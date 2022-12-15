@@ -1,16 +1,18 @@
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'say_logic.dart';
 
-class SayPage extends StatefulWidget {
+class SayPage extends BasePage {
   const SayPage({Key? key}) : super(key: key);
 
   @override
-  _SayPageState createState() => _SayPageState();
+  BasePageState<BasePage> getState() => _SayPageState();
+
 }
 
-class _SayPageState extends State<SayPage> {
+class _SayPageState extends BasePageState<SayPage> {
   final logic = Get.put(SayLogic());
   final state = Get.find<SayLogic>().state;
 
@@ -23,5 +25,15 @@ class _SayPageState extends State<SayPage> {
   void dispose() {
     Get.delete<SayLogic>();
     super.dispose();
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }

@@ -88,12 +88,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.THEME_COLOR,
-        centerTitle: true,
-        title: Obx(()=>Text(titles[_selectedIndex.value],style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 16.sp),)),
-      ),
       extendBody: true,
       body: SafeArea(
         child: Container(
@@ -113,10 +107,6 @@ class _HomePageState extends State<HomePage> {
                       LearnPage(),
                       SayPage(),
                       MinePage()
-                      // RecommendPage(),
-                      // ArticleInsertPage(),
-                      // TrackEffectsPage(),
-                      // UserCenterPage(),
                     ],
                   )
               )

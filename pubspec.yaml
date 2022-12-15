@@ -153,15 +153,30 @@ flutter:
   # assets-generator-begin
   # images/*
     - images/icon_close.png
+    - images/icon_tab3_normal.png
+    - images/index_class_new.png
     - images/icon_back.png
+    - images/index_teacher_icon1.png
+    - images/index_search.png
+    - images/index_teacher_icon2.png
     - images/icon_back_black.png
+    - images/index_msg.png
+    - images/icon_tab4_normal.png
+    - images/icon_tab1_normal.png
+    - images/icon_tab3_pressed.png
+    - images/index_icon_1.png
+    - images/icon_tab2_normal.png
+    - images/icon_tab4_pressed.png
+    - images/index_icon_0.png
+    - images/index_icon_2.png
     - images/welcome_icon.png
+    - images/index_icon_3.png
+    - images/index_class_more.png
+    - images/index_icon_4.png
+    - images/icon_tab1_pressed.png
+    - images/icon_tab2_pressed.png
+    - images/index_class_thumb1.png
+    - images/index_ad.png
+    - images/index_class_thumb2.png
+    - images/index_icon_play.png
     - images/icon_back_blue.png
-    - icon_tab1_normal.png
-    - icon_tab1_pressed.png
-    - icon_tab2_normal.png
-    - icon_tab2_pressed.png
-    - icon_tab3_normal.png
-    - icon_tab3_pressed.png
-    - icon_tab4_normal.png
-    - icon_tab4_pressed.png

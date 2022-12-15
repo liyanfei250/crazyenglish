@@ -7,9 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../base/common.dart';
