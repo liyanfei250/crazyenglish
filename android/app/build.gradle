@@ -21,12 +21,28 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
+def flutterMinSdkVersionCode = localProperties.getProperty('flutter.minSdkVersionCode')
+if (flutterMinSdkVersionCode == null) {
+    flutterMinSdkVersionCode = '21'
+}
+
+def flutterTargetSdkVersionCode = localProperties.getProperty('flutter.targetSdkVersionCode')
+if (flutterTargetSdkVersionCode == null) {
+    flutterTargetSdkVersionCode = '30'
+}
+
+def flutterCompileSdkVersionCode = localProperties.getProperty('flutter.compileSdkVersionCode')
+if (flutterCompileSdkVersionCode == null) {
+    flutterCompileSdkVersionCode = '33'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion flutterCompileSdkVersionCode.toInteger()
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -39,10 +55,18 @@ android {
         applicationId "com.weekly.crazyenglish.crazyenglish"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion flutterMinSdkVersionCode.toInteger()
+        targetSdkVersion flutterTargetSdkVersionCode.toInteger()
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            , 'x86', 'x86_64', 'mips', 'mips64'
+            // 还可以添加
+        }
     }
 
     buildTypes {
