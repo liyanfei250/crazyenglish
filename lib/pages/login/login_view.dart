@@ -118,7 +118,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // color: AppColors.c_FFFFFFFF,
+      backgroundColor: AppColors.c_FFFAF7F7,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -143,7 +143,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Obx(()=>Checkbox(value: agreePolicy.value,shape: const CircleBorder(),activeColor: AppColors.THEME_COLOR,onChanged: ( value){
+                          Obx(()=>Checkbox(value: agreePolicy.value,
+                              shape: const CircleBorder(),activeColor: AppColors.THEME_COLOR,onChanged: ( value){
                             agreePolicy.value = value!;
                           })),
                           RichText(
@@ -253,7 +254,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              RouterUtil.offAndToNamed(AppRoutes.HOME);
+              RouterUtil.toNamed(AppRoutes.HOME);
             },
             child: Container(
                   height: 44.w,

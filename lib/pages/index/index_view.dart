@@ -76,7 +76,7 @@ class _IndexPageState extends BasePageState<IndexPage> with SingleTickerProvider
   );
 
   Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.symmetric(horizontal: 14.w),
+    margin: EdgeInsets.only(left: 14.w,right: 14.w,top: 7.w),
     height: 28.w,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +92,8 @@ class _IndexPageState extends BasePageState<IndexPage> with SingleTickerProvider
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(R.imagesIndexSearch,width: 22.w,height: 22.w,),
+              Image.asset(R.imagesIndexSearch,fit:BoxFit.cover,width: 22.w,height: 22.w,),
+              Padding(padding: EdgeInsets.only(left: 9.w)),
               Text("疯狂英语",style: TextStyle(fontSize:16.sp,color: AppColors.TEXT_GRAY_COLOR),)
             ],
           ),

@@ -34,6 +34,7 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(padding: EdgeInsets.only(top: 9.w)),
             Image.asset(R.imagesIndexAd,width: double.infinity,height: 120.w,),
             Padding(padding: EdgeInsets.only(top: 12.w)),
             Row(
@@ -125,12 +126,20 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
     ),
     width: 103.w,
     height: 144.w,
+    alignment: Alignment.center,
     child: Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(R.imagesIndexTeacherIcon2,width: 70.w,height: 70.w,),
+        Padding(padding: EdgeInsets.only(top: 8.w)),
         Text("Slience",style: TextStyle(fontSize:12.sp,color: AppColors.c_FF101010),),
+        Padding(padding: EdgeInsets.only(top: 1.w)),
         Text("金牌讲师",style: TextStyle(fontSize:12.sp,color: AppColors.TEXT_BLACK_COLOR),),
+        Padding(padding: EdgeInsets.only(top: 2.w)),
         Container(
+          width: 68.w,
+          height: 20.w,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10.w)),
               color: AppColors.c_FFFF4D35
@@ -156,13 +165,14 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
         Padding(padding: EdgeInsets.only(left: 4.w)),
         _buildClassCard(0),
         _buildClassCard(1),
-        Padding(padding: EdgeInsets.only(left: 6.w)),
+        Padding(padding: EdgeInsets.only(top: 16.w)),
       ],
     ),
   );
 
   Widget _buildClassCard(int index) => Container(
     margin: EdgeInsets.only(top: 6.w),
+    padding: EdgeInsets.only(bottom: 7.w),
     width: double.infinity,
     height: 75.w,
     alignment: Alignment.topRight,
@@ -178,29 +188,59 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
         borderRadius: BorderRadius.all(Radius.circular(10.w)),
         color: AppColors.c_FFFFFFFF
     ),
-    child:Row(
+    child:Stack(
       children: [
-        Image.asset(R.imagesIndexClassThumb1,width: 87.w,height: 61.w,),
-        Padding(padding: EdgeInsets.only(left: 7.w)),
-        Column(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("懂你英语A+学习计划",style: TextStyle(fontWeight:FontWeight.bold,fontSize:16.sp,color: AppColors.c_FF101010),),
-            Text("懂你英语A+学习计划",style: TextStyle(fontWeight:FontWeight.bold,fontSize:16.sp,color: AppColors.c_FF101010),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("精品课 量身定制",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFFFBC00),),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+            Padding(padding: EdgeInsets.only(left: 7.w)),
+            Image.asset(R.imagesIndexClassThumb1,width: 87.w,height: 61.w,),
+            Padding(padding: EdgeInsets.only(left: 7.w,top: 7.w)),
+            Expanded(
+                flex:1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("14节课",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFD7D7D7),),
-                    Text("3.8w人学习",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFD7D7D7),),
+                    Text("懂你英语A+学习计划",style: TextStyle(fontWeight:FontWeight.bold,fontSize:16.sp,color: AppColors.c_FF101010),),
+                    Text("为你量身定制系统化的英语课程",style: TextStyle(fontSize:10.sp,color: AppColors.TEXT_GRAY_COLOR),),
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("精品课 量身定制",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFFFBC00),),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("14节课",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFD7D7D7),),
+                            Padding(padding: EdgeInsets.only(left: 8.w)),
+                            Text("3.8w人学习",style: TextStyle(fontWeight:FontWeight.bold,fontSize:10.sp,color: AppColors.c_FFD7D7D7),),
+                            Padding(padding: EdgeInsets.only(right: 8.w)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ))
+          ],
+        ),
+        Positioned(
+          right: 0,
+            top: 0,
+            child: Container(
+              color: AppColors.darkGray,
+                width: 56.w,height: 18.w,
+                child: Stack(
+                  children: [
+                    Image.asset(R.imagesIndexClassNew,fit:BoxFit.cover,width: double.infinity,
+                        height: double.infinity)
                   ],
                 )
-              ],
-            )
-          ],
-        )
+           ))
+        // Align(
+        //     alignment: Alignment.topRight,
+        //   child: Image.asset(R.imagesIndexClassNew,width: 56.w,height: 18.w,)
+        // )
+
       ],
     )
   );
