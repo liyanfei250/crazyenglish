@@ -3,11 +3,13 @@ import 'package:flutter/painting.dart';
 class AppColors {
   static Color darkGray = Color(0xFF333333);
   static Color c_FFEEEEEE = Color(0xFFEEEEEE);
+  static Color c_66000000 = Color(0x66000000);
   static Color c_FF32374E = Color(0xFF32374E);
   static Color c_FFFFFFFF = Color(0xFFFFFFFF);
   static Color c_4DD9D9D9 = Color(0x4DD9D9D9);
   static Color c_FFF0F0F0 = Color(0xFFF0F0F0);
   static Color c_FFFFEBEB = Color(0xFFFFEBEB);
+  static Color c_FF542327 = Color(0xFF542327);
   static Color c_FFFF4D35 = Color(0xFFFF4D35);
   static Color c_FFD7D7D7 = Color(0xFFD7D7D7);
   static Color c_FFFAF7F7 = Color(0xFFFAF7F7);

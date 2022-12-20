@@ -46,6 +46,8 @@ dependencies:
   shared_preferences: ^2.0.7
   flutter_pickers: ^2.1.1
   image: ^3.0.1
+  # webSocket 连接
+  web_socket_channel: ^2.2.0
 
   image_picker: ^0.8.6
   # 状态管理
@@ -95,6 +97,8 @@ dependencies:
   flutter_image_compress: ^1.1.3
   sign_in_with_apple: ^4.2.0
   flutter_inapp_purchase: ^5.3.1
+  flutter_sound: ^9.2.13
+  audio_session: ^0.1.6
 
 dev_dependencies:
   flutter_test:
@@ -152,11 +156,15 @@ flutter:
   assets:
   # assets-generator-begin
   # images/*
+    - images/weekly_item_eye.png
+    - images/weekly_item_bg0.png
     - images/icon_close.png
+    - images/weekly_item_bg1.png
     - images/icon_tab3_normal.png
     - images/index_class_new.png
     - images/icon_back.png
     - images/index_teacher_icon1.png
+    - images/weekly_item_shadow.png
     - images/index_search.png
     - images/index_teacher_icon2.png
     - images/icon_back_black.png

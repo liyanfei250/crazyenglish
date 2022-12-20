@@ -1,5 +1,8 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/colors.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,7 +45,14 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
               children: functionTxt.map((e){
                 return InkWell(
                   onTap: (){
-
+                    switch(e){
+                      case "英语周报":
+                        RouterUtil.toNamed(AppRoutes.WeeklyList);
+                        break;
+                      case "新手福利":
+                        RouterUtil.toNamed(AppRoutes.TextToVoice);
+                        break;
+                    }
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -227,14 +237,11 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
           right: 0,
             top: 0,
             child: Container(
+              alignment: Alignment.center,
               color: AppColors.darkGray,
                 width: 56.w,height: 18.w,
-                child: Stack(
-                  children: [
-                    Image.asset(R.imagesIndexClassNew,fit:BoxFit.cover,width: double.infinity,
-                        height: double.infinity)
-                  ],
-                )
+                child: ExtendedImage.asset(R.imagesIndexClassNew,fit:BoxFit.cover,width: 56.w,
+                        height: 18.w)
            ))
         // Align(
         //     alignment: Alignment.topRight,
