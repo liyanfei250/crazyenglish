@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:get/get.dart';
 
+import '../r.dart';
 import 'utils/xf_socket.dart';
 
 /// 作者： lixp
@@ -21,8 +24,11 @@ class _TextToVoiceState extends State<TextToVoice> {
 
 
   final TextEditingController _editingController = TextEditingController();
+  final TextEditingController _editingController2 = TextEditingController();
 
 
+  var englishTxt = "".obs;
+  var vcnTxt = "xiaoyan".obs;
 
   @override
   void initState() {
@@ -56,17 +62,23 @@ class _TextToVoiceState extends State<TextToVoice> {
             decoration: const InputDecoration(hintText: "输入需要转换的语音文本"),
             controller: _editingController,
           ),
-          Container(
-            child: ElevatedButton(
-                onPressed: () {
-                  var text = _editingController.text;
-                  XfSocket.connect(text, onFilePath: (path) {
-                    _play(path);
-                  });
-                },
-                child: const Text("播放")),
+          TextField(
+            decoration: const InputDecoration(hintText: "输入需要更改的发言人"),
+            controller: _editingController2,
+            onChanged: (text){
+              vcnTxt.value = text;
+            },
           ),
-
+          Obx(() => ElevatedButton(
+              onPressed: () {
+                var text = _editingController.text;
+                XfSocket.connect(text,vcnTxt.value, onFilePath: (path) {
+                  _play(path);
+                });
+              },
+              child: Text("采用${vcnTxt.value}播放"))),
+          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Image.asset(R.imagesXunfei)
         ],
       ),
     );

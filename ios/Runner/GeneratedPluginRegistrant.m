@@ -120,18 +120,6 @@
 @import sqflite;
 #endif
 
-#if __has_include(<umeng_common_sdk/UmengCommonSdkPlugin.h>)
-#import <umeng_common_sdk/UmengCommonSdkPlugin.h>
-#else
-@import umeng_common_sdk;
-#endif
-
-#if __has_include(<umeng_push_sdk/UmengPushSdkPlugin.h>)
-#import <umeng_push_sdk/UmengPushSdkPlugin.h>
-#else
-@import umeng_push_sdk;
-#endif
-
 #if __has_include(<url_launcher_ios/FLTURLLauncherPlugin.h>)
 #import <url_launcher_ios/FLTURLLauncherPlugin.h>
 #else
@@ -166,8 +154,6 @@
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SignInWithApplePlugin registerWithRegistrar:[registry registrarForPlugin:@"SignInWithApplePlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
-  [UmengCommonSdkPlugin registerWithRegistrar:[registry registrarForPlugin:@"UmengCommonSdkPlugin"]];
-  [UmengPushSdkPlugin registerWithRegistrar:[registry registrarForPlugin:@"UmengPushSdkPlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
 }

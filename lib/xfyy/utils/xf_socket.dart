@@ -32,7 +32,7 @@ class XfSocket {
   /// 创建连接
   /// listen 转化完成后的回调
   /// 因为鉴权时间戳原因 每次请求都必须重新鉴权连接
-  XfSocket.connect(String text, {this.onFilePath}) {
+  XfSocket.connect(String text,String vcn, {this.onFilePath}) {
     String u = XfUtil.getAuthUrl(_host, _apiKey, _apiSecret);
     debugPrint('创建连接url = $u');
     close();
@@ -43,7 +43,7 @@ class XfSocket {
     }, onError: (e) {
       debugPrint(" init error $e");
     });
-    sendText(text);
+    sendText(text,vcn);
   }
 
   /// 创建连接 发送语音
@@ -122,7 +122,7 @@ class XfSocket {
   }
 
   ///语音转文字
-  sendText(String text) {
+  sendText(String text,String vcn) {
     XfTextReq xfTextReq = XfTextReq();
 
     ///设置appId
@@ -135,7 +135,7 @@ class XfSocket {
     business.tte = "UTF8";
     business.pitch = 50;
     business.speed = 40;
-    business.vcn = "xiaoyan";
+    business.vcn = vcn.isNotEmpty? vcn:"xiaoyan";
     business.volume = 50; //音量
     business.sfl = 0;
     business.auf = "audio/L16;rate=16000";
@@ -164,7 +164,7 @@ class XfSocket {
 
     BusinessV business = BusinessV();
     // 语种 zh_cn:中文
-    business.language = "zh_cn";
+    business.language = "en_us";
     //应用领域
     // iat：日常用语
     // medical：医疗

@@ -3,6 +3,8 @@ class R {
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg0.png)
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
+  /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
+  static final String imagesXunfei = 'images/xunfei.jpeg';
   /// ![](http://127.0.0.1:11/images/icon_close.png)
   static final String imagesIconClose = 'images/icon_close.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg1.png)

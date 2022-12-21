@@ -116,16 +116,6 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin sqflite, com.tekartik.sqflite.SqflitePlugin", e);
     }
     try {
-      flutterEngine.getPlugins().add(new com.umeng.umeng_common_sdk.UmengCommonSdkPlugin());
-    } catch(Exception e) {
-      Log.e(TAG, "Error registering plugin umeng_common_sdk, com.umeng.umeng_common_sdk.UmengCommonSdkPlugin", e);
-    }
-    try {
-      flutterEngine.getPlugins().add(new com.umeng.message.UmengPushSdkPlugin());
-    } catch(Exception e) {
-      Log.e(TAG, "Error registering plugin umeng_push_sdk, com.umeng.message.UmengPushSdkPlugin", e);
-    }
-    try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
     } catch(Exception e) {
       Log.e(TAG, "Error registering plugin url_launcher_android, io.flutter.plugins.urllauncher.UrlLauncherPlugin", e);

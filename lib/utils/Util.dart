@@ -5,17 +5,13 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/utils/colors.dart';
-import 'package:crazyenglish/utils/log_util.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
-import 'package:device_info/device_info.dart';
-import 'package:umeng_push_sdk/umeng_push.dart';
 import '../config.dart';
-import '../entity/login/login_util.dart';
 import '../net/net_manager.dart';
 import '../r.dart';
 import 'object_util.dart';
@@ -75,29 +71,6 @@ class Util {
     //     appId: SnsLoginUtil.TENCENT_APPID,
     //     universalLink: SnsLoginUtil.UNIVERSAL_LINK);
     // registerUmeng();
-  }
-
-  static void registerUmeng() async{
-    UmengPushSdk.setPushEnable(true);
-    UmengPushSdk.setTokenCallback((result) {
-      Fluttertoast.showToast(msg: "tokenCallback:"+result);
-      SpUtil.putString(BaseConstant.umengToken,result);
-
-      if(Util.isLogin()){
-        String userId = SpUtil.getString(BaseConstant.userId);
-      }
-    });
-
-    UmengPushSdk.setMessageCallback((result) {
-      // Fluttertoast.showToast(msg: "messageCallback:"+result);
-    });
-    UmengPushSdk.register();
-
-    String? token = await UmengPushSdk.getRegisteredId();
-    if((token??"").isNotEmpty){
-      print("ios token:$token");
-      SpUtil.putString(BaseConstant.umengToken,token);
-    }
   }
 
   static Widget buildBackWidget(BuildContext context){
