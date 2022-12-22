@@ -77,38 +77,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
             ),
             width: 88.w,
             height: 122.w,
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Container(
-            //       width: 38.w,
-            //       height: 14.w,
-            //       decoration: BoxDecoration(
-            //           borderRadius: BorderRadius.all(Radius.circular(6.w)),
-            //           color: AppColors.c_66000000
-            //       ),
-            //       child: Row(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: [
-            //           Image.asset(R.imagesWeeklyItemEye,width: 10.w,height: 10.w,),
-            //           Padding(padding: EdgeInsets.only(left: 1.w)),
-            //           Text("10",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 8.sp),)
-            //         ],
-            //       ),
-            //     ),
-            //     Container(
-            //       decoration: BoxDecoration(
-            //           image: DecorationImage(
-            //             image: AssetImage(R.imagesWeeklyItemShadow),
-            //           )
-            //       ),
-            //       width: 88.w,
-            //       height: 33.w,
-            //       child: Text("2022-10-15",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 10.sp),),
-            //     )
-            //   ],
-            // ),
+
           ),
           Padding(padding: EdgeInsets.only(top: 4.w)),
           Text("第$index期",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),)
