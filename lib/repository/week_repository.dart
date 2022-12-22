@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../api/api.dart';
 import '../entity/base_resp.dart';
 import '../entity/week_paper_response.dart';
@@ -14,8 +16,8 @@ class WeekRepository{
 
   Future<WeekPaperResponse> getWeekPaperList(Map<String,String> req) async{
     BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getWeekPaperList,
-        data: req);
+        .request<Map<String, dynamic>>(Method.get, Api.getWeekPaperList,
+        data: req,options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.message!);
     }

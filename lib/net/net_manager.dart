@@ -90,13 +90,13 @@ class NetManager {
     );
   }
 
-  // Options _checkOptions(method, options) {
-  //   if (options == null) {
-  //     options = new Options();
-  //   }
-  //   options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
-  //   return options;
-  // }
+  Options _checkOptions(method, options) {
+    if (options == null) {
+      options = new Options(method: Method.get);
+    }
+    options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
+    return options;
+  }
 
   /// Make http request with options.
   /// [method] The request method.
@@ -110,18 +110,24 @@ class NetManager {
       if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
         data['user_id'] = SpUtil.getString(BaseConstant.userId);
       }
-      data['newLH'] = "1";
-      data['app_id'] = Config.appId;
-      data.remove("sign");
-      String params = GetSign.getSign(data as Map<String, String?>);
-      data['sign'] = params;
+      // data['app_id'] = Config.appId;
+      // data.remove("sign");
+      // String params = GetSign.getSign(data as Map<String, String?>);
+      // data['sign'] = params;
     }
     Response response;
     try {
-      response = await _dio.request(path,
-          data: data,
-          // options: _checkOptions(method, options),
-          cancelToken: cancelToken);
+      if(method == Method.get){
+        response = await _dio.get(path,
+            queryParameters: data,
+            cancelToken: cancelToken);
+      }else{
+        response = await _dio.request(path,
+            data: data,
+            options: _checkOptions(method, options),
+            cancelToken: cancelToken);
+      }
+
     } catch (e) {
       if (e is DioError) {
         Util.toast("网络异常");

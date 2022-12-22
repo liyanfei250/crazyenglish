@@ -73,9 +73,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
   int tryTime = 0;
   var isHidePasswd = true.obs;
   var isUserLoginEnable = false.obs;
-  var isHideCloseUserNameLogin = false.obs;
-  var paswordStr = "".obs;
-  var userNameStr = "".obs;
+  var phoneStr = "".obs;
   var wechatIsInstalled = true.obs;
   var qqIsInstalled = true.obs;
 
@@ -230,10 +228,12 @@ class _LoginPageState extends BasePageState<LoginPage> {
                                 FilteringTextInputFormatter.singleLineFormatter
                               ],
                               onChanged: (String str) {
-                                paswordStr.value = str;
-                                if(paswordStr.value.isNotEmpty && userNameStr.value.isNotEmpty){
+                                phoneStr.value = str;
+                                if(phoneStr.value.isNotEmpty){
+                                  _isHavePhoneNum.value = true;
                                   isUserLoginEnable.value = true;
                                 }else{
+                                  _isHavePhoneNum.value = false;
                                   isUserLoginEnable.value = false;
                                 }
                               },
@@ -246,7 +246,15 @@ class _LoginPageState extends BasePageState<LoginPage> {
                             )
                         ),
                     ),
-                    Text("获取验证码",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),)
+                    InkWell(
+                      onTap: (){
+                        if (_isHavePhoneNum.value && countDown.value <= 0) {
+                          logic.sendCode(_phoneController!.text);
+                          _startTimer(60);
+                        }
+                      },
+                      child: Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),),
+                    )
                   ],
                 )
             ),
@@ -303,15 +311,15 @@ class _LoginPageState extends BasePageState<LoginPage> {
               ],
               onChanged: (String str) {
                 if (str != null && str != "") {
-                  isHideCloseUserNameLogin.value = false;
+                  _isHavePhoneNum.value = false;
                 } else {
-                  isHideCloseUserNameLogin.value = true;
+                  _isHavePhoneNum.value = true;
                 }
-                userNameStr.value = str;
-                if(paswordStr.value.isNotEmpty && userNameStr.value.isNotEmpty){
-                  isUserLoginEnable.value = true;
+                phoneStr.value = str;
+                if(phoneStr.value.isNotEmpty){
+                  _isHavePhoneNum.value = true;
                 }else{
-                  isUserLoginEnable.value = false;
+                  _isHavePhoneNum.value = false;
                 }
               },
               decoration: const InputDecoration(

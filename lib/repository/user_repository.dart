@@ -3,6 +3,7 @@ import 'package:crazyenglish/entity/login_response.dart';
 import 'package:crazyenglish/entity/push_msg.dart';
 import 'package:crazyenglish/entity/send_code_response.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:dio/dio.dart';
 import 'package:package_info/package_info.dart';
 
 import '../../api/api.dart';
@@ -36,8 +37,19 @@ class UserRepository{
     }
   }
 
-  Future<SendCodeResponse> sendCode(Map<String,String> req) async{
-    return Future.error("返回SendCodeResponse为空");
+  Future<SendCodeResponse> sendCode(String phone) async{
+    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
+        .request<Map<String, dynamic>>(Method.get, Api.getSendCode+phone);
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.message!);
+    }
+    if(baseResp.obj !=null){
+
+      SendCodeResponse orderQuestionObj = SendCodeResponse.fromJson(baseResp.obj);
+      return orderQuestionObj!;
+    } else {
+      return Future.error("返回SendCodeResponse为空");
+    }
   }
 
   Future<LoginResponse> bindPhone(Map<String,String> req) async{

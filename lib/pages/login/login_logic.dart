@@ -59,8 +59,8 @@ class LoginLogic extends GetxController {
     update([GetBuilderIds.quickLogin]);
   }
 
-  void sendCode(Map<String,String> req) async{
-    SendCodeResponse sendCodeResponse = await userRepository.sendCode(req);
+  void sendCode(String phone) async{
+    SendCodeResponse sendCodeResponse = await userRepository.sendCode(phone);
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
   }

@@ -4,6 +4,7 @@ class WeeklyListState {
 
   List<Records> list = [];
   bool hasMore = true;
+  int pageNo = 0;
   WeeklyListState() {}
 
 }

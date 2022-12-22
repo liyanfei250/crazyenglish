@@ -25,7 +25,7 @@ class WeeklyListLogic extends GetxController {
 
   void getPeridList(String weekTime,int page,int pageSize) async{
     Map<String,String> req= {};
-    req["weekTime"] = weekTime;
+    // req["weekTime"] = weekTime;
     req["current"] = "$page";
     req["size"] = "$pageSize";
 

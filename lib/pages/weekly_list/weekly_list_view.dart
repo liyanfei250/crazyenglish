@@ -1,10 +1,13 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../entity/week_paper_response.dart';
 import '../../r.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
 import 'weekly_list_logic.dart';
@@ -21,6 +24,41 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
   final state = Get.find<WeeklyListLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
+  final int pageSize = 10;
+  int currentPageNo = 0;
+  List<Records> weekPaperList = [];
+  final int pageStartIndex = 1;
+  @override
+  void onCreate() {
+    logic.getPeridList("2022-12-22", pageStartIndex, 10);
+    logic.addListenerId(GetBuilderIds.weekList,(){
+      if(state.list!=null && state.list!=null){
+        if(state.pageNo == currentPageNo+1){
+          weekPaperList = state.list;
+          currentPageNo++;
+          weekPaperList.addAll(state!.list!);
+          if(mounted && _refreshController!=null){
+            _refreshController.loadComplete();
+            setState(() {
+
+            });
+          }
+        }else if(state.pageNo == pageStartIndex){
+          currentPageNo = pageStartIndex;
+          weekPaperList.clear();
+          weekPaperList.addAll(state.list!);
+          if(mounted && _refreshController!=null){
+            _refreshController.refreshCompleted();
+            setState(() {
+            });
+          }
+
+        }
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +74,35 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
         enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context,LoadStatus? mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text("pull up load");
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.failed){
+              body = Text("Load Failed!Click retry!");
+            }
+            else if(mode == LoadStatus.canLoading){
+              body = Text("release to load more");
+            }
+            else{
+              body = Text("No more Data");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child: GridView.builder(
-          itemCount: 10,
+          itemCount: weekPaperList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemBuilder: (_,int position)=>buildItem(position)),
       ),
@@ -87,17 +149,18 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
   }
 
 
+
   void _onRefresh() async{
     await Future.delayed(Duration(milliseconds: 100));
-    // currentPageNo = pageStartIndex;
-    // logic.getArticleTopList({"pageSize":"$pageSize","index":pageStartIndex.toString()},pageStartIndex);
+    currentPageNo = pageStartIndex;
+    logic.getPeridList("2022-12-22",pageStartIndex,pageSize);
   }
 
   void _onLoading() async{
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 100));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getArticleTopList({"pageSize":"$pageSize","index":(currentPageNo+1).toString()},currentPageNo+1);
+    logic.getPeridList("2022-12-22",currentPageNo,pageSize);
   }
 
   @override
@@ -105,11 +168,6 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
     Get.delete<WeeklyListLogic>();
     _refreshController.dispose();
     super.dispose();
-  }
-
-  @override
-  void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
