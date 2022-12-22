@@ -56,7 +56,7 @@ class Util {
     return croppedFile;
   }
 
-  static initWhenEnterMain() async{
+  static initWhenEnterMain() async {
     // Wechat.instance.registerApp(
     //   appId: SnsLoginUtil.WECHAT_APPID,
     //   universalLink: SnsLoginUtil.WECHAT_UNIVERSAL_LINK,
@@ -83,8 +83,8 @@ class Util {
       child:
       Center(
           child: Image.asset(
-            R.imagesIconBack,
-            width: Util.setWidth(45) as double?,height: Util.setWidth(45) as double?,),
+            R.imagesIconBackBlack,
+            width: Util.setWidth(30) as double?,height: Util.setWidth(30) as double?,),
       ),
     );
   }

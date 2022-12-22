@@ -87,6 +87,7 @@ class _WebViewPageState extends State<WebViewPage> {
       body: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: webUrl!,
+          javascriptMode: JavascriptMode.unrestricted,
         );
         // return InAppWebView(
         //   initialUrlRequest: URLRequest(url:Uri.parse(webUrl!)),
@@ -170,6 +171,8 @@ class _WebViewPageState extends State<WebViewPage> {
       );
     }
   }
+
+
   ///浏览器网页加载进度条
   _buildProgressBar(double progress, BuildContext context) {
     return PreferredSize(

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external_files" path="."/>
+    <external-path name="beta_external_path" path="Download/"/>
+    <external-path name="beta_external_files_path" path="Android/data/"/>
+    <external-files-path name="umeng_cache" path="umeng_cache/"/>
+</paths>

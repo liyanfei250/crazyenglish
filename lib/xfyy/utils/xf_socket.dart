@@ -13,9 +13,13 @@ import 'package:crazyenglish/xfyy/utils/xf_util.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 /// 配置参数
-const String _appId = "83836aa0";
-const String _apiKey = "445f5702911ec04cfc9155e1350b2a53";
-const String _apiSecret = "Y2M5OTI1MmZjY2NkNWYzZWY5OGJkMDRk";
+// const String _appId = "83836aa0";
+// const String _apiKey = "445f5702911ec04cfc9155e1350b2a53";
+// const String _apiSecret = "Y2M5OTI1MmZjY2NkNWYzZWY5OGJkMDRk";
+
+const String _appId = "573472a8";
+const String _apiKey = "518c9af2e1033e7e76900f38a8dff147";
+const String _apiSecret = "954e0b74bfc8652e3823ad5a3ac6786e";
 
 const String _host = "tts-api.xfyun.cn";
 const String _host2 = "iat-api.xfyun.cn";

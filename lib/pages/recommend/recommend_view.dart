@@ -25,6 +25,11 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
   final List<String> functionTxt = [
     "英语周报",
     "每周题库",
+    "高考真题",
+    "听力题库",
+    "口语题库",
+    "阅读理解",
+    "完形填空",
     "新手福利",
     "精选直播",
     "全部",
@@ -40,30 +45,14 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
             Padding(padding: EdgeInsets.only(top: 9.w)),
             Image.asset(R.imagesIndexAd,width: double.infinity,height: 120.w,),
             Padding(padding: EdgeInsets.only(top: 12.w)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: functionTxt.map((e){
-                return InkWell(
-                  onTap: (){
-                    switch(e){
-                      case "英语周报":
-                        RouterUtil.toNamed(AppRoutes.WeeklyList);
-                        break;
-                      case "新手福利":
-                        RouterUtil.toNamed(AppRoutes.TextToVoice);
-                        break;
-                    }
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset("images/index_icon_${functionTxt.indexOf(e)}.png",width: 40.w,height: 40.w,),
-                      Text(e,style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_BLACK_COLOR),)
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
+            GridView.builder(
+                shrinkWrap:true,
+                itemCount: functionTxt.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
+                itemBuilder: (_,int position){
+                  String e = functionTxt[position];
+                  return _buildFuncAreaItem(e);
+                }),
             Padding(padding: EdgeInsets.only(top: 12.w)),
             _buildPlayBar(),
             Padding(padding: EdgeInsets.only(top: 8.w)),
@@ -76,6 +65,29 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
       ),
     );
   }
+
+  Widget _buildFuncAreaItem(String e) => InkWell(
+    onTap: (){
+      switch(e){
+        case "每周题库":
+          RouterUtil.toNamed(AppRoutes.WeeklyList);
+          break;
+        case "英语周报":
+          RouterUtil.toWebPage("http://192.168.0.120:8080/",title: "英语周报",showAppBar: true);
+          break;
+        case "新手福利":
+          RouterUtil.toNamed(AppRoutes.TextToVoice);
+          break;
+      }
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset("images/index_icon_${functionTxt.indexOf(e)+1}.png",width: 40.w,height: 40.w,),
+        Text(e,style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_BLACK_COLOR),)
+      ],
+    ),
+  );
 
   Widget _buildPlayBar() => Container(
     width: double.infinity,

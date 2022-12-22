@@ -10,13 +10,7 @@ import 'sp_util.dart';
 class JsonCacheManageUtils{
 
   // dataType
-  static final int TemplateList = 0x01;
-  static final int RecommendList = 0x02;
-  static final int TrackEffectsArticle = 0x03;
-  static final int topArticleList = 0x04;
-  static final int CheckUpdateResp = 0x05;
-  static final int PushMsgList = 0x06;
-  static final int Meal = 0x07;
+  static final int WeekPaperResponse = 0x01;
 
   // String contentJson;
 

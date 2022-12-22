@@ -4,6 +4,8 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 
 import '../r.dart';
+import '../utils/Util.dart';
+import '../utils/colors.dart';
 import 'utils/xf_socket.dart';
 
 /// 作者： lixp
@@ -28,7 +30,7 @@ class _TextToVoiceState extends State<TextToVoice> {
 
 
   var englishTxt = "".obs;
-  var vcnTxt = "xiaoyan".obs;
+  var vcnTxt = "Laura".obs;
 
   @override
   void initState() {
@@ -53,33 +55,43 @@ class _TextToVoiceState extends State<TextToVoice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('语音合成'),),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            decoration: const InputDecoration(hintText: "输入需要转换的语音文本"),
-            controller: _editingController,
-          ),
-          TextField(
-            decoration: const InputDecoration(hintText: "输入需要更改的发言人"),
-            controller: _editingController2,
-            onChanged: (text){
-              vcnTxt.value = text;
-            },
-          ),
-          Obx(() => ElevatedButton(
-              onPressed: () {
-                var text = _editingController.text;
-                XfSocket.connect(text,vcnTxt.value, onFilePath: (path) {
-                  _play(path);
-                });
+      appBar: AppBar(
+        backgroundColor: AppColors.c_FFFFFFFF,
+        centerTitle: true,
+        title: Text("语音合成",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
+        leading: Util.buildBackWidget(context),
+        // bottom: ,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(hintText: "输入需要转换的语音文本"),
+              controller: _editingController,
+            ),
+            TextField(
+              decoration: const InputDecoration(hintText: "输入需要更改的发言人"),
+              controller: _editingController2,
+              onChanged: (text){
+                vcnTxt.value = text;
               },
-              child: Text("采用${vcnTxt.value}播放"))),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
-          Image.asset(R.imagesXunfei)
-        ],
+            ),
+            Obx(() => ElevatedButton(
+                onPressed: () {
+                  var text = _editingController.text;
+                  XfSocket.connect(text,vcnTxt.value, onFilePath: (path) {
+                    _play(path);
+                  });
+                },
+                child: Text("采用${vcnTxt.value}播放"))),
+            Padding(padding: EdgeInsets.only(top: 20.w)),
+            Image.asset(R.imagesXunfei),
+            Image.asset(R.imagesXunfeiEnglish)
+          ],
+        ),
       ),
     );
   }

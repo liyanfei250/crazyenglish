@@ -23,12 +23,22 @@ class R {
   static final String imagesIndexSearch = 'images/index_search.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon2.png)
   static final String imagesIndexTeacherIcon2 = 'images/index_teacher_icon2.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_8.png)
+  static final String imagesIndexIcon8 = 'images/index_icon_8.png';
+  /// ![](http://127.0.0.1:11/images/xunfei_english.png)
+  static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_9.png)
+  static final String imagesIndexIcon9 = 'images/index_icon_9.png';
   /// ![](http://127.0.0.1:11/images/icon_back_black.png)
   static final String imagesIconBackBlack = 'images/icon_back_black.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_10.png)
+  static final String imagesIndexIcon10 = 'images/index_icon_10.png';
   /// ![](http://127.0.0.1:11/images/index_msg.png)
   static final String imagesIndexMsg = 'images/index_msg.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_normal.png)
   static final String imagesIconTab4Normal = 'images/icon_tab4_normal.png';
+  /// ![](http://127.0.0.1:11/images/img.png)
+  static final String imagesImg = 'images/img.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_normal.png)
   static final String imagesIconTab1Normal = 'images/icon_tab1_normal.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_pressed.png)
@@ -39,18 +49,22 @@ class R {
   static final String imagesIconTab2Normal = 'images/icon_tab2_normal.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_pressed.png)
   static final String imagesIconTab4Pressed = 'images/icon_tab4_pressed.png';
-  /// ![](http://127.0.0.1:11/images/index_icon_0.png)
-  static final String imagesIndexIcon0 = 'images/index_icon_0.png';
   /// ![](http://127.0.0.1:11/images/index_icon_2.png)
   static final String imagesIndexIcon2 = 'images/index_icon_2.png';
   /// ![](http://127.0.0.1:11/images/welcome_icon.png)
   static final String imagesWelcomeIcon = 'images/welcome_icon.png';
   /// ![](http://127.0.0.1:11/images/index_icon_3.png)
   static final String imagesIndexIcon3 = 'images/index_icon_3.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_7.png)
+  static final String imagesIndexIcon7 = 'images/index_icon_7.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)
   static final String imagesIndexClassMore = 'images/index_class_more.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_6.png)
+  static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
   static final String imagesIndexIcon4 = 'images/index_icon_4.png';
+  /// ![](http://127.0.0.1:11/images/index_icon_5.png)
+  static final String imagesIndexIcon5 = 'images/index_icon_5.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_pressed.png)
   static final String imagesIconTab1Pressed = 'images/icon_tab1_pressed.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_pressed.png)

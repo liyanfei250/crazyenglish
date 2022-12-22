@@ -88,7 +88,7 @@ dependencies:
   extended_image: ^6.3.1
   pull_to_refresh: ^2.0.0
   worker_manager: ^4.4.6
-  #  flutter_inappwebview: 5.4.3+8
+  #  flutter_inappwebview: 5.4.3+8a
   share_plus: ^4.5.3
   wrapper: ^1.0.2
   dash_painter: ^1.0.2
@@ -96,7 +96,7 @@ dependencies:
   sign_in_with_apple: ^4.2.0
   flutter_inapp_purchase: ^5.3.1
   flutter_sound: ^9.2.13
-  audio_session: ^0.1.13
+  audio_session: 0.1.6
 
 dev_dependencies:
   flutter_test:
@@ -166,20 +166,27 @@ flutter:
     - images/weekly_item_shadow.png
     - images/index_search.png
     - images/index_teacher_icon2.png
+    - images/index_icon_8.png
+    - images/xunfei_english.png
+    - images/index_icon_9.png
     - images/icon_back_black.png
+    - images/index_icon_10.png
     - images/index_msg.png
     - images/icon_tab4_normal.png
+    - images/img.png
     - images/icon_tab1_normal.png
     - images/icon_tab3_pressed.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
     - images/icon_tab4_pressed.png
-    - images/index_icon_0.png
     - images/index_icon_2.png
     - images/welcome_icon.png
     - images/index_icon_3.png
+    - images/index_icon_7.png
     - images/index_class_more.png
+    - images/index_icon_6.png
     - images/index_icon_4.png
+    - images/index_icon_5.png
     - images/icon_tab1_pressed.png
     - images/icon_tab2_pressed.png
     - images/index_class_thumb1.png

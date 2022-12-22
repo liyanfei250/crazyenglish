@@ -1,9 +1,15 @@
+import 'package:crazyenglish/repository/week_repository.dart';
 import 'package:get/get.dart';
 
+import '../../entity/week_paper_response.dart';
+import '../../routes/getx_ids.dart';
+import '../../utils/json_cache_util.dart';
 import 'weekly_list_state.dart';
 
 class WeeklyListLogic extends GetxController {
   final WeeklyListState state = WeeklyListState();
+
+  WeekRepository weekRepository = WeekRepository();
 
   @override
   void onReady() {
@@ -16,4 +22,53 @@ class WeeklyListLogic extends GetxController {
     // TODO: implement onClose
     super.onClose();
   }
+
+  void getPeridList(String weekTime,int page,int pageSize) async{
+    Map<String,String> req= {};
+    req["weekTime"] = weekTime;
+    req["current"] = "$page";
+    req["size"] = "$pageSize";
+
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.WeekPaperResponse,labelId: weekTime.toString()).then((value){
+      if(value!=null){
+        return WeekPaperResponse.fromJson(value as Map<String,dynamic>?);
+      }
+    });
+
+    if(page==0 && cache is WeekPaperResponse && cache.records!=null) {
+      state.list = cache.records!;
+      if(state.list.length < pageSize){
+        state.hasMore = false;
+      }else{
+        state.hasMore = true;
+      }
+      update([GetBuilderIds.weekList]);
+    }
+    WeekPaperResponse list = await weekRepository.getWeekPaperList(req);
+    if(page ==0){
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.WeekPaperResponse,
+          labelId: weekTime.toString(),
+          list.toJson());
+    }
+    if(list.records==null) {
+      if(page ==0){
+        state.list.clear();
+      }
+    } else {
+      if(page ==0){
+        state.list = list.records!;
+      } else {
+        state.list.addAll(list.records!);
+      }
+      if(list.records!.length < pageSize){
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update([GetBuilderIds.weekList]);
+  }
+
 }
