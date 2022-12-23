@@ -1,4 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,12 +27,11 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
   final int pageSize = 10;
-  int currentPageNo = 0;
+  int currentPageNo = 1;
   List<Records> weekPaperList = [];
   final int pageStartIndex = 1;
   @override
   void onCreate() {
-    logic.getPeridList("2022-12-22", pageStartIndex, 10);
     logic.addListenerId(GetBuilderIds.weekList,(){
       if(state.list!=null && state.list!=null){
         if(state.pageNo == currentPageNo+1){
@@ -65,7 +66,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
       appBar: AppBar(
         backgroundColor: AppColors.c_FFFFFFFF,
         centerTitle: true,
-        title: Text("英语周报",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 18.sp),),
+        title: Text("英语周报",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
         leading: Util.buildBackWidget(context),
         // bottom: ,
         elevation: 0,
@@ -111,39 +112,45 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
 
 
   Widget buildItem(int index){
-    return Container(
-      width: 88.w,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            constraints: BoxConstraints.expand(
+    return InkWell(
+      onTap: (){
+        RouterUtil.toNamed(AppRoutes.PaperCategory,arguments: weekPaperList[index]);
+      },
+      child: Container(
+        width: 88.w,
+        height: 122.w,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              constraints: BoxConstraints.expand(
+                width: 88.w,
+                height: 122.w,
+              ),
+              decoration: BoxDecoration(
+                  boxShadow:[
+                    BoxShadow(
+                      color: AppColors.c_FF542327.withOpacity(0.5),		// 阴影的颜色
+                      offset: Offset(10, 20),						// 阴影与容器的距离
+                      blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
+                      spreadRadius: 5.0,
+                    )
+                  ],
+                  image: DecorationImage(
+                      image: NetworkImage(weekPaperList[index].img??""),
+                      fit: BoxFit.cover
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                  color: AppColors.TEXT_BLACK_COLOR
+              ),
               width: 88.w,
               height: 122.w,
-            ),
-            decoration: BoxDecoration(
-                boxShadow:[
-                  BoxShadow(
-                    color: AppColors.c_FF542327.withOpacity(0.5),		// 阴影的颜色
-                    offset: Offset(10, 20),						// 阴影与容器的距离
-                    blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
-                    spreadRadius: 5.0,
-                  )
-                ],
-                image: DecorationImage(
-                  image: AssetImage(R.imagesWeeklyItemBg0),
-                  fit: BoxFit.cover
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                color: AppColors.TEXT_BLACK_COLOR
-            ),
-            width: 88.w,
-            height: 122.w,
 
-          ),
-          Padding(padding: EdgeInsets.only(top: 4.w)),
-          Text("第$index期",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),)
-        ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 4.w)),
+            Text(weekPaperList[index].nameTitle?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),)
+          ],
+        ),
       ),
     );
   }

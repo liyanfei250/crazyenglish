@@ -11,6 +11,8 @@ class JsonCacheManageUtils{
 
   // dataType
   static final int WeekPaperResponse = 0x01;
+  static final int PaperCategory = 0x02;
+  static final int PaperDetail = 0x03;
 
   // String contentJson;
 

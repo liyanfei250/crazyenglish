@@ -1,0 +1,189 @@
+import 'package:crazyenglish/entity/paper_category.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../entity/week_paper_response.dart';
+import '../../routes/getx_ids.dart';
+import '../../utils/Util.dart';
+import '../../utils/colors.dart';
+import 'reading_catalog_logic.dart';
+
+class Reading_catalogPage extends StatefulWidget {
+  Records? records;
+
+  Reading_catalogPage({Key? key}) : super(key: key) {
+    if(Get.arguments!=null &&
+        Get.arguments is Records){
+      records = Get.arguments;
+    }
+  }
+
+  @override
+  _Reading_catalogPageState createState() => _Reading_catalogPageState();
+}
+
+class _Reading_catalogPageState extends State<Reading_catalogPage> {
+  final logic = Get.put(Reading_catalogLogic());
+  final state = Get.find<Reading_catalogLogic>().state;
+  RefreshController _refreshController = RefreshController(initialRefresh: true);
+
+  PaperCategory? paperCategory;
+
+  @override
+  void initState(){
+    super.initState();
+    logic.addListenerId(GetBuilderIds.weekList,(){
+      if(state.paperCategory!=null){
+        paperCategory = state.paperCategory;
+        if(mounted && _refreshController!=null){
+          _refreshController.refreshCompleted();
+          setState(() {
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.c_FFFFFFFF,
+        centerTitle: true,
+        title: Text(widget.records!.name!,style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
+        leading: Util.buildBackWidget(context),
+        // bottom: ,
+        elevation: 0,
+      ),
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        header: WaterDropHeader(),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: ListView.builder(
+            itemCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
+            itemBuilder: (_,int position)=>buildItem(position)),
+      ),
+    );
+  }
+
+
+  Widget buildItem(int index){
+    return InkWell(
+      onTap: (){
+        RouterUtil.toNamed(AppRoutes.PaperDetail,arguments: paperCategory!.data![index]);
+      },
+      child: Container(
+        width: 332.w,
+        height: 100.w,
+        decoration: BoxDecoration(
+            boxShadow:[
+              BoxShadow(
+                color: AppColors.c_0FA50D1A.withOpacity(0.5),		// 阴影的颜色
+                offset: Offset(10, 20),						// 阴影与容器的距离
+                blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
+                spreadRadius: 5.0,
+              )
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(6.w)),
+            color: AppColors.TEXT_BLACK_COLOR
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 72.w,
+              height: 72.w,
+              decoration: BoxDecoration(
+                boxShadow:[
+                  BoxShadow(
+                    color: AppColors.c_0FA50D1A.withOpacity(0.5),		// 阴影的颜色
+                    offset: Offset(10, 20),						// 阴影与容器的距离
+                    blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
+                    spreadRadius: 5.0,
+                  )
+                ],
+                image: DecorationImage(
+                    image: NetworkImage(paperCategory!.data![index].catalogueTitleImg??""),
+                    fit: BoxFit.cover
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              ),
+            ),
+            Column(
+              children: [
+                Text(paperCategory!.data![index].catalogueTitle?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 18.sp),),
+                Text(paperCategory!.data![index].catalogueTitleSubtitle?? "",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 16.sp),),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset("",width: 14.w,height:14.w,),
+                          Padding(padding: EdgeInsets.only(left: 4.w)),
+                          Text("${paperCategory!.data![index].likeCount}",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 6.w)),
+                    InkWell(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset("",width: 14.w,height:14.w,),
+                          Padding(padding: EdgeInsets.only(left: 4.w)),
+                          Text("${paperCategory!.data![index].collectCount}",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 6.w)),
+                    InkWell(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset("",width: 14.w,height:14.w,),
+                          Padding(padding: EdgeInsets.only(left: 4.w)),
+                          Text("${paperCategory!.data![index].viewsCount}",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+  void _onRefresh() async{
+    await Future.delayed(Duration(milliseconds: 100));
+    logic.getPagerCategory("${widget.records!.id}");
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 100));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    logic.getPagerCategory("${widget.records!.id}");
+  }
+
+  @override
+  void dispose() {
+    Get.delete<Reading_catalogLogic>();
+    super.dispose();
+  }
+}

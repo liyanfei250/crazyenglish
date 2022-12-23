@@ -29,7 +29,7 @@ class Method {
 }
 
 class ResponseCode {
-  static const int status_success = 0;
+  static const int status_success = 1;
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
@@ -52,7 +52,7 @@ class NetManager {
   String _msgKey = "msg";
 
   /// BaseResp [T data]字段 key, 默认：data.
-  String _dataKey = "obj";
+  String _dataKey = "data";
 
   static NetManager? getInstance() {
     if (_instance == null) {

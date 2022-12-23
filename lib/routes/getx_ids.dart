@@ -10,6 +10,8 @@ class GetBuilderIds {
   static const String quickLogin = "quickLogin";
   static const String sendCode = "sendCode";
   static const String weekList = "weekList";
+  static const String paperCategory = "paperCategory";
+  static const String paperDetail = "paperDetail";
 
 
 }

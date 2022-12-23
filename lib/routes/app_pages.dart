@@ -1,5 +1,8 @@
+import 'package:crazyenglish/pages/reading_catalog/reading_catalog_view.dart';
+import 'package:crazyenglish/pages/reading_detail/reading_detail_view.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
+import '../entity/paper_category.dart';
 import '../pages/home_page.dart';
 import '../pages/login/login_view.dart';
 import '../pages/weekly_list/weekly_list_view.dart';
@@ -20,5 +23,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.TextToVoice, page:()=> TextToVoice(),),
     GetPage(name: AppRoutes.LOGIN, page:()=>LoginPage(),),
     GetPage(name: AppRoutes.WeeklyList, page:()=>WeeklyListPage(),),
+    GetPage(name: AppRoutes.PaperCategory, page:()=>Reading_catalogPage(),),
+    GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),
   ];
 }

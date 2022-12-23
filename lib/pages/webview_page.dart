@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart' as config;
@@ -66,6 +67,9 @@ class _WebViewPageState extends State<WebViewPage> {
   //控制器
   // late InAppWebViewController _controller ;
 
+  //控制器
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
 
   @override
   void initState() {
@@ -84,18 +88,36 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Builder(builder: (BuildContext context) {
-        return WebView(
-          initialUrl: webUrl!,
-          javascriptMode: JavascriptMode.unrestricted,
-        );
-        // return InAppWebView(
-        //   initialUrlRequest: URLRequest(url:Uri.parse(webUrl!)),
-        //   onWebViewCreated: (controller){
-        //     _controller = controller;
-        //   },
-        // );
-      }),
+      body: WillPopScope(
+        onWillPop: () async{
+          _controller.future.then((webView) async {
+            bool canGoBack = await webView.canGoBack();
+            if (canGoBack) {
+              webView.goBack();
+            } else {
+              Get.back();
+            }
+
+          });
+          return false;
+      },
+        child: Builder(builder: (BuildContext context) {
+          return WebView(
+            initialUrl: webUrl!,
+            javascriptMode: JavascriptMode.unrestricted,
+            javascriptChannels: <JavascriptChannel>{
+              //JS交互方法
+              _backtopre(context),
+            },
+          );
+          // return InAppWebView(
+          //   initialUrlRequest: URLRequest(url:Uri.parse(webUrl!)),
+          //   onWebViewCreated: (controller){
+          //     _controller = controller;
+          //   },
+          // );
+        }),
+      ),
     );
   }
 
@@ -115,19 +137,22 @@ class _WebViewPageState extends State<WebViewPage> {
         leading: IconButton(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           icon: _buildBackIcon(),
-          onPressed: () async{
+          onPressed: () {
+            test();
             ///点击返回按钮
-            // if (backIconType == BackIconType.back && _controller!=null) {
+            // if (backIconType == BackIconType.back) {
             //   //返回按钮
-            //     bool canGoBack = await _controller.canGoBack();
+            //   _controller.future.then((webView) async {
+            //     bool canGoBack = await webView.canGoBack();
             //     if (canGoBack) {
-            //       _controller.goBack();
+            //       webView.goBack();
             //     } else {
             //       Get.back();
             //     }
+            //   });
             // } else {
-              //关闭按钮
-              Get.back();
+            //   //关闭按钮
+            //   Get.back();
             // }
           },
         ),
@@ -197,9 +222,31 @@ class _WebViewPageState extends State<WebViewPage> {
     });
   }
 
+  JavascriptChannel _backtopre(BuildContext context) {
+    return JavascriptChannel(
+        name: 'backtopre',
+        onMessageReceived: (JavascriptMessage message) {
+          _controller.future.then((webView) async {
+            bool canGoBack = await webView.canGoBack();
+            if (canGoBack) {
+              webView.goBack();
+            } else {
+              Get.back();
+            }
+          });
+        });
+  }
+
+  void test(){
+    _controller.future.then((mWebView) async{
+      String futrue = await mWebView.runJavascriptReturningResult('showbg()');
+      Fluttertoast.showToast(msg: futrue);
+    });
+  }
+
 
   String getJs(Map<String, dynamic> map) {
     String jsonStr = json.encode(map);
-    return 'javascript:window["koolearnApp2jsBridge.callback"]($jsonStr)';
+    return 'javascript:window["showbg"]($jsonStr)';
   }
 }

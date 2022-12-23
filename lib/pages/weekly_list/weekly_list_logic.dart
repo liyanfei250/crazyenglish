@@ -36,6 +36,7 @@ class WeeklyListLogic extends GetxController {
       }
     });
 
+    state.pageNo = page;
     if(page==0 && cache is WeekPaperResponse && cache.records!=null) {
       state.list = cache.records!;
       if(state.list.length < pageSize){
@@ -46,18 +47,18 @@ class WeeklyListLogic extends GetxController {
       update([GetBuilderIds.weekList]);
     }
     WeekPaperResponse list = await weekRepository.getWeekPaperList(req);
-    if(page ==0){
+    if(page ==1){
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.WeekPaperResponse,
           labelId: weekTime.toString(),
           list.toJson());
     }
     if(list.records==null) {
-      if(page ==0){
+      if(page ==1){
         state.list.clear();
       }
     } else {
-      if(page ==0){
+      if(page ==1){
         state.list = list.records!;
       } else {
         state.list.addAll(list.records!);
