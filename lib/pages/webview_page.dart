@@ -70,7 +70,7 @@ class _WebViewPageState extends State<WebViewPage> {
   //控制器
   final Completer<WebViewController> _controller =
   Completer<WebViewController>();
-
+  WebView? webView;
   @override
   void initState() {
     super.initState();
@@ -90,8 +90,9 @@ class _WebViewPageState extends State<WebViewPage> {
       appBar: _buildAppBar(),
       body: WillPopScope(
         onWillPop: () async{
-          _controller.future.then((webView) async {
-            bool canGoBack = await webView.canGoBack();
+          bool canGoBack = false;
+          await _controller.future.then((webView) async {
+           canGoBack = await webView.canGoBack();
             if (canGoBack) {
               webView.goBack();
             } else {
@@ -99,7 +100,11 @@ class _WebViewPageState extends State<WebViewPage> {
             }
 
           });
-          return false;
+          if(canGoBack){
+            return false;
+          }else{
+            return false;
+          }
       },
         child: Builder(builder: (BuildContext context) {
           return WebView(
@@ -108,6 +113,9 @@ class _WebViewPageState extends State<WebViewPage> {
             javascriptChannels: <JavascriptChannel>{
               //JS交互方法
               _backtopre(context),
+            }.toSet(),
+            onWebViewCreated: (WebViewController webViewController) async {
+              _controller.complete(webViewController);
             },
           );
           // return InAppWebView(
@@ -138,22 +146,21 @@ class _WebViewPageState extends State<WebViewPage> {
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           icon: _buildBackIcon(),
           onPressed: () {
-            test();
             ///点击返回按钮
-            // if (backIconType == BackIconType.back) {
-            //   //返回按钮
-            //   _controller.future.then((webView) async {
-            //     bool canGoBack = await webView.canGoBack();
-            //     if (canGoBack) {
-            //       webView.goBack();
-            //     } else {
-            //       Get.back();
-            //     }
-            //   });
-            // } else {
-            //   //关闭按钮
-            //   Get.back();
-            // }
+            if (backIconType == BackIconType.back) {
+              //返回按钮
+              _controller.future.then((webView) async {
+                bool canGoBack = await webView.canGoBack();
+                if (canGoBack) {
+                  webView.goBack();
+                } else {
+                  Get.back();
+                }
+              });
+            } else {
+              //关闭按钮
+              Get.back();
+            }
           },
         ),
         title: Text(
@@ -214,13 +221,13 @@ class _WebViewPageState extends State<WebViewPage> {
   }
 
 
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(() {
-      fn();
-      print("set State");
-    });
-  }
+  // @override
+  // void setState(VoidCallback fn) {
+  //   super.setState(() {
+  //     fn();
+  //     print("set State");
+  //   });
+  // }
 
   JavascriptChannel _backtopre(BuildContext context) {
     return JavascriptChannel(
@@ -235,13 +242,6 @@ class _WebViewPageState extends State<WebViewPage> {
             }
           });
         });
-  }
-
-  void test(){
-    _controller.future.then((mWebView) async{
-      String futrue = await mWebView.runJavascriptReturningResult('showbg()');
-      Fluttertoast.showToast(msg: futrue);
-    });
   }
 
 
