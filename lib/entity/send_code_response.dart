@@ -2,29 +2,16 @@
 /// message : "OK"
 
 class SendCodeResponse {
-  String? _code;
-  String? _message;
+  String _data;
 
-  String? get code => _code;
-  String? get message => _message;
 
-  SendCodeResponse({
-      String? code, 
-      String? message}){
-    _code = code;
-    _message = message;
-}
+  String get data => _data;
 
-  SendCodeResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    _message = json['message'];
+  set data(String value) {
+    _data = value;
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map['code'] = _code;
-    map['message'] = _message;
-    return map;
-  }
+  SendCodeResponse(this._data);
+
 
 }

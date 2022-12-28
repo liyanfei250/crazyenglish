@@ -4,6 +4,7 @@ import 'package:crazyenglish/entity/push_msg.dart';
 import 'package:crazyenglish/entity/send_code_response.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 
 import '../../api/api.dart';
@@ -37,15 +38,35 @@ class UserRepository{
     }
   }
 
-  Future<SendCodeResponse> sendCode(String phone) async{
+  Future<LoginResponse> mobileLogin(Map<String,String> req) async{
+    req.addAll({
+      "grant_type":"sms_code",
+      "client_id":"mobile",
+      "client_secret":"e16b2ab8d12314bf4efbd6203906ea6c"});
     BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.get, Api.getSendCode+phone);
+        .request<Map<String, dynamic>>(Method.post, Api.getLogin,
+        data: req);
+    if (baseResp.code != ResponseCode.status_success) {
+      Fluttertoast.showToast(msg: baseResp.message??"");
+    }
+    if(baseResp.obj !=null){
+
+      LoginResponse loginResponse = LoginResponse.fromJson(baseResp.obj);
+      return loginResponse!;
+    } else {
+      return Future.error("返回LoginResponse为空");
+    }
+  }
+
+  Future<SendCodeResponse> sendCode(String phone) async{
+    BaseResp<String?> baseResp = await NetManager.getInstance()!
+        .request<String>(Method.get, Api.getSendCode+phone);
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.message!);
     }
     if(baseResp.obj !=null){
 
-      SendCodeResponse orderQuestionObj = SendCodeResponse.fromJson(baseResp.obj);
+      SendCodeResponse orderQuestionObj = SendCodeResponse(baseResp.obj.toString());
       return orderQuestionObj!;
     } else {
       return Future.error("返回SendCodeResponse为空");

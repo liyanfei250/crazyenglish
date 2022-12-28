@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -74,6 +75,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
   var isHidePasswd = true.obs;
   var isUserLoginEnable = false.obs;
   var phoneStr = "".obs;
+  var phoneCodeStr = "".obs;
   var wechatIsInstalled = true.obs;
   var qqIsInstalled = true.obs;
 
@@ -95,8 +97,21 @@ class _LoginPageState extends BasePageState<LoginPage> {
         title: "隐私保护政策",showStatusBar: true,showAppBar: true,showH5Title: true,);
     };
 
-    logic.addListenerId(GetBuilderIds.quickLogin, () {
+    logic.addListenerId(GetBuilderIds.sendCode, () {
+
+      Fluttertoast.showToast(msg: state.sendCodeResponse.data??"");
+      _startTimer(60);
       hideLoading();
+    });
+    logic.addListenerId(GetBuilderIds.mobileLogin, () {
+      if((state.loginResponse.accessToken??"").isNotEmpty){
+        Fluttertoast.showToast(msg: "登录成功");
+        RouterUtil.offAndToNamed(AppRoutes.HOME);
+      }else{
+        Fluttertoast.showToast(msg: "登录失败");
+      }
+
+
     });
     // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
   }
@@ -225,17 +240,10 @@ class _LoginPageState extends BasePageState<LoginPage> {
                               obscureText: isHidePasswd.value,
                               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
                               inputFormatters: [
-                                FilteringTextInputFormatter.singleLineFormatter
+                                FilteringTextInputFormatter.digitsOnly
                               ],
                               onChanged: (String str) {
-                                phoneStr.value = str;
-                                if(phoneStr.value.isNotEmpty){
-                                  _isHavePhoneNum.value = true;
-                                  isUserLoginEnable.value = true;
-                                }else{
-                                  _isHavePhoneNum.value = false;
-                                  isUserLoginEnable.value = false;
-                                }
+                                phoneCodeStr.value = str;
                               },
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -248,12 +256,19 @@ class _LoginPageState extends BasePageState<LoginPage> {
                     ),
                     InkWell(
                       onTap: (){
-                        if (_isHavePhoneNum.value && countDown.value <= 0) {
-                          logic.sendCode(_phoneController!.text);
-                          _startTimer(60);
+                        if (_isHavePhoneNum.value) {
+                          if(countDown.value <= 0){
+                            logic.sendCode(_phoneController!.text);
+                          }else{
+                            Fluttertoast.showToast(msg: "请等待${countDown.value} s后重新发送");
+                          }
+                        }else{
+                          Fluttertoast.showToast(msg: "请输入手机号");
                         }
                       },
-                      child: Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),),
+                      child: Obx(
+                          ()=>Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),)
+                      ),
                     )
                   ],
                 )
@@ -262,7 +277,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              RouterUtil.toNamed(AppRoutes.HOME);
+              logic.mobileLogin(phoneStr.value,phoneCodeStr.value);
             },
             child: Container(
                   height: 44.w,
@@ -307,18 +322,13 @@ class _LoginPageState extends BasePageState<LoginPage> {
               controller: _phoneController,
               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
               inputFormatters: [
-                FilteringTextInputFormatter.singleLineFormatter
+                FilteringTextInputFormatter.digitsOnly
               ],
               onChanged: (String str) {
-                if (str != null && str != "") {
-                  _isHavePhoneNum.value = false;
-                } else {
-                  _isHavePhoneNum.value = true;
-                }
                 phoneStr.value = str;
                 if(phoneStr.value.isNotEmpty){
                   _isHavePhoneNum.value = true;
-                }else{
+                } else {
                   _isHavePhoneNum.value = false;
                 }
               },

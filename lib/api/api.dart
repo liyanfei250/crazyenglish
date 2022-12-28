@@ -4,7 +4,7 @@ import '../config.dart';
 class Api {
 
   static String getUser = Config.ApiHost +"/user.site";
-  static String getLogin = Config.ApiHost +"/login.site";
+  static String getLogin = Config.ApiHost +"/crazy-basic-auth/oauth/token";
   static String getSendCode = Config.ApiHost +"/crazy-basic-core/sms/";
 
   static String getWeekPaperList = Config.ApiHost +"/crazy-weekly/periodical/app/page";

@@ -3,7 +3,7 @@ import '../../entity/send_code_response.dart';
 
 class LoginState {
   late LoginResponse loginResponse;
-  SendCodeResponse sendCodeResponse = SendCodeResponse();
+  SendCodeResponse sendCodeResponse = SendCodeResponse("");
 
   LoginState() {
     ///Initialize variables

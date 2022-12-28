@@ -23,10 +23,13 @@ class LoginLogic extends GetxController {
   }
 
 
-  void testLogin(String token) async{
-    LoginResponse loginResponse = await userRepository.quickLogin({"phoneNo":token,"type":"6"});
+  void mobileLogin(String phone,String phoneCode) async{
+    LoginResponse loginResponse = await userRepository.mobileLogin(
+        {"mobile" : phone ,
+          "code" : phoneCode ,
+          "requestType" : "app"});
     state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
+    update([GetBuilderIds.mobileLogin]);
   }
 
 
@@ -59,16 +62,10 @@ class LoginLogic extends GetxController {
     update([GetBuilderIds.quickLogin]);
   }
 
-  void sendCode(String phone) async{
+  void sendCode(String phone) async {
     SendCodeResponse sendCodeResponse = await userRepository.sendCode(phone);
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
-  }
-
-  void bindPhone(Map<String,String> req) async{
-    LoginResponse loginResponse = await userRepository.bindPhone(req);
-    state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
   }
 
   void getMobile() async{

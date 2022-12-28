@@ -92,7 +92,7 @@ class NetManager {
 
   Options _checkOptions(method, options) {
     if (options == null) {
-      options = new Options(method: Method.get);
+      options = new Options(method: method);
     }
     options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
     return options;
@@ -107,9 +107,9 @@ class NetManager {
   Future<BaseResp<T?>> request<T>(String method, String path,
       {data, Options? options, CancelToken? cancelToken}) async {
     if (data is Map) {
-      if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
-        data['user_id'] = SpUtil.getString(BaseConstant.userId);
-      }
+      // if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
+      //   data['user_id'] = SpUtil.getString(BaseConstant.userId);
+      // }
       // data['app_id'] = Config.appId;
       // data.remove("sign");
       // String params = GetSign.getSign(data as Map<String, String?>);
@@ -154,6 +154,12 @@ class NetManager {
         response.statusCode == HttpStatus.created) {
       try {
         if (response.data is Map) {
+          _code = (response.data[_codeKey] is String)
+              ? int.tryParse(response.data[_codeKey])
+              : response.data[_codeKey];
+          _msg = response.data[_msgKey];
+          _data = response.data[_dataKey];
+        } else if (response.data is String) {
           _code = (response.data[_codeKey] is String)
               ? int.tryParse(response.data[_codeKey])
               : response.data[_codeKey];
@@ -508,6 +514,12 @@ class NetManager {
         response.statusCode == HttpStatus.created) {
       try {
         if (response.data is Map) {
+          _code = (response.data[_codeKey] is String)
+              ? int.tryParse(response.data[_codeKey])
+              : response.data[_codeKey];
+          _msg = response.data[_msgKey];
+          _data = response.data[_dataKey];
+        } else if(response.data is String){
           _code = (response.data[_codeKey] is String)
               ? int.tryParse(response.data[_codeKey])
               : response.data[_codeKey];
