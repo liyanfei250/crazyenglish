@@ -223,6 +223,7 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(padding: EdgeInsets.only(top: 7.w)),
                     Text("懂你英语A+学习计划",style: TextStyle(fontWeight:FontWeight.bold,fontSize:16.sp,color: AppColors.c_FF101010),),
                     Text("为你量身定制系统化的英语课程",style: TextStyle(fontSize:10.sp,color: AppColors.TEXT_GRAY_COLOR),),
                     Spacer(),
@@ -250,11 +251,17 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
             top: 0,
             child: Container(
               alignment: Alignment.center,
-              color: AppColors.darkGray,
+              decoration: BoxDecoration(
+                color: AppColors.c_FFFFBC00,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.w),topRight: Radius.circular(10.w))
+                // FFBC00
+              ),
+              // color: AppColors.darkGray,
                 width: 56.w,height: 18.w,
-                child: ExtendedImage.asset(R.imagesIndexClassNew,fit:BoxFit.cover,width: 56.w,
-                        height: 18.w)
-           ))
+              child: Text("限时免费",style: TextStyle(fontSize: 10.sp,color: AppColors.c_FFFFFFFF),),
+
+           )
+        )
         // Align(
         //     alignment: Alignment.topRight,
         //   child: Image.asset(R.imagesIndexClassNew,width: 56.w,height: 18.w,)
