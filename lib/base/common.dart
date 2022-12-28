@@ -31,6 +31,7 @@ class BaseConstant{
 
   static const String NOTICE_PERMISSION = "notice_permission";
   static const String ISLOGING = "is_login";
+  static const String loginTOKEN = "loginTOKEN";
 
 }
 

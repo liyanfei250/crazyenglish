@@ -20,6 +20,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../../utils/sp_util.dart';
 import 'login_logic.dart';
 
 class LoginPage extends BasePage {
@@ -51,8 +52,6 @@ class _LoginPageState extends BasePageState<LoginPage> {
   final TapGestureRecognizer recognizerRegister = TapGestureRecognizer();
   ///用户隐私协议
   final TapGestureRecognizer recognizerPrivacyLaw = TapGestureRecognizer();
-  ///儿童保护协议
-  final TapGestureRecognizer recognizerKidsLaw = TapGestureRecognizer();
 
 
   // 极光相关
@@ -106,6 +105,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if((state.loginResponse.accessToken??"").isNotEmpty){
         Fluttertoast.showToast(msg: "登录成功");
+        SpUtil.putBool(BaseConstant.ISLOGING, true);
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.accessToken);
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
         Fluttertoast.showToast(msg: "登录失败");

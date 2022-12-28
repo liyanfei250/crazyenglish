@@ -35,8 +35,7 @@ class RouterUtil {
         bool isNeedCheckLogin = false,
         bool checkYKLogin = false,
       }) {
-    if (isNeedCheckLogin &&
-        (checkYKLogin ? !Util.isLoginCheckYK() : !Util.isLogin())) {
+    if (isNeedCheckLogin && !Util.isLogin()) {
       return Get.offAndToNamed(AppRoutes.LOGIN)!;
     }
     return Get.offAndToNamed(page, arguments: arguments, parameters: parameters);
