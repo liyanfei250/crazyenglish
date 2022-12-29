@@ -1,18 +1,22 @@
+import 'package:crazyenglish/entity/base_resp.dart';
+
 /// code : 0
 /// msg : "String"
 /// data : [{"id":0,"periodicaId":0,"catalogueTitle":"String","catalogueTitleImg":"String","viewsCount":0,"likeCount":0,"collectCount":0,"catalogueTitleSubtitle":"String"}]
 
-class PeriodicaId_response {
+class PeriodicaId_response extends BaseResp{
   List<Data>? _data;
 
   List<Data>? get data => _data;
 
   PeriodicaId_response({
-      List<Data>? data}){
+    int? code,
+    String? msg,
+      List<Data>? data}):super(code,msg){
     _data = data;
 }
 
-  PeriodicaId_response.fromJson(dynamic json) {
+  PeriodicaId_response.fromJson(dynamic json):super.fromJson(json) {
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {

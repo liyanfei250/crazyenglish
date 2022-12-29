@@ -16,17 +16,16 @@ import '../net/net_manager.dart';
  */
 class WeekRepository{
 
-  Future<WeekPaperResponse> getWeekPaperList(Map<String,String> req) async{
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.get, Api.getWeekPaperList,
+  Future<WeekPaper> getWeekPaperList(Map<String,String> req) async{
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getWeekPaperList,
         data: req,options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
+      return Future.error(baseResp.msg!);
     }
-    if(baseResp.obj !=null){
-
-      WeekPaperResponse weekPaperResponse = WeekPaperResponse.fromJson(baseResp.obj);
-      return weekPaperResponse!;
+    if(baseResp.getReturnData() !=null){
+      WeekPaperResponse weekPaperResponse = WeekPaperResponse.fromJson(baseResp.getReturnData());
+      return weekPaperResponse.data!;
     } else {
       return Future.error("返回weekPaperResponse为空");
     }
@@ -34,15 +33,15 @@ class WeekRepository{
 
 
   Future<PaperCategory> getWeekPaperCategory(String periodicaId) async{
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.get, Api.getWeekPaperCategory+periodicaId,
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getWeekPaperCategory+periodicaId,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
+      return Future.error(baseResp.msg!);
     }
-    if(baseResp.obj !=null){
+    if(baseResp.getReturnData() !=null){
 
-      PaperCategory paperCategory = PaperCategory.fromJson(baseResp.obj);
+      PaperCategory paperCategory = PaperCategory.fromJson(baseResp.getReturnData());
       return paperCategory!;
     } else {
       return Future.error("返回weekPaperResponse为空");
@@ -51,15 +50,15 @@ class WeekRepository{
 
 
   Future<PaperDetail> getWeekPaperDetail(String id) async{
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.get, Api.getWeekPaperDetail+id,
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getWeekPaperDetail+id,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
+      return Future.error(baseResp.msg!);
     }
-    if(baseResp.obj !=null){
+    if(baseResp.getReturnData() !=null){
 
-      PaperDetail paperDetail = PaperDetail.fromJson(baseResp.obj);
+      PaperDetail paperDetail = PaperDetail.fromJson(baseResp.getReturnData());
       return paperDetail!;
     } else {
       return Future.error("返回weekPaperResponse为空");

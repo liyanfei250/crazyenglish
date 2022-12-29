@@ -1,6 +1,8 @@
 class R {
   /// ![](http://127.0.0.1:11/images/weekly_item_eye.png)
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
+  /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
+  static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg0.png)
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
   /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
@@ -53,8 +55,12 @@ class R {
   static final String imagesIndexIcon2 = 'images/index_icon_2.png';
   /// ![](http://127.0.0.1:11/images/welcome_icon.png)
   static final String imagesWelcomeIcon = 'images/welcome_icon.png';
+  /// ![](http://127.0.0.1:11/images/weekly_fabulous.png)
+  static final String imagesWeeklyFabulous = 'images/weekly_fabulous.png';
   /// ![](http://127.0.0.1:11/images/index_icon_3.png)
   static final String imagesIndexIcon3 = 'images/index_icon_3.png';
+  /// ![](http://127.0.0.1:11/images/weekly_collect.png)
+  static final String imagesWeeklyCollect = 'images/weekly_collect.png';
   /// ![](http://127.0.0.1:11/images/index_icon_7.png)
   static final String imagesIndexIcon7 = 'images/index_icon_7.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)

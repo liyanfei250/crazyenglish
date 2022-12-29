@@ -104,7 +104,7 @@ class NetManager {
   /// [data] The request data
   /// [options] The request options.
   /// <BaseResp<T> 返回 status code msg data .
-  Future<BaseResp<T?>> request<T>(String method, String path,
+  Future<BaseResp> request(String method, String path,
       {data, Options? options, CancelToken? cancelToken}) async {
     if (data is Map) {
       // if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
@@ -146,43 +146,14 @@ class NetManager {
     }
 
     _printHttpLog(response);
-    String _status;
-    int? _code;
-    String? _msg;
-    T? _data;
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        if (response.data is Map) {
-          _code = (response.data[_codeKey] is String)
-              ? int.tryParse(response.data[_codeKey])
-              : response.data[_codeKey];
-          _msg = response.data[_msgKey];
-          _data = response.data[_dataKey];
-        } else if (response.data is String) {
-          _code = (response.data[_codeKey] is String)
-              ? int.tryParse(response.data[_codeKey])
-              : response.data[_codeKey];
-          _msg = response.data[_msgKey];
-          _data = response.data[_dataKey];
-        } else {
-          Map<String, dynamic> _dataMap = _decodeData(response)!;
-          _code = (_dataMap[_codeKey] is String)
-              ? int.tryParse(_dataMap[_codeKey])
-              : _dataMap[_codeKey];
-          _msg = _dataMap[_msgKey];
-          _data = _dataMap[_dataKey];
-        }
-        // if(_code == C.SID_INVALID){
-        //   // eventBus.fire(ChangeThemeEvent(Random().nextInt(7)));
-        // }else{
-        return new BaseResp(_code, _msg, _data);
+        BaseResp baseResp =  BaseResp.fromJson(response.data);
+        baseResp.setReturnData(response.data);
+        return baseResp;
         // }
       } catch (e) {
-        // Util.toast("网络异常 httpCode" +
-        //     response.statusCode.toString() +
-        //     "\n" +
-        //     response.statusMessage);
         Util.toast("网络异常");
         return new Future.error(new DioError(
           response: response,
@@ -205,100 +176,8 @@ class NetManager {
   }
 
 
-  // 这个请求是游客登录特殊请求，因为游客登录返回的json结构和正常的不太一样
-  // Future<YKResp> requestYKDL(String method, String path,
-  //     {data, Options? options, CancelToken? cancelToken}) async {
-  //   if (data is Map) {
-  //     if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid))) {
-  //       data['sid'] = SpUtil.getString(BaseConstant.Sid);
-  //     }
-  //     data['app_id'] = Config.appId;
-  //     data.remove("sign");
-  //     String params = GetSign.getSign(data as Map<String, String>);
-  //     data['sign'] = params;
-  //   }
-  //   Response response;
-  //   try {
-  //     response = await _dio.request(path,
-  //         data: data,
-  //         // options: _checkOptions(method, options),
-  //         cancelToken: cancelToken);
-  //   } catch (e) {
-  //     if (e is DioError) {
-  //       // Util.toastLong("网络异常 type:" +
-  //       //     e.type.toString() +
-  //       //     "\n" +
-  //       //     e.message +
-  //       //     "\n" +
-  //       //     (e.response != null
-  //       //         ? e.response.statusCode.toString()
-  //       //         : "response 为null"));
-  //       Util.toast("网络异常");
-  //     } else {
-  //       Util.toast("网络异常");
-  //     }
-  //     return new Future.error(e);
-  //   }
-  //
-  //   _printHttpLog(response);
-  //   String _status;
-  //   int? _code;
-  //   String? _msg;
-  //   String? _userId;
-  //   String? _sid;
-  //   if (response.statusCode == HttpStatus.ok ||
-  //       response.statusCode == HttpStatus.created) {
-  //     try {
-  //       if (response.data is Map) {
-  //         _code = (response.data[_codeKey] is String)
-  //             ? int.tryParse(response.data[_codeKey])
-  //             : response.data[_codeKey];
-  //         _msg = response.data[_msgKey];
-  //         _userId = response.data["userId"];
-  //         _sid = response.data["sid"];
-  //       } else {
-  //         Map<String, dynamic> _dataMap = _decodeData(response)!;
-  //         _code = (_dataMap[_codeKey] is String)
-  //             ? int.tryParse(_dataMap[_codeKey])
-  //             : _dataMap[_codeKey];
-  //         _msg = _dataMap[_msgKey];
-  //         _userId = _dataMap[_dataKey];
-  //         _sid = _dataMap["sid"];
-  //       }
-  //       // if(_code == C.SID_INVALID){
-  //       //   // eventBus.fire(ChangeThemeEvent(Random().nextInt(7)));
-  //       // }else{
-  //       return new YKResp(_code, _msg, _userId,_sid);
-  //       // }
-  //     } catch (e) {
-  //       // Util.toast("网络异常 httpCode" +
-  //       //     response.statusCode.toString() +
-  //       //     "\n" +
-  //       //     response.statusMessage);
-  //       Util.toast("网络异常");
-  //       return new Future.error(new DioError(
-  //         response: response,
-  //         error: "data parsing exception...",
-  //         type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
-  //       ));
-  //     }
-  //   } else {
-  //     // Util.toast("网络异常 httpCode" +
-  //     //     response.statusCode.toString() +
-  //     //     "\n" +
-  //     //     response.statusMessage);
-  //     Util.toast("网络异常");
-  //   }
-  //   return new Future.error(new DioError(
-  //     response: response,
-  //     error: "statusCode: $response.statusCode, service error",
-  //     type: DioErrorType.response,
-  //       requestOptions: RequestOptions(path: '')
-  //   ));
-  // }
-
   //上传文件
-  Future<BaseResp<T?>> uploadFile<T>(
+  Future<BaseResp> uploadFile<T>(
       String url, XFile file, Map<String, String> data) async {
     var bytes = await file.readAsBytes();
     String hash = sha256.convert(bytes).toString();
@@ -327,7 +206,7 @@ class NetManager {
         print("上传进度 $progress 总量 $total");
       });
     } catch (e) {
-      return new BaseResp(-1, "上传失败" + e.toString(), null);
+      return new BaseResp(-1, "上传失败" + e.toString());
     }
     _printHttpLog(response);
     String _status;
@@ -337,21 +216,8 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        if (response.data is Map) {
-          _code = (response.data[_codeKey] is String)
-              ? int.tryParse(response.data[_codeKey])
-              : response.data[_codeKey];
-          _msg = response.data[_msgKey];
-          _data = response.data[_dataKey];
-        } else {
-          Map<String, dynamic> _dataMap = _decodeData(response)!;
-          _code = (_dataMap[_codeKey] is String)
-              ? int.tryParse(_dataMap[_codeKey])
-              : _dataMap[_codeKey];
-          _msg = _dataMap[_msgKey];
-          _data = _dataMap[_dataKey];
-        }
-        return new BaseResp(_code, _msg, _data);
+
+        return BaseResp.fromJson(json);
       } catch (e) {
         // Util.toast("网络异常 httpCode" +
         //     response.statusCode.toString() +
@@ -420,7 +286,7 @@ class NetManager {
     }
 
     if (bytes==null){
-      return BaseResp(-1, "操作失败", null);;
+      return BaseResp(-1, "操作失败");
     }
 
     // ImageProperties properties = await FlutterNativeImage.getImageProperties(image.path);
@@ -458,7 +324,7 @@ class NetManager {
                     "multipart/form-data;boundary=------------------319831265358979362846"
               }));
     } catch (e) {
-      return new BaseResp(-1, "上传失败" + e.toString(), null);
+      return new BaseResp(-1, "上传失败" + e.toString());
     }
     int? _code;
     String? _msg;
@@ -473,7 +339,7 @@ class NetManager {
         // if(_code == C.SID_INVALID){
         //   // eventBus.fire(ChangeThemeEvent(Random().nextInt(7)));
         // }else{
-        return new BaseResp(_code, _msg, null);
+        return new BaseResp(_code, _msg);
         // }
       } catch (e) {
         return new BaseResp(
@@ -481,8 +347,7 @@ class NetManager {
             "网络异常 httpCode" +
                 response.statusCode.toString() +
                 "\n" +
-                response.statusMessage,
-            null);
+                response.statusMessage);
       }
     } else {
       return new BaseResp(
@@ -490,8 +355,7 @@ class NetManager {
           "网络异常 httpCode" +
               response.statusCode.toString() +
               "\n" +
-              response.statusMessage,
-          null);
+              response.statusMessage);
     }
   }
 

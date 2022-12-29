@@ -143,6 +143,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
                 ExtendedImage.network(
                   weekPaperList[index].img??"",
                   fit: BoxFit.fill,
+                  cacheRawData: true,
                   width: 88.w,
                   height: 122.w,),
                 Container(
@@ -192,14 +193,11 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
 
 
   void _onRefresh() async{
-    await Future.delayed(Duration(milliseconds: 100));
     currentPageNo = pageStartIndex;
     logic.getPeridList("2022-12-22",pageStartIndex,pageSize);
   }
 
   void _onLoading() async{
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 100));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     logic.getPeridList("2022-12-22",currentPageNo,pageSize);
   }

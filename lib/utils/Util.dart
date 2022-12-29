@@ -82,9 +82,13 @@ class Util {
       },
       child:
       Center(
-          child: Image.asset(
-            R.imagesIconBackBlack,
-            width: Util.setWidth(30) as double?,height: Util.setWidth(30) as double?,),
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(left: Util.setWidth(13) as double),
+            child: Image.asset(
+              R.imagesIconBackBlack,
+              width: Util.setWidth(48) as double?,height: Util.setWidth(24) as double?,),
+          ),
       ),
     );
   }

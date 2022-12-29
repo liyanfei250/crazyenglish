@@ -98,15 +98,15 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
 
-      Fluttertoast.showToast(msg: state.sendCodeResponse.data??"");
+      // Fluttertoast.showToast(msg: state.sendCodeResponse.data??"");
       _startTimer(60);
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
-      if((state.loginResponse.accessToken??"").isNotEmpty){
+      if((state.loginResponse.data!.accessToken??"").isNotEmpty){
         Fluttertoast.showToast(msg: "登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
-        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.accessToken);
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
         Fluttertoast.showToast(msg: "登录失败");

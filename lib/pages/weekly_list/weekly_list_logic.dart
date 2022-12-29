@@ -32,12 +32,12 @@ class WeeklyListLogic extends GetxController {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.WeekPaperResponse,labelId: weekTime.toString()).then((value){
       if(value!=null){
-        return WeekPaperResponse.fromJson(value as Map<String,dynamic>?);
+        return WeekPaper.fromJson(value as Map<String,dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==0 && cache is WeekPaperResponse && cache.records!=null) {
+    if(page==0 && cache is WeekPaper && cache.records!=null) {
       state.list = cache.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;
@@ -46,7 +46,7 @@ class WeeklyListLogic extends GetxController {
       }
       update([GetBuilderIds.weekList]);
     }
-    WeekPaperResponse list = await weekRepository.getWeekPaperList(req);
+    WeekPaper list = await weekRepository.getWeekPaperList(req);
     if(page ==1){
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.WeekPaperResponse,

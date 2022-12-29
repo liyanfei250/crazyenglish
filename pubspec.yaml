@@ -161,6 +161,7 @@ flutter:
   # assets-generator-begin
   # images/*
     - images/weekly_item_eye.png
+    - images/weekly_de_browse.png
     - images/weekly_item_bg0.png
     - images/xunfei.jpeg
     - images/icon_close.png
@@ -187,7 +188,9 @@ flutter:
     - images/icon_tab4_pressed.png
     - images/index_icon_2.png
     - images/welcome_icon.png
+    - images/weekly_fabulous.png
     - images/index_icon_3.png
+    - images/weekly_collect.png
     - images/index_icon_7.png
     - images/index_class_more.png
     - images/weekly_bg.png

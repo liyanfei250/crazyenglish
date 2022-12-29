@@ -23,16 +23,16 @@ class UserRepository{
 
   Future<LoginResponse> quickLogin(Map<String,String> req) async{
     req.addAll({"action":"loginCallBack"});
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getLogin,
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.post, Api.getLogin,
         data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
+      return Future.error(baseResp.msg!);
     }
-    if(baseResp.obj !=null){
 
-      LoginResponse orderQuestionObj = LoginResponse.fromJson(baseResp.obj);
-      return orderQuestionObj!;
+    LoginResponse loginResponse = LoginResponse.fromJson(baseResp.getReturnData());
+    if(loginResponse !=null){
+      return loginResponse!;
     } else {
       return Future.error("返回LoginResponse为空");
     }
@@ -43,15 +43,14 @@ class UserRepository{
       "grant_type":"sms_code",
       "client_id":"mobile",
       "client_secret":"e16b2ab8d12314bf4efbd6203906ea6c"});
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getLogin,
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.post, Api.getLogin,
         data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Fluttertoast.showToast(msg: baseResp.message??"");
+      Fluttertoast.showToast(msg: baseResp.msg??"");
     }
-    if(baseResp.obj !=null){
-
-      LoginResponse loginResponse = LoginResponse.fromJson(baseResp.obj);
+    LoginResponse loginResponse = LoginResponse.fromJson(baseResp.getReturnData());
+    if(loginResponse !=null){
       return loginResponse!;
     } else {
       return Future.error("返回LoginResponse为空");
@@ -59,106 +58,18 @@ class UserRepository{
   }
 
   Future<SendCodeResponse> sendCode(String phone) async{
-    BaseResp<String?> baseResp = await NetManager.getInstance()!
-        .request<String>(Method.get, Api.getSendCode+phone);
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getSendCode+phone);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
+      return Future.error(baseResp.msg!);
     }
-    if(baseResp.obj !=null){
 
-      SendCodeResponse orderQuestionObj = SendCodeResponse(baseResp.obj.toString());
-      return orderQuestionObj!;
+    SendCodeResponse sendCodeResponse = SendCodeResponse.fromJson(baseResp.getReturnData());
+    if(sendCodeResponse!=null){
+      return sendCodeResponse!;
     } else {
       return Future.error("返回SendCodeResponse为空");
     }
   }
 
-  Future<LoginResponse> bindPhone(Map<String,String> req) async{
-    req.addAll({"action":"bindMobile"});
-    // code uid
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getUser,
-        data: req);
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.obj !=null){
-
-      LoginResponse orderQuestionObj = LoginResponse.fromJson(baseResp.obj);
-      return orderQuestionObj!;
-    } else {
-      return Future.error("返回LoginResponse为空");
-    }
-  }
-
-  Future<LoginResponse> userInfo(Map<String,String> req) async{
-    req.addAll({"action":"info"});
-    // code uid
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getUser,
-        data: req);
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.obj !=null){
-
-      LoginResponse orderQuestionObj = LoginResponse.fromJson(baseResp.obj);
-      return orderQuestionObj!;
-    } else {
-      return Future.error("返回LoginResponse为空");
-    }
-  }
-
-
-  Future<bool> updateUserNick(String u_nick) async{
-    Map<String,String> req = {"u_nick":u_nick};
-    req.addAll({"action":"updateNick"});
-    req.addAll({"user_id":SpUtil.getString(BaseConstant.userId)});
-    // code uid
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getUser,
-        data: req);
-    if (baseResp.code != ResponseCode.status_success) {
-      return false;
-    }
-    return true;
-  }
-
-  Future<CheckUpdateResp> getAppVersion(Map<String,String> req) async{
-    req.addAll({"action":"info"});
-    // current_version =
-    // code uid
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    req.addAll({"current_version":packageInfo.version});
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getAppVersion,
-        data: req);
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-
-    if(baseResp.obj !=null){
-      CheckUpdateResp orderQuestionObj = CheckUpdateResp.fromJson(baseResp.obj);
-      return orderQuestionObj!;
-    } else {
-      return Future.error("返回CheckUpdateResp为空");
-    }
-  }
-
-  Future<PushMsgList> getPushList(Map<String,String> req) async{
-    req.addAll({"action":"list"});
-    BaseResp<Map<String, dynamic>?> baseResp = await NetManager.getInstance()!
-        .request<Map<String, dynamic>>(Method.post, Api.getPush,
-        data: req);
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.obj !=null){
-
-      PushMsgList orderQuestionObj = PushMsgList.fromJson(baseResp.obj);
-      return orderQuestionObj!;
-    } else {
-      return Future.error("返回列表PushMsgList为空");
-    }
-  }
 }

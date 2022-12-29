@@ -1,10 +1,16 @@
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../entity/paper_detail.dart';
+import '../../r.dart';
 import '../../routes/getx_ids.dart';
+import '../../utils/Util.dart';
+import '../../utils/colors.dart';
+import '../../utils/text_util.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
 
@@ -29,7 +35,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   @override
   void initState(){
     super.initState();
-    logic.addListenerId(GetBuilderIds.weekList,(){
+    logic.addListenerId(GetBuilderIds.paperDetail,(){
       if(state.paperDetail!=null){
           paperDetail = state.paperDetail;
           if(mounted && _refreshController!=null){
@@ -46,12 +52,59 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<Reading_detailLogic>(
-        id: GetBuilderIds.paperDetail,
-        builder: (logic){
-          return Container();
-      }
-    ));
+        appBar: AppBar(
+          backgroundColor: AppColors.c_FFFFFFFF,
+          centerTitle: true,
+          title: Text("英语周报",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
+          leading: Util.buildBackWidget(context),
+          // bottom: ,
+          elevation: 0,
+        ),
+        backgroundColor: AppColors.c_FFFAF7F7,
+      body: SingleChildScrollView(
+        child: GetBuilder<Reading_detailLogic>(
+            id: GetBuilderIds.paperDetail,
+            builder: (logic){
+              if(logic.state.paperDetail.data==null){
+                return Container();
+              }
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 4.w,
+                            height: 12.w,
+                            margin: EdgeInsets.only(right: 7.w),
+                            color: AppColors.c_FFFFBC00,
+                          ),
+                          Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(R.imagesWeeklyDeBrowse,width: 12.w,height: 12.w,),
+                          Padding(padding: EdgeInsets.only(left: 2.w)),
+                          Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
+                        ],
+                      )
+                    ],
+                  ),
+                  Html(
+                    data: TextUtil.weekDetail.replaceFirst("###content###", logic.state.paperDetail.data!.content??""),
+                    shrinkWrap: true,
+                  )
+                ],
+              );
+            }
+        ),
+      )
+    );
   }
 
   @override

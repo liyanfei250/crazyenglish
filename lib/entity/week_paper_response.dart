@@ -9,6 +9,42 @@
 /// maxLimit : 0
 
 class WeekPaperResponse {
+  int? _code;
+  String? _msg;
+  WeekPaper? _data;
+
+  int? get code => _code;
+  String? get msg => _msg;
+  WeekPaper? get data => _data;
+
+  WeekPaperResponse({
+    int? code,
+    String? msg,
+    WeekPaper? data}){
+    _code = code;
+    _msg = msg;
+    _data = data;
+  }
+
+  WeekPaperResponse.fromJson(dynamic json) {
+    _code = json['code'];
+    _msg = json['msg'];
+    _data = json['data'] != null ? WeekPaper.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map['code'] = _code;
+    map['msg'] = _msg;
+    if (_data != null) {
+      map['data'] = _data?.toJson();
+    }
+    return map;
+  }
+
+}
+
+class WeekPaper {
   List<Records>? _records;
   int? _total;
   int? _size;
@@ -29,15 +65,15 @@ class WeekPaperResponse {
   String? get countId => _countId;
   int? get maxLimit => _maxLimit;
 
-  WeekPaperResponse({
-      List<Records>? records, 
-      int? total, 
-      int? size, 
-      int? current, 
-      List<Orders>? orders, 
-      bool? optimizeCountSql, 
-      bool? searchCount, 
-      String? countId, 
+  WeekPaper({
+      List<Records>? records,
+      int? total,
+      int? size,
+      int? current,
+      List<Orders>? orders,
+      bool? optimizeCountSql,
+      bool? searchCount,
+      String? countId,
       int? maxLimit}){
     _records = records;
     _total = total;
@@ -50,7 +86,7 @@ class WeekPaperResponse {
     _maxLimit = maxLimit;
 }
 
-  WeekPaperResponse.fromJson(dynamic json) {
+  WeekPaper.fromJson(dynamic json) {
     if (json['records'] != null) {
       _records = [];
       json['records'].forEach((v) {
@@ -103,7 +139,7 @@ class Orders {
   bool? get asc => _asc;
 
   Orders({
-      String? column, 
+      String? column,
       bool? asc}){
     _column = column;
     _asc = asc;
@@ -152,13 +188,13 @@ class Records {
   String? get createTime => _createTime;
 
   Records({
-      int? id, 
-      String? name, 
-      String? stage, 
-      int? sort, 
-      String? weekTime, 
-      String? nameTitle, 
-      String? img, 
+      int? id,
+      String? name,
+      String? stage,
+      int? sort,
+      String? weekTime,
+      String? nameTitle,
+      String? img,
       String? createTime}){
     _id = id;
     _name = name;
