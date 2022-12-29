@@ -190,6 +190,7 @@ flutter:
     - images/index_icon_3.png
     - images/index_icon_7.png
     - images/index_class_more.png
+    - images/weekly_bg.png
     - images/index_icon_6.png
     - images/index_icon_4.png
     - images/index_icon_5.png
@@ -199,4 +200,5 @@ flutter:
     - images/index_ad.png
     - images/index_class_thumb2.png
     - images/index_icon_play.png
+    - images/weekly_browse.png
     - images/icon_back_blue.png

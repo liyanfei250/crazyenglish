@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,6 +72,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
         // bottom: ,
         elevation: 0,
       ),
+      backgroundColor: AppColors.c_FFFAF7F7,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
@@ -104,7 +106,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
         onLoading: _onLoading,
         child: GridView.builder(
             shrinkWrap:true,
-          itemCount: weekPaperList.length,
+            itemCount: weekPaperList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
                 childAspectRatio:0.6),
             itemBuilder: (_,int position)=>buildItem(position)),
@@ -126,28 +128,55 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
             decoration: BoxDecoration(
                 boxShadow:[
                   BoxShadow(
-                    color: AppColors.c_FF542327.withOpacity(0.5),		// 阴影的颜色
-                    offset: Offset(1, 2),						// 阴影与容器的距离
-                    blurRadius: 25.0,							// 高斯的标准偏差与盒子的形状卷积。
-                    spreadRadius: 5.0,
+                    color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
+                    offset: Offset(7, 7),						// 阴影与容器的距离
+                    blurRadius: 165,							// 高斯的标准偏差与盒子的形状卷积。
+                    spreadRadius: 0.w,
                   )
                 ],
-                image: DecorationImage(
-                    image: NetworkImage(weekPaperList[index].img??""),
-                    fit: BoxFit.fill
-                ),
                 borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                color: AppColors.TEXT_BLACK_COLOR
             ),
             width: 88.w,
             height: 122.w,
-            child: Container(
-              width: 38.w,
-              height: 14.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                  color: AppColors.TEXT_BLACK_COLOR
-              ),
+            child: Stack(
+              children: [
+                ExtendedImage.network(
+                  weekPaperList[index].img??"",
+                  fit: BoxFit.fill,
+                  width: 88.w,
+                  height: 122.w,),
+                Container(
+                  width: 38.w,
+                  height: 14.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      color: AppColors.c_66000000
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(R.imagesWeeklyBrowse,width: 9.w,height: 7.w,),
+                      Text("265",style: TextStyle(fontSize: 8.sp,color: AppColors.c_FFFFFFFF),)
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.w,
+                  child: Container(
+                    width: 88.w,
+                    height: 31.w,
+                    padding: EdgeInsets.only(left: 7.w,bottom: 4.w),
+                    alignment: Alignment.bottomLeft,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(R.imagesWeeklyBg)
+                      ),
+                    ),
+                    child: Text(weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 10.sp),),
+                  ),
+                )
+              ],
             ),
           ),
           Container(

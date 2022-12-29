@@ -59,6 +59,8 @@ class R {
   static final String imagesIndexIcon7 = 'images/index_icon_7.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)
   static final String imagesIndexClassMore = 'images/index_class_more.png';
+  /// ![](http://127.0.0.1:11/images/weekly_bg.png)
+  static final String imagesWeeklyBg = 'images/weekly_bg.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
@@ -77,6 +79,8 @@ class R {
   static final String imagesIndexClassThumb2 = 'images/index_class_thumb2.png';
   /// ![](http://127.0.0.1:11/images/index_icon_play.png)
   static final String imagesIndexIconPlay = 'images/index_icon_play.png';
+  /// ![](http://127.0.0.1:11/images/weekly_browse.png)
+  static final String imagesWeeklyBrowse = 'images/weekly_browse.png';
   /// ![](http://127.0.0.1:11/images/icon_back_blue.png)
   static final String imagesIconBackBlue = 'images/icon_back_blue.png';
 }
