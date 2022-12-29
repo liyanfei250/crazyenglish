@@ -73,7 +73,7 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
           RouterUtil.toNamed(AppRoutes.WeeklyList);
           break;
         case "英语周报":
-          RouterUtil.toWebPage("http://101.42.97.189:10001/",title: "英语周报",showAppBar: true);
+          RouterUtil.toWebPage("https://101.42.97.189:10001/",title: "英语周报",showAppBar: true);
           break;
         case "新手福利":
           RouterUtil.toNamed(AppRoutes.TextToVoice);

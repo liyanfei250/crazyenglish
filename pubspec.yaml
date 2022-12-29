@@ -78,7 +78,6 @@ dependencies:
   permission_handler: ^9.2.0
   tencent_cos: ^1.0.7
   image_cropper: ^3.0.0
-  webview_flutter: ^3.0.4
   # 系统浏览器启动
   # https://pub.flutter-io.cn/packages/url_launcher
   url_launcher: ^6.0.10
@@ -98,6 +97,12 @@ dependencies:
   flutter_sound: ^9.2.13
   audio_session: 0.1.6
   flutter_html: 3.0.0-alpha.6
+  # webView使用本地插件，忽略ssl证书
+
+#  flutter_inappwebview: ^5.7.2+3
+#  webview_flutter: ^4.0.1
+  flutter_inappwebview: ^6.0.0-beta.22
+
 
 dev_dependencies:
   flutter_test:

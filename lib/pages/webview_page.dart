@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -13,7 +14,6 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../entity/apple_pay_item.dart';
 
@@ -68,8 +68,7 @@ class _WebViewPageState extends State<WebViewPage> {
   // late InAppWebViewController _controller ;
 
   //控制器
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+  InAppWebViewController? _controller;
   WebView? webView;
   @override
   void initState() {
@@ -91,15 +90,12 @@ class _WebViewPageState extends State<WebViewPage> {
       body: WillPopScope(
         onWillPop: () async{
           bool canGoBack = false;
-          await _controller.future.then((webView) async {
-           canGoBack = await webView.canGoBack();
-            if (canGoBack) {
-              webView.goBack();
-            } else {
-              Get.back();
-            }
-
-          });
+         canGoBack = await _controller!.canGoBack();
+          if (canGoBack) {
+            _controller!.goBack();
+          } else {
+            Get.back();
+          }
           if(canGoBack){
             return false;
           }else{
@@ -107,23 +103,19 @@ class _WebViewPageState extends State<WebViewPage> {
           }
       },
         child: Builder(builder: (BuildContext context) {
-          return WebView(
-            initialUrl: webUrl!,
-            javascriptMode: JavascriptMode.unrestricted,
-            javascriptChannels: <JavascriptChannel>{
-              //JS交互方法
-              _backtopre(context),
-            }.toSet(),
-            onWebViewCreated: (WebViewController webViewController) async {
-              _controller.complete(webViewController);
+          return InAppWebView(
+            initialUrlRequest: URLRequest(url:WebUri.uri(Uri.parse(webUrl!))),
+            initialSettings: InAppWebViewSettings(
+                javaScriptEnabled:true,
+            ),
+            onWebViewCreated: (controller){
+              _controller = controller;
+            },
+            onReceivedServerTrustAuthRequest: (InAppWebViewController controller,
+                URLAuthenticationChallenge challenge) async {
+              return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
             },
           );
-          // return InAppWebView(
-          //   initialUrlRequest: URLRequest(url:Uri.parse(webUrl!)),
-          //   onWebViewCreated: (controller){
-          //     _controller = controller;
-          //   },
-          // );
         }),
       ),
     );
@@ -145,18 +137,16 @@ class _WebViewPageState extends State<WebViewPage> {
         leading: IconButton(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           icon: _buildBackIcon(),
-          onPressed: () {
+          onPressed: () async {
             ///点击返回按钮
             if (backIconType == BackIconType.back) {
               //返回按钮
-              _controller.future.then((webView) async {
-                bool canGoBack = await webView.canGoBack();
+                bool canGoBack = await _controller!.canGoBack();
                 if (canGoBack) {
-                  webView.goBack();
+                  _controller!.goBack();
                 } else {
                   Get.back();
                 }
-              });
             } else {
               //关闭按钮
               Get.back();
@@ -228,21 +218,21 @@ class _WebViewPageState extends State<WebViewPage> {
   //     print("set State");
   //   });
   // }
-
-  JavascriptChannel _backtopre(BuildContext context) {
-    return JavascriptChannel(
-        name: 'backtopre',
-        onMessageReceived: (JavascriptMessage message) {
-          _controller.future.then((webView) async {
-            bool canGoBack = await webView.canGoBack();
-            if (canGoBack) {
-              webView.goBack();
-            } else {
-              Get.back();
-            }
-          });
-        });
-  }
+  //
+  // JavascriptChannel _backtopre(BuildContext context) {
+  //   return JavascriptChannel(
+  //       name: 'backtopre',
+  //       onMessageReceived: (JavascriptMessage message) {
+  //         _controller.future.then((webView) async {
+  //           bool canGoBack = await webView.canGoBack();
+  //           if (canGoBack) {
+  //             webView.goBack();
+  //           } else {
+  //             Get.back();
+  //           }
+  //         });
+  //       });
+  // }
 
 
   String getJs(Map<String, dynamic> map) {

@@ -2,7 +2,12 @@
 <network-security-config xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 只有当android:debuggable为true时才可用-->
     <!-- 支持 Android 7.0 以上调试时，信任 Charles 和 Fiddler 等用户信任的证书 -->
-    <base-config cleartextTrafficPermitted="true" />
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
     <debug-overrides>
         <trust-anchors>
             <certificates
@@ -13,12 +18,15 @@
                 src="user" />
         </trust-anchors>
     </debug-overrides>
+
     <domain-config cleartextTrafficPermitted="true">
     <domain includeSubdomains="true">mp.weixin.qq.com</domain>
     <domain includeSubdomains="true">weixin.sogou.com</domain>
     <domain includeSubdomains="true">192.168.0.120</domain>
+    <domain includeSubdomains="true">101.42.97.189</domain>
         <trust-anchors>
             <certificates src="user"/>//用户自装证书
+            <certificates src="system"/>//用户自装证书
         </trust-anchors>
 
     </domain-config>

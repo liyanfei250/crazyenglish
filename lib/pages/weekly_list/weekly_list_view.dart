@@ -103,8 +103,10 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child: GridView.builder(
+            shrinkWrap:true,
           itemCount: weekPaperList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+                childAspectRatio:0.6),
             itemBuilder: (_,int position)=>buildItem(position)),
       ),
     );
@@ -116,41 +118,44 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
       onTap: (){
         RouterUtil.toNamed(AppRoutes.PaperCategory,arguments: weekPaperList[index]);
       },
-      child: Container(
-        width: 88.w,
-        height: 122.w,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              constraints: BoxConstraints.expand(
-                width: 88.w,
-                height: 122.w,
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 18.w),
+            decoration: BoxDecoration(
+                boxShadow:[
+                  BoxShadow(
+                    color: AppColors.c_FF542327.withOpacity(0.5),		// 阴影的颜色
+                    offset: Offset(1, 2),						// 阴影与容器的距离
+                    blurRadius: 25.0,							// 高斯的标准偏差与盒子的形状卷积。
+                    spreadRadius: 5.0,
+                  )
+                ],
+                image: DecorationImage(
+                    image: NetworkImage(weekPaperList[index].img??""),
+                    fit: BoxFit.fill
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                color: AppColors.TEXT_BLACK_COLOR
+            ),
+            width: 88.w,
+            height: 122.w,
+            child: Container(
+              width: 38.w,
+              height: 14.w,
               decoration: BoxDecoration(
-                  boxShadow:[
-                    BoxShadow(
-                      color: AppColors.c_FF542327.withOpacity(0.5),		// 阴影的颜色
-                      offset: Offset(10, 20),						// 阴影与容器的距离
-                      blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
-                      spreadRadius: 5.0,
-                    )
-                  ],
-                  image: DecorationImage(
-                      image: NetworkImage(weekPaperList[index].img??""),
-                      fit: BoxFit.cover
-                  ),
                   borderRadius: BorderRadius.all(Radius.circular(6.w)),
                   color: AppColors.TEXT_BLACK_COLOR
               ),
-              width: 88.w,
-              height: 122.w,
-
             ),
-            Padding(padding: EdgeInsets.only(top: 4.w)),
-            Text(weekPaperList[index].nameTitle?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),)
-          ],
-        ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 4.w),
+            child: Text(weekPaperList[index].nameTitle?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),),
+          )
+          //
+        ],
       ),
     );
   }
