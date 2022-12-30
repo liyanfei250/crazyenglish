@@ -24,6 +24,10 @@ const String _apiSecret = "954e0b74bfc8652e3823ad5a3ac6786e";
 const String _host = "tts-api.xfyun.cn";
 const String _host2 = "iat-api.xfyun.cn";
 
+const String huaweiAppid= "hw065511755";
+const String huaweiApiKey= "FB92ELRV2AXMJF7GY6BY";
+const String huaweiApiSecret= "uA6saFaYpPbjsWcgrBDbitF41oIRCKh1jQz7PjeD";
+
 /// 作者： lixp
 /// 创建时间： 2022/6/1 15:57
 /// 类介绍：讯飞Socket连接

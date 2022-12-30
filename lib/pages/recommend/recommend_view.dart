@@ -70,10 +70,10 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
     onTap: (){
       switch(e){
         case "每周题库":
-          RouterUtil.toNamed(AppRoutes.WeeklyList);
+          RouterUtil.toWebPage("https://101.42.97.189:10001/",title: "英语周报",showAppBar: true);
           break;
         case "英语周报":
-          RouterUtil.toWebPage("https://101.42.97.189:10001/",title: "英语周报",showAppBar: true);
+          RouterUtil.toNamed(AppRoutes.WeeklyList);
           break;
         case "新手福利":
           RouterUtil.toNamed(AppRoutes.TextToVoice);
