@@ -32,6 +32,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   final state = Get.find<Reading_detailLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
   PaperDetail? paperDetail;
+  CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   @override
   void initState(){
     super.initState();
@@ -98,6 +99,25 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                   Html(
                     data: TextUtil.weekDetail.replaceFirst("###content###", logic.state.paperDetail.data!.content??""),
                     shrinkWrap: true,
+                    onImageTap: (url,context,attributes,element,){
+
+                    },
+                    style: {
+                      "p":Style(
+                          fontSize:FontSize.large
+                      ),
+                      "hr":Style(
+                        margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+                        padding: EdgeInsets.all(0),
+                        border: Border(bottom: BorderSide(color: Colors.grey)),
+                      )
+                    },
+                    // customRenders: {
+                    //   hrMatcher(): CustomRender.widget(widget: (context, buildChildren) => Container(
+                    //     width: double.infinity,
+                    //     color: AppColors.c_FF282828,
+                    //   ),),
+                    // },
                   )
                 ],
               );
