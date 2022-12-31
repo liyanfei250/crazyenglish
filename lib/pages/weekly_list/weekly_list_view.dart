@@ -174,7 +174,8 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
                           image: AssetImage(R.imagesWeeklyBg)
                       ),
                     ),
-                    child: Text(weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 10.sp),),
+                    child: Text(
+                      weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 10.sp),),
                   ),
                 )
               ],
@@ -182,7 +183,10 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
           ),
           Container(
             margin: EdgeInsets.only(top: 4.w),
-            child: Text(weekPaperList[index].nameTitle?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),),
+            child: Text(
+              maxLines:1,
+              overflow:TextOverflow.ellipsis,
+              weekPaperList[index].name?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),),
           )
           //
         ],
