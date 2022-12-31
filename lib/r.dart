@@ -45,10 +45,16 @@ class R {
   static final String imagesIconTab4Normal = 'images/icon_tab4_normal.png';
   /// ![](http://127.0.0.1:11/images/img.png)
   static final String imagesImg = 'images/img.png';
+  /// ![](http://127.0.0.1:11/images/splash_icon.png)
+  static final String imagesSplashIcon = 'images/splash_icon.png';
+  /// ![](http://127.0.0.1:11/images/splash_welcome_1.png)
+  static final String imagesSplashWelcome1 = 'images/splash_welcome_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_normal.png)
   static final String imagesIconTab1Normal = 'images/icon_tab1_normal.png';
   /// ![](http://127.0.0.1:11/images/article_share.png)
   static final String imagesArticleShare = 'images/article_share.png';
+  /// ![](http://127.0.0.1:11/images/splash_welcome_2.png)
+  static final String imagesSplashWelcome2 = 'images/splash_welcome_2.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_pressed.png)
   static final String imagesIconTab3Pressed = 'images/icon_tab3_pressed.png';
   /// ![](http://127.0.0.1:11/images/index_icon_1.png)
@@ -57,6 +63,8 @@ class R {
   static final String imagesIconTab2Normal = 'images/icon_tab2_normal.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_pressed.png)
   static final String imagesIconTab4Pressed = 'images/icon_tab4_pressed.png';
+  /// ![](http://127.0.0.1:11/images/splash.png)
+  static final String imagesSplash = 'images/splash.png';
   /// ![](http://127.0.0.1:11/images/index_icon_2.png)
   static final String imagesIndexIcon2 = 'images/index_icon_2.png';
   /// ![](http://127.0.0.1:11/images/welcome_icon.png)

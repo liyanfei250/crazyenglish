@@ -66,11 +66,11 @@ class SplashPageState extends State<SplashPage> {
       children: [
         Positioned.fill(child: Container(
           color: AppColors.c_FFFAF7F7,
-          // child: Image.asset(
-          //   fit:BoxFit.cover,
-          //   R.imagesSplash,
-          //   width: double.infinity,
-          //   height: double.infinity,),
+          child: Image.asset(
+            fit:BoxFit.cover,
+            R.imagesSplash,
+            width: double.infinity,
+            height: double.infinity,),
         ),),
 
         Offstage(
