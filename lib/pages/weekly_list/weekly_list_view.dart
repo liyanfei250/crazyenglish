@@ -108,7 +108,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
             shrinkWrap:true,
             itemCount: weekPaperList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
-                childAspectRatio:0.6),
+                childAspectRatio:0.76),
             itemBuilder: (_,int position)=>buildItem(position)),
       ),
     );
@@ -126,15 +126,15 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
           Container(
             margin: EdgeInsets.only(top: 18.w),
             decoration: BoxDecoration(
-                boxShadow:[
-                  BoxShadow(
-                    color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                    offset: Offset(7, 7),						// 阴影与容器的距离
-                    blurRadius: 165,							// 高斯的标准偏差与盒子的形状卷积。
-                    spreadRadius: 0.w,
-                  )
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              boxShadow:[
+                BoxShadow(
+                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
+                  offset: Offset(7, 7),						// 阴影与容器的距离
+                  blurRadius: 165,							// 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 0.w,
+                )
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(6.w)),
             ),
             width: 88.w,
             height: 122.w,
@@ -157,7 +157,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(R.imagesWeeklyBrowse,width: 9.w,height: 7.w,),
+                      Image.asset(R.imagesWeeklyBrowse,width: 13.w,height: 13.w,),
                       Text("265",style: TextStyle(fontSize: 8.sp,color: AppColors.c_FFFFFFFF),)
                     ],
                   ),
