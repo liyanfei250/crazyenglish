@@ -84,13 +84,13 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
       },
       child: Container(
         width: 332.w,
-        height: 100.w,
-        margin: EdgeInsets.only(top: 5.w,left: 14.w,right: 14.w),
+        height: 106.w,
+        margin: EdgeInsets.only(top: 11.w,left: 14.w,right: 14.w),
         padding: EdgeInsets.only(top: 14.w,bottom: 14.w),
         decoration: BoxDecoration(
             boxShadow:[
               BoxShadow(
-                color: AppColors.c_0FA50D1A.withOpacity(0.4),		// 阴影的颜色
+                color: AppColors.c_0FA50D1A.withOpacity(0.05),		// 阴影的颜色
                 offset: Offset(10, 20),						// 阴影与容器的距离
                 blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
                 spreadRadius: 0,

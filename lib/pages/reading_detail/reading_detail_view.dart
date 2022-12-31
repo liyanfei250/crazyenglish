@@ -2,6 +2,8 @@ import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -11,6 +13,7 @@ import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
+import '../../xfyy/utils/xf_socket.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
 
@@ -32,6 +35,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   final state = Get.find<Reading_detailLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
   PaperDetail? paperDetail;
+
+  final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
+
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   @override
   void initState(){
@@ -48,6 +54,18 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
       }
     });
     logic.getPagerDetail("${widget.data!.id}");
+    initPlay();
+  }
+
+
+
+
+  /// 初始化播放
+  initPlay() async {
+    await playerModule.closePlayer();
+    await playerModule.openPlayer();
+    await playerModule
+        .setSubscriptionDuration(const Duration(milliseconds: 10));
   }
 
   @override
@@ -60,6 +78,48 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           leading: Util.buildBackWidget(context),
           // bottom: ,
           elevation: 0,
+          actions: [
+            Container(
+              width: 22.w,
+              height: 22.w,
+              margin: EdgeInsets.only(right: 22.w),
+              child: InkWell(
+                onTap: (){
+                  if(paperDetail!=null
+                      && paperDetail!.data!=null
+                      && paperDetail!.data!.titleEn!=null){
+                    XfSocket.connect(paperDetail!.data!.titleEn!,"John", onFilePath: (path) {
+                      _play(path);
+                    });
+                  }
+
+                },
+                child: Image.asset(R.imagesArticleListenDerfault),
+              ),
+            ),
+            Container(
+              width: 22.w,
+              height: 22.w,
+              margin: EdgeInsets.only(right: 22.w),
+              child: InkWell(
+                onTap: (){
+
+                },
+                child: Image.asset(R.imagesArticleCollectDefault),
+              ),
+            ),
+            Container(
+              width: 22.w,
+              height: 22.w,
+              margin: EdgeInsets.only(right: 12.w),
+              child: InkWell(
+                onTap: (){
+
+                },
+                child: Image.asset(R.imagesArticleShare),
+              ),
+            ),
+          ],
         ),
         backgroundColor: AppColors.c_FFFAF7F7,
       body: SingleChildScrollView(
@@ -69,62 +129,69 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               if(logic.state.paperDetail.data==null){
                 return Container();
               }
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+              return Container(
+                padding: EdgeInsets.only(left: 8.w,right: 8.w),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 40.w,
+                      margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Container(
-                            width: 4.w,
-                            height: 12.w,
-                            margin: EdgeInsets.only(right: 7.w),
-                            color: AppColors.c_FFFFBC00,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 4.w,
+                                height: 12.w,
+                                margin: EdgeInsets.only(right: 7.w),
+                                color: AppColors.c_FFFFBC00,
+                              ),
+                              Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                            ],
                           ),
-                          Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(R.imagesWeeklyDeBrowse,width: 12.w,height: 12.w,),
+                              Padding(padding: EdgeInsets.only(left: 2.w)),
+                              Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
+                            ],
+                          )
                         ],
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(R.imagesWeeklyDeBrowse,width: 12.w,height: 12.w,),
-                          Padding(padding: EdgeInsets.only(left: 2.w)),
-                          Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
-                        ],
-                      )
-                    ],
-                  ),
-                  Html(
-                    data: TextUtil.weekDetail.replaceFirst("###content###", logic.state.paperDetail.data!.content??""),
-                    shrinkWrap: true,
-                    onImageTap: (url,context,attributes,element,){
-
-                    },
-                    style: {
-                      "p":Style(
-                          fontSize:FontSize.large
-                      ),
-                      "hr":Style(
-                        margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-                        padding: EdgeInsets.all(0),
-                        border: Border(bottom: BorderSide(color: Colors.grey)),
-                      )
-                    },
-                    // customRenders: {
-                    //   hrMatcher(): CustomRender.widget(widget: (context, buildChildren) => Container(
-                    //     width: double.infinity,
-                    //     color: AppColors.c_FF282828,
-                    //   ),),
-                    // },
-                  )
-                ],
+                    ),
+                    Html(
+                      data: TextUtil.weekDetail.replaceFirst("###content###", logic.state.paperDetail.data!.content??""),
+                      shrinkWrap: true,
+                      onImageTap: (url,context,attributes,element,){
+                        Fluttertoast.showToast(msg: url??" ");
+                      },
+                      style: {
+                        "p":Style(
+                            fontSize:FontSize.large
+                        ),
+                        "hr":Style(
+                          margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+                          padding: EdgeInsets.all(0),
+                          border: Border(bottom: BorderSide(color: Colors.grey)),
+                        )
+                      },
+                    )
+                  ],
+                ),
               );
             }
         ),
       )
     );
+  }
+
+  void _play(String path) async {
+    await playerModule.startPlayer(fromURI: path);
   }
 
   @override
