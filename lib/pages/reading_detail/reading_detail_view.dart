@@ -86,11 +86,18 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               child: InkWell(
                 onTap: (){
                   if(paperDetail!=null
-                      && paperDetail!.data!=null
-                      && paperDetail!.data!.titleEn!=null){
-                    XfSocket.connect(paperDetail!.data!.titleEn!,"John", onFilePath: (path) {
-                      _play(path);
-                    });
+                      && paperDetail!.data!=null){
+                    if(paperDetail!.data!.voiceContent!=null
+                        && paperDetail!.data!.voiceContent!.isNotEmpty){
+                      XfSocket.connect(paperDetail!.data!.voiceContent!,"John", onFilePath: (path) {
+                        _play(path);
+                      });
+                    }else if(paperDetail!.data!.titleEn!=null){
+                      XfSocket.connect(paperDetail!.data!.titleEn!,"John", onFilePath: (path) {
+                        _play(path);
+                      });
+                    }
+
                   }
 
                 },

@@ -140,12 +140,15 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
             height: 122.w,
             child: Stack(
               children: [
-                ExtendedImage.network(
-                  weekPaperList[index].img??"",
-                  fit: BoxFit.fill,
-                  cacheRawData: true,
-                  width: 88.w,
-                  height: 122.w,),
+                ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                  child: ExtendedImage.network(
+                    weekPaperList[index].img??"",
+                    fit: BoxFit.fill,
+                    cacheRawData: true,
+                    width: 88.w,
+                    height: 122.w,),
+                ),
                 Container(
                   width: 38.w,
                   height: 14.w,
@@ -184,6 +187,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
           Container(
             margin: EdgeInsets.only(top: 4.w),
             child: Text(
+              textAlign:TextAlign.center,
               maxLines:1,
               overflow:TextOverflow.ellipsis,
               weekPaperList[index].name?? "",style: TextStyle(color: AppColors.TEXT_BLACK_COLOR,fontSize: 14.sp),),
