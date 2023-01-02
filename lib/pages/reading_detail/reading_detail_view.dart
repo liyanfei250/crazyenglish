@@ -8,6 +8,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/paper_detail.dart';
@@ -42,6 +43,8 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
+  late VideoPlayerController _controller;
+  CustomRenderMatcher videoMatcher() => (context) => context.tree.element?.localName == 'video';
   @override
   void initState(){
     super.initState();
@@ -49,6 +52,16 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
       if(state.paperDetail!=null){
           paperDetail = state.paperDetail;
           if(mounted && _refreshController!=null){
+            if(paperDetail!.data!=null
+                && paperDetail!.data!.videoFile!=null
+                && paperDetail!.data!.videoFile!.isNotEmpty){
+              _controller = VideoPlayerController.network(
+                  paperDetail!.data!.videoFile!)
+                ..initialize().then((_) {
+                  // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+                  setState(() {});
+                });
+            }
             _refreshController.refreshCompleted();
             setState(() {
             });
@@ -141,10 +154,16 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               }
               String htmlContent = logic.state.paperDetail.data!.content!;
               bool hasLargeFile = false;
+              bool hasVideoFile = false;
               if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.largeFile!=null && logic.state.paperDetail.data!.largeFile!.isNotEmpty){
                 htmlContent = "<img src=\"${logic.state.paperDetail.data!.largeFile!}\"/>${logic.state.paperDetail.data!.content!}";
                 hasLargeFile = true;
               }
+              if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.videoFile!=null && logic.state.paperDetail.data!.videoFile!.isNotEmpty){
+                htmlContent = "<video src=\"${logic.state.paperDetail.data!.videoFile!}\"/>${logic.state.paperDetail.data!.content!}";
+                hasVideoFile = true;
+              }
+
               return Container(
                 padding: EdgeInsets.only(left: 8.w,right: 8.w),
                 child: Stack(
@@ -183,11 +202,12 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                     Column(
                       children: [
                         Visibility(
-                            visible: hasLargeFile,
+                            visible: hasLargeFile|| hasVideoFile,
                             child: Container(
                               height: 40.w,
                               margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
                             )),
+
                         Html(
                           data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
                           shrinkWrap: true,
@@ -206,6 +226,22 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                               padding: EdgeInsets.all(0),
                               border: Border(bottom: BorderSide(color: Colors.grey)),
                             )
+                          },
+                          customRenders: {
+                            videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
+                              return _controller.value.isInitialized
+                                  ? InkWell(
+                                onTap: (){
+                                  _controller.value.isPlaying
+                                      ? _controller.pause()
+                                      : _controller.play();
+                                },
+                                child: AspectRatio(
+                                  aspectRatio: _controller.value.aspectRatio,
+                                  child: VideoPlayer(_controller),),
+                              )
+                                  : Container();
+                            })
                           },
                         )
                       ],
@@ -227,6 +263,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   @override
   void dispose() {
     Get.delete<Reading_detailLogic>();
+    if(_controller!=null){
+      _controller.dispose();
+    }
     super.dispose();
   }
 }
