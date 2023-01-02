@@ -103,16 +103,25 @@ dependencies:
 #  webview_flutter: ^4.0.1
   flutter_inappwebview: ^6.0.0-beta.22
 
+
 dev_dependencies:
+  icons_launcher: ^2.0.1
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  json_serializable: ^6.3.1
+  dart_code_metrics: ^4.17.1
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+icons_launcher:
+  platforms:
+    ios:
+      enable: true
+    android:
+      enable: true
+  image_path: "assets/app_icon_1024.png"
+
 
 
 # For information on the generic Dart part of this file, see the
