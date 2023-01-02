@@ -107,4 +107,6 @@ class R {
   static final String imagesWeeklyBrowse = 'images/weekly_browse.png';
   /// ![](http://127.0.0.1:11/images/icon_back_blue.png)
   static final String imagesIconBackBlue = 'images/icon_back_blue.png';
+  /// ![](http://127.0.0.1:11/images/tree_edit.png)
+  static final String imagesTreeEdit = 'images/tree_edit.png';
 }

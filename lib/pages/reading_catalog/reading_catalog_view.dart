@@ -128,8 +128,10 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
                       children: [
                         Text(paperCategory!.data![index].catalogueTitle?? "",
                           maxLines:1,
-                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+                          overflow:TextOverflow.ellipsis,
+                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.normal),),
                         Text(paperCategory!.data![index].catalogueTitleSubtitle?? "",
+                          overflow:TextOverflow.ellipsis,
                           maxLines:1,style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 16.sp),),
                       ],
                     ),

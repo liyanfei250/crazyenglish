@@ -1,6 +1,6 @@
-/// code : 0
-/// msg : "String"
-/// data : [{"id":0,"periodicalId":0,"parentId":0,"name":"String","sort":0,"createTime":"DateTime","childList":null}]
+/// code : 1
+/// msg : "系统正常"
+/// data : [{"id":25,"periodicalId":12,"parentId":0,"name":"第四篇","sort":12,"createTime":"2022-12-31T11:48:22.000+00:00","childList":[{"id":27,"periodicalId":12,"parentId":25,"name":"第一章节","sort":1,"createTime":"2022-12-31T12:03:31.000+00:00","childList":[{"id":34,"periodicalId":12,"parentId":27,"name":"第一节","sort":4,"createTime":"2022-12-31T14:41:35.000+00:00","childList":[]},{"id":35,"periodicalId":12,"parentId":27,"name":"第二节","sort":1,"createTime":"2022-12-31T14:42:41.000+00:00","childList":[]},{"id":39,"periodicalId":12,"parentId":27,"name":"第三节","sort":2,"createTime":"2022-12-31T16:18:10.000+00:00","childList":[]}]}]}]
 
 class WeekTestCatalogResponse {
   int? _code;
@@ -43,13 +43,13 @@ class WeekTestCatalogResponse {
 
 }
 
-/// id : 0
-/// periodicalId : 0
+/// id : 25
+/// periodicalId : 12
 /// parentId : 0
-/// name : "String"
-/// sort : 0
-/// createTime : "DateTime"
-/// childList : null
+/// name : "第四篇"
+/// sort : 12
+/// createTime : "2022-12-31T11:48:22.000+00:00"
+/// childList : [{"id":27,"periodicalId":12,"parentId":25,"name":"第一章节","sort":1,"createTime":"2022-12-31T12:03:31.000+00:00","childList":[{"id":34,"periodicalId":12,"parentId":27,"name":"第一节","sort":4,"createTime":"2022-12-31T14:41:35.000+00:00","childList":[]},{"id":35,"periodicalId":12,"parentId":27,"name":"第二节","sort":1,"createTime":"2022-12-31T14:42:41.000+00:00","childList":[]},{"id":39,"periodicalId":12,"parentId":27,"name":"第三节","sort":2,"createTime":"2022-12-31T16:18:10.000+00:00","childList":[]}]}]
 
 class Data {
   int? _id;
@@ -58,7 +58,7 @@ class Data {
   String? _name;
   int? _sort;
   String? _createTime;
-  dynamic? _childList;
+  List<Data>? _childList;
 
   int? get id => _id;
   int? get periodicalId => _periodicalId;
@@ -66,7 +66,7 @@ class Data {
   String? get name => _name;
   int? get sort => _sort;
   String? get createTime => _createTime;
-  dynamic? get childList => _childList;
+  List<Data>? get childList => _childList;
 
   Data({
       int? id, 
@@ -75,7 +75,7 @@ class Data {
       String? name, 
       int? sort, 
       String? createTime, 
-      dynamic? childList}){
+      List<Data>? childList}){
     _id = id;
     _periodicalId = periodicalId;
     _parentId = parentId;
@@ -92,7 +92,12 @@ class Data {
     _name = json['name'];
     _sort = json['sort'];
     _createTime = json['createTime'];
-    _childList = json['childList'];
+    if (json['childList'] != null) {
+      _childList = [];
+      json['childList'].forEach((v) {
+        _childList?.add(Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -103,8 +108,12 @@ class Data {
     map['name'] = _name;
     map['sort'] = _sort;
     map['createTime'] = _createTime;
-    map['childList'] = _childList;
+    if (_childList != null) {
+      map['childList'] = _childList?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 
 }
+
+///

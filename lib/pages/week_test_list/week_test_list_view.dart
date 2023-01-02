@@ -258,6 +258,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                               Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height:14.w,),
                               Padding(padding: EdgeInsets.only(left: 4.w)),
                               Text("222",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
+                              Padding(padding: EdgeInsets.only(left: 4.w)),
                             ],
                           ),
                         ),

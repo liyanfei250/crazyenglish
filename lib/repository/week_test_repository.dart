@@ -32,7 +32,7 @@ class WeekTestRepository{
   }
 
 
-  Future<WeekTestCatalogResponse> getWeekPaperCategory(String periodicaId) async{
+  Future<WeekTestCatalogResponse> getWeekTestCategory(String periodicaId) async{
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.get, Api.getWeekTestCategoryList+periodicaId,
         options: Options(method: Method.get));
@@ -49,7 +49,7 @@ class WeekTestRepository{
   }
 
 
-  Future<WeekTestDetailResponse> getWeekPaperDetail(String id) async{
+  Future<WeekTestDetailResponse> getWeekTestDetail(String id) async{
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.get, Api.getWeekTestDetail+id,
         options: Options(method: Method.get));

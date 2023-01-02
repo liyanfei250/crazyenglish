@@ -103,7 +103,6 @@ dependencies:
 #  webview_flutter: ^4.0.1
   flutter_inappwebview: ^6.0.0-beta.22
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -214,3 +213,4 @@ flutter:
     - images/article_listen_press.png
     - images/weekly_browse.png
     - images/icon_back_blue.png
+    - images/tree_edit.png
