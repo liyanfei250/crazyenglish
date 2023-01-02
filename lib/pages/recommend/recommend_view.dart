@@ -70,6 +70,7 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
     onTap: (){
       switch(e){
         case "每周题库":
+          RouterUtil.toNamed(AppRoutes.WeeklyTestList);
           break;
         case "英语周报":
           RouterUtil.toNamed(AppRoutes.WeeklyList);

@@ -13,6 +13,12 @@ class Api {
   //{id}
   static String getWeekPaperDetail = Config.ApiHost +"/crazy-weekly/periodicalContent/app/selectById/";
 
+  static String getWeekTestList = Config.ApiHost +"/crazy-question/exercisePeriodical/app/page";
+
+  static String getWeekTestCategoryList = Config.ApiHost +"/crazy-question/exerciseCatalogue/app/list/";
+  //{periodicaId}
+  static String getWeekTestDetail = Config.ApiHost +"/crazy-question/exerciseQuestionRequire/selectAppRequireListVo/";
+
 
 
   static String getWeiXinPay = Config.ApiHost +"/weixinpay.site";

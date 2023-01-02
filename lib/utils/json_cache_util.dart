@@ -13,6 +13,10 @@ class JsonCacheManageUtils{
   static final int WeekPaperResponse = 0x01;
   static final int PaperCategory = 0x02;
   static final int PaperDetail = 0x03;
+  static final int WeekTestListResponse = 0x04;
+  static final int WeekTestCatalogResponse = 0x05;
+  static final int WeekTestDetailResponse = 0x06;
+
 
   // String contentJson;
 

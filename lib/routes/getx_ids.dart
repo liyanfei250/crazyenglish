@@ -13,6 +13,10 @@ class GetBuilderIds {
   static const String weekList = "weekList";
   static const String paperCategory = "paperCategory";
   static const String paperDetail = "paperDetail";
+  static const String weekTestList = "weekTestList";
+  static const String weekTestCatalogList = "weekTestCatalogList";
+  static const String weekTestDetailList = "weekTestDetailList";
+
 
 
 }

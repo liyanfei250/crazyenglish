@@ -147,9 +147,9 @@ class Util {
     }else if(num<10000){
       return num.toString();
     }else if(num<1000000){
-      return formartFloatNum(num/10000,1)+"万";
+      return formartFloatNum(num/10000,1)+"w";
     }else {
-      return (num/10000).toString()+"万";
+      return (num/10000).toString()+"w";
     }
   }
 

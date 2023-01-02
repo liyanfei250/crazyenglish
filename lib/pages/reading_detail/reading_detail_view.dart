@@ -1,4 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/paper_detail.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
@@ -136,6 +139,12 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               if(logic.state.paperDetail.data==null){
                 return Container();
               }
+              String htmlContent = logic.state.paperDetail.data!.content!;
+              bool hasLargeFile = false;
+              if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.largeFile!=null && logic.state.paperDetail.data!.largeFile!.isNotEmpty){
+                htmlContent = "<img src=\"${logic.state.paperDetail.data!.largeFile!}\"/>${logic.state.paperDetail.data!.content!}";
+                hasLargeFile = true;
+              }
               return Container(
                 padding: EdgeInsets.only(left: 8.w,right: 8.w),
                 child: Stack(
@@ -171,23 +180,37 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                         ],
                       ),
                     ),
-                    Html(
-                      data: TextUtil.weekDetail.replaceFirst("###content###", logic.state.paperDetail.data!.content??""),
-                      shrinkWrap: true,
-                      onImageTap: (url,context,attributes,element,){
-                        Fluttertoast.showToast(msg: url??" ");
-                      },
-                      style: {
-                        "p":Style(
-                            fontSize:FontSize.large
-                        ),
-                        "hr":Style(
-                          margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-                          padding: EdgeInsets.all(0),
-                          border: Border(bottom: BorderSide(color: Colors.grey)),
+                    Column(
+                      children: [
+                        Visibility(
+                            visible: hasLargeFile,
+                            child: Container(
+                              height: 40.w,
+                              margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
+                            )),
+                        Html(
+                          data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+                          shrinkWrap: true,
+                          onImageTap: (url,context,attributes,element,){
+                            if(url!=null && url!.startsWith('http')){
+                              DialogManager.showPreViewImageDialog(
+                                  BackButtonBehavior.close, url);
+                            }
+                          },
+                          style: {
+                            "p":Style(
+                                fontSize:FontSize.large
+                            ),
+                            "hr":Style(
+                              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+                              padding: EdgeInsets.all(0),
+                              border: Border(bottom: BorderSide(color: Colors.grey)),
+                            )
+                          },
                         )
-                      },
+                      ],
                     )
+
                   ],
                 ),
               );

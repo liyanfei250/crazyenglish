@@ -1,5 +1,8 @@
 import 'package:crazyenglish/pages/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/reading_detail/reading_detail_view.dart';
+import 'package:crazyenglish/pages/week_test_catalog/week_test_catalog_view.dart';
+import 'package:crazyenglish/pages/week_test_detail/week_test_detail_view.dart';
+import 'package:crazyenglish/pages/week_test_list/week_test_list_view.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../entity/paper_category.dart';
@@ -26,5 +29,9 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WeeklyList, page:()=>WeeklyListPage(),),
     GetPage(name: AppRoutes.PaperCategory, page:()=>Reading_catalogPage(),),
     GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),
+    GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
+    GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
+    GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
+
   ];
 }

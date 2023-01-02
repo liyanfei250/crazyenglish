@@ -110,7 +110,7 @@ class XfSocket {
 
   /// 获取文件路径
   Future<String> _getLocalFileDir() async {
-    Directory? tempDir = await getExternalStorageDirectory();
+    Directory? tempDir = await getApplicationDocumentsDirectory();
     return tempDir!.path;
   }
 

@@ -8,6 +8,10 @@ abstract class AppRoutes{
   static const PaperCategory = '/PaperCategory';
   static const PaperDetail = '/PaperDetail';
   static const TextToVoice = '/TextToVoice';
-  // static const LOGIN = '/login';
+  static const WeeklyTestList = '/weeklyTestList';
+  static const WeeklyTestCategory = '/WeeklyTestCategory';
+  static const WeeklyTestDetail = '/WeeklyTestDetail';
+
+// static const LOGIN = '/login';
 
 }
