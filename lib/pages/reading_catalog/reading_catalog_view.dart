@@ -104,6 +104,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
           children: [
             Container(
               width: 72.w,
+              alignment: Alignment.center,
               margin: EdgeInsets.only(left: 12.w,right: 15.w),
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -114,6 +115,10 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
                     fit: BoxFit.cover
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              ),
+              child: Visibility(
+                visible: paperCategory!.data![index].isVideoFile??false,
+                child:Image.asset(R.imagesItemPlay,width: 36.w,height: 36.w,)
               ),
             ),
             Expanded(

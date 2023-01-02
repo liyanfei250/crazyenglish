@@ -43,6 +43,8 @@ class R {
   static final String imagesIndexMsg = 'images/index_msg.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_normal.png)
   static final String imagesIconTab4Normal = 'images/icon_tab4_normal.png';
+  /// ![](http://127.0.0.1:11/images/item_play.png)
+  static final String imagesItemPlay = 'images/item_play.png';
   /// ![](http://127.0.0.1:11/images/img.png)
   static final String imagesImg = 'images/img.png';
   /// ![](http://127.0.0.1:11/images/splash_icon.png)

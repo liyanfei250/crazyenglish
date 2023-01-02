@@ -55,6 +55,7 @@ class Data {
   int? _viewsCount;
   int? _likeCount;
   int? _collectCount;
+  bool? _isVideoFile;
 
   int? get id => _id;
   int? get periodicaId => _periodicaId;
@@ -64,6 +65,7 @@ class Data {
   int? get viewsCount => _viewsCount;
   int? get likeCount => _likeCount;
   int? get collectCount => _collectCount;
+  bool? get isVideoFile => _isVideoFile;
 
   Data({
       int? id, 
@@ -73,7 +75,9 @@ class Data {
       String? catalogueTitleImg, 
       int? viewsCount, 
       int? likeCount, 
-      int? collectCount}){
+      int? collectCount,
+      bool? isVideoFile
+  }){
     _id = id;
     _periodicaId = periodicaId;
     _catalogueTitle = catalogueTitle;
@@ -82,6 +86,7 @@ class Data {
     _viewsCount = viewsCount;
     _likeCount = likeCount;
     _collectCount = collectCount;
+    _isVideoFile = isVideoFile;
 }
 
   Data.fromJson(dynamic json) {
@@ -93,6 +98,7 @@ class Data {
     _viewsCount = json['viewsCount'];
     _likeCount = json['likeCount'];
     _collectCount = json['collectCount'];
+    _isVideoFile = json['isVideoFile'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +111,7 @@ class Data {
     map['viewsCount'] = _viewsCount;
     map['likeCount'] = _likeCount;
     map['collectCount'] = _collectCount;
+    map['isVideoFile'] = _isVideoFile;
     return map;
   }
 
