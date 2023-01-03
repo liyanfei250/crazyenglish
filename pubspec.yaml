@@ -184,11 +184,13 @@ flutter:
     - images/weekly_item_shadow.png
     - images/index_search.png
     - images/index_teacher_icon2.png
+    - images/article_man_play.png
     - images/index_icon_8.png
     - images/article_collect_press.png
     - images/xunfei_english.png
     - images/index_icon_9.png
     - images/icon_back_black.png
+    - images/article_torid_notice.png
     - images/index_icon_10.png
     - images/index_msg.png
     - images/icon_tab4_normal.png
@@ -205,6 +207,7 @@ flutter:
     - images/icon_tab2_normal.png
     - images/icon_tab4_pressed.png
     - images/splash.png
+    - images/home_search.png
     - images/index_icon_2.png
     - images/welcome_icon.png
     - images/weekly_fabulous.png

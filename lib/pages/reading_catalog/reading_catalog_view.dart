@@ -13,6 +13,7 @@ import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../../widgets/search_bar.dart';
 import 'reading_catalog_logic.dart';
 
 class Reading_catalogPage extends StatefulWidget {
@@ -69,15 +70,31 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child: ListView.builder(
-            itemCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
-            itemBuilder: (_,int position)=>buildItem(position)),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.only(bottom:5.w,top: 12.w,left: 33.w,right: 33.w),
+                child: SearchBar(width: double.infinity,height: 28.w,),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                buildItem,
+                childCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
+              ),
+            ),
+            // ListView.builder(
+            //     itemCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
+            //     itemBuilder: (_,int position)=>buildItem(position)),
+          ],
+        )
       ),
     );
   }
 
 
-  Widget buildItem(int index){
+  Widget buildItem(BuildContext context,int index){
     return InkWell(
       onTap: (){
         RouterUtil.toNamed(AppRoutes.PaperDetail,arguments: paperCategory!.data![index]);

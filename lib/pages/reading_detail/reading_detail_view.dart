@@ -45,6 +45,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   late VideoPlayerController _controller;
   CustomRenderMatcher videoMatcher() => (context) => context.tree.element?.localName == 'video';
+  var playMan = "John".obs;
+  String man = "John";
+  String woman = "lindsay";
   @override
   void initState(){
     super.initState();
@@ -61,6 +64,11 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
                   setState(() {});
                 });
+              _controller.addListener(() {
+                setState(() {});
+              });
+              // _controller.setLooping(true);
+              _controller.initialize();
             }
             _refreshController.refreshCompleted();
             setState(() {
@@ -103,13 +111,14 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                 onTap: (){
                   if(paperDetail!=null
                       && paperDetail!.data!=null){
+                    _stopPlay();
                     if(paperDetail!.data!.voiceContent!=null
                         && paperDetail!.data!.voiceContent!.isNotEmpty){
-                      XfSocket.connect(paperDetail!.data!.voiceContent!,"John", onFilePath: (path) {
+                      XfSocket.connect(paperDetail!.data!.voiceContent!,playMan.value??"John", onFilePath: (path) {
                         _play(path);
                       });
                     }else if(paperDetail!.data!.titleEn!=null){
-                      XfSocket.connect(paperDetail!.data!.titleEn!,"John", onFilePath: (path) {
+                      XfSocket.connect(paperDetail!.data!.titleEn!,playMan.value??"John", onFilePath: (path) {
                         _play(path);
                       });
                     }
@@ -137,9 +146,16 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               margin: EdgeInsets.only(right: 12.w),
               child: InkWell(
                 onTap: (){
-
+                  if(playMan.value == man){
+                    playMan.value = woman;
+                    Fluttertoast.showToast(msg: "已切换为女生");
+                  }else{
+                    playMan.value = man;
+                    Fluttertoast.showToast(msg: "已切换为男生");
+                  }
+                  _stopPlay();
                 },
-                child: Image.asset(R.imagesArticleShare),
+                child: Image.asset(R.imagesArticleManPlay),
               ),
             ),
           ],
@@ -257,10 +273,14 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   void _play(String path) async {
     await playerModule.startPlayer(fromURI: path);
   }
+  void _stopPlay() {
+    playerModule.stopPlayer();
+  }
 
   @override
   void dispose() {
     Get.delete<Reading_detailLogic>();
+    playerModule.stopPlayer();
     if(_controller!=null){
       _controller.dispose();
     }
@@ -307,10 +327,19 @@ class _ControlsOverlay extends StatelessWidget {
               ? const SizedBox.shrink()
               : Container(
             color: Colors.black26,
+            child: const Center(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 100.0,
+                semanticLabel: 'Play',
+              ),
+            ),
           ),
         ),
         GestureDetector(
           onTap: () {
+
             controller.value.isPlaying ? controller.pause() : controller.play();
           },
         ),
