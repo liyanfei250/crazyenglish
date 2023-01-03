@@ -217,9 +217,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                             }
                           },
                           style: {
-                            "p":Style(
-                                fontSize:FontSize.large
-                            ),
+                            // "p":Style(
+                            //     fontSize:FontSize.large
+                            // ),
                             "hr":Style(
                               margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
                               padding: EdgeInsets.all(0),

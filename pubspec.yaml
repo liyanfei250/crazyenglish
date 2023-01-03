@@ -90,7 +90,7 @@ dependencies:
   #  flutter_inappwebview: 5.4.3+8a
   share_plus: ^4.5.3
   wrapper: ^1.0.2
-  dash_painter: ^1.0.2
+  dotted_line: ^3.1.0
   flutter_image_compress: ^1.1.3
   sign_in_with_apple: ^4.2.0
   flutter_inapp_purchase: ^5.3.1
@@ -176,6 +176,7 @@ flutter:
     - images/xunfei.jpeg
     - images/icon_close.png
     - images/weekly_item_bg1.png
+    - images/choice_correct.png
     - images/icon_tab3_normal.png
     - images/index_class_new.png
     - images/icon_back.png
@@ -199,6 +200,7 @@ flutter:
     - images/article_share.png
     - images/splash_welcome_2.png
     - images/icon_tab3_pressed.png
+    - images/choice_error.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
     - images/icon_tab4_pressed.png
@@ -220,6 +222,7 @@ flutter:
     - images/article_listen_derfault.png
     - images/index_ad.png
     - images/index_class_thumb2.png
+    - images/test_paly.png
     - images/index_icon_play.png
     - images/article_listen_press.png
     - images/weekly_browse.png

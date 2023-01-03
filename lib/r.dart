@@ -13,6 +13,8 @@ class R {
   static final String imagesIconClose = 'images/icon_close.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg1.png)
   static final String imagesWeeklyItemBg1 = 'images/weekly_item_bg1.png';
+  /// ![](http://127.0.0.1:11/images/choice_correct.png)
+  static final String imagesChoiceCorrect = 'images/choice_correct.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_normal.png)
   static final String imagesIconTab3Normal = 'images/icon_tab3_normal.png';
   /// ![](http://127.0.0.1:11/images/index_class_new.png)
@@ -59,6 +61,8 @@ class R {
   static final String imagesSplashWelcome2 = 'images/splash_welcome_2.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_pressed.png)
   static final String imagesIconTab3Pressed = 'images/icon_tab3_pressed.png';
+  /// ![](http://127.0.0.1:11/images/choice_error.png)
+  static final String imagesChoiceError = 'images/choice_error.png';
   /// ![](http://127.0.0.1:11/images/index_icon_1.png)
   static final String imagesIndexIcon1 = 'images/index_icon_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_normal.png)
@@ -101,6 +105,8 @@ class R {
   static final String imagesIndexAd = 'images/index_ad.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb2.png)
   static final String imagesIndexClassThumb2 = 'images/index_class_thumb2.png';
+  /// ![](http://127.0.0.1:11/images/test_paly.png)
+  static final String imagesTestPaly = 'images/test_paly.png';
   /// ![](http://127.0.0.1:11/images/index_icon_play.png)
   static final String imagesIndexIconPlay = 'images/index_icon_play.png';
   /// ![](http://127.0.0.1:11/images/article_listen_press.png)

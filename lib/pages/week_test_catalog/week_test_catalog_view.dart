@@ -1,4 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/widgets/dash_line.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +44,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
   // WeekTestCatalogResponse? paperCategory;
-  TreeViewController treeViewController = TreeViewController();
+  TreeViewController? treeViewController;
 
   @override
   void onCreate() {
@@ -98,7 +100,11 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         id: GetBuilderIds.weekTestCatalogList,
         builder: (logic){
           if(logic.state.nodes!=null && logic.state.nodes.length>0){
-            treeViewController = TreeViewController(children:logic.state.nodes!);
+            if(treeViewController==null){
+              treeViewController = TreeViewController(children:logic.state.nodes!);
+              List<tree.Node> nodes = treeViewController!.expandAll();
+              treeViewController = TreeViewController(children:nodes!);
+            }
             return Container(
               margin: EdgeInsets.only(top: 20.w,left: 14.w,right: 14.w,bottom: 20.w),
               decoration: BoxDecoration(
@@ -117,9 +123,17 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                 children: [
                   Expanded(
                     child: TreeView(
-                      controller: treeViewController,
+                      controller: treeViewController!,
                       nodeBuilder: (context, node)=>buildItem(context, node),
-
+                      onExpansionChanged: (key, expanded) {
+                        tree.Node? node = treeViewController!.getNode(key);
+                        if (node != null) {
+                          List<tree.Node> updated = treeViewController!.updateNode(key, node.copyWith(expanded: expanded));
+                          setState(() {
+                            treeViewController = treeViewController!.copyWith(children: updated);
+                          });
+                        }
+                      }
                     ),
                   )
                 ],
@@ -140,20 +154,52 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            Expanded(child: Row(
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                    alignment: Alignment.center,
-                    width: 17.w,
-                    height: 17.w,
-                    margin: EdgeInsets.only(left:14.w,right: 14.w),
-                    decoration: BoxDecoration(
-                        color: AppColors.c_FFFF4D35,
-                        borderRadius: BorderRadius.all(Radius.circular(16.w))
+                Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: EdgeInsets.only(left:22.w),
+                      child: Visibility(
+                        visible: node.parent,
+                        child: DottedLine(
+                          dashLength: 3.w,
+                          dashGapLength: 3.w,
+                          lineThickness: 2.w,
+                          dashColor: AppColors.c_FFE2E2E2,
+                          direction: Axis.vertical,
+                        ),
+                      )),
                     ),
-                    child: Text(node.expanded? "-":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
+                Row(
+                  children: [
+                    Container(
+                        alignment: Alignment.center,
+                        width: 17.w,
+                        height: 17.w,
+                        margin: EdgeInsets.only(left:14.w,right: 14.w),
+                        decoration: BoxDecoration(
+                            color: AppColors.c_FFFF4D35,
+                            borderRadius: BorderRadius.all(Radius.circular(16.w))
+                        ),
+                        child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
+                    ),
+                    Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR),)
+                  ],
                 ),
-                Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR),)
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                      margin: EdgeInsets.only(left:22.w),
+                      child: DottedLine(
+                        dashLength: 3.w,
+                        dashGapLength: 3.w,
+                        lineThickness: 2.w,
+                        dashColor: AppColors.c_FFE2E2E2,
+                        direction: Axis.vertical,
+                      )),
+                ),
               ],
             ),),
             Container(
@@ -177,19 +223,48 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 12.w,
-                    height: 12.w,
-                    margin: EdgeInsets.only(left:18.w,right: 18.w),
-                    decoration: BoxDecoration(
-                        color: AppColors.c_FFFF4D35,
-                        borderRadius: BorderRadius.all(Radius.circular(16.w))
-                    ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        margin: EdgeInsets.only(left:22.w),
+                        child: DottedLine(
+                          dashLength: 3.w,
+                          dashGapLength: 3.w,
+                          lineThickness: 2.w,
+                          dashColor: AppColors.c_FFE2E2E2,
+                          direction: Axis.vertical,
+                        )),
                   ),
-                  Text(node.label,style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 12.w,
+                        height: 12.w,
+                        margin: EdgeInsets.only(left:17.w,right: 18.w),
+                        decoration: BoxDecoration(
+                            color: AppColors.c_FFFF4D35,
+                            borderRadius: BorderRadius.all(Radius.circular(16.w))
+                        ),
+                      ),
+                      Text(node.label,style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),)
+                    ],
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        margin: EdgeInsets.only(left:22.w),
+                        child: DottedLine(
+                          dashLength: 3.w,
+                          dashGapLength: 3.w,
+                          lineThickness: 2.w,
+                          dashColor: AppColors.c_FFE2E2E2,
+                          direction: Axis.vertical,
+                        )),
+                  ),
                 ],
               ),
               Image.asset(R.imagesTreeEdit,width: 20.w,height: 20.w,)

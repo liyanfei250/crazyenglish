@@ -103,7 +103,7 @@ class Node<T> {
       label: _label,
       data: _data,
       expanded: Utilities.truthful(map['expanded']),
-      parent: Utilities.truthful(map['parent']),
+      parent: _children!=null && _children.length>0,
       children: _children,
     );
   }

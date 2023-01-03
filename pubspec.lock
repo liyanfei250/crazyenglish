@@ -169,13 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.4"
-  dash_painter:
-    dependency: "direct main"
-    description:
-      name: dash_painter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   device_info:
     dependency: "direct main"
     description:
@@ -197,6 +190,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  dotted_line:
+    dependency: "direct main"
+    description:
+      name: dotted_line
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   event_bus:
     dependency: "direct main"
     description:
