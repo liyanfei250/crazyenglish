@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/widgets/ChoiceRadioItem.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import 'test_player_widget.dart';
 import 'week_test_detail_logic.dart';
 
 class WeekTestDetailPage extends BasePage {
@@ -30,6 +32,8 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   final logic = Get.put(WeekTestDetailLogic());
   final state = Get.find<WeekTestDetailLogic>().state;
 
+
+  AudioPlayer audioPlayer  = AudioPlayer();
 
   @override
   void onCreate() {
@@ -99,6 +103,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             ),
             child: Text("单选题",style: TextStyle(color: AppColors.c_FFFFBC00,fontSize: 10.sp),),
           ),
+          buildListenQuestion(),
           Text(
             "第1题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
           ),
@@ -134,21 +139,9 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   }
 
   Widget buildListenQuestion(){
+    audioPlayer.setSourceUrl("https://ps-1252082677.cos.ap-beijing.myqcloud.com/test.mp3");
     return Container(
-      child: Stack(
-        children: [
-          Row(
-            children: [
-              InkWell(
-                onTap: (){
-
-                },
-                child: Image.asset(R.imagesTestPaly,width: 32.w,height: 32.w,),
-              )
-            ],
-          )
-        ],
-      ),
+      child: TestPlayerWidget(player: audioPlayer),
     );
   }
 
