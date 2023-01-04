@@ -27,7 +27,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
   final state = Get.find<WeeklyListLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
-  final int pageSize = 10;
+  final int pageSize = 20;
   int currentPageNo = 1;
   List<Records> weekPaperList = [];
   final int pageStartIndex = 1;
@@ -207,7 +207,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
 
   void _onLoading() async{
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getPeridList("2022-12-22",currentPageNo,pageSize);
+    logic.getPeridList("2022-12-22",currentPageNo+1,pageSize);
   }
 
   @override

@@ -37,7 +37,7 @@ class WeeklyListLogic extends GetxController {
     });
 
     state.pageNo = page;
-    if(page==0 && cache is WeekPaper && cache.records!=null) {
+    if(page==1 && cache is WeekPaper && cache.records!=null) {
       state.list = cache.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;

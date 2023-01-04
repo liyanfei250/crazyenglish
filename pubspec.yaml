@@ -103,6 +103,7 @@ dependencies:
 #  webview_flutter: ^4.0.1
   flutter_inappwebview: ^6.0.0-beta.22
   video_player: ^2.4.10
+  audioplayers: ^1.2.0
 
 
 dev_dependencies:

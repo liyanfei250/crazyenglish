@@ -43,6 +43,30 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
+  CustomRenderMatcher pMatcher() => (context) {
+
+    if(context.tree.element!.localName == 'p'){
+      if (context.tree.element?.attributes == null ||
+          _textIndent(context.tree.element!.attributes.cast()) == null) {
+        return false;
+      }else{
+        if(_textIndent(context.tree.element!.attributes.cast())!.contains("text-indent")){
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
+
+  };
+
+  String? _textIndent(Map<String, String> attributes) {
+    return attributes["style"];
+  }
+
+
   late VideoPlayerController _controller;
   CustomRenderMatcher videoMatcher() => (context) => context.tree.element?.localName == 'video';
   var playMan = "John".obs;
@@ -179,6 +203,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                 htmlContent = "<video src=\"${logic.state.paperDetail.data!.videoFile!}\"/>${logic.state.paperDetail.data!.content!}";
                 hasVideoFile = true;
               }
+              // htmlContent = htmlContent.replaceAll('\\"', '"');
 
               return Container(
                 padding: EdgeInsets.only(left: 8.w,right: 8.w),
@@ -225,7 +250,6 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                             )),
                         Html(
                           data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
-                          shrinkWrap: true,
                           onImageTap: (url,context,attributes,element,){
                             if(url!=null && url!.startsWith('http')){
                               DialogManager.showPreViewImageDialog(
@@ -236,6 +260,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                             // "p":Style(
                             //     fontSize:FontSize.large
                             // ),
+
                             "hr":Style(
                               margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
                               padding: EdgeInsets.all(0),
@@ -255,6 +280,25 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                   ],
                                 ),
                               );
+                            }),
+                            pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
+                              if (_textIndent(context.tree.element!.attributes.cast()) != null) {
+                                // final style = context.tree.element?.styles
+                                //     .where((style) => style.property == 'text-indent')
+                                //     .first;
+                                // print(style?.value?.span);
+                                return TextSpan(
+                                  children: [
+                                    const WidgetSpan(child: SizedBox(width: 100.0)),
+                                    WidgetSpan(child: CssBoxWidget.withInlineSpanChildren(
+                                      children: parsedChild.call(),
+                                      style: context.style,
+                                    )),
+                                  ],
+                                );
+                              }else{
+                                return TextSpan();
+                              }
                             })
                           },
                         )
@@ -281,6 +325,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   void dispose() {
     Get.delete<Reading_detailLogic>();
     playerModule.stopPlayer();
+    playerModule.closePlayer();
     if(_controller!=null){
       _controller.dispose();
     }

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
@@ -127,6 +128,25 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
                 )
             ).toList(),
           ))
+        ],
+      ),
+    );
+  }
+
+  Widget buildListenQuestion(){
+    return Container(
+      child: Stack(
+        children: [
+          Row(
+            children: [
+              InkWell(
+                onTap: (){
+
+                },
+                child: Image.asset(R.imagesTestPaly,width: 32.w,height: 32.w,),
+              )
+            ],
+          )
         ],
       ),
     );
