@@ -171,8 +171,12 @@ flutter:
   # assets-generator-begin
   # images/*
     - images/article_collect_default.png
+    - images/torid_right.png
     - images/weekly_item_eye.png
     - images/weekly_de_browse.png
+    - images/torid_five_hide.png
+    - images/torid_tixing.png
+    - images/torid_close.png
     - images/weekly_item_bg0.png
     - images/xunfei.jpeg
     - images/icon_close.png
@@ -184,8 +188,10 @@ flutter:
     - images/index_teacher_icon1.png
     - images/weekly_item_shadow.png
     - images/index_search.png
+    - images/torid_top.png
     - images/index_teacher_icon2.png
     - images/article_man_play.png
+    - images/torid_eye_hide.png
     - images/index_icon_8.png
     - images/article_collect_press.png
     - images/xunfei_english.png
@@ -206,6 +212,7 @@ flutter:
     - images/choice_error.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
+    - images/torid_four_hide.png
     - images/icon_tab4_pressed.png
     - images/splash.png
     - images/home_search.png
@@ -215,8 +222,10 @@ flutter:
     - images/index_icon_3.png
     - images/weekly_collect.png
     - images/index_icon_7.png
+    - images/torid_three_hide.png
     - images/index_class_more.png
     - images/weekly_bg.png
+    - images/torid_one_hide.png
     - images/index_icon_6.png
     - images/index_icon_4.png
     - images/index_icon_5.png
@@ -226,10 +235,13 @@ flutter:
     - images/index_class_thumb1.png
     - images/article_listen_derfault.png
     - images/index_ad.png
+    - images/torid_two_hide.png
     - images/index_class_thumb2.png
     - images/test_paly.png
     - images/index_icon_play.png
     - images/article_listen_press.png
     - images/weekly_browse.png
+    - images/torid_bottom.png
+    - images/torid_left.png
     - images/icon_back_blue.png
     - images/tree_edit.png

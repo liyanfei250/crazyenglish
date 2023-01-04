@@ -17,6 +17,7 @@ import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
+import '../../widgets/swiper.dart';
 import '../../xfyy/utils/xf_socket.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
@@ -209,36 +210,82 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                 padding: EdgeInsets.only(left: 8.w,right: 8.w),
                 child: Stack(
                   children: [
-                    Container(
-                      height: 40.w,
-                      margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
+                    Column(
+                      children: [
+                        Container(
+                          height: 24.w,
+                          margin: EdgeInsets.only(top: 8.w,right: 8.w),
+                          alignment: Alignment.topRight,
+                          child: Builder(builder:(context){
+                            return InkWell(
+                              onTap: (){
+                                BotToast.showAttachedWidget(attachedBuilder: (_)=>Container(
+                                  width: double.infinity,
+                                  height: 370.w,
+                                  margin: EdgeInsets.only(left: 24.w,right: 24.w),
+                                  color: Colors.transparent,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      // Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 341.w,
+                                        margin: EdgeInsets.only(top: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.c_FFFFFFFF,
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(12.w),
+                                              bottomRight: Radius.circular(12.w),
+                                              topLeft: Radius.circular(12.w),
+                                          )
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                  targetContext: context,
+                                  backgroundColor:AppColors.c_80000000,
+                                  preferDirection: PreferDirection.bottomRight,
+                                );
+                              },
+
+                              child: Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
+                            );
+                          }),
+                        ),
+                        Container(
+                          height: 40.w,
+                          margin: EdgeInsets.only(left: 8.w,right: 8.w),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Container(
-                                width: 4.w,
-                                height: 12.w,
-                                margin: EdgeInsets.only(right: 7.w),
-                                color: AppColors.c_FFFFBC00,
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 4.w,
+                                    height: 12.w,
+                                    margin: EdgeInsets.only(right: 7.w),
+                                    color: AppColors.c_FFFFBC00,
+                                  ),
+                                  Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                                ],
                               ),
-                              Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height: 14.w,),
+                                  Padding(padding: EdgeInsets.only(left: 2.w)),
+                                  Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
+                                ],
+                              )
                             ],
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(R.imagesWeeklyDeBrowse,width: 12.w,height: 12.w,),
-                              Padding(padding: EdgeInsets.only(left: 2.w)),
-                              Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
-                            ],
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Column(
                       children: [
@@ -248,6 +295,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                               height: 40.w,
                               margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
                             )),
+                        Padding(padding: EdgeInsets.only(top: 24.w)),
                         Html(
                           data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
                           onImageTap: (url,context,attributes,element,){
@@ -313,6 +361,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
       )
     );
   }
+
 
   void _play(String path) async {
     await playerModule.startPlayer(fromURI: path);

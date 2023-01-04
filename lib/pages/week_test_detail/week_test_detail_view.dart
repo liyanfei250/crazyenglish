@@ -70,6 +70,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   @override
   void dispose() {
     Get.delete<WeekTestDetailLogic>();
+    audioPlayer.release();
     super.dispose();
   }
 

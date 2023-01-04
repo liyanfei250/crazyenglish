@@ -1,10 +1,18 @@
 class R {
   /// ![](http://127.0.0.1:11/images/article_collect_default.png)
   static final String imagesArticleCollectDefault = 'images/article_collect_default.png';
+  /// ![](http://127.0.0.1:11/images/torid_right.png)
+  static final String imagesToridRight = 'images/torid_right.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_eye.png)
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
   static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
+  /// ![](http://127.0.0.1:11/images/torid_five_hide.png)
+  static final String imagesToridFiveHide = 'images/torid_five_hide.png';
+  /// ![](http://127.0.0.1:11/images/torid_tixing.png)
+  static final String imagesToridTixing = 'images/torid_tixing.png';
+  /// ![](http://127.0.0.1:11/images/torid_close.png)
+  static final String imagesToridClose = 'images/torid_close.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg0.png)
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
   /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
@@ -27,10 +35,14 @@ class R {
   static final String imagesWeeklyItemShadow = 'images/weekly_item_shadow.png';
   /// ![](http://127.0.0.1:11/images/index_search.png)
   static final String imagesIndexSearch = 'images/index_search.png';
+  /// ![](http://127.0.0.1:11/images/torid_top.png)
+  static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon2.png)
   static final String imagesIndexTeacherIcon2 = 'images/index_teacher_icon2.png';
   /// ![](http://127.0.0.1:11/images/article_man_play.png)
   static final String imagesArticleManPlay = 'images/article_man_play.png';
+  /// ![](http://127.0.0.1:11/images/torid_eye_hide.png)
+  static final String imagesToridEyeHide = 'images/torid_eye_hide.png';
   /// ![](http://127.0.0.1:11/images/index_icon_8.png)
   static final String imagesIndexIcon8 = 'images/index_icon_8.png';
   /// ![](http://127.0.0.1:11/images/article_collect_press.png)
@@ -71,6 +83,8 @@ class R {
   static final String imagesIndexIcon1 = 'images/index_icon_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_normal.png)
   static final String imagesIconTab2Normal = 'images/icon_tab2_normal.png';
+  /// ![](http://127.0.0.1:11/images/torid_four_hide.png)
+  static final String imagesToridFourHide = 'images/torid_four_hide.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_pressed.png)
   static final String imagesIconTab4Pressed = 'images/icon_tab4_pressed.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
@@ -89,10 +103,14 @@ class R {
   static final String imagesWeeklyCollect = 'images/weekly_collect.png';
   /// ![](http://127.0.0.1:11/images/index_icon_7.png)
   static final String imagesIndexIcon7 = 'images/index_icon_7.png';
+  /// ![](http://127.0.0.1:11/images/torid_three_hide.png)
+  static final String imagesToridThreeHide = 'images/torid_three_hide.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)
   static final String imagesIndexClassMore = 'images/index_class_more.png';
   /// ![](http://127.0.0.1:11/images/weekly_bg.png)
   static final String imagesWeeklyBg = 'images/weekly_bg.png';
+  /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
+  static final String imagesToridOneHide = 'images/torid_one_hide.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
@@ -111,6 +129,8 @@ class R {
   static final String imagesArticleListenDerfault = 'images/article_listen_derfault.png';
   /// ![](http://127.0.0.1:11/images/index_ad.png)
   static final String imagesIndexAd = 'images/index_ad.png';
+  /// ![](http://127.0.0.1:11/images/torid_two_hide.png)
+  static final String imagesToridTwoHide = 'images/torid_two_hide.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb2.png)
   static final String imagesIndexClassThumb2 = 'images/index_class_thumb2.png';
   /// ![](http://127.0.0.1:11/images/test_paly.png)
@@ -121,6 +141,10 @@ class R {
   static final String imagesArticleListenPress = 'images/article_listen_press.png';
   /// ![](http://127.0.0.1:11/images/weekly_browse.png)
   static final String imagesWeeklyBrowse = 'images/weekly_browse.png';
+  /// ![](http://127.0.0.1:11/images/torid_bottom.png)
+  static final String imagesToridBottom = 'images/torid_bottom.png';
+  /// ![](http://127.0.0.1:11/images/torid_left.png)
+  static final String imagesToridLeft = 'images/torid_left.png';
   /// ![](http://127.0.0.1:11/images/icon_back_blue.png)
   static final String imagesIconBackBlue = 'images/icon_back_blue.png';
   /// ![](http://127.0.0.1:11/images/tree_edit.png)
