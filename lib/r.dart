@@ -103,6 +103,8 @@ class R {
   static final String imagesIconTab1Pressed = 'images/icon_tab1_pressed.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_pressed.png)
   static final String imagesIconTab2Pressed = 'images/icon_tab2_pressed.png';
+  /// ![](http://127.0.0.1:11/images/reading_default.png)
+  static final String imagesReadingDefault = 'images/reading_default.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb1.png)
   static final String imagesIndexClassThumb1 = 'images/index_class_thumb1.png';
   /// ![](http://127.0.0.1:11/images/article_listen_derfault.png)

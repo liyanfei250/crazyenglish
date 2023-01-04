@@ -121,21 +121,40 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
           children: [
             Container(
               width: 72.w,
+              height: 72.w,
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 12.w,right: 15.w),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: ExtendedNetworkImageProvider(
-                      paperCategory!.data![index].catalogueTitleImg??"",
-                      cacheRawData: true
-                    ),
-                    fit: BoxFit.cover
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(6.w)),
-              ),
-              child: Visibility(
-                visible: paperCategory!.data![index].isVideoFile??false,
-                child:Image.asset(R.imagesItemPlay,width: 36.w,height: 36.w,)
+              child: Stack(
+                children: [
+                  ExtendedImage.network(
+                    paperCategory!.data![index].catalogueTitleImg??"",
+                    cacheRawData: true,
+                    width: 72.w,
+                    height: 72.w,
+                    fit: BoxFit.fill,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                    enableLoadState: true,
+                    loadStateChanged: (state){
+                      switch (state.extendedImageLoadState) {
+                        case LoadState.completed:
+                          return ExtendedRawImage(
+                            image: state.extendedImageInfo?.image,
+                            fit: BoxFit.cover,
+                          );
+                        default :
+                          return Image.asset(
+                            R.imagesReadingDefault,
+                            fit: BoxFit.fill,
+                          );
+                      }
+                    },
+                  ),
+                  Visibility(
+                      visible: paperCategory!.data![index].isVideoFile??false,
+                      child:Image.asset(R.imagesItemPlay,width: 36.w,height: 36.w,)
+                  )
+                ],
               ),
             ),
             Expanded(
