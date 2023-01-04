@@ -305,9 +305,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                             }
                           },
                           style: {
-                            // "p":Style(
-                            //     fontSize:FontSize.large
-                            // ),
+                            "p":Style(
+                                fontSize:FontSize.large
+                            ),
 
                             "hr":Style(
                               margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
@@ -329,25 +329,25 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                 ),
                               );
                             }),
-                            pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
-                              if (_textIndent(context.tree.element!.attributes.cast()) != null) {
-                                // final style = context.tree.element?.styles
-                                //     .where((style) => style.property == 'text-indent')
-                                //     .first;
-                                // print(style?.value?.span);
-                                return TextSpan(
-                                  children: [
-                                    const WidgetSpan(child: SizedBox(width: 100.0)),
-                                    WidgetSpan(child: CssBoxWidget.withInlineSpanChildren(
-                                      children: parsedChild.call(),
-                                      style: context.style,
-                                    )),
-                                  ],
-                                );
-                              }else{
-                                return TextSpan();
-                              }
-                            })
+                            // pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
+                            //   if (_textIndent(context.tree.element!.attributes.cast()) != null) {
+                            //     // final style = context.tree.element?.styles
+                            //     //     .where((style) => style.property == 'text-indent')
+                            //     //     .first;
+                            //     // print(style?.value?.span);
+                            //     return TextSpan(
+                            //       children: [
+                            //         const WidgetSpan(child: SizedBox(width: 100.0)),
+                            //         WidgetSpan(child: CssBoxWidget.withInlineSpanChildren(
+                            //           children: parsedChild.call(),
+                            //           style: context.style,
+                            //         )),
+                            //       ],
+                            //     );
+                            //   }else{
+                            //     return TextSpan();
+                            //   }
+                            // })
                           },
                         )
                       ],
