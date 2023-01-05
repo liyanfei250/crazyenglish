@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:extended_image/extended_image.dart';
@@ -19,6 +20,7 @@ import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
 import '../../widgets/swiper.dart';
 import '../../xfyy/utils/xf_socket.dart';
+import '../week_test_detail/test_player_widget.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
 import 'torid_page.dart';
@@ -43,6 +45,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   PaperDetail? paperDetail;
 
   final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
+  AudioPlayer? audioPlayer;
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   CustomRenderMatcher pMatcher() => (context) {
@@ -96,6 +99,14 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               // _controller.setLooping(true);
               _controller.initialize();
             }
+            if(paperDetail!.data!=null
+                && paperDetail!.data!.audioFile!=null
+                && paperDetail!.data!.audioFile!.isNotEmpty){
+              audioPlayer = AudioPlayer();
+              audioPlayer!.setSourceUrl(paperDetail!.data!.audioFile!);
+            }
+            // audioPlayer = AudioPlayer();
+            // audioPlayer!.setSourceUrl("https://ps-1252082677.cos.ap-beijing.myqcloud.com/test.mp3");
             _refreshController.refreshCompleted();
             setState(() {
             });
@@ -187,181 +198,194 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           ],
         ),
         backgroundColor: AppColors.c_FFFAF7F7,
-      body: SingleChildScrollView(
-        child: GetBuilder<Reading_detailLogic>(
-            id: GetBuilderIds.paperDetail,
-            builder: (logic){
-              if(logic.state.paperDetail.data==null){
-                return Container();
-              }
-              String htmlContent = logic.state.paperDetail.data!.content!;
-              bool hasLargeFile = false;
-              bool hasVideoFile = false;
-              if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.largeFile!=null && logic.state.paperDetail.data!.largeFile!.isNotEmpty){
-                htmlContent = "<img src=\"${logic.state.paperDetail.data!.largeFile!}\"/>${logic.state.paperDetail.data!.content!}";
-                hasLargeFile = true;
-              }
-              if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.videoFile!=null && logic.state.paperDetail.data!.videoFile!.isNotEmpty){
-                htmlContent = "<video src=\"${logic.state.paperDetail.data!.videoFile!}\"/>${logic.state.paperDetail.data!.content!}";
-                hasVideoFile = true;
-              }
-              // htmlContent = htmlContent.replaceAll('\\"', '"');
+      body: Column(
+        children: [
+          Expanded(child: SingleChildScrollView(
+            child: GetBuilder<Reading_detailLogic>(
+                id: GetBuilderIds.paperDetail,
+                builder: (logic){
+                  if(logic.state.paperDetail.data==null){
+                    return Container();
+                  }
+                  String htmlContent = logic.state.paperDetail.data!.content!;
+                  bool hasLargeFile = false;
+                  bool hasVideoFile = false;
+                  if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.largeFile!=null && logic.state.paperDetail.data!.largeFile!.isNotEmpty){
+                    htmlContent = "<img src=\"${logic.state.paperDetail.data!.largeFile!}\"/>${logic.state.paperDetail.data!.content!}";
+                    hasLargeFile = true;
+                  }
+                  if(logic.state.paperDetail.data!=null && logic.state.paperDetail.data!.videoFile!=null && logic.state.paperDetail.data!.videoFile!.isNotEmpty){
+                    htmlContent = "<video src=\"${logic.state.paperDetail.data!.videoFile!}\"/>${logic.state.paperDetail.data!.content!}";
+                    hasVideoFile = true;
+                  }
+                  // htmlContent = htmlContent.replaceAll('\\"', '"');
 
-              return Container(
-                padding: EdgeInsets.only(left: 8.w,right: 8.w),
-                child: Stack(
-                  children: [
-                    Column(
+                  return Container(
+                    padding: EdgeInsets.only(left: 8.w,right: 8.w),
+                    child: Stack(
                       children: [
-                        Container(
-                          height: 24.w,
-                          margin: EdgeInsets.only(top: 8.w,right: 8.w),
-                          alignment: Alignment.topRight,
-                          child: Builder(builder:(context){
-                            return InkWell(
-                              onTap: (){
-                                BotToast.showAttachedWidget(attachedBuilder: (_)=>Container(
-                                  width: double.infinity,
-                                  height: 370.w,
-                                  margin: EdgeInsets.only(left: 24.w,right: 24.w),
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      // Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 341.w,
-                                        margin: EdgeInsets.only(top: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.c_FFFFFFFF,
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(12.w),
-                                              bottomRight: Radius.circular(12.w),
-                                              topLeft: Radius.circular(12.w),
-                                          )
-                                        ),
-                                        child: TORID_Widget(
+                        Column(
+                          children: [
+                            Container(
+                              height: 24.w,
+                              margin: EdgeInsets.only(top: 8.w,right: 8.w),
+                              alignment: Alignment.topRight,
+                              child: Builder(builder:(context){
+                                return InkWell(
+                                  onTap: (){
+                                    BotToast.showAttachedWidget(attachedBuilder: (_)=>Container(
+                                      width: double.infinity,
+                                      height: 370.w,
+                                      margin: EdgeInsets.only(left: 24.w,right: 24.w),
+                                      color: Colors.transparent,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          // Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
+                                          Container(
+                                            width: double.infinity,
+                                            height: 341.w,
+                                            margin: EdgeInsets.only(top: 5.w),
+                                            decoration: BoxDecoration(
+                                                color: AppColors.c_FFFFFFFF,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft: Radius.circular(12.w),
+                                                  bottomRight: Radius.circular(12.w),
+                                                  topLeft: Radius.circular(12.w),
+                                                )
+                                            ),
+                                            child: TORID_Widget(
 
-                                        ),
-                                      )
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                      targetContext: context,
+                                      backgroundColor:AppColors.c_80000000,
+                                      preferDirection: PreferDirection.bottomRight,
+                                    );
+                                  },
+
+                                  child: Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
+                                );
+                              }),
+                            ),
+                            Container(
+                              height: 40.w,
+                              margin: EdgeInsets.only(left: 8.w,right: 8.w),
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        width: 4.w,
+                                        height: 12.w,
+                                        margin: EdgeInsets.only(right: 7.w),
+                                        color: AppColors.c_FFFFBC00,
+                                      ),
+                                      Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
                                     ],
                                   ),
-                                ),
-                                  targetContext: context,
-                                  backgroundColor:AppColors.c_80000000,
-                                  preferDirection: PreferDirection.bottomRight,
-                                );
-                              },
-
-                              child: Image.asset(R.imagesArticleToridNotice,width: 24.w,height: 24.w,),
-                            );
-                          }),
-                        ),
-                        Container(
-                          height: 40.w,
-                          margin: EdgeInsets.only(left: 8.w,right: 8.w),
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 4.w,
-                                    height: 12.w,
-                                    margin: EdgeInsets.only(right: 7.w),
-                                    color: AppColors.c_FFFFBC00,
-                                  ),
-                                  Text(logic.state.paperDetail.data!.createTime??"",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF282828),)
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height: 14.w,),
+                                      Padding(padding: EdgeInsets.only(left: 2.w)),
+                                      Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
+                                    ],
+                                  )
                                 ],
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height: 14.w,),
-                                  Padding(padding: EdgeInsets.only(left: 2.w)),
-                                  Text("${logic.state.paperDetail.data!.viewsCount}",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),)
-                                ],
-                              )
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Visibility(
+                                visible: hasLargeFile|| hasVideoFile,
+                                child: Container(
+                                  height: 40.w,
+                                  margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
+                                )),
+                            Padding(padding: EdgeInsets.only(top: 24.w)),
+                            Html(
+                              data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+                              onImageTap: (url,context,attributes,element,){
+                                if(url!=null && url!.startsWith('http')){
+                                  DialogManager.showPreViewImageDialog(
+                                      BackButtonBehavior.close, url);
+                                }
+                              },
+                              style: {
+                                "p":Style(
+                                    fontSize:FontSize.large
+                                ),
+
+                                "hr":Style(
+                                  margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+                                  padding: EdgeInsets.all(0),
+                                  border: Border(bottom: BorderSide(color: Colors.grey)),
+                                )
+                              },
+                              customRenders: {
+                                videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
+                                  return AspectRatio(
+                                    aspectRatio: _controller.value.isInitialized? _controller.value.aspectRatio:(16/9),
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: <Widget>[
+                                        VideoPlayer(_controller),
+                                        _ControlsOverlay(controller: _controller),
+                                        VideoProgressIndicator(_controller, allowScrubbing: true),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                                // pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
+                                //   if (_textIndent(context.tree.element!.attributes.cast()) != null) {
+                                //     // final style = context.tree.element?.styles
+                                //     //     .where((style) => style.property == 'text-indent')
+                                //     //     .first;
+                                //     // print(style?.value?.span);
+                                //     return TextSpan(
+                                //       children: [
+                                //         const WidgetSpan(child: SizedBox(width: 100.0)),
+                                //         WidgetSpan(child: CssBoxWidget.withInlineSpanChildren(
+                                //           children: parsedChild.call(),
+                                //           style: context.style,
+                                //         )),
+                                //       ],
+                                //     );
+                                //   }else{
+                                //     return TextSpan();
+                                //   }
+                                // })
+                              },
+                            ),
+                            Visibility(
+                                visible: audioPlayer!=null,
+                                child: SizedBox(
+                                  height: 52.w,
+                                )),
+                          ],
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Visibility(
-                            visible: hasLargeFile|| hasVideoFile,
-                            child: Container(
-                              height: 40.w,
-                              margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
-                            )),
-                        Padding(padding: EdgeInsets.only(top: 24.w)),
-                        Html(
-                          data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
-                          onImageTap: (url,context,attributes,element,){
-                            if(url!=null && url!.startsWith('http')){
-                              DialogManager.showPreViewImageDialog(
-                                  BackButtonBehavior.close, url);
-                            }
-                          },
-                          style: {
-                            "p":Style(
-                                fontSize:FontSize.large
-                            ),
+                  );
+                }
+            ),
+          ),),
 
-                            "hr":Style(
-                              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-                              padding: EdgeInsets.all(0),
-                              border: Border(bottom: BorderSide(color: Colors.grey)),
-                            )
-                          },
-                          customRenders: {
-                            videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
-                              return AspectRatio(
-                                aspectRatio: _controller.value.isInitialized? _controller.value.aspectRatio:(16/9),
-                                child: Stack(
-                                  alignment: Alignment.bottomCenter,
-                                  children: <Widget>[
-                                    VideoPlayer(_controller),
-                                    _ControlsOverlay(controller: _controller),
-                                    VideoProgressIndicator(_controller, allowScrubbing: true),
-                                  ],
-                                ),
-                              );
-                            }),
-                            // pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
-                            //   if (_textIndent(context.tree.element!.attributes.cast()) != null) {
-                            //     // final style = context.tree.element?.styles
-                            //     //     .where((style) => style.property == 'text-indent')
-                            //     //     .first;
-                            //     // print(style?.value?.span);
-                            //     return TextSpan(
-                            //       children: [
-                            //         const WidgetSpan(child: SizedBox(width: 100.0)),
-                            //         WidgetSpan(child: CssBoxWidget.withInlineSpanChildren(
-                            //           children: parsedChild.call(),
-                            //           style: context.style,
-                            //         )),
-                            //       ],
-                            //     );
-                            //   }else{
-                            //     return TextSpan();
-                            //   }
-                            // })
-                          },
-                        )
-                      ],
-                    )
-
-                  ],
-                ),
-              );
-            }
-        ),
+          audioPlayer!=null?
+          Visibility(
+              visible: audioPlayer!=null,
+              child: TestPlayerWidget(player:audioPlayer!)):Container(),
+        ],
       )
     );
   }
@@ -379,6 +403,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
     Get.delete<Reading_detailLogic>();
     playerModule.stopPlayer();
     playerModule.closePlayer();
+    if(audioPlayer!=null){
+      audioPlayer!.release();
+    }
     if(_controller!=null){
       _controller.dispose();
     }

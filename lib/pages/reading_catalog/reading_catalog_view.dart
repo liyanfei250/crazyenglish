@@ -125,6 +125,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 12.w,right: 15.w),
               child: Stack(
+                alignment: Alignment.center,
                 children: [
                   ExtendedImage.network(
                     paperCategory!.data![index].catalogueTitleImg??"",
@@ -152,7 +153,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
                   ),
                   Visibility(
                       visible: paperCategory!.data![index].isVideoFile??false,
-                      child:Image.asset(R.imagesItemPlay,width: 36.w,height: 36.w,)
+                      child:Image.asset(R.imagesItemPlay,width: 18.w,height: 18.w,)
                   )
                 ],
               ),
