@@ -21,6 +21,7 @@ import '../../widgets/swiper.dart';
 import '../../xfyy/utils/xf_socket.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
+import 'torid_page.dart';
 
 class Reading_detailPage extends StatefulWidget {
   paper.Data? data;
@@ -239,6 +240,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                               bottomRight: Radius.circular(12.w),
                                               topLeft: Radius.circular(12.w),
                                           )
+                                        ),
+                                        child: TORID_Widget(
+
                                         ),
                                       )
                                     ],

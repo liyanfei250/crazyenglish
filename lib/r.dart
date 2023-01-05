@@ -13,16 +13,22 @@ class R {
   static final String imagesToridTixing = 'images/torid_tixing.png';
   /// ![](http://127.0.0.1:11/images/torid_close.png)
   static final String imagesToridClose = 'images/torid_close.png';
+  /// ![](http://127.0.0.1:11/images/torid_one_show.png)
+  static final String imagesToridOneShow = 'images/torid_one_show.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg0.png)
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
   /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
   static final String imagesXunfei = 'images/xunfei.jpeg';
+  /// ![](http://127.0.0.1:11/images/torid_second.png)
+  static final String imagesToridSecond = 'images/torid_second.png';
   /// ![](http://127.0.0.1:11/images/icon_close.png)
   static final String imagesIconClose = 'images/icon_close.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg1.png)
   static final String imagesWeeklyItemBg1 = 'images/weekly_item_bg1.png';
   /// ![](http://127.0.0.1:11/images/choice_correct.png)
   static final String imagesChoiceCorrect = 'images/choice_correct.png';
+  /// ![](http://127.0.0.1:11/images/torid_three_show.png)
+  static final String imagesToridThreeShow = 'images/torid_three_show.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_normal.png)
   static final String imagesIconTab3Normal = 'images/icon_tab3_normal.png';
   /// ![](http://127.0.0.1:11/images/index_class_new.png)
@@ -39,6 +45,8 @@ class R {
   static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon2.png)
   static final String imagesIndexTeacherIcon2 = 'images/index_teacher_icon2.png';
+  /// ![](http://127.0.0.1:11/images/torid_four_show.png)
+  static final String imagesToridFourShow = 'images/torid_four_show.png';
   /// ![](http://127.0.0.1:11/images/article_man_play.png)
   static final String imagesArticleManPlay = 'images/article_man_play.png';
   /// ![](http://127.0.0.1:11/images/torid_eye_hide.png)
@@ -61,6 +69,8 @@ class R {
   static final String imagesIndexMsg = 'images/index_msg.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_normal.png)
   static final String imagesIconTab4Normal = 'images/icon_tab4_normal.png';
+  /// ![](http://127.0.0.1:11/images/torid_two_show.png)
+  static final String imagesToridTwoShow = 'images/torid_two_show.png';
   /// ![](http://127.0.0.1:11/images/item_play.png)
   static final String imagesItemPlay = 'images/item_play.png';
   /// ![](http://127.0.0.1:11/images/img.png)
@@ -115,6 +125,8 @@ class R {
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
   static final String imagesIndexIcon4 = 'images/index_icon_4.png';
+  /// ![](http://127.0.0.1:11/images/torid_five_show.png)
+  static final String imagesToridFiveShow = 'images/torid_five_show.png';
   /// ![](http://127.0.0.1:11/images/index_icon_5.png)
   static final String imagesIndexIcon5 = 'images/index_icon_5.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_pressed.png)
