@@ -13,6 +13,7 @@ import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../../widgets/search_bar.dart';
 import 'weekly_list_logic.dart';
 
 class WeeklyListPage extends BasePage {
@@ -104,18 +105,30 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child: GridView.builder(
-            shrinkWrap:true,
-            itemCount: weekPaperList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
-                childAspectRatio:0.76),
-            itemBuilder: (_,int position)=>buildItem(position)),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.only(bottom:5.w,top: 12.w,left: 33.w,right: 33.w),
+                child: SearchBar(width: double.infinity,height: 28.w,),
+              ),
+            ),
+            SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                buildItem,
+                childCount: weekPaperList.length,
+              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+                  childAspectRatio:0.76),
+            )
+          ],
+        ),
       ),
     );
   }
 
 
-  Widget buildItem(int index){
+  Widget buildItem(BuildContext context,int index){
     return InkWell(
       onTap: (){
         RouterUtil.toNamed(AppRoutes.PaperCategory,arguments: weekPaperList[index]);

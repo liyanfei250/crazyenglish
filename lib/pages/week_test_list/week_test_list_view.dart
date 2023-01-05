@@ -13,6 +13,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../../widgets/search_bar.dart';
 import 'week_test_list_logic.dart';
 
 class WeekTestListPage extends BasePage {
@@ -106,11 +107,23 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child: ListView.builder(
-            shrinkWrap:true,
-            itemCount: weekPaperList.length,
-            itemBuilder: (_,int position)=>buildItem(position)),
-      ),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.only(bottom:5.w,top: 12.w,left: 33.w,right: 33.w),
+                child: SearchBar(width: double.infinity,height: 28.w,),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                buildItem,
+                childCount: weekPaperList.length,
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 
@@ -198,7 +211,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
     );
   }
 
-  Widget buildItem(int index){
+  Widget buildItem(BuildContext context,int index){
     return InkWell(
       onTap: (){
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
