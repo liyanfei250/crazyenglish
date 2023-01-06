@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../r.dart';
+import '../../widgets/swiper.dart';
 import 'recommend_logic.dart';
 
 class RecommendPage extends BasePage {
@@ -23,16 +24,16 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
   final state = Get.find<RecommendLogic>().state;
 
   final List<String> functionTxt = [
-    "英语周报",
-    "每周题库",
+    "周报阅读",
+    "周报题库",
     "高考真题",
-    "听力题库",
-    "口语题库",
+    "综合听力",
+    "集中识词",
+    "语言运用",
     "阅读理解",
-    "完形填空",
-    "新手福利",
-    "精选直播",
-    "全部",
+    "综合口语",
+    "语音知识",
+    "写作训练",
   ];
 
   @override
@@ -43,8 +44,8 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
         child: Column(
           children: [
             Padding(padding: EdgeInsets.only(top: 9.w)),
-            Image.asset(R.imagesIndexAd,width: double.infinity,height: 120.w,),
-            Padding(padding: EdgeInsets.only(top: 12.w)),
+            adsBanner,
+            Padding(padding: EdgeInsets.only(top: 13.w)),
             GridView.builder(
                 shrinkWrap:true,
                 itemCount: functionTxt.length,
@@ -64,6 +65,42 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
         ),
       ),
     );
+  }
+
+  Widget get adsBanner {
+    return Container(
+      width: double.infinity,
+      height: 130.w,
+      child: Swiper(
+          autoStart: true,
+          circular: true,
+          indicator: CustomSwiperIndicator(
+            spacing: 4.w,
+            // radius: 4.0,
+            padding: EdgeInsets.only(bottom: 10.w),
+            // itemColor: AppColors.c_FFC2BFC2,
+            // itemActiveColor: AppColors.c_FF11CA9C
+            normalHeight: 4.w,
+            normalWidth: 4.w,
+            noralBoxDecoration: BoxDecoration(
+                color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
+            selectHeight: 4.w,
+            selectWidth: 4.w,
+            selectBoxDecoration: BoxDecoration(
+                color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
+          ),
+          indicatorAlignment: AlignmentDirectional.bottomCenter,
+          children: makeBanner()),
+    );
+  }
+
+  ///banner条目适配器
+  List<Widget> makeBanner() {
+    List<Widget> items = [];
+    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
+    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
+    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
+    return items;
   }
 
   Widget _buildFuncAreaItem(String e) => InkWell(
