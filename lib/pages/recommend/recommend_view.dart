@@ -106,13 +106,13 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
   Widget _buildFuncAreaItem(String e) => InkWell(
     onTap: (){
       switch(e){
-        case "每周题库":
+        case "周报题库":
           RouterUtil.toNamed(AppRoutes.WeeklyTestList);
           break;
-        case "英语周报":
+        case "周报阅读":
           RouterUtil.toNamed(AppRoutes.WeeklyList);
           break;
-        case "新手福利":
+        case "综合口语":
           RouterUtil.toNamed(AppRoutes.TextToVoice);
           break;
       }

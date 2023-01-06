@@ -1,15 +1,21 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/base/widgetPage/empty.dart';
 import 'package:crazyenglish/widgets/ChoiceRadioItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import '../../base/widgetPage/dialog_manager.dart';
+import '../../entity/week_test_detail_response.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../../utils/text_util.dart';
 import 'test_player_widget.dart';
 import 'week_test_detail_logic.dart';
 
@@ -35,6 +41,8 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
 
   AudioPlayer audioPlayer  = AudioPlayer();
 
+  WeekTestDetailResponse? weekTestDetailResponse;
+  CustomRenderMatcher gapMatcher() => (context) => context.tree.element?.localName == 'input';
   @override
   void onCreate() {
     // TODO: implement onCreate
@@ -55,11 +63,18 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
       body: GetBuilder<WeekTestDetailLogic>(
         id: GetBuilderIds.weekTestDetailList,
         builder: (logic){
+          weekTestDetailResponse = logic.state.weekTestDetailResponse;
+          if(weekTestDetailResponse == null){
+            return EmptyWidget("么有试题");
+          }
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                buildSingleChoice(),
-              ],
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 14.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: buildQuestionList(weekTestDetailResponse!),
+              ),
             ),
           );
         },
@@ -79,54 +94,101 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     // TODO: implement onDestroy
   }
 
-  Widget buildSingleChoice(){
-    final Map<String,ItemBean> items = {
-      "A":ItemBean("A","Guests could exchange them for traditional plastic",false),
-      "B":ItemBean("B","second",false),
-      "C":ItemBean("C","third",false),
-      "D":ItemBean("D","forth",true),
-    };
+  List<Widget> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
+    List<Widget> questionList = [];
+    if(weekTestDetailResponse.data!=null){
+      weekTestDetailResponse.data!.forEach((element) {
+        switch(element.type){
+          case 1: // 听力题
+            questionList.add(buildQuestionType("听力题"));
+            questionList.add(buildListenQuestion());
+            break;
+          case 2: // 选择题
+            questionList.add(buildQuestionType("选择题"));
+            break;
+          case 3: // 填空题
+            questionList.add(buildQuestionType("填空题"));
+            break;
+          case 4: // 阅读题
+            questionList.add(Stack(
+              children: [
+                buildQuestionType("阅读题"),
+                buildReadQuestion(element!.readContent)
+              ],
+            ));
+            break;
+        }
+        if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
+          int questionNum = element.questionBankAppListVos!.length;
+          for(int i = 0 ;i< questionNum;i++){
+            QuestionBankAppListVos question = element.questionBankAppListVos![i];
+            questionList.add(Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "第${i+1}题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
+                ),
+                Padding(padding: EdgeInsets.only(top: 7.w)),
+                Visibility(
+                  visible: question!.title != null && question!.title!.isNotEmpty,
+                  child: Text(
+                  question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
+                ),)
+              ],
+            ));
+            if(question.type == 2 || question.listenType == 1){
+              // 选择题
+              questionList.add(buildSingleChoice(question!.bankAnswerAppListVos!));
+            }
+          }
+        }
+      });
+    }
+    return questionList;
+  }
+
+  Widget buildQuestionType(String name){
+    return Container(
+      width: 46.w,
+      height: 22.w,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top:10.w,bottom: 10.w),
+      decoration: BoxDecoration(
+          color: AppColors.c_33FEDD00,
+          borderRadius: BorderRadius.all(Radius.circular(2.w))
+      ),
+      child: Text(name,style: TextStyle(color: AppColors.c_FFFFBC00,fontSize: 10.sp),),
+    );
+  }
+
+  Widget buildSingleChoice(List<BankAnswerAppListVos> list){
     var choseItem = "".obs;
     String answer = "B";
+    list.forEach((element) {
+      if(element.isAnswer??false){
+        answer = element.logoAnswer??"K";
+      }
+    });
     return Container(
-      margin: EdgeInsets.only(left: 14.w,right: 14.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 46.w,
-            height: 22.w,
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(bottom: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.c_33FEDD00,
-                borderRadius: BorderRadius.all(Radius.circular(2.w))
-            ),
-            child: Text("单选题",style: TextStyle(color: AppColors.c_FFFFBC00,fontSize: 10.sp),),
-          ),
-          buildListenQuestion(),
-          Text(
-            "第1题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-          ),
-          Padding(padding: EdgeInsets.only(top: 7.w)),
-          Text(
-            "题干 If I hadn't practiced when I was ",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-          ),
           Padding(padding: EdgeInsets.only(top: 12.w)),
           Obx(() => Column(
             mainAxisSize: MainAxisSize.min,
-            children: items.keys.map(
+            children: list.map(
                     (e) => InkWell(
                   onTap: (){
-                    choseItem.value = items[e]!.label!;
+                    choseItem.value = e.logoAnswer??"K";
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        getType(answer,choseItem.value,items[e]!.label!),
+                        getType(answer,choseItem.value,e.logoAnswer??"K"),
                         choseItem.value,
-                        items[e]!.label!,
-                        items[e]!.content!,
+                        e.logoAnswer??"K",
+                        e!.content!,
                         double.infinity,
                         52.w
                     ),
@@ -139,10 +201,46 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     );
   }
 
+  Widget buildGapQuestion(List<BankAnswerAppListVos> list){
+
+    return Container();
+  }
+
   Widget buildListenQuestion(){
     audioPlayer.setSourceUrl("https://ps-1252082677.cos.ap-beijing.myqcloud.com/test.mp3");
     return Container(
       child: TestPlayerWidget(player: audioPlayer),
+    );
+  }
+
+  Widget buildReadQuestion(String? htmlContent){
+    return Container(
+      child: Html(
+        data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+        onImageTap: (url,context,attributes,element,){
+          if(url!=null && url!.startsWith('http')){
+            DialogManager.showPreViewImageDialog(
+                BackButtonBehavior.close, url);
+          }
+        },
+        style: {
+          "p":Style(
+              fontSize:FontSize.large
+          ),
+
+          "hr":Style(
+            margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+            padding: EdgeInsets.all(0),
+            border: Border(bottom: BorderSide(color: Colors.grey)),
+          )
+        },
+        customRenders: {
+          gapMatcher():CustomRender.widget(widget: (context, buildChildren){
+            return TextField(controller: TextEditingController(text: "sddss"));
+          })
+        },
+
+      ),
     );
   }
 

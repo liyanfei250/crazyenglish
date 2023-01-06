@@ -61,6 +61,7 @@ class Data {
   bool? _isTake;
   String? _name;
   String? _content;
+  String? _readContent;
   String? _createTime;
   List<QuestionBankAppListVos>? _questionBankAppListVos;
 
@@ -71,6 +72,7 @@ class Data {
   bool? get isTake => _isTake;
   String? get name => _name;
   String? get content => _content;
+  String? get readContent => _readContent;
   String? get createTime => _createTime;
   List<QuestionBankAppListVos>? get questionBankAppListVos => _questionBankAppListVos;
 
@@ -82,7 +84,8 @@ class Data {
       bool? isTake, 
       String? name, 
       String? content, 
-      String? createTime, 
+      String? readContent,
+      String? createTime,
       List<QuestionBankAppListVos>? questionBankAppListVos}){
     _id = id;
     _title = title;
@@ -91,6 +94,7 @@ class Data {
     _isTake = isTake;
     _name = name;
     _content = content;
+    _readContent = readContent;
     _createTime = createTime;
     _questionBankAppListVos = questionBankAppListVos;
 }
@@ -103,6 +107,7 @@ class Data {
     _isTake = json['isTake'];
     _name = json['name'];
     _content = json['content'];
+    _readContent = json['readContent'];
     _createTime = json['createTime'];
     if (json['questionBankAppListVos'] != null) {
       _questionBankAppListVos = [];
@@ -121,6 +126,7 @@ class Data {
     map['isTake'] = _isTake;
     map['name'] = _name;
     map['content'] = _content;
+    map['readContent'] = _readContent;
     map['createTime'] = _createTime;
     if (_questionBankAppListVos != null) {
       map['questionBankAppListVos'] = _questionBankAppListVos?.map((v) => v.toJson()).toList();
