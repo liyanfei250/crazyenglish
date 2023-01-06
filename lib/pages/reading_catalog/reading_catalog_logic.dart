@@ -39,7 +39,7 @@ class Reading_catalogLogic extends GetxController {
     }
     PaperCategory list = await weekRepository.getWeekPaperCategory(periodicaId);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.WeekPaperResponse,
+        JsonCacheManageUtils.PaperCategory,
         labelId: periodicaId,
         list.toJson());
     state.paperCategory = list!;
