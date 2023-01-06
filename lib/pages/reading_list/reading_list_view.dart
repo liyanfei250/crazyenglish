@@ -183,14 +183,15 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
                   child: Container(
                     width: 88.w,
                     height: 31.w,
-                    padding: EdgeInsets.only(left: 7.w,bottom: 4.w),
-                    alignment: Alignment.bottomLeft,
+                    padding: EdgeInsets.only(bottom: 4.w),
+                    alignment: Alignment.bottomCenter,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(R.imagesWeeklyBg)
                       ),
                     ),
                     child: Text(
+                      textAlign:TextAlign.center,
                       weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 10.sp),),
                   ),
                 )
