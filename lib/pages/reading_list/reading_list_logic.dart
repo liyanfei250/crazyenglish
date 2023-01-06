@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import '../../entity/week_paper_response.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/json_cache_util.dart';
-import 'weekly_list_state.dart';
+import 'reading_list_state.dart';
 
-class WeeklyListLogic extends GetxController {
-  final WeeklyListState state = WeeklyListState();
+class ReadingListLogic extends GetxController {
+  final ReadingListState state = ReadingListState();
 
   WeekRepository weekRepository = WeekRepository();
 

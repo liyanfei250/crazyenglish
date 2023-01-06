@@ -14,18 +14,18 @@ import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
-import 'weekly_list_logic.dart';
+import 'reading_list_logic.dart';
 
-class WeeklyListPage extends BasePage {
-  const WeeklyListPage({Key? key}) : super(key: key);
+class ReadingListPage extends BasePage {
+  const ReadingListPage({Key? key}) : super(key: key);
 
   @override
-  BasePageState<BasePage> getState() => _WeeklyListPageState();
+  BasePageState<BasePage> getState() => _ReadingListPageState();
 }
 
-class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
-  final logic = Get.put(WeeklyListLogic());
-  final state = Get.find<WeeklyListLogic>().state;
+class _ReadingListPageState extends BasePageState<ReadingListPage> {
+  final logic = Get.put(ReadingListLogic());
+  final state = Get.find<ReadingListLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
 
   final int pageSize = 20;
@@ -225,7 +225,7 @@ class _WeeklyListPageState extends BasePageState<WeeklyListPage> {
 
   @override
   void dispose() {
-    Get.delete<WeeklyListLogic>();
+    Get.delete<ReadingListLogic>();
     _refreshController.dispose();
     super.dispose();
   }
