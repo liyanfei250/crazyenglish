@@ -40,7 +40,7 @@ class WeekTestListLogic extends GetxController {
       state.list = cache.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;
-      }else{
+      } else {
         state.hasMore = true;
       }
       update([GetBuilderIds.weekTestList]);

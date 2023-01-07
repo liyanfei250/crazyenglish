@@ -93,11 +93,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
                   setState(() {});
                 });
-              _controller.addListener(() {
-                setState(() {});
-              });
               // _controller.setLooping(true);
-              _controller.initialize();
             }
             if(paperDetail!.data!=null
                 && paperDetail!.data!.audioFile!=null

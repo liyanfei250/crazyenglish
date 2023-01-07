@@ -4,6 +4,7 @@ import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/base/widgetPage/empty.dart';
 import 'package:crazyenglish/widgets/ChoiceRadioItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -42,12 +43,24 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   AudioPlayer audioPlayer  = AudioPlayer();
 
   WeekTestDetailResponse? weekTestDetailResponse;
-  CustomRenderMatcher gapMatcher() => (context) => context.tree.element?.localName == 'input';
+  Map<String,TextEditingController> gapEditController = {};
   @override
   void onCreate() {
     // TODO: implement onCreate
     logic.getWeekTestDetail(widget.id!);
   }
+
+
+  TextEditingController makeEditController(String key){
+    if(gapEditController[key] == null){
+      TextEditingController controller = TextEditingController();
+      gapEditController[key] = controller;
+      return controller;
+    }else{
+      return gapEditController[key]!;
+    }
+  }
+
 
 
   @override
@@ -137,9 +150,13 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
                 ),)
               ],
             ));
-            if(question.type == 2 || question.listenType == 1){
+            if(question.type == 2 || (
+                (question.type == 1 || question.type ==4)
+                && question.listenType == 1)){
               // 选择题
               questionList.add(buildSingleChoice(question!.bankAnswerAppListVos!));
+            }else if(question.type == 3){
+              questionList.add(buildGapQuestion(question!.bankAnswerAppListVos!,element!.readContent!));
             }
           }
         }
@@ -201,9 +218,114 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     );
   }
 
-  Widget buildGapQuestion(List<BankAnswerAppListVos> list){
+  Color getInputColor(int type){
+    switch(type){
+      case 0:
+        return AppColors.c_FF101010;
+      case -1:
+        return AppColors.c_FFEC9D4E;
+      case 1:
+        return AppColors.c_FF58BC6D;
+      default:
+        return AppColors.c_FF101010;
+    }
+  }
 
-    return Container();
+  Widget buildGapQuestion(List<BankAnswerAppListVos> list,String htmlContent){
+    FocusScopeNode _scopeNode = FocusScopeNode();
+    int max = 0;
+    return FocusScope(
+      node: _scopeNode,
+      child: Html(
+        data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+        onImageTap: (url,context,attributes,element,){
+          if(url!=null && url!.startsWith('http')){
+            DialogManager.showPreViewImageDialog(
+                BackButtonBehavior.close, url);
+          }
+        },
+        style: {
+          "p":Style(
+              fontSize:FontSize.large
+          ),
+        },
+        tagsList: Html.tags..addAll(['gap']),
+        customRenders: {
+          tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+            String key = context.tree.element!.attributes["value"]??"unknown";
+            String content = "";
+            int num = 0;
+            var correctType = 0.obs;
+            try {
+              num = int.parse(key);
+              max = num;
+              if(num<=list.length){
+                content = list[num-1].content!;
+              }
+            } catch (e) {
+              e.printError();
+            }
+
+            return SizedBox(
+              width: 50.w,
+              child: Obx(()=>TextField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: getInputColor(correctType.value)),
+                  decoration: InputDecoration(
+                    isDense:true,
+                    contentPadding: EdgeInsets.all(0.w),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1.w,
+                          color: getInputColor(correctType.value),
+                          style: BorderStyle.solid
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1.w,
+                          color: getInputColor(correctType.value),
+                          style: BorderStyle.solid
+                      ),
+                    ),
+                  ),
+                  onChanged: (text){
+                    if(content.isNotEmpty){
+                      if(text.isNotEmpty){
+                        if(content.startsWith(text)){
+                          correctType.value = 1;
+                        }else{
+                          correctType.value = -1;
+                        }
+                      }else{
+                        correctType.value = 0;
+                      }
+                    }else{
+
+                    }
+
+                  },
+                  onSubmitted: (text){
+
+                  },
+                  onEditingComplete: (){
+                    if(num < max){
+                      _scopeNode.nextFocus();
+                    }else{
+                      _scopeNode.unfocus();
+                    }
+
+                  },
+                  controller: makeEditController(key))),
+
+            );
+          })
+        },
+
+      ),
+    );
   }
 
   Widget buildListenQuestion(){
@@ -234,10 +356,24 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             border: Border(bottom: BorderSide(color: Colors.grey)),
           )
         },
+        tagsList: Html.tags..addAll(['gap']),
         customRenders: {
-          gapMatcher():CustomRender.widget(widget: (context, buildChildren){
-            return TextField(controller: TextEditingController(text: "sddss"));
-          })
+          // tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+          //   return Container(
+          //     width: 30.w,
+          //     height: 20.w,
+          //     child: TextField(
+          //       controller: ,
+          //       style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
+          //       onChanged: (String str) {},
+          //       decoration: const InputDecoration(
+          //         border: InputBorder.none,
+          //         hintText: '请输入答案',
+          //         hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
+          //       ),
+          //     ),
+          //   );
+          // })
         },
 
       ),
