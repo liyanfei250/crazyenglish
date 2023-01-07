@@ -39,19 +39,25 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
         if(state.pageNo == currentPageNo+1){
           weekPaperList = state.list;
           currentPageNo++;
-          weekPaperList.addAll(state!.list!);
           if(mounted && _refreshController!=null){
             _refreshController.loadComplete();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }
             setState(() {
 
             });
           }
+          weekPaperList.addAll(state!.list!);
         }else if(state.pageNo == pageStartIndex){
           currentPageNo = pageStartIndex;
           weekPaperList.clear();
           weekPaperList.addAll(state.list!);
           if(mounted && _refreshController!=null){
             _refreshController.refreshCompleted();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }
             setState(() {
             });
           }
