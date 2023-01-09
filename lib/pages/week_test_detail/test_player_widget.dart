@@ -5,8 +5,10 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../r.dart';
+import '../../xfyy/utils/xf_socket.dart';
 
 /**
  * Time: 2023/1/4 14:00
@@ -16,8 +18,20 @@ import '../../r.dart';
  * Description:
  */
 class TestPlayerWidget extends StatefulWidget {
-  final AudioPlayer player;
-  const TestPlayerWidget({Key? key,required this.player}) : super(key: key);
+  AudioPlayer? player;
+  final bool isBottomPlayer;
+  String? voiceContent;
+  String? playerName;
+
+  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName}) : super(key: key) {
+    if(voiceContent!=null){
+      this.voiceContent = voiceContent;
+    }
+    if(playerName!=null){
+      this.playerName = playerName;
+    }
+
+  }
 
   @override
   State<TestPlayerWidget> createState() => _TestPlayerWidgetState();
@@ -39,7 +53,7 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
   String get _durationText => _duration?.toString().split('.').first ?? '';
   String get _positionText => _position?.toString().split('.').first ?? '';
 
-  AudioPlayer get player => widget.player;
+  AudioPlayer? get player => widget.player;
 
   @override
   void initState() {
@@ -67,72 +81,116 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 52.w,
-      width: double.infinity,
-      child: Stack(
-        children: [
-          Row(
-            children: [
-              InkWell(
-                onTap: (){
-                  _isPlaying ? null : _play();
-                },
-                child: Image.asset(R.imagesTestPaly,width: 32.w,height: 32.w,),
-              ),
-              Expanded(child: Slider(
-                onChanged: (v) {
-                  final duration = _duration;
-                  if (duration == null) {
-                    return;
-                  }
-                  final position = v * duration.inMilliseconds;
-                  player.seek(Duration(milliseconds: position.round()));
-                },
-                activeColor: AppColors.c_FFFFBC00,
-                inactiveColor: AppColors.c_FFE2E2E2,
-                value: (_position != null &&
-                    _duration != null &&
-                    _position!.inMilliseconds > 0 &&
-                    _position!.inMilliseconds < _duration!.inMilliseconds)
-                    ? _position!.inMilliseconds / _duration!.inMilliseconds
-                    : 0.0,
-              ),)
-            ],
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.only(left: 50.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    if(widget.isBottomPlayer){
+      return Container(
+        height: 79.w,
+        width: double.infinity,
+        color: AppColors.c_FFF2F2F2,
+        padding: EdgeInsets.only(left: 14.w),
+        child: Stack(
+          children: [
+            Row(
               children: [
-                Text(
-                  _position != null
-                      ? '$_positionText / $_durationText'
-                      : _duration != null
-                      ? _durationText
-                      : '',
-                  style: const TextStyle(fontSize: 16.0),
+                InkWell(
+                  onTap: (){
+                    _isPlaying ? _pause() : _play();
+                  },
+                  child: Image.asset(
+                    _isPlaying? R.imagesTestPause : _isPaused? R.imagesTestPlay:R.imagesTestPlay,
+                    width: 32.w,height: 32.w,),
                 ),
-                Text("1X",style: TextStyle(fontSize: 16.0,color: AppColors.TEXT_BLACK_COLOR)),
+                Expanded(child: Slider(
+                  onChanged: (v) {
+                    final duration = _duration;
+                    if (duration == null) {
+                      return;
+                    }
+                    final position = v * duration.inMilliseconds;
+                    if(player!=null){
+                      player!.seek(Duration(milliseconds: position.round()));
+                    }
+
+                  },
+                  activeColor: AppColors.c_FFFFBC00,
+                  inactiveColor: AppColors.c_FFE2E2E2,
+                  value: (_position != null &&
+                      _duration != null &&
+                      _position!.inMilliseconds > 0 &&
+                      _position!.inMilliseconds < _duration!.inMilliseconds)
+                      ? _position!.inMilliseconds / _duration!.inMilliseconds
+                      : 0.0,
+                ),)
               ],
             ),
-          )
-        ],
-      ),
-    );
+            Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.only(left: 50.w,right: 31.w,bottom: 12.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("",style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_BLACK_COLOR)),
+                  Text(
+                    _position != null
+                        ? '$_positionText / $_durationText'
+                        : _duration != null
+                        ? "0:00:00/"+_durationText
+                        : '',
+                    style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
+                  ),
+
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }else{
+      return Container(
+          width: 22.w,
+          height: 22.w,
+          child: InkWell(
+            onTap: (){
+              if(widget.voiceContent!=null
+                  && widget.voiceContent!.isNotEmpty){
+                if(player == null){
+                  XfSocket.connect(widget.voiceContent!,widget.playerName!, onFilePath: (path) {
+                    widget.player = AudioPlayer();
+                    player!.setSourceDeviceFile(path);
+                    _initStreams();
+                    _play();
+                  });
+                }else{
+                  _isPlaying ? _pause() : _play();
+                }
+
+              }else {
+                Fluttertoast.showToast(msg: "暂无音频");
+              }
+
+
+            },
+            child: Image.asset(
+              _isPlaying? R.imagesArticleListenPause : _isPaused? R.imagesArticleListenPlay:R.imagesArticleListenPlay,
+              width: 22.w,height: 22.w,),
+          ),
+        );
+    }
+
   }
 
   void _initStreams() {
-    _durationSubscription = player.onDurationChanged.listen((duration) {
+    if(player==null){
+      return;
+    }
+    _durationSubscription = player!.onDurationChanged.listen((duration) {
       setState(() => _duration = duration);
     });
 
-    _positionSubscription = player.onPositionChanged.listen(
+    _positionSubscription = player!.onPositionChanged.listen(
           (p) => setState(() => _position = p),
     );
 
-    _playerCompleteSubscription = player.onPlayerComplete.listen((event) {
+    _playerCompleteSubscription = player!.onPlayerComplete.listen((event) {
       setState(() {
         _playerState = PlayerState.stopped;
         _position = Duration.zero;
@@ -140,7 +198,7 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
     });
 
     _playerStateChangeSubscription =
-        player.onPlayerStateChanged.listen((state) {
+        player!.onPlayerStateChanged.listen((state) {
           setState(() {
             _audioPlayerState = state;
           });
@@ -149,20 +207,30 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
 
   Future<void> _play() async {
     final position = _position;
-    if (position != null && position.inMilliseconds > 0) {
-      await player.seek(position);
+    if(player == null){
+      return;
     }
-    await player.resume();
+    if (position != null && position.inMilliseconds > 0) {
+
+      await player!.seek(position);
+    }
+    await player!.resume();
     setState(() => _playerState = PlayerState.playing);
   }
 
   Future<void> _pause() async {
-    await player.pause();
+    if(player == null){
+      return;
+    }
+    await player!.pause();
     setState(() => _playerState = PlayerState.paused);
   }
 
   Future<void> _stop() async {
-    await player.stop();
+    if(player == null){
+      return;
+    }
+    await player!.stop();
     setState(() {
       _playerState = PlayerState.stopped;
       _position = Duration.zero;

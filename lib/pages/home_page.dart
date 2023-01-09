@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildBottomRowBar(){
     return Container(
       color: AppColors.c_FFFFFFFF,
-      height: 52.w,
+      height: 56.w,
       child: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,7 +153,10 @@ class _HomePageState extends State<HomePage> {
           // Padding(padding: EdgeInsets.only(top: 4.w)),
           Obx(()=>Text(
             bottomTitles[index],
-            style: TextStyle(color: _selectedIndex.value == index ? AppColors.THEME_COLOR:AppColors.darkGray,fontSize: 11.sp),
+            style: TextStyle(
+                color: _selectedIndex.value == index ? AppColors.c_FF585858:AppColors.c_FF828282,
+                fontWeight: _selectedIndex.value == index ? FontWeight.bold:FontWeight.normal,
+                fontSize: 10.sp),
           )),
         ],
       ),

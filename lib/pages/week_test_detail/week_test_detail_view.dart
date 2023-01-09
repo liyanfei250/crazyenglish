@@ -338,7 +338,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   Widget buildListenQuestion(){
     audioPlayer.setSourceUrl("https://ps-1252082677.cos.ap-beijing.myqcloud.com/test.mp3");
     return Container(
-      child: TestPlayerWidget(player: audioPlayer),
+      child: TestPlayerWidget(audioPlayer,true),
     );
   }
 

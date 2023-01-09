@@ -46,6 +46,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
 
   final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
   AudioPlayer? audioPlayer;
+  var hasAudioFile = false.obs;
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   CustomRenderMatcher pMatcher() => (context) {
@@ -98,6 +99,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
             if(paperDetail!.data!=null
                 && paperDetail!.data!.audioFile!=null
                 && paperDetail!.data!.audioFile!.isNotEmpty){
+              hasAudioFile.value = true;
               audioPlayer = AudioPlayer();
               audioPlayer!.setSourceUrl(paperDetail!.data!.audioFile!);
             }
@@ -136,36 +138,13 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           // bottom: ,
           elevation: 0,
           actions: [
+            Obx(()=>Visibility(
+                visible: !hasAudioFile.value,
+                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!.data!.voiceContent,playerName: playMan.value,)))),
             Container(
               width: 22.w,
               height: 22.w,
-              margin: EdgeInsets.only(right: 22.w),
-              child: InkWell(
-                onTap: (){
-                  if(paperDetail!=null
-                      && paperDetail!.data!=null){
-                    _stopPlay();
-                    if(paperDetail!.data!.voiceContent!=null
-                        && paperDetail!.data!.voiceContent!.isNotEmpty){
-                      XfSocket.connect(paperDetail!.data!.voiceContent!,playMan.value??"John", onFilePath: (path) {
-                        _play(path);
-                      });
-                    }else if(paperDetail!.data!.titleEn!=null){
-                      XfSocket.connect(paperDetail!.data!.titleEn!,playMan.value??"John", onFilePath: (path) {
-                        _play(path);
-                      });
-                    }
-
-                  }
-
-                },
-                child: Image.asset(R.imagesArticleListenDerfault),
-              ),
-            ),
-            Container(
-              width: 22.w,
-              height: 22.w,
-              margin: EdgeInsets.only(right: 22.w),
+              margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
 
@@ -173,7 +152,9 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),
             ),
-            Container(
+            Obx(()=>Visibility(
+                visible: !hasAudioFile.value,
+                child: Container(
               width: 22.w,
               height: 22.w,
               margin: EdgeInsets.only(right: 12.w),
@@ -188,9 +169,11 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                   }
                   _stopPlay();
                 },
-                child: Image.asset(R.imagesArticleManPlay),
+                child: Obx(()=>Image.asset(
+                    playMan.value == man ?
+                    R.imagesArticleManPlay : R.imagesArticleWomanPlay)),
               ),
-            ),
+            )),)
           ],
         ),
         backgroundColor: AppColors.c_FFFAF7F7,
@@ -250,9 +233,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                                   topLeft: Radius.circular(12.w),
                                                 )
                                             ),
-                                            child: TORID_Widget(
-
-                                            ),
+                                            child: TORID_Widget(),
                                           )
                                         ],
                                       ),
@@ -380,7 +361,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           audioPlayer!=null?
           Visibility(
               visible: audioPlayer!=null,
-              child: TestPlayerWidget(player:audioPlayer!)):Container(),
+              child: TestPlayerWidget(audioPlayer!,true)):Container(),
         ],
       )
     );
@@ -388,10 +369,15 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
 
 
   void _play(String path) async {
-    await playerModule.startPlayer(fromURI: path);
+    await playerModule.startPlayer(fromURI: path,whenFinished: (){
+
+    });
   }
   void _stopPlay() {
-    playerModule.stopPlayer();
+    // playerModule.stopPlayer();
+    if(audioPlayer!=null){
+      audioPlayer!.stop();
+    }
   }
 
   @override

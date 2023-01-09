@@ -266,7 +266,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(weekPaperList![index].nameTitle?? "",
+                    Text(weekPaperList![index].name?? "",
                       maxLines:1,
                       style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.bold),),
                     Row(
