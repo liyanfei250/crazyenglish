@@ -57,6 +57,7 @@ class Data {
   int? _id;
   String? _title;
   int? _type;
+  int? _questionType;
   int? _sort;
   bool? _isTake;
   String? _name;
@@ -68,6 +69,7 @@ class Data {
   int? get id => _id;
   String? get title => _title;
   int? get type => _type;
+  int? get questionType => _questionType;
   int? get sort => _sort;
   bool? get isTake => _isTake;
   String? get name => _name;
@@ -80,7 +82,8 @@ class Data {
       int? id, 
       String? title, 
       int? type, 
-      int? sort, 
+      int? questionType,
+      int? sort,
       bool? isTake, 
       String? name, 
       String? content, 
@@ -90,6 +93,7 @@ class Data {
     _id = id;
     _title = title;
     _type = type;
+    _questionType = questionType;
     _sort = sort;
     _isTake = isTake;
     _name = name;
@@ -103,6 +107,7 @@ class Data {
     _id = json['id'];
     _title = json['title'];
     _type = json['type'];
+    _questionType = json['questionType'];
     _sort = json['sort'];
     _isTake = json['isTake'];
     _name = json['name'];
@@ -122,6 +127,7 @@ class Data {
     map['id'] = _id;
     map['title'] = _title;
     map['type'] = _type;
+    map['questionType'] = _questionType;
     map['sort'] = _sort;
     map['isTake'] = _isTake;
     map['name'] = _name;

@@ -46,6 +46,8 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
             _refreshController.loadComplete();
             if(!state!.hasMore){
               _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
             }
             setState(() {
 
@@ -57,6 +59,11 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
           weekPaperList.addAll(state.list!);
           if(mounted && _refreshController!=null){
             _refreshController.refreshCompleted();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
             setState(() {
             });
           }

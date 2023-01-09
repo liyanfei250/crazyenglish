@@ -111,7 +111,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     List<Widget> questionList = [];
     if(weekTestDetailResponse.data!=null){
       weekTestDetailResponse.data!.forEach((element) {
-        switch(element.type){
+        switch(element.questionType){
           case 1: // 听力题
             questionList.add(buildQuestionType("听力题"));
             questionList.add(buildListenQuestion());
@@ -135,28 +135,24 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
           int questionNum = element.questionBankAppListVos!.length;
           for(int i = 0 ;i< questionNum;i++){
             QuestionBankAppListVos question = element.questionBankAppListVos![i];
-            questionList.add(Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "第${i+1}题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-                ),
-                Padding(padding: EdgeInsets.only(top: 7.w)),
-                Visibility(
-                  visible: question!.title != null && question!.title!.isNotEmpty,
-                  child: Text(
-                  question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-                ),)
-              ],
+
+            questionList.add(Text(
+              "第${i+1}题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
             ));
+            questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+
             if(question.type == 2 || (
                 (question.type == 1 || question.type ==4)
                 && question.listenType == 1)){
               // 选择题
+              questionList.add(Visibility(
+                visible: question!.title != null && question!.title!.isNotEmpty,
+                child: Text(
+                  question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
+                ),));
               questionList.add(buildSingleChoice(question!.bankAnswerAppListVos!));
             }else if(question.type == 3){
-              questionList.add(buildGapQuestion(question!.bankAnswerAppListVos!,element!.readContent!));
+              questionList.add(buildGapQuestion(question!.bankAnswerAppListVos,question!.title!));
             }
           }
         }
@@ -231,9 +227,18 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     }
   }
 
-  Widget buildGapQuestion(List<BankAnswerAppListVos> list,String htmlContent){
+  Widget buildGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
+    String gap = "____";
+    int key = -1;
+    while(htmlContent.contains(gap)){
+      key++;
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$key"></gap>');
+    }
+
+    // htmlContent.replaceAll("####", "<gap/>");
+
     return FocusScope(
       node: _scopeNode,
       child: Html(
@@ -245,9 +250,9 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
           }
         },
         style: {
-          "p":Style(
-              fontSize:FontSize.large
-          ),
+          // "p":Style(
+          //     fontSize:FontSize.large
+          // ),
         },
         tagsList: Html.tags..addAll(['gap']),
         customRenders: {
@@ -259,8 +264,10 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             try {
               num = int.parse(key);
               max = num;
-              if(num<=list.length){
-                content = list[num-1].content!;
+              if(list!=null && num<=list!.length){
+                content = list![num-1].content!;
+              }else{
+                content = "";
               }
             } catch (e) {
               e.printError();
@@ -303,7 +310,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
                         correctType.value = 0;
                       }
                     }else{
-
+                      correctType.value = 0;
                     }
 
                   },
@@ -346,9 +353,9 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
           }
         },
         style: {
-          "p":Style(
-              fontSize:FontSize.large
-          ),
+          // "p":Style(
+          //     fontSize:FontSize.large
+          // ),
 
           "hr":Style(
             margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
@@ -358,22 +365,6 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
         },
         tagsList: Html.tags..addAll(['gap']),
         customRenders: {
-          // tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
-          //   return Container(
-          //     width: 30.w,
-          //     height: 20.w,
-          //     child: TextField(
-          //       controller: ,
-          //       style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
-          //       onChanged: (String str) {},
-          //       decoration: const InputDecoration(
-          //         border: InputBorder.none,
-          //         hintText: '请输入答案',
-          //         hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
-          //       ),
-          //     ),
-          //   );
-          // })
         },
 
       ),
