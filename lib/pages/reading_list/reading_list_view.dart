@@ -43,6 +43,8 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             _refreshController.loadComplete();
             if(!state!.hasMore){
               _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
             }
             setState(() {
 
@@ -57,6 +59,8 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             _refreshController.refreshCompleted();
             if(!state!.hasMore){
               _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
             }
             setState(() {
             });
