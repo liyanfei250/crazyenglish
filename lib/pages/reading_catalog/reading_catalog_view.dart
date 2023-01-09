@@ -33,7 +33,7 @@ class Reading_catalogPage extends StatefulWidget {
 class _Reading_catalogPageState extends State<Reading_catalogPage> {
   final logic = Get.put(Reading_catalogLogic());
   final state = Get.find<Reading_catalogLogic>().state;
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   PaperCategory? paperCategory;
 
@@ -50,6 +50,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
         }
       }
     });
+    _onRefresh();
   }
 
   @override

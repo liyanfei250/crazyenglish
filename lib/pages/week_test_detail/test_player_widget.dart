@@ -72,6 +72,7 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
 
   @override
   void dispose() {
+    _stop();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
@@ -164,13 +165,14 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
                 }
 
               }else {
-                Fluttertoast.showToast(msg: "暂无音频");
+                Fluttertoast.showToast(msg: "暂无播放内容");
               }
 
 
             },
             child: Image.asset(
-              _isPlaying? R.imagesArticleListenPause : _isPaused? R.imagesArticleListenPlay:R.imagesArticleListenPlay,
+              _isPlaying!=null ? (_isPlaying? R.imagesArticleListenPause :
+    _isPaused? R.imagesArticleListenPlay:R.imagesArticleListenPlay):R.imagesArticleListenPlay,
               width: 22.w,height: 22.w,),
           ),
         );

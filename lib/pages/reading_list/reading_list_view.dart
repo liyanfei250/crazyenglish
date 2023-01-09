@@ -26,7 +26,7 @@ class ReadingListPage extends BasePage {
 class _ReadingListPageState extends BasePageState<ReadingListPage> {
   final logic = Get.put(ReadingListLogic());
   final state = Get.find<ReadingListLogic>().state;
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -69,6 +69,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
         }
       }
     });
+    _onRefresh();
   }
 
 

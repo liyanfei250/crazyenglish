@@ -41,7 +41,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   final logic = Get.put(WeekTestCatalogLogic());
   final state = Get.find<WeekTestCatalogLogic>().state;
 
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   // WeekTestCatalogResponse? paperCategory;
   TreeViewController? treeViewController;
@@ -61,7 +61,6 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       }
     });
     _onRefresh();
-
   }
 
   @override
@@ -250,7 +249,14 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                             borderRadius: BorderRadius.all(Radius.circular(16.w))
                         ),
                       ),
-                      Text(node.label,style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),)
+                      Container(
+                        width: 250.w,
+                        child: Text(node.label,
+                          overflow:TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),),
+                      )
+
                     ],
                   ),
                   Expanded(

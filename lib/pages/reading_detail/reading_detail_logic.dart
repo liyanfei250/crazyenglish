@@ -32,8 +32,10 @@ class Reading_detailLogic extends GetxController {
       }
     });
 
+    bool hasCache = false;
     if(cache is PaperDetail) {
       state.paperDetail = cache!;
+      hasCache = true;
       update([GetBuilderIds.paperDetail]);
     }
     PaperDetail list = await weekRepository.getWeekPaperDetail(id);
@@ -42,6 +44,8 @@ class Reading_detailLogic extends GetxController {
         labelId: id,
         list.toJson());
     state.paperDetail = list!;
-    update([GetBuilderIds.paperDetail]);
+    if(!hasCache){
+      update([GetBuilderIds.paperDetail]);
+    }
   }
 }

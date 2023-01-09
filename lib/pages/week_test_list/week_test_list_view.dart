@@ -27,7 +27,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   final logic = Get.put(WeekTestListLogic());
   final state = Get.find<WeekTestListLogic>().state;
 
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -71,6 +71,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
         }
       }
     });
+    _onRefresh();
   }
 
 

@@ -140,7 +140,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           actions: [
             Obx(()=>Visibility(
                 visible: !hasAudioFile.value,
-                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!.data!.voiceContent,playerName: playMan.value,)))),
+                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,)))),
             Container(
               width: 22.w,
               height: 22.w,
