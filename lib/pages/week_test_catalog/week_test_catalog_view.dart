@@ -46,9 +46,10 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   // WeekTestCatalogResponse? paperCategory;
   TreeViewController? treeViewController;
 
-  Set<String> nodeFirst = {};
+  Set<String> nodeFirstParent = {};
+  Set<String> nodeSecondParent = {};
   Set<String> nodeEnd = {};
-  Set<String> nodeEndParent = {};
+  Set<String> nodeSecondEndParent = {};
   @override
   void onCreate() {
     // TODO: implement onCreate
@@ -106,7 +107,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
               treeViewController = TreeViewController(children:logic.state.nodes!);
               List<tree.Node> nodes = treeViewController!.expandAll();
               nodes.forEach((element) {
-                nodeFirst.add(element!.key??"");
+                nodeFirstParent.add(element!.key??"");
                 int length = element.children!=null ? element.children.length:0;
                 for(int i = 0;i<length;i++){
                   if(i==length-1){
@@ -115,8 +116,9 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                       int childLength = element.children[i].children.length;
                       nodeEnd.add(element.children[i].children[childLength-1].key??"");
                     }
-                    nodeEndParent.add(element.children[i].key??"");
+                    nodeSecondEndParent.add(element.children[i].key??"");
                   }
+                  nodeSecondParent.add(element.children[i].key??"");
                 }
               });
               treeViewController = TreeViewController(children:nodes!);
@@ -173,13 +175,24 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Visibility(
+                //     maintainAnimation: true,
+                //     maintainState: true,
+                //     maintainSize: true,
+                //     visible: treeViewController!.getBefore(node.key)!=null && treeViewController!.getBeforeNode(node.key)!.expanded,
+                //     child: Container(
+                //       height: 1.w,
+                //       width: double.infinity,
+                //       margin: EdgeInsets.only(left: 44.w),
+                //       color: AppColors.c_FFEBEBEB,
+                //     )),
                 Expanded(
                     flex: 1,
                     child: Visibility(
                         maintainAnimation: true,
                         maintainState: true,
                         maintainSize: true,
-                        visible: !nodeFirst.contains(node.key),
+                        visible: !nodeFirstParent.contains(node.key),
                       child: Container(
                           margin: EdgeInsets.only(left:22.w),
                           child: Visibility(
@@ -207,7 +220,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         ),
                         child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
                     ),
-                    Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR),)
+                    Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),)
                   ],
                 ),
                 Expanded(
@@ -216,7 +229,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                     maintainAnimation: true,
                     maintainState: true,
                     maintainSize: true,
-                    visible: !((nodeEndParent.contains(node.key) || nodeFirst.contains(node.key))&& !node.expanded),
+                    visible: !((nodeSecondEndParent.contains(node.key) || nodeFirstParent.contains(node.key))&& !node.expanded),
                     child: Container(
                         margin: EdgeInsets.only(left:22.w),
                         child: DottedLine(
@@ -230,12 +243,18 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                 ),
               ],
             ),),
-            Container(
+            Visibility(
+              maintainAnimation: true,
+              maintainState: true,
+              maintainSize: true,
+              visible: !(nodeSecondParent.contains(node.key)&& node.expanded),
+              child: Container(
               height: 1.w,
               width: double.infinity,
               margin: EdgeInsets.only(left: 44.w),
               color: AppColors.c_FFEBEBEB,
-            )
+            ))
+
           ],
         ),
       );
