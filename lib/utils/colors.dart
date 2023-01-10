@@ -23,17 +23,19 @@ class AppColors {
   static Color c_FFEC9D4E = Color(0xFFEC9D4E);
   static Color c_FFFCF0E2 = Color(0xFFFCF0E2);
   static Color c_FFE2E2E2 = Color(0xFFE2E2E2);
+  static Color c_FF848BA2 = Color(0xFF848BA2);
+  static Color c_FF424966 = Color(0xFF424966);
 
   static Color c_FFECECEC = Color(0xFFECECEC);
   static Color c_FF959BA0 = Color(0xFF959BA0);
   static Color c_FF282828 = Color(0xFF282828);
   static Color c_FF828282 = Color(0xFF828282);
   static Color c_0FA50D1A = Color(0x0FA50D1A);
-  static Color c_FF424966 = Color(0xFF424966);
   static Color c_FF585858 = Color(0xFF585858);
   static Color c_FF101010 = Color(0xFF101010);
   static Color c_FFF2F2F2 = Color(0xFFF2F2F2);
   static Color c_FFFFBC00 = Color(0xFFFFBC00);
+  static Color c_FFF5F6F9 = Color(0xFFF5F6F9);
   static Color c_FFE9EBEF = Color(0xFFE9EBEF);
   static Color THEME_COLOR = Color(0xFFE70014);
   static Color THEME_HALF_COLOR = Color(0xAAE70014);

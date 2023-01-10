@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../entity/paper_category.dart';
 import '../pages/home_page.dart';
+import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/login/login_view.dart';
 import '../pages/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
@@ -32,6 +33,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
     GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
+    GetPage(name: AppRoutes.IntensiveListeningPage, page:()=>IntensiveListeningPage(),),
 
   ];
 }

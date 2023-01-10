@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -147,7 +149,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
-
+                  RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 },
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),

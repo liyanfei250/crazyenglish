@@ -7,14 +7,22 @@ class R {
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
   static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_clicked.png)
+  static final String imagesIconIntensiveListeningTranslateYesClicked = 'images/icon_intensive_listening_translate_yes_clicked.png';
   /// ![](http://127.0.0.1:11/images/torid_five_hide.png)
   static final String imagesToridFiveHide = 'images/torid_five_hide.png';
   /// ![](http://127.0.0.1:11/images/torid_tixing.png)
   static final String imagesToridTixing = 'images/torid_tixing.png';
   /// ![](http://127.0.0.1:11/images/torid_close.png)
   static final String imagesToridClose = 'images/torid_close.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_15_selected.png)
+  static final String imagesIconTransmissionSpeed15Selected = 'images/icon_transmission_speed_15_selected.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_no_clicked.png)
+  static final String imagesIconIntensiveListeningLoopNoClicked = 'images/icon_intensive_listening_loop_no_clicked.png';
   /// ![](http://127.0.0.1:11/images/torid_one_show.png)
   static final String imagesToridOneShow = 'images/torid_one_show.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_12_selected.png)
+  static final String imagesIconTransmissionSpeed12Selected = 'images/icon_transmission_speed_12_selected.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_bg0.png)
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
   /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
@@ -37,10 +45,18 @@ class R {
   static final String imagesIndexClassNew = 'images/index_class_new.png';
   /// ![](http://127.0.0.1:11/images/icon_back.png)
   static final String imagesIconBack = 'images/icon_back.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_yes.png)
+  static final String imagesIconIntensiveListeningShowWordYes = 'images/icon_intensive_listening_show_word_yes.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_no.png)
+  static final String imagesIconIntensiveListeningTranslateNo = 'images/icon_intensive_listening_translate_no.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon1.png)
   static final String imagesIndexTeacherIcon1 = 'images/index_teacher_icon1.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20.png)
+  static final String imagesIconTransmissionSpeed20 = 'images/icon_transmission_speed_20.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_shadow.png)
   static final String imagesWeeklyItemShadow = 'images/weekly_item_shadow.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_08.png)
+  static final String imagesIconTransmissionSpeed08 = 'images/icon_transmission_speed_08.png';
   /// ![](http://127.0.0.1:11/images/index_search.png)
   static final String imagesIndexSearch = 'images/index_search.png';
   /// ![](http://127.0.0.1:11/images/torid_top.png)
@@ -51,6 +67,8 @@ class R {
   static final String imagesToridFourShow = 'images/torid_four_show.png';
   /// ![](http://127.0.0.1:11/images/article_man_play.png)
   static final String imagesArticleManPlay = 'images/article_man_play.png';
+  /// ![](http://127.0.0.1:11/images/test_lrc_json.json)
+  static final String imagesTestLrcJson = 'images/test_lrc_json.json';
   /// ![](http://127.0.0.1:11/images/torid_eye_hide.png)
   static final String imagesToridEyeHide = 'images/torid_eye_hide.png';
   /// ![](http://127.0.0.1:11/images/index_icon_8.png)
@@ -59,6 +77,8 @@ class R {
   static final String imagesArticleCollectPress = 'images/article_collect_press.png';
   /// ![](http://127.0.0.1:11/images/xunfei_english.png)
   static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_clicked.png)
+  static final String imagesIconTransmissionSpeed05Clicked = 'images/icon_transmission_speed_05_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_icon_9.png)
   static final String imagesIndexIcon9 = 'images/index_icon_9.png';
   /// ![](http://127.0.0.1:11/images/icon_back_black.png)
@@ -67,6 +87,10 @@ class R {
   static final String imagesArticleToridNotice = 'images/article_torid_notice.png';
   /// ![](http://127.0.0.1:11/images/index_icon_10.png)
   static final String imagesIndexIcon10 = 'images/index_icon_10.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_no_clicked.png)
+  static final String imagesIconIntensiveListeningTranslateNoClicked = 'images/icon_intensive_listening_translate_no_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_10_clicked.png)
+  static final String imagesIconTransmissionSpeed10Clicked = 'images/icon_transmission_speed_10_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_msg.png)
   static final String imagesIndexMsg = 'images/index_msg.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_normal.png)
@@ -85,10 +109,18 @@ class R {
   static final String imagesSplashWelcome1 = 'images/splash_welcome_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_normal.png)
   static final String imagesIconTab1Normal = 'images/icon_tab1_normal.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_no.png)
+  static final String imagesIconIntensiveListeningLoopNo = 'images/icon_intensive_listening_loop_no.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_15_clicked.png)
+  static final String imagesIconTransmissionSpeed15Clicked = 'images/icon_transmission_speed_15_clicked.png';
   /// ![](http://127.0.0.1:11/images/article_share.png)
   static final String imagesArticleShare = 'images/article_share.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_pause_clicked.png)
+  static final String imagesIconPlayerPauseClicked = 'images/icon_player_pause_clicked.png';
   /// ![](http://127.0.0.1:11/images/splash_welcome_2.png)
   static final String imagesSplashWelcome2 = 'images/splash_welcome_2.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_yes_clicked.png)
+  static final String imagesIconIntensiveListeningShowWordYesClicked = 'images/icon_intensive_listening_show_word_yes_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_pressed.png)
   static final String imagesIconTab3Pressed = 'images/icon_tab3_pressed.png';
   /// ![](http://127.0.0.1:11/images/choice_error.png)
@@ -97,12 +129,26 @@ class R {
   static final String imagesIndexIcon1 = 'images/index_icon_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_normal.png)
   static final String imagesIconTab2Normal = 'images/icon_tab2_normal.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_08_selected.png)
+  static final String imagesIconTransmissionSpeed08Selected = 'images/icon_transmission_speed_08_selected.png';
   /// ![](http://127.0.0.1:11/images/torid_four_hide.png)
   static final String imagesToridFourHide = 'images/torid_four_hide.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_befor_play_clicked.png)
+  static final String imagesIconPlayerBeforPlayClicked = 'images/icon_player_befor_play_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_no_clicked.png)
+  static final String imagesIconIntensiveListeningShowWordNoClicked = 'images/icon_intensive_listening_show_word_no_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_pressed.png)
   static final String imagesIconTab4Pressed = 'images/icon_tab4_pressed.png';
   /// ![](http://127.0.0.1:11/images/article_woman_play.png)
   static final String imagesArticleWomanPlay = 'images/article_woman_play.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_play_clicked.png)
+  static final String imagesIconPlayerPlayClicked = 'images/icon_player_play_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_no_not_enabled.png)
+  static final String imagesIconIntensiveListeningTranslateNoNotEnabled = 'images/icon_intensive_listening_translate_no_not_enabled.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_yes.png)
+  static final String imagesIconIntensiveListeningLoopYes = 'images/icon_intensive_listening_loop_yes.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_no.png)
+  static final String imagesIconIntensiveListeningShowWordNo = 'images/icon_intensive_listening_show_word_no.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
   static final String imagesSplash = 'images/splash.png';
   /// ![](http://127.0.0.1:11/images/home_search.png)
@@ -111,8 +157,16 @@ class R {
   static final String imagesIndexIcon2 = 'images/index_icon_2.png';
   /// ![](http://127.0.0.1:11/images/welcome_icon.png)
   static final String imagesWelcomeIcon = 'images/welcome_icon.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_befor_play.png)
+  static final String imagesIconPlayerBeforPlay = 'images/icon_player_befor_play.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_clicked.png)
+  static final String imagesIconTransmissionSpeed20Clicked = 'images/icon_transmission_speed_20_clicked.png';
   /// ![](http://127.0.0.1:11/images/weekly_fabulous.png)
   static final String imagesWeeklyFabulous = 'images/weekly_fabulous.png';
+  /// ![](http://127.0.0.1:11/images/test_lrc.mp3)
+  static final String imagesTestLrc = 'images/test_lrc.mp3';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_12_clicked.png)
+  static final String imagesIconTransmissionSpeed12Clicked = 'images/icon_transmission_speed_12_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_icon_3.png)
   static final String imagesIndexIcon3 = 'images/index_icon_3.png';
   /// ![](http://127.0.0.1:11/images/weekly_collect.png)
@@ -133,28 +187,52 @@ class R {
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/article_listen_play.png)
   static final String imagesArticleListenPlay = 'images/article_listen_play.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes.png)
+  static final String imagesIconIntensiveListeningTranslateYes = 'images/icon_intensive_listening_translate_yes.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
   static final String imagesIndexIcon4 = 'images/index_icon_4.png';
   /// ![](http://127.0.0.1:11/images/torid_five_show.png)
   static final String imagesToridFiveShow = 'images/torid_five_show.png';
   /// ![](http://127.0.0.1:11/images/index_icon_5.png)
   static final String imagesIndexIcon5 = 'images/index_icon_5.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_after_play_clicked.png)
+  static final String imagesIconPlayerAfterPlayClicked = 'images/icon_player_after_play_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_pressed.png)
   static final String imagesIconTab1Pressed = 'images/icon_tab1_pressed.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_pause.png)
+  static final String imagesIconPlayerPause = 'images/icon_player_pause.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_pressed.png)
   static final String imagesIconTab2Pressed = 'images/icon_tab2_pressed.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_selected.png)
+  static final String imagesIconTransmissionSpeed20Selected = 'images/icon_transmission_speed_20_selected.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_yes_clicked.png)
+  static final String imagesIconIntensiveListeningLoopYesClicked = 'images/icon_intensive_listening_loop_yes_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_12.png)
+  static final String imagesIconTransmissionSpeed12 = 'images/icon_transmission_speed_12.png';
   /// ![](http://127.0.0.1:11/images/reading_default.png)
   static final String imagesReadingDefault = 'images/reading_default.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb1.png)
   static final String imagesIndexClassThumb1 = 'images/index_class_thumb1.png';
+  /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_not_enabled.png)
+  static final String imagesIconIntensiveListeningTranslateYesNotEnabled = 'images/icon_intensive_listening_translate_yes_not_enabled.png';
   /// ![](http://127.0.0.1:11/images/article_listen_derfault.png)
   static final String imagesArticleListenDerfault = 'images/article_listen_derfault.png';
   /// ![](http://127.0.0.1:11/images/index_ad.png)
   static final String imagesIndexAd = 'images/index_ad.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_10.png)
+  static final String imagesIconTransmissionSpeed10 = 'images/icon_transmission_speed_10.png';
   /// ![](http://127.0.0.1:11/images/torid_two_hide.png)
   static final String imagesToridTwoHide = 'images/torid_two_hide.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_08_clicked.png)
+  static final String imagesIconTransmissionSpeed08Clicked = 'images/icon_transmission_speed_08_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05.png)
+  static final String imagesIconTransmissionSpeed05 = 'images/icon_transmission_speed_05.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb2.png)
   static final String imagesIndexClassThumb2 = 'images/index_class_thumb2.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_after_play.png)
+  static final String imagesIconPlayerAfterPlay = 'images/icon_player_after_play.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_15.png)
+  static final String imagesIconTransmissionSpeed15 = 'images/icon_transmission_speed_15.png';
   /// ![](http://127.0.0.1:11/images/index_icon_play.png)
   static final String imagesIndexIconPlay = 'images/index_icon_play.png';
   /// ![](http://127.0.0.1:11/images/article_listen_press.png)
@@ -167,6 +245,12 @@ class R {
   static final String imagesToridLeft = 'images/torid_left.png';
   /// ![](http://127.0.0.1:11/images/icon_back_blue.png)
   static final String imagesIconBackBlue = 'images/icon_back_blue.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_10_selected.png)
+  static final String imagesIconTransmissionSpeed10Selected = 'images/icon_transmission_speed_10_selected.png';
   /// ![](http://127.0.0.1:11/images/tree_edit.png)
   static final String imagesTreeEdit = 'images/tree_edit.png';
+  /// ![](http://127.0.0.1:11/images/icon_player_play.png)
+  static final String imagesIconPlayerPlay = 'images/icon_player_play.png';
+  /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_selected.png)
+  static final String imagesIconTransmissionSpeed05Selected = 'images/icon_transmission_speed_05_selected.png';
 }
