@@ -123,12 +123,16 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             questionList.add(buildQuestionType("填空题"));
             break;
           case 4: // 阅读题
+            questionList.add(buildQuestionType("阅读题"));
             questionList.add(Stack(
               children: [
-                buildQuestionType("阅读题"),
-                buildReadQuestion(element!.readContent)
+                Visibility(
+                    visible: element!.name!=null && element!.name!.isNotEmpty,
+                    child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)),
+                buildReadQuestion(element!.readContent),
               ],
             ));
+
             break;
         }
         if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
@@ -136,9 +140,9 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
           for(int i = 0 ;i< questionNum;i++){
             QuestionBankAppListVos question = element.questionBankAppListVos![i];
 
-            questionList.add(Text(
-              "第${i+1}题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-            ));
+            // questionList.add(Text(
+            //   "第${i+1}题",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
+            // ));
             questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
             if(question.type == 2 || (
