@@ -46,6 +46,9 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   // WeekTestCatalogResponse? paperCategory;
   TreeViewController? treeViewController;
 
+  Set<String> nodeFirst = {};
+  Set<String> nodeEnd = {};
+  Set<String> nodeEndParent = {};
   @override
   void onCreate() {
     // TODO: implement onCreate
@@ -102,6 +105,20 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
             if(treeViewController==null){
               treeViewController = TreeViewController(children:logic.state.nodes!);
               List<tree.Node> nodes = treeViewController!.expandAll();
+              nodes.forEach((element) {
+                nodeFirst.add(element!.key??"");
+                int length = element.children!=null ? element.children.length:0;
+                for(int i = 0;i<length;i++){
+                  if(i==length-1){
+                    // 最后一个章
+                    if(element.children[i].children!=null && element.children[i].children!.length>0){
+                      int childLength = element.children[i].children.length;
+                      nodeEnd.add(element.children[i].children[childLength-1].key??"");
+                    }
+                    nodeEndParent.add(element.children[i].key??"");
+                  }
+                }
+              });
               treeViewController = TreeViewController(children:nodes!);
             }
             return Container(
@@ -158,18 +175,24 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.only(left:22.w),
-                      child: Visibility(
-                        visible: node.parent,
-                        child: DottedLine(
-                          dashLength: 3.w,
-                          dashGapLength: 3.w,
-                          lineThickness: 2.w,
-                          dashColor: AppColors.c_FFE2E2E2,
-                          direction: Axis.vertical,
-                        ),
-                      )),
+                    child: Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        maintainSize: true,
+                        visible: !nodeFirst.contains(node.key),
+                      child: Container(
+                          margin: EdgeInsets.only(left:22.w),
+                          child: Visibility(
+                            visible: node.parent,
+                            child: DottedLine(
+                              dashLength: 3.w,
+                              dashGapLength: 3.w,
+                              lineThickness: 2.w,
+                              dashColor: AppColors.c_FFE2E2E2,
+                              direction: Axis.vertical,
+                            ),
+                          )),
+                    ),
                     ),
                 Row(
                   children: [
@@ -189,15 +212,21 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                      margin: EdgeInsets.only(left:22.w),
-                      child: DottedLine(
-                        dashLength: 3.w,
-                        dashGapLength: 3.w,
-                        lineThickness: 2.w,
-                        dashColor: AppColors.c_FFE2E2E2,
-                        direction: Axis.vertical,
-                      )),
+                  child: Visibility(
+                    maintainAnimation: true,
+                    maintainState: true,
+                    maintainSize: true,
+                    visible: !((nodeEndParent.contains(node.key) || nodeFirst.contains(node.key))&& !node.expanded),
+                    child: Container(
+                        margin: EdgeInsets.only(left:22.w),
+                        child: DottedLine(
+                          dashLength: 3.w,
+                          dashGapLength: 3.w,
+                          lineThickness: 2.w,
+                          dashColor: AppColors.c_FFE2E2E2,
+                          direction: Axis.vertical,
+                        )),
+                  ),
                 ),
               ],
             ),),
@@ -261,15 +290,21 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                        margin: EdgeInsets.only(left:22.w),
-                        child: DottedLine(
-                          dashLength: 3.w,
-                          dashGapLength: 3.w,
-                          lineThickness: 2.w,
-                          dashColor: AppColors.c_FFE2E2E2,
-                          direction: Axis.vertical,
-                        )),
+                    child: Visibility(
+                      maintainAnimation: true,
+                      maintainState: true,
+                      maintainSize: true,
+                      visible: !nodeEnd.contains(node.key),
+                      child: Container(
+                          margin: EdgeInsets.only(left:22.w),
+                          child: DottedLine(
+                            dashLength: 3.w,
+                            dashGapLength: 3.w,
+                            lineThickness: 2.w,
+                            dashColor: AppColors.c_FFE2E2E2,
+                            direction: Axis.vertical,
+                          )),
+                    ),
                   ),
                 ],
               ),
