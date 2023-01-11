@@ -51,7 +51,7 @@ class PayType{
 }
 
 class C{
-  static const String APPNAME = "推广大师";
+  static const String APPNAME = "英语周报";
   static const String COMPANY = "太原东方盛慧科技有限公司";
   static const String APP_DESC = "太原东方盛慧科技有限公司";
   static const String APP_DOWNLOAD_URL = "https://ps-1252082677.cos.ap-beijing.myqcloud.com/apk/money_make.apk";

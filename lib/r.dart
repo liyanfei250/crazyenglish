@@ -39,6 +39,8 @@ class R {
   static final String imagesChoiceCorrect = 'images/choice_correct.png';
   /// ![](http://127.0.0.1:11/images/torid_three_show.png)
   static final String imagesToridThreeShow = 'images/torid_three_show.png';
+  /// ![](http://127.0.0.1:11/images/icon_close_round_black.png)
+  static final String imagesIconCloseRoundBlack = 'images/icon_close_round_black.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_normal.png)
   static final String imagesIconTab3Normal = 'images/icon_tab3_normal.png';
   /// ![](http://127.0.0.1:11/images/index_class_new.png)
@@ -163,8 +165,6 @@ class R {
   static final String imagesIconTransmissionSpeed20Clicked = 'images/icon_transmission_speed_20_clicked.png';
   /// ![](http://127.0.0.1:11/images/weekly_fabulous.png)
   static final String imagesWeeklyFabulous = 'images/weekly_fabulous.png';
-  /// ![](http://127.0.0.1:11/images/test_lrc.mp3)
-  static final String imagesTestLrc = 'images/test_lrc.mp3';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_12_clicked.png)
   static final String imagesIconTransmissionSpeed12Clicked = 'images/icon_transmission_speed_12_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_icon_3.png)
@@ -179,6 +179,8 @@ class R {
   static final String imagesToridThreeHide = 'images/torid_three_hide.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)
   static final String imagesIndexClassMore = 'images/index_class_more.png';
+  /// ![](http://127.0.0.1:11/images/bg_update_top.png)
+  static final String imagesBgUpdateTop = 'images/bg_update_top.png';
   /// ![](http://127.0.0.1:11/images/weekly_bg.png)
   static final String imagesWeeklyBg = 'images/weekly_bg.png';
   /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
@@ -191,6 +193,8 @@ class R {
   static final String imagesIconIntensiveListeningTranslateYes = 'images/icon_intensive_listening_translate_yes.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
   static final String imagesIndexIcon4 = 'images/index_icon_4.png';
+  /// ![](http://127.0.0.1:11/images/iv_no_show.png)
+  static final String imagesIvNoShow = 'images/iv_no_show.png';
   /// ![](http://127.0.0.1:11/images/torid_five_show.png)
   static final String imagesToridFiveShow = 'images/torid_five_show.png';
   /// ![](http://127.0.0.1:11/images/index_icon_5.png)

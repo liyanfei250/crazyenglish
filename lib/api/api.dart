@@ -20,9 +20,11 @@ class Api {
   static String getWeekTestDetail = Config.ApiHost +"/crazy-question/exerciseQuestionRequire/selectAppRequireListVo/";
 
 
+  static String getAppVersion = Config.ApiHost +"/crazy-question/exerciseQuestionRequire/selectAppRequireListVo/169";
+
+
 
   static String getWeiXinPay = Config.ApiHost +"/weixinpay.site";
-  static String getAppVersion = Config.ApiHost +"/version.site";
   static String getPush = Config.ApiHost +"/push_record.site";
   static String getMobile = "https://api.verification.jpush.cn/v1/web/loginTokenVerify";
 }

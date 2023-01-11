@@ -16,6 +16,7 @@ class JsonCacheManageUtils{
   static final int WeekTestListResponse = 0x04;
   static final int WeekTestCatalogResponse = 0x05;
   static final int WeekTestDetailResponse = 0x06;
+  static final int APPVERSION = 0x07;
 
 
   // String contentJson;

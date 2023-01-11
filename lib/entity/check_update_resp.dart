@@ -7,14 +7,14 @@
 class CheckUpdateResp {
   String? _apkUrl;
   String? _updateDescription;
-  int? _publishDate;
+  String? _publishDate;
   bool? _forceUpdate;
   int? _apkSize;
   bool? _isUpdate;
   String? _newVersion;
 
   String? get apkUrl => _apkUrl;
-  int? get publishDate => _publishDate;
+  String? get publishDate => _publishDate;
   String? get newVersion => _newVersion;
   String? get updateDescription => _updateDescription;
   bool? get forceUpdate => _forceUpdate;
@@ -24,7 +24,7 @@ class CheckUpdateResp {
   CheckUpdateResp({
       String? apkUrl, 
       String? newVersion,
-    int? publishDate,
+    String? publishDate,
       String? updateDescription,
       bool? forceUpdate, 
       int? apkSize, 

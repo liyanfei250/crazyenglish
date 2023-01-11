@@ -65,6 +65,22 @@ class WeekTestRepository{
     }
   }
 
+  Future<WeekTestDetailResponse> getAppVersion() async{
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getAppVersion,
+        options: Options(method: Method.get));
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.msg!);
+    }
+    if(baseResp.getReturnData() !=null){
+
+      WeekTestDetailResponse weekTestDetailResponse = WeekTestDetailResponse.fromJson(baseResp.getReturnData());
+      return weekTestDetailResponse!;
+    } else {
+      return Future.error("返回weekTestDetailResponse为空");
+    }
+  }
+
 
 
 }

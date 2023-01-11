@@ -13,6 +13,7 @@ import '../utils/Util.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
+import 'app_update_panel/app_update_panel_logic.dart';
 import 'index/index_view.dart';
 import 'learn/learn_view.dart';
 import 'mine/mine_view.dart';
@@ -41,7 +42,9 @@ class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0.obs;
   // final trackLogic = Get.put(TrackEffectsLogic());
   // final userCenterLogic = Get.put(UserCenterLogic());
-  // final userCenterState = Get.find<UserCenterLogic>().state;
+  final appUpdatePanelLogic = Get.put(AppUpdatePanelLogic());
+  final appUpdatePanelState = Get.find<AppUpdatePanelLogic>().state;
+
   List<String> bottomTitles = [
     "首页",
     "我学",
@@ -67,13 +70,12 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     Util.initWhenEnterMain();
-    // userCenterLogic.getAppVersion({});
-    // userCenterLogic.addListenerId(GetBuilderIds.versionInfo, () {
-    //   if(userCenterState.checkUpdateResp!=null
-    //       && _selectedIndex.value ==0){
-    //     showAppUpgrade(userCenterState.checkUpdateResp);
-    //   }
-    // });
+    appUpdatePanelLogic.getAppVersion();
+    appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
+      if(appUpdatePanelState.checkUpdateResp!=null){
+        showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
+      }
+    });
   }
 
   @override

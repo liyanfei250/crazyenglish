@@ -171,7 +171,6 @@ flutter:
   assets:
   # assets-generator-begin
   # images/*
-    - assets/test_lrc.mp3
     - images/article_collect_default.png
     - images/torid_right.png
     - images/weekly_item_eye.png
@@ -192,6 +191,7 @@ flutter:
     - images/weekly_item_bg1.png
     - images/choice_correct.png
     - images/torid_three_show.png
+    - images/icon_close_round_black.png
     - images/icon_tab3_normal.png
     - images/index_class_new.png
     - images/icon_back.png
@@ -261,12 +261,14 @@ flutter:
     - images/index_icon_7.png
     - images/torid_three_hide.png
     - images/index_class_more.png
+    - images/bg_update_top.png
     - images/weekly_bg.png
     - images/torid_one_hide.png
     - images/index_icon_6.png
     - images/article_listen_play.png
     - images/icon_intensive_listening_translate_yes.png
     - images/index_icon_4.png
+    - images/iv_no_show.png
     - images/torid_five_show.png
     - images/index_icon_5.png
     - images/icon_player_after_play_clicked.png

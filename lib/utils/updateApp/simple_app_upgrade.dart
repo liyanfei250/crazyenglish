@@ -124,7 +124,7 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
                   Container(
                     margin: EdgeInsets.only(left: 21.5, top: 86),
                     child: Text(
-                      '推广大师',
+                      '英语周报',
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
@@ -243,7 +243,9 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
     String updateContent = "";
     updateContent += "版本号 ：" + resp.newVersion!;
     updateContent +=
-        "\n更新时间 ：" + DateUtil.formatDateMs(resp.publishDate);
+        "\n更新时间 ：${resp.publishDate}";
+    // updateContent +=
+    //     "\n更新时间 ：" + DateUtil.formatDateMs(resp.publishDate);
     updateContent += "\n更新说明 ：\n";
     updateContent += resp.updateDescription??"\n";
     return updateContent;
