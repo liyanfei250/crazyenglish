@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -24,6 +26,7 @@ import '../week_test_detail/test_player_widget.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
 import 'torid_page.dart';
+import 'package:collection/collection.dart';
 
 class Reading_detailPage extends StatefulWidget {
   paper.Data? data;
@@ -62,6 +65,25 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
           return false;
         }
       }
+    } else {
+      return false;
+    }
+
+  };
+
+  CustomRenderMatcher sentenceMatcher() => (context) {
+
+    if(context.tree.element!.localName == 'sentence'){
+      String key = context.tree.element!.attributes["value"]??"unknown";
+      try {
+        int num = int.parse(key);
+        if(num>0){
+          return true;
+        }
+      } catch (e) {
+        e.printError();
+      }
+      return false;
     } else {
       return false;
     }
@@ -147,7 +169,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
               margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
-
+                  RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 },
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),
@@ -302,6 +324,10 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                 "p":Style(
                                     fontSize:FontSize.large
                                 ),
+                                "sentence":Style(
+                                    textDecorationStyle: TextDecorationStyle.dashed,
+                                    textDecorationColor: AppColors.THEME_COLOR
+                                ),
 
                                 "hr":Style(
                                   margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
@@ -309,6 +335,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                   border: Border(bottom: BorderSide(color: Colors.grey)),
                                 )
                               },
+                              tagsList: Html.tags..addAll(['sentence']),
                               customRenders: {
                                 videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
                                   return AspectRatio(
@@ -323,6 +350,38 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                     ),
                                   );
                                 }),
+                                tagMatcher("sentence"):CustomRender.inlineSpan(inlineSpan: (context, buildChildren){
+                                  context.tree.style.textDecorationColor = AppColors.THEME_COLOR;
+                                  context.style.textDecorationColor = AppColors.THEME_COLOR;
+                                  context.tree.style.textDecorationStyle = TextDecorationStyle.dashed;
+                                  context.style.textDecorationStyle = TextDecorationStyle.dashed;
+                                  if (context.parser.selectable) {
+                                    return TextSpan(
+                                      style: context.style.generateTextStyle(),
+                                      children:
+                                          context.tree.children
+                                              .expandIndexed((i, childTree) => [
+                                            context.parser.parseTree(context, childTree),
+                                          ])
+                                              .toList(),
+                                    );
+                                  }
+                                  return WidgetSpan(
+                                    alignment: PlaceholderAlignment.baseline,
+                                    baseline: TextBaseline.alphabetic,
+                                    child: CssBoxWidget.withInlineSpanChildren(
+                                      key: context.key,
+                                      style: context.tree.style,
+                                      shrinkWrap: context.parser.shrinkWrap,
+                                      children:
+                                          context.tree.children
+                                              .expandIndexed((i, childTree) => [
+                                            context.parser.parseTree(context, childTree),
+                                          ])
+                                              .toList(),
+                                    ),
+                                  );
+                                })
                                 // pMatcher():CustomRender.inlineSpan(inlineSpan: (context, parsedChild) {
                                 //   if (_textIndent(context.tree.element!.attributes.cast()) != null) {
                                 //     // final style = context.tree.element?.styles

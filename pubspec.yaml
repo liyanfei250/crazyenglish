@@ -104,6 +104,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0-beta.22
   video_player: ^2.4.10
   audioplayers: ^1.2.0
+  scroll_to_index: ^3.0.1
 
 
 dev_dependencies:
@@ -170,14 +171,19 @@ flutter:
   assets:
   # assets-generator-begin
   # images/*
+    - assets/test_lrc.mp3
     - images/article_collect_default.png
     - images/torid_right.png
     - images/weekly_item_eye.png
     - images/weekly_de_browse.png
+    - images/icon_intensive_listening_translate_yes_clicked.png
     - images/torid_five_hide.png
     - images/torid_tixing.png
     - images/torid_close.png
+    - images/icon_transmission_speed_15_selected.png
+    - images/icon_intensive_listening_loop_no_clicked.png
     - images/torid_one_show.png
+    - images/icon_transmission_speed_12_selected.png
     - images/weekly_item_bg0.png
     - images/xunfei.jpeg
     - images/torid_second.png
@@ -189,21 +195,29 @@ flutter:
     - images/icon_tab3_normal.png
     - images/index_class_new.png
     - images/icon_back.png
+    - images/icon_intensive_listening_show_word_yes.png
+    - images/icon_intensive_listening_translate_no.png
     - images/index_teacher_icon1.png
+    - images/icon_transmission_speed_20.png
     - images/weekly_item_shadow.png
+    - images/icon_transmission_speed_08.png
     - images/index_search.png
     - images/torid_top.png
     - images/index_teacher_icon2.png
     - images/torid_four_show.png
     - images/article_man_play.png
+    - images/test_lrc_json.json
     - images/torid_eye_hide.png
     - images/index_icon_8.png
     - images/article_collect_press.png
     - images/xunfei_english.png
+    - images/icon_transmission_speed_05_clicked.png
     - images/index_icon_9.png
     - images/icon_back_black.png
     - images/article_torid_notice.png
     - images/index_icon_10.png
+    - images/icon_intensive_listening_translate_no_clicked.png
+    - images/icon_transmission_speed_10_clicked.png
     - images/index_msg.png
     - images/icon_tab4_normal.png
     - images/torid_two_show.png
@@ -213,20 +227,34 @@ flutter:
     - images/splash_icon.png
     - images/splash_welcome_1.png
     - images/icon_tab1_normal.png
+    - images/icon_intensive_listening_loop_no.png
+    - images/icon_transmission_speed_15_clicked.png
     - images/article_share.png
+    - images/icon_player_pause_clicked.png
     - images/splash_welcome_2.png
+    - images/icon_intensive_listening_show_word_yes_clicked.png
     - images/icon_tab3_pressed.png
     - images/choice_error.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
+    - images/icon_transmission_speed_08_selected.png
     - images/torid_four_hide.png
+    - images/icon_player_befor_play_clicked.png
+    - images/icon_intensive_listening_show_word_no_clicked.png
     - images/icon_tab4_pressed.png
     - images/article_woman_play.png
+    - images/icon_player_play_clicked.png
+    - images/icon_intensive_listening_translate_no_not_enabled.png
+    - images/icon_intensive_listening_loop_yes.png
+    - images/icon_intensive_listening_show_word_no.png
     - images/splash.png
     - images/home_search.png
     - images/index_icon_2.png
     - images/welcome_icon.png
+    - images/icon_player_befor_play.png
+    - images/icon_transmission_speed_20_clicked.png
     - images/weekly_fabulous.png
+    - images/icon_transmission_speed_12_clicked.png
     - images/index_icon_3.png
     - images/weekly_collect.png
     - images/article_listen_pause.png
@@ -237,21 +265,36 @@ flutter:
     - images/torid_one_hide.png
     - images/index_icon_6.png
     - images/article_listen_play.png
+    - images/icon_intensive_listening_translate_yes.png
     - images/index_icon_4.png
     - images/torid_five_show.png
     - images/index_icon_5.png
+    - images/icon_player_after_play_clicked.png
     - images/icon_tab1_pressed.png
+    - images/icon_player_pause.png
     - images/icon_tab2_pressed.png
+    - images/icon_transmission_speed_20_selected.png
+    - images/icon_intensive_listening_loop_yes_clicked.png
+    - images/icon_transmission_speed_12.png
     - images/reading_default.png
     - images/index_class_thumb1.png
+    - images/icon_intensive_listening_translate_yes_not_enabled.png
     - images/article_listen_derfault.png
     - images/index_ad.png
+    - images/icon_transmission_speed_10.png
     - images/torid_two_hide.png
+    - images/icon_transmission_speed_08_clicked.png
+    - images/icon_transmission_speed_05.png
     - images/index_class_thumb2.png
+    - images/icon_player_after_play.png
+    - images/icon_transmission_speed_15.png
     - images/index_icon_play.png
     - images/article_listen_press.png
     - images/weekly_browse.png
     - images/torid_bottom.png
     - images/torid_left.png
     - images/icon_back_blue.png
+    - images/icon_transmission_speed_10_selected.png
     - images/tree_edit.png
+    - images/icon_player_play.png
+    - images/icon_transmission_speed_05_selected.png
