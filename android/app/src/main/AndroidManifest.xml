@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="疯狂英语"
+        android:label="英语周报"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

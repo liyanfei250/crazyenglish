@@ -220,7 +220,17 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         ),
                         child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
                     ),
-                    Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),)
+                    Container(
+                      width: 260.w,
+                      child: Text(node.label,
+                        overflow:TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            color:nodeFirstParent.contains(node.key) && node.expanded? AppColors.c_FFFF4D35:AppColors.TEXT_BLACK_COLOR,
+                            fontSize: nodeFirstParent.contains(node.key) && node.expanded? 16.sp:14.sp,
+                            fontWeight: FontWeight.bold),),
+                    )
+
                   ],
                 ),
                 Expanded(
@@ -302,7 +312,9 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         child: Text(node.label,
                           overflow:TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color:AppColors.TEXT_GRAY_COLOR),),
                       )
 
                     ],
