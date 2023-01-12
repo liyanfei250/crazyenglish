@@ -124,14 +124,10 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             break;
           case 4: // 阅读题
             questionList.add(buildQuestionType("阅读题"));
-            questionList.add(Stack(
-              children: [
-                Visibility(
-                    visible: element!.name!=null && element!.name!.isNotEmpty,
-                    child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)),
-                buildReadQuestion(element!.readContent),
-              ],
-            ));
+            questionList.add(Visibility(
+                visible: element!.name!=null && element!.name!.isNotEmpty,
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+            questionList.add(buildReadQuestion(element!.readContent));
 
             break;
         }
@@ -154,8 +150,10 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
                 child: Text(
                   question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
                 ),));
-              questionList.add(buildSingleChoice(question!.bankAnswerAppListVos!));
-            }else if(question.type == 3){
+              if((question!.bankAnswerAppListVos??[]).length > 0) {
+                questionList.add(buildSingleChoice(question!.bankAnswerAppListVos??[]));
+              }
+            }else if(question.type == 3 ){  // 选择题
               questionList.add(buildGapQuestion(question!.bankAnswerAppListVos,question!.title!));
             }
           }
@@ -246,7 +244,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     return FocusScope(
       node: _scopeNode,
       child: Html(
-        data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+        data: htmlContent??"",
         onImageTap: (url,context,attributes,element,){
           if(url!=null && url!.startsWith('http')){
             DialogManager.showPreViewImageDialog(
@@ -349,7 +347,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   Widget buildReadQuestion(String? htmlContent){
     return Container(
       child: Html(
-        data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
+        data: htmlContent??"",
         onImageTap: (url,context,attributes,element,){
           if(url!=null && url!.startsWith('http')){
             DialogManager.showPreViewImageDialog(
