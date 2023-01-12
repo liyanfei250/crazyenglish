@@ -1,9 +1,11 @@
+import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
 
+import '../base/common.dart';
 import '../entity/login/login_util.dart';
 import '../r.dart';
 import '../routes/app_pages.dart';
@@ -44,6 +46,8 @@ class _HomePageState extends State<HomePage> {
   // final userCenterLogic = Get.put(UserCenterLogic());
   final appUpdatePanelLogic = Get.put(AppUpdatePanelLogic());
   final appUpdatePanelState = Get.find<AppUpdatePanelLogic>().state;
+  final dataGroupLogic = Get.put(ConfigLogic());
+  final dataGroupState = Get.find<ConfigLogic>().state;
 
   List<String> bottomTitles = [
     "首页",
@@ -74,6 +78,14 @@ class _HomePageState extends State<HomePage> {
     appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
       if(appUpdatePanelState.checkUpdateResp!=null){
         showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
+      }
+    });
+    dataGroupLogic.getConfig();
+    dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
+      if(dataGroupState.groupQUESTION_TYPE.data!=null){
+        dataGroupState.groupQUESTION_TYPE.data!.forEach((e) {
+          DataGroup.questionType[e.value!] = e.label??"";
+        });
       }
     });
   }

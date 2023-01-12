@@ -42,6 +42,10 @@ class LoadStatus {
   static const int empty = 2;
 }
 
+class DataGroup{
+  static Map<String,String> questionType = {};
+}
+
 class PayType{
   static const String APPLE = "apple";
   static const String WX = "wx";

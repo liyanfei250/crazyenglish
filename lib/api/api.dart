@@ -22,6 +22,13 @@ class Api {
 
   static String getAppVersion = Config.ApiHost +"/crazy-question/exerciseQuestionRequire/selectAppRequireListVo/169";
 
+  /// CLASS_GRADE 年级
+  /// QUESTION_TYPE 题型
+  /// QUESTION_DIFFICULTY 题目难度
+  /// LISTENING_TYPE 题目类型
+  /// LISTENING_MODE 听力类型
+  static String getDataGroupDetail = Config.ApiHost +"/crazy-basic-core/dataGroupDetail/";
+
 
 
   static String getWeiXinPay = Config.ApiHost +"/weixinpay.site";
