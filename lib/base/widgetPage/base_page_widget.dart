@@ -76,7 +76,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
     if(_cancelLoading!=null){
       _cancelLoading!();
     }
-    _cancelLoading = BotToast.showLoading();
+    _cancelLoading = BotToast.showCustomLoading(toastBuilder: (_) => LoadingWidget());
   }
 
   void hideLoading(){

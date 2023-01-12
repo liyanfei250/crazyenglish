@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
@@ -16,7 +17,7 @@ import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
 import 'reading_catalog_logic.dart';
 
-class Reading_catalogPage extends StatefulWidget {
+class Reading_catalogPage extends BasePage {
   Records? records;
 
   Reading_catalogPage({Key? key}) : super(key: key) {
@@ -26,11 +27,15 @@ class Reading_catalogPage extends StatefulWidget {
     }
   }
 
+
   @override
-  _Reading_catalogPageState createState() => _Reading_catalogPageState();
+  BasePageState<BasePage> getState() {
+    // TODO: implement getState
+    return _Reading_catalogPageState();
+  }
 }
 
-class _Reading_catalogPageState extends State<Reading_catalogPage> {
+class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
   final logic = Get.put(Reading_catalogLogic());
   final state = Get.find<Reading_catalogLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -41,6 +46,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
   void initState(){
     super.initState();
     logic.addListenerId(GetBuilderIds.paperCategory,(){
+      hideLoading();
       if(state.paperCategory!=null){
         paperCategory = state.paperCategory;
         if(mounted && _refreshController!=null){
@@ -51,6 +57,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
       }
     });
     _onRefresh();
+    showLoading("");
   }
 
   @override
@@ -239,5 +246,15 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
   void dispose() {
     Get.delete<Reading_catalogLogic>();
     super.dispose();
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }

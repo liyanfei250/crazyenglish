@@ -46,8 +46,8 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   Map<String,TextEditingController> gapEditController = {};
   @override
   void onCreate() {
-    // TODO: implement onCreate
     logic.getWeekTestDetail(widget.id!);
+    showLoading("");
   }
 
 
@@ -80,6 +80,15 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
           if(weekTestDetailResponse == null){
             return EmptyWidget("么有试题");
           }
+          if(weekTestDetailResponse != null
+            && weekTestDetailResponse!.data !=null){
+            hideLoading();
+          }
+          if(weekTestDetailResponse != null
+              && weekTestDetailResponse!.data !=null && weekTestDetailResponse!.data!.length ==0){
+            return EmptyWidget("空页面 请录入试题！");
+          }
+
           return SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 14.w),
@@ -118,6 +127,13 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             break;
           case 2: // 选择题
             questionList.add(buildQuestionType("选择题"));
+            questionList.add(Visibility(
+                visible: element!.name!=null && element!.name!.isNotEmpty,
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+            questionList.add(Visibility(
+                visible: element!.title!=null && element!.title!.isNotEmpty,
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+
             break;
           case 3: // 填空题
             questionList.add(buildQuestionType("填空题"));

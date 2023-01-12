@@ -35,6 +35,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.weekList,(){
+      hideLoading();
       if(state.list!=null && state.list!=null){
         if(state.pageNo == currentPageNo+1){
           weekPaperList = state.list;
@@ -70,6 +71,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
       }
     });
     _onRefresh();
+    showLoading("加载中");
   }
 
 
@@ -130,7 +132,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
                 childCount: weekPaperList.length,
               ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
-                  childAspectRatio:0.76),
+                  childAspectRatio:0.72),
             )
           ],
         ),

@@ -171,6 +171,7 @@ flutter:
   assets:
   # assets-generator-begin
   # images/*
+    - assets/test_lrc.mp3
     - images/article_collect_default.png
     - images/torid_right.png
     - images/weekly_item_eye.png

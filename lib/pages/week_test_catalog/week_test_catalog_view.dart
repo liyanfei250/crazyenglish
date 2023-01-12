@@ -54,6 +54,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   void onCreate() {
     // TODO: implement onCreate
     logic.addListenerId(GetBuilderIds.weekTestCatalogList,(){
+      hideLoading();
       if(state.nodes!=null && state.nodes.length>0){
         // paperCategory = state.weekTestCatalogResponse;
         if(mounted && _refreshController!=null){
@@ -65,6 +66,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       }
     });
     _onRefresh();
+    showLoading("");
   }
 
   @override
@@ -221,7 +223,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
                     ),
                     Container(
-                      width: 260.w,
+                      width: 245.w,
                       child: Text(node.label,
                         overflow:TextOverflow.ellipsis,
                         maxLines: 1,
@@ -308,7 +310,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         ),
                       ),
                       Container(
-                        width: 250.w,
+                        width: 235.w,
                         child: Text(node.label,
                           overflow:TextOverflow.ellipsis,
                           maxLines: 1,

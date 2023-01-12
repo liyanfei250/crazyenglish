@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
@@ -29,7 +30,7 @@ import '../../entity/paper_category.dart' as paper;
 import 'torid_page.dart';
 import 'package:collection/collection.dart';
 
-class Reading_detailPage extends StatefulWidget {
+class Reading_detailPage extends BasePage {
   paper.Data? data;
   Reading_detailPage({Key? key}) : super(key: key) {
     if(Get.arguments!=null &&
@@ -39,10 +40,13 @@ class Reading_detailPage extends StatefulWidget {
   }
 
   @override
-  _Reading_detailPageState createState() => _Reading_detailPageState();
+  BasePageState<BasePage> getState() {
+    // TODO: implement getState
+    return _Reading_detailPageState();
+  }
 }
 
-class _Reading_detailPageState extends State<Reading_detailPage> {
+class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
   final logic = Get.put(Reading_detailLogic());
   final state = Get.find<Reading_detailLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -105,6 +109,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
   void initState(){
     super.initState();
     logic.addListenerId(GetBuilderIds.paperDetail,(){
+      hideLoading();
       if(state.paperDetail!=null){
           paperDetail = state.paperDetail;
           if(mounted && _refreshController!=null){
@@ -136,6 +141,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
       }
     });
     logic.getPagerDetail("${widget.data!.id}");
+    showLoading("");
     initPlay();
   }
 
@@ -315,7 +321,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                   margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.w),
                                 )),
                             Padding(padding: EdgeInsets.only(top: 24.w)),
-                            Html(
+                            SelectionArea(child: Html(
                               data: TextUtil.weekDetail.replaceFirst("###content###", htmlContent??""),
                               onImageTap: (url,context,attributes,element,){
                                 if(url!=null && url!.startsWith('http')){
@@ -362,11 +368,11 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                     return TextSpan(
                                       style: context.style.generateTextStyle(),
                                       children:
-                                          context.tree.children
-                                              .expandIndexed((i, childTree) => [
-                                            context.parser.parseTree(context, childTree),
-                                          ])
-                                              .toList(),
+                                      context.tree.children
+                                          .expandIndexed((i, childTree) => [
+                                        context.parser.parseTree(context, childTree),
+                                      ])
+                                          .toList(),
                                     );
                                   }
                                   return WidgetSpan(
@@ -377,11 +383,11 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                       style: context.tree.style,
                                       shrinkWrap: context.parser.shrinkWrap,
                                       children:
-                                          context.tree.children
-                                              .expandIndexed((i, childTree) => [
-                                            context.parser.parseTree(context, childTree),
-                                          ])
-                                              .toList(),
+                                      context.tree.children
+                                          .expandIndexed((i, childTree) => [
+                                        context.parser.parseTree(context, childTree),
+                                      ])
+                                          .toList(),
                                     ),
                                   );
                                 })
@@ -405,7 +411,7 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
                                 //   }
                                 // })
                               },
-                            ),
+                            ),),
                             Visibility(
                                 visible: audioPlayer!=null,
                                 child: SizedBox(
@@ -454,6 +460,16 @@ class _Reading_detailPageState extends State<Reading_detailPage> {
       _controller.dispose();
     }
     super.dispose();
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }
 

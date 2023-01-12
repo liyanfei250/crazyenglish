@@ -37,6 +37,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.weekTestList,(){
+      hideLoading();
       if(state.list!=null && state.list!=null){
         if(state.pageNo == currentPageNo+1){
           weekPaperList = state.list;
@@ -72,6 +73,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
       }
     });
     _onRefresh();
+    showLoading("");
   }
 
 

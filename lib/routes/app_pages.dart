@@ -34,7 +34,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
-    GetPage(name: AppRoutes.WeeklyTestDetail, page:()=> Config.env == Env.TEST? WeekDetailPage():WeekTestDetailPage(),),
+    GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
     GetPage(name: AppRoutes.IntensiveListeningPage, page:()=>IntensiveListeningPage(),),
 
   ];
