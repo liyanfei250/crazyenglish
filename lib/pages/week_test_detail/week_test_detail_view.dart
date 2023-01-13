@@ -123,7 +123,14 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
         switch(element.questionType){
           case 1: // 听力题
             questionList.add(buildQuestionType("听力题"));
+            questionList.add(Visibility(
+                visible: element!.name!=null && element!.name!.isNotEmpty,
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+            questionList.add(Visibility(
+                visible: element!.title!=null && element!.title!.isNotEmpty,
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
             questionList.add(buildListenQuestion());
+
             break;
           case 2: // 选择题
             questionList.add(buildQuestionType("选择题"));

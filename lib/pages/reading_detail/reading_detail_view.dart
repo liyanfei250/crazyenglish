@@ -1,11 +1,9 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart' as audio;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/config.dart';
-import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,8 +20,6 @@ import '../../routes/getx_ids.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
-import '../../widgets/swiper.dart';
-import '../../xfyy/utils/xf_socket.dart';
 import '../week_test_detail/test_player_widget.dart';
 import 'reading_detail_logic.dart';
 import '../../entity/paper_category.dart' as paper;
@@ -52,8 +48,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
   PaperDetail? paperDetail;
 
-  final FlutterSoundPlayer playerModule = FlutterSoundPlayer();
-  AudioPlayer? audioPlayer;
+  audio.AudioPlayer? audioPlayer;
   var hasAudioFile = false.obs;
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
@@ -99,12 +94,39 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
     return attributes["style"];
   }
 
+  static const List<Duration> _exampleCaptionOffsets = <Duration>[
+    Duration(seconds: -10),
+    Duration(seconds: -3),
+    Duration(seconds: -1, milliseconds: -500),
+    Duration(milliseconds: -250),
+    Duration.zero,
+    Duration(milliseconds: 250),
+    Duration(seconds: 1, milliseconds: 500),
+    Duration(seconds: 3),
+    Duration(seconds: 10),
+  ];
+  static const List<double> _examplePlaybackRates = <double>[
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0,
+    10.0,
+  ];
 
-  late VideoPlayerController _controller;
+  late VideoPlayerController videoController;
   CustomRenderMatcher videoMatcher() => (context) => context.tree.element?.localName == 'video';
   var playMan = "John".obs;
   String man = "John";
   String woman = "lindsay";
+
+  VideoPlayerController? get controller => videoController;
+  
+  AudioPlayerStateChanged? audioPlayerStateChanged;
+  audio.PlayerState playerState = audio.PlayerState.stopped;
+  var isVideoPlaying = false.obs;
   @override
   void initState(){
     super.initState();
@@ -116,19 +138,26 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
             if(paperDetail!.data!=null
                 && paperDetail!.data!.videoFile!=null
                 && paperDetail!.data!.videoFile!.isNotEmpty){
-              _controller = VideoPlayerController.network(
+              videoController = VideoPlayerController.network(
                   paperDetail!.data!.videoFile!)
                 ..initialize().then((_) {
                   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
                   setState(() {});
                 });
+              videoController.addListener(() {
+                if(videoController.value.isPlaying){
+                  isVideoPlaying.value = true;
+                }else{
+                  isVideoPlaying.value = false;
+                }
+              });
               // _controller.setLooping(true);
             }
             if(paperDetail!.data!=null
                 && paperDetail!.data!.audioFile!=null
                 && paperDetail!.data!.audioFile!.isNotEmpty){
               hasAudioFile.value = true;
-              audioPlayer = AudioPlayer();
+              audioPlayer = audio.AudioPlayer();
               audioPlayer!.setSourceUrl(paperDetail!.data!.audioFile!);
             }
             // audioPlayer = AudioPlayer();
@@ -142,18 +171,14 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
     });
     logic.getPagerDetail("${widget.data!.id}");
     showLoading("");
-    initPlay();
-  }
-
-
-
-
-  /// 初始化播放
-  initPlay() async {
-    await playerModule.closePlayer();
-    await playerModule.openPlayer();
-    await playerModule
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
+    audioPlayerStateChanged = (playerState){
+      this.playerState = playerState;
+      if (playerState == audio.PlayerState.playing && videoController!=null) {
+        if(videoController.value.isPlaying){
+          videoController!.pause();
+        }
+      }
+    };
   }
 
   @override
@@ -169,7 +194,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
           actions: [
             Obx(()=>Visibility(
                 visible: !hasAudioFile.value,
-                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,)))),
+                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged)))),
             Container(
               width: 22.w,
               height: 22.w,
@@ -348,13 +373,46 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                               customRenders: {
                                 videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
                                   return AspectRatio(
-                                    aspectRatio: _controller.value.isInitialized? _controller.value.aspectRatio:(16/9),
+                                    aspectRatio: videoController.value.isInitialized? videoController.value.aspectRatio:(16/9),
                                     child: Stack(
                                       alignment: Alignment.bottomCenter,
                                       children: <Widget>[
-                                        VideoPlayer(_controller),
-                                        _ControlsOverlay(controller: _controller),
-                                        VideoProgressIndicator(_controller, allowScrubbing: true),
+                                        VideoPlayer(videoController),
+                                        Stack(
+                                          children: <Widget>[
+                                            Obx(()=> isVideoPlaying.value
+                                                ? const SizedBox.shrink(): Container(
+                                              color: Colors.black26,
+                                              child: const Center(
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.white,
+                                                  size: 100.0,
+                                                  semanticLabel: 'Play',
+                                                ),
+                                              ),
+                                            )),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if(controller!=null){
+                                                  if(controller!.value.isPlaying){
+                                                    controller!.pause();
+                                                  } else {
+                                                    if(playerState == audio.PlayerState.playing && audioPlayer!=null){
+                                                      audioPlayer!.pause().then((value) => Future.delayed(Duration(milliseconds: 150),(){
+                                                        controller!.play();
+                                                      }));
+                                                    }else{
+                                                      controller!.play();
+                                                    }
+                                                  }
+                                                }
+
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        VideoProgressIndicator(videoController, allowScrubbing: true),
                                       ],
                                     ),
                                   );
@@ -429,18 +487,13 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
           audioPlayer!=null?
           Visibility(
               visible: audioPlayer!=null,
-              child: TestPlayerWidget(audioPlayer!,true)):Container(),
+              child: TestPlayerWidget(audioPlayer!,true,stateChangeCallback:audioPlayerStateChanged)):Container(),
         ],
       )
     );
   }
 
 
-  void _play(String path) async {
-    await playerModule.startPlayer(fromURI: path,whenFinished: (){
-
-    });
-  }
   void _stopPlay() {
     // playerModule.stopPlayer();
     if(audioPlayer!=null){
@@ -451,13 +504,11 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
   @override
   void dispose() {
     Get.delete<Reading_detailLogic>();
-    playerModule.stopPlayer();
-    playerModule.closePlayer();
     if(audioPlayer!=null){
       audioPlayer!.release();
     }
-    if(_controller!=null){
-      _controller.dispose();
+    if(videoController!=null){
+      videoController.dispose();
     }
     super.dispose();
   }
@@ -509,7 +560,7 @@ class _ControlsOverlay extends StatelessWidget {
           duration: const Duration(milliseconds: 50),
           reverseDuration: const Duration(milliseconds: 200),
           child: controller.value.isPlaying
-              ? const SizedBox.shrink()
+              ? Container()
               : Container(
             color: Colors.black26,
             child: const Center(
@@ -524,8 +575,12 @@ class _ControlsOverlay extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            if(controller.value.isPlaying){
+              controller.pause();
+            } else {
 
-            controller.value.isPlaying ? controller.pause() : controller.play();
+              controller.play();
+            }
           },
         ),
         Align(

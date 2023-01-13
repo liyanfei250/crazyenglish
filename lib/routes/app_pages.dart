@@ -12,7 +12,6 @@ import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/login/login_view.dart';
 import '../pages/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
-import '../pages/week_test_detail/week_detail_view.dart';
 import '../xfyy/main.dart';
 import '../xfyy/text_to_voice.dart';
 

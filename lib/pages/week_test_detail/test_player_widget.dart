@@ -17,20 +17,26 @@ import '../../xfyy/utils/xf_socket.dart';
  *
  * Description:
  */
+
+typedef AudioPlayerStateChanged = Function(PlayerState playerState);
+
 class TestPlayerWidget extends StatefulWidget {
   AudioPlayer? player;
   final bool isBottomPlayer;
   String? voiceContent;
   String? playerName;
+  AudioPlayerStateChanged? stateChangeCallback;
 
-  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName}) : super(key: key) {
+  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName,AudioPlayerStateChanged? stateChangeCallback}) : super(key: key) {
     if(voiceContent!=null){
       this.voiceContent = voiceContent;
     }
     if(playerName!=null){
       this.playerName = playerName;
     }
-
+    if(stateChangeCallback!=null){
+      this.stateChangeCallback = stateChangeCallback;
+    }
   }
 
   @override
@@ -38,7 +44,6 @@ class TestPlayerWidget extends StatefulWidget {
 }
 
 class _TestPlayerWidgetState extends State<TestPlayerWidget> {
-  PlayerState? _audioPlayerState;
   Duration? _duration;
   Duration? _position;
 
@@ -202,7 +207,10 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
     _playerStateChangeSubscription =
         player!.onPlayerStateChanged.listen((state) {
           setState(() {
-            _audioPlayerState = state;
+            if(widget.stateChangeCallback!=null){
+              widget.stateChangeCallback!(_playerState);
+            }
+            _playerState = state;
           });
         });
   }
