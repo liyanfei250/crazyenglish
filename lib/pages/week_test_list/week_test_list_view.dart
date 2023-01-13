@@ -233,7 +233,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
         width: 332.w,
         height: 92.w,
         margin: EdgeInsets.only(top: 11.w,left: 14.w,right: 14.w),
-        padding: EdgeInsets.only(top: 14.w,bottom: 14.w),
+        padding: EdgeInsets.only(top: 8.w,bottom: 8.w),
         decoration: BoxDecoration(
             boxShadow:[
               BoxShadow(
@@ -251,6 +251,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
           children: [
             Container(
               width: 62.w,
+              height: 76.w,
               margin: EdgeInsets.only(left: 7.w,right: 16.w),
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -265,33 +266,36 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
             ),
             Expanded(
                 child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(weekPaperList![index].name?? "",
-                      maxLines:1,
-                      style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.bold),),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 12.sp),),
-                        InkWell(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height:14.w,),
-                              Padding(padding: EdgeInsets.only(left: 4.w)),
-                              Text("222",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
-                              Padding(padding: EdgeInsets.only(left: 4.w)),
-                            ],
+                Container(
+                  margin: EdgeInsets.only(top: 4.w,bottom: 4.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(weekPaperList![index].name?? "",
+                        maxLines:1,
+                        style: TextStyle(color: AppColors.c_FF101010,fontSize: 17.sp,fontWeight: FontWeight.w600),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            weekPaperList[index].weekTime?? "",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 12.sp),),
+                          InkWell(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(R.imagesWeeklyDeBrowse,width: 14.w,height:14.w,),
+                                Padding(padding: EdgeInsets.only(left: 4.w)),
+                                Text("222",style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 10.sp),),
+                                Padding(padding: EdgeInsets.only(left: 14.w)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ))
+                        ],
+                      ),
+                    ],
+                  )),
+                )
           ],
         ),
       ),

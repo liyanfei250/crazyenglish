@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
@@ -101,38 +102,49 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: AppColors.c_FFFAF7F7,
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(()=>Offstage(
-                offstage: _selectedIndex.value == 3,
-                child: Container(),
-              )),
-              Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    physics: _neverScroll,
-                    children: const [
-                      IndexPage(),
-                      LearnPage(),
-                      SayPage(),
-                      MinePage()
-                    ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: AppColors.c_FFFAF7F7,
+          body: SafeArea(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(()=>Offstage(
+                    offstage: _selectedIndex.value == 3,
+                    child: Container(),
+                  )),
+                  Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        physics: _neverScroll,
+                        children: const [
+                          IndexPage(),
+                          LearnPage(),
+                          SayPage(),
+                          MinePage()
+                        ],
+                      )
                   )
-              )
-            ],
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: SafeArea(
+            child: buildBottomRowBar(),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: buildBottomRowBar(),
-      ),
-    );
+        value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,//状态栏颜色
+        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
+        statusBarBrightness: Brightness.dark,  //状态栏亮度
+        systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
+        systemNavigationBarColor: Colors.white,  //导航栏颜色
+        systemNavigationBarIconBrightness: Brightness.dark,//导航栏图标颜色
+        systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
+        systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
+    ),);
   }
 
   Widget buildBottomRowBar(){
@@ -162,9 +174,11 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Obx(()=>Image.asset("images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
+          Obx(()=>Image.asset(
+            fit:BoxFit.contain,
+            "images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
             height: 26.w,)),
-          // Padding(padding: EdgeInsets.only(top: 4.w)),
+          Padding(padding: EdgeInsets.only(top: 4.w)),
           Obx(()=>Text(
             bottomTitles[index],
             style: TextStyle(

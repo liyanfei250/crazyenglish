@@ -14,9 +14,9 @@ import '../r.dart';
 
 class SearchBar extends StatelessWidget {
   String? hintContent = "请输入关键词搜索";
-  double? height = 28.w;
-  double? width = 294.w;
-  SearchBar({Key? key,this.hintContent="请输入关键词搜索",this.width,this.height}) : super(key: key);
+  double height;
+  double width;
+  SearchBar({Key? key,this.hintContent="请输入关键词搜索",required this.width,required  this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

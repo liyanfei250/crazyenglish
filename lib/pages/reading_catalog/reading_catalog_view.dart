@@ -86,12 +86,13 @@ class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
                 child: SearchBar(width: double.infinity,height: 28.w,),
               ),
             ),
-            SliverList(
+            SliverPadding(padding: EdgeInsets.only(bottom:15.w,),
+            sliver:SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
                 childCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
               ),
-            ),
+            )),
             // ListView.builder(
             //     itemCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
             //     itemBuilder: (_,int position)=>buildItem(position)),
@@ -111,7 +112,7 @@ class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
         width: 332.w,
         height: 106.w,
         margin: EdgeInsets.only(top: 11.w,left: 14.w,right: 14.w),
-        padding: EdgeInsets.only(top: 14.w,bottom: 14.w),
+        padding: EdgeInsets.only(top: 14.w,bottom: 14.w,right: 2.w),
         decoration: BoxDecoration(
             boxShadow:[
               BoxShadow(
@@ -179,10 +180,11 @@ class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
                         Text(paperCategory!.data![index].catalogueTitle?? "",
                           maxLines:1,
                           overflow:TextOverflow.ellipsis,
-                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.normal),),
+                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 17.sp,fontWeight: FontWeight.w600),),
+                        Padding(padding: EdgeInsets.only(top: 6.w)),
                         Text(paperCategory!.data![index].catalogueTitleSubtitle?? "",
                           overflow:TextOverflow.ellipsis,
-                          maxLines:1,style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 16.sp),),
+                          maxLines:1,style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 15.sp),),
                       ],
                     ),
                     Row(

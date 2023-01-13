@@ -91,7 +91,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
 
           return SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 14.w),
+              margin: EdgeInsets.symmetric(horizontal: 8.w,vertical: 12.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -122,34 +122,37 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
       weekTestDetailResponse.data!.forEach((element) {
         switch(element.questionType){
           case 1: // 听力题
-            questionList.add(buildQuestionType("听力题"));
-            questionList.add(Visibility(
+            questionList.add(makeMarkeContainer(buildQuestionType("听力题")));
+            questionList.add(
+                makeMarkeContainer(
+                Visibility(
                 visible: element!.name!=null && element!.name!.isNotEmpty,
-                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
-            questionList.add(Visibility(
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))
+                ));
+            questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.title!=null && element!.title!.isNotEmpty,
-                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
-            questionList.add(buildListenQuestion());
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+            questionList.add(makeMarkeContainer(buildListenQuestion()));
 
             break;
           case 2: // 选择题
-            questionList.add(buildQuestionType("选择题"));
-            questionList.add(Visibility(
+            questionList.add(makeMarkeContainer(buildQuestionType("选择题")));
+            questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.name!=null && element!.name!.isNotEmpty,
-                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
-            questionList.add(Visibility(
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+            questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.title!=null && element!.title!.isNotEmpty,
-                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
 
             break;
           case 3: // 填空题
-            questionList.add(buildQuestionType("填空题"));
+            questionList.add(makeMarkeContainer(buildQuestionType("填空题")));
             break;
           case 4: // 阅读题
-            questionList.add(buildQuestionType("阅读题"));
-            questionList.add(Visibility(
+            questionList.add(makeMarkeContainer(buildQuestionType("阅读题")));
+            questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.name!=null && element!.name!.isNotEmpty,
-                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),)));
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
             questionList.add(buildReadQuestion(element!.readContent));
 
             break;
@@ -168,13 +171,13 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
                 (question.type == 1 || question.type ==4)
                 && question.listenType == 1)){
               // 选择题
-              questionList.add(Visibility(
+              questionList.add(makeMarkeContainer(Visibility(
                 visible: question!.title != null && question!.title!.isNotEmpty,
                 child: Text(
-                  question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp),
-                ),));
+                  question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+                ),)));
               if((question!.bankAnswerAppListVos??[]).length > 0) {
-                questionList.add(buildSingleChoice(question!.bankAnswerAppListVos??[]));
+                questionList.add(makeMarkeContainer(buildSingleChoice(question!.bankAnswerAppListVos??[])));
               }
             }else if(question.type == 3 ){  // 选择题
               questionList.add(buildGapQuestion(question!.bankAnswerAppListVos,question!.title!));
@@ -184,6 +187,13 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
       });
     }
     return questionList;
+  }
+
+  Widget makeMarkeContainer(Widget child){
+    return Container(
+      margin: EdgeInsets.only(left: 8.w,right: 5.w),
+      child: child,
+    );
   }
 
   Widget buildQuestionType(String name){

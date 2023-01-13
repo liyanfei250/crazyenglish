@@ -136,15 +136,27 @@ class _LoginPageState extends BasePageState<LoginPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(padding: EdgeInsets.only(top: 80.w)),
-          Image.asset(R.imagesWelcomeIcon,width: 252.w,height: 84.w,),
+          Padding(padding: EdgeInsets.only(top: 70.w)),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(left: 40.w, right: 20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
+                Padding(padding: EdgeInsets.only(top: 8.w)),
+                Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
+              ],
+            ),
+          ),
           _getLoginInput(),
           Padding(padding: EdgeInsets.only(top: 10.w)),
           const Spacer(),
           Column(
             children: [
               Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
+                margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -157,10 +169,18 @@ class _LoginPageState extends BasePageState<LoginPage> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Obx(()=>Checkbox(value: agreePolicy.value,
-                              shape: const CircleBorder(),activeColor: AppColors.THEME_COLOR,onChanged: ( value){
-                            agreePolicy.value = value!;
-                          })),
+                          Obx(()=>InkWell(
+                            onTap: (){
+                              agreePolicy.value = !agreePolicy.value;
+                            },
+                            child: Container(
+                              width: 20.w,
+                              height: 20.w,
+                              padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
+                              child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
+                                height: 10.w,),
+                            ),
+                          )),
                           RichText(
                             text: TextSpan(
                                 text: "阅读并同意",
@@ -234,7 +254,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                   children: [
                     Obx(()=>
                         Container(
-                          padding: EdgeInsets.only(left: 30.w),
+                          padding: EdgeInsets.only(left: 20.w),
                           width: 170.w,
                           child:TextField(
                               controller: _verifyCodeController,
@@ -250,7 +270,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                                 border: InputBorder.none,
                                 hintText: '请输入验证码',
                                 hintStyle:
-                                TextStyle(fontSize: 15, color: Color(0xffccd6e8)),
+                                TextStyle(fontSize: 15, color: Color(0xff717171)),
                               ),
                             )
                         ),
@@ -268,7 +288,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                         }
                       },
                       child: Obx(
-                          ()=>Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),)
+                          ()=>Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15,color: AppColors.THEME_COLOR),)
                       ),
                     )
                   ],
@@ -313,12 +333,12 @@ class _LoginPageState extends BasePageState<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 9.w),
-            width: 54.w,
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
             child: Text("+86",style: TextStyle(fontSize:16.sp,color: AppColors.c_FF101010),),
           ),
           Container(
-            width: 190.w,
+            width: 170.w,
+            alignment: Alignment.centerLeft,
             child: TextField(
               controller: _phoneController,
               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),

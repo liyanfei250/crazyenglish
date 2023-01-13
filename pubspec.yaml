@@ -171,7 +171,6 @@ flutter:
   assets:
   # assets-generator-begin
   # images/*
-    - assets/test_lrc.mp3
     - images/article_collect_default.png
     - images/torid_right.png
     - images/weekly_item_eye.png
@@ -184,6 +183,7 @@ flutter:
     - images/icon_intensive_listening_loop_no_clicked.png
     - images/torid_one_show.png
     - images/icon_transmission_speed_12_selected.png
+    - images/login_agree_default.png
     - images/weekly_item_bg0.png
     - images/xunfei.jpeg
     - images/torid_second.png
@@ -245,6 +245,7 @@ flutter:
     - images/icon_tab4_pressed.png
     - images/article_woman_play.png
     - images/icon_player_play_clicked.png
+    - images/login_agree_selected.png
     - images/icon_intensive_listening_translate_no_not_enabled.png
     - images/icon_intensive_listening_loop_yes.png
     - images/icon_intensive_listening_show_word_no.png
@@ -291,6 +292,7 @@ flutter:
     - images/index_class_thumb2.png
     - images/icon_player_after_play.png
     - images/icon_transmission_speed_15.png
+    - images/welcome_txt.png
     - images/index_icon_play.png
     - images/article_listen_press.png
     - images/weekly_browse.png

@@ -87,7 +87,7 @@ class Util {
             margin: EdgeInsets.only(left: Util.setWidth(13) as double),
             child: Image.asset(
               R.imagesIconBackBlack,
-              width: Util.setWidth(48) as double?,height: Util.setWidth(24) as double?,),
+              width: Util.setWidth(52) as double?,height: Util.setWidth(26) as double?,),
           ),
       ),
     );

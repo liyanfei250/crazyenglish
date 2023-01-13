@@ -126,14 +126,15 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
                 child: SearchBar(width: double.infinity,height: 28.w,),
               ),
             ),
-            SliverGrid(
+            SliverPadding(padding: EdgeInsets.only(left: 10.w,right: 10.w),
+            sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
                 childCount: weekPaperList.length,
               ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
-                  childAspectRatio:0.72),
-            )
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+                mainAxisExtent:165.w,),
+            ),)
           ],
         ),
       ),
@@ -154,11 +155,29 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             decoration: BoxDecoration(
               boxShadow:[
                 BoxShadow(
-                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                  offset: Offset(7, 7),						// 阴影与容器的距离
-                  blurRadius: 165,							// 高斯的标准偏差与盒子的形状卷积。
+                  color: AppColors.c_BF542327.withOpacity(0.15),		// 阴影的颜色
+                  offset: Offset(0.w, 1.w),						// 阴影与容器的距离
+                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
                   spreadRadius: 0.w,
-                )
+                ),
+                BoxShadow(
+                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
+                  offset: Offset(0.w, -1.w),						// 阴影与容器的距离
+                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 0.w,
+                ),
+                BoxShadow(
+                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
+                  offset: Offset(1.w, 0.w),						// 阴影与容器的距离
+                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 0.w,
+                ),
+                BoxShadow(
+                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
+                  offset: Offset(-1.w, 0.w),						// 阴影与容器的距离
+                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 0.w,
+                ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(6.w)),
             ),
