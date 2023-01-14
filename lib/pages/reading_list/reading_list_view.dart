@@ -78,14 +78,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.c_FFFFFFFF,
-        centerTitle: true,
-        title: Text("英语周报",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
-        leading: Util.buildBackWidget(context),
-        // bottom: ,
-        elevation: 0,
-      ),
+      appBar: buildNormalAppBar("英语周报"),
       backgroundColor: AppColors.c_FFFAF7F7,
       body: SmartRefresher(
         enablePullDown: true,
@@ -155,27 +148,9 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             decoration: BoxDecoration(
               boxShadow:[
                 BoxShadow(
-                  color: AppColors.c_BF542327.withOpacity(0.15),		// 阴影的颜色
-                  offset: Offset(0.w, 1.w),						// 阴影与容器的距离
-                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
-                  spreadRadius: 0.w,
-                ),
-                BoxShadow(
                   color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                  offset: Offset(0.w, -1.w),						// 阴影与容器的距离
-                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
-                  spreadRadius: 0.w,
-                ),
-                BoxShadow(
-                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                  offset: Offset(1.w, 0.w),						// 阴影与容器的距离
-                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
-                  spreadRadius: 0.w,
-                ),
-                BoxShadow(
-                  color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                  offset: Offset(-1.w, 0.w),						// 阴影与容器的距离
-                  blurRadius: 6,							// 高斯的标准偏差与盒子的形状卷积。
+                  offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+                  blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
                   spreadRadius: 0.w,
                 ),
               ],

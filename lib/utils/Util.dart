@@ -83,11 +83,12 @@ class Util {
       child:
       Center(
           child: Container(
-            alignment: Alignment.center,
+            width: Util.setWidth(20) as double?,
+            height: Util.setWidth(20) as double?,
+            alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: Util.setWidth(13) as double),
             child: Image.asset(
-              R.imagesIconBackBlack,
-              width: Util.setWidth(52) as double?,height: Util.setWidth(26) as double?,),
+              R.imagesIconBackBlack,fit: BoxFit.fill,),
           ),
       ),
     );

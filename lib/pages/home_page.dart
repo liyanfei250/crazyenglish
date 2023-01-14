@@ -21,6 +21,7 @@ import 'index/index_view.dart';
 import 'learn/learn_view.dart';
 import 'mine/mine_view.dart';
 import 'say/say_view.dart';
+import 'dart:io' as io;
 
 /**
  * Time: 2022/9/16 16:33
@@ -103,6 +104,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,//状态栏颜色
+        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
+        statusBarBrightness: Brightness.dark,  //状态栏亮度
+        systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
+        systemNavigationBarColor: Colors.white,  //导航栏颜色
+        systemNavigationBarIconBrightness: Brightness.light,//导航栏图标颜色
+        systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
+        systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
+    ),
         child: Scaffold(
           extendBody: true,
           backgroundColor: AppColors.c_FFFAF7F7,
@@ -131,37 +142,48 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          bottomNavigationBar: SafeArea(
-            child: buildBottomRowBar(),
-          ),
-        ),
-        value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,//状态栏颜色
-        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
-        statusBarBrightness: Brightness.dark,  //状态栏亮度
-        systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
-        systemNavigationBarColor: Colors.white,  //导航栏颜色
-        systemNavigationBarIconBrightness: Brightness.dark,//导航栏图标颜色
-        systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
-        systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
-    ),);
+          bottomNavigationBar: buildBottomRowBar(),
+        ),);
   }
 
   Widget buildBottomRowBar(){
-    return Container(
-      color: AppColors.c_FFFFFFFF,
-      height: 56.w,
-      child: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buildBottomBar(0),
-            buildBottomBar(1),
-            buildBottomBar(2),
-            buildBottomBar(3),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height:56.w,
+          decoration: BoxDecoration(
+            color: AppColors.c_FFFFFFFF,
+            boxShadow:[
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),		// 阴影的颜色
+                offset: Offset(0.w, -10.w),						// 阴影与容器的距离
+                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                spreadRadius: 0.w,
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(6.w)),
+          ),
+          child: Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buildBottomBar(0),
+                buildBottomBar(1),
+                buildBottomBar(2),
+                buildBottomBar(3),
+              ],
+            ),
+          ),
         ),
-      ),
+        Visibility(
+            visible: io.Platform.isIOS,
+            child: Container(
+          color: AppColors.c_FFFFFFFF,
+          height:22.w,
+          width: double.infinity,
+        ))
+      ],
     );
   }
 
