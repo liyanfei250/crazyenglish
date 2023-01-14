@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,15 @@ import '../../xfyy/utils/xf_socket.dart';
 
 typedef AudioPlayerStateChanged = Function(PlayerState playerState);
 
-class TestPlayerWidget extends StatefulWidget {
+class TestPlayerWidget extends BasePage {
   AudioPlayer? player;
   final bool isBottomPlayer;
   String? voiceContent;
   String? playerName;
   AudioPlayerStateChanged? stateChangeCallback;
+  StreamController? playerManStreamController;
 
-  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName,AudioPlayerStateChanged? stateChangeCallback}) : super(key: key) {
+  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName,AudioPlayerStateChanged? stateChangeCallback,StreamController? playerManStreamController}) : super(key: key) {
     if(voiceContent!=null){
       this.voiceContent = voiceContent;
     }
@@ -37,13 +39,19 @@ class TestPlayerWidget extends StatefulWidget {
     if(stateChangeCallback!=null){
       this.stateChangeCallback = stateChangeCallback;
     }
+    if(playerManStreamController!=null){
+      this.playerManStreamController = playerManStreamController;
+    }
   }
 
   @override
-  State<TestPlayerWidget> createState() => _TestPlayerWidgetState();
+  BasePageState<BasePage> getState() {
+    // TODO: implement getState
+    return _TestPlayerWidgetState();
+  }
 }
 
-class _TestPlayerWidgetState extends State<TestPlayerWidget> {
+class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
   Duration? _duration;
   Duration? _position;
 
@@ -52,6 +60,7 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
   StreamSubscription? _positionSubscription;
   StreamSubscription? _playerCompleteSubscription;
   StreamSubscription? _playerStateChangeSubscription;
+  StreamSubscription? _womanManStreamSubscription;
 
   bool get _isPlaying => _playerState == PlayerState.playing;
   bool get _isPaused => _playerState == PlayerState.paused;
@@ -82,6 +91,8 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
     _playerStateChangeSubscription?.cancel();
+    _womanManStreamSubscription?.cancel();
+
     super.dispose();
   }
 
@@ -159,11 +170,13 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
               if(widget.voiceContent!=null
                   && widget.voiceContent!.isNotEmpty){
                 if(player == null){
+                  showLoading("");
                   XfSocket.connect(widget.voiceContent!,widget.playerName!, onFilePath: (path) {
                     widget.player = AudioPlayer();
-                    player!.setSourceDeviceFile(path);
+                    print("onFilePath maked");
                     _initStreams();
-                    _play();
+                    _firstPlay(path);
+                    hideLoading();
                   });
                 }else{
                   _isPlaying ? _pause() : _play();
@@ -189,6 +202,13 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
     if(player==null){
       return;
     }
+    _womanManStreamSubscription = widget.playerManStreamController?.stream.listen((event) {
+      if(event is bool){
+        if(event){
+          _stop();
+        }
+      }
+    });
     _durationSubscription = player!.onDurationChanged.listen((duration) {
       setState(() => _duration = duration);
     });
@@ -217,14 +237,33 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
 
   Future<void> _play() async {
     final position = _position;
+    print("position");
     if(player == null){
+      print("player == null");
       return;
     }
     if (position != null && position.inMilliseconds > 0) {
-
+      print("position != null");
       await player!.seek(position);
     }
+    print("player resume");
     await player!.resume();
+    setState(() => _playerState = PlayerState.playing);
+  }
+
+  Future<void> _firstPlay(String source) async {
+    final position = _position;
+    print("position");
+    if(player == null){
+      print("player == null");
+      return;
+    }
+    if (position != null && position.inMilliseconds > 0) {
+      print("position != null");
+      await player!.seek(position);
+    }
+    print("player resume");
+    player!.play(DeviceFileSource(source));
     setState(() => _playerState = PlayerState.playing);
   }
 
@@ -240,10 +279,21 @@ class _TestPlayerWidgetState extends State<TestPlayerWidget> {
     if(player == null){
       return;
     }
+    XfSocket.close();
     await player!.stop();
     setState(() {
       _playerState = PlayerState.stopped;
       _position = Duration.zero;
     });
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }

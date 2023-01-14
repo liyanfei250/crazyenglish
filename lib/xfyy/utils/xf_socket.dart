@@ -43,7 +43,7 @@ class XfSocket {
   XfSocket.connect(String text,String vcn, {this.onFilePath}) {
     String u = XfUtil.getAuthUrl(_host, _apiKey, _apiSecret);
     debugPrint('创建连接url = $u');
-    close();
+    XfSocket.close();
     _channel = IOWebSocketChannel.connect(u);
     //创建监听
     _channel?.stream.listen((message) {
@@ -70,9 +70,12 @@ class XfSocket {
   }
 
   ///关闭连接
-  close([int status = status.goingAway]) {
+  XfSocket.close([int status = status.goingAway]) {
     debugPrint('关闭连接');
-    _channel?.sink.close(status);
+    if(_channel!=null){
+      _channel?.sink.close(status);
+    }
+
   }
 
   void _onMessage(dynamic data, {int type = 1}) {
@@ -80,7 +83,7 @@ class XfSocket {
     if (type == 1) {
       var xfRes = XfRes.fromJson(jsonDecode(data));
       var decode = base64.decode(xfRes.data!.audio!);
-      debugPrint("result222 = $decode");
+      print("result222 = $decode");
       _writeCounter(decode);
     } else {
       var xfVoiceRes = XfVoiceRes.fromJson(jsonDecode(data));
@@ -101,7 +104,7 @@ class XfSocket {
         }
       } else if (status == 2) {
         // 识别结束
-        close();
+        XfSocket.close();
       } else {
         onTextResult?.call("数据有误:${xfVoiceRes.message}");
       }
@@ -124,7 +127,7 @@ class XfSocket {
   void _writeCounter(Uint8List decode) async {
     File file = await _getLocalFile();
     file.writeAsBytes(decode, mode: FileMode.write).then((value) {
-      debugPrint("result写入文件 $value");
+      print("result写入文件 $value");
       onFilePath?.call(value.path);
     });
   }

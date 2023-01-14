@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart' as audio;
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
@@ -50,6 +52,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
 
   audio.AudioPlayer? audioPlayer;
   var hasAudioFile = false.obs;
+  StreamController<bool> playerManStreamController = StreamController.broadcast();
 
   CustomRenderMatcher hrMatcher() => (context) => context.tree.element?.localName == 'hr';
   CustomRenderMatcher pMatcher() => (context) {
@@ -116,13 +119,13 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
     10.0,
   ];
 
-  late VideoPlayerController videoController;
+  VideoPlayerController? videoController;
   CustomRenderMatcher videoMatcher() => (context) => context.tree.element?.localName == 'video';
-  var playMan = "John".obs;
-  String man = "John";
-  String woman = "lindsay";
+  var playMan = "henry".obs;
+  String man = "henry";
+  String woman = "catherine";
 
-  VideoPlayerController? get controller => videoController;
+  // VideoPlayerController? get controller => videoController;
   
   AudioPlayerStateChanged? audioPlayerStateChanged;
   audio.PlayerState playerState = audio.PlayerState.stopped;
@@ -144,8 +147,8 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
                   setState(() {});
                 });
-              videoController.addListener(() {
-                if(videoController.value.isPlaying){
+              videoController!.addListener(() {
+                if(videoController!.value.isPlaying){
                   isVideoPlaying.value = true;
                 }else{
                   isVideoPlaying.value = false;
@@ -174,7 +177,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
     audioPlayerStateChanged = (playerState){
       this.playerState = playerState;
       if (playerState == audio.PlayerState.playing && videoController!=null) {
-        if(videoController.value.isPlaying){
+        if(videoController!.value.isPlaying){
           videoController!.pause();
         }
       }
@@ -194,7 +197,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
           actions: [
             Obx(()=>Visibility(
                 visible: !hasAudioFile.value,
-                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged)))),
+                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged,playerManStreamController: playerManStreamController)))),
             Container(
               width: 22.w,
               height: 22.w,
@@ -219,9 +222,11 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                   if(playMan.value == man){
                     playMan.value = woman;
                     Fluttertoast.showToast(msg: "已切换为女生");
+                    playerManStreamController.add(true);
                   }else{
                     playMan.value = man;
                     Fluttertoast.showToast(msg: "已切换为男生");
+                    playerManStreamController.add(true);
                   }
                   _stopPlay();
                 },
@@ -331,12 +336,15 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                                   tagsList: Html.tags..addAll(['sentence']),
                                   customRenders: {
                                     videoMatcher(): CustomRender.widget(widget: (context, buildChildren){
+                                      if(videoController==null){
+                                        return SizedBox.shrink();
+                                      }
                                       return AspectRatio(
-                                        aspectRatio: videoController.value.isInitialized? videoController.value.aspectRatio:(16/9),
+                                        aspectRatio: videoController!.value.isInitialized? videoController!.value.aspectRatio:(16/9),
                                         child: Stack(
                                           alignment: Alignment.bottomCenter,
                                           children: <Widget>[
-                                            VideoPlayer(videoController),
+                                            VideoPlayer(videoController!),
                                             Stack(
                                               children: <Widget>[
                                                 Obx(()=> isVideoPlaying.value
@@ -353,16 +361,16 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                                                 )),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    if(controller!=null){
-                                                      if(controller!.value.isPlaying){
-                                                        controller!.pause();
+                                                    if(videoController!=null){
+                                                      if(videoController!.value.isPlaying){
+                                                        videoController!.pause();
                                                       } else {
                                                         if(playerState == audio.PlayerState.playing && audioPlayer!=null){
                                                           audioPlayer!.pause().then((value) => Future.delayed(Duration(milliseconds: 150),(){
-                                                            controller!.play();
+                                                            videoController!.play();
                                                           }));
                                                         }else{
-                                                          controller!.play();
+                                                          videoController!.play();
                                                         }
                                                       }
                                                     }
@@ -371,7 +379,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
                                                 ),
                                               ],
                                             ),
-                                            VideoProgressIndicator(videoController, allowScrubbing: true),
+                                            VideoProgressIndicator(videoController!, allowScrubbing: true),
                                           ],
                                         ),
                                       );
@@ -512,7 +520,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
       audioPlayer!.release();
     }
     if(videoController!=null){
-      videoController.dispose();
+      videoController!.dispose();
     }
     super.dispose();
   }
