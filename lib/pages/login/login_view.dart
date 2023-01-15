@@ -257,6 +257,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                           padding: EdgeInsets.only(left: 20.w),
                           width: 170.w,
                           child:TextField(
+                            keyboardType: TextInputType.number,
                               controller: _verifyCodeController,
                               obscureText: isHidePasswd.value,
                               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
@@ -340,6 +341,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
             width: 170.w,
             alignment: Alignment.centerLeft,
             child: TextField(
+              keyboardType: TextInputType.phone,
               controller: _phoneController,
               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
               inputFormatters: [
