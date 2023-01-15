@@ -164,11 +164,11 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
           case 2: // 选择题
             questionList.add(makeMarkeContainer(buildQuestionType("选择题")));
             questionList.add(makeMarkeContainer(Visibility(
-                visible: element!.name!=null && element!.name!.isNotEmpty,
-                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
-            questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.title!=null && element!.title!.isNotEmpty,
                 child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+            questionList.add(makeMarkeContainer(Visibility(
+                visible: element!.name!=null && element!.name!.isNotEmpty,
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
 
             break;
           case 3: // 填空题
@@ -182,6 +182,14 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
             questionList.add(buildReadQuestion(element!.readContent));
 
             break;
+          case 5: // 纠错
+            questionList.add(makeMarkeContainer(buildQuestionType("纠错题")));
+            questionList.add(makeMarkeContainer(Visibility(
+                visible: element!.title!=null && element!.title!.isNotEmpty,
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+            questionList.add(makeMarkeContainer(Visibility(
+                visible: element!.name!=null && element!.name!.isNotEmpty,
+                child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
         }
         if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
           int questionNum = element.questionBankAppListVos!.length;
@@ -207,6 +215,8 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
               }
             }else if(question.type == 3 ){  // 选择题
               questionList.add(buildGapQuestion(question!.bankAnswerAppListVos,question!.title!));
+            }else if(question.type == 5){
+              questionList.add(buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
             }
           }
         }
@@ -393,6 +403,55 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
         },
 
       ),
+    );
+  }
+
+  Widget buildFixProblemQuestion(List<BankAnswerAppListVos>? list,String htmlContent){
+
+    TextEditingController? _inputController;
+    _inputController = TextEditingController(
+      text: htmlContent??"",
+    );
+    // list!=null && list.length>0 && list[0].content!=null && list[0].content!.isNotEmpty? list[0].content!:""
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 8.w,right: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 7.w),
+          child: Text(
+            htmlContent,
+            style: TextStyle(
+                fontSize: 16.sp,),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 8.w,right: 5.w,top: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 7.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+              color: AppColors.c_4DD9D9D9
+          ),
+          child: TextField(
+            controller: _inputController,
+            keyboardType: TextInputType.multiline,
+            minLines: 10,
+            maxLines: 20,
+            style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 16.sp,
+                height: 1.5,
+                textBaseline: TextBaseline.alphabetic
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              enabledBorder: InputBorder.none,
+              hintText: "请输入改正后的文字",
+            ),
+          ),
+        )
+
+      ],
     );
   }
 

@@ -104,8 +104,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-        statusBarColor: AppColors.theme_bg,//状态栏颜色
+        value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,//状态栏颜色
         statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
         statusBarBrightness: Brightness.dark,  //状态栏亮度
         systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
