@@ -133,106 +133,119 @@ class _LoginPageState extends BasePageState<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.theme_bg,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 70.w)),
-          Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(left: 40.w, right: 20.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
-                Padding(padding: EdgeInsets.only(top: 8.w)),
-                Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
-              ],
-            ),
-          ),
-          _getLoginInput(),
-          Padding(padding: EdgeInsets.only(top: 10.w)),
-          const Spacer(),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Divider(
-                      height: 1,
-                      indent: 20,
-                      endIndent: 30,
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Obx(()=>InkWell(
-                            onTap: (){
-                              agreePolicy.value = !agreePolicy.value;
-                            },
-                            child: Container(
-                              width: 20.w,
-                              height: 20.w,
-                              padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
-                              child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
-                                height: 10.w,),
-                            ),
-                          )),
-                          RichText(
-                            text: TextSpan(
-                                text: "阅读并同意",
-                                style:
-                                TextStyle(color: Color(0xff727a89), fontSize: 11),
-                                children: [
-                                  TextSpan(
-                                    text: "用户协议",
-                                    style: TextStyle(
-                                        color: AppColors.THEME_COLOR,
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                    recognizer: recognizerRegister,
-                                  ),
-                                  TextSpan(
-                                    text: "·",
-                                    style: TextStyle(
-                                        color: Color(0xff727a89),
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                  ),
-
-                                  TextSpan(
-                                    text: "隐私政策·",
-                                    style: TextStyle(
-                                        color: AppColors.THEME_COLOR,
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                    recognizer: recognizerPrivacyLaw,
-                                  ),
-                                  TextSpan(
-                                    text: "首次登录将自动注册",
-                                    style: TextStyle(
-                                        color: Color(0xff727a89),
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          hideKeyBoard();
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 70.w)),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(left: 40.w, right: 20.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
+                  Padding(padding: EdgeInsets.only(top: 8.w)),
+                  Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
+                ],
               ),
-            ],
-          )
-        ],
+            ),
+            _getLoginInput(),
+            Padding(padding: EdgeInsets.only(top: 10.w)),
+            const Spacer(),
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const Divider(
+                        height: 1,
+                        indent: 20,
+                        endIndent: 30,
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Obx(()=>InkWell(
+                              onTap: (){
+                                agreePolicy.value = !agreePolicy.value;
+                              },
+                              child: Container(
+                                width: 20.w,
+                                height: 20.w,
+                                padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
+                                child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
+                                  height: 10.w,),
+                              ),
+                            )),
+                            RichText(
+                              text: TextSpan(
+                                  text: "阅读并同意",
+                                  style:
+                                  TextStyle(color: Color(0xff727a89), fontSize: 11),
+                                  children: [
+                                    TextSpan(
+                                      text: "用户协议",
+                                      style: TextStyle(
+                                          color: AppColors.THEME_COLOR,
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                      recognizer: recognizerRegister,
+                                    ),
+                                    TextSpan(
+                                      text: "·",
+                                      style: TextStyle(
+                                          color: Color(0xff727a89),
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                    ),
+
+                                    TextSpan(
+                                      text: "隐私政策·",
+                                      style: TextStyle(
+                                          color: AppColors.THEME_COLOR,
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                      recognizer: recognizerPrivacyLaw,
+                                    ),
+                                    TextSpan(
+                                      text: "首次登录将自动注册",
+                                      style: TextStyle(
+                                          color: Color(0xff727a89),
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                    ),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
+  ///收起键盘
+  hideKeyBoard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
 
   //用户名密码登录，总编辑框
   Widget _getLoginInput() {
@@ -282,9 +295,11 @@ class _LoginPageState extends BasePageState<LoginPage> {
                           if(countDown.value <= 0){
                             logic.sendCode(_phoneController!.text);
                           }else{
+                            hideKeyBoard();
                             Fluttertoast.showToast(msg: "请等待${countDown.value} s后重新发送");
                           }
                         }else{
+                          hideKeyBoard();
                           Fluttertoast.showToast(msg: "请输入手机号");
                         }
                       },
@@ -299,6 +314,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
+              hideKeyBoard();
               logic.mobileLogin(phoneStr.value,phoneCodeStr.value);
             },
             child: Container(
