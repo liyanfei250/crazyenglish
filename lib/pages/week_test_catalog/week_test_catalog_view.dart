@@ -94,6 +94,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
     );
     return Scaffold(
       appBar: buildNormalAppBar("每周习题"),
+      backgroundColor: AppColors.theme_bg,
       body: GetBuilder<WeekTestCatalogLogic>(
         id: GetBuilderIds.weekTestCatalogList,
         builder: (logic){

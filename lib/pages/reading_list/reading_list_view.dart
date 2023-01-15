@@ -79,7 +79,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNormalAppBar("英语周报"),
-      backgroundColor: AppColors.c_FFFAF7F7,
+      backgroundColor: AppColors.theme_bg,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
@@ -160,14 +160,29 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             height: 122.w,
             child: Stack(
               children: [
-                ClipRRect(
+                ExtendedImage.network(
+                  weekPaperList[index].img??"",
+                  cacheRawData: true,
+                  width: 88.w,
+                  height: 122.w,
+                  fit: BoxFit.fill,
+                  shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                  child: ExtendedImage.network(
-                    weekPaperList[index].img??"",
-                    fit: BoxFit.fill,
-                    cacheRawData: true,
-                    width: 88.w,
-                    height: 122.w,),
+                  enableLoadState: true,
+                  loadStateChanged: (state){
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.completed:
+                        return ExtendedRawImage(
+                          image: state.extendedImageInfo?.image,
+                          fit: BoxFit.cover,
+                        );
+                      default :
+                        return Image.asset(
+                          R.imagesReadingDefault,
+                          fit: BoxFit.fill,
+                        );
+                    }
+                  },
                 ),
                 Container(
                   width: 38.w,

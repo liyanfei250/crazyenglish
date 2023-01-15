@@ -81,7 +81,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNormalAppBar("每周习题"),
-      backgroundColor: AppColors.c_FFFAF7F7,
+      backgroundColor: AppColors.theme_bg,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,

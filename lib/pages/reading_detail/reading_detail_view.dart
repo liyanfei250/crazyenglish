@@ -237,7 +237,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
             )),)
           ],
         ),
-        backgroundColor: AppColors.c_FFFAF7F7,
+        backgroundColor: AppColors.theme_bg,
       body: Stack(
         children: [
           Column(

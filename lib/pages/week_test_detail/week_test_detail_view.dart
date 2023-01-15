@@ -67,6 +67,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNormalAppBar(widget.name??""),
+      backgroundColor: AppColors.theme_bg,
       body: GetBuilder<WeekTestDetailLogic>(
         id: GetBuilderIds.weekTestDetailList,
         builder: (logic){

@@ -132,7 +132,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.c_FFFAF7F7,
+      backgroundColor: AppColors.theme_bg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

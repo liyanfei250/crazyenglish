@@ -89,7 +89,7 @@ class _IntensiveListeningPageState extends State<IntensiveListeningPage> {
         // bottom: ,
         elevation: 0,
       ),
-      backgroundColor: AppColors.c_FFFAF7F7,
+      backgroundColor: AppColors.theme_bg,
       body: Column(
         children: [
           Visibility(

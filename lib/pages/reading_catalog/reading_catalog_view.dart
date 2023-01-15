@@ -64,6 +64,7 @@ class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNormalAppBar(widget.records!.name!),
+      backgroundColor: AppColors.theme_bg,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: false,

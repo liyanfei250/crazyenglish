@@ -89,13 +89,13 @@ class ChoiceRadioItem extends StatelessWidget {
   Color getBgColor(ChoiceRadioItemType type){
     switch(type){
       case ChoiceRadioItemType.SELECTED:
-        return AppColors.c_FFFAF7F7;
+        return AppColors.theme_bg;
       case ChoiceRadioItemType.WRONG_SELECTED:
         return AppColors.c_FFFCF0E2;
       case ChoiceRadioItemType.RIGHT_SELECTED:
         return AppColors.c_FFE5F9DE;
       default:
-        return AppColors.c_FFFAF7F7;
+        return AppColors.theme_bg;
     }
   }
 }

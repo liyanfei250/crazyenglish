@@ -65,7 +65,7 @@ class SplashPageState extends State<SplashPage> {
       alignment: Alignment.center,
       children: [
         Positioned.fill(child: Container(
-          color: AppColors.c_FFFAF7F7,
+          color: AppColors.theme_bg,
           child: Image.asset(
             fit:BoxFit.cover,
             R.imagesSplash,

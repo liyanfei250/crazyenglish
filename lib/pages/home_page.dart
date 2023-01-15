@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
     ),
         child: Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.c_FFFAF7F7,
+          backgroundColor: AppColors.theme_bg,
           body: SafeArea(
             child: Container(
               child: Column(
