@@ -44,7 +44,7 @@ class Reading_detailPage extends BasePage {
   }
 }
 
-class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
+class _Reading_detailPageState extends BasePageState<Reading_detailPage> with WidgetsBindingObserver{
   final logic = Get.put(Reading_detailLogic());
   final state = Get.find<Reading_detailLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -133,6 +133,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
   @override
   void initState(){
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     logic.addListenerId(GetBuilderIds.paperDetail,(){
       hideLoading();
       if(state.paperDetail!=null){
@@ -513,14 +514,52 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> {
     }
   }
 
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+      //  应用程序处于闲置状态并且没有收到用户的输入事件。
+      //注意这个状态，在切换到后台时候会触发，所以流程应该是先冻结窗口，然后停止UI
+        print('YM----->AppLifecycleState.inactive');
+        break;
+      case AppLifecycleState.paused:
+//      应用程序处于不可见状态
+        if(audioPlayer!=null){
+          audioPlayer!.pause();
+        }
+        if(videoController!=null){
+          if(videoController!.value.isPlaying){
+            videoController!.pause();
+          }
+        }
+        if(playerManStreamController!=null){
+          playerManStreamController.add(true);
+        }
+        break;
+      case AppLifecycleState.resumed:
+        print('YM----->AppLifecycleState.resumed');
+        break;
+      case AppLifecycleState.detached:
+      //当前页面即将退出
+        print('YM----->AppLifecycleState.detached');
+        break;
+    }
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     Get.delete<Reading_detailLogic>();
     if(audioPlayer!=null){
       audioPlayer!.release();
     }
     if(videoController!=null){
       videoController!.dispose();
+    }
+    if(playerManStreamController!=null){
+      playerManStreamController.add(true);
     }
     super.dispose();
   }

@@ -57,7 +57,7 @@ class SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     ScreenUtil.init(
         context,
-        designSize: const Size(375, 667));
+        designSize: const Size(360, 640));
 
 
 
@@ -65,12 +65,15 @@ class SplashPageState extends State<SplashPage> {
       alignment: Alignment.center,
       children: [
         Positioned.fill(child: Container(
-          color: AppColors.theme_bg,
+          padding: EdgeInsets.only(top: 145.w),
+          color: AppColors.c_FFFFFFFF,
+          width: double.infinity,
+          height: double.infinity,
+          alignment: Alignment.topCenter,
           child: Image.asset(
-            fit:BoxFit.cover,
-            R.imagesSplash,
-            width: double.infinity,
-            height: double.infinity,),
+            R.imagesLaunchLogo,
+            width: 240.w,
+            height: 219.w,),
         ),),
 
         Offstage(

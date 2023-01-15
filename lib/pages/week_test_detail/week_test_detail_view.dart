@@ -35,7 +35,7 @@ class WeekTestDetailPage extends BasePage {
   BasePageState<BasePage> getState() => _WeekTestDetailPageState();
 }
 
-class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
+class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with WidgetsBindingObserver{
   final logic = Get.put(WeekTestDetailLogic());
   final state = Get.find<WeekTestDetailLogic>().state;
 
@@ -46,6 +46,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
   Map<String,TextEditingController> gapEditController = {};
   @override
   void onCreate() {
+    WidgetsBinding.instance.addObserver(this);
     logic.getWeekTestDetail(widget.id!);
     showLoading("");
   }
@@ -99,8 +100,36 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     );
   }
 
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+      //  应用程序处于闲置状态并且没有收到用户的输入事件。
+      //注意这个状态，在切换到后台时候会触发，所以流程应该是先冻结窗口，然后停止UI
+        print('YM----->AppLifecycleState.inactive');
+        break;
+      case AppLifecycleState.paused:
+//      应用程序处于不可见状态
+        if(audioPlayer!=null){
+          audioPlayer!.pause();
+        }
+        break;
+      case AppLifecycleState.resumed:
+        print('YM----->AppLifecycleState.resumed');
+        break;
+      case AppLifecycleState.detached:
+      //当前页面即将退出
+        print('YM----->AppLifecycleState.detached');
+        break;
+    }
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     Get.delete<WeekTestDetailLogic>();
     audioPlayer.release();
     super.dispose();
@@ -127,7 +156,9 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
             questionList.add(makeMarkeContainer(Visibility(
                 visible: element!.title!=null && element!.title!.isNotEmpty,
                 child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
-            questionList.add(makeMarkeContainer(buildListenQuestion()));
+            if(element.type == 3 && element!.content !=null && element!.content!.isNotEmpty){
+              questionList.add(makeMarkeContainer(buildListenQuestion(element!.content??"")));
+            }
 
             break;
           case 2: // 选择题
@@ -365,8 +396,8 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> {
     );
   }
 
-  Widget buildListenQuestion(){
-    audioPlayer.setSourceUrl("https://ps-1252082677.cos.ap-beijing.myqcloud.com/test.mp3");
+  Widget buildListenQuestion(String listtenUrl){
+    audioPlayer.setSourceUrl(listtenUrl);
     return Container(
       child: TestPlayerWidget(audioPlayer,true),
     );

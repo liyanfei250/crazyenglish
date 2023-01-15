@@ -235,6 +235,8 @@ class R {
   static final String imagesIconTransmissionSpeed08Clicked = 'images/icon_transmission_speed_08_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05.png)
   static final String imagesIconTransmissionSpeed05 = 'images/icon_transmission_speed_05.png';
+  /// ![](http://127.0.0.1:11/images/launch_logo.png)
+  static final String imagesLaunchLogo = 'images/launch_logo.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb2.png)
   static final String imagesIndexClassThumb2 = 'images/index_class_thumb2.png';
   /// ![](http://127.0.0.1:11/images/icon_player_after_play.png)

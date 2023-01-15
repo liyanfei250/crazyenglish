@@ -205,7 +205,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
     _womanManStreamSubscription = widget.playerManStreamController?.stream.listen((event) {
       if(event is bool){
         if(event){
-          _stop();
+          _pause();
         }
       }
     });
