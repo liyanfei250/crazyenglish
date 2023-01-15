@@ -147,15 +147,17 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
         switch(element.questionType){
           case 1: // 听力题
             questionList.add(makeMarkeContainer(buildQuestionType("听力题")));
+            questionList.add(makeMarkeContainer(Visibility(
+                visible: element!.title!=null && element!.title!.isNotEmpty,
+                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+
             questionList.add(
                 makeMarkeContainer(
                 Visibility(
                 visible: element!.name!=null && element!.name!.isNotEmpty,
                 child: Text(element!.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))
                 ));
-            questionList.add(makeMarkeContainer(Visibility(
-                visible: element!.title!=null && element!.title!.isNotEmpty,
-                child: Text(element!.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),))));
+
             if(element.type == 3 && element!.content !=null && element!.content!.isNotEmpty){
               questionList.add(makeMarkeContainer(buildListenQuestion(element!.content??"")));
             }
@@ -418,7 +420,6 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
       children: [
         Container(
           margin: EdgeInsets.only(left: 8.w,right: 5.w),
-          padding: EdgeInsets.symmetric(horizontal: 7.w),
           child: Text(
             htmlContent,
             style: TextStyle(
