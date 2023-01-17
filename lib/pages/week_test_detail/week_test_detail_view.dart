@@ -44,6 +44,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
 
   WeekTestDetailResponse? weekTestDetailResponse;
   Map<String,TextEditingController> gapEditController = {};
+  int gapKey = -1;
   @override
   void onCreate() {
     WidgetsBinding.instance.addObserver(this);
@@ -66,6 +67,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
 
   @override
   Widget build(BuildContext context) {
+    gapKey == -1;
     return Scaffold(
       appBar: buildNormalAppBar(widget.name??""),
       backgroundColor: AppColors.theme_bg,
@@ -304,14 +306,15 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
-    int key = -1;
+
+    int gapIndex = -1;
     while(htmlContent.contains(gap)){
-      key++;
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$key"></gap>');
+      gapKey++;
+      gapIndex++;
+      print("gapKey: $gapKey gapIndex:$gapIndex");
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex"></gap>');
+
     }
-
-    // htmlContent.replaceAll("####", "<gap/>");
-
     return FocusScope(
       node: _scopeNode,
       child: Html(
@@ -331,17 +334,20 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
         customRenders: {
           tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
             String key = context.tree.element!.attributes["value"]??"unknown";
+            String gapIndex = context.tree.element!.attributes["index"]??"unknown";
             String content = "";
             int num = 0;
             var correctType = 0.obs;
             try {
-              num = int.parse(key);
+              num = int.parse(gapIndex);
               max = num;
-              if(list!=null && num<=list!.length){
-                content = list![num-1].content!;
+
+              if(list!=null && num< list!.length){
+                content = list![num].content!;
               }else{
                 content = "";
               }
+              print("num: $num content: $content");
             } catch (e) {
               e.printError();
             }
@@ -349,7 +355,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
             return SizedBox(
               width: 50.w,
               child: Obx(()=>TextField(
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.name,
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: getInputColor(correctType.value)),
@@ -372,6 +378,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
                     ),
                   ),
                   onChanged: (text){
+                    print("intput:"+text+"  content:"+content);
                     if(content.isNotEmpty){
                       if(text.isNotEmpty){
                         if(content.startsWith(text)){
