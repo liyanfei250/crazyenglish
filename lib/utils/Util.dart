@@ -196,20 +196,14 @@ class Util {
 
   static Future<Map<String,String>> getHeaderParams() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    var appname = "";
-    if(Platform.isIOS){
-      appname = "com.koolearn.Ielts2019";
-    }else{
-      appname = "ielts";
-    }
+    var appname = "crazyenglish";
     return {
       "appname": appname,
-      "macaddr": "02:00:00:00:00:00",
       "screensize": "1080*1920",
       "platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
       "vcode": packageInfo.buildNumber,
       "pversion": Config.versionName,
-      "curAppid": Config.appId,
+      "appId": Config.appId,
       "version": Config.versionName,
       "channel": "flutter",
       "vendor": appname,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:crazyenglish/entity/week_test_catalog_response.dart';
 import 'package:crazyenglish/entity/week_test_detail_response.dart';
 import 'package:crazyenglish/entity/week_test_list_response.dart' as weekTest;
@@ -5,6 +7,7 @@ import 'package:dio/dio.dart';
 
 import '../api/api.dart';
 import '../entity/base_resp.dart';
+import '../entity/check_update_resp.dart';
 import '../net/net_manager.dart';
 
 /**
@@ -65,19 +68,18 @@ class WeekTestRepository{
     }
   }
 
-  Future<WeekTestDetailResponse> getAppVersion() async{
+  Future<CheckUpdateResp> getAppVersion() async{
     BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getAppVersion,
+        .request(Method.get, Api.getAppVersion+(Platform.isIOS?"1":"2"),
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.msg!);
     }
     if(baseResp.getReturnData() !=null){
-
-      WeekTestDetailResponse weekTestDetailResponse = WeekTestDetailResponse.fromJson(baseResp.getReturnData());
-      return weekTestDetailResponse!;
+      CheckUpdateResp checkUpdateResp = CheckUpdateResp.fromJson(baseResp.getReturnData());
+      return checkUpdateResp!;
     } else {
-      return Future.error("返回weekTestDetailResponse为空");
+      return Future.error("返回CheckUpdateResp为空");
     }
   }
 

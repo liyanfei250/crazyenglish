@@ -3,6 +3,8 @@ class R {
   static final String imagesArticleCollectDefault = 'images/article_collect_default.png';
   /// ![](http://127.0.0.1:11/images/torid_right.png)
   static final String imagesToridRight = 'images/torid_right.png';
+  /// ![](http://127.0.0.1:11/images/my_top_bg.png)
+  static final String imagesMyTopBg = 'images/my_top_bg.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_eye.png)
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
@@ -67,10 +69,14 @@ class R {
   static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon2.png)
   static final String imagesIndexTeacherIcon2 = 'images/index_teacher_icon2.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_help.png)
+  static final String imagesMyIconHelp = 'images/my_icon_help.png';
   /// ![](http://127.0.0.1:11/images/torid_four_show.png)
   static final String imagesToridFourShow = 'images/torid_four_show.png';
   /// ![](http://127.0.0.1:11/images/article_man_play.png)
   static final String imagesArticleManPlay = 'images/article_man_play.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_share.png)
+  static final String imagesMyIconShare = 'images/my_icon_share.png';
   /// ![](http://127.0.0.1:11/images/test_lrc_json.json)
   static final String imagesTestLrcJson = 'images/test_lrc_json.json';
   /// ![](http://127.0.0.1:11/images/torid_eye_hide.png)
@@ -83,6 +89,8 @@ class R {
   static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_clicked.png)
   static final String imagesIconTransmissionSpeed05Clicked = 'images/icon_transmission_speed_05_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_home_me_default_head.png)
+  static final String imagesIconHomeMeDefaultHead = 'images/icon_home_me_default_head.png';
   /// ![](http://127.0.0.1:11/images/index_icon_9.png)
   static final String imagesIndexIcon9 = 'images/index_icon_9.png';
   /// ![](http://127.0.0.1:11/images/icon_back_black.png)
@@ -145,6 +153,8 @@ class R {
   static final String imagesIconTab4Pressed = 'images/icon_tab4_pressed.png';
   /// ![](http://127.0.0.1:11/images/article_woman_play.png)
   static final String imagesArticleWomanPlay = 'images/article_woman_play.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)
+  static final String imagesMyIconCoupon = 'images/my_icon_coupon.png';
   /// ![](http://127.0.0.1:11/images/icon_player_play_clicked.png)
   static final String imagesIconPlayerPlayClicked = 'images/icon_player_play_clicked.png';
   /// ![](http://127.0.0.1:11/images/login_agree_selected.png)
@@ -201,6 +211,8 @@ class R {
   static final String imagesIvNoShow = 'images/iv_no_show.png';
   /// ![](http://127.0.0.1:11/images/torid_five_show.png)
   static final String imagesToridFiveShow = 'images/torid_five_show.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_order.png)
+  static final String imagesMyIconOrder = 'images/my_icon_order.png';
   /// ![](http://127.0.0.1:11/images/index_icon_5.png)
   static final String imagesIndexIcon5 = 'images/index_icon_5.png';
   /// ![](http://127.0.0.1:11/images/icon_player_after_play_clicked.png)
@@ -209,6 +221,8 @@ class R {
   static final String imagesIconTab1Pressed = 'images/icon_tab1_pressed.png';
   /// ![](http://127.0.0.1:11/images/icon_player_pause.png)
   static final String imagesIconPlayerPause = 'images/icon_player_pause.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_setting.png)
+  static final String imagesMyIconSetting = 'images/my_icon_setting.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_pressed.png)
   static final String imagesIconTab2Pressed = 'images/icon_tab2_pressed.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_selected.png)
@@ -263,6 +277,8 @@ class R {
   static final String imagesTreeEdit = 'images/tree_edit.png';
   /// ![](http://127.0.0.1:11/images/icon_player_play.png)
   static final String imagesIconPlayerPlay = 'images/icon_player_play.png';
+  /// ![](http://127.0.0.1:11/images/my_icon_right_arrow.png)
+  static final String imagesMyIconRightArrow = 'images/my_icon_right_arrow.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_selected.png)
   static final String imagesIconTransmissionSpeed05Selected = 'images/icon_transmission_speed_05_selected.png';
 }
