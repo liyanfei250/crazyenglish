@@ -86,7 +86,7 @@ class C{
 
   static const String BAIDU = "baidu";
   static const String BAIDU_APP_KEY = "xnA14dMjxEFsuSdRXlKdz1vH";
-  static const String BAIDU_URL = "http://www.koolearn.com";
+  static const String BAIDU_URL = "http://www.crazyenglish.com";
 
   static const int SID_INVALID = 9708;
   //领取资料的文案（2.0弃用）
