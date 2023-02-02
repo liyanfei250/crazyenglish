@@ -235,9 +235,9 @@ packages:
   dio:
     dependency: "direct main"
     description:
-      name: dio
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../dio/dio"
+      relative: true
+    source: path
     version: "4.0.6"
   dotted_line:
     dependency: "direct main"

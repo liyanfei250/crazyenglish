@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
       }
     });
-    dataGroupLogic.getConfig();
+    // dataGroupLogic.getConfig();
     dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
       if(dataGroupState.groupQUESTION_TYPE.data!=null){
         dataGroupState.groupQUESTION_TYPE.data!.forEach((e) {
@@ -192,6 +192,7 @@ class _HomePageState extends State<HomePage> {
     InkWell(
       onTap: (){
         _onItemTapped(index);
+        appUpdatePanelLogic.getAppVersion();
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -288,8 +288,14 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
       FlutterUpgrade.toMarket(appMarketInfo: widget.appMarketInfo!);
       return;
     }
-    String path = await FlutterUpgrade.apkDownloadPath;
-    _downloadApk(widget.downloadUrl, '$path/$_downloadApkName');
+    bool hasPermission = await FlutterUpgrade.hasInstallPersmission.call();
+    if( hasPermission ){
+      String path = await FlutterUpgrade.apkDownloadPath;
+      _downloadApk(widget.downloadUrl, '$path/$_downloadApkName');
+    } else {
+      FlutterUpgrade.hasInstallPersmission.call();
+    }
+
   }
 
   _clickCancle(){

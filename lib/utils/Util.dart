@@ -198,16 +198,17 @@ class Util {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var appname = "crazyenglish";
     return {
-      "appname": appname,
-      "screensize": "1080*1920",
-      "platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
+      "Appname": appname,
+      "Screensize": "1080*1920",
+      "Platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
       "vcode": packageInfo.buildNumber,
-      "pversion": Config.versionName,
-      "appId": Config.appId,
-      "version": Config.versionName,
-      "channel": "flutter",
-      "vendor": appname,
-      "imei":"223232323",
+      "Pversion": Config.versionName,
+      "AppId": Config.appId,
+      "Version": Config.versionName,
+      "Channel": "flutter",
+      "Vendor": appname,
+      "Imei":"223232323",
+      "Authorization":"Authorization",
     };
   }
 
