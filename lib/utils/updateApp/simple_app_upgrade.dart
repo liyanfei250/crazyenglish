@@ -293,7 +293,7 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
       String path = await FlutterUpgrade.apkDownloadPath;
       _downloadApk(widget.downloadUrl, '$path/$_downloadApkName');
     } else {
-      FlutterUpgrade.hasInstallPersmission.call();
+      FlutterUpgrade.requestPersmission.call();
     }
 
   }
