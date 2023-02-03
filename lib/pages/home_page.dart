@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showAppUpgrade(CheckUpdateResp resp){
-    if (resp.forceUpdate??false) {
+    if ((resp.forceUpdate??0)>0) {
       AppUpgrade.appUpgrade(
         context,
         resp,

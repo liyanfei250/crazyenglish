@@ -45,7 +45,7 @@ class AppUpgrade {
     bool forceUpdate = false;
 
     ///升级模式：0无提示，1提醒一次，2提醒多次，3强制更新
-    forceUpdate = resp.forceUpdate??false;
+    forceUpdate = (resp.forceUpdate??0)>0;
     forceUpdate = false;
     _showUpgradeDialog(context, resp,
         apkDownloadUrl: resp.apkUrl.toString(),

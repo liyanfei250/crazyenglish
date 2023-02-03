@@ -21,7 +21,7 @@ class Api {
 
 
   // static String getAppVersion = Config.ApiHost +"/crazy-basic-core/appVersion/app/version/";
-  static String getAppVersion = Config.ApiHost + "/crazy/crazy-basic-core/appVersion/app/version/";
+  static String getAppVersion = Config.ApiHost + "/crazy-basic-core/appVersion/app/version/";
 
   /// CLASS_GRADE 年级
   /// QUESTION_TYPE 题型
