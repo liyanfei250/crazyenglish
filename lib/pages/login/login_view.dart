@@ -107,6 +107,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
         Fluttertoast.showToast(msg: "登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
+        Util.getHeader();
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
         Fluttertoast.showToast(msg: "登录失败");

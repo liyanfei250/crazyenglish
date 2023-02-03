@@ -208,7 +208,7 @@ class Util {
       "Channel": "flutter",
       "Vendor": appname,
       "Imei":"223232323",
-      "Authorization":"Authorization",
+      "Authorization":SpUtil.getString(BaseConstant.loginTOKEN),
     };
   }
 
