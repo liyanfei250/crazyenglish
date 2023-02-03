@@ -27,12 +27,12 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
     "周报阅读",
     "周报题库",
     "高考真题",
+    "中考提分",
     "综合听力",
     "集中识词",
     "语言运用",
     "阅读理解",
     "综合口语",
-    "语音知识",
     "写作训练",
   ];
 
@@ -121,6 +121,7 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset("images/index_icon_${functionTxt.indexOf(e)+1}.png",width: 40.w,height: 40.w,),
+        Padding(padding: EdgeInsets.only(bottom: 2.w)),
         Text(e,style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_BLACK_COLOR),)
       ],
     ),

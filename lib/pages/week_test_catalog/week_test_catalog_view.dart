@@ -46,10 +46,15 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   // WeekTestCatalogResponse? paperCategory;
   TreeViewController? treeViewController;
 
+  Set<String> nodeFirstParent = {};
+  Set<String> nodeSecondParent = {};
+  Set<String> nodeEnd = {};
+  Set<String> nodeSecondEndParent = {};
   @override
   void onCreate() {
     // TODO: implement onCreate
     logic.addListenerId(GetBuilderIds.weekTestCatalogList,(){
+      hideLoading();
       if(state.nodes!=null && state.nodes.length>0){
         // paperCategory = state.weekTestCatalogResponse;
         if(mounted && _refreshController!=null){
@@ -61,6 +66,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       }
     });
     _onRefresh();
+    showLoading("");
   }
 
   @override
@@ -87,14 +93,8 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       colorScheme: Theme.of(context).colorScheme,
     );
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.c_FFFFFFFF,
-        centerTitle: true,
-        title: Text("每周习题",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
-        leading: Util.buildBackWidget(context),
-        // bottom: ,
-        elevation: 0,
-      ),
+      appBar: buildNormalAppBar("每周习题"),
+      backgroundColor: AppColors.theme_bg,
       body: GetBuilder<WeekTestCatalogLogic>(
         id: GetBuilderIds.weekTestCatalogList,
         builder: (logic){
@@ -102,6 +102,21 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
             if(treeViewController==null){
               treeViewController = TreeViewController(children:logic.state.nodes!);
               List<tree.Node> nodes = treeViewController!.expandAll();
+              nodes.forEach((element) {
+                nodeFirstParent.add(element!.key??"");
+                int length = element.children!=null ? element.children.length:0;
+                for(int i = 0;i<length;i++){
+                  if(i==length-1){
+                    // 最后一个章
+                    if(element.children[i].children!=null && element.children[i].children!.length>0){
+                      int childLength = element.children[i].children.length;
+                      nodeEnd.add(element.children[i].children[childLength-1].key??"");
+                    }
+                    nodeSecondEndParent.add(element.children[i].key??"");
+                  }
+                  nodeSecondParent.add(element.children[i].key??"");
+                }
+              });
               treeViewController = TreeViewController(children:nodes!);
             }
             return Container(
@@ -156,20 +171,37 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Visibility(
+                //     maintainAnimation: true,
+                //     maintainState: true,
+                //     maintainSize: true,
+                //     visible: treeViewController!.getBefore(node.key)!=null && treeViewController!.getBeforeNode(node.key)!.expanded,
+                //     child: Container(
+                //       height: 1.w,
+                //       width: double.infinity,
+                //       margin: EdgeInsets.only(left: 44.w),
+                //       color: AppColors.c_FFEBEBEB,
+                //     )),
                 Expanded(
                     flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.only(left:22.w),
-                      child: Visibility(
-                        visible: node.parent,
-                        child: DottedLine(
-                          dashLength: 3.w,
-                          dashGapLength: 3.w,
-                          lineThickness: 2.w,
-                          dashColor: AppColors.c_FFE2E2E2,
-                          direction: Axis.vertical,
-                        ),
-                      )),
+                    child: Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        maintainSize: true,
+                        visible: !nodeFirstParent.contains(node.key),
+                      child: Container(
+                          margin: EdgeInsets.only(left:22.w),
+                          child: Visibility(
+                            visible: node.parent,
+                            child: DottedLine(
+                              dashLength: 3.w,
+                              dashGapLength: 3.w,
+                              lineThickness: 2.w,
+                              dashColor: AppColors.c_FFE2E2E2,
+                              direction: Axis.vertical,
+                            ),
+                          )),
+                    ),
                     ),
                 Row(
                   children: [
@@ -184,29 +216,51 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         ),
                         child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
                     ),
-                    Text(node.label,style: TextStyle(color:AppColors.TEXT_BLACK_COLOR),)
+                    Container(
+                      width: 245.w,
+                      child: Text(node.label,
+                        overflow:TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            color:nodeFirstParent.contains(node.key) && node.expanded? AppColors.c_FFFF4D35:AppColors.TEXT_BLACK_COLOR,
+                            fontSize: nodeFirstParent.contains(node.key) && node.expanded? 16.sp:14.sp,
+                            fontWeight: FontWeight.bold),),
+                    )
+
                   ],
                 ),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                      margin: EdgeInsets.only(left:22.w),
-                      child: DottedLine(
-                        dashLength: 3.w,
-                        dashGapLength: 3.w,
-                        lineThickness: 2.w,
-                        dashColor: AppColors.c_FFE2E2E2,
-                        direction: Axis.vertical,
-                      )),
+                  child: Visibility(
+                    maintainAnimation: true,
+                    maintainState: true,
+                    maintainSize: true,
+                    visible: !((nodeSecondEndParent.contains(node.key) || nodeFirstParent.contains(node.key))&& !node.expanded),
+                    child: Container(
+                        margin: EdgeInsets.only(left:22.w),
+                        child: DottedLine(
+                          dashLength: 3.w,
+                          dashGapLength: 3.w,
+                          lineThickness: 2.w,
+                          dashColor: AppColors.c_FFE2E2E2,
+                          direction: Axis.vertical,
+                        )),
+                  ),
                 ),
               ],
             ),),
-            Container(
+            Visibility(
+              maintainAnimation: true,
+              maintainState: true,
+              maintainSize: true,
+              visible: !(nodeSecondParent.contains(node.key)&& node.expanded),
+              child: Container(
               height: 1.w,
               width: double.infinity,
               margin: EdgeInsets.only(left: 44.w),
               color: AppColors.c_FFEBEBEB,
-            )
+            ))
+
           ],
         ),
       );
@@ -250,26 +304,34 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                         ),
                       ),
                       Container(
-                        width: 250.w,
+                        width: 235.w,
                         child: Text(node.label,
                           overflow:TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(color:AppColors.TEXT_GRAY_COLOR),),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color:AppColors.TEXT_GRAY_COLOR),),
                       )
 
                     ],
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                        margin: EdgeInsets.only(left:22.w),
-                        child: DottedLine(
-                          dashLength: 3.w,
-                          dashGapLength: 3.w,
-                          lineThickness: 2.w,
-                          dashColor: AppColors.c_FFE2E2E2,
-                          direction: Axis.vertical,
-                        )),
+                    child: Visibility(
+                      maintainAnimation: true,
+                      maintainState: true,
+                      maintainSize: true,
+                      visible: !nodeEnd.contains(node.key),
+                      child: Container(
+                          margin: EdgeInsets.only(left:22.w),
+                          child: DottedLine(
+                            dashLength: 3.w,
+                            dashGapLength: 3.w,
+                            lineThickness: 2.w,
+                            dashColor: AppColors.c_FFE2E2E2,
+                            direction: Axis.vertical,
+                          )),
+                    ),
                   ),
                 ],
               ),

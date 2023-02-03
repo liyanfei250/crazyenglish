@@ -42,6 +42,10 @@ class LoadStatus {
   static const int empty = 2;
 }
 
+class DataGroup{
+  static Map<String,String> questionType = {};
+}
+
 class PayType{
   static const String APPLE = "apple";
   static const String WX = "wx";
@@ -51,7 +55,7 @@ class PayType{
 }
 
 class C{
-  static const String APPNAME = "推广大师";
+  static const String APPNAME = "英语周报";
   static const String COMPANY = "太原东方盛慧科技有限公司";
   static const String APP_DESC = "太原东方盛慧科技有限公司";
   static const String APP_DOWNLOAD_URL = "https://ps-1252082677.cos.ap-beijing.myqcloud.com/apk/money_make.apk";
@@ -82,7 +86,7 @@ class C{
 
   static const String BAIDU = "baidu";
   static const String BAIDU_APP_KEY = "xnA14dMjxEFsuSdRXlKdz1vH";
-  static const String BAIDU_URL = "http://www.koolearn.com";
+  static const String BAIDU_URL = "http://www.crazyenglish.com";
 
   static const int SID_INVALID = 9708;
   //领取资料的文案（2.0弃用）

@@ -4,9 +4,11 @@ import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/utils/Util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../blocs/login_change_bloc.dart';
 import '../../blocs/login_change_state.dart';
+import '../../utils/colors.dart';
 import 'empty.dart';
 import 'error.dart';
 import 'loading.dart';
@@ -76,13 +78,25 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
     if(_cancelLoading!=null){
       _cancelLoading!();
     }
-    _cancelLoading = BotToast.showLoading();
+    _cancelLoading = BotToast.showCustomLoading(toastBuilder: (_) => LoadingWidget());
   }
 
   void hideLoading(){
     if(_cancelLoading!=null){
       _cancelLoading!();
     }
+  }
+
+  AppBar buildNormalAppBar(String text){
+    return AppBar(
+      backgroundColor: AppColors.c_FFFFFFFF,
+      centerTitle: true,
+      title: Text(text,style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+      leading: Util.buildBackWidget(context),
+      // bottom: ,
+      elevation: 10.w,
+      shadowColor: const Color(0x1F000000),
+    );
   }
 
   Widget buildLoadingWidget(){

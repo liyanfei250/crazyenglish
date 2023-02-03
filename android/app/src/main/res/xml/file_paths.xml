@@ -11,6 +11,7 @@
 
     <!--相当于Environment.getExternalStorageDirectory()-->
     <external-path name="external" path="." />
+    <external-path name="download" path="." />
 
 
     <!--相当于Context.getExternalFilesDir(String) Context.getExternalFilesDir(null).-->

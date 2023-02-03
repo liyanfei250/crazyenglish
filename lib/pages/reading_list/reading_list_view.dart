@@ -35,6 +35,7 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.weekList,(){
+      hideLoading();
       if(state.list!=null && state.list!=null){
         if(state.pageNo == currentPageNo+1){
           weekPaperList = state.list;
@@ -70,21 +71,15 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
       }
     });
     _onRefresh();
+    showLoading("加载中");
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.c_FFFFFFFF,
-        centerTitle: true,
-        title: Text("英语周报",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
-        leading: Util.buildBackWidget(context),
-        // bottom: ,
-        elevation: 0,
-      ),
-      backgroundColor: AppColors.c_FFFAF7F7,
+      appBar: buildNormalAppBar("英语周报"),
+      backgroundColor: AppColors.theme_bg,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
@@ -124,14 +119,15 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
                 child: SearchBar(width: double.infinity,height: 28.w,),
               ),
             ),
-            SliverGrid(
+            SliverPadding(padding: EdgeInsets.only(left: 10.w,right: 10.w),
+            sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
                 childCount: weekPaperList.length,
               ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
-                  childAspectRatio:0.76),
-            )
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+                mainAxisExtent:165.w,),
+            ),)
           ],
         ),
       ),
@@ -153,10 +149,10 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
               boxShadow:[
                 BoxShadow(
                   color: AppColors.c_BF542327.withOpacity(0.25),		// 阴影的颜色
-                  offset: Offset(7, 7),						// 阴影与容器的距离
-                  blurRadius: 165,							// 高斯的标准偏差与盒子的形状卷积。
+                  offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+                  blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
                   spreadRadius: 0.w,
-                )
+                ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(6.w)),
             ),
@@ -164,14 +160,29 @@ class _ReadingListPageState extends BasePageState<ReadingListPage> {
             height: 122.w,
             child: Stack(
               children: [
-                ClipRRect(
+                ExtendedImage.network(
+                  weekPaperList[index].img??"",
+                  cacheRawData: true,
+                  width: 88.w,
+                  height: 122.w,
+                  fit: BoxFit.fill,
+                  shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                  child: ExtendedImage.network(
-                    weekPaperList[index].img??"",
-                    fit: BoxFit.fill,
-                    cacheRawData: true,
-                    width: 88.w,
-                    height: 122.w,),
+                  enableLoadState: true,
+                  loadStateChanged: (state){
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.completed:
+                        return ExtendedRawImage(
+                          image: state.extendedImageInfo?.image,
+                          fit: BoxFit.cover,
+                        );
+                      default :
+                        return Image.asset(
+                          R.imagesReadingDefault,
+                          fit: BoxFit.fill,
+                        );
+                    }
+                  },
                 ),
                 Container(
                   width: 38.w,

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:crazyenglish/utils/permissions/permissions_util.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app_market.dart';
@@ -25,6 +27,14 @@ class FlutterUpgrade {
   static installAppForAndroid(String path) async {
     var map = {'path': path};
     return await _channel.invokeMethod('install', map);
+  }
+
+  static Future<bool> hasInstallPersmission() async {
+    return await _channel.invokeMethod("hasPermission");
+  }
+
+  static Future<bool> requestPersmission() async {
+    return await _channel.invokeMethod("requestPersmission");
   }
 
   ///

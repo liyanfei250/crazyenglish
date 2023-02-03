@@ -57,11 +57,11 @@ class ChoiceRadioItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(padding: EdgeInsets.only(left: 18.w)),
-              Text(labelValue??"",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 16.sp,color: AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),),
-              Padding(padding: EdgeInsets.only(left: 19.w)),
+              // Text(labelValue??"",
+              //   maxLines: 1,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: TextStyle(fontSize: 16.sp,color: AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),),
+              // Padding(padding: EdgeInsets.only(left: 19.w)),
               Container(
                 width: 218.w,
                 child: Text(contentValue??"",
@@ -89,13 +89,13 @@ class ChoiceRadioItem extends StatelessWidget {
   Color getBgColor(ChoiceRadioItemType type){
     switch(type){
       case ChoiceRadioItemType.SELECTED:
-        return AppColors.c_FFFAF7F7;
+        return AppColors.theme_bg;
       case ChoiceRadioItemType.WRONG_SELECTED:
         return AppColors.c_FFFCF0E2;
       case ChoiceRadioItemType.RIGHT_SELECTED:
         return AppColors.c_FFE5F9DE;
       default:
-        return AppColors.c_FFFAF7F7;
+        return AppColors.theme_bg;
     }
   }
 }

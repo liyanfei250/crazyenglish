@@ -68,7 +68,7 @@ class _TORID_WidgetState extends State<TORID_Widget> {
 
   Widget get adsBanner {
     return Container(
-      width: 285.w,
+      width: 295.w,
       height: 285.w,
       child: Swiper(
           autoStart: false,
@@ -127,7 +127,7 @@ class _TORID_WidgetState extends State<TORID_Widget> {
                   Container(
                     height: 30.w,
                     alignment: Alignment.topLeft,
-                    child: Image.asset(R.imagesToridTop,width: 20.w,height: 10.w,),
+                    child: Image.asset(R.imagesToridTop,width: 28.w,height: 17.w,),
                   ),
                   Obx(() => GestureDetector(
                     onTap: (){
@@ -154,9 +154,9 @@ class _TORID_WidgetState extends State<TORID_Widget> {
                     child: Image.asset(fiveEye.value? R.imagesToridFiveHide:R.imagesToridFiveShow,width: 132.w,height: 81.w,),
                   )),
                   Container(
-                    height: 30.w,
+                    height: 40.w,
                     alignment: Alignment.bottomLeft,
-                    child: Image.asset(R.imagesToridBottom,width: 20.w,height: 10.w,),
+                    child: Image.asset(R.imagesToridBottom,width: 28.w,height: 17.w,),
                   ),
                   Obx(() => GestureDetector(
                     onTap: (){
@@ -173,9 +173,9 @@ class _TORID_WidgetState extends State<TORID_Widget> {
             left: 40.w,
             child: Image.asset(R.imagesToridLeft,width: 24.w,height: 43.w,),),
           Positioned(
-            top: 75.w,
+            top: 70.w,
             right: 40.w,
-            child: Image.asset(R.imagesToridRight,width: 10.w,height: 85.w,),),
+            child: Image.asset(R.imagesToridRight,width: 14.w,height: 96.w,),),
 
 
 

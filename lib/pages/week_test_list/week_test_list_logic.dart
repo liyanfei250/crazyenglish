@@ -36,7 +36,7 @@ class WeekTestListLogic extends GetxController {
     });
 
     state.pageNo = page;
-    if(page==0 && cache is Data && cache.records!=null) {
+    if(page==1 && cache is Data && cache.records!=null) {
       state.list = cache.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;

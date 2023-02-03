@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
@@ -16,7 +17,7 @@ import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
 import 'reading_catalog_logic.dart';
 
-class Reading_catalogPage extends StatefulWidget {
+class Reading_catalogPage extends BasePage {
   Records? records;
 
   Reading_catalogPage({Key? key}) : super(key: key) {
@@ -26,11 +27,15 @@ class Reading_catalogPage extends StatefulWidget {
     }
   }
 
+
   @override
-  _Reading_catalogPageState createState() => _Reading_catalogPageState();
+  BasePageState<BasePage> getState() {
+    // TODO: implement getState
+    return _Reading_catalogPageState();
+  }
 }
 
-class _Reading_catalogPageState extends State<Reading_catalogPage> {
+class _Reading_catalogPageState extends BasePageState<Reading_catalogPage> {
   final logic = Get.put(Reading_catalogLogic());
   final state = Get.find<Reading_catalogLogic>().state;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -41,6 +46,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
   void initState(){
     super.initState();
     logic.addListenerId(GetBuilderIds.paperCategory,(){
+      hideLoading();
       if(state.paperCategory!=null){
         paperCategory = state.paperCategory;
         if(mounted && _refreshController!=null){
@@ -51,19 +57,14 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
       }
     });
     _onRefresh();
+    showLoading("");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.c_FFFFFFFF,
-        centerTitle: true,
-        title: Text(widget.records!.name!,style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp),),
-        leading: Util.buildBackWidget(context),
-        // bottom: ,
-        elevation: 0,
-      ),
+      appBar: buildNormalAppBar(widget.records!.name!),
+      backgroundColor: AppColors.theme_bg,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: false,
@@ -79,12 +80,13 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
                 child: SearchBar(width: double.infinity,height: 28.w,),
               ),
             ),
-            SliverList(
+            SliverPadding(padding: EdgeInsets.only(bottom:15.w,),
+            sliver:SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
                 childCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
               ),
-            ),
+            )),
             // ListView.builder(
             //     itemCount: paperCategory!=null && paperCategory!.data!=null ? paperCategory!.data!.length:0,
             //     itemBuilder: (_,int position)=>buildItem(position)),
@@ -104,7 +106,7 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
         width: 332.w,
         height: 106.w,
         margin: EdgeInsets.only(top: 11.w,left: 14.w,right: 14.w),
-        padding: EdgeInsets.only(top: 14.w,bottom: 14.w),
+        padding: EdgeInsets.only(top: 14.w,bottom: 14.w,right: 2.w),
         decoration: BoxDecoration(
             boxShadow:[
               BoxShadow(
@@ -172,10 +174,11 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
                         Text(paperCategory!.data![index].catalogueTitle?? "",
                           maxLines:1,
                           overflow:TextOverflow.ellipsis,
-                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 18.sp,fontWeight: FontWeight.normal),),
+                          style: TextStyle(color: AppColors.c_FF101010,fontSize: 17.sp,fontWeight: FontWeight.w600),),
+                        Padding(padding: EdgeInsets.only(top: 6.w)),
                         Text(paperCategory!.data![index].catalogueTitleSubtitle?? "",
                           overflow:TextOverflow.ellipsis,
-                          maxLines:1,style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 16.sp),),
+                          maxLines:1,style: TextStyle(color: AppColors.TEXT_GRAY_COLOR,fontSize: 15.sp),),
                       ],
                     ),
                     Row(
@@ -239,5 +242,15 @@ class _Reading_catalogPageState extends State<Reading_catalogPage> {
   void dispose() {
     Get.delete<Reading_catalogLogic>();
     super.dispose();
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }

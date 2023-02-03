@@ -5,6 +5,7 @@ class AppColors {
   static Color c_FFEEEEEE = Color(0xFFEEEEEE);
   static Color c_66000000 = Color(0x66000000);
   static Color c_80000000 = Color(0x80000000);
+  static Color c_12000000 = Color(0x22000000);
   static Color c_FF32374E = Color(0xFF32374E);
   static Color c_FFFFFFFF = Color(0xFFFFFFFF);
   static Color c_80FFFFFF = Color(0x80FFFFFF);
@@ -17,7 +18,6 @@ class AppColors {
   static Color c_BF542327 = Color(0xBF542327);
   static Color c_FFFF4D35 = Color(0xFFFF4D35);
   static Color c_FFD7D7D7 = Color(0xFFD7D7D7);
-  static Color c_FFFAF7F7 = Color(0xFFFAF7F7);
   static Color c_FFE5F9DE = Color(0xFFE5F9DE);
   static Color c_FF58BC6D = Color(0xFF58BC6D);
   static Color c_FFEC9D4E = Color(0xFFEC9D4E);
@@ -44,4 +44,5 @@ class AppColors {
   static Color TAB_COLOR = Color(0xFFFEDD00);
   static Color c_33FEDD00 = Color(0x33FEDD00);
   static Color TEXT_BLACK_COLOR = Color(0xFF282828);
+  static Color theme_bg = Color(0xFFF6F8FC);
 }

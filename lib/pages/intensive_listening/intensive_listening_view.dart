@@ -89,7 +89,11 @@ class _IntensiveListeningPageState extends State<IntensiveListeningPage> {
         // bottom: ,
         elevation: 0,
       ),
+<<<<<<< HEAD
       backgroundColor: AppColors.c_FFFAF7F7,
+=======
+      backgroundColor: AppColors.theme_bg,
+>>>>>>> master
       body: Column(
         children: [
           Visibility(
@@ -109,7 +113,11 @@ class _IntensiveListeningPageState extends State<IntensiveListeningPage> {
                   controller: controller,
                   index: index,
                   highlightColor: Colors.black.withOpacity(0.1),
+<<<<<<< HEAD
                   child: InkWell(
+=======
+                  child: GestureDetector(
+>>>>>>> master
                     onTap: (){
                       int length = randomList.length;
                       for(int i = 0;i<length;i++){
@@ -119,16 +127,29 @@ class _IntensiveListeningPageState extends State<IntensiveListeningPage> {
                         }
                       }
                     },
+<<<<<<< HEAD
+=======
+                    onDoubleTap: (){
+                      Fluttertoast.showToast(msg: "收藏句子");
+                    },
+>>>>>>> master
                     child: Container(
                       margin: EdgeInsets.only(left: 10.w,right: 10.w,top: 4.w,bottom: 4.w),
                       child: Obx(()=>Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+<<<<<<< HEAD
                           Text(data.entext??"",style: TextStyle(fontSize: 16.sp,
                               color: randomList[playPosition.value].id == index? AppColors.c_FF424966:AppColors.c_FF848BA2,
                               fontWeight: randomList[playPosition.value].id == index? FontWeight.bold:FontWeight.normal
                           ),),
+=======
+                          SelectionArea(child: Text(data.entext??"",style: TextStyle(fontSize: 16.sp,
+                              color: randomList[playPosition.value].id == index? AppColors.c_FF424966:AppColors.c_FF848BA2,
+                              fontWeight: randomList[playPosition.value].id == index? FontWeight.bold:FontWeight.normal
+                          ),),),
+>>>>>>> master
                           Obx(()=>Visibility(visible:showTranslate.value,child: Text(data.cntext??"",style: TextStyle(fontSize: 15.sp,
                               color: randomList[playPosition.value].id == index? AppColors.c_FF424966:AppColors.c_FF848BA2,
                               fontWeight: randomList[playPosition.value].id == index? FontWeight.bold:FontWeight.normal

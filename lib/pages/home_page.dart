@@ -1,9 +1,12 @@
+import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
 
+import '../base/common.dart';
 import '../entity/login/login_util.dart';
 import '../r.dart';
 import '../routes/app_pages.dart';
@@ -13,10 +16,12 @@ import '../utils/Util.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
+import 'app_update_panel/app_update_panel_logic.dart';
 import 'index/index_view.dart';
 import 'learn/learn_view.dart';
 import 'mine/mine_view.dart';
 import 'say/say_view.dart';
+import 'dart:io' as io;
 
 /**
  * Time: 2022/9/16 16:33
@@ -41,7 +46,11 @@ class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0.obs;
   // final trackLogic = Get.put(TrackEffectsLogic());
   // final userCenterLogic = Get.put(UserCenterLogic());
-  // final userCenterState = Get.find<UserCenterLogic>().state;
+  final appUpdatePanelLogic = Get.put(AppUpdatePanelLogic());
+  final appUpdatePanelState = Get.find<AppUpdatePanelLogic>().state;
+  final dataGroupLogic = Get.put(ConfigLogic());
+  final dataGroupState = Get.find<ConfigLogic>().state;
+
   List<String> bottomTitles = [
     "首页",
     "我学",
@@ -67,13 +76,20 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     Util.initWhenEnterMain();
-    // userCenterLogic.getAppVersion({});
-    // userCenterLogic.addListenerId(GetBuilderIds.versionInfo, () {
-    //   if(userCenterState.checkUpdateResp!=null
-    //       && _selectedIndex.value ==0){
-    //     showAppUpgrade(userCenterState.checkUpdateResp);
-    //   }
-    // });
+    appUpdatePanelLogic.getAppVersion();
+    appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
+      if(appUpdatePanelState.checkUpdateResp!=null){
+        showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
+      }
+    });
+    // dataGroupLogic.getConfig();
+    dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
+      if(dataGroupState.groupQUESTION_TYPE.data!=null){
+        dataGroupState.groupQUESTION_TYPE.data!.forEach((e) {
+          DataGroup.questionType[e.value!] = e.label??"";
+        });
+      }
+    });
   }
 
   @override
@@ -87,55 +103,87 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: AppColors.c_FFFAF7F7,
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(()=>Offstage(
-                offstage: _selectedIndex.value == 3,
-                child: Container(),
-              )),
-              Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    physics: _neverScroll,
-                    children: const [
-                      IndexPage(),
-                      LearnPage(),
-                      SayPage(),
-                      MinePage()
-                    ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,//状态栏颜色
+        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
+        statusBarBrightness: Brightness.dark,  //状态栏亮度
+        systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
+        systemNavigationBarColor: Colors.white,  //导航栏颜色
+        systemNavigationBarIconBrightness: Brightness.light,//导航栏图标颜色
+        systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
+        systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
+    ),
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: AppColors.theme_bg,
+          body: SafeArea(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(()=>Offstage(
+                    offstage: _selectedIndex.value == 3,
+                    child: Container(),
+                  )),
+                  Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        physics: _neverScroll,
+                        children: const [
+                          IndexPage(),
+                          LearnPage(),
+                          SayPage(),
+                          MinePage()
+                        ],
+                      )
                   )
-              )
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: buildBottomRowBar(),
-      ),
-    );
+          bottomNavigationBar: buildBottomRowBar(),
+        ),);
   }
 
   Widget buildBottomRowBar(){
-    return Container(
-      color: AppColors.c_FFFFFFFF,
-      height: 56.w,
-      child: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buildBottomBar(0),
-            buildBottomBar(1),
-            buildBottomBar(2),
-            buildBottomBar(3),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height:56.w,
+          decoration: BoxDecoration(
+            color: AppColors.c_FFFFFFFF,
+            boxShadow:[
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),		// 阴影的颜色
+                offset: Offset(0.w, -10.w),						// 阴影与容器的距离
+                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                spreadRadius: 0.w,
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(6.w)),
+          ),
+          child: Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buildBottomBar(0),
+                buildBottomBar(1),
+                buildBottomBar(2),
+                buildBottomBar(3),
+              ],
+            ),
+          ),
         ),
-      ),
+        Visibility(
+            visible: io.Platform.isIOS,
+            child: Container(
+          color: AppColors.c_FFFFFFFF,
+          height:22.w,
+          width: double.infinity,
+        ))
+      ],
     );
   }
 
@@ -144,13 +192,16 @@ class _HomePageState extends State<HomePage> {
     InkWell(
       onTap: (){
         _onItemTapped(index);
+        appUpdatePanelLogic.getAppVersion();
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Obx(()=>Image.asset("images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
+          Obx(()=>Image.asset(
+            fit:BoxFit.contain,
+            "images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
             height: 26.w,)),
-          // Padding(padding: EdgeInsets.only(top: 4.w)),
+          Padding(padding: EdgeInsets.only(top: 4.w)),
           Obx(()=>Text(
             bottomTitles[index],
             style: TextStyle(
@@ -165,7 +216,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showAppUpgrade(CheckUpdateResp resp){
-    if (resp.isUpdate??false) {
+    if (resp.forceUpdate??false) {
       AppUpgrade.appUpgrade(
         context,
         resp,

@@ -107,6 +107,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
         Fluttertoast.showToast(msg: "登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
+        Util.getHeader();
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
         Fluttertoast.showToast(msg: "登录失败");
@@ -132,87 +133,120 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.c_FFFAF7F7,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 80.w)),
-          Image.asset(R.imagesWelcomeIcon,width: 252.w,height: 84.w,),
-          _getLoginInput(),
-          Padding(padding: EdgeInsets.only(top: 10.w)),
-          const Spacer(),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Divider(
-                      height: 1,
-                      indent: 20,
-                      endIndent: 30,
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Obx(()=>Checkbox(value: agreePolicy.value,
-                              shape: const CircleBorder(),activeColor: AppColors.THEME_COLOR,onChanged: ( value){
-                            agreePolicy.value = value!;
-                          })),
-                          RichText(
-                            text: TextSpan(
-                                text: "阅读并同意",
-                                style:
-                                TextStyle(color: Color(0xff727a89), fontSize: 11),
-                                children: [
-                                  TextSpan(
-                                    text: "用户协议",
-                                    style: TextStyle(
-                                        color: AppColors.THEME_COLOR,
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                    recognizer: recognizerRegister,
-                                  ),
-                                  TextSpan(
-                                    text: "·",
-                                    style: TextStyle(
-                                        color: Color(0xff727a89),
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                  ),
-
-                                  TextSpan(
-                                    text: "隐私政策·",
-                                    style: TextStyle(
-                                        color: AppColors.THEME_COLOR,
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                    recognizer: recognizerPrivacyLaw,
-                                  ),
-                                  TextSpan(
-                                    text: "首次登录将自动注册",
-                                    style: TextStyle(
-                                        color: Color(0xff727a89),
-                                        fontSize: 11.sp,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+      backgroundColor: AppColors.theme_bg,
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          hideKeyBoard();
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 70.w)),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(left: 40.w, right: 20.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
+                  Padding(padding: EdgeInsets.only(top: 8.w)),
+                  Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
+                ],
               ),
-            ],
-          )
-        ],
+            ),
+            _getLoginInput(),
+            Padding(padding: EdgeInsets.only(top: 10.w)),
+            const Spacer(),
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const Divider(
+                        height: 1,
+                        indent: 20,
+                        endIndent: 30,
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Obx(()=>InkWell(
+                              onTap: (){
+                                agreePolicy.value = !agreePolicy.value;
+                              },
+                              child: Container(
+                                width: 20.w,
+                                height: 20.w,
+                                padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
+                                child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
+                                  height: 10.w,),
+                              ),
+                            )),
+                            RichText(
+                              text: TextSpan(
+                                  text: "阅读并同意",
+                                  style:
+                                  TextStyle(color: Color(0xff727a89), fontSize: 11),
+                                  children: [
+                                    TextSpan(
+                                      text: "用户协议",
+                                      style: TextStyle(
+                                          color: AppColors.THEME_COLOR,
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                      recognizer: recognizerRegister,
+                                    ),
+                                    TextSpan(
+                                      text: "·",
+                                      style: TextStyle(
+                                          color: Color(0xff727a89),
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                    ),
+
+                                    TextSpan(
+                                      text: "隐私政策·",
+                                      style: TextStyle(
+                                          color: AppColors.THEME_COLOR,
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                      recognizer: recognizerPrivacyLaw,
+                                    ),
+                                    TextSpan(
+                                      text: "首次登录将自动注册",
+                                      style: TextStyle(
+                                          color: Color(0xff727a89),
+                                          fontSize: 11.sp,
+                                          decoration: TextDecoration.none),
+                                    ),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
+  ///收起键盘
+  hideKeyBoard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
 
   //用户名密码登录，总编辑框
   Widget _getLoginInput() {
@@ -234,9 +268,10 @@ class _LoginPageState extends BasePageState<LoginPage> {
                   children: [
                     Obx(()=>
                         Container(
-                          padding: EdgeInsets.only(left: 30.w),
+                          padding: EdgeInsets.only(left: 20.w),
                           width: 170.w,
                           child:TextField(
+                            keyboardType: TextInputType.number,
                               controller: _verifyCodeController,
                               obscureText: isHidePasswd.value,
                               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
@@ -250,7 +285,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                                 border: InputBorder.none,
                                 hintText: '请输入验证码',
                                 hintStyle:
-                                TextStyle(fontSize: 15, color: Color(0xffccd6e8)),
+                                TextStyle(fontSize: 15, color: Color(0xff717171)),
                               ),
                             )
                         ),
@@ -261,14 +296,16 @@ class _LoginPageState extends BasePageState<LoginPage> {
                           if(countDown.value <= 0){
                             logic.sendCode(_phoneController!.text);
                           }else{
+                            hideKeyBoard();
                             Fluttertoast.showToast(msg: "请等待${countDown.value} s后重新发送");
                           }
                         }else{
+                          hideKeyBoard();
                           Fluttertoast.showToast(msg: "请输入手机号");
                         }
                       },
                       child: Obx(
-                          ()=>Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 16.sp,color: AppColors.THEME_COLOR),)
+                          ()=>Text(countDown.value == -1 ? "获取验证码" : "${countDown.value} s",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15,color: AppColors.THEME_COLOR),)
                       ),
                     )
                   ],
@@ -278,6 +315,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
+              hideKeyBoard();
               logic.mobileLogin(phoneStr.value,phoneCodeStr.value);
             },
             child: Container(
@@ -313,13 +351,14 @@ class _LoginPageState extends BasePageState<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 9.w),
-            width: 54.w,
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
             child: Text("+86",style: TextStyle(fontSize:16.sp,color: AppColors.c_FF101010),),
           ),
           Container(
-            width: 190.w,
+            width: 170.w,
+            alignment: Alignment.centerLeft,
             child: TextField(
+              keyboardType: TextInputType.phone,
               controller: _phoneController,
               style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
               inputFormatters: [

@@ -83,11 +83,12 @@ class Util {
       child:
       Center(
           child: Container(
-            alignment: Alignment.center,
+            width: Util.setWidth(20) as double?,
+            height: Util.setWidth(20) as double?,
+            alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: Util.setWidth(13) as double),
             child: Image.asset(
-              R.imagesIconBackBlack,
-              width: Util.setWidth(48) as double?,height: Util.setWidth(24) as double?,),
+              R.imagesIconBackBlack,fit: BoxFit.fill,),
           ),
       ),
     );
@@ -195,24 +196,19 @@ class Util {
 
   static Future<Map<String,String>> getHeaderParams() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    var appname = "";
-    if(Platform.isIOS){
-      appname = "com.koolearn.Ielts2019";
-    }else{
-      appname = "ielts";
-    }
+    var appname = "crazyenglish";
     return {
-      "appname": appname,
-      "macaddr": "02:00:00:00:00:00",
-      "screensize": "1080*1920",
-      "platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
+      "Appname": appname,
+      "Screensize": "1080*1920",
+      "Platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
       "vcode": packageInfo.buildNumber,
-      "pversion": Config.versionName,
-      "curAppid": Config.appId,
-      "version": Config.versionName,
-      "channel": "flutter",
-      "vendor": appname,
-      "imei":"223232323",
+      "Pversion": Config.versionName,
+      "AppId": Config.appId,
+      "Version": Config.versionName,
+      "Channel": "flutter",
+      "Vendor": appname,
+      "Imei":"223232323",
+      "Authorization":SpUtil.getString(BaseConstant.loginTOKEN),
     };
   }
 

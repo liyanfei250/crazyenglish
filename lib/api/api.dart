@@ -20,9 +20,19 @@ class Api {
   static String getWeekTestDetail = Config.ApiHost +"/crazy-question/exerciseQuestionRequire/selectAppRequireListVo/";
 
 
+  // static String getAppVersion = Config.ApiHost +"/crazy-basic-core/appVersion/app/version/";
+  static String getAppVersion = "http://192.168.0.101/crazy/crazy-basic-core/appVersion/app/version/";
+
+  /// CLASS_GRADE 年级
+  /// QUESTION_TYPE 题型
+  /// QUESTION_DIFFICULTY 题目难度
+  /// LISTENING_TYPE 题目类型
+  /// LISTENING_MODE 听力类型
+  static String getDataGroupDetail = Config.ApiHost +"/crazy-basic-core/dataGroupDetail/";
+
+
 
   static String getWeiXinPay = Config.ApiHost +"/weixinpay.site";
-  static String getAppVersion = Config.ApiHost +"/version.site";
   static String getPush = Config.ApiHost +"/push_record.site";
   static String getMobile = "https://api.verification.jpush.cn/v1/web/loginTokenVerify";
 }

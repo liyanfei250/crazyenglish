@@ -271,6 +271,43 @@ class TreeViewController {
     return _found;
   }
 
+
+  Node? getBefore<T>(String key, {Node? parent}){
+    Node<T>? found = getBeforeNode(key,parent: parent);
+    return beforeNode;
+  }
+
+  Node?  beforeNode;
+
+  Node<T>? getBeforeNode<T>(String key, {Node? parent}) {
+    Node<T>? _found;
+    List<Node> _children = parent == null ? this.children : parent.children;
+    Iterator iter = _children.iterator;
+
+    while (iter.moveNext()) {
+      bool isComeFromChild = false;
+      Node child = iter.current;
+      if (child.key == key) {
+        _found = child as Node<T>;
+        break;
+      } else {
+        if (child.isParent) {
+          _found = this.getBeforeNode<T>(key, parent: child);
+          if (_found != null) {
+            isComeFromChild = true;
+            break;
+          }
+        }
+      }
+      if(!isComeFromChild){
+        beforeNode = child as Node<T>;
+      }
+
+    }
+    return _found;
+  }
+
+
   /// Expands all node that are children of the parent node parameter. If no parent is passed, uses the root node as the parent.
   List<Node> expandAll({Node? parent}) {
     List<Node> _children = [];

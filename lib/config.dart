@@ -2,19 +2,24 @@
 enum Env {
   NEIBU,
   PRODUCT,
+  TEST,
 }
 
 class Config {
   static Env? env;
   // 内网环境
-  static final String NEIBU_APP_ID = "381";
+  static final String NEIBU_APP_ID = "1001";
   static final String NEIBU_SECURITY_KEY = "f6448a1aa06b4779b39549c5f5f0aa32";
   static final String NEIBU_API_DOMAIN = "https://101.42.97.189/crazy";
 
   // 外网环境
-  static final String PRODUCT_APP_ID = "381";
+  static final String PRODUCT_APP_ID = "1001";
   static final String PRODUCT_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
   static final String PRODUCT_API_DOMAIN = "https://101.42.97.189/crazy";
+
+  static final String TEST_APP_ID = "1001";
+  static final String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
+  static final String TEST_API_DOMAIN = "https://101.42.97.189/crazy";
 
 
 

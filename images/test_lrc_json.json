@@ -4,103 +4,160 @@
     "start": 185,
     "end" : 6875,
     "entext": "Hello boys and girls",
+    "entext": "Hello, boys and girls!",
     "cntext":"男孩女孩们好"
 },
     {
         "id":2,
         "start": 7054,
         "end" : 13555,
+<<<<<<< HEAD
         "entext": "In this new term you may find a new class in your timetable",
+=======
+        "entext": "In this new term, you may find a new class in your timetable. ",
+>>>>>>> master
         "cntext":"在这个新学期，你可能会在你的时间表中找到一个新的班级"
     },
     {
         "id":3,
         "start": 13934,
         "end" : 17275,
+<<<<<<< HEAD
         "entext": "Yes it's labor class",
+=======
+        "entext": "Yes, it’s labor class.",
+>>>>>>> master
         "cntext":"是的，是劳动阶级"
     },
     {
         "id":4,
         "start": 18574 ,
         "end" : 26005,
+<<<<<<< HEAD
         "entext": "Primary and middle school students will have at least one labor class every week",
+=======
+        "entext": "Primary and middle school students will have at least one labor class every week.",
+>>>>>>> master
         "cntext":"中小学生每周至少上一节劳动课"
     },
     {
         "id":5,
         "start": 27304 ,
         "end" : 30095,
+<<<<<<< HEAD
         "entext": "What can you learn in labor class",
+=======
+        "entext": "What can you learn in labor class?",
+>>>>>>> master
         "cntext":"你在劳动课上能学到什么"
     },
     {
         "id":6,
         "start": 32324 ,
         "end" : 39565,
+<<<<<<< HEAD
         "entext": "I know first and second graders need to do some cleaning and learn to wash vegetables",
+=======
+        "entext": "\n“I know first and second graders need to do some cleaning and learn to wash vegetables. ",
+>>>>>>> master
         "cntext":"我知道一年级和二年级的学生需要做一些清洁和学习洗蔬菜"
     },
     {
         "id":7,
         "start": 40124 ,
         "end" : 50345,
+<<<<<<< HEAD
         "entext": "We also need to learn to look after one or two kinds of clans small animals says a second grader",
+=======
+        "entext": "We also need to learn to look after one or two kinds of plants or small animals,”says a second grader.",
+>>>>>>> master
         "cntext":"一位二年级学生说，我们还需要学会照顾一两种小动物"
     },
     {
         "id":8,
         "start": 50714 ,
         "end" : 60375,
+<<<<<<< HEAD
         "entext": "With third and fourth graders to clean the classroom and learn to watch our socks and shoes",
+=======
+        "entext": "\n“We third and fourth graders should clean the classroom, and learn to wash our socks and shoes. ",
+>>>>>>> master
         "cntext":"让三年级和四年级的学生打扫教室，学会照看袜子和鞋子"
     },
     {
         "id":9,
         "start": 61674 ,
         "end" : 68735,
+<<<<<<< HEAD
         "entext": "We also need to learn how to make cool dishes and use home appliances",
+=======
+        "entext": "We also need to learn how to make cold dishes and use home appliances.”",
+>>>>>>> master
         "cntext":"我们还需要学习如何制作凉菜和使用家用电器"
     },
     {
         "id":10,
         "start": 69664 ,
         "end" : 81175,
+<<<<<<< HEAD
         "entext": "Fifth and six graders need to learn to cook 203 simple dishes such as fly decks says a fifth grader",
+=======
+        "entext": "\n“Fifth and sixth graders need to learn to cook two or three simple dishes, such as fried eggs,”says a fifth grader. ",
+>>>>>>> master
         "cntext":"一名五年级学生表示，五年级和六年级学生需要学习烹饪203道简单的菜肴，如飞行甲板"
     },
     {
         "id":11,
         "start": 82474 ,
         "end" : 88975,
+<<<<<<< HEAD
         "entext": "As middle school students we need to learn to think about the food for three meals",
+=======
+        "entext": "“As middle school students, we need to learn to think about the food for three meals.",
+>>>>>>> master
         "cntext":"作为中学生，我们需要学会思考三餐的食物"
     },
     {
         "id":12,
         "start": 90094 ,
         "end" : 97895,
+<<<<<<< HEAD
         "entext": "We also need to learn to make one or two kinds of traditional hand crafts and some other things",
+=======
+        "entext": " We also need to learn to make one or two kinds of traditional handicrafts, and some other things.”",
+>>>>>>> master
         "cntext":"我们还需要学习制作一两种传统手工艺品和其他一些东西"
     },
     {
         "id":13,
         "start": 99014 ,
         "end" : 100865,
+<<<<<<< HEAD
         "entext": "That all sounds great",
+=======
+        "entext": "That all sounds great. ",
+>>>>>>> master
         "cntext":"听起来都很棒"
     },
     {
         "id":14,
         "start": 101054 ,
         "end" : 105135,
+<<<<<<< HEAD
         "entext": "I'm sure our labor class will be very interesting",
+=======
+        "entext": "I’m sure labor class will be very interesting. ",
+>>>>>>> master
         "cntext":"我相信我们的劳动课会很有趣"
     },
     {
         "id":15,
         "start": 105694 ,
         "end" : 120925,
+<<<<<<< HEAD
         "entext": "Are you all ready for it",
+=======
+        "entext": "Are you all ready for it?",
+>>>>>>> master
         "cntext":"你准备好了吗"
     }]

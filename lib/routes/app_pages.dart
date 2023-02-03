@@ -1,3 +1,4 @@
+import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/pages/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/reading_detail/reading_detail_view.dart';
 import 'package:crazyenglish/pages/week_test_catalog/week_test_catalog_view.dart';

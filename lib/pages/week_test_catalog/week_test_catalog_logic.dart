@@ -25,20 +25,20 @@ class WeekTestCatalogLogic extends GetxController {
 
 
   void getWeekTestCategory(String periodicaId) async{
-    // Map<String,String> req= {};
-    // // req["weekTime"] = weekTime;
-    // var cache = await JsonCacheManageUtils.getCacheData(
-    //     JsonCacheManageUtils.WeekTestCatalogResponse,labelId: periodicaId.toString()).then((value){
-    //   if(value!=null){
-    //     return WeekTestCatalogResponse.fromJson(value as Map<String,dynamic>?);
-    //   }
-    // });
-    //
-    // if(cache is WeekTestCatalogResponse) {
-    //   state.weekTestCatalogResponse = cache!;
-    //   state.nodes = process(state.weekTestCatalogResponse);
-    //   update([GetBuilderIds.weekTestCatalogList]);
-    // }
+    Map<String,String> req= {};
+    // req["weekTime"] = weekTime;
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.WeekTestCatalogResponse,labelId: periodicaId.toString()).then((value){
+      if(value!=null){
+        return WeekTestCatalogResponse.fromJson(value as Map<String,dynamic>?);
+      }
+    });
+
+    if(cache is WeekTestCatalogResponse) {
+      state.weekTestCatalogResponse = cache!;
+      state.nodes = process(state.weekTestCatalogResponse);
+      update([GetBuilderIds.weekTestCatalogList]);
+    }
     WeekTestCatalogResponse list = await weekTestRepository.getWeekTestCategory(periodicaId);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.WeekTestCatalogResponse,
