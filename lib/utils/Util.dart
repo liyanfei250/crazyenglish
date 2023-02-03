@@ -197,19 +197,22 @@ class Util {
   static Future<Map<String,String>> getHeaderParams() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var appname = "crazyenglish";
-    return {
+    Map<String,String> params =  {
       "Appname": appname,
       "Screensize": "1080*1920",
       "Platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
       "vcode": packageInfo.buildNumber,
       "Pversion": Config.versionName,
-      "AppId": Config.appId,
+      "appId": Config.appId,
       "Version": Config.versionName,
       "Channel": "flutter",
       "Vendor": appname,
       "Imei":"223232323",
-      "Authorization":SpUtil.getString(BaseConstant.loginTOKEN),
     };
+    if(SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty){
+      params["Authorization"] = "Bearer "+SpUtil.getString(BaseConstant.loginTOKEN);
+    }
+    return params;
   }
 
   static getHeader() {
