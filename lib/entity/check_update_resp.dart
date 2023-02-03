@@ -50,7 +50,7 @@ class CheckUpdateResp {
   String? _linkUrl;
   String? _description;
   String? _publishDate;
-  bool? _forceUpdate;
+  int? _forceUpdate;
   int? _apkSize;
   bool? _isUpdate;
   String? _version;
@@ -59,7 +59,7 @@ class CheckUpdateResp {
   String? get publishDate => _publishDate;
   String? get newVersion => _version;
   String? get updateDescription => _description;
-  bool? get forceUpdate => _forceUpdate;
+  int? get forceUpdate => _forceUpdate;
   int? get apkSize => _apkSize;
   bool? get isUpdate => _isUpdate;
 
@@ -68,7 +68,7 @@ class CheckUpdateResp {
     String? version,
     String? publishDate,
     String? updateDescription,
-    bool? forceUpdate,
+    int? forceUpdate,
     int? apkSize,
     bool? isUpdate}){
     _linkUrl = apkUrl;
@@ -85,7 +85,7 @@ class CheckUpdateResp {
     _version = json['version']??"";
     _publishDate = json['publishDate']??"";
     _description = json['description']??"";
-    _forceUpdate = json['forceUpdate']??false;
+    _forceUpdate = json['forceUpdate']??1;
     _apkSize = json['apkSize']??0;
     _isUpdate = json['isUpdate']??false;
   }
