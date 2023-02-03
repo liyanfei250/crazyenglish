@@ -192,7 +192,6 @@ class _HomePageState extends State<HomePage> {
     InkWell(
       onTap: (){
         _onItemTapped(index);
-        appUpdatePanelLogic.getAppVersion();
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
