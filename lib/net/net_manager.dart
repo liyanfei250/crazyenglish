@@ -73,6 +73,13 @@ class NetManager {
 
   NetManager() {
     _dio = Dio(_options);
+    //   ..httpClientAdapter = Http2Adapter(
+    //   ConnectionManager(
+    //     idleTimeout: 10000,
+    //     // Ignore bad certificate
+    //     onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+    //   ),
+    // );
   }
 
   static BaseOptions getDefOptions() {
