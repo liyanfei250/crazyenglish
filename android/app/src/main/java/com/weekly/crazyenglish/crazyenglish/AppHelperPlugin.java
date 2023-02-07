@@ -55,6 +55,8 @@ public class AppHelperPlugin implements FlutterPlugin, MethodChannel.MethodCallH
         try{
             if (call.method.equals("hasPermission")) {
                 result.success(hasInstallPermission());
+            }else if (call.method.equals("requestPersmission")) {
+                startInstallPermissionSettingActivity();
             } else if (call.method.equals("install")) {
                 //安装app
                 filePath = call.argument("path");
