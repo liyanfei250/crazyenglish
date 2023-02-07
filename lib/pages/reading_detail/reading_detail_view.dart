@@ -2,17 +2,14 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart' as audio;
 import 'package:bot_toast/bot_toast.dart';
-<<<<<<< HEAD
 import 'package:crazyenglish/entity/paper_category.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:extended_image/extended_image.dart';
-=======
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
->>>>>>> master
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,13 +209,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
               margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
-<<<<<<< HEAD
                   RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
-=======
-                  if(Config.env == Env.TEST){
-                    RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
-                  }
->>>>>>> master
                 },
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),
