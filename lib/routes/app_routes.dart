@@ -13,6 +13,8 @@ abstract class AppRoutes{
   static const WeeklyTestDetail = '/WeeklyTestDetail';
 
   static const IntensiveListeningPage = '/IntensiveListeningPage';
+  static const ToShoppingPage = '/ToShoppingPage';
+  static const ShoppingListPage = '/ShoppingListPage';
 
 // static const LOGIN = '/login';
 

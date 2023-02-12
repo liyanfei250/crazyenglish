@@ -115,6 +115,9 @@ class _RecommendPageState extends BasePageState<RecommendPage> {
         case "综合口语":
           RouterUtil.toNamed(AppRoutes.TextToVoice);
           break;
+        case "高考真题":
+          RouterUtil.toNamed(AppRoutes.ToShoppingPage);
+          break;
       }
     },
     child: Column(
