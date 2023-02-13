@@ -11,7 +11,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../entity/week_paper_response.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
-import '../../utils/Util.dart';
+import '../../base/AppUtil.dart';
 import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
 import 'reading_list_logic.dart';

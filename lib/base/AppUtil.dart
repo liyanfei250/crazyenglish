@@ -14,7 +14,7 @@ import 'package:package_info/package_info.dart';
 import '../config.dart';
 import '../net/net_manager.dart';
 import '../r.dart';
-import 'object_util.dart';
+import '../utils/object_util.dart';
 import 'package:html/parser.dart' show parse;
 import 'dart:ui' as ui;
 

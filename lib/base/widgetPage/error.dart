@@ -1,8 +1,8 @@
-import 'package:crazyenglish/utils/Util.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../r.dart';
+import '../AppUtil.dart';
 
 typedef ReloadData = void Function();
 

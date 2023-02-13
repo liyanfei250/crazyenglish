@@ -8,7 +8,6 @@ import 'package:crypto/crypto.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/net/get_sign.dart';
-import 'package:crazyenglish/utils/Util.dart';
 import 'package:crazyenglish/utils/object_util.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +15,7 @@ import 'package:crazyenglish/net/kool_exception.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
+import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
 import 'dio_log_interceptor.dart';
 

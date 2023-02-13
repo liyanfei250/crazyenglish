@@ -12,7 +12,7 @@ import '../r.dart';
 import '../routes/app_pages.dart';
 import '../routes/getx_ids.dart';
 import '../routes/routes_utils.dart';
-import '../utils/Util.dart';
+import '../base/AppUtil.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 
+import '../base/AppUtil.dart';
 import '../r.dart';
-import '../utils/Util.dart';
 import '../utils/colors.dart';
 import 'utils/xf_socket.dart';
 

@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../r.dart';
-import '../../utils/Util.dart';
+import '../../base/AppUtil.dart';
 import 'intensive_listening_logic.dart';
 import 'intensive_player.dart';
 

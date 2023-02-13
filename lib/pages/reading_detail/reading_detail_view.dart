@@ -19,7 +19,7 @@ import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/paper_detail.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
-import '../../utils/Util.dart';
+import '../../base/AppUtil.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
 import '../week_test_detail/test_player_widget.dart';

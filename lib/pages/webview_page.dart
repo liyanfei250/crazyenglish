@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart' as config;
-import 'package:crazyenglish/utils/Util.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
