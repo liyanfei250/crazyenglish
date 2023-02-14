@@ -52,11 +52,11 @@ dependencies:
   image_picker: ^0.8.6
   # 状态管理
   flutter_bloc: ^7.2.0
-
   flutter_native_image: ^0.0.6+1
-
   flutter_cache_manager: ^3.0.0-nullsafety.1
-  # 日期时间处理
+  #购物车
+  provider: ^6.0.0
+# 日期时间处理
   intl: ^0.17.0
 
   #设置http代理
@@ -99,8 +99,8 @@ dependencies:
   flutter_html: 3.0.0-alpha.6
   # webView使用本地插件，忽略ssl证书
 
-#  flutter_inappwebview: ^5.7.2+3
-#  webview_flutter: ^4.0.1
+  #  flutter_inappwebview: ^5.7.2+3
+  #  webview_flutter: ^4.0.1
   flutter_inappwebview: ^6.0.0-beta.22
   video_player: ^2.4.10
   audioplayers: ^1.2.0
@@ -169,8 +169,8 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
-  # assets-generator-begin
-  # images/*
+    # assets-generator-begin
+    # images/*
     - images/article_collect_default.png
     - images/torid_right.png
     - images/my_top_bg.png

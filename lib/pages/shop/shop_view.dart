@@ -1,5 +1,4 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/entity/shoplist/view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,7 @@ import '../../r.dart';
 import '../../utils/ScreenGetUtil.dart';
 import '../../utils/Util.dart';
 import '../../utils/colors.dart';
+import '../shoplist/view.dart';
 import 'shop_logic.dart';
 
 class ToShoppingPage extends BasePage {
