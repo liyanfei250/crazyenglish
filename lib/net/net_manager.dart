@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:crazyenglish/base/common.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 
 import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
+import '../routes/app_pages.dart';
 import 'dio_log_interceptor.dart';
 
 class Method {
@@ -33,6 +35,7 @@ class ResponseCode {
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
+  static const int status_token_invalid = 40003; //token失效
 }
 
 class NetManager {
@@ -136,8 +139,8 @@ class NetManager {
       }
 
     } catch (e) {
-      if (e is DioError) {
-        Util.toast("网络异常");
+      if (e is DioError && e.response!=null) {
+        response = e!.response!;
         // Util.toastLong("网络异常 type:" +
         //     e.type.toString() +
         //     "\n" +
@@ -148,8 +151,8 @@ class NetManager {
         //         : "response 为null"));
       } else {
         Util.toastLong("网络异常");
+        return new Future.error(e);
       }
-      return new Future.error(e);
     }
 
     _printHttpLog(response);
@@ -168,6 +171,13 @@ class NetManager {
           type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
         ));
       }
+    } else if(response.statusCode == HttpStatus.unauthorized || (response.data!=null
+        && response.data['code']!=null
+        && response.data['code'] == ResponseCode.status_token_invalid)){
+      Util.toastLong("登录信息已失效，请重新登录");
+      SpUtil.putString(BaseConstant.loginTOKEN,"");
+      Util.getHeader();
+      RouterUtil.offAndToNamed(AppRoutes.LOGIN);
     } else {
       // Util.toast("网络异常 httpCode" +
       //     response.statusCode.toString() +
