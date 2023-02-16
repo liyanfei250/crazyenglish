@@ -77,8 +77,6 @@ class R {
   static final String imagesArticleManPlay = 'images/article_man_play.png';
   /// ![](http://127.0.0.1:11/images/my_icon_share.png)
   static final String imagesMyIconShare = 'images/my_icon_share.png';
-  /// ![](http://127.0.0.1:11/images/test_lrc_json.json)
-  static final String imagesTestLrcJson = 'images/test_lrc_json.json';
   /// ![](http://127.0.0.1:11/images/torid_eye_hide.png)
   static final String imagesToridEyeHide = 'images/torid_eye_hide.png';
   /// ![](http://127.0.0.1:11/images/index_icon_8.png)

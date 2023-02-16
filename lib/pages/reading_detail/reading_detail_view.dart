@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart' as audio;
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/entity/paper_category.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
@@ -205,9 +209,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
               margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
-                  if(Config.env == Env.TEST){
-                    RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
-                  }
+                  RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 },
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),
