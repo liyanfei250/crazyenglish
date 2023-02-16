@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色
-        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
+        statusBarIconBrightness: Brightness.light, //状态栏图标颜色
         statusBarBrightness: Brightness.dark,  //状态栏亮度
         systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
         systemNavigationBarColor: Colors.white,  //导航栏颜色
@@ -116,31 +116,15 @@ class _HomePageState extends State<HomePage> {
     ),
         child: Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.theme_bg,
-          body: SafeArea(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Obx(()=>Offstage(
-                    offstage: _selectedIndex.value == 3,
-                    child: Container(),
-                  )),
-                  Expanded(
-                      child: PageView(
-                        controller: pageController,
-                        physics: _neverScroll,
-                        children: const [
-                          IndexPage(),
-                          ReviewPage(),
-                          CoursePage(),
-                          MinePage()
-                        ],
-                      )
-                  )
-                ],
-              ),
-            ),
+          body: PageView(
+            controller: pageController,
+            physics: _neverScroll,
+            children: const [
+              IndexPage(),
+              ReviewPage(),
+              CoursePage(),
+              MinePage()
+            ],
           ),
           bottomNavigationBar: buildBottomRowBar(),
         ),);

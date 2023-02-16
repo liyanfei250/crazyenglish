@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../r.dart';
 import 'review_logic.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -16,7 +18,20 @@ class _ReviewPageState extends State<ReviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+        body: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(R.imagesReviewTopBg),
+              fit: BoxFit.cover
+            ),
+          ),
+          child: Column(
+
+          ),
+        ),
+    );
   }
 
   @override
