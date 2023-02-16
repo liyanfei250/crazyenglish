@@ -231,3 +231,67 @@ class Records {
   }
 
 }
+class Shopping {
+  int? _id;
+  String? _name;
+  String? _stage;
+  int? _sort;
+  String? _weekTime;
+  String? _nameTitle;
+  String? _img;
+  String? _createTime;
+
+  int? get id => _id;
+  String? get name => _name;
+  String? get stage => _stage;
+  int? get sort => _sort;
+  String? get weekTime => _weekTime;
+  String? get nameTitle => _nameTitle;
+  String? get img => _img;
+  String? get createTime => _createTime;
+
+  Shopping({
+      int? id,
+      String? name,
+      String? stage,
+      int? sort,
+      String? weekTime,
+      String? nameTitle,
+      String? img,
+      String? createTime}){
+    _id = id;
+    _name = name;
+    _stage = stage;
+    _sort = sort;
+    _weekTime = weekTime;
+    _nameTitle = nameTitle;
+    _img = img;
+    _createTime = createTime;
+}
+
+  Shopping.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _stage = json['stage'];
+    _sort = json['sort'];
+    _weekTime = json['weekTime'];
+    _nameTitle = json['nameTitle'];
+    _img = json['img'];
+    _createTime = json['createTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['stage'] = _stage;
+    map['sort'] = _sort;
+    map['weekTime'] = _weekTime;
+    map['nameTitle'] = _nameTitle;
+    map['img'] = _img;
+    map['createTime'] = _createTime;
+    return map;
+  }
+
+}
+

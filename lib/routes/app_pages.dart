@@ -1,6 +1,10 @@
 import 'package:crazyenglish/config.dart';
+import 'package:crazyenglish/pages/order_sure/order_sure_view.dart';
 import 'package:crazyenglish/pages/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/reading_detail/reading_detail_view.dart';
+import 'package:crazyenglish/pages/shop/shop_view.dart';
+import 'package:crazyenglish/pages/shop_car/shop_car_view.dart';
+import 'package:crazyenglish/pages/shoplist/view.dart';
 import 'package:crazyenglish/pages/week_test_catalog/week_test_catalog_view.dart';
 import 'package:crazyenglish/pages/week_test_detail/week_test_detail_view.dart';
 import 'package:crazyenglish/pages/week_test_list/week_test_list_view.dart';
@@ -35,6 +39,10 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
     GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
     GetPage(name: AppRoutes.IntensiveListeningPage, page:()=>IntensiveListeningPage(),),
+    GetPage(name: AppRoutes.ToShoppingPage, page:()=>ToShoppingPage(),),
+    GetPage(name: AppRoutes.ShoppingListPage, page:()=>ShoppingListPage(),),
+    GetPage(name: AppRoutes.ShopCarPage, page:()=>ShopCarPage(),),
+    GetPage(name: AppRoutes.OrderSurePage, page:()=>OrderSurePage(),),
 
   ];
 }

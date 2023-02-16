@@ -18,6 +18,7 @@ class GetBuilderIds {
   static const String weekTestDetailList = "weekTestDetailList";
   static const String datagroupDetailResponse = "datagroupDetailResponse";
   static const String APPVERSION = "APPVERSION";
+  static const String shopList = "shopList";
 
 
 

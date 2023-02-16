@@ -7,11 +7,7 @@ import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
 
 import '../base/common.dart';
-import '../entity/login/login_util.dart';
-import '../r.dart';
-import '../routes/app_pages.dart';
 import '../routes/getx_ids.dart';
-import '../routes/routes_utils.dart';
 import '../base/AppUtil.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
@@ -105,6 +101,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 解决Flutter 不同终端屏幕适配问题，传入context和设计稿子上的宽高
+    //ScreenAdaper.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色
