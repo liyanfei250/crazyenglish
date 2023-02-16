@@ -4,7 +4,7 @@ import 'package:crazyenglish/entity/push_msg.dart';
 import 'package:crazyenglish/entity/send_code_response.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:package_info/package_info.dart';
 
 import '../../api/api.dart';
@@ -47,7 +47,7 @@ class UserRepository{
         .request(Method.post, Api.getLogin,
         data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Fluttertoast.showToast(msg: baseResp.msg??"");
+      showToast(baseResp.msg??"");
     }
     LoginResponse loginResponse = LoginResponse.fromJson(baseResp.getReturnData());
     if(loginResponse !=null){

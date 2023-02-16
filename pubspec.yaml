@@ -39,7 +39,9 @@ dependencies:
   flutter_native_splash: ^2.2.9
   dio: ^4.0.6
   ffi: ^2.0.0
-  fluttertoast: ^8.0.8
+  ## 不兼容桌面版
+#  fluttertoast: ^8.0.8
+  flutter_styled_toast: ^2.1.3
   flutter_screenutil: ^5.4.0
   #事件总线--EventBus
   event_bus: ^2.0.0

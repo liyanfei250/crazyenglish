@@ -6,7 +6,7 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 import '../../r.dart';
 import '../../xfyy/utils/xf_socket.dart';
@@ -183,7 +183,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
                 }
 
               }else {
-                Fluttertoast.showToast(msg: "暂无播放内容");
+                showToast("暂无播放内容");
               }
 
 

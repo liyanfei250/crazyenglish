@@ -7,20 +7,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../base/common.dart';
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../entity/login/login_util.dart';
-import '../../r.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/getx_ids.dart';
-import '../../routes/routes_utils.dart';
-import '../../base/AppUtil.dart';
-import '../../utils/colors.dart';
-import '../../utils/sp_util.dart';
+import '../../../base/common.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../entity/login/login_util.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../base/AppUtil.dart';
+import '../../../utils/colors.dart';
+import '../../../utils/sp_util.dart';
 import 'login_logic.dart';
 
 class LoginPage extends BasePage {
@@ -98,19 +98,19 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
 
-      // Fluttertoast.showToast(msg: state.sendCodeResponse.data??"");
+      // showToast(state.sendCodeResponse.data??"");
       _startTimer(60);
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if((state.loginResponse.data!.accessToken??"").isNotEmpty){
-        Fluttertoast.showToast(msg: "登录成功");
+        showToast("登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         Util.getHeader();
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
-        Fluttertoast.showToast(msg: "登录失败");
+        showToast("登录失败");
       }
 
 
@@ -139,102 +139,107 @@ class _LoginPageState extends BasePageState<LoginPage> {
         onTap: () {
           hideKeyBoard();
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 70.w)),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 40.w, right: 20.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
-                  Padding(padding: EdgeInsets.only(top: 8.w)),
-                  Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
-                ],
-              ),
-            ),
-            _getLoginInput(),
-            Padding(padding: EdgeInsets.only(top: 10.w)),
-            const Spacer(),
-            Column(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
+                Padding(padding: EdgeInsets.only(top: 70.w)),
                 Container(
-                  margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
-                  child: Stack(
-                    alignment: Alignment.center,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: 40.w, right: 20.w),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Divider(
-                        height: 1,
-                        indent: 20,
-                        endIndent: 30,
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Obx(()=>InkWell(
-                              onTap: (){
-                                agreePolicy.value = !agreePolicy.value;
-                              },
-                              child: Container(
-                                width: 20.w,
-                                height: 20.w,
-                                padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
-                                child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
-                                  height: 10.w,),
-                              ),
-                            )),
-                            RichText(
-                              text: TextSpan(
-                                  text: "阅读并同意",
-                                  style:
-                                  TextStyle(color: Color(0xff727a89), fontSize: 11),
-                                  children: [
-                                    TextSpan(
-                                      text: "用户协议",
-                                      style: TextStyle(
-                                          color: AppColors.THEME_COLOR,
-                                          fontSize: 11.sp,
-                                          decoration: TextDecoration.none),
-                                      recognizer: recognizerRegister,
-                                    ),
-                                    TextSpan(
-                                      text: "·",
-                                      style: TextStyle(
-                                          color: Color(0xff727a89),
-                                          fontSize: 11.sp,
-                                          decoration: TextDecoration.none),
-                                    ),
-
-                                    TextSpan(
-                                      text: "隐私政策·",
-                                      style: TextStyle(
-                                          color: AppColors.THEME_COLOR,
-                                          fontSize: 11.sp,
-                                          decoration: TextDecoration.none),
-                                      recognizer: recognizerPrivacyLaw,
-                                    ),
-                                    TextSpan(
-                                      text: "首次登录将自动注册",
-                                      style: TextStyle(
-                                          color: Color(0xff727a89),
-                                          fontSize: 11.sp,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ]),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Image.asset(R.imagesWelcomeIcon,width: 78.w,height: 76.w,),
+                      Padding(padding: EdgeInsets.only(top: 8.w)),
+                      Image.asset(R.imagesWelcomeTxt,width: 236.w,height: 33.w,),
                     ],
                   ),
                 ),
+                _getLoginInput(),
+                Padding(padding: EdgeInsets.only(top: 10.w)),
+                const Spacer(),
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20,bottom: 43.w),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          const Divider(
+                            height: 1,
+                            indent: 20,
+                            endIndent: 30,
+                          ),
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Obx(()=>InkWell(
+                                  onTap: (){
+                                    agreePolicy.value = !agreePolicy.value;
+                                  },
+                                  child: Container(
+                                    width: 20.w,
+                                    height: 20.w,
+                                    padding: EdgeInsets.only(left:5.w,right: 5.w,top: 4.w),
+                                    child: Image.asset(agreePolicy.value? R.imagesLoginAgreeSelected:R.imagesLoginAgreeDefault,width: 10.w,
+                                      height: 10.w,),
+                                  ),
+                                )),
+                                RichText(
+                                  text: TextSpan(
+                                      text: "阅读并同意",
+                                      style:
+                                      TextStyle(color: Color(0xff727a89), fontSize: 11),
+                                      children: [
+                                        TextSpan(
+                                          text: "用户协议",
+                                          style: TextStyle(
+                                              color: AppColors.THEME_COLOR,
+                                              fontSize: 11.sp,
+                                              decoration: TextDecoration.none),
+                                          recognizer: recognizerRegister,
+                                        ),
+                                        TextSpan(
+                                          text: "·",
+                                          style: TextStyle(
+                                              color: Color(0xff727a89),
+                                              fontSize: 11.sp,
+                                              decoration: TextDecoration.none),
+                                        ),
+
+                                        TextSpan(
+                                          text: "隐私政策·",
+                                          style: TextStyle(
+                                              color: AppColors.THEME_COLOR,
+                                              fontSize: 11.sp,
+                                              decoration: TextDecoration.none),
+                                          recognizer: recognizerPrivacyLaw,
+                                        ),
+                                        TextSpan(
+                                          text: "首次登录将自动注册",
+                                          style: TextStyle(
+                                              color: Color(0xff727a89),
+                                              fontSize: 11.sp,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );
@@ -297,11 +302,11 @@ class _LoginPageState extends BasePageState<LoginPage> {
                             logic.sendCode(_phoneController!.text);
                           }else{
                             hideKeyBoard();
-                            Fluttertoast.showToast(msg: "请等待${countDown.value} s后重新发送");
+                            showToast("请等待${countDown.value} s后重新发送");
                           }
                         }else{
                           hideKeyBoard();
-                          Fluttertoast.showToast(msg: "请输入手机号");
+                          showToast("请输入手机号");
                         }
                       },
                       child: Obx(

@@ -9,7 +9,7 @@ import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:package_info/package_info.dart';
 import '../config.dart';
 import '../net/net_manager.dart';
@@ -226,18 +226,14 @@ class Util {
   }
 
   static toast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+    showToast(message,
+      duration: Duration(milliseconds: 200),
     );
   }
 
   static toastLong(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
+    showToast(message,
+      duration: Duration(milliseconds: 500),
     );
   }
 

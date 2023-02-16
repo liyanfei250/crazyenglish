@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:video_player/video_player.dart';
@@ -224,11 +224,11 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
                 onTap: (){
                   if(playMan.value == man){
                     playMan.value = woman;
-                    Fluttertoast.showToast(msg: "已切换为女生");
+                    showToast("已切换为女生");
                     playerManStreamController.add(true);
                   }else{
                     playMan.value = man;
-                    Fluttertoast.showToast(msg: "已切换为男生");
+                    showToast("已切换为男生");
                     playerManStreamController.add(true);
                   }
                   _stopPlay();
