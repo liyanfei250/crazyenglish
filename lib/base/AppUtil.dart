@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -9,7 +10,6 @@ import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:package_info/package_info.dart';
 import '../config.dart';
 import '../net/net_manager.dart';
@@ -226,15 +226,11 @@ class Util {
   }
 
   static toast(String message) {
-    showToast(message,
-      duration: Duration(milliseconds: 200),
-    );
+    BotToast.showText(text:message);
   }
 
   static toastLong(String message) {
-    showToast(message,
-      duration: Duration(milliseconds: 500),
-    );
+    BotToast.showText(text:message);
   }
 
 
@@ -248,6 +244,10 @@ class Util {
   static bool isLogin() {
     return SpUtil.getBool(BaseConstant.ISLOGING);
     // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
+  }
+
+  static bool isDesktop(){
+    return Platform.isMacOS || Platform.isWindows || Platform.isLinux;
   }
 
   static bool isLoginCheckYK() {

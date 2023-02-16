@@ -1,7 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 
 import '../../r.dart';

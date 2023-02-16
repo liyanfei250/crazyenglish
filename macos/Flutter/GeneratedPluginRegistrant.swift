@@ -9,7 +9,7 @@ import audio_session
 import audioplayers_darwin
 import flutter_inappwebview
 import package_info
-import path_provider_macos
+import path_provider_foundation
 import share_plus_macos
 import shared_preferences_macos
 import sign_in_with_apple

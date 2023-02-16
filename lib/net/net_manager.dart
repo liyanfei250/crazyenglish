@@ -2,24 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:convert';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/net/get_sign.dart';
-import 'package:crazyenglish/utils/object_util.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
-import 'package:crazyenglish/net/kool_exception.dart';
+import 'package:dio/adapter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
 import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
 import '../routes/app_pages.dart';
-import 'dio_log_interceptor.dart';
 
 class Method {
   static final String get = "GET";
@@ -84,6 +81,24 @@ class NetManager {
     //     onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
     //   ),
     // );
+    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      // client.findProxy = (uri) {
+      //   // return "PROXY 10.155.33.120:8888";
+      //   return "PROXY 10.155.43.66:8888";
+      //   // return "PROXY 172.20.10.12:8886";
+      //   // return "PROXY 10.155.33.120:8888";
+      // };
+
+      //下面是代理地址，需要的自己打开注释改成自己的代理
+      client.findProxy = (uri) {
+        return "PROXY localhost:8886;DIRECT;";
+      };
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) {
+        return true;
+      };
+    };
   }
 
   static BaseOptions getDefOptions() {

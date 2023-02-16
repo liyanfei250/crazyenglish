@@ -7,7 +7,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -98,19 +97,19 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
 
-      // showToast(state.sendCodeResponse.data??"");
+      // Util.toast(state.sendCodeResponse.data??"");
       _startTimer(60);
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if((state.loginResponse.data!.accessToken??"").isNotEmpty){
-        showToast("登录成功");
+        Util.toast("登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         Util.getHeader();
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       }else{
-        showToast("登录失败");
+        Util.toast("登录失败");
       }
 
 
@@ -127,10 +126,18 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(
-        context,
-        designSize: const Size(360, 640));
 
+    if(Util.isDesktop()){
+      ScreenUtil.init(
+          context,
+          designSize: const Size(1000, 860));
+
+    }else{
+      ScreenUtil.init(
+          context,
+          designSize: const Size(360, 640));
+
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.theme_bg,
@@ -302,11 +309,11 @@ class _LoginPageState extends BasePageState<LoginPage> {
                             logic.sendCode(_phoneController!.text);
                           }else{
                             hideKeyBoard();
-                            showToast("请等待${countDown.value} s后重新发送");
+                            Util.toast("请等待${countDown.value} s后重新发送");
                           }
                         }else{
                           hideKeyBoard();
-                          showToast("请输入手机号");
+                          Util.toast("请输入手机号");
                         }
                       },
                       child: Obx(
