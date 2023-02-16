@@ -71,6 +71,7 @@ class NetManager {
   }
 
   void setHeaders(Map<String, dynamic> map) {
+    _options.headers.remove("Authorization");
     _options.headers.addAll(map);
   }
 
