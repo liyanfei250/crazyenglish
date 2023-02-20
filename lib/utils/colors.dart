@@ -37,6 +37,7 @@ class AppColors {
   static Color c_FFFFBC00 = Color(0xFFFFBC00);
   static Color c_FFF5F6F9 = Color(0xFFF5F6F9);
   static Color c_FFE9EBEF = Color(0xFFE9EBEF);
+  static Color c_FFEB5447 = Color(0xFFEB5447);
   static Color THEME_COLOR = Color(0xFFE70014);
   static Color THEME_HALF_COLOR = Color(0xAAE70014);
   static Color TEXT_COLOR = Color(0xFF424966);
