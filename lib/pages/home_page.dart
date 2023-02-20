@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色
-        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
+        statusBarIconBrightness: Brightness.light, //状态栏图标颜色
         statusBarBrightness: Brightness.dark,  //状态栏亮度
         systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
         systemNavigationBarColor: Colors.white,  //导航栏颜色
@@ -116,31 +116,15 @@ class _HomePageState extends State<HomePage> {
     ),
         child: Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.theme_bg,
-          body: SafeArea(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Obx(()=>Offstage(
-                    offstage: _selectedIndex.value == 3,
-                    child: Container(),
-                  )),
-                  Expanded(
-                      child: PageView(
-                        controller: pageController,
-                        physics: _neverScroll,
-                        children: const [
-                          IndexPage(),
-                          ReviewPage(),
-                          CoursePage(),
-                          MinePage()
-                        ],
-                      )
-                  )
-                ],
-              ),
-            ),
+          body: PageView(
+            controller: pageController,
+            physics: _neverScroll,
+            children: const [
+              IndexPage(),
+              ReviewPage(),
+              CoursePage(),
+              MinePage()
+            ],
           ),
           bottomNavigationBar: buildBottomRowBar(),
         ),);
@@ -162,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                 spreadRadius: 0.w,
               ),
             ],
-            borderRadius: BorderRadius.all(Radius.circular(6.w)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.w),topRight: Radius.circular(10.w)),
           ),
           child: Center(
             child: Row(
@@ -199,12 +183,12 @@ class _HomePageState extends State<HomePage> {
           Obx(()=>Image.asset(
             fit:BoxFit.contain,
             "images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
-            height: 26.w,)),
-          Padding(padding: EdgeInsets.only(top: 4.w)),
+            height: 24.w,)),
+          Padding(padding: EdgeInsets.only(top: 6.w)),
           Obx(()=>Text(
             bottomTitles[index],
             style: TextStyle(
-                color: _selectedIndex.value == index ? AppColors.c_FF585858:AppColors.c_FF828282,
+                color: _selectedIndex.value == index ? AppColors.c_FFEB5447:AppColors.c_FF828282,
                 fontWeight: _selectedIndex.value == index ? FontWeight.bold:FontWeight.normal,
                 fontSize: 10.sp),
           )),

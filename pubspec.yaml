@@ -210,6 +210,7 @@ flutter:
     - images/torid_four_show.png
     - images/article_man_play.png
     - images/my_icon_share.png
+    - images/student_index_3.png
     - images/torid_eye_hide.png
     - images/index_icon_8.png
     - images/article_collect_press.png
@@ -217,6 +218,8 @@ flutter:
     - images/icon_transmission_speed_05_clicked.png
     - images/icon_home_me_default_head.png
     - images/index_icon_9.png
+    - images/student_index_2.png
+    - images/student_index_0.png
     - images/icon_back_black.png
     - images/article_torid_notice.png
     - images/index_icon_10.png
@@ -224,6 +227,8 @@ flutter:
     - images/icon_transmission_speed_10_clicked.png
     - images/index_msg.png
     - images/icon_tab4_normal.png
+    - images/student_index_1.png
+    - images/student_index_5.png
     - images/torid_two_show.png
     - images/test_play.png
     - images/item_play.png
@@ -233,6 +238,8 @@ flutter:
     - images/icon_tab1_normal.png
     - images/icon_intensive_listening_loop_no.png
     - images/icon_transmission_speed_15_clicked.png
+    - images/student_index_4.png
+    - images/student_index_6.png
     - images/article_share.png
     - images/icon_player_pause_clicked.png
     - images/splash_welcome_2.png
@@ -241,6 +248,7 @@ flutter:
     - images/choice_error.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
+    - images/student_day_words.png
     - images/icon_transmission_speed_08_selected.png
     - images/torid_four_hide.png
     - images/icon_player_befor_play_clicked.png
@@ -310,4 +318,5 @@ flutter:
     - images/tree_edit.png
     - images/icon_player_play.png
     - images/my_icon_right_arrow.png
+    - images/review_top_bg.png
     - images/icon_transmission_speed_05_selected.png
