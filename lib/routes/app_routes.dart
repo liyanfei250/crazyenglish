@@ -17,6 +17,9 @@ abstract class AppRoutes{
   static const ShoppingListPage = '/ShoppingListPage';
   static const ShopCarPage = '/ShopCarPage';
   static const OrderSurePage = '/OrderSurePage';
+  static const CashierPage = '/CashierPage';
+  static const OrderDetailPage = '/OrderDetailPage';
+  static const MyOrderPage = '/MyOrderPage';
 
 // static const LOGIN = '/login';
 

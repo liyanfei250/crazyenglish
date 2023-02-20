@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/dialog/address_edit_dialog/address_add.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +39,8 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                           return CartItem(value);
                         }).toList(),*/
                     ),
-                addAdddress(),
+                addAdddress(context),
+                showAdddress(context),
                 cartItem(),
                 cartItem(),
                 payInfo(),
@@ -86,7 +88,7 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                         backgroundColor: Colors.red,
                       ),
                       onPressed: () {
-                        //RouterUtil.toNamed(AppRoutes.OrderSurePage);
+                        RouterUtil.toNamed(AppRoutes.CashierPage);
                       },
                     ),
                   ],
@@ -103,7 +105,7 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
   @override
   void onDestroy() {}
 
-  Widget addAdddress() => Center(
+  Widget addAdddress(BuildContext context) => Center(
           child: Container(
         width: 347.w,
         height: 71.w,
@@ -111,28 +113,125 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
         decoration: BoxDecoration(
             color: AppColors.c_FFFFFFFF,
             borderRadius: BorderRadius.all(Radius.circular(6.w))),
-        child: Center(
-            child: Row(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            _clickOk();
+            showDialog(
+              context: context,
+              builder: (context) => MyDialog("添加收货地址", "content"),
+            );
+          },
+          child: Center(
+            child: Text("+ 添加地址",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center),
+          ),
+        )
+        /* child: Center(
+          child: Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(padding: EdgeInsets.only(left: 7.w)),
-            Image.asset(
-              R.imagesHomeSearch,
-              width: 18.w,
-              height: 18.w,
-            ),
-            Padding(padding: EdgeInsets.only(left: 6.w)),
-            Text(
-              "+添加地址",
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.red,
-                  fontWeight: FontWeight.w600),
-            )
-          ],
-        )),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(padding: EdgeInsets.only(left: 7.w)),
+              Image.asset(
+                R.imagesHomeSearch,
+                width: 18.w,
+                height: 18.w,
+              ),
+              Padding(padding: EdgeInsets.only(left: 6.w)),
+              Text(
+                "+添加地址",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600),
+              )
+            ],
+          ))*/
+
+        ,
       ));
+
+  Widget showAdddress(BuildContext context) => Center(
+      child: Container(
+          width: 347.w,
+          height: 71.w,
+          margin: EdgeInsets.only(top: 11.w, left: 14.w, right: 14.w),
+          padding: EdgeInsets.only(left: 14.w, right: 14.w),
+          decoration: BoxDecoration(
+              color: AppColors.c_FFFFFFFF,
+              borderRadius: BorderRadius.all(Radius.circular(6.w))),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              _clickOk();
+              showDialog(
+                context: context,
+                builder: (context) => MyDialog("添加收货地址", "content"),
+              );
+            },
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text("豆豆",
+                              style: TextStyle(
+                                  color: Color(0xff151619),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700)),
+                          SizedBox(width: 14.w),
+                          Text("+86 18902837192",
+                              style: TextStyle(
+                                  color: Color(0xff151619),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700)),
+                          SizedBox(width: 30.w),
+                          Container(
+                            width: 25.w,
+                            height: 12.w,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(0.w)),
+                                color: Color(0xfffcecee)),
+                            child: Text("默认",
+                                style: TextStyle(
+                                    color: AppColors.THEME_COLOR,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600)),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 5.w),
+                      Text("山西太原小店区鸿泰国际大厦",
+                          style: TextStyle(
+                              color: Color(0xff6a6e7e),
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w700))
+                    ],
+                  )),
+                  Image.asset(
+                    'images/icon_to_next.png',
+                    fit: BoxFit.cover,
+                    width: 22.w,
+                    height: 22.w,
+                  ),
+                ],
+              ),
+            ),
+          )));
 
   Widget cartItem() => InkWell(
         onTap: () {
@@ -278,3 +377,5 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
         ],
       ));
 }
+
+_clickOk() {}

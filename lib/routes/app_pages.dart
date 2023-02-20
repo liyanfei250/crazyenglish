@@ -1,4 +1,5 @@
 import 'package:crazyenglish/config.dart';
+import 'package:crazyenglish/pages/cashier/cashier_view.dart';
 import 'package:crazyenglish/pages/order_sure/order_sure_view.dart';
 import 'package:crazyenglish/pages/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/reading_detail/reading_detail_view.dart';
@@ -14,6 +15,8 @@ import '../entity/paper_category.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/login/login_view.dart';
+import '../pages/my_order_list/view.dart';
+import '../pages/order_detail/view.dart';
 import '../pages/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
 import '../xfyy/main.dart';
@@ -43,6 +46,9 @@ abstract class AppPages {
     GetPage(name: AppRoutes.ShoppingListPage, page:()=>ShoppingListPage(),),
     GetPage(name: AppRoutes.ShopCarPage, page:()=>ShopCarPage(),),
     GetPage(name: AppRoutes.OrderSurePage, page:()=>OrderSurePage(),),
+    GetPage(name: AppRoutes.CashierPage, page:()=>CashierPage(),),
+    GetPage(name: AppRoutes.OrderDetailPage, page:()=>OrderDetailPage(),),
+    GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
 
   ];
 }
