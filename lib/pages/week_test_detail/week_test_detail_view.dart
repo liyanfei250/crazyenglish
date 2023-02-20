@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/week_test_detail_response.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
-import '../../utils/Util.dart';
+import '../../base/AppUtil.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_util.dart';
 import 'test_player_widget.dart';

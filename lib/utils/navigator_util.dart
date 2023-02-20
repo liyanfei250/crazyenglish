@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 
+import '../base/AppUtil.dart';
 import '../pages/webview_page.dart';
 import '../routes/routes_utils.dart';
-import 'Util.dart';
 import 'object_util.dart';
 
 class NavigatorUtil {

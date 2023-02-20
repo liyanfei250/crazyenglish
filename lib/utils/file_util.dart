@@ -2,8 +2,9 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
-import 'Util.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../base/AppUtil.dart';
 
 class FileUtil{
 

@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../base/AppUtil.dart';
 import '../../entity/check_update_resp.dart';
-import '../Util.dart';
 import '../colors.dart';
 import '../date_util.dart';
 import 'app_market.dart';

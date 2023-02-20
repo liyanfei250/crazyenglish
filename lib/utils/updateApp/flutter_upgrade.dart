@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 
-import 'package:crazyenglish/utils/permissions/permissions_util.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'app_market.dart';
-import 'app_upgrade.dart';
 
 
 class FlutterUpgrade {

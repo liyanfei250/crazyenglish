@@ -4,13 +4,13 @@ import 'package:crazyenglish/entity/push_msg.dart';
 import 'package:crazyenglish/entity/send_code_response.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 
 import '../../api/api.dart';
 import '../../base/common.dart';
 import '../../entity/base_resp.dart';
 import '../../net/net_manager.dart';
+import '../base/AppUtil.dart';
 
 /**
  * Time: 2022/9/24 09:14
@@ -47,7 +47,7 @@ class UserRepository{
         .request(Method.post, Api.getLogin,
         data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Fluttertoast.showToast(msg: baseResp.msg??"");
+      Util.toast(baseResp.msg??"");
     }
     LoginResponse loginResponse = LoginResponse.fromJson(baseResp.getReturnData());
     if(loginResponse !=null){

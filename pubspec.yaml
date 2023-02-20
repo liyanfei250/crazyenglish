@@ -39,7 +39,6 @@ dependencies:
   flutter_native_splash: ^2.2.9
   dio: ^4.0.6
   ffi: ^2.0.0
-  fluttertoast: ^8.0.8
   flutter_screenutil: ^5.4.0
   #事件总线--EventBus
   event_bus: ^2.0.0
@@ -103,7 +102,7 @@ dependencies:
   #  webview_flutter: ^4.0.1
   flutter_inappwebview: ^6.0.0-beta.22
   video_player: ^2.4.10
-  audioplayers: ^1.2.0
+  audioplayers: ^3.0.1
   scroll_to_index: ^3.0.1
 
 

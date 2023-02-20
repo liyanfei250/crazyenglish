@@ -11,7 +11,6 @@ import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
-import '../../utils/ScreenGetUtil.dart';
 import '../../utils/colors.dart';
 import 'logic.dart';
 

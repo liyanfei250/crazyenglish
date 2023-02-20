@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:crazyenglish/entity/send_code_response.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 
-import '../../entity/login_response.dart';
-import '../../repository/user_repository.dart';
+import '../../../entity/login_response.dart';
+import '../../../repository/user_repository.dart';
 import 'login_state.dart';
 
 class LoginLogic extends GetxController {

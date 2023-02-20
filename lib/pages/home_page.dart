@@ -7,20 +7,17 @@ import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
 
 import '../base/common.dart';
-import '../entity/login/login_util.dart';
-import '../r.dart';
-import '../routes/app_pages.dart';
 import '../routes/getx_ids.dart';
-import '../routes/routes_utils.dart';
-import '../utils/ScreenGetUtil.dart';
-import '../utils/Util.dart';
+import '../base/AppUtil.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
 import 'app_update_panel/app_update_panel_logic.dart';
+import 'course/course_view.dart';
 import 'index/index_view.dart';
 import 'learn/learn_view.dart';
 import 'mine/mine_view.dart';
+import 'review/review_view.dart';
 import 'say/say_view.dart';
 import 'dart:io' as io;
 
@@ -54,15 +51,15 @@ class _HomePageState extends State<HomePage> {
 
   List<String> bottomTitles = [
     "首页",
-    "我学",
-    "我说",
+    "复习",
+    "课程",
     "我的",
   ];
 
   List<String> titles = [
     "首页",
-    "我学",
-    "我说",
+    "复习",
+    "课程",
     "我的",
   ];
 
@@ -135,8 +132,8 @@ class _HomePageState extends State<HomePage> {
                         physics: _neverScroll,
                         children: const [
                           IndexPage(),
-                          LearnPage(),
-                          SayPage(),
+                          ReviewPage(),
+                          CoursePage(),
                           MinePage()
                         ],
                       )

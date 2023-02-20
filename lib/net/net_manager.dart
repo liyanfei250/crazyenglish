@@ -2,22 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:convert';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/net/get_sign.dart';
-import 'package:crazyenglish/utils/Util.dart';
-import 'package:crazyenglish/utils/object_util.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart';
-import 'package:crazyenglish/net/kool_exception.dart';
+import 'package:dio/adapter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
+import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
-import 'dio_log_interceptor.dart';
+import '../routes/app_pages.dart';
 
 class Method {
   static final String get = "GET";
@@ -33,6 +32,7 @@ class ResponseCode {
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
+  static const int status_token_invalid = 40003; //token失效
 }
 
 class NetManager {
@@ -68,6 +68,7 @@ class NetManager {
   }
 
   void setHeaders(Map<String, dynamic> map) {
+    _options.headers.remove("Authorization");
     _options.headers.addAll(map);
   }
 
@@ -80,6 +81,24 @@ class NetManager {
     //     onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
     //   ),
     // );
+    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      // client.findProxy = (uri) {
+      //   // return "PROXY 10.155.33.120:8888";
+      //   return "PROXY 10.155.43.66:8888";
+      //   // return "PROXY 172.20.10.12:8886";
+      //   // return "PROXY 10.155.33.120:8888";
+      // };
+
+      //下面是代理地址，需要的自己打开注释改成自己的代理
+      client.findProxy = (uri) {
+        return "PROXY localhost:8886;DIRECT;";
+      };
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) {
+        return true;
+      };
+    };
   }
 
   static BaseOptions getDefOptions() {
@@ -136,8 +155,8 @@ class NetManager {
       }
 
     } catch (e) {
-      if (e is DioError) {
-        Util.toast("网络异常");
+      if (e is DioError && e.response!=null) {
+        response = e!.response!;
         // Util.toastLong("网络异常 type:" +
         //     e.type.toString() +
         //     "\n" +
@@ -148,8 +167,8 @@ class NetManager {
         //         : "response 为null"));
       } else {
         Util.toastLong("网络异常");
+        return new Future.error(e);
       }
-      return new Future.error(e);
     }
 
     _printHttpLog(response);
@@ -168,6 +187,13 @@ class NetManager {
           type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
         ));
       }
+    } else if(response.statusCode == HttpStatus.unauthorized || (response.data!=null
+        && response.data['code']!=null
+        && response.data['code'] == ResponseCode.status_token_invalid)){
+      Util.toastLong("登录信息已失效，请重新登录");
+      SpUtil.putString(BaseConstant.loginTOKEN,"");
+      Util.getHeader();
+      RouterUtil.offAndToNamed(AppRoutes.LOGIN);
     } else {
       // Util.toast("网络异常 httpCode" +
       //     response.statusCode.toString() +

@@ -13,7 +13,7 @@ import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
-import '../../utils/Util.dart';
+import '../../base/AppUtil.dart';
 import '../../utils/colors.dart';
 import '../../widgets/treeview/expander_theme_data.dart';
 import '../../widgets/treeview/tree_view.dart';

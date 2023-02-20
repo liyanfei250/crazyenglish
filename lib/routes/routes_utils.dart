@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
+import '../base/AppUtil.dart';
 import '../pages/webview_page.dart';
-import '../utils/Util.dart';
 import 'app_pages.dart';
 
 /*

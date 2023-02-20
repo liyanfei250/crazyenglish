@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
-import 'package:crazyenglish/utils/Util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../blocs/login_change_bloc.dart';
 import '../../blocs/login_change_state.dart';
 import '../../utils/colors.dart';
+import '../AppUtil.dart';
 import 'empty.dart';
 import 'error.dart';
 import 'loading.dart';
