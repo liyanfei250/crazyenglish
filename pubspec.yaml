@@ -1,0 +1,339 @@
+name: crazyenglish
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+100
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  flutter_native_splash: ^2.2.9
+  dio: ^4.0.6
+  ffi: ^2.0.0
+  flutter_screenutil: ^5.4.0
+  #事件总线--EventBus
+  event_bus: ^2.0.0
+  shared_preferences: ^2.0.7
+  flutter_pickers: ^2.1.1
+  image: ^3.0.1
+  # webSocket 连接
+  web_socket_channel: ^2.2.0
+
+  image_picker: ^0.8.6
+  # 状态管理
+  flutter_bloc: ^7.2.0
+  flutter_native_image: ^0.0.6+1
+  flutter_cache_manager: ^3.0.0-nullsafety.1
+  #购物车
+  provider: ^6.0.0
+# 日期时间处理
+  intl: ^0.17.0
+
+  #设置http代理
+  http_proxy_override: ^1.0.0
+  #GetX状态管理框架 https://pub.flutter-io.cn/packages/get
+  get: ^4.6.5
+  #普通日志打印框架  https://github.com/leisim/logger
+  logger: ^1.1.0
+  bot_toast: ^4.0.1
+  fk_user_agent: ^2.0.1
+  # 包信息
+  # https://pub.flutter-io.cn/packages/package_info
+  package_info: ^2.0.2
+  # 设备信息
+  # https://pub.flutter-io.cn/packages/device_info/install
+  device_info: ^2.0.2
+  #  权限申请
+  # https://pub.flutter-io.cn/packages/permission_handler
+  permission_handler: ^9.2.0
+  tencent_cos: ^1.0.7
+  image_cropper: ^3.0.0
+  # 系统浏览器启动
+  # https://pub.flutter-io.cn/packages/url_launcher
+  url_launcher: ^6.0.10
+  #  video_editor: ^1.4.3
+  #图片预览缩放显示
+  #https://pub.flutter-io.cn/packages/extended_image
+  extended_image: ^6.3.1
+  pull_to_refresh: ^2.0.0
+  worker_manager: ^4.4.6
+  #  flutter_inappwebview: 5.4.3+8a
+  share_plus: ^4.5.3
+  wrapper: ^1.0.2
+  dotted_line: ^3.1.0
+  flutter_image_compress: ^1.1.3
+  sign_in_with_apple: ^4.2.0
+  flutter_inapp_purchase: ^5.3.1
+  flutter_sound: ^9.2.13
+  audio_session: 0.1.6
+  flutter_html: 3.0.0-alpha.6
+  # webView使用本地插件，忽略ssl证书
+
+  #  flutter_inappwebview: ^5.7.2+3
+  #  webview_flutter: ^4.0.1
+  flutter_inappwebview: ^6.0.0-beta.22
+  video_player: ^2.4.10
+  audioplayers: ^3.0.1
+  scroll_to_index: ^3.0.1
+
+
+dev_dependencies:
+  icons_launcher: ^2.0.1
+  flutter_lints: ^2.0.1
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  json_serializable: ^6.3.1
+  dart_code_metrics: ^4.17.1
+
+icons_launcher:
+  platforms:
+    ios:
+      enable: true
+    android:
+      enable: true
+  image_path: "assets/app_icon_1024.png"
+
+
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    # assets-generator-begin
+    # images/*
+    - images/article_collect_default.png
+    - images/torid_right.png
+    - images/my_top_bg.png
+    - images/weekly_item_eye.png
+    - images/weekly_de_browse.png
+    - images/index_collection_words.png
+    - images/icon_intensive_listening_translate_yes_clicked.png
+    - images/torid_five_hide.png
+    - images/torid_tixing.png
+    - images/torid_close.png
+    - images/icon_transmission_speed_15_selected.png
+    - images/icon_intensive_listening_loop_no_clicked.png
+    - images/torid_one_show.png
+    - images/icon_transmission_speed_12_selected.png
+    - images/login_agree_default.png
+    - images/weekly_item_bg0.png
+    - images/xunfei.jpeg
+    - images/torid_second.png
+    - images/icon_close.png
+    - images/test_pause.png
+    - images/weekly_item_bg1.png
+    - images/choice_correct.png
+    - images/torid_three_show.png
+    - images/icon_close_round_black.png
+    - images/icon_tab3_normal.png
+    - images/index_class_new.png
+    - images/icon_back.png
+    - images/icon_intensive_listening_show_word_yes.png
+    - images/icon_intensive_listening_translate_no.png
+    - images/index_teacher_icon1.png
+    - images/icon_transmission_speed_20.png
+    - images/weekly_item_shadow.png
+    - images/icon_transmission_speed_08.png
+    - images/review_favor_words_icon.png
+    - images/index_search.png
+    - images/index_scan.png
+    - images/torid_top.png
+    - images/review_jump_practise.png
+    - images/index_teacher_icon2.png
+    - images/my_icon_help.png
+    - images/torid_four_show.png
+    - images/article_man_play.png
+    - images/my_icon_share.png
+    - images/student_index_3.png
+    - images/torid_eye_hide.png
+    - images/index_icon_8.png
+    - images/review_wrong_question_item.png
+    - images/article_collect_press.png
+    - images/xunfei_english.png
+    - images/icon_transmission_speed_05_clicked.png
+    - images/icon_home_me_default_head.png
+    - images/index_icon_9.png
+    - images/student_index_2.png
+    - images/wrong_question_item.png
+    - images/student_index_0.png
+    - images/icon_back_black.png
+    - images/review_practise_history.png
+    - images/practise_next_question_unable.png
+    - images/article_torid_notice.png
+    - images/index_icon_10.png
+    - images/icon_intensive_listening_translate_no_clicked.png
+    - images/icon_transmission_speed_10_clicked.png
+    - images/index_msg.png
+    - images/icon_tab4_normal.png
+    - images/student_index_1.png
+    - images/student_index_5.png
+    - images/torid_two_show.png
+    - images/test_play.png
+    - images/item_play.png
+    - images/img.png
+    - images/splash_icon.png
+    - images/splash_welcome_1.png
+    - images/icon_tab1_normal.png
+    - images/review_favor_question_icon.png
+    - images/icon_intensive_listening_loop_no.png
+    - images/icon_transmission_speed_15_clicked.png
+    - images/student_index_4.png
+    - images/student_index_6.png
+    - images/article_share.png
+    - images/icon_player_pause_clicked.png
+    - images/index_day_word.png
+    - images/splash_welcome_2.png
+    - images/icon_intensive_listening_show_word_yes_clicked.png
+    - images/icon_tab3_pressed.png
+    - images/practise_pre_question_unable.png
+    - images/choice_error.png
+    - images/review_reading_tag.png
+    - images/index_icon_1.png
+    - images/icon_tab2_normal.png
+    - images/student_day_words.png
+    - images/icon_transmission_speed_08_selected.png
+    - images/torid_four_hide.png
+    - images/practise_pre_question_enable.png
+    - images/icon_player_befor_play_clicked.png
+    - images/icon_intensive_listening_show_word_no_clicked.png
+    - images/icon_tab4_pressed.png
+    - images/article_woman_play.png
+    - images/my_icon_coupon.png
+    - images/icon_player_play_clicked.png
+    - images/login_agree_selected.png
+    - images/icon_intensive_listening_translate_no_not_enabled.png
+    - images/icon_intensive_listening_loop_yes.png
+    - images/icon_intensive_listening_show_word_no.png
+    - images/splash.png
+    - images/home_search.png
+    - images/index_icon_2.png
+    - images/welcome_icon.png
+    - images/icon_player_befor_play.png
+    - images/icon_transmission_speed_20_clicked.png
+    - images/weekly_fabulous.png
+    - images/icon_transmission_speed_12_clicked.png
+    - images/index_icon_3.png
+    - images/icon_to_next.png
+    - images/weekly_collect.png
+    - images/article_listen_pause.png
+    - images/index_icon_7.png
+    - images/torid_three_hide.png
+    - images/index_class_more.png
+    - images/bg_update_top.png
+    - images/weekly_bg.png
+    - images/torid_one_hide.png
+    - images/practise_next_question_enable.png
+    - images/index_icon_6.png
+    - images/index_today_todo.png
+    - images/article_listen_play.png
+    - images/icon_intensive_listening_translate_yes.png
+    - images/index_icon_4.png
+    - images/iv_no_show.png
+    - images/torid_five_show.png
+    - images/my_icon_order.png
+    - images/index_icon_5.png
+    - images/icon_player_after_play_clicked.png
+    - images/icon_tab1_pressed.png
+    - images/icon_player_pause.png
+    - images/my_icon_setting.png
+    - images/icon_tab2_pressed.png
+    - images/icon_transmission_speed_20_selected.png
+    - images/icon_intensive_listening_loop_yes_clicked.png
+    - images/icon_transmission_speed_12.png
+    - images/reading_default.png
+    - images/index_class_thumb1.png
+    - images/practise_count_time_icon.png
+    - images/icon_intensive_listening_translate_yes_not_enabled.png
+    - images/article_listen_derfault.png
+    - images/index_ad.png
+    - images/icon_transmission_speed_10.png
+    - images/torid_two_hide.png
+    - images/icon_transmission_speed_08_clicked.png
+    - images/icon_transmission_speed_05.png
+    - images/launch_logo.png
+    - images/index_class_thumb2.png
+    - images/review_favor_question_bg.png
+    - images/icon_player_after_play.png
+    - images/icon_transmission_speed_15.png
+    - images/welcome_txt.png
+    - images/index_icon_play.png
+    - images/article_listen_press.png
+    - images/weekly_browse.png
+    - images/torid_bottom.png
+    - images/torid_left.png
+    - images/icon_back_blue.png
+    - images/icon_transmission_speed_10_selected.png
+    - images/tree_edit.png
+    - images/icon_player_play.png
+    - images/my_icon_right_arrow.png
+    - images/review_top_bg.png
+    - images/icon_transmission_speed_05_selected.png
