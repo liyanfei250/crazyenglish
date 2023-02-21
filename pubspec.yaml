@@ -175,6 +175,7 @@ flutter:
     - images/my_top_bg.png
     - images/weekly_item_eye.png
     - images/weekly_de_browse.png
+    - images/index_collection_words.png
     - images/icon_intensive_listening_translate_yes_clicked.png
     - images/torid_five_hide.png
     - images/torid_tixing.png
@@ -204,6 +205,7 @@ flutter:
     - images/icon_transmission_speed_08.png
     - images/review_favor_words_icon.png
     - images/index_search.png
+    - images/index_scan.png
     - images/torid_top.png
     - images/review_jump_practise.png
     - images/index_teacher_icon2.png
@@ -248,6 +250,7 @@ flutter:
     - images/student_index_6.png
     - images/article_share.png
     - images/icon_player_pause_clicked.png
+    - images/index_day_word.png
     - images/splash_welcome_2.png
     - images/icon_intensive_listening_show_word_yes_clicked.png
     - images/icon_tab3_pressed.png
@@ -290,6 +293,7 @@ flutter:
     - images/torid_one_hide.png
     - images/practise_next_question_enable.png
     - images/index_icon_6.png
+    - images/index_today_todo.png
     - images/article_listen_play.png
     - images/icon_intensive_listening_translate_yes.png
     - images/index_icon_4.png

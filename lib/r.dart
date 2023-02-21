@@ -9,6 +9,8 @@ class R {
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
   static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
+  /// ![](http://127.0.0.1:11/images/index_collection_words.png)
+  static final String imagesIndexCollectionWords = 'images/index_collection_words.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_clicked.png)
   static final String imagesIconIntensiveListeningTranslateYesClicked = 'images/icon_intensive_listening_translate_yes_clicked.png';
   /// ![](http://127.0.0.1:11/images/torid_five_hide.png)
@@ -67,6 +69,8 @@ class R {
   static final String imagesReviewFavorWordsIcon = 'images/review_favor_words_icon.png';
   /// ![](http://127.0.0.1:11/images/index_search.png)
   static final String imagesIndexSearch = 'images/index_search.png';
+  /// ![](http://127.0.0.1:11/images/index_scan.png)
+  static final String imagesIndexScan = 'images/index_scan.png';
   /// ![](http://127.0.0.1:11/images/torid_top.png)
   static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/review_jump_practise.png)
@@ -155,6 +159,8 @@ class R {
   static final String imagesArticleShare = 'images/article_share.png';
   /// ![](http://127.0.0.1:11/images/icon_player_pause_clicked.png)
   static final String imagesIconPlayerPauseClicked = 'images/icon_player_pause_clicked.png';
+  /// ![](http://127.0.0.1:11/images/index_day_word.png)
+  static final String imagesIndexDayWord = 'images/index_day_word.png';
   /// ![](http://127.0.0.1:11/images/splash_welcome_2.png)
   static final String imagesSplashWelcome2 = 'images/splash_welcome_2.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_yes_clicked.png)
@@ -239,6 +245,8 @@ class R {
   static final String imagesPractiseNextQuestionEnable = 'images/practise_next_question_enable.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
+  /// ![](http://127.0.0.1:11/images/index_today_todo.png)
+  static final String imagesIndexTodayTodo = 'images/index_today_todo.png';
   /// ![](http://127.0.0.1:11/images/article_listen_play.png)
   static final String imagesArticleListenPlay = 'images/article_listen_play.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes.png)
