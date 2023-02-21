@@ -22,6 +22,7 @@ abstract class AppRoutes{
   static const MyOrderPage = '/MyOrderPage';
   static const ListenPractisePage = '/ListenPractisePage';
   static const ReadPractisePage = '/ReadPractisePage';
+  static const WritingPage = '/WritingPage';
 
 // static const LOGIN = '/login';
 
