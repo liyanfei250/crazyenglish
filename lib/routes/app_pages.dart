@@ -1,5 +1,6 @@
 import 'package:crazyenglish/pages/cashier/cashier_view.dart';
 import 'package:crazyenglish/pages/order_sure/order_sure_view.dart';
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/week_read/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/week_read/reading_detail/reading_detail_view.dart';
 import 'package:crazyenglish/pages/shop/shop_view.dart';
@@ -14,8 +15,6 @@ import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/my_order_list/view.dart';
 import '../pages/order_detail/view.dart';
-import '../pages/practise/listen_practise/listen_practise_view.dart';
-import '../pages/practise/read_practise/read_practise_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
 import '../pages/user/login/login_view.dart';
@@ -49,9 +48,8 @@ abstract class AppPages {
     GetPage(name: AppRoutes.CashierPage, page:()=>CashierPage(),),
     GetPage(name: AppRoutes.OrderDetailPage, page:()=>OrderDetailPage(),),
     GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
-    GetPage(name: AppRoutes.ListenPractisePage, page:()=>ListenPractisePage(),),
-    GetPage(name: AppRoutes.ReadPractisePage, page:()=>ReadPractisePage(),),
     GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
+    GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
 
   ];
 }
