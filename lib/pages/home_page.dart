@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
         systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
     ),
         child: Scaffold(
-          extendBody: true,
+          // extendBody: true,
           body: PageView(
             controller: pageController,
             physics: _neverScroll,
