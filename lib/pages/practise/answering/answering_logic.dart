@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import 'read_practise_state.dart';
+import 'answering_state.dart';
 
-class ReadPractiseLogic extends GetxController {
-  final ReadPractiseState state = ReadPractiseState();
+class AnsweringLogic extends GetxController {
+  final AnsweringState state = AnsweringState();
 
   @override
   void onReady() {

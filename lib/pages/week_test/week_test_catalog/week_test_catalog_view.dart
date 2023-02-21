@@ -70,7 +70,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
     logicDetail.addListenerId(GetBuilderIds.weekTestDetailList, () {
       if(stateDetail.weekTestDetailResponse!=null){
         RouterUtil.toNamed(
-            AppRoutes.ListenPractisePage,arguments: {stateDetail.weekTestDetailResponse.data});
+            AppRoutes.AnsweringPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
       }
     });
     _onRefresh();
