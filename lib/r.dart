@@ -109,6 +109,8 @@ class R {
   static final String imagesIconBackBlack = 'images/icon_back_black.png';
   /// ![](http://127.0.0.1:11/images/review_practise_history.png)
   static final String imagesReviewPractiseHistory = 'images/review_practise_history.png';
+  /// ![](http://127.0.0.1:11/images/practise_next_question_unable.png)
+  static final String imagesPractiseNextQuestionUnable = 'images/practise_next_question_unable.png';
   /// ![](http://127.0.0.1:11/images/article_torid_notice.png)
   static final String imagesArticleToridNotice = 'images/article_torid_notice.png';
   /// ![](http://127.0.0.1:11/images/index_icon_10.png)
@@ -159,6 +161,8 @@ class R {
   static final String imagesIconIntensiveListeningShowWordYesClicked = 'images/icon_intensive_listening_show_word_yes_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_pressed.png)
   static final String imagesIconTab3Pressed = 'images/icon_tab3_pressed.png';
+  /// ![](http://127.0.0.1:11/images/practise_pre_question_unable.png)
+  static final String imagesPractisePreQuestionUnable = 'images/practise_pre_question_unable.png';
   /// ![](http://127.0.0.1:11/images/choice_error.png)
   static final String imagesChoiceError = 'images/choice_error.png';
   /// ![](http://127.0.0.1:11/images/review_reading_tag.png)
@@ -173,6 +177,8 @@ class R {
   static final String imagesIconTransmissionSpeed08Selected = 'images/icon_transmission_speed_08_selected.png';
   /// ![](http://127.0.0.1:11/images/torid_four_hide.png)
   static final String imagesToridFourHide = 'images/torid_four_hide.png';
+  /// ![](http://127.0.0.1:11/images/practise_pre_question_enable.png)
+  static final String imagesPractisePreQuestionEnable = 'images/practise_pre_question_enable.png';
   /// ![](http://127.0.0.1:11/images/icon_player_befor_play_clicked.png)
   static final String imagesIconPlayerBeforPlayClicked = 'images/icon_player_befor_play_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_show_word_no_clicked.png)
@@ -229,6 +235,8 @@ class R {
   static final String imagesWeeklyBg = 'images/weekly_bg.png';
   /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
   static final String imagesToridOneHide = 'images/torid_one_hide.png';
+  /// ![](http://127.0.0.1:11/images/practise_next_question_enable.png)
+  static final String imagesPractiseNextQuestionEnable = 'images/practise_next_question_enable.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/article_listen_play.png)
@@ -265,6 +273,8 @@ class R {
   static final String imagesReadingDefault = 'images/reading_default.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb1.png)
   static final String imagesIndexClassThumb1 = 'images/index_class_thumb1.png';
+  /// ![](http://127.0.0.1:11/images/practise_count_time_icon.png)
+  static final String imagesPractiseCountTimeIcon = 'images/practise_count_time_icon.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_not_enabled.png)
   static final String imagesIconIntensiveListeningTranslateYesNotEnabled = 'images/icon_intensive_listening_translate_yes_not_enabled.png';
   /// ![](http://127.0.0.1:11/images/article_listen_derfault.png)

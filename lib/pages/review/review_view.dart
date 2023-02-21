@@ -37,7 +37,7 @@ class _ReviewPageState extends State<ReviewPage> {
               AppBar(
                 elevation: 0,
                 automaticallyImplyLeading:false,
-                title: Text("复习巩固",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp),),
+                title: Text("复习巩固",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
                 backgroundColor:Colors.transparent,
                 actions: [
                   InkWell(
@@ -144,19 +144,35 @@ class _ReviewPageState extends State<ReviewPage> {
           ),
           Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(R.imagesReviewFavorQuestionBg),
-                    fit: BoxFit.contain
-                )
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildFavorItem(0),
-                Divider(color: AppColors.c_FFD2D5DC,indent: 15.w,endIndent: 15.w,),
-                _buildFavorItem(1),
+              boxShadow:[
+                BoxShadow(
+                  color: AppColors.c_FFFDD9AF.withOpacity(0.1),		// 阴影的颜色
+                  offset: Offset(0.w, 1.w),						// 阴影与容器的距离
+                  blurRadius: 2.w,							// 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 2.w,
+                ),
               ],
+              borderRadius: BorderRadius.all(Radius.circular(10.w)),
             ),
+            child:
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(R.imagesReviewFavorQuestionBg),
+                      fit: BoxFit.cover
+                  )
+
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildFavorItem(0),
+                  Divider(color: AppColors.c_FFD2D5DC,indent: 15.w,endIndent: 15.w,),
+                  _buildFavorItem(1),
+                ],
+              ),
+            ),
+
           ),
 
         ],

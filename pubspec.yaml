@@ -225,6 +225,7 @@ flutter:
     - images/student_index_0.png
     - images/icon_back_black.png
     - images/review_practise_history.png
+    - images/practise_next_question_unable.png
     - images/article_torid_notice.png
     - images/index_icon_10.png
     - images/icon_intensive_listening_translate_no_clicked.png
@@ -250,6 +251,7 @@ flutter:
     - images/splash_welcome_2.png
     - images/icon_intensive_listening_show_word_yes_clicked.png
     - images/icon_tab3_pressed.png
+    - images/practise_pre_question_unable.png
     - images/choice_error.png
     - images/review_reading_tag.png
     - images/index_icon_1.png
@@ -257,6 +259,7 @@ flutter:
     - images/student_day_words.png
     - images/icon_transmission_speed_08_selected.png
     - images/torid_four_hide.png
+    - images/practise_pre_question_enable.png
     - images/icon_player_befor_play_clicked.png
     - images/icon_intensive_listening_show_word_no_clicked.png
     - images/icon_tab4_pressed.png
@@ -285,6 +288,7 @@ flutter:
     - images/bg_update_top.png
     - images/weekly_bg.png
     - images/torid_one_hide.png
+    - images/practise_next_question_enable.png
     - images/index_icon_6.png
     - images/article_listen_play.png
     - images/icon_intensive_listening_translate_yes.png
@@ -303,6 +307,7 @@ flutter:
     - images/icon_transmission_speed_12.png
     - images/reading_default.png
     - images/index_class_thumb1.png
+    - images/practise_count_time_icon.png
     - images/icon_intensive_listening_translate_yes_not_enabled.png
     - images/article_listen_derfault.png
     - images/index_ad.png
