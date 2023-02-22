@@ -18,6 +18,7 @@ import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
 import '../pages/user/login/login_view.dart';
+import '../pages/writing/writing_view.dart';
 import '../xfyy/text_to_voice.dart';
 
 part './app_routes.dart';
@@ -47,6 +48,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.CashierPage, page:()=>CashierPage(),),
     GetPage(name: AppRoutes.OrderDetailPage, page:()=>OrderDetailPage(),),
     GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
+    GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
 
   ];
