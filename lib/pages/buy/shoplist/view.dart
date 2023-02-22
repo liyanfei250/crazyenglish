@@ -6,12 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../entity/week_paper_response.dart';
-import '../../r.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/getx_ids.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/colors.dart';
+import '../../../entity/week_paper_response.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
 import 'logic.dart';
 
 class ShoppingListPage extends BasePage {

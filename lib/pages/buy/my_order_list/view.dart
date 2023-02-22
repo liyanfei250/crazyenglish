@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../utils/colors.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../utils/colors.dart';
 import 'logic.dart';
 
 class MyOrderPage extends  BasePage {

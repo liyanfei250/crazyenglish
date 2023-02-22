@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/colors.dart';
-import '../provider/CartProvider.dart';
-import '../provider/CheckOutProvider.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
+import '../../provider/CartProvider.dart';
+import '../../provider/CheckOutProvider.dart';
 import 'shop_car_logic.dart';
-import '../provider/cartItem.dart';
+import '../../provider/cartItem.dart';
 import 'package:provider/provider.dart';
-import '../provider/CartService.dart';
+import '../../provider/CartService.dart';
 
 class ShopCarPage extends BasePage {
   const ShopCarPage({Key? key}) : super(key: key);

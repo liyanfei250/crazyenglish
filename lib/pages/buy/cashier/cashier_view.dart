@@ -1,12 +1,12 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/pages/cashier/CounterDownPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../routes/app_pages.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/colors.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
+import 'CounterDownPage.dart';
 import 'cashier_logic.dart';
 
 class CashierPage extends BasePage {

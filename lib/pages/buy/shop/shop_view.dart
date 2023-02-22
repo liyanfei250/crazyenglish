@@ -1,13 +1,12 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/pages/shop/BaseRoutesWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../base/AppUtil.dart';
-import '../../r.dart';
-import '../../utils/colors.dart';
+import '../../../base/AppUtil.dart';
+import '../../../r.dart';
+import '../../../utils/colors.dart';
 import '../shoplist/view.dart';
 import 'shop_logic.dart';
 
