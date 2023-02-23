@@ -75,10 +75,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       ),
       body: Column(
         children: [
-          Expanded(child: PageView(
-            controller: pageController,
-            physics: _neverScroll,
-            children: pages,
+          Expanded(child: Flexible(
+            child: PageView(
+              controller: pageController,
+              physics: _neverScroll,
+              children: pages,
+            ),
           )),
           Container(
             margin: EdgeInsets.only(left: 66.w,right: 66.w),

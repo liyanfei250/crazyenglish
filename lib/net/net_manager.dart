@@ -81,24 +81,27 @@ class NetManager {
     //     onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
     //   ),
     // );
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      // client.findProxy = (uri) {
-      //   // return "PROXY 10.155.33.120:8888";
-      //   return "PROXY 10.155.43.66:8888";
-      //   // return "PROXY 172.20.10.12:8886";
-      //   // return "PROXY 10.155.33.120:8888";
-      // };
+    if(!(Platform.isAndroid || Platform.isIOS)){
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (client) {
+        // client.findProxy = (uri) {
+        //   // return "PROXY 10.155.33.120:8888";
+        //   return "PROXY 10.155.43.66:8888";
+        //   // return "PROXY 172.20.10.12:8886";
+        //   // return "PROXY 10.155.33.120:8888";
+        // };
 
-      //下面是代理地址，需要的自己打开注释改成自己的代理
-      client.findProxy = (uri) {
-        return "PROXY localhost:8886;DIRECT;";
+        //下面是代理地址，需要的自己打开注释改成自己的代理
+        client.findProxy = (uri) {
+          return "PROXY localhost:8886;DIRECT;";
+        };
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) {
+          return true;
+        };
       };
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) {
-        return true;
-      };
-    };
+    }
+
   }
 
   static BaseOptions getDefOptions() {

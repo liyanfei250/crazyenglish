@@ -47,22 +47,25 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
   Widget build(BuildContext context) {
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildQuestionType("听力题"),
-          Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Visibility(
-              visible: element.name!=null && element.name!.isNotEmpty,
-              child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Visibility(
-              visible: element.type == 3 && element.content !=null && element.content!.isNotEmpty,
-              child: buildListenQuestion(element.content??"")),
-          getQuestionDetail(element),
-        ],
-      ),
-    );
+      child: Container(
+        padding: EdgeInsets.only(left: 18.w,right: 18.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildQuestionType("听力题"),
+            Visibility(
+                visible: element.title!=null && element.title!.isNotEmpty,
+                child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+            Visibility(
+                visible: element.name!=null && element.name!.isNotEmpty,
+                child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+            Visibility(
+                visible: element.type == 3 && element.content !=null && element.content!.isNotEmpty,
+                child: buildListenQuestion(element.content??"")),
+            getQuestionDetail(element),
+          ],
+        ),
+      ));
   }
 
 
@@ -73,6 +76,8 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
       child: TestPlayerWidget(audioPlayer,true),
     );
   }
+
+
 
   @override
   void onDestroy() {

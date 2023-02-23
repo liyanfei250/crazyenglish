@@ -56,7 +56,7 @@ class SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     ScreenUtil.init(
         context,
-        designSize: const Size(360, 640));
+        designSize: const Size(375, 812));
 
 
 

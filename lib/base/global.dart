@@ -18,18 +18,18 @@ class Global {
   //初始化全局信息
   static Future init(VoidCallback callback) async {
     WidgetsFlutterBinding.ensureInitialized();
-    if(Platform.isAndroid || Platform.isIOS){
-      //设置http代理
+    // if(Platform.isAndroid || Platform.isIOS){
+    //   设置http代理
       HttpOverrides.global = await HttpProxyOverride.createHttpProxy();
-    }
+    // }
 
 
     // BotToastInit();
     await SpUtil.getInstance();
-    if(Platform.isAndroid || Platform.isIOS){
+    // if(Platform.isAndroid || Platform.isIOS){
       await FkUserAgent.init();
 
-    }
+    // }
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
