@@ -13,6 +13,7 @@ import '../../../base/AppUtil.dart';
 import '../../../entity/week_test_detail_response.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../question/base_question.dart';
 import '../question/gap_question.dart';
 import 'answering_logic.dart';
 
@@ -41,7 +42,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   late Timer _timer;
   var countTime = 0.obs;
 
-  List<Widget> pages = <Widget>[];
+  List<BaseQuestion> pages = <BaseQuestion>[];
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
@@ -75,13 +76,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       ),
       body: Column(
         children: [
-          Expanded(child: Flexible(
-            child: PageView(
-              controller: pageController,
-              physics: _neverScroll,
-              children: pages,
-            ),
-          )),
+          Container(
+            width: double.infinity,
+            height: 600.w,
+            child: pages[0],
+          ),
           Container(
             margin: EdgeInsets.only(left: 66.w,right: 66.w),
             child: Row(
@@ -89,7 +88,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               children: [
                 InkWell(
                   onTap: (){
-
+                    pages[0].pre();
                   },
                   child: Image.asset(R.imagesPractisePreQuestionEnable,width: 40.w,height: 40.w,),
                 ),
@@ -99,7 +98,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                 ),
                 InkWell(
                   onTap: (){
-
+                    pages[0].next();
                   },
                   child: Image.asset(R.imagesPractiseNextQuestionEnable,width: 40.w,height: 40.w,),
                 )
@@ -111,8 +110,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     );
   }
 
-  List<Widget> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
-    List<Widget> questionList = [];
+  List<BaseQuestion> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
+    List<BaseQuestion> questionList = [];
     if(weekTestDetailResponse.data!=null){
       weekTestDetailResponse.data!.forEach((element) {
         switch(element.questionType){

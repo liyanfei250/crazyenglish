@@ -34,6 +34,16 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   getAnswers() {
     baseQuestionState.getAnswers();
   }
+  bool next(){
+    return baseQuestionState.next();
+  }
+  bool pre(){
+    return baseQuestionState.pre();
+  }
+
+  int getQuestionCount(){
+    return baseQuestionState.getQuestionCount();
+  }
 }
 
 abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with AnswerMixin{
@@ -45,6 +55,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
+  List<Widget> questionList = [];
+  int currentPage = 0;
   @override
   void initState(){
     super.initState();
@@ -75,12 +87,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   }
 
   Widget getQuestionDetail(Data element){
-    List<Widget> questionList = [];
     if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
       int questionNum = element.questionBankAppListVos!.length;
       for(int i = 0 ;i< questionNum;i++){
         QuestionBankAppListVos question = element.questionBankAppListVos![i];
-
 
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
@@ -118,6 +128,42 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       physics: _neverScroll,
       children: questionList,
     );
+  }
+
+  @override
+  int getQuestionCount() {
+    return questionList.length;
+  }
+
+  @override
+  bool next() {
+    if(currentPage< questionList.length-1 && currentPage>=0){
+      currentPage = currentPage+1;
+      pageController.jumpToPage(currentPage);
+      if(currentPage< questionList.length-1){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+
+  }
+
+  @override
+  bool pre() {
+    if(currentPage>0){
+      currentPage = currentPage-1;
+      pageController.jumpToPage(currentPage);
+      if(currentPage>0){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
   }
 
   TextEditingController makeEditController(String key){
