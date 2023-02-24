@@ -18,6 +18,8 @@ import '../pages/buy/shop_car/shop_car_view.dart';
 import '../pages/buy/shoplist/view.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
+import '../pages/user/role/role_view.dart';
+import '../pages/user/role_two/role_two_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
 import '../pages/splash_page.dart';
 import '../pages/user/login/login_view.dart';
@@ -56,6 +58,8 @@ abstract class AppPages {
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
     GetPage(name: AppRoutes.SetPsdPage, page:()=>SetPsdPage(),),
     GetPage(name: AppRoutes.AuthCodePage, page:()=>AuthCodePage(),),
+    GetPage(name: AppRoutes.RolePage, page:()=>RolePage(),),
+    GetPage(name: AppRoutes.RoleTwoPage, page:()=>RoleTwoPage(),),
 
   ];
 }

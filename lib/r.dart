@@ -203,6 +203,10 @@ class R {
   static final String imagesLoginEyeOpen = 'images/login_eye_open.png';
   /// ![](http://127.0.0.1:11/images/login_logo_top.png)
   static final String imagesLoginLogoTop = 'images/login_logo_top.png';
+  /// ![](http://127.0.0.1:11/images/login_role_student.png)
+  static final String imagesLoginRoleStudent = 'images/login_role_student.png';
+  /// ![](http://127.0.0.1:11/images/login_role_teacher.png)
+  static final String imagesLoginRoleTeacher = 'images/login_role_teacher.png';
   /// ![](http://127.0.0.1:11/images/login_top_bg.png)
   static final String imagesLoginTopBg = 'images/login_top_bg.png';
   /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)

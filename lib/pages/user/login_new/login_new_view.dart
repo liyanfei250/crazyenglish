@@ -408,6 +408,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             onTap: () {
               hideKeyBoard();
               logic.mobileLogin(phoneStr.value, phoneCodeStr.value);
+              RouterUtil.toNamed(AppRoutes.RolePage);
             },
             child: Container(
               height: 47.w,

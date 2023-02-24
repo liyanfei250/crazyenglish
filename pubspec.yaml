@@ -272,6 +272,8 @@ flutter:
     - images/login_eye_close.png
     - images/login_eye_open.png
     - images/login_logo_top.png
+    - images/login_role_student.png
+    - images/login_role_teacher.png
     - images/login_top_bg.png
     - images/my_icon_coupon.png
     - images/my_icon_help.png

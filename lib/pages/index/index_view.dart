@@ -202,7 +202,7 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   Widget _buildPlayBar() => Container(
         width: double.infinity,
-        height: 60.w,
+        height: 64.w,
         margin: EdgeInsets.symmetric(horizontal: 14.w),
         padding:
             EdgeInsets.only(left: 24.w, right: 10.w, top: 10.w, bottom: 10.w),

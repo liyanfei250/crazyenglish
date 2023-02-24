@@ -25,6 +25,8 @@ abstract class AppRoutes{
   static const AnsweringPage = '/AnsweringPage';
   static const SetPsdPage = '/SetPsdPage';
   static const AuthCodePage = '/AuthCodePage';
+  static const RolePage = '/RolePage';
+  static const RoleTwoPage = '/RoleTwoPage';
 
 // static const LOGIN = '/login';
 
