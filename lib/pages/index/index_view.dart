@@ -166,14 +166,13 @@ class _IndexPageState extends BasePageState<IndexPage>
               RouterUtil.toNamed(AppRoutes.WeeklyList);
               break;
             case "写作训练":
-<<<<<<< HEAD
-              RouterUtil.toNamed(AppRoutes.);
-=======
               RouterUtil.toNamed(AppRoutes.WritingPage);
->>>>>>> 5fada2c326b39997805e289244e38025d6312e5f
               break;
             case "综合口语":
               RouterUtil.toNamed(AppRoutes.TextToVoice);
+              break;
+            case "语言运用":
+              RouterUtil.toNamed(AppRoutes.LOGIN);
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ToShoppingPage);

@@ -1,4 +1,7 @@
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
+import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
+import 'package:crazyenglish/pages/user/set_psd/set_psd_view.dart';
 import 'package:crazyenglish/pages/week_read/reading_catalog/reading_catalog_view.dart';
 import 'package:crazyenglish/pages/week_read/reading_detail/reading_detail_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_catalog/week_test_catalog_view.dart';
@@ -32,6 +35,7 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> MyHomePage(title: "ceshi",),),
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),
+    GetPage(name: AppRoutes.LoginNew, page:()=> LoginNewPage(),),
     GetPage(name: AppRoutes.TextToVoice, page:()=> TextToVoice(),),
     GetPage(name: AppRoutes.LOGIN, page:()=>LoginPage(),),
     GetPage(name: AppRoutes.WeeklyList, page:()=>ReadingListPage(),),
@@ -50,6 +54,8 @@ abstract class AppPages {
     GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
     GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
+    GetPage(name: AppRoutes.SetPsdPage, page:()=>SetPsdPage(),),
+    GetPage(name: AppRoutes.AuthCodePage, page:()=>AuthCodePage(),),
 
   ];
 }

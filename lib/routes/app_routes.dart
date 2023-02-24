@@ -3,6 +3,7 @@ abstract class AppRoutes{
 
   static const INITIAL = '/';
   static const HOME = '/home';
+  static const LoginNew = '/loginNew';
   static const LOGIN = '/login';
   static const WeeklyList = '/weeklyList';
   static const PaperCategory = '/PaperCategory';
@@ -22,6 +23,8 @@ abstract class AppRoutes{
   static const MyOrderPage = '/MyOrderPage';
   static const WritingPage = '/WritingPage';
   static const AnsweringPage = '/AnsweringPage';
+  static const SetPsdPage = '/SetPsdPage';
+  static const AuthCodePage = '/AuthCodePage';
 
 // static const LOGIN = '/login';
 

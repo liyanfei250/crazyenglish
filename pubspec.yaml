@@ -269,6 +269,10 @@ flutter:
     - images/launch_logo.png
     - images/login_agree_default.png
     - images/login_agree_selected.png
+    - images/login_eye_close.png
+    - images/login_eye_open.png
+    - images/login_logo_top.png
+    - images/login_top_bg.png
     - images/my_icon_coupon.png
     - images/my_icon_help.png
     - images/my_icon_order.png

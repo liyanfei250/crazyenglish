@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import 'mine_logic.dart';
 
@@ -27,11 +29,9 @@ class _MinePageState extends BasePageState<MinePage> {
             children: [
               Image.asset(R.imagesMyTopBg),
               Container(
-                margin: EdgeInsets.only(
-                    top: 69.w, left: 16.w),
+                margin: EdgeInsets.only(top: 69.w, left: 16.w),
                 child: GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Row(
                     children: [
                       ClipOval(
@@ -40,32 +40,35 @@ class _MinePageState extends BasePageState<MinePage> {
                               backgroundColor: Colors.white,
                               backgroundImage: AssetImage(
                                   "images/icon_home_me_default_head.png"))),
-                      Padding(
-                          padding: EdgeInsets.only(left: 15.w)),
+                      Padding(padding: EdgeInsets.only(left: 15.w)),
                       isLogin //是否登录
                           ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "吴尊",
-                            style: TextStyle(
-                                color: AppColors.c_FFFFFFFF,
-                                fontSize: 20.w),
-                          ),
-                          Text(
-                            "要读的书太多，没时间写签名",
-                            style: TextStyle(
-                                color: AppColors.c_FFFFEBEB,
-                                fontSize: 16.sp),
-                          )
-                        ],
-                      )
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                    onTap: () =>
+                                        RouterUtil.toNamed(AppRoutes.LoginNew),
+                                    child: Text(
+                                      "吴尊",
+                                      style: TextStyle(
+                                          color: AppColors.c_FFFFFFFF,
+                                          fontSize: 20.w),
+                                    )),
+                                //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                                Text(
+                                  "要读的书太多，没时间写签名",
+                                  style: TextStyle(
+                                      color: AppColors.c_FFFFEBEB,
+                                      fontSize: 16.sp),
+                                )
+                              ],
+                            )
                           : Container(
-                        child: Text("未登录",
-                            style: TextStyle(
-                                color: AppColors.c_FFFFEBEB,
-                                fontSize: 16.sp)),
-                      )
+                              child: Text("未登录",
+                                  style: TextStyle(
+                                      color: AppColors.c_FFFFEBEB,
+                                      fontSize: 16.sp)),
+                            )
                     ],
                   ),
                 ),
@@ -117,9 +120,7 @@ class _MinePageState extends BasePageState<MinePage> {
     );
   }
 
-  void onClickPosition(int position) {
-
-  }
+  void onClickPosition(int position) {}
 
   Widget buildItem(String menu, Image icon, int position) {
     return Container(
@@ -158,8 +159,7 @@ class _MinePageState extends BasePageState<MinePage> {
                       height: 13.w,
                       width: 13.w,
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(right: 11.8.w)),
+                    Padding(padding: EdgeInsets.only(right: 11.8.w)),
                   ],
                 ),
               ),
