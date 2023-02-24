@@ -8,4 +8,7 @@
 
 mixin AnswerMixin{
   getAnswers();
+  bool next();
+  bool pre();
+  int getQuestionCount();
 }

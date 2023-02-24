@@ -49,25 +49,29 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildQuestionType("阅读题"),
-          Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Visibility(
-              visible: element.name!=null && element.name!.isNotEmpty,
-              child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          buildReadQuestion(element!.readContent),
-          getQuestionDetail(element),
-        ],
-      ),
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(left: 18.w,right: 18.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildQuestionType("阅读题"),
+            Visibility(
+                visible: element.title!=null && element.title!.isNotEmpty,
+                child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+            Visibility(
+                visible: element.name!=null && element.name!.isNotEmpty,
+                child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+            buildReadQuestion(element!.readContent),
+            getQuestionDetail(element),
+          ],
+        ),
     );
   }
 
   Widget buildReadQuestion(String? htmlContent){
     return Container(
+      height: 204.w,
       child: Html(
         data: htmlContent??"",
         onImageTap: (url,context,attributes,element,){

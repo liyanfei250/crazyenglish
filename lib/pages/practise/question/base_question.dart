@@ -34,6 +34,16 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   getAnswers() {
     baseQuestionState.getAnswers();
   }
+  bool next(){
+    return baseQuestionState.next();
+  }
+  bool pre(){
+    return baseQuestionState.pre();
+  }
+
+  int getQuestionCount(){
+    return baseQuestionState.getQuestionCount();
+  }
 }
 
 abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with AnswerMixin{
@@ -41,7 +51,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   String tag = "BaseQuestionState_";
 
   Map<String,TextEditingController> gapEditController = {};
+  final PageController pageController = PageController(keepPage: true);
 
+  // 禁止 PageView 滑动
+  final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
+  List<Widget> questionList = [];
+  int currentPage = 0;
   @override
   void initState(){
     super.initState();
@@ -64,48 +79,91 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       alignment: Alignment.center,
       margin: EdgeInsets.only(top:10.w,bottom: 10.w),
       decoration: BoxDecoration(
-          color: AppColors.c_33FEDD00,
-          borderRadius: BorderRadius.all(Radius.circular(2.w))
+          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+        border: Border.all(color: AppColors.c_FF898A93)
       ),
-      child: Text(name,style: TextStyle(color: AppColors.c_FFFFBC00,fontSize: 10.sp),),
+      child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
     );
   }
 
   Widget getQuestionDetail(Data element){
-    List<Widget> questionList = [];
     if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
       int questionNum = element.questionBankAppListVos!.length;
       for(int i = 0 ;i< questionNum;i++){
         QuestionBankAppListVos question = element.questionBankAppListVos![i];
 
-        questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+        List<Widget> itemList = [];
+        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
         if(question.type == 2 || (
             (question.type == 1 || question.type ==4)
                 && question.listenType == 1)){
           // 选择题
-          questionList.add(Visibility(
+          itemList.add(Visibility(
             visible: question!.title != null && question!.title!.isNotEmpty,
             child: Text(
               question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
           if((question!.bankAnswerAppListVos??[]).length > 0) {
-            questionList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
+            itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
           }
         }else if(question.type == 3 ){  // 填空题
-          questionList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+          itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
         }else if(question.type == 5){
-          questionList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
+          itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
         }
+
+        questionList.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: itemList,
+        ));
       }
     }else{
       questionList.add(const SizedBox());
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return PageView(
+      controller: pageController,
+      physics: _neverScroll,
       children: questionList,
     );
+  }
+
+  @override
+  int getQuestionCount() {
+    return questionList.length;
+  }
+
+  @override
+  bool next() {
+    if(currentPage< questionList.length-1 && currentPage>=0){
+      currentPage = currentPage+1;
+      pageController.jumpToPage(currentPage);
+      if(currentPage< questionList.length-1){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+
+  }
+
+  @override
+  bool pre() {
+    if(currentPage>0){
+      currentPage = currentPage-1;
+      pageController.jumpToPage(currentPage);
+      if(currentPage>0){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
   }
 
   TextEditingController makeEditController(String key){

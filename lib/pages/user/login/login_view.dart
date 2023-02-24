@@ -135,7 +135,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
     }else{
       ScreenUtil.init(
           context,
-          designSize: const Size(360, 640));
+          designSize: const Size(375, 812));
 
     }
     return Scaffold(
@@ -154,10 +154,6 @@ class _LoginPageState extends BasePageState<LoginPage> {
               Padding(padding: EdgeInsets.only(top: 70.w)),
               Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(R.imagesLoginTopBg), fit: BoxFit.cover),
-                ),
                 margin: EdgeInsets.only(left: 40.w, right: 20.w),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

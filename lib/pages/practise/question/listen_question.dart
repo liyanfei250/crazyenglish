@@ -46,8 +46,11 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
   @override
   Widget build(BuildContext context) {
 
-    return SingleChildScrollView(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 18.w,right: 18.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildQuestionType("听力题"),
           Visibility(
@@ -59,7 +62,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           Visibility(
               visible: element.type == 3 && element.content !=null && element.content!.isNotEmpty,
               child: buildListenQuestion(element.content??"")),
-          getQuestionDetail(element),
+          Expanded(child: getQuestionDetail(element)),
         ],
       ),
     );
@@ -74,8 +77,11 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
     );
   }
 
+
+
   @override
   void onDestroy() {
     audioPlayer.release();
   }
+
 }
