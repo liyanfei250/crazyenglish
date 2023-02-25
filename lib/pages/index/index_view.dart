@@ -171,6 +171,9 @@ class _IndexPageState extends BasePageState<IndexPage>
             case "综合口语":
               RouterUtil.toNamed(AppRoutes.TextToVoice);
               break;
+            case "综合听力":
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage);
+              break;
             case "语言运用":
               RouterUtil.toNamed(AppRoutes.LOGIN);
               break;

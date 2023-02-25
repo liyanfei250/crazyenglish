@@ -267,6 +267,7 @@ flutter:
     - images/item_play.png
     - images/iv_no_show.png
     - images/launch_logo.png
+    - images/listenig_last_icon.png
     - images/login_agree_default.png
     - images/login_agree_selected.png
     - images/login_eye_close.png

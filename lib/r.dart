@@ -193,6 +193,8 @@ class R {
   static final String imagesIvNoShow = 'images/iv_no_show.png';
   /// ![](http://127.0.0.1:11/images/launch_logo.png)
   static final String imagesLaunchLogo = 'images/launch_logo.png';
+  /// ![](http://127.0.0.1:11/images/listenig_last_icon.png)
+  static final String imagesListenigLastIcon = 'images/listenig_last_icon.png';
   /// ![](http://127.0.0.1:11/images/login_agree_default.png)
   static final String imagesLoginAgreeDefault = 'images/login_agree_default.png';
   /// ![](http://127.0.0.1:11/images/login_agree_selected.png)
