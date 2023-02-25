@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/leixun/software/flutter
-FLUTTER_APPLICATION_PATH=/Users/leixun/my_flutter/crazyenglish
+FLUTTER_ROOT=D:\flutterSdk\flutter
+FLUTTER_APPLICATION_PATH=D:\Demo\demo\gitlabDemo\crazyenglish
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
