@@ -201,7 +201,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
           actions: [
             Obx(()=>Visibility(
                 visible: !hasAudioFile.value,
-                child: Obx(()=>TestPlayerWidget(audioPlayer,false,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged,playerManStreamController: playerManStreamController)))),
+                child: Obx(()=>TestPlayerWidget(audioPlayer,TestPlayerWidget.READ_TOP_TYPE,voiceContent: paperDetail!=null ? paperDetail!.data!.voiceContent:"",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged,playerManStreamController: playerManStreamController)))),
             Container(
               width: 22.w,
               height: 22.w,
@@ -456,7 +456,7 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
               audioPlayer!=null?
               Visibility(
                   visible: audioPlayer!=null,
-                  child: TestPlayerWidget(audioPlayer!,true,stateChangeCallback:audioPlayerStateChanged)):Container(),
+                  child: TestPlayerWidget(audioPlayer!,TestPlayerWidget.READ_BOTTOM_TYPE,stateChangeCallback:audioPlayerStateChanged)):Container(),
             ],
           ),
           Positioned(child: Container(

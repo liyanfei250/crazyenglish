@@ -39,7 +39,7 @@ class TimeUtil{
     if (hour != 0) {
       timeString = hourString + ":" + fenString + ":" + miaoString;
     } else if (fen != 0) {
-      timeString = fenString + "\'" + miaoString + "\"";
+      timeString = fenString + ":" + miaoString;
     } else {
       timeString = miaoString + "\"";
     }
