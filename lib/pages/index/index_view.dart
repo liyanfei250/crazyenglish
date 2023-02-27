@@ -31,6 +31,15 @@ class _IndexPageState extends BasePageState<IndexPage>
     "语言运用",
     "商城",
   ];
+  List listData = [
+    {
+      "title": "【完形填空】Module 1 Unit3",
+      "type": 0,
+    },
+    {"title": "【单词速记】Module 1 Unit3", "type": 1},
+    {"title": "【单词速记】Module 2 Unit3", "type": 2},
+    {"title": "【单词速记】Module 3 Unit3", "type": 3},
+  ];
 
   @override
   void initState() {
@@ -301,19 +310,15 @@ class _IndexPageState extends BasePageState<IndexPage>
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(left: 4.w)),
             _buildClassCard(0),
-            Padding(padding: EdgeInsets.only(top: 16.w)),
           ],
         ),
       );
 
   Widget _buildClassCard(int index) => Container(
-      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w),
-      padding:
-          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
+      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
+      padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 2.w, bottom: 2.w),
       width: double.infinity,
-      alignment: Alignment.topRight,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -325,15 +330,18 @@ class _IndexPageState extends BasePageState<IndexPage>
           ],
           borderRadius: BorderRadius.all(Radius.circular(10.w)),
           color: AppColors.c_FFFFFFFF),
-      child: Column(children: [
-        _listOne(),
-        Padding(padding: EdgeInsets.only(top: 14.w)),
-        Divider(),
-        _listOne(),
-        Padding(padding: EdgeInsets.only(top: 14.w)),
-        Divider(),
-        _listOne(),
-      ]));
+      child: ListView.separated(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return _listOne(listData[index]);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(height: 1, color: Color(0xffd2d5dc));
+        },
+        itemCount: listData.length,
+      ));
 
   Widget _buildSearchBar() => Container(
         margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 7.w),
@@ -418,75 +426,79 @@ LinearGradient _getLinearGradient(Color left, Color right,
       end: end,
     );
 
-Widget _listOne() => Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(children: [
-                Container(
-                  width: 27.w,
-                  height: 14.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      gradient: yellowGreen(),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(7.w),
-                          topRight: Radius.circular(7.w),
-                          bottomRight: Radius.circular(7.w),
-                          bottomLeft: Radius.circular(0.w)),
-                      color: Color(0xfff0e9ff)),
-                  child: Text("7/99",
-                      style: TextStyle(
-                          color: Color(0xff8b8f9f),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w700)),
-                ),
-                SizedBox(width: 10.w),
-                Text("【完形填空】Module 1 Unit3",
-                    style: TextStyle(
-                        color: Color(0xff353e4d),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600)),
-              ]),
-              SizedBox(
-                height: 5.w,
-              ),
-              Row(
-                children: [
-                  Text("剩余时间：7小时29分钟",
-                      style: TextStyle(
-                          color: Color(0xff8b8f9f),
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w700)),
-                  SizedBox(width: 30.w),
+Widget _listOne(value) =>
+    Container(
+      padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(children: [
                   Container(
-                    width: 25.w,
-                    height: 12.w,
-                    padding: EdgeInsets.only(
-                        top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
+                    width: 27.w,
+                    height: 14.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                        gradient: yellowGreen(),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(7.w),
+                            topRight: Radius.circular(7.w),
+                            bottomRight: Radius.circular(7.w),
+                            bottomLeft: Radius.circular(0.w)),
                         color: Color(0xfff0e9ff)),
-                    child: Text("默认",
+                    child: Text("7/99",
                         style: TextStyle(
-                            color: Color(0xffc66afe),
-                            fontSize: 7.sp,
-                            fontWeight: FontWeight.w600)),
-                  )
-                ],
-              ),
-            ],
+                            color: Color(0xff8b8f9f),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w700)),
+                  ),
+                  SizedBox(width: 10.w),
+                  Text(value['title'],
+                      style: TextStyle(
+                          color: Color(0xff353e4d),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600)),
+                ]),
+                SizedBox(
+                  height: 5.w,
+                ),
+                Row(
+                  children: [
+                    Text("剩余时间：7小时29分钟",
+                        style: TextStyle(
+                            color: Color(0xff8b8f9f),
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w700)),
+                    SizedBox(width: 30.w),
+                    Container(
+                      width: 25.w,
+                      height: 12.w,
+                      padding: EdgeInsets.only(
+                          top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                          color: Color(0xfff0e9ff)),
+                      child: Text("默认",
+                          style: TextStyle(
+                              color: Color(0xffc66afe),
+                              fontSize: 7.sp,
+                              fontWeight: FontWeight.w600)),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        Image.asset(
-          R.imagesIconToNext,
-          width: 14.w,
-          height: 14.w,
-        )
-      ],
+          Image.asset(
+            R.imagesIconToNext,
+            width: 14.w,
+            height: 14.w,
+          )
+        ],
+      ),
     );
