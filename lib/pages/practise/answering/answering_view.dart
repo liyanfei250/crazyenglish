@@ -49,6 +49,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var _selectedIndex = 0.obs;
   final PageController pageController = PageController(keepPage: true);
 
+  var canPre = false.obs;
+  var canNext = true.obs;
+  var pageChangeStr = "".obs;
   @override
   void onCreate() {
     startTimer();
@@ -76,31 +79,36 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       ),
       body: Column(
         children: [
-          Container(
+          Expanded(child: Container(
             width: double.infinity,
-            height: 600.w,
             child: pages[0],
-          ),
+          ),),
           Container(
-            margin: EdgeInsets.only(left: 66.w,right: 66.w),
+            margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: (){
-                    pages[0].pre();
+                    canPre.value = pages[0].pre();
+                    if(canPre.value){
+                      canNext.value = true;
+                    }
                   },
-                  child: Image.asset(R.imagesPractisePreQuestionEnable,width: 40.w,height: 40.w,),
+                  child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
                 ),
-                Text(
-                  "1/5",
+                Obx(()=>Text(
+                  pageChangeStr.value,
                   style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
-                ),
+                ),),
                 InkWell(
                   onTap: (){
-                    pages[0].next();
+                    canNext.value = pages[0].next();
+                    if(canNext.value){
+                      canPre.value = true;
+                    }
                   },
-                  child: Image.asset(R.imagesPractiseNextQuestionEnable,width: 40.w,height: 40.w,),
+                  child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
                 )
               ],
             ),
@@ -112,23 +120,26 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   List<BaseQuestion> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
     List<BaseQuestion> questionList = [];
+    ValueChanged<String> valueChanged = (value){
+      pageChangeStr.value = value;
+    };
     if(weekTestDetailResponse.data!=null){
       weekTestDetailResponse.data!.forEach((element) {
         switch(element.questionType){
           case 1: // 听力题
-            questionList.add(ListenQuestion(data: element,));
+            questionList.add(ListenQuestion(data: element,onPageChnaged: valueChanged));
             break;
           case 2: // 选择题
-            questionList.add(ChoiseQuestion(data: element,));
+            questionList.add(ChoiseQuestion(data: element,onPageChnaged: valueChanged));
             break;
           case 3: // 填空题
-            questionList.add(GapQuestion(data: element,));
+            questionList.add(GapQuestion(data: element,onPageChnaged: valueChanged));
             break;
           case 4: // 阅读题
-            questionList.add(ReadQuestion(data: element,));
+            questionList.add(ReadQuestion(data: element,onPageChnaged: valueChanged));
             break;
           case 5: // 纠错
-            questionList.add(FixArticleQuestion(data: element,));
+            questionList.add(FixArticleQuestion(data: element,onPageChnaged: valueChanged));
         }
       });
     }

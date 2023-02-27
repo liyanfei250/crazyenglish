@@ -15,11 +15,14 @@ import '../answer_interface.dart';
  */
 
 typedef GetEditingControllerCallback = TextEditingController Function(String key);
+typedef PageControllerListener = TextEditingController Function(String key);
+
 
 abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   late BaseQuestionState baseQuestionState;
+  final ValueChanged<String> onPageChanged;
 
-  BaseQuestion({Key? key}) : super(key: key);
+  BaseQuestion({required this.onPageChanged,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -77,12 +80,35 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       width: 46.w,
       height: 22.w,
       alignment: Alignment.center,
-      margin: EdgeInsets.only(top:10.w,bottom: 10.w),
+      margin: EdgeInsets.only(top:14.w,bottom: 10.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(2.w)),
-        border: Border.all(color: AppColors.c_FF898A93)
+        border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
       ),
       child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+    );
+  }
+
+  Widget buildQuestionDesc(String name){
+    return Container(
+      width: 66.w,
+      height: 22.w,
+      child: Stack(
+        alignment: Alignment.bottomLeft,
+        children: [
+          Container(
+            width: 66.w,
+            height: 9.w,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [
+                Color(0x78FCB853),
+                Color(0x00FDB446),
+              ]),
+            ),
+          ),
+          Text(name,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),)
+        ],
+      ),
     );
   }
 
@@ -99,6 +125,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             (question.type == 1 || question.type ==4)
                 && question.listenType == 1)){
           // 选择题
+          itemList.add(buildQuestionType("选择题"));
           itemList.add(Visibility(
             visible: question!.title != null && question!.title!.isNotEmpty,
             child: Text(
@@ -108,24 +135,31 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
           }
         }else if(question.type == 3 ){  // 填空题
+          itemList.add(buildQuestionType("填空题"));
           itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
         }else if(question.type == 5){
+          itemList.add(buildQuestionType("纠错题"));
           itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
         }
 
-        questionList.add(Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: itemList,
+        questionList.add(SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: itemList,
+          ),
         ));
       }
     }else{
       questionList.add(const SizedBox());
     }
-
+    widget.onPageChanged("1/${questionList.length}");
     return PageView(
       controller: pageController,
       physics: _neverScroll,
+      onPageChanged: (int value){
+        widget.onPageChanged("${(value+1)}/${questionList.length}");
+      },
       children: questionList,
     );
   }
