@@ -465,7 +465,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
   Widget buildListenQuestion(String listtenUrl){
     audioPlayer.setSourceUrl(listtenUrl);
     return Container(
-      child: TestPlayerWidget(audioPlayer,true),
+      child: TestPlayerWidget(audioPlayer,TestPlayerWidget.READ_BOTTOM_TYPE),
     );
   }
 

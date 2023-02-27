@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/utils/colors.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
+import '../../../widgets/WDCustomTrackShape.dart';
 import '../../../xfyy/utils/xf_socket.dart';
 
 /**
@@ -22,14 +24,17 @@ import '../../../xfyy/utils/xf_socket.dart';
 typedef AudioPlayerStateChanged = Function(PlayerState playerState);
 
 class TestPlayerWidget extends BasePage {
+  static const int READ_TOP_TYPE = 0;
+  static const int READ_BOTTOM_TYPE = 1;
+  static const int PRACTISE_TYPE = 2;
   AudioPlayer? player;
-  final bool isBottomPlayer;
+  int? playerType = 0;
   String? voiceContent;
   String? playerName;
   AudioPlayerStateChanged? stateChangeCallback;
   StreamController? playerManStreamController;
 
-  TestPlayerWidget(this.player,this.isBottomPlayer,{Key? key,String ? voiceContent,String? playerName,AudioPlayerStateChanged? stateChangeCallback,StreamController? playerManStreamController}) : super(key: key) {
+  TestPlayerWidget(this.player,this.playerType,{Key? key,String ? voiceContent,String? playerName,AudioPlayerStateChanged? stateChangeCallback,StreamController? playerManStreamController}) : super(key: key) {
     if(voiceContent!=null){
       this.voiceContent = voiceContent;
     }
@@ -64,8 +69,8 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
 
   bool get _isPlaying => _playerState == PlayerState.playing;
   bool get _isPaused => _playerState == PlayerState.paused;
-  String get _durationText => _duration?.toString().split('.').first ?? '';
-  String get _positionText => _position?.toString().split('.').first ?? '';
+  String get _durationText => TimeUtil.getMiaoFenOptional(_duration?.inSeconds ?? 0);
+  String get _positionText => TimeUtil.getMiaoFenOptional(_position?.inSeconds ?? 0);
 
   AudioPlayer? get player => widget.player;
 
@@ -98,7 +103,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isBottomPlayer){
+    if(widget.playerType == TestPlayerWidget.READ_BOTTOM_TYPE){
       return Container(
         height: 79.w,
         width: double.infinity,
@@ -161,7 +166,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
           ],
         ),
       );
-    }else{
+    }else if(widget.playerType == TestPlayerWidget.READ_TOP_TYPE){
       return Container(
           width: 22.w,
           height: 22.w,
@@ -194,6 +199,78 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
               width: 22.w,height: 22.w,),
           ),
         );
+    }else { // 练习样式
+      return Container(
+        height: 54.w,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.c_FFFFF4E3,
+          boxShadow:[
+            BoxShadow(
+              color: AppColors.c_80E3EDFF,		// 阴影的颜色
+              offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+              blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 0.w,
+            ),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(32.w)),
+        ),
+        margin: EdgeInsets.only(left: 27.w,right: 27.w),
+        padding: EdgeInsets.only(left: 24.w,right: 15.w),
+        child: Row(
+          children: [
+            InkWell(
+              onTap: (){
+                _isPlaying ? _pause() : _play();
+              },
+              child: Image.asset(
+                _isPlaying? R.imagesPlayerPractisePause : _isPaused? R.imagesPlayerPractisePlay:R.imagesPlayerPractisePlay,
+                width: 22.w,height: 22.w,),
+            ),
+            Expanded(child: Container(
+              margin: EdgeInsets.only(left: 12.w,right: 12.w),
+              child: SliderTheme(
+                data: SliderThemeData(
+                    trackHeight: 1,
+                    activeTrackColor: AppColors.c_FFFFBC00,
+                    inactiveTrackColor: AppColors.c_FFFEDD00,
+                    trackShape: WDCustomTrackShape(addHeight: 0)
+                ),
+                child: Slider(
+                  onChanged: (v) {
+                    final duration = _duration;
+                    if (duration == null) {
+                      return;
+                    }
+                    final position = v * duration.inMilliseconds;
+                    if(player!=null){
+                      player!.seek(Duration(milliseconds: position.round()));
+                    }
+                  },
+
+                  value: (_position != null &&
+                      _duration != null &&
+                      _position!.inMilliseconds > 0 &&
+                      _position!.inMilliseconds < _duration!.inMilliseconds)
+                      ? _position!.inMilliseconds / _duration!.inMilliseconds
+                      : 0.0,
+                ),
+              ),
+            )),
+            Container(
+              width: 66.w,
+              child: Text(
+                _position != null
+                    ? '$_positionText / $_durationText'
+                    : _duration != null
+                    ? "00:00/"+_durationText
+                    : '',
+                style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
+              ),
+            )
+          ],
+        ),
+      );
     }
 
   }

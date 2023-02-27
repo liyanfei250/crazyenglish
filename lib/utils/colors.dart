@@ -21,11 +21,14 @@ class AppColors {
   static Color c_FFE5F9DE = Color(0xFFE5F9DE);
   static Color c_FF58BC6D = Color(0xFF58BC6D);
   static Color c_FFEC9D4E = Color(0xFFEC9D4E);
+  static Color c_FFFFF4E3 = Color(0xFFFFF4E3);
   static Color c_FFFCF0E2 = Color(0xFFFCF0E2);
   static Color c_FFE2E2E2 = Color(0xFFE2E2E2);
+  static Color c_FFFEDD00 = Color(0xFFFEDD00);
   static Color c_FF848BA2 = Color(0xFF848BA2);
   static Color c_FF424966 = Color(0xFF424966);
   static Color c_FF353E4D = Color(0xFF353E4D);
+  static Color c_80E3EDFF = Color(0x80E3EDFF);
   static Color c_FF434863 = Color(0xFF434863);
   static Color c_FF898A93 = Color(0xFF898A93);
   static Color c_FFFDD9AF = Color(0xFFFDD9AF);

@@ -74,7 +74,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
   Widget buildListenQuestion(String listtenUrl){
     audioPlayer.setSourceUrl(listtenUrl);
     return Container(
-      child: TestPlayerWidget(audioPlayer,true),
+      child: TestPlayerWidget(audioPlayer,TestPlayerWidget.PRACTISE_TYPE),
     );
   }
 
