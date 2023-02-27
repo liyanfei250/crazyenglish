@@ -16,7 +16,8 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
 class ListenQuestion extends BaseQuestion {
   Data data;
 
-  ListenQuestion({required this.data,Key? key}) : super(key: key);
+  ListenQuestion({required this.data,required onPageChnaged,Key? key}) : super(key: key,onPageChanged: onPageChnaged);
+
 
   @override
   BaseQuestionState<BaseQuestion> getState() {

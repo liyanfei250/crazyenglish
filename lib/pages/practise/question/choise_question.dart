@@ -16,7 +16,7 @@ import '../../../entity/week_test_detail_response.dart';
 class ChoiseQuestion extends BaseQuestion {
   Data data;
 
-  ChoiseQuestion({required this.data,Key? key}) : super(key: key);
+  ChoiseQuestion({required this.data,required onPageChnaged,Key? key}) : super(key: key,onPageChanged: onPageChnaged);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
