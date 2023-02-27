@@ -253,6 +253,10 @@ class R {
   static final String imagesReviewTopBg = 'images/review_top_bg.png';
   /// ![](http://127.0.0.1:11/images/review_wrong_question_item.png)
   static final String imagesReviewWrongQuestionItem = 'images/review_wrong_question_item.png';
+  /// ![](http://127.0.0.1:11/images/shop_address_location_icon.png)
+  static final String imagesShopAddressLocationIcon = 'images/shop_address_location_icon.png';
+  /// ![](http://127.0.0.1:11/images/shop_image_logo_test.png)
+  static final String imagesShopImageLogoTest = 'images/shop_image_logo_test.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
   static final String imagesSplash = 'images/splash.png';
   /// ![](http://127.0.0.1:11/images/splash_icon.png)

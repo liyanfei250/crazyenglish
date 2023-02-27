@@ -223,7 +223,7 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                     ],
                   )),
                   Image.asset(
-                    'images/icon_to_next.png',
+                    R.imagesIconToNext,
                     fit: BoxFit.cover,
                     width: 22.w,
                     height: 22.w,
