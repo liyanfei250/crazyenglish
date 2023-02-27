@@ -197,6 +197,18 @@ class R {
   static final String imagesLoginAgreeDefault = 'images/login_agree_default.png';
   /// ![](http://127.0.0.1:11/images/login_agree_selected.png)
   static final String imagesLoginAgreeSelected = 'images/login_agree_selected.png';
+  /// ![](http://127.0.0.1:11/images/login_eye_close.png)
+  static final String imagesLoginEyeClose = 'images/login_eye_close.png';
+  /// ![](http://127.0.0.1:11/images/login_eye_open.png)
+  static final String imagesLoginEyeOpen = 'images/login_eye_open.png';
+  /// ![](http://127.0.0.1:11/images/login_logo_top.png)
+  static final String imagesLoginLogoTop = 'images/login_logo_top.png';
+  /// ![](http://127.0.0.1:11/images/login_role_student.png)
+  static final String imagesLoginRoleStudent = 'images/login_role_student.png';
+  /// ![](http://127.0.0.1:11/images/login_role_teacher.png)
+  static final String imagesLoginRoleTeacher = 'images/login_role_teacher.png';
+  /// ![](http://127.0.0.1:11/images/login_top_bg.png)
+  static final String imagesLoginTopBg = 'images/login_top_bg.png';
   /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)
   static final String imagesMyIconCoupon = 'images/my_icon_coupon.png';
   /// ![](http://127.0.0.1:11/images/my_icon_help.png)
