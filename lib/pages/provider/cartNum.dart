@@ -34,8 +34,8 @@ class _CartNumState extends State<CartNum> {
         },
         child: Container(
           alignment: Alignment.center,
-          width: 20.w,
-          height: 20.w,
+          width: 19.w,
+          height: 19.w,
           child: Text("-"),
         ),
       );
@@ -52,8 +52,8 @@ class _CartNumState extends State<CartNum> {
         },
         child: Container(
           alignment: Alignment.center,
-          width: 20.w,
-          height: 20.w,
+          width: 19.w,
+          height: 19.w,
           child: Text("+"),
         ),
       );
@@ -68,13 +68,13 @@ class _CartNumState extends State<CartNum> {
           left: BorderSide(width: 2.0, color: Colors.black12),
           right: BorderSide(width: 2.0, color: Colors.black12),
         )),
-        height: 45.0,
+        height: 19.w,
         child: Text("45"),
       );
     }
 
     return Container(
-      width: 68.w,
+      width: 70.w,
       height: 20.w,
       decoration:
           BoxDecoration(border: Border.all(width: 2.0, color: Colors.black12)),

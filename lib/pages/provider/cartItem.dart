@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../r.dart';
 import '../../utils/colors.dart';
 import 'CartProvider.dart';
 import 'cartNum.dart';
@@ -17,24 +18,26 @@ class _CartItemState extends State<CartItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    // 删除中间数据 _itemData 不会重新赋值，因为该initState不会被触发，但是build方法会重新触发
-    // 也就是该页面_itemData仍为旧数据, 但是List数量删除后减少了，原来5条，删除中间2条后剩余3条，这样页面显示的是前面3条
-    // 当重新运行的时候init执行获取数据，显示正确
-    // this._itemData = widget._itemData;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 112.w,
-      width: 347.w,
-      padding: EdgeInsets.all(5),
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 11.w, left: 14.w, right: 14.w),
+      padding: EdgeInsets.only(top: 17.w, bottom: 17.w, left: 16.w, right: 16.w),
 
-      // 底部线条
       decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(width: 2.0, color: Colors.black12))),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_0FA50D1A.withOpacity(0.05), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(6.w)),
+          color: AppColors.c_FFFFFFFF),
 
       // cell
       child: Row(
@@ -42,7 +45,7 @@ class _CartItemState extends State<CartItem> {
           // 单选框
           Container(
             width: 14.w,
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            margin: EdgeInsets.only(right: 12.w),
             child: Checkbox(
               value: true,
               activeColor: Colors.pink,
@@ -55,36 +58,51 @@ class _CartItemState extends State<CartItem> {
             ),
           ),
 
-          // 图片
-          Container(
-              width: 80.w,
-              height: 80.w,
-              color: Colors.red,
-              child: Image.network(
-                  "https://www.baidu.com/img/flexible/logo/pc/result.png",
-                  fit: BoxFit.cover)),
-
+          ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: Image.asset(
+                R.imagesShopImageLogoTest,
+                width: 80.w,
+                height: 80.w,
+              )),
           // 标题
           Expanded(
             // 浮动
             flex: 1,
             child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+              height: 80.w,
+              padding: EdgeInsets.only(left: 16.w, ),
               child: Column(
                 // 上title 下detail
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // title
-                  Text(
-                    "英语周刊 年度订阅",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: AppColors.c_FF101010,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "英语周刊 年度订阅",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Color(0xff151619),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "¥ 199.00",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Color(0xff1b1d2c),
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400),
+                      ),
+
+                    ],
                   ),
+
                   // attr
                   Row(
                     children: [
@@ -92,7 +110,7 @@ class _CartItemState extends State<CartItem> {
                           child: Text("已选：高考综合",
                               maxLines: 2,
                               style: TextStyle(
-                                  color: AppColors.c_FF585858,
+                                  color: Color(0xff8a9098),
                                   fontSize: 10.sp))),
                       Align(
                         alignment: Alignment.centerRight,

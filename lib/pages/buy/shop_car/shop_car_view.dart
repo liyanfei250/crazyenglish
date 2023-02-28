@@ -7,12 +7,9 @@ import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
-import '../../provider/CartProvider.dart';
 import '../../provider/CheckOutProvider.dart';
-import 'shop_car_logic.dart';
 import '../../provider/cartItem.dart';
-import 'package:provider/provider.dart';
-import '../../provider/CartService.dart';
+import 'shop_car_logic.dart';
 
 class ShopCarPage extends BasePage {
   const ShopCarPage({Key? key}) : super(key: key);
@@ -55,8 +52,6 @@ class _ToShopCarPageState extends BasePageState<ShopCarPage> {
                 CartItem(),
                 CartItem(),
                 CartItem(),
-                // 和全选按钮来点距离
-                SizedBox(height: 100.0)
               ],
             ),
 
@@ -66,15 +61,9 @@ class _ToShopCarPageState extends BasePageState<ShopCarPage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 78.0,
-                padding: EdgeInsets.only(left: 9.w),
-                // 顶部线条
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(width: 2.0, color: Colors.black12)),
-                    color: Colors.white),
-
-                // 左全选 右结算
+                height: 56.w,
+                padding: EdgeInsets.only(left: 20.w),
+                color: Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -84,23 +73,32 @@ class _ToShopCarPageState extends BasePageState<ShopCarPage> {
                       // 左单选框 右文本
                       children: <Widget>[
                         Text("合计："),
-                        Text("¥ 564",
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 16.sp))
+                        Text("¥ 218.90",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600))
                       ],
                     ),
                     // 结算
-                    ElevatedButton(
-                      child: Text("去支付",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.sp)),
-                      // onPressed: doCheckOut,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         RouterUtil.toNamed(AppRoutes.OrderSurePage);
                       },
+                      child: Container(
+                        width: 130.w,
+                        height: 56.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xffeb4c4a), Color(0xffee7d7a)],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            )),
+                        child: Text("去支付",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 14.sp)),
+                      ),
                     ),
                   ],
                 ),
