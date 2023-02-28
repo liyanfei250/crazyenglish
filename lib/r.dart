@@ -1,4 +1,6 @@
 class R {
+  /// ![](http://127.0.0.1:11/images/result_vector_tips.png)
+  static final String imagesResultVectorTips = 'images/result_vector_tips.png';
   /// ![](http://127.0.0.1:11/images/article_collect_default.png)
   static final String imagesArticleCollectDefault = 'images/article_collect_default.png';
   /// ![](http://127.0.0.1:11/images/torid_right.png)
@@ -79,6 +81,8 @@ class R {
   static final String imagesIndexSearch = 'images/index_search.png';
   /// ![](http://127.0.0.1:11/images/index_scan.png)
   static final String imagesIndexScan = 'images/index_scan.png';
+  /// ![](http://127.0.0.1:11/images/result_time_tips.png)
+  static final String imagesResultTimeTips = 'images/result_time_tips.png';
   /// ![](http://127.0.0.1:11/images/torid_top.png)
   static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/review_jump_practise.png)
@@ -147,6 +151,8 @@ class R {
   static final String imagesToridTwoShow = 'images/torid_two_show.png';
   /// ![](http://127.0.0.1:11/images/login_logo_top.png)
   static final String imagesLoginLogoTop = 'images/login_logo_top.png';
+  /// ![](http://127.0.0.1:11/images/result_answer_card_tips.png)
+  static final String imagesResultAnswerCardTips = 'images/result_answer_card_tips.png';
   /// ![](http://127.0.0.1:11/images/test_play.png)
   static final String imagesTestPlay = 'images/test_play.png';
   /// ![](http://127.0.0.1:11/images/item_play.png)
@@ -263,12 +269,16 @@ class R {
   static final String imagesBgUpdateTop = 'images/bg_update_top.png';
   /// ![](http://127.0.0.1:11/images/weekly_bg.png)
   static final String imagesWeeklyBg = 'images/weekly_bg.png';
+  /// ![](http://127.0.0.1:11/images/result_favor.png)
+  static final String imagesResultFavor = 'images/result_favor.png';
   /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
   static final String imagesToridOneHide = 'images/torid_one_hide.png';
   /// ![](http://127.0.0.1:11/images/practise_next_question_enable.png)
   static final String imagesPractiseNextQuestionEnable = 'images/practise_next_question_enable.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
+  /// ![](http://127.0.0.1:11/images/result_unfavor.png)
+  static final String imagesResultUnfavor = 'images/result_unfavor.png';
   /// ![](http://127.0.0.1:11/images/index_today_todo.png)
   static final String imagesIndexTodayTodo = 'images/index_today_todo.png';
   /// ![](http://127.0.0.1:11/images/article_listen_play.png)

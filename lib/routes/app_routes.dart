@@ -23,6 +23,7 @@ abstract class AppRoutes{
   static const MyOrderPage = '/MyOrderPage';
   static const WritingPage = '/WritingPage';
   static const AnsweringPage = '/AnsweringPage';
+  static const ResultPage = '/ResultPage';
   static const SetPsdPage = '/SetPsdPage';
   static const AuthCodePage = '/AuthCodePage';
   static const RolePage = '/RolePage';

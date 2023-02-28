@@ -104,6 +104,7 @@ dependencies:
   video_player: ^2.4.10
   audioplayers: ^3.0.1
   scroll_to_index: ^3.0.1
+  sleek_circular_slider: ^2.0.1
 
 
 dev_dependencies:
@@ -170,6 +171,7 @@ flutter:
   assets:
     # assets-generator-begin
     # images/*
+    - images/result_vector_tips.png
     - images/article_collect_default.png
     - images/torid_right.png
     - images/writing_commit_button.png
@@ -210,6 +212,7 @@ flutter:
     - images/review_favor_words_icon.png
     - images/index_search.png
     - images/index_scan.png
+    - images/result_time_tips.png
     - images/torid_top.png
     - images/review_jump_practise.png
     - images/index_teacher_icon2.png
@@ -244,6 +247,7 @@ flutter:
     - images/student_index_5.png
     - images/torid_two_show.png
     - images/login_logo_top.png
+    - images/result_answer_card_tips.png
     - images/test_play.png
     - images/item_play.png
     - images/img.png
@@ -302,9 +306,11 @@ flutter:
     - images/index_class_more.png
     - images/bg_update_top.png
     - images/weekly_bg.png
+    - images/result_favor.png
     - images/torid_one_hide.png
     - images/practise_next_question_enable.png
     - images/index_icon_6.png
+    - images/result_unfavor.png
     - images/index_today_todo.png
     - images/article_listen_play.png
     - images/icon_intensive_listening_translate_yes.png
