@@ -1,5 +1,6 @@
 import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
 import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/user/set_psd/set_psd_view.dart';
@@ -36,6 +37,7 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> TestApp(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPageNew(),),
     GetPage(name: AppRoutes.INITIAL, page:()=> SplashPage(),),
+    GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> MyHomePage(title: "ceshi",),),
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),

@@ -310,6 +310,10 @@ flutter:
     - images/shop_car_num_icon.png
     - images/shop_image_logo_test.png
     - images/splash.png
+    - images/splash_bg.png
+    - images/splash_bottom_logo.png
+    - images/splash_center_image.png
+    - images/splash_center_text.png
     - images/splash_icon.png
     - images/splash_welcome_1.png
     - images/splash_welcome_2.png

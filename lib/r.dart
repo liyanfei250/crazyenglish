@@ -277,6 +277,14 @@ class R {
   static final String imagesShopImageLogoTest = 'images/shop_image_logo_test.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
   static final String imagesSplash = 'images/splash.png';
+  /// ![](http://127.0.0.1:11/images/splash_bg.png)
+  static final String imagesSplashBg = 'images/splash_bg.png';
+  /// ![](http://127.0.0.1:11/images/splash_bottom_logo.png)
+  static final String imagesSplashBottomLogo = 'images/splash_bottom_logo.png';
+  /// ![](http://127.0.0.1:11/images/splash_center_image.png)
+  static final String imagesSplashCenterImage = 'images/splash_center_image.png';
+  /// ![](http://127.0.0.1:11/images/splash_center_text.png)
+  static final String imagesSplashCenterText = 'images/splash_center_text.png';
   /// ![](http://127.0.0.1:11/images/splash_icon.png)
   static final String imagesSplashIcon = 'images/splash_icon.png';
   /// ![](http://127.0.0.1:11/images/splash_welcome_1.png)

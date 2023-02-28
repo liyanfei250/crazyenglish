@@ -2,6 +2,7 @@ part of './app_pages.dart';
 abstract class AppRoutes{
 
   static const INITIAL = '/';
+  static const INITIALNew = '/SplashNew';
   static const HOME = '/home';
   static const LoginNew = '/loginNew';
   static const LOGIN = '/login';
