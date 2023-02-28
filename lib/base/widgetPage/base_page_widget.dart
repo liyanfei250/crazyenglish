@@ -99,6 +99,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
     );
   }
 
+
   Widget buildLoadingWidget(){
     return LoadingWidget();
   }

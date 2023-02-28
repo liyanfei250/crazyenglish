@@ -11,7 +11,7 @@ import 'package:crazyenglish/pages/week_test/week_test_list/week_test_list_view.
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../pages/buy/cashier/cashier_view.dart';
-import '../pages/buy/my_order_list/view.dart';
+import '../pages/buy/my_order_list/my_order_list_view.dart';
 import '../pages/buy/order_detail/view.dart';
 import '../pages/buy/order_sure/order_sure_view.dart';
 import '../pages/buy/shop/shop_view.dart';

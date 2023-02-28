@@ -11,6 +11,8 @@ class R {
   static final String imagesMyTopBg = 'images/my_top_bg.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_eye.png)
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
+  /// ![](http://127.0.0.1:11/images/shop_address_location_icon.png)
+  static final String imagesShopAddressLocationIcon = 'images/shop_address_location_icon.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
   static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
   /// ![](http://127.0.0.1:11/images/index_collection_words.png)
@@ -261,6 +263,8 @@ class R {
   static final String imagesArticleListenPause = 'images/article_listen_pause.png';
   /// ![](http://127.0.0.1:11/images/index_icon_7.png)
   static final String imagesIndexIcon7 = 'images/index_icon_7.png';
+  /// ![](http://127.0.0.1:11/images/shop_image_logo_test.png)
+  static final String imagesShopImageLogoTest = 'images/shop_image_logo_test.png';
   /// ![](http://127.0.0.1:11/images/torid_three_hide.png)
   static final String imagesToridThreeHide = 'images/torid_three_hide.png';
   /// ![](http://127.0.0.1:11/images/index_class_more.png)

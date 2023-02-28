@@ -50,7 +50,7 @@ class WDCustomTrackShape extends RoundedRectSliderTrackShape {
         enableAnimation: enableAnimation,
         textDirection: textDirection,
         thumbCenter: thumbCenter,
-        secondaryOffset: secondaryOffset,
+        // secondaryOffset: secondaryOffset,
         additionalActiveTrackHeight: addHeight
     );
   }

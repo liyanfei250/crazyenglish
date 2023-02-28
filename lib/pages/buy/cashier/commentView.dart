@@ -1,15 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../utils/colors.dart';
-import 'logic.dart';
-
+/*
 class MyOrderPage extends  BasePage {
-const MyOrderPage({Key? key}) : super(key: key);
+  const MyOrderPage({Key? key}) : super(key: key);
 
-@override
-BasePageState<BasePage> getState() => _ToMyOrderPageState();
+  @override
+  BasePageState<BasePage> getState() => _ToMyOrderPageState();
 }
 
 class _ToMyOrderPageState extends BasePageState<MyOrderPage> {
@@ -30,3 +24,4 @@ class _ToMyOrderPageState extends BasePageState<MyOrderPage> {
   @override
   void onDestroy() {}
 }
+*/
