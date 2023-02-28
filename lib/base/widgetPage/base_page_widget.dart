@@ -99,6 +99,16 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
     );
   }
 
+  AppBar buildTransparentAppBar(String txt){
+    return AppBar(
+      elevation: 0,
+      centerTitle: true,
+      leading: Util.buildBackWidget(context),
+      title: Text(txt,style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
+      backgroundColor:Colors.transparent,
+    );
+  }
+
 
   Widget buildLoadingWidget(){
     return LoadingWidget();

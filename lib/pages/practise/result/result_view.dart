@@ -76,12 +76,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
           child: Column(
             children: [
-              AppBar(
-                elevation: 0,
-                automaticallyImplyLeading:false,
-                title: Text("Module 1 Unit3",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
-                backgroundColor:Colors.transparent,
-              ),
+              buildTransparentAppBar("Module Unit3"),
               buildTopIndicator(),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
@@ -97,8 +92,40 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   ],
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(padding: EdgeInsets.only(top: 24.w)),
+                    Container(
+                      padding: EdgeInsets.only(left: 18.w,right: 18.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
+                              Padding(padding: EdgeInsets.only(left: 9.w)),
+                              Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              buildAnswerState(1),
+                              buildAnswerState(2),
+                              buildAnswerState(3),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 24.w)),
                     _buildTabBar(),
+                    Container(
+                      height: 0.5.w,
+                      width: double.infinity,
+                      color: AppColors.c_FFD2D5DC,
+                    ),
                     resutl,
                   ],
                 ),
@@ -107,6 +134,45 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
         ),
       ),);
+  }
+
+  Widget buildAnswerState(int state){
+    String text = "未答";
+    BoxDecoration decoration;
+    if ( state == 1 ) { // 未答
+      text = "未答";
+      decoration = BoxDecoration(
+          color: AppColors.c_FFF5F7FA,
+          borderRadius: BorderRadius.all(Radius.circular(22.w)),
+          border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
+      );
+    } else if(state == 2){   // 答对
+      text = "答对";
+      decoration = BoxDecoration(
+        color: AppColors.c_FF62C5A2,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    } else {  // 答错
+      text = "答错";
+      decoration = BoxDecoration(
+        color: AppColors.c_FFEC6560,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(padding: EdgeInsets.only(left: 13.w)),
+        Container(
+          width: 10.w,
+          height: 10.w,
+          decoration: decoration,
+        ),
+        Padding(padding: EdgeInsets.only(left: 3.w)),
+        Text(text,style: TextStyle(fontWeight: FontWeight.w500,color: AppColors.c_FF878DA6,fontSize: 12.sp),)
+      ],
+    );
   }
 
   Widget buildTopIndicator(){
@@ -236,38 +302,70 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
     },
     controller: _tabController,
-    indicatorColor: Colors.transparent,
+    indicatorColor: AppColors.c_FF353E4D,
     isScrollable: true,
-    labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
-    indicatorWeight: 3,
+    labelPadding: EdgeInsets.symmetric(horizontal: 20.w),
+    indicatorWeight: 2.w,
+    indicatorSize: TabBarIndicatorSize.label,
     labelStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
     unselectedLabelStyle:
     TextStyle(fontSize: 14.sp, color: AppColors.TEXT_BLACK_COLOR),
     labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Container(
+    tabs: tabs.map((e) => buildTab(e)).toList(),
+  );
+
+  Widget buildTab(String e){
+    int state = tabs.indexOf(e);
+
+    BoxDecoration decoration;
+    Color textColor = Colors.white;
+    if(state == 1){
+      decoration = BoxDecoration(
+        color: AppColors.c_FFF5F7FA,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+        border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
+      );
+      textColor = AppColors.c_FFD6D9DB;
+    }else if(state == 2){
+      decoration = BoxDecoration(
+        color: AppColors.c_FF62C5A2,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    }else{
+      decoration = BoxDecoration(
+        color: AppColors.c_FFEC6560,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    }
+
+    return Container(
       width: 34.w,
       height: 34.w,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(22.w)),
-      ),
-      child: Text(e),
-    )).toList(),
-  );
+      margin: EdgeInsets.only(bottom: 9.w),
+      decoration: decoration,
+      child: Text(e,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
+    );
+  }
 
   Widget buildQuestionType(String name){
-    return Container(
-      width: 46.w,
-      height: 22.w,
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(top:14.w,bottom: 10.w),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(2.w)),
-          border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
-      ),
-      child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height: 17.w,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 7.w,right: 7.w,bottom: 2.w),
+          margin: EdgeInsets.only(top:14.w,bottom: 10.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+              border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
+          ),
+          child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+        ),
+        Padding(padding: EdgeInsets.only(left: 11.w)),
+        Image.asset(R.imagesResultFavor,width: 48.w,height: 17.w,),
+      ],
     );
   }
 
@@ -302,11 +400,16 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
         }
 
-        questionList.add(Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: itemList,
+        questionList.add(Container(
+          margin: EdgeInsets.only(left: 18.w,right: 18.w),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: itemList,
+            ),
           ),
+        ),
         );
       }
     } else {
