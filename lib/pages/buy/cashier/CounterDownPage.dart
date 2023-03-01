@@ -91,19 +91,13 @@ class _CounterDownPageState extends State<CounterDownPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "剩余",
-            style: TextStyle(
-                fontSize: 18.sp,
-                color: Color.fromRGBO(255, 111, 50, 1),
-                fontWeight: FontWeight.bold),
-          ),
-          Text(
             remainTimeStr.length > 0 ? remainTimeStr : "--",
             style: TextStyle(
                 fontSize: 18.sp,
                 color: Color.fromRGBO(255, 111, 50, 1),
                 fontWeight: FontWeight.bold),
           ),
+
         ],
       ),
     );

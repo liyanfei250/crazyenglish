@@ -20,6 +20,13 @@ class OrderSurePage extends BasePage {
 class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
   final logic = Get.put(Order_sureLogic());
   final state = Get.find<Order_sureLogic>().state;
+  List listData = [
+    {
+      "title": "英语周刊 年度订阅",
+      "type": 0,
+    },
+    {"title": "英语周刊 月度订阅", "type": 1},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +49,9 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                 addAdddress(context),
                 showAdddress(context),
                 cartItem(),
-                cartItem(),
                 payInfo(),
                 // 和全选按钮来点距离
-                SizedBox(height: 100.0)
+                //SizedBox(height: 100.0)
               ],
             ),
 
@@ -55,15 +61,9 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 78.0,
-                padding: EdgeInsets.only(left: 9.w),
-                // 顶部线条
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(width: 2.0, color: Colors.black12)),
-                    color: Colors.white),
-
-                // 左全选 右结算
+                height: 56.w,
+                padding: EdgeInsets.only(left: 20.w),
+                color: Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -74,22 +74,31 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                       children: <Widget>[
                         Text("实付金额："),
                         Text("¥ 564",
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 16.sp))
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600))
                       ],
                     ),
                     // 结算
-                    ElevatedButton(
-                      child: Text("立即购买",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.sp)),
-                      // onPressed: doCheckOut,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         RouterUtil.toNamed(AppRoutes.CashierPage);
                       },
+                      child: Container(
+                        width: 130.w,
+                        height: 56.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                          colors: [Color(0xffeb4c4a), Color(0xffee7d7a)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        )),
+                        child: Text("立即购买",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 14.sp)),
+                      ),
                     ),
                   ],
                 ),
@@ -238,10 +247,10 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
           // RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
         },
         child: Container(
-          width: 332.w,
-          height: 92.w,
+          width: double.infinity,
           margin: EdgeInsets.only(top: 11.w, left: 14.w, right: 14.w),
-          padding: EdgeInsets.only(top: 8.w, bottom: 8.w),
+          padding:
+              EdgeInsets.only(top: 8.w, bottom: 8.w, left: 16.w, right: 16.w),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -253,63 +262,18 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
               ],
               borderRadius: BorderRadius.all(Radius.circular(6.w)),
               color: AppColors.c_FFFFFFFF),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 62.w,
-                height: 76.w,
-                margin: EdgeInsets.only(left: 7.w, right: 16.w),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "https://fanyi-cdn.cdn.bcebos.com/static/translation/img/header/logo_e835568.png"),
-                      fit: BoxFit.cover),
-                  borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                    margin: EdgeInsets.only(top: 4.w, bottom: 4.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "英语周刊 年度订阅",
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: AppColors.c_FF101010,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "已选：高考综合",
-                              style: TextStyle(
-                                  color: AppColors.TEXT_GRAY_COLOR,
-                                  fontSize: 12.sp),
-                            ),
-                            Text("￥ 199.00",
-                                style: TextStyle(
-                                    color: AppColors.TEXT_GRAY_COLOR,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700)),
-                          ],
-                        ),
-                      ],
-                    )),
-              )
-            ],
+          child: ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: listData.map((value) {
+              return listitem(value);
+            }).toList(),
           ),
         ),
       );
 
   Widget payInfo() => Container(
-      width: 332.w,
-      height: 92.w,
+      width: double.infinity,
       margin: EdgeInsets.only(top: 11.w, left: 14.w, right: 14.w),
       padding: EdgeInsets.only(top: 8.w, bottom: 8.w, left: 16.w, right: 16.w),
       decoration: BoxDecoration(
@@ -335,6 +299,9 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600),
           ),
+          SizedBox(
+            height: 8.w,
+          ),
           Row(
             children: [
               Expanded(
@@ -342,26 +309,29 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                 "商品金额",
                 maxLines: 1,
                 style: TextStyle(
-                    color: AppColors.c_FF101010,
+                    color: Color(0xff353e4d),
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w500),
               )),
               Text(
                 "￥218.90",
                 maxLines: 1,
                 style: TextStyle(
-                    color: AppColors.c_FF101010,
+                    color: Color(0xff353e4d),
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w500),
               ),
             ],
+          ),
+          SizedBox(
+            height: 12.w,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             Text(
               "合计：",
               maxLines: 1,
               style: TextStyle(
-                  color: AppColors.c_FF101010,
+                  color: Color(0xff353e4d),
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600),
             ),
@@ -369,13 +339,65 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
               "￥218.90",
               maxLines: 1,
               style: TextStyle(
-                  color: Colors.red,
+                  color: Color(0xffeb5447),
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600),
             )
           ])
         ],
       ));
+
+  Widget listitem(value) {
+    return Container(
+        margin: EdgeInsets.only(top: 8.w, bottom: 8.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: Image.asset(
+                  R.imagesShopImageLogoTest,
+                  width: 80.w,
+                  height: 80.w,
+                )),
+            Expanded(
+              child: Container(
+                  height: 80.w,
+                  margin: EdgeInsets.only(left: 14.w, top: 0.w, bottom: 0.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "英语周刊 年度订阅",
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: AppColors.c_FF101010,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "已选：高考综合",
+                            style: TextStyle(
+                                color: AppColors.TEXT_GRAY_COLOR,
+                                fontSize: 12.sp),
+                          ),
+                          Text("￥ 199.00",
+                              style: TextStyle(
+                                  color: AppColors.TEXT_GRAY_COLOR,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700)),
+                        ],
+                      ),
+                    ],
+                  )),
+            )
+          ],
+        ));
+  }
 }
 
 _clickOk() {}

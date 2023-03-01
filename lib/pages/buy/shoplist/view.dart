@@ -64,7 +64,7 @@ class _ToShoppingPageState extends BasePageState<ShoppingListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.symmetric(horizontal: 0.w),
         child: Column(children: [
           Expanded(
             child: SmartRefresher(
@@ -104,6 +104,7 @@ class _ToShoppingPageState extends BasePageState<ShoppingListPage> {
           ),
           Container(
               color: Colors.white,
+              height: 60.w,
               padding: EdgeInsets.only(
                   left: 14.w, right: 14.w, top: 7.w, bottom: 7.w),
               child: Row(
@@ -114,20 +115,23 @@ class _ToShoppingPageState extends BasePageState<ShoppingListPage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Image.asset(
-                    R.imagesIndexMsg,
-                    width: 26.w,
-                    height: 89.w,
+                    R.imagesShopCarNumIcon,
+                    width: 44.w,
+                    height: 44.w,
                   ),
                   Expanded(
                     child: Container(
-                      width: 80.w,
-                      height: 89.w,
                       alignment: Alignment.centerRight,
+                      margin: EdgeInsets.only(right: 6.w),
                       color: Colors.white,
-                      child: Text('¥218.9',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              color: AppColors.THEME_COLOR, fontSize: 22.sp)),
+                      child: Text(
+                        '¥218.9',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Color(0xffeb5447),
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   Center(
@@ -150,7 +154,7 @@ class _ToShoppingPageState extends BasePageState<ShoppingListPage> {
                               child: Center(
                                 child: Text("立即购买",
                                     style: TextStyle(
-                                        fontSize: 12.sp,
+                                        fontSize: 14.sp,
                                         color: AppColors.c_FFFFFFFF),
                                     textAlign: TextAlign.center),
                               ),

@@ -43,7 +43,7 @@ class _ToShoppingPageState extends BasePageState<ToShoppingPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildTitleBar("周报商城"),
-      backgroundColor: AppColors.theme_bg,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           _buildSearchBar(),
@@ -76,42 +76,59 @@ class _ToShoppingPageState extends BasePageState<ToShoppingPage>
 
   Widget _buildSearchBar() => Container(
         margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 7.w),
-        height: 28.w,
-        color: AppColors.theme_bg,
+        padding: EdgeInsets.only(left: 10.w, right: 2.w),
+        alignment: Alignment.center,
+        height: 30.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15.w)),
+          border: Border.all(width: 1.w, color: Colors.red),
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 294.w,
-              height: 28.w,
-              padding: EdgeInsets.only(left: 11.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                color: AppColors.c_FFF0F0F0,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    R.imagesIndexSearch,
-                    fit: BoxFit.cover,
-                    width: 22.w,
-                    height: 22.w,
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 9.w)),
-                  Text(
-                    "搜索周刊/书籍/卡券等",
-                    style: TextStyle(
-                        fontSize: 12.sp, color: AppColors.TEXT_GRAY_COLOR),
-                  )
-                ],
-              ),
-            ),
             Image.asset(
-              R.imagesIndexMsg,
-              width: 26.w,
-              height: 22.w,
-            )
+              R.imagesHomeSearch,
+              width: 17.w,
+              height: 17.w,
+            ),
+            SizedBox(
+              width: 7.w,
+            ),
+            Expanded(
+                child: TextField(
+              cursorColor: Colors.black,
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 12),
+              //controller: getBoyController,
+              autofocus: false,
+              decoration: InputDecoration(
+                  //提示信息
+                  hintText: "搜索周刊/书籍/卡券等",
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 12)),
+              //设置最大行数
+              maxLines: 1,
+            )),
+            Container(
+                width: 50.w,
+                height: 24.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15.w)),
+                    color: AppColors.c_FFFF4D35),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    //_clickOk();
+                  },
+                  child: Center(
+                    child: Text("搜索",
+                        style: TextStyle(
+                            fontSize: 12.sp, color: AppColors.c_FFFFFFFF),
+                        textAlign: TextAlign.center),
+                  ),
+                ))
           ],
         ),
       );
@@ -137,21 +154,6 @@ class _ToShoppingPageState extends BasePageState<ToShoppingPage>
     super.dispose();
   }
 
-  Widget _buildTabBar() => TabBar(
-        onTap: (tab) => print(tab),
-        controller: _tabController,
-        indicatorColor: Colors.transparent,
-        isScrollable: false,
-        labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        indicatorWeight: 3,
-        labelStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-        unselectedLabelStyle:
-            TextStyle(fontSize: 14.sp, color: AppColors.TEXT_BLACK_COLOR),
-        labelColor: AppColors.TEXT_COLOR,
-        tabs: tabs.map((e) => Tab(text: e,icon: Icon(Icons.arrow_drop_down, size: 128.0, color: Colors.black12,),)).toList(),
-      );
-
 // 筛选导航
   Widget _subHeaderWidget() {
     return Positioned(
@@ -172,8 +174,7 @@ class _ToShoppingPageState extends BasePageState<ToShoppingPage>
               child: InkWell(
                 // 按钮支持点击
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        0, 2.0, 0, 2.0),
+                    padding: EdgeInsets.fromLTRB(0, 2.0, 0, 2.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -211,7 +212,6 @@ class _ToShoppingPageState extends BasePageState<ToShoppingPage>
         //this._selectHeaderId = id;
       });
     } else {
-
       // 更改选中颜色
       setState(() {
         // 改变排序方式:id-1在数组中为0
