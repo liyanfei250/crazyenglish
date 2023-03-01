@@ -7,6 +7,8 @@ import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
@@ -199,7 +201,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
               width: 22.w,height: 22.w,),
           ),
         );
-    }else { // 练习样式
+    } else { // 练习样式
       return Container(
         height: 54.w,
         width: double.infinity,
@@ -217,26 +219,24 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
         ),
         margin: EdgeInsets.only(left: 27.w,right: 27.w),
         padding: EdgeInsets.only(left: 24.w,right: 15.w),
-        child: Row(
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            InkWell(
-              onTap: (){
-                _isPlaying ? _pause() : _play();
-              },
-              child: Image.asset(
-                _isPlaying? R.imagesPlayerPractisePause : _isPaused? R.imagesPlayerPractisePlay:R.imagesPlayerPractisePlay,
-                width: 22.w,height: 22.w,),
-            ),
             Expanded(child: Container(
-              margin: EdgeInsets.only(left: 12.w,right: 12.w),
-              child: SliderTheme(
-                data: SliderThemeData(
-                    trackHeight: 1,
+              margin: EdgeInsets.only(left: 12.w,right: 50.w),
+              child: SfSliderTheme(
+                data: SfSliderThemeData(
                     activeTrackColor: AppColors.c_FFFFBC00,
                     inactiveTrackColor: AppColors.c_FFFEDD00,
-                    trackShape: WDCustomTrackShape(addHeight: 0)
+                    thumbColor: AppColors.c_FFFFBC00,
+                    thumbStrokeColor: AppColors.c_FFFFFFFF,
+                    thumbStrokeWidth: 6.w,
+                    thumbRadius:10.w,
+                    tickOffset:Offset.zero
                 ),
-                child: Slider(
+                child: SfSlider(
+
+                  // thumbIcon: Image.asset(R.imagesPlayerPractiseSlide,width: 23.w,height: 23.w,),
                   onChanged: (v) {
                     final duration = _duration;
                     if (duration == null) {
@@ -257,17 +257,32 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
                 ),
               ),
             )),
-            Container(
-              width: 66.w,
-              child: Text(
-                _position != null
-                    ? '$_positionText / $_durationText'
-                    : _duration != null
-                    ? "00:00/"+_durationText
-                    : '',
-                style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
-              ),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: (){
+                    _isPlaying ? _pause() : _play();
+                  },
+                  child: Image.asset(
+                    _isPlaying? R.imagesPlayerPractisePause : _isPaused? R.imagesPlayerPractisePlay:R.imagesPlayerPractisePlay,
+                    width: 22.w,height: 22.w,),
+                ),
+                Container(
+                  width: 70.w,
+                  child: Text(
+                    _position != null
+                        ? '$_positionText/$_durationText'
+                        : _duration != null
+                        ? "00:00/"+_durationText
+                        : '',
+                    style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
+                  ),
+                )
+              ],
+            ),
+
           ],
         ),
       );

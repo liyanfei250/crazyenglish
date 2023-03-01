@@ -69,10 +69,10 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
     });
     logicDetail.addListenerId(GetBuilderIds.weekTestDetailList, () {
       if(stateDetail.weekTestDetailResponse!=null){
-        // RouterUtil.toNamed(
-        //     AppRoutes.AnsweringPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
         RouterUtil.toNamed(
-            AppRoutes.ResultPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
+            AppRoutes.AnsweringPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
+        // RouterUtil.toNamed(
+        //     AppRoutes.ResultPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
       }
     });
     _onRefresh();
