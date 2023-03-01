@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/practise/question_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../entity/week_test_detail_response.dart';
 import '../../../utils/colors.dart';
@@ -15,6 +16,8 @@ import '../answer_interface.dart';
  */
 
 typedef GetEditingControllerCallback = TextEditingController Function(String key);
+typedef GetFocusNodeControllerCallback = FocusNode Function(String key);
+typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
 
 
@@ -54,12 +57,15 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   String tag = "BaseQuestionState_";
 
   Map<String,TextEditingController> gapEditController = {};
+  Map<String,FocusNode> gapFocusNodeController = {};
+  Map<String,String> gapAnswerController = {};
   final PageController pageController = PageController(keepPage: true);
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   List<Widget> questionList = [];
   int currentPage = 0;
+  final selectGapGetxController = Get.put(SelectGapGetxController());
   @override
   void initState(){
     super.initState();
@@ -137,9 +143,14 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         }else if(question.type == 3 ){  // 填空题
           itemList.add(buildQuestionType("填空题"));
           itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+          itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
+          );
         }else if(question.type == 5){
           itemList.add(buildQuestionType("纠错题"));
           itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
+        }else if(question.type == 12){
+          itemList.add(buildQuestionType("选择填空题"));
+          itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
         }
 
         questionList.add(SingleChildScrollView(
@@ -210,6 +221,20 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }
   }
 
+  FocusNode makeFocusNodeController(String key){
+    if(gapFocusNodeController[key] == null){
+      FocusNode focusNode = FocusNode();
+      gapFocusNodeController[key] = focusNode;
+      return focusNode;
+    }else{
+      return gapFocusNodeController[key]!;
+    }
+  }
+
+  String makeGapAnswerController(String key){
+    return "";
+  }
+
   void onCreate();
 
   void onDestroy();
@@ -235,6 +260,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   @override
   void dispose() {
     print(tag + "dispose\n");
+    Get.delete<SelectGapGetxController>();
     onDestroy();
     super.dispose();
   }
@@ -243,5 +269,22 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void didChangeDependencies() {
     print(tag + "didChangeDependencies\n");
     super.didChangeDependencies();
+  }
+
+
+}
+
+class SelectGapGetxController extends GetxController{
+  var hasFocusMap = {}.obs;
+  var contentMap = {}.obs;
+
+  updateFocus(String key,bool hasFocus){
+    hasFocusMap.value.addIf(true, key, hasFocus);
+    update([key]);
+  }
+
+  updateContent(String key,String contentTxt){
+    contentMap.value.addIf(true, key, contentTxt);
+    update([key]);
   }
 }

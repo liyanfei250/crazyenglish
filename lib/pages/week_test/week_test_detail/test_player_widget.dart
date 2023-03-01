@@ -201,7 +201,7 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
               width: 22.w,height: 22.w,),
           ),
         );
-    }else { // 练习样式
+    } else { // 练习样式
       return Container(
         height: 54.w,
         width: double.infinity,
