@@ -86,6 +86,7 @@ class _CounterDownPageState extends State<CounterDownPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> timeStar = remainTimeStr.split('');
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -97,9 +98,12 @@ class _CounterDownPageState extends State<CounterDownPage> {
                 color: Color.fromRGBO(255, 111, 50, 1),
                 fontWeight: FontWeight.bold),
           ),
-
         ],
       ),
     );
+  }
+
+  Widget listitem(value) {
+    return Container();
   }
 }

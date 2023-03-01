@@ -24,13 +24,16 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
   final state = Get.find<Set_psdLogic>().state;
   late bool isPhoneLog;
   late bool isShowPsd;
+  var phoneCodeStr = "".obs;
   TextEditingController? _phoneController;
+  var map = new Map();
 
   @override
   void initState() {
     super.initState();
     isPhoneLog = false;
     isShowPsd = false;
+    _phoneController = TextEditingController();
   }
 
   @override
@@ -98,7 +101,20 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
-              RouterUtil.toNamed(AppRoutes.AuthCodePage);
+              if (_phoneController!.text.isEmpty) {
+                Util.toast("请输入手机号");
+                return;
+              }
+              if (phoneCodeStr.value.isEmpty) {
+                Util.toast("请输入新密码");
+                return;
+              }
+              //logic.mobileLogin(phoneStr.value, phoneAuthStr.value)
+              var date = {
+                'phone': _phoneController!.text,
+                'code': phoneCodeStr.value
+              };
+              RouterUtil.toNamed(AppRoutes.AuthCodePage, arguments: date);
             },
             child: Container(
               height: 47.w,
@@ -155,7 +171,7 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
     return Container(
         width: double.infinity,
         height: 47.w,
-        margin: EdgeInsets.only(top: 18.w,bottom: 50.w),
+        margin: EdgeInsets.only(top: 18.w, bottom: 50.w),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8.w)),
             color: AppColors.c_4DD9D9D9),
@@ -168,9 +184,9 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
               obscureText: isShowPsd,
               style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              /*  onChanged: (String str) {
+              onChanged: (String str) {
                 phoneCodeStr.value = str;
-              },*/
+              },
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: '请输入密码',

@@ -38,6 +38,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   var _isHavePhoneNum = false.obs;
   var _isHaveVerifyCode = false.obs;
   TextEditingController? _phoneController;
+  TextEditingController? _psdControl;
   TextEditingController? _verifyCodeController;
 
   TextEditingController? _pawdController;
@@ -71,6 +72,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   var isUserLoginEnable = false.obs;
   var phoneStr = "".obs;
   var phoneCodeStr = "".obs;
+  var phoneAuthStr = "".obs;
   var wechatIsInstalled = true.obs;
   var qqIsInstalled = true.obs;
   late bool isPhoneLog;
@@ -84,6 +86,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     isPhoneLog = false;
     isShowPsd = false;
     _phoneController = TextEditingController();
+    _psdControl = TextEditingController();
     _verifyCodeController = TextEditingController();
 
     // Future.delayed(Duration(milliseconds: 400),quickLogin());
@@ -112,7 +115,18 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
-      if ((state.loginResponse.data!.accessToken ?? "").isNotEmpty) {
+      if ((state.loginResponseTwo.data ?? "").isNotEmpty) {
+        Util.toast("登录成功");
+        SpUtil.putBool(BaseConstant.ISLOGING, true);
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponseTwo.data);
+        Util.getHeader();
+        RouterUtil.offAndToNamed(AppRoutes.HOME);
+      } else {
+        Util.toast("登录失败");
+      }
+    });
+    logic.addListenerId(GetBuilderIds.passwordLogin, () {
+      if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(
@@ -335,7 +349,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   onChanged: (String str) {
-                                    phoneCodeStr.value = str;
+                                    phoneAuthStr.value = str;
                                   },
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
@@ -407,8 +421,28 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
-              logic.mobileLogin(phoneStr.value, phoneCodeStr.value);
-              RouterUtil.toNamed(AppRoutes.RolePage);
+              if (isPhoneLog) {
+                if (_phoneController!.text.isEmpty) {
+                  Util.toast("请输入手机号");
+                  return;
+                }
+                if (phoneAuthStr.value.isEmpty) {
+                  Util.toast("请输入验证码");
+                  return;
+                }
+              } else {
+                if (_phoneController!.text.isEmpty) {
+                  Util.toast("请输入用户名/手机号/邮箱");
+                  return;
+                }
+                if (_psdControl!.text.isEmpty) {
+                  Util.toast("请输入密码");
+                  return;
+                }
+              }
+              isPhoneLog
+                  ? logic.mobileLogin(phoneStr.value, phoneAuthStr.value)
+                  : logic.passwordLogin(phoneStr.value, phoneCodeStr.value);
             },
             child: Container(
               height: 47.w,
@@ -442,12 +476,13 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             Expanded(
                 child: TextField(
               keyboardType: TextInputType.number,
+              controller: _psdControl,
               obscureText: isShowPsd,
               style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              /*  onChanged: (String str) {
+              onChanged: (String str) {
                 phoneCodeStr.value = str;
-              },*/
+              },
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: '请输入密码',
@@ -492,8 +527,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             child: TextField(
               keyboardType: TextInputType.phone,
               controller: _phoneController,
-              style: TextStyle(fontSize: 18, color: Color(0xff32374e)),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
+              //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: (String str) {
                 phoneStr.value = str;
                 if (phoneStr.value.isNotEmpty) {
@@ -574,10 +609,10 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
 
     if (appleCredential.userIdentifier != null &&
         appleCredential.identityToken != null) {
-      logic.appleLogin({
+      /*logic.appleLogin({
         "userIdentifier": appleCredential.userIdentifier!,
         "identityToken": appleCredential.identityToken!
-      });
+      });*/
     }
   }
 

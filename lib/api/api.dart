@@ -5,6 +5,8 @@ class Api {
 
   static String getUser = Config.ApiHost +"/user.site";
   static String getLogin = Config.ApiHost +"/crazy-basic-auth/oauth/token";
+  static String getPsdLoginNew ="http://192.168.0.155/app/user/login";
+  static String getLoginNew ="http://192.168.0.155/app/user/login/sms";
   static String getSendCode = Config.ApiHost +"/crazy-basic-core/sms/";
 
   static String getWeekPaperList = Config.ApiHost +"/crazy-weekly/periodical/app/page";
