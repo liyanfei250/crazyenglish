@@ -246,6 +246,10 @@ class QuestionFactory{
               child: GetBuilder<SelectGapGetxController>(
                 id:key,
                 builder: (_){
+                  if(_.nextFocus){
+                    _.resetNextFocus();
+                    _scopeNode.nextFocus();
+                  }
                   return Container(
                     width: 70.w,
                     height: 17.w,
@@ -268,7 +272,7 @@ class QuestionFactory{
                             width: double.infinity,
                             height: 13.w,
                             child: Center(
-                              child: Text("${key}"),
+                              child: Text((_.contentMap.value[key]??"").isEmpty? "${key}":_.contentMap.value[key]??""),
                             ),
                           ),
                           Container(
@@ -354,31 +358,49 @@ class QuestionFactory{
 
   static Widget buildSelectAnswerQuestion(List<String> answers){
     return Wrap(
-      children: answers.map((e) => _colorAnswerItem(e)).toList(),
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
     );
   }
 
-  static Widget _colorAnswerItem(String answer) {
-    return GestureDetector(
-      onTap: () {
+  static Widget _colorAnswerItem(int key,String answer) {
+    return GetBuilder<SelectGapGetxController>(
+      id: "answer:${key}",
+      builder: (_){
+        return GestureDetector(
+          onTap: () {
+            String gapIndex = "";
+            _.hasFocusMap.value.forEach((key, value) {
+              if(value){
+                gapIndex = key;
+              }
+            });
+            if((_.answerIndexToGapIndexMap.value["answer:${key}"]??"").isEmpty){
+              _.updateIndex("answer:${key}", gapIndex);
+              _.updateContent(gapIndex, answer);
+            }else{
+              _.updateIndex("answer:${key}", "");
+              _.updateContent(gapIndex, "");
+            }
+          },
+          child: Container(
+            height: 22.w,
+            padding: EdgeInsets.only(left: 13.w,right: 13.w),
+            margin: EdgeInsets.only(right: 11.w,bottom: 10.w),
+            decoration: BoxDecoration(
+              color: (_.answerIndexToGapIndexMap.value["answer:${key}"]??"").isNotEmpty ? AppColors.c_FFD2D5DC : AppColors.c_FFF5F7FB,
+              border: Border.all(color: AppColors.c_FFD2D5DC,width: 1.w),
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+            ),
+            child: Text(
+              answer,
+              style: TextStyle(
+                  color: AppColors.c_FF353E4D,
+                  fontSize: 14.sp,
+                  decoration: TextDecoration.none),
+            ),
+          ),
+        );
       },
-      child: Container(
-        height: 22.w,
-        padding: EdgeInsets.only(left: 13.w,right: 13.w),
-        margin: EdgeInsets.only(right: 11.w,bottom: 10.w),
-        decoration: BoxDecoration(
-          color: AppColors.c_FFF5F7FB,
-          border: Border.all(color: AppColors.c_FFD2D5DC,width: 1.w),
-          borderRadius: BorderRadius.all(Radius.circular(4.w)),
-        ),
-        child: Text(
-          answer,
-          style: TextStyle(
-              color: AppColors.c_FF353E4D,
-              fontSize: 14.sp,
-              decoration: TextDecoration.none),
-        ),
-      ),
     );
   }
 

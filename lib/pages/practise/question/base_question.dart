@@ -282,8 +282,22 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 }
 
 class SelectGapGetxController extends GetxController{
+  // 答案 列表
+  List<String> indexContentList = [];
+
+  // 填空的 焦点 key-bool
   var hasFocusMap = {}.obs;
+  // 填空的内容
   var contentMap = {}.obs;
+  // 答案索引-填空索引
+  var answerIndexToGapIndexMap = {}.obs;
+
+  bool nextFocus = false;
+
+  initContent(List<String> list){
+    indexContentList.clear();
+    indexContentList.addAll(list);
+  }
 
   updateFocus(String key,bool hasFocus){
     if(hasFocus){
@@ -299,11 +313,24 @@ class SelectGapGetxController extends GetxController{
       hasFocusMap.value.addIf(true, key, hasFocus);
       update([key]);
     }
-
   }
 
   updateContent(String key,String contentTxt){
     contentMap.value.addIf(true, key, contentTxt);
+    if(contentTxt.isNotEmpty){
+      nextFocus = true;
+    }else{
+      nextFocus = false;
+    }
     update([key]);
+  }
+
+  resetNextFocus(){
+    nextFocus = false;
+  }
+
+  updateIndex(String answerIndex,String gapIndex){
+    answerIndexToGapIndexMap.value.addIf(true, answerIndex, gapIndex);
+    update([answerIndex]);
   }
 }
