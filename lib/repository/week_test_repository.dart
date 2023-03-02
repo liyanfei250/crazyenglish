@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import '../api/api.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
+import '../entity/user_info_response.dart';
 import '../net/net_manager.dart';
 
 /**
@@ -81,6 +82,25 @@ class WeekTestRepository{
     } else {
       return Future.error("返回CheckUpdateResp为空");
     }
+  }
+
+  //获取用户信息
+  Future<UserInfoResponse> getUserInfo() async {
+    BaseResp baseResp =
+    await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.msg!);
+    }
+
+    UserInfoResponse sendCodeResponse =
+    UserInfoResponse.fromJson(baseResp.getReturnData());
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回SendCodeResponse为空");
+    }
+
+
   }
 
 

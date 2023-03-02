@@ -21,6 +21,7 @@ import '../pages/buy/shoplist/view.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/practise/result/result_view.dart';
+import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
@@ -58,6 +59,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.CashierPage, page:()=>CashierPage(),),
     GetPage(name: AppRoutes.OrderDetailPage, page:()=>OrderDetailPage(),),
     GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
+    GetPage(name: AppRoutes.SettingPage, page:()=>SettingPage(),),
     GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
     GetPage(name: AppRoutes.ResultPage, page:()=>ResultPage(),),

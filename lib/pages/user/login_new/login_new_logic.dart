@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 
+import '../../../entity/SendCodeResponseNew.dart';
 import '../../../entity/login/LoginCodeResponse.dart';
 import '../../../entity/login/LoginNewResponse.dart';
 import '../../../entity/login_response.dart';
 import '../../../entity/send_code_response.dart';
+import '../../../entity/user_info_response.dart';
 import '../../../repository/user_repository.dart';
 import '../../../routes/getx_ids.dart';
 import 'login_new_state.dart';
@@ -39,8 +41,16 @@ class Login_newLogic extends GetxController {
   }
 
   void sendCode(String phone) async {
-    SendCodeResponse sendCodeResponse = await userRepository.sendCode(phone);
+    SendCodeResponseNew sendCodeResponse =
+        await userRepository.sendCodeNew({"mobile": phone});
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
+  }
+
+  void getUserinfo() async {
+    UserInfoResponse sendCodeResponse =
+        await userRepository.getUserInfo();
+    state.infoResponse = sendCodeResponse;
+    update([GetBuilderIds.getUserInfo]);
   }
 }

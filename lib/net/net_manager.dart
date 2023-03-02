@@ -32,7 +32,8 @@ class ResponseCode {
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
-  static const int status_token_invalid = 40003; //token失效
+  static const int status_token_invalid = 40003; //token失效，张勇接口
+  static const int status_token_invalid_new = 401; //token失效，胡接口
 }
 
 class NetManager {
@@ -61,7 +62,6 @@ class NetManager {
     return _instance;
   }
 
-
   /// 打开debug模式.
   static void openDebug() {
     _isDebug = true;
@@ -81,7 +81,7 @@ class NetManager {
     //     onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
     //   ),
     // );
-    if(!(Platform.isAndroid || Platform.isIOS)){
+    if (!(Platform.isAndroid || Platform.isIOS)) {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (client) {
         // client.findProxy = (uri) {
@@ -101,7 +101,6 @@ class NetManager {
         };
       };
     }
-
   }
 
   static BaseOptions getDefOptions() {
@@ -123,7 +122,8 @@ class NetManager {
     if (options == null) {
       options = new Options(method: method);
     }
-    options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
+    options.contentType =
+        ContentType.parse("application/x-www-form-urlencoded").toString();
     return options;
   }
 
@@ -146,19 +146,17 @@ class NetManager {
     }
     Response response;
     try {
-      if(method == Method.get){
+      if (method == Method.get) {
         response = await _dio.get(path,
-            queryParameters: data,
-            cancelToken: cancelToken);
-      }else{
+            queryParameters: data, cancelToken: cancelToken);
+      } else {
         response = await _dio.request(path,
             data: data,
             options: _checkOptions(method, options),
             cancelToken: cancelToken);
       }
-
     } catch (e) {
-      if (e is DioError && e.response!=null) {
+      if (e is DioError && e.response != null) {
         response = e!.response!;
         // Util.toastLong("网络异常 type:" +
         //     e.type.toString() +
@@ -178,7 +176,7 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        BaseResp baseResp =  BaseResp.fromJson(response.data);
+        BaseResp baseResp = BaseResp.fromJson(response.data);
         baseResp.setReturnData(response.data);
         return baseResp;
         // }
@@ -187,16 +185,19 @@ class NetManager {
         return new Future.error(new DioError(
           response: response,
           error: "data parsing exception...",
-          type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
+          type: DioErrorType.response,
+          requestOptions: RequestOptions(path: ''),
         ));
       }
-    } else if(response.statusCode == HttpStatus.unauthorized || (response.data!=null
-        && response.data['code']!=null
-        && response.data['code'] == ResponseCode.status_token_invalid)){
-      Util.toastLong("登录信息已失效，请重新登录");
-      SpUtil.putString(BaseConstant.loginTOKEN,"");
+    } else if (response.statusCode == HttpStatus.unauthorized ||
+        (response.data != null &&
+            response.data['code'] != null &&
+            //response.data['code'] == ResponseCode.status_token_invalid &&
+            response.data['code'] == ResponseCode.status_token_invalid_new)) {
+      /*Util.toastLong("登录信息已失效，请重新登录");
+      SpUtil.putString(BaseConstant.loginTOKEN, "");
       Util.getHeader();
-      RouterUtil.offAndToNamed(AppRoutes.LOGIN);
+      RouterUtil.offAndToNamed(AppRoutes.LOGIN);*/
     } else {
       // Util.toast("网络异常 httpCode" +
       //     response.statusCode.toString() +
@@ -207,10 +208,10 @@ class NetManager {
     return new Future.error(new DioError(
       response: response,
       error: "statusCode: $response.statusCode, service error",
-      type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
+      type: DioErrorType.response,
+      requestOptions: RequestOptions(path: ''),
     ));
   }
-
 
   //上传文件
   Future<BaseResp> uploadFile<T>(
@@ -220,7 +221,11 @@ class NetManager {
     //第一步组装上传图片所需url
     String sid = SpUtil.getString(BaseConstant.Sid);
     String appId = Config.appId;
-    data.addAll({"shaCode": hash, "app_id": appId, "sid": sid,});
+    data.addAll({
+      "shaCode": hash,
+      "app_id": appId,
+      "sid": sid,
+    });
     data.remove("sign");
     String sign = GetSign.getSign(data);
     MultipartFile multipartFile =
@@ -252,7 +257,6 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-
         return BaseResp.fromJson(json);
       } catch (e) {
         // Util.toast("网络异常 httpCode" +
@@ -261,11 +265,10 @@ class NetManager {
         //     response.statusMessage);
         Util.toast("网络异常");
         return new Future.error(new DioError(
-          response: response,
-          error: "data parsing exception...",
-          type: DioErrorType.response,
-            requestOptions: RequestOptions(path: '')
-        ));
+            response: response,
+            error: "data parsing exception...",
+            type: DioErrorType.response,
+            requestOptions: RequestOptions(path: '')));
       }
     } else {
       // Util.toast("网络异常 httpCode" +
@@ -276,11 +279,10 @@ class NetManager {
     }
 
     return new Future.error(new DioError(
-      response: response,
-      error: "statusCode: $response.statusCode, service error",
-      type: DioErrorType.response,
-        requestOptions: RequestOptions(path: '')
-    ));
+        response: response,
+        error: "statusCode: $response.statusCode, service error",
+        type: DioErrorType.response,
+        requestOptions: RequestOptions(path: '')));
   }
 
   //上传图片
@@ -309,19 +311,23 @@ class NetManager {
     String forthLine = lineEnd;
 
     Uint8List bytes;
-    ImageProperties properties = await FlutterNativeImage.getImageProperties(image.path);
-    if(properties.width!>500 && properties.height!>500){
-      var originX = (properties.width!-500)/2;
-      var originY = (properties.height!-500)/2;
-      File croppedFile = await FlutterNativeImage.cropImage(image.path, originX.toInt(), originY.toInt(), 500, 500);
-      File compressedFile = await FlutterNativeImage.compressImage(croppedFile.path,
-          quality: 50, percentage: 50);
+    ImageProperties properties =
+        await FlutterNativeImage.getImageProperties(image.path);
+    if (properties.width! > 500 && properties.height! > 500) {
+      var originX = (properties.width! - 500) / 2;
+      var originY = (properties.height! - 500) / 2;
+      File croppedFile = await FlutterNativeImage.cropImage(
+          image.path, originX.toInt(), originY.toInt(), 500, 500);
+      File compressedFile = await FlutterNativeImage.compressImage(
+          croppedFile.path,
+          quality: 50,
+          percentage: 50);
       bytes = await File(compressedFile.path).readAsBytesSync();
-    }else{
+    } else {
       bytes = await File(image.path).readAsBytesSync();
     }
 
-    if (bytes==null){
+    if (bytes == null) {
       return BaseResp(-1, "操作失败");
     }
 
@@ -332,8 +338,6 @@ class NetManager {
 
     // File compressedFile = await FlutterNativeImage.compressImage(file.path,
     //     quality: quality, percentage: percentage);
-
-
 
     String sixthLine = lineEnd;
     String seventhLine = twoHyphens + BOUNDARY + twoHyphens + lineEnd;
@@ -419,7 +423,7 @@ class NetManager {
               : response.data[_codeKey];
           _msg = response.data[_msgKey];
           _data = response.data[_dataKey];
-        } else if(response.data is String){
+        } else if (response.data is String) {
           _code = (response.data[_codeKey] is String)
               ? int.tryParse(response.data[_codeKey])
               : response.data[_codeKey];
@@ -436,19 +440,17 @@ class NetManager {
         return new BaseRespR(_status, _code, _msg, _data, response);
       } catch (e) {
         return new Future.error(new DioError(
-          response: response,
-          error: "data parsing exception...",
-          type: DioErrorType.response,
-            requestOptions: RequestOptions(path: '')
-        ));
+            response: response,
+            error: "data parsing exception...",
+            type: DioErrorType.response,
+            requestOptions: RequestOptions(path: '')));
       }
     }
     return new Future.error(new DioError(
-      response: response,
-      error: "statusCode: $response.statusCode, service error",
-      type: DioErrorType.response,
-        requestOptions: RequestOptions(path: '')
-    ));
+        response: response,
+        error: "statusCode: $response.statusCode, service error",
+        type: DioErrorType.response,
+        requestOptions: RequestOptions(path: '')));
   }
 
   /// decode response data.
@@ -473,6 +475,7 @@ class NetManager {
           "\n[request   ]:   " +
           _getOptionsStr(response.requestOptions));
       _printDataStr("reqdata ", response.requestOptions.data);
+      _printDataStr("reqdata HEADER ", response.requestOptions.headers['Authorization']);
       _printDataStr("response", response.data);
     } catch (ex) {
       print("Http Log" + " error......");
@@ -502,7 +505,6 @@ class NetManager {
       }
     }
   }
-
 
   get(String url, Function callBack) async {
     int? code;

@@ -72,6 +72,12 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     Util.initWhenEnterMain();
+    appUpdatePanelLogic.getAppUserInfo();
+    appUpdatePanelLogic.addListenerId(GetBuilderIds.getUserInfo, () {
+      if(appUpdatePanelState.infoResponse!=null){
+        // todo
+      }
+    });
     appUpdatePanelLogic.getAppVersion();
     appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
       if(appUpdatePanelState.checkUpdateResp!=null){

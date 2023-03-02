@@ -11,6 +11,9 @@ class GetBuilderIds {
   static const String mobileLogin = "mobileLogin";
   static const String passwordLogin = "passwordLogin";
   static const String sendCode = "sendCode";
+  static const String resetPassword = "resetPassword";
+  static const String choiceRole = "ChoiceRole";
+  static const String getUserInfo = "getUserInfo";
   static const String weekList = "weekList";
   static const String paperCategory = "paperCategory";
   static const String paperDetail = "paperDetail";

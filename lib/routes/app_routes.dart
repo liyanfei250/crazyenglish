@@ -22,6 +22,7 @@ abstract class AppRoutes{
   static const CashierPage = '/CashierPage';
   static const OrderDetailPage = '/OrderDetailPage';
   static const MyOrderPage = '/MyOrderPage';
+  static const SettingPage = '/SettingPage';
   static const WritingPage = '/WritingPage';
   static const AnsweringPage = '/AnsweringPage';
   static const ResultPage = '/ResultPage';

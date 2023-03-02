@@ -120,7 +120,15 @@ class _MinePageState extends BasePageState<MinePage> {
     );
   }
 
-  void onClickPosition(int position) {}
+  void onClickPosition(int position) {
+    switch (position) {
+      case 4:
+        RouterUtil.toNamed(AppRoutes.SettingPage);
+        break;
+      default:
+        break;
+    }
+  }
 
   Widget buildItem(String menu, Image icon, int position) {
     return Container(

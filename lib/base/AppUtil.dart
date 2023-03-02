@@ -32,16 +32,17 @@ class Util {
     return null;
   }
 
-
   static String parseHtmlString(String? htmlString) {
     var document = parse(htmlString);
     return document.body!.text;
   }
 
-  static Future<CroppedFile?> crop(String filePath,bool is4x1Picture) async{
+  static Future<CroppedFile?> crop(String filePath, bool is4x1Picture) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: filePath,
-      aspectRatio:is4x1Picture?CropAspectRatio(ratioX: 360.w,ratioY:90.w):CropAspectRatio(ratioX: 360.w,ratioY:360.w),
+      aspectRatio: is4x1Picture
+          ? CropAspectRatio(ratioX: 360.w, ratioY: 90.w)
+          : CropAspectRatio(ratioX: 360.w, ratioY: 360.w),
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: '图片裁剪',
@@ -73,64 +74,65 @@ class Util {
     // registerUmeng();
   }
 
-  static Widget buildBackWidget(BuildContext context){
-    return
-    GestureDetector(
+  static Widget buildBackWidget(BuildContext context) {
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
+      onTap: () {
         Get.back();
       },
-      child:
-      Center(
-          child: Container(
-            width: Util.setWidth(20) as double?,
-            height: Util.setWidth(20) as double?,
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(left: Util.setWidth(13) as double),
-            child: Image.asset(
-              R.imagesIconBackBlack,fit: BoxFit.fill,),
+      child: Center(
+        child: Container(
+          width: Util.setWidth(20) as double?,
+          height: Util.setWidth(20) as double?,
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(left: Util.setWidth(13) as double),
+          child: Image.asset(
+            R.imagesIconBackBlack,
+            fit: BoxFit.fill,
           ),
+        ),
       ),
     );
   }
 
-  static Widget buildCloseWidget(BuildContext context){
-    return
-      GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
+  static Widget buildCloseWidget(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Get.back();
+      },
+      child: Center(
+        child: Image.asset(
+          R.imagesIconClose,
+          width: Util.setWidth(40) as double?,
+          height: Util.setWidth(40) as double?,
+        ),
+      ),
+    );
+  }
+
+  static Widget buildBlackBackWidget(BuildContext context,
+      {Function()? onBackTap}) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (onBackTap != null) {
+          onBackTap.call();
+        } else {
           Get.back();
-        },
-        child:
-        Center(
-          child: Image.asset(
-            R.imagesIconClose,
-            width: Util.setWidth(40) as double?,height: Util.setWidth(40) as double?,),
+        }
+      },
+      child: Center(
+        child: Image.asset(
+          R.imagesIconBackBlue,
+          width: Util.setWidth(45) as double?,
+          height: Util.setWidth(45) as double?,
         ),
-      );
+      ),
+    );
   }
 
-  static Widget buildBlackBackWidget(BuildContext context,{Function()? onBackTap}){
-    return
-      GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          if(onBackTap!=null){
-            onBackTap.call();
-          }else{
-            Get.back();
-          }
-        },
-        child:
-        Center(
-          child: Image.asset(
-            R.imagesIconBackBlue,
-            width: Util.setWidth(45) as double?,height: Util.setWidth(45) as double?,),
-        ),
-      );
-  }
-
-  static num buildBackWidgetWidth(){
+  static num buildBackWidgetWidth() {
     return Util.setWidth(27.5);
   }
 
@@ -142,15 +144,15 @@ class Util {
     return ScreenUtil().setSp(sp);
   }
 
-  static String formatNum(int num){
-    if(num<0){
+  static String formatNum(int num) {
+    if (num < 0) {
       return "";
-    }else if(num<10000){
+    } else if (num < 10000) {
       return num.toString();
-    }else if(num<1000000){
-      return formartFloatNum(num/10000,1)+"w";
-    }else {
-      return (num/10000).toString()+"w";
+    } else if (num < 1000000) {
+      return formartFloatNum(num / 10000, 1) + "w";
+    } else {
+      return (num / 10000).toString() + "w";
     }
   }
 
@@ -159,7 +161,8 @@ class Util {
    * postion 要保留的位数
    * isCrop  true 直接裁剪 false 四舍五入
    */
-  static String formartFloatNum(num target, int postion, {bool isCrop = false}) {
+  static String formartFloatNum(num target, int postion,
+      {bool isCrop = false}) {
     String t = target.toString();
     // 如果要保留的长度小于等于0 直接返回当前字符串
     if (postion < 0) {
@@ -185,7 +188,7 @@ class Util {
       }
     } else {
       // 不含小数的部分补点和相应的0
-      String t3 =  postion>0?".":"";
+      String t3 = postion > 0 ? "." : "";
 
       for (int i = 0; i < postion; i++) {
         t3 += "0";
@@ -194,45 +197,69 @@ class Util {
     }
   }
 
-  static Future<Map<String,String>> getHeaderParams() async {
+  /*static Future<Map<String, String>> getHeaderParams() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var appname = "crazyenglish";
-    Map<String,String> params =  {
+    Map<String, String> params = {
       "Appname": appname,
       "Screensize": "1080*1920",
-      "Platform": Platform.isAndroid? "android_phone_10":Platform.isIOS? "ios_phone_10":"android_phone_10",
-      "vcode": packageInfo.buildNumber,
+      "Platform": Platform.isAndroid
+          ? "android_phone_10"
+          : Platform.isIOS
+              ? "ios_phone_10"
+              : "android_phone_10",
+      // "vcode": packageInfo.buildNumber,
       "Pversion": Config.versionName,
       "appId": Config.appId,
       "Version": Config.versionName,
       "Channel": "flutter",
       "Vendor": appname,
-      "Imei":"223232323",
+      "Imei": "223232323",
     };
-    if(SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty){
-      params["Authorization"] = "Bearer "+SpUtil.getString(BaseConstant.loginTOKEN);
+    if (SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty) {
+      //params["Authorization"] = "Bearer "+SpUtil.getString(BaseConstant.loginTOKEN);
+      params["Authorization"] = SpUtil.getString(BaseConstant.loginTOKEN);
+    }
+    return params;
+  }*/
+  static Map<String, String> getHeaderParams()  {
+    var appname = "crazyenglish";
+    Map<String, String> params = {
+      "Appname": appname,
+      "Screensize": "1080*1920",
+      "Platform": Platform.isAndroid
+          ? "android_phone_10"
+          : Platform.isIOS
+              ? "ios_phone_10"
+              : "android_phone_10",
+      "Pversion": Config.versionName,
+      "appId": Config.appId,
+      "Version": Config.versionName,
+      "Channel": "flutter",
+      "Vendor": appname,
+      "Imei": "223232323",
+    };
+    if (SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty) {
+      params["Authorization"] = SpUtil.getString(BaseConstant.loginTOKEN);
     }
     return params;
   }
 
   static getHeader() {
     try {
-      getHeaderParams().then((value){
-        NetManager.getInstance()!.setHeaders(value);
-      });
+      NetManager.getInstance()!.setHeaders(getHeaderParams());
     } catch (exception) {
       Util.toast(exception.toString());
     }
   }
 
   static toast(String message) {
-    BotToast.showText(text:message);
+    BotToast.showText(text: message);
   }
 
   static toastLong(String message) {
-    BotToast.showText(text:message);
+    BotToast.showText(text: message);
   }
-
 
   static hidePhone(String phone) {
     if (phone.isEmpty) {
@@ -246,12 +273,28 @@ class Util {
     // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
   }
 
-  static bool isDesktop(){
+  static bool isChoiceRole() {
+    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE);
+    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
+  }
+
+  static bool isChoiceRoleGrade() {
+    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_GRADE);
+    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
+  }
+
+  static bool isChoiceRoleStudent() {
+    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT);
+    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
+  }
+
+  static bool isDesktop() {
     return Platform.isMacOS || Platform.isWindows || Platform.isLinux;
   }
 
   static bool isLoginCheckYK() {
-    return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid)) && SpUtil.getObject(BaseConstant.loginUser)!=null;
+    return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid)) &&
+        SpUtil.getObject(BaseConstant.loginUser) != null;
   }
 
   static int getLoadStatus(bool hasError, List data) {
@@ -276,5 +319,11 @@ class Util {
   static FlutterErrorDetails makeDetails(Object error, StackTrace stackTrace) {
     // 构建错误信息
     return FlutterErrorDetails(stack: stackTrace, exception: error);
+  }
+
+  static bool isLoginPassword(String input) {
+    RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,20}$");
+    // RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+    return mobile.hasMatch(input);
   }
 }

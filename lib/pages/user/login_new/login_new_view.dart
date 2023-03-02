@@ -9,6 +9,8 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../entity/login/login_util.dart';
+import '../../../entity/user_info_response.dart';
+import '../../../entity/user_info_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -120,7 +122,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponseTwo.data);
         Util.getHeader();
-        RouterUtil.offAndToNamed(AppRoutes.HOME);
+        logic.getUserinfo();
+        //直接去首页
+        // RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {
         Util.toast("登录失败");
       }
@@ -132,12 +136,44 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putString(
             BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         Util.getHeader();
-        RouterUtil.offAndToNamed(AppRoutes.HOME);
+        logic.getUserinfo();
       } else {
         Util.toast("登录失败");
       }
     });
     // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
+
+    logic.addListenerId(GetBuilderIds.getUserInfo, () {
+      //判断有没有选择身份
+      if (state.infoResponse.code == 1) {
+        if (state.infoResponse.data?.identity == 2 ||
+            state.infoResponse.data?.identity == 3) {
+          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
+        } else {
+          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, false);
+        }
+
+        if (state.infoResponse.data?.identity == 3 &&
+            state.infoResponse.data?.grade == 0) {
+          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
+        }
+      }
+      if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
+        //没选角色
+        RouterUtil.offAndToNamed(AppRoutes.RolePage);
+      } else {
+        if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
+          ////是学生且没选年级
+          //如果没选年级就去选年级
+          RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
+              arguments: {'identity': 3});
+          //选了去首页
+        } else {
+          //直接去首页
+          RouterUtil.offAndToNamed(AppRoutes.HOME);
+        }
+      }
+    });
   }
 
   void isThirdInstalled() async {

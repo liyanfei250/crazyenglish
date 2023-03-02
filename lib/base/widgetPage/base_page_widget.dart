@@ -35,6 +35,9 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   String curPage = "";
   String tag = "BasePageState_";
   bool isLogin = Util.isLogin();
+  bool isChoiceRole = Util.isChoiceRole();
+  bool isChoiceRoleGrade = Util.isChoiceRoleGrade();
+  bool isChoiceRoleStudent = Util.isChoiceRoleStudent();
   CancelFunc? _cancelLoading;
   @override
   void initState(){

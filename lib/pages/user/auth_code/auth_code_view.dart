@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import 'auth_code_logic.dart';
 
@@ -27,8 +31,7 @@ class AuthCodePage extends BasePage {
 class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
   final logic = Get.put(Auth_codeLogic());
   final state = Get.find<Auth_codeLogic>().state;
-
-  get data => null;
+  late TextEditingController _phoneController;
 
   ///收起键盘
   hideKeyBoard() {
@@ -36,6 +39,34 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
       FocusManager.instance.primaryFocus?.unfocus();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController = TextEditingController();
+    _startTimer(6);
+    logic.addListenerId(GetBuilderIds.resetPassword, () {
+      Util.toast("修改成功");
+      hideLoading();
+      RouterUtil.offAndToNamed(AppRoutes.LoginNew);
+    });
+
+    _phoneController.addListener(() {
+      if (_phoneController.text.length >= 4) {
+        logic.sendResetPsd(widget.phone.toString(), _phoneController.text,
+            widget.code.toString());
+      }
+    });
+
+    logic.addListenerId(GetBuilderIds.sendCode, () {
+      // Util.toast(state.sendCodeResponse.data??"");
+      if(state.sendCodeResponse.code==1){
+        _startTimer(6);
+      }
+
+      hideLoading();
+    });
   }
 
   @override
@@ -50,28 +81,33 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              // '请输入验证码',
-              widget.phone.toString(),
+              '请输入验证码',
+              //widget.phone.toString(),
               style: TextStyle(fontSize: 16, color: Color(0xff353e4d)),
             ),
             Row(
               children: [
                 Expanded(
                     child: Text(
-                  '已发送至178****7851',
+                  '已发送至${widget.phone.toString().replaceRange(3, 7, '****')}',
                   style: TextStyle(fontSize: 14, color: Color(0xff898a93)),
                 )),
                 InkWell(
                   onTap: () {
                     hideKeyBoard();
-                    _startTimer(6);
+                    if (countDown.value == -1) {
+                      //先掉发送验证码的接口
+                      logic.sendCode(widget.phone.toString());
+                    }
                   },
                   child: Obx(() => Text(
-                        countDown.value == -1 ? "重新发送" : "${countDown.value} s",
+                        countDown.value == -1
+                            ? "重新发送验证码"
+                            : "${countDown.value} s",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: Color(0xff898a93)),
+                            color: Colors.red),
                       )),
                 )
               ],
@@ -80,7 +116,8 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
             CodeWidget(
                 itemWidth: 71.w,
                 borderColor: Color(0xffe7e7e7),
-                borderSelectColor: Color(0xffb5b5b5))
+                borderSelectColor: Color(0xffb5b5b5),
+                controller: _phoneController),
           ],
         ),
       ),
