@@ -21,7 +21,7 @@ import '../../../entity/week_test_detail_response.dart';
 class ReadQuestion extends BaseQuestion {
   Data data;
 
-  ReadQuestion({required this.data,required onPageChnaged,Key? key}) : super(key: key,onPageChanged: onPageChnaged);
+  ReadQuestion({required this.data,Key? key}) : super(key: key);
 
 
   @override

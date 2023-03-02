@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../entity/week_test_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
+import '../answering/answering_logic.dart';
 
 /**
  * Time: 2023/2/21 14:14
@@ -23,9 +24,8 @@ typedef PageControllerListener = TextEditingController Function(String key);
 
 abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   late BaseQuestionState baseQuestionState;
-  final ValueChanged<String> onPageChanged;
 
-  BaseQuestion({required this.onPageChanged,Key? key}) : super(key: key);
+  BaseQuestion({Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -66,6 +66,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   List<Widget> questionList = [];
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
+  final logic = Get.find<AnsweringLogic>();
   @override
   void initState(){
     super.initState();
@@ -119,6 +120,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   }
 
   Widget getQuestionDetail(Data element){
+    questionList.clear();
     if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
       int questionNum = element.questionBankAppListVos!.length;
       for(int i = 0 ;i< questionNum;i++){
@@ -142,7 +144,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           }
         }else if(question.type == 3 ){  // 填空题
           itemList.add(buildQuestionType("填空题"));
-          itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+          // itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+          itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
           itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
           );
         }else if(question.type == 5){
@@ -164,12 +167,16 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }else{
       questionList.add(const SizedBox());
     }
-    widget.onPageChanged("1/${questionList.length}");
+    if(logic!=null){
+      logic.initPageStr("1/${questionList.length}");
+    }
     return PageView(
       controller: pageController,
       physics: _neverScroll,
       onPageChanged: (int value){
-        widget.onPageChanged("${(value+1)}/${questionList.length}");
+        if(logic!=null){
+          logic.updatePageStr("${(value+1)}/${questionList.length}");
+        }
       },
       children: questionList,
     );
@@ -275,16 +282,55 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 }
 
 class SelectGapGetxController extends GetxController{
+  // 答案 列表
+  List<String> indexContentList = [];
+
+  // 填空的 焦点 key-bool
   var hasFocusMap = {}.obs;
+  // 填空的内容
   var contentMap = {}.obs;
+  // 答案索引-填空索引
+  var answerIndexToGapIndexMap = {}.obs;
+
+  bool nextFocus = false;
+
+  initContent(List<String> list){
+    indexContentList.clear();
+    indexContentList.addAll(list);
+  }
 
   updateFocus(String key,bool hasFocus){
-    hasFocusMap.value.addIf(true, key, hasFocus);
-    update([key]);
+    if(hasFocus){
+      hasFocusMap.value.keys.toList().forEach((element) {
+        hasFocusMap.value.addIf(true, element, false);
+      });
+      hasFocusMap.value.addIf(true, key, hasFocus);
+      hasFocusMap.value.keys.toList().forEach((element) {
+        update([element]);
+      });
+      // update([key]);
+    } else {
+      hasFocusMap.value.addIf(true, key, hasFocus);
+      update([key]);
+    }
   }
 
   updateContent(String key,String contentTxt){
     contentMap.value.addIf(true, key, contentTxt);
+    if(contentTxt.isNotEmpty){
+      nextFocus = true;
+    }else{
+      nextFocus = false;
+    }
     update([key]);
+  }
+
+  resetNextFocus(){
+    nextFocus = false;
+  }
+
+  updateIndex(String answerIndex,String gapIndex){
+    answerIndexToGapIndexMap.value.addIf(true, answerIndex, gapIndex);
+    update([answerIndex]);
   }
 }

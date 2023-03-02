@@ -14,7 +14,7 @@ import '../../../entity/week_test_detail_response.dart';
 class GapQuestion extends BaseQuestion {
   Data data;
 
-  GapQuestion({required this.data,required onPageChnaged,Key? key}) : super(key: key,onPageChanged: onPageChnaged);
+  GapQuestion({required this.data,Key? key}) : super(key: key,);
 
 
   @override

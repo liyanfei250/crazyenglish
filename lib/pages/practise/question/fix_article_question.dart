@@ -14,7 +14,7 @@ import '../../../entity/week_test_detail_response.dart';
 class FixArticleQuestion extends BaseQuestion {
   Data data;
 
-  FixArticleQuestion({required this.data,required onPageChnaged,Key? key}) : super(key: key,onPageChanged: onPageChnaged);
+  FixArticleQuestion({required this.data,Key? key}) : super(key: key,);
 
 
   @override

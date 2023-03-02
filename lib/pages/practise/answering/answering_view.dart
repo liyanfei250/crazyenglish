@@ -5,6 +5,7 @@ import 'package:crazyenglish/pages/practise/question/choise_question.dart';
 import 'package:crazyenglish/pages/practise/question/fix_article_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question/read_question.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -51,18 +52,24 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   var canPre = false.obs;
   var canNext = true.obs;
-  var pageChangeStr = "".obs;
+  String initPageNum = "";
   @override
   void onCreate() {
     startTimer();
+    logic.addListenerId(GetBuilderIds.answerPageInitNum, () {
+      initPageNum = state.pageChangeStr;
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     pages = buildQuestionList(widget.testDetailResponse!);
     return Scaffold(
+      resizeToAvoidBottomInset:false,
       appBar: AppBar(
-        title: Text("标题",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+        title: Text(widget.testDetailResponse?.data?[0].title??"",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
         leading: Util.buildBackWidget(context),
         actions: [
           Visibility(
@@ -77,6 +84,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               ))
         ],
       ),
+      backgroundColor:Colors.white,
       body: Column(
         children: [
           Expanded(child: Container(
@@ -97,10 +105,14 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   },
                   child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
                 ),
-                Obx(()=>Text(
-                  pageChangeStr.value,
-                  style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
-                ),),
+                GetBuilder<AnsweringLogic>(
+                  id: GetBuilderIds.answerPageNum,
+                  builder: (logic){
+                    return Text(
+                      logic.state.pageChangeStr??" ",
+                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                    );
+                }),
                 InkWell(
                   onTap: (){
                     canNext.value = pages[0].next();
@@ -120,26 +132,23 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   List<BaseQuestion> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
     List<BaseQuestion> questionList = [];
-    ValueChanged<String> valueChanged = (value){
-      pageChangeStr.value = value;
-    };
     if(weekTestDetailResponse.data!=null){
       weekTestDetailResponse.data!.forEach((element) {
         switch(element.questionType){
           case 1: // 听力题
-            questionList.add(ListenQuestion(data: element,onPageChnaged: valueChanged));
+            questionList.add(ListenQuestion(data: element));
             break;
           case 2: // 选择题
-            questionList.add(ChoiseQuestion(data: element,onPageChnaged: valueChanged));
+            questionList.add(ChoiseQuestion(data: element));
             break;
           case 3: // 填空题
-            questionList.add(GapQuestion(data: element,onPageChnaged: valueChanged));
+            questionList.add(GapQuestion(data: element));
             break;
           case 4: // 阅读题
-            questionList.add(ReadQuestion(data: element,onPageChnaged: valueChanged));
+            questionList.add(ReadQuestion(data: element));
             break;
           case 5: // 纠错
-            questionList.add(FixArticleQuestion(data: element,onPageChnaged: valueChanged));
+            questionList.add(FixArticleQuestion(data: element));
         }
       });
     }
