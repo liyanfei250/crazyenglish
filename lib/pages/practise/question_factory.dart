@@ -242,51 +242,41 @@ class QuestionFactory{
 
             return SizedBox(
               width: 80.w,
+              height: 17.w,
               child: GetBuilder<SelectGapGetxController>(
                 id:key,
                 builder: (_){
-                  return InkWell(
-                    onTap: (){
-
-                    },
-                    focusNode: getFocusNodeControllerCallback(key),
-                    onFocusChange:(focused){
-                      _.updateFocus(key, focused);
-                    },
-                    child: Container(
-                      width: 70.w,
-                      margin: EdgeInsets.only(left:3.w,right:3.w,bottom: 8.w),
-                      decoration: _.hasFocusMap.value[key]?
-                      BoxDecoration(
-                          color: AppColors.c_FFD2D5DC,
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.c_FF353E4D, // 阴影的颜色
-                              offset: Offset(0, 4), // 阴影与容器的距离
-                              blurRadius: 0, // 高斯的标准偏差与盒子的形状卷积。
-                              spreadRadius: 0,
+                  return Container(
+                    width: 70.w,
+                    height: 17.w,
+                    margin: EdgeInsets.only(left:3.w,right:3.w),
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: (){
+                        _.updateFocus(key, !(_.hasFocusMap.value[key]??false));
+                      },
+                      focusNode: getFocusNodeControllerCallback(key),
+                      onFocusChange:(focused){
+                        _.updateFocus(key, focused);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            color: (_.hasFocusMap.value[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
+                            width: double.infinity,
+                            height: 13.w,
+                            child: Center(
+                              child: Text("${key}"),
                             ),
-                            BoxShadow(
-                              color: Colors.white, // 阴影的颜色
-                              offset: Offset(0, 2), // 阴影与容器的距离
-                              blurRadius: 0, // 高斯的标准偏差与盒子的形状卷积。
-                              spreadRadius: 0,
-                            )
-                          ]
-                      ):
-                      BoxDecoration(
-                          color: AppColors.c_FFD2D5DC,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white, // 阴影的颜色
-                              offset: Offset(0, 4), // 阴影与容器的距离
-                              blurRadius: 0, // 高斯的标准偏差与盒子的形状卷积。
-                              spreadRadius: 0,
-                            ),
-                          ]
-                      ),
-                      child: Center(
-                        child: Text(_.contentMap.value[key]),
+                          ),
+                          Container(
+                            color: AppColors.c_FF353E4D,
+                            width: double.infinity,
+                            height: 2.w,
+                          )
+                        ],
                       ),
                     ),
                   );
