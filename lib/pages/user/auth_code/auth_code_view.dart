@@ -10,7 +10,15 @@ import '../../../utils/colors.dart';
 import 'auth_code_logic.dart';
 
 class AuthCodePage extends BasePage {
-  const AuthCodePage({Key? key}) : super(key: key);
+  String? phone;
+  String? code;
+
+  AuthCodePage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      phone = Get.arguments['phone'];
+      code = Get.arguments['code'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToCodeAuthPageState();
@@ -19,6 +27,8 @@ class AuthCodePage extends BasePage {
 class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
   final logic = Get.put(Auth_codeLogic());
   final state = Get.find<Auth_codeLogic>().state;
+
+  get data => null;
 
   ///收起键盘
   hideKeyBoard() {
@@ -40,7 +50,8 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '请输入验证码',
+              // '请输入验证码',
+              widget.phone.toString(),
               style: TextStyle(fontSize: 16, color: Color(0xff353e4d)),
             ),
             Row(

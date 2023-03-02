@@ -1,12 +1,15 @@
-import '../../../entity/login_response.dart';
+import '../../../entity/login/LoginCodeResponse.dart';
+import '../../../entity/login/LoginNewResponse.dart';
 import '../../../entity/send_code_response.dart';
 
 class Login_newState {
-  late LoginResponse loginResponse;
+  late LoginNewResponse loginResponse;
+  late LoginCodeResponse loginResponseTwo;
   SendCodeResponse sendCodeResponse = SendCodeResponse();
 
   LoginState() {
     ///Initialize variables
-    loginResponse = LoginResponse();
+    loginResponse = LoginNewResponse();
+    loginResponseTwo = LoginCodeResponse();
   }
 }

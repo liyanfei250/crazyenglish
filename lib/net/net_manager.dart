@@ -40,7 +40,7 @@ class NetManager {
   late Dio _dio;
 
   /// 是否是debug模式.
-  static bool _isDebug = false;
+  static bool _isDebug = true;
 
   BaseOptions _options = getDefOptions();
   static NetManager? _instance;

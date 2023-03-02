@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../../entity/login/LoginCodeResponse.dart';
+import '../../../entity/login/LoginNewResponse.dart';
 import '../../../entity/login_response.dart';
 import '../../../entity/send_code_response.dart';
 import '../../../repository/user_repository.dart';
@@ -22,55 +24,23 @@ class Login_newLogic extends GetxController {
     super.onClose();
   }
 
-
-  void mobileLogin(String phone,String phoneCode) async{
-    LoginResponse loginResponse = await userRepository.mobileLogin(
-        {"mobile" : phone ,
-          "code" : phoneCode ,
-          "requestType" : "app"});
-    state.loginResponse = loginResponse;
+  void mobileLogin(String phone, String phoneCode) async {
+    LoginCodeResponse loginResponse = await userRepository
+        .mobileNewLogin({"mobile": phone, "code": phoneCode});
+    state.loginResponseTwo = loginResponse;
     update([GetBuilderIds.mobileLogin]);
   }
 
-
-
-  void qqLogin(Map<String,String> req) async{
-    req.addAll({"type":"0"});
-    LoginResponse loginResponse = await userRepository.quickLogin(req);
+  void passwordLogin(String phone, String phoneCode) async {
+    LoginNewResponse loginResponse = await userRepository
+        .passwordLogin({"username": phone, "password": phoneCode});
     state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
-  }
-
-  void weixinLogin(Map<String,String> req) async{
-    req.addAll({"type":"1"});
-    LoginResponse loginResponse = await userRepository.quickLogin(req);
-    state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
-  }
-
-  void sinaLogin(Map<String,String> req) async{
-    req.addAll({"type":"4"});
-    LoginResponse loginResponse = await userRepository.quickLogin(req);
-    state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
-  }
-
-  void appleLogin(Map<String,String> req) async{
-    req.addAll({"type":"5"});
-    LoginResponse loginResponse = await userRepository.quickLogin(req);
-    state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
+    update([GetBuilderIds.passwordLogin]);
   }
 
   void sendCode(String phone) async {
     SendCodeResponse sendCodeResponse = await userRepository.sendCode(phone);
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
-  }
-
-  void getMobile() async{
-    LoginResponse loginResponse = await userRepository.quickLogin({});
-    state.loginResponse = loginResponse;
-    update([GetBuilderIds.quickLogin]);
   }
 }
