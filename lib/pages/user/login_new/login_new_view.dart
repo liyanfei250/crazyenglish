@@ -156,21 +156,24 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         if (state.infoResponse.data?.identity == 3 &&
             state.infoResponse.data?.grade == 0) {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
+        }else{
+          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
         }
-      }
-      if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
-        //没选角色
-        RouterUtil.offAndToNamed(AppRoutes.RolePage);
-      } else {
-        if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
-          ////是学生且没选年级
-          //如果没选年级就去选年级
-          RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
-              arguments: {'identity': 3});
-          //选了去首页
+
+        if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
+          //没选角色
+          RouterUtil.offAndToNamed(AppRoutes.RolePage);
         } else {
-          //直接去首页
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
+          if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
+            ////是学生且没选年级
+            //如果没选年级就去选年级
+            RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
+                arguments: {'identity': 3});
+            //选了去首页
+          } else {
+            //直接去首页
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }
         }
       }
     });

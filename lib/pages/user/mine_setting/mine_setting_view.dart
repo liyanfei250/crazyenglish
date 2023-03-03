@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/common.dart';
@@ -23,29 +24,31 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNormalAppBar("设置"),
-      backgroundColor: AppColors.theme_bg,
-      body: Container(
-          child: ElevatedButton(
-        onPressed: () {
-          //退出
-          SpUtil.putBool(BaseConstant.ISLOGING, false);
-          SpUtil.putString(BaseConstant.loginTOKEN, '');
-          //直接去首页
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
-        },
-        child: const Text(
-          '退出登录',
-          style: TextStyle(fontSize: 17, color: Colors.white),
-        ),
-        style: ButtonStyle(
-          //去除阴影
-          elevation: MaterialStateProperty.all(0),
-          //将按钮背景设置为透明
-          backgroundColor: MaterialStateProperty.all(Colors.red),
-        ),
-      )),
-    );
+        appBar: buildNormalAppBar("设置"),
+        backgroundColor: AppColors.theme_bg,
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            //退出
+            SpUtil.putBool(BaseConstant.ISLOGING, false);
+            SpUtil.putString(BaseConstant.loginTOKEN, '');
+            //直接去首页
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          },
+          child: Container(
+            height: 47.w,
+            margin: EdgeInsets.all(20.w),
+            decoration: BoxDecoration(
+                color: AppColors.THEME_COLOR,
+                borderRadius: const BorderRadius.all(Radius.circular(22))),
+            child: const Center(
+              child: Text(
+                "退出登录",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
+          ),
+        ));
   }
 
   @override

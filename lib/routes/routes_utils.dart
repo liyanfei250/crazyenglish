@@ -20,7 +20,7 @@ class RouterUtil {
   }) {
     if (isNeedCheckLogin &&
         (checkYKLogin ? !Util.isLoginCheckYK() : !Util.isLogin())) {
-      return Get.toNamed(AppRoutes.LOGIN)!;
+      return Get.toNamed(AppRoutes.LoginNew)!;
     }
     return Get.toNamed(page, arguments: arguments, parameters: parameters);
   }
@@ -36,7 +36,7 @@ class RouterUtil {
         bool checkYKLogin = false,
       }) {
     if (isNeedCheckLogin && !Util.isLogin()) {
-      return Get.offAndToNamed(AppRoutes.LOGIN)!;
+      return Get.offAndToNamed(AppRoutes.LoginNew)!;
     }
     return Get.offAndToNamed(page, arguments: arguments, parameters: parameters);
   }
@@ -71,7 +71,7 @@ class RouterUtil {
   }) {
     if (isNeedCheckLogin &&
         (checkYKLogin ? !Util.isLoginCheckYK() : !Util.isLogin())) {
-      return Get.toNamed(AppRoutes.LOGIN)!;
+      return Get.toNamed(AppRoutes.LoginNew)!;
     }
     return Get.to(WebViewPage(
         title: title,
