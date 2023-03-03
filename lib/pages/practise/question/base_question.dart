@@ -144,16 +144,16 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           }
         }else if(question.type == 3 ){  // 填空题
           itemList.add(buildQuestionType("填空题"));
-          // itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
-          itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
-          itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
-          );
+          itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+
         }else if(question.type == 5){
           itemList.add(buildQuestionType("纠错题"));
           itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
         }else if(question.type == 12){
           itemList.add(buildQuestionType("选择填空题"));
           itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
+          itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
+          );
         }
 
         questionList.add(SingleChildScrollView(
