@@ -19,7 +19,7 @@ class NavigatorUtil {
       // BlingabcRouter.push(context,
       //     module: MainRouters.moduleName,
       //     path: MainRouters.login);
-      RouterUtil.toNamed(AppRoutes.LOGIN);
+      RouterUtil.toNamed(AppRoutes.LoginNew);
       return;
     }
     Navigator.push(
@@ -31,7 +31,7 @@ class NavigatorUtil {
     if (context == null || ObjectUtil.isEmpty(url))
       return;
     if (needLogin && !Util.isLogin()) {
-      RouterUtil.toNamed(AppRoutes.LOGIN);
+      RouterUtil.toNamed(AppRoutes.LoginNew);
       return;
     }
     Navigator.push(

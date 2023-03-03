@@ -18,7 +18,9 @@ class MinePage extends BasePage {
 
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
-  final state = Get.find<MineLogic>().state;
+  final state = Get
+      .find<MineLogic>()
+      .state;
 
   @override
   Widget build(BuildContext context) {
@@ -43,32 +45,38 @@ class _MinePageState extends BasePageState<MinePage> {
                       Padding(padding: EdgeInsets.only(left: 15.w)),
                       isLogin //是否登录
                           ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                    onTap: () =>
-                                        RouterUtil.toNamed(AppRoutes.LoginNew),
-                                    child: Text(
-                                      "吴尊",
-                                      style: TextStyle(
-                                          color: AppColors.c_FFFFFFFF,
-                                          fontSize: 20.w),
-                                    )),
-                                //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                                Text(
-                                  "要读的书太多，没时间写签名",
-                                  style: TextStyle(
-                                      color: AppColors.c_FFFFEBEB,
-                                      fontSize: 16.sp),
-                                )
-                              ],
-                            )
-                          : Container(
-                              child: Text("未登录",
-                                  style: TextStyle(
-                                      color: AppColors.c_FFFFEBEB,
-                                      fontSize: 16.sp)),
-                            )
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                              onTap: () =>
+                                  RouterUtil.toNamed(AppRoutes.LoginNew),
+                              child: Text(
+                                "吴尊",
+                                style: TextStyle(
+                                    color: AppColors.c_FFFFFFFF,
+                                    fontSize: 20.w),
+                              )),
+                          //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                          Text(
+                            "要读的书太多，没时间写签名",
+                            style: TextStyle(
+                                color: AppColors.c_FFFFEBEB,
+                                fontSize: 16.sp),
+                          )
+                        ],
+                      )
+                          :
+                      GestureDetector(
+                          onTap: () {
+                            RouterUtil.toNamed(AppRoutes.LoginNew);
+                          },
+                          child: Container(
+                            child: Text("未登录",
+                                style: TextStyle(
+                                    color: AppColors.c_FFFFEBEB,
+                                    fontSize: 16.sp)),
+                          )
+                      )
                     ],
                   ),
                 ),
@@ -123,7 +131,7 @@ class _MinePageState extends BasePageState<MinePage> {
   void onClickPosition(int position) {
     switch (position) {
       case 4:
-        RouterUtil.toNamed(AppRoutes.SettingPage);
+        RouterUtil.offAndToNamed(AppRoutes.SettingPage);
         break;
       default:
         break;
