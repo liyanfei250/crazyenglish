@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/sp_util.dart';
 import 'role_two_logic.dart';
 
 class RoleTwoPage extends BasePage {
-  const RoleTwoPage({Key? key}) : super(key: key);
+  int? identity;
+
+  RoleTwoPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      identity = Get.arguments['identity'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToRoleTwoPageState();
@@ -22,18 +32,33 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
   List list = [
     {
       "title": "高三",
-      "type": 0,
+      "type": 12,
     },
-    {"title": "高二", "type": 1},
-    {"title": "高一", "type": 2},
-    {"title": "初三", "type": 3},
-    {"title": "初二", "type": 4},
-    {"title": "初一", "type": 5},
+    {"title": "高二", "type": 11},
+    {"title": "高一", "type": 10},
+    {"title": "初三", "type": 9},
+    {"title": "初二", "type": 8},
+    {"title": "初一", "type": 7},
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    logic.addListenerId(GetBuilderIds.choiceRole, () {
+      if (state.sendCodeResponse.code == 1) {
+        SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false);//是学生且已选年级
+        Util.toast("选择成功");
+        RouterUtil.offAndToNamed(AppRoutes.HOME);
+      } else {
+        Util.toast("选择失败");
+      }
+    });
+    // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int groupValue = 1;
     return Scaffold(
       backgroundColor: AppColors.theme_bg,
       body: Stack(children: [
@@ -54,7 +79,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
               child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    RouterUtil.toNamed(AppRoutes.RolePage);
+                    RouterUtil.offAndToNamed(AppRoutes.HOME);
                   },
                   child: Container(
                     height: 26.w,
@@ -113,7 +138,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                RouterUtil.toNamed(AppRoutes.RolePage);
+                logic.setUserInfo(3, groupValue);
               },
               child: Container(
                 height: 47.w,
@@ -188,7 +213,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
             ));
   }
 
-  int groupValue = 0;
+  int groupValue = 13;
 
   updateGroupValue(int v) {
     setState(() {

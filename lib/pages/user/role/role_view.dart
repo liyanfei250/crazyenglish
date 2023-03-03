@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/sp_util.dart';
 import 'role_logic.dart';
 
 class RolePage extends BasePage {
@@ -19,6 +23,27 @@ class RolePage extends BasePage {
 class _ToRolePageState extends BasePageState<RolePage> {
   final logic = Get.put(RoleLogic());
   final state = Get.find<RoleLogic>().state;
+  int? identity; //2老师  3学生
+  @override
+  void initState() {
+    super.initState();
+
+    logic.addListenerId(GetBuilderIds.choiceRole, () {
+      if (state.sendCodeResponse.code == 1) {
+        SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
+        if (identity == 3) {
+          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true);//是学生且没选年级
+          RouterUtil.toNamed(AppRoutes.RoleTwoPage, arguments: {'identity': 3});
+        } else {
+          Util.toast("选择成功");
+          RouterUtil.offAndToNamed(AppRoutes.HOME);
+        }
+      } else {
+        Util.toast("选择失败");
+      }
+    });
+    // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +72,8 @@ class _ToRolePageState extends BasePageState<RolePage> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      RouterUtil.toNamed(AppRoutes.RoleTwoPage);
+                      identity = 3;
+                      logic.setUserInfo(identity!);
                     },
                     child: Container(
                       height: 44.w,
@@ -103,7 +129,10 @@ class _ToRolePageState extends BasePageState<RolePage> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      RouterUtil.toNamed(AppRoutes.RolePage);
+                      //直接掉接口
+                      //RouterUtil.toNamed(AppRoutes.RoleTwoPage,arguments: {'identity':2});
+                      identity = 2;
+                      logic.setUserInfo(identity!);
                     },
                     child: Container(
                       height: 44.w,

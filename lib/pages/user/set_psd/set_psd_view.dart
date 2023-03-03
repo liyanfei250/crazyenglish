@@ -9,6 +9,7 @@ import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import 'set_psd_logic.dart';
 
@@ -34,6 +35,20 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
     isPhoneLog = false;
     isShowPsd = false;
     _phoneController = TextEditingController();
+
+    logic.addListenerId(GetBuilderIds.sendCode, () {
+      // Util.toast(state.sendCodeResponse.data??"");
+      hideLoading();
+      if (state.sendCodeResponse.code == 1) {
+        var date = {
+          'phone': _phoneController!.text,
+          'code': phoneCodeStr.value
+        };
+        RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
+      } else {
+        Util.toast(state.sendCodeResponse.msg!);
+      }
+    });
   }
 
   @override
@@ -109,12 +124,12 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
                 Util.toast("请输入新密码");
                 return;
               }
-              //logic.mobileLogin(phoneStr.value, phoneAuthStr.value)
-              var date = {
-                'phone': _phoneController!.text,
-                'code': phoneCodeStr.value
-              };
-              RouterUtil.toNamed(AppRoutes.AuthCodePage, arguments: date);
+              //密码的格式是否通过？
+              if(Util.isLoginPassword(phoneCodeStr.value)){
+                Util.toast("新密码需8-20位字符，必须包含字母/数字/字符中两种以上组合");
+                return;
+              }
+              logic.sendCode(_phoneController!.text);
             },
             child: Container(
               height: 47.w,

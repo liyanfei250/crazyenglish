@@ -42,6 +42,7 @@ class CodeWidget extends StatefulWidget {
     this.contentSize = 16,
     this.itemWidth = 50,
     this.itemSpace = 16,
+    required this.controller ,
   }) : super(key: key) {
     //如果是表格样式，就不设置Item之间的距离
     if (style == CodeStyle.form) {
@@ -87,14 +88,14 @@ class CodeWidget extends StatefulWidget {
   //Item之间的间隙
   late int itemSpace;
 
+  late TextEditingController controller;
+
   @override
   State<CodeWidget> createState() => _CodeWidgetState();
 }
 
 class _CodeWidgetState extends State<CodeWidget> {
   FocusNode focusNode = FocusNode();
-
-  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -121,12 +122,12 @@ class _CodeWidgetState extends State<CodeWidget> {
               widget.itemWidth,
               widget.itemSpace,
               focusNode,
-              controller,
+              widget.controller,
             ),
             child: TextField(
               //控制焦点
               focusNode: focusNode,
-              controller: controller,
+              controller: widget.controller,
               //光标不显示
               showCursor: false,
               //光标颜色透明
@@ -238,6 +239,7 @@ class CodeCustomPainter extends CustomPainter {
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
     );
+
   }
 
   @override
