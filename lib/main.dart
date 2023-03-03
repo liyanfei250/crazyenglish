@@ -40,7 +40,7 @@ class MyAppState extends State<MyApp> {
     return GetMaterialApp(
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
-      initialRoute: AppRoutes.INITIAL,
+      initialRoute: AppRoutes.INITIALNew,
       getPages: AppPages.pages,
       theme: ThemeData(
         appBarTheme: AppBarTheme.of(context).copyWith(color: Colors.white),

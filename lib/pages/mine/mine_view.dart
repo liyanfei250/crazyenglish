@@ -131,7 +131,7 @@ class _MinePageState extends BasePageState<MinePage> {
   void onClickPosition(int position) {
     switch (position) {
       case 4:
-        RouterUtil.offAndToNamed(AppRoutes.SettingPage);
+        RouterUtil.toNamed(AppRoutes.SettingPage);
         break;
       default:
         break;

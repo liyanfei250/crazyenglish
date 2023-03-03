@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -69,10 +70,7 @@ class SplashPageState extends State<SplashPage> {
           width: double.infinity,
           height: double.infinity,
           alignment: Alignment.topCenter,
-          child: Image.asset(
-            R.imagesLaunchLogo,
-            width: 240.w,
-            height: 219.w,),
+          child: SplashPageNew(),
         ),),
 
         Offstage(

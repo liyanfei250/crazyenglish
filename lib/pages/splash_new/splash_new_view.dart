@@ -2,26 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../base/common.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
+import '../../utils/sp_util.dart';
 import 'splash_new_logic.dart';
 
-class SplashPageNew extends BasePage {
-  const SplashPageNew({Key? key}) : super(key: key);
-
+class SplashPageNew extends StatefulWidget {
   @override
-  BasePageState<BasePage> getState() => _ToSplashPageState();
+  State<StatefulWidget> createState() {
+    return new SplashNewPageState();
+  }
 }
 
-class _ToSplashPageState extends BasePageState<SplashPageNew> {
+class SplashNewPageState extends State<SplashPageNew> {
   final logic = Get.put(Splash_newLogic());
   final state = Get.find<Splash_newLogic>().state;
+  var privacyAgreementTitle = "温馨提示";
+  bool firstInstall = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  void _init() {
+    //1.首次安装
+    firstInstall =
+        SpUtil.getBool(BaseConstant.key_first_installation, defValue: true);
+    Future.delayed(const Duration(seconds: 1), () {
+      if (!firstInstall) {
+        _goMain();
+      }
+    });
+  }
+
+  void _goMain() {
+    RouterUtil.offAndToNamed(AppRoutes.HOME, isNeedCheckLogin: true);
+  }
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: AppColors.theme_bg,
       body: Stack(
@@ -43,7 +69,7 @@ class _ToSplashPageState extends BasePageState<SplashPageNew> {
                 child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      RouterUtil.toNamed(AppRoutes.RolePage);
+                      //RouterUtil.toNamed(AppRoutes.RolePage);
                     },
                     child: Container(
                       height: 26.w,
@@ -92,8 +118,7 @@ class _ToSplashPageState extends BasePageState<SplashPageNew> {
   }
 
   @override
-  void onCreate() {}
-
-  @override
-  void onDestroy() {}
+  void dispose() {
+    super.dispose();
+  }
 }
