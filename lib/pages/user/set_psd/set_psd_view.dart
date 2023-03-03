@@ -26,6 +26,7 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
   late bool isPhoneLog;
   late bool isShowPsd;
   var phoneCodeStr = "".obs;
+  var phoneNumStr = "".obs;
   TextEditingController? _phoneController;
   var map = new Map();
 
@@ -125,24 +126,26 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
                 return;
               }
               //密码的格式是否通过？
-              if(Util.isLoginPassword(phoneCodeStr.value)){
+              if (Util.isLoginPassword(phoneCodeStr.value)) {
                 Util.toast("新密码需8-20位字符，必须包含字母/数字/字符中两种以上组合");
                 return;
               }
               logic.sendCode(_phoneController!.text);
             },
-            child: Container(
-              height: 47.w,
-              decoration: BoxDecoration(
-                  color: AppColors.THEME_COLOR,
-                  borderRadius: const BorderRadius.all(Radius.circular(22))),
-              child: const Center(
-                child: Text(
-                  "下一步",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+            child: Obx(() {
+              return Container(
+                height: 47.w,
+                decoration: BoxDecoration(
+                    color: getColor(),
+                    borderRadius: const BorderRadius.all(Radius.circular(22))),
+                child: const Center(
+                  child: Text(
+                    "下一步",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),
@@ -169,7 +172,9 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
               controller: _phoneController,
               style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (String str) {},
+              onChanged: (String str) {
+                phoneNumStr.value = str;
+              },
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: '请输入手机号',
@@ -249,5 +254,11 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
     setState(() {
       isPhoneLog = !isPhoneLog;
     });
+  }
+
+  Color getColor() {
+    return phoneNumStr.value.isEmpty || phoneCodeStr.value.isEmpty
+        ? Color(0xfff6c9c6)
+        : AppColors.THEME_COLOR;
   }
 }

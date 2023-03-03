@@ -69,7 +69,7 @@ class SplashNewPageState extends State<SplashPageNew> {
                 child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      //RouterUtil.toNamed(AppRoutes.RolePage);
+                      RouterUtil.offAndToNamed(AppRoutes.HOME,isNeedCheckLogin: true);
                     },
                     child: Container(
                       height: 26.w,
