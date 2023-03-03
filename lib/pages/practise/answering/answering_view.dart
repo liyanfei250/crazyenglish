@@ -13,6 +13,8 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../entity/week_test_detail_response.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../question/base_question.dart';
 import '../question/gap_question.dart';
@@ -118,6 +120,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                     canNext.value = pages[0].next();
                     if(canNext.value){
                       canPre.value = true;
+                    }else{
+                      RouterUtil.toNamed(
+                          AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
                     }
                   },
                   child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
