@@ -69,7 +69,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
     pages = buildQuestionList(widget.testDetailResponse!);
     return Scaffold(
-      resizeToAvoidBottomInset:false,
       appBar: AppBar(
         title: Text(widget.testDetailResponse?.data?[0].title??"",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
         leading: Util.buildBackWidget(context),
@@ -87,50 +86,56 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         ],
       ),
       backgroundColor:Colors.white,
-      body: Column(
-        children: [
-          Expanded(child: Container(
-            width: double.infinity,
-            child: pages[0],
-          ),),
-          Container(
-            margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: (){
-                    canPre.value = pages[0].pre();
-                    if(canPre.value){
-                      canNext.value = true;
-                    }
-                  },
-                  child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height
+              - AppBar().preferredSize.height - MediaQuery.of(context).padding.top),
+          child: Column(
+            children: [
+              Expanded(child: Container(
+                width: double.infinity,
+                child: pages[0],
+              ),),
+              Container(
+                margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        canPre.value = pages[0].pre();
+                        if(canPre.value){
+                          canNext.value = true;
+                        }
+                      },
+                      child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+                    ),
+                    GetBuilder<AnsweringLogic>(
+                        id: GetBuilderIds.answerPageNum,
+                        builder: (logic){
+                          return Text(
+                            logic.state.pageChangeStr??" ",
+                            style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                          );
+                        }),
+                    InkWell(
+                      onTap: (){
+                        canNext.value = pages[0].next();
+                        if(canNext.value){
+                          canPre.value = true;
+                        }else{
+                          RouterUtil.toNamed(
+                              AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                        }
+                      },
+                      child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
+                    )
+                  ],
                 ),
-                GetBuilder<AnsweringLogic>(
-                  id: GetBuilderIds.answerPageNum,
-                  builder: (logic){
-                    return Text(
-                      logic.state.pageChangeStr??" ",
-                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
-                    );
-                }),
-                InkWell(
-                  onTap: (){
-                    canNext.value = pages[0].next();
-                    if(canNext.value){
-                      canPre.value = true;
-                    }else{
-                      RouterUtil.toNamed(
-                          AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
-                    }
-                  },
-                  child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
-                )
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
