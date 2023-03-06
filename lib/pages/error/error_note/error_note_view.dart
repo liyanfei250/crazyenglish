@@ -101,7 +101,6 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
   }
 
 
-
   Widget buildBottomBar(int index){
     return Expanded(child:
     InkWell(

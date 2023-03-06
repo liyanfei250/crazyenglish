@@ -25,6 +25,10 @@ class R {
   static final String imagesChoiceCorrect = 'images/choice_correct.png';
   /// ![](http://127.0.0.1:11/images/choice_error.png)
   static final String imagesChoiceError = 'images/choice_error.png';
+  /// ![](http://127.0.0.1:11/images/error_to_correct.png)
+  static final String imagesErrorToCorrect = 'images/error_to_correct.png';
+  /// ![](http://127.0.0.1:11/images/error_to_correct_over.png)
+  static final String imagesErrorToCorrectOver = 'images/error_to_correct_over.png';
   /// ![](http://127.0.0.1:11/images/home_search.png)
   static final String imagesHomeSearch = 'images/home_search.png';
   /// ![](http://127.0.0.1:11/images/icon_back.png)
