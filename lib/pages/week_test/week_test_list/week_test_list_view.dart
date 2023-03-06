@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../entity/week_list_response.dart';
 import '../../../entity/week_test_list_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -32,7 +33,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
 
   final int pageSize = 10;
   int currentPageNo = 1;
-  List<Records> weekPaperList = [];
+  List<Rows> weekPaperList = [];
   final int pageStartIndex = 1;
 
 

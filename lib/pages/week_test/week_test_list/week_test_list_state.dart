@@ -1,8 +1,8 @@
-import '../../../entity/week_test_list_response.dart';
+import '../../../entity/week_list_response.dart';
 
 class WeekTestListState {
 
-  List<Records> list = [];
+  List<Rows> list = [];
   bool hasMore = true;
   int pageNo = 0;
   WeekTestListState() {

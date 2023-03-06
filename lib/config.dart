@@ -19,7 +19,7 @@ class Config {
 
   static final String TEST_APP_ID = "1001";
   static final String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static final String TEST_API_DOMAIN = "https://101.42.97.189/crazy";
+  static final String TEST_API_DOMAIN = "http://192.168.0.155";
 
   static String get appId {
     switch (env) {
@@ -47,6 +47,8 @@ class Config {
         return NEIBU_API_DOMAIN;
       case Env.PRODUCT:
         return PRODUCT_API_DOMAIN;
+      case Env.TEST:
+        return TEST_API_DOMAIN;
       default:
         return PRODUCT_API_DOMAIN;
     }

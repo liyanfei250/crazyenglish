@@ -1,4 +1,4 @@
-import 'package:crazyenglish/entity/week_test_list_response.dart';
+import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:get/get.dart';
 
 import '../../../repository/week_test_repository.dart';
@@ -29,15 +29,15 @@ class WeekTestListLogic extends GetxController {
     req["size"] = "$pageSize";
 
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.WeekTestListResponse,labelId: weekTime.toString()).then((value){
+        JsonCacheManageUtils.WeekListRespose,labelId: weekTime.toString()).then((value){
       if(value!=null){
         return Data.fromJson(value as Map<String,dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==1 && cache is Data && cache.records!=null) {
-      state.list = cache.records!;
+    if(page==1 && cache is Data && cache.rows!=null) {
+      state.list = cache.rows!;
       if(state.list.length < pageSize){
         state.hasMore = false;
       } else {
@@ -52,17 +52,17 @@ class WeekTestListLogic extends GetxController {
           labelId: weekTime.toString(),
           list.toJson());
     }
-    if(list.records==null) {
+    if(list.rows==null) {
       if(page ==1){
         state.list.clear();
       }
     } else {
       if(page ==1){
-        state.list = list.records!;
+        state.list = list.rows!;
       } else {
-        state.list.addAll(list.records!);
+        state.list.addAll(list.rows!);
       }
-      if(list.records!.length < pageSize){
+      if(list.rows!.length < pageSize){
         state.hasMore = false;
       } else {
         state.hasMore = true;

@@ -1,6 +1,7 @@
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/week_directory_response.dart';
 import '../../../entity/week_test_catalog_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
@@ -28,31 +29,31 @@ class WeekTestCatalogLogic extends GetxController {
     Map<String,String> req= {};
     // req["weekTime"] = weekTime;
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.WeekTestCatalogResponse,labelId: periodicaId.toString()).then((value){
+        JsonCacheManageUtils.WeekDirectoryResponse,labelId: periodicaId.toString()).then((value){
       if(value!=null){
-        return WeekTestCatalogResponse.fromJson(value as Map<String,dynamic>?);
+        return WeekDirectoryResponse.fromJson(value as Map<String,dynamic>?);
       }
     });
 
-    if(cache is WeekTestCatalogResponse) {
-      state.weekTestCatalogResponse = cache!;
-      state.nodes = process(state.weekTestCatalogResponse);
+    if(cache is WeekDirectoryResponse) {
+      state.weekDirectoryResponse = cache!;
+      state.nodes = process(state.weekDirectoryResponse);
       update([GetBuilderIds.weekTestCatalogList]);
     }
-    WeekTestCatalogResponse list = await weekTestRepository.getWeekTestCategory(periodicaId);
+    WeekDirectoryResponse list = await weekTestRepository.getWeekTestCategory(periodicaId);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.WeekTestCatalogResponse,
+        JsonCacheManageUtils.WeekDirectoryResponse,
         labelId: periodicaId,
         list.toJson());
-    state.weekTestCatalogResponse = list!;
-    state.nodes = process(state.weekTestCatalogResponse);
+    state.weekDirectoryResponse = list!;
+    state.nodes = process(state.weekDirectoryResponse);
     update([GetBuilderIds.weekTestCatalogList]);
   }
 
-  List<tree.Node> process(WeekTestCatalogResponse weekTestCatalogResponse){
+  List<tree.Node> process(WeekDirectoryResponse weekDirectoryResponse){
     List<tree.Node> nodes = [];
-    if(weekTestCatalogResponse.data!=null){
-      weekTestCatalogResponse.data!.forEach((element) {
+    if(weekDirectoryResponse.data!=null){
+      weekDirectoryResponse.data!.forEach((element) {
         tree.Node parentNode = tree.Node.fromMap(element.toJson());
         nodes.add(parentNode);
       });
