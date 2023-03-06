@@ -47,7 +47,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
 
     logic.addListenerId(GetBuilderIds.choiceRole, () {
       if (state.sendCodeResponse.code == 1) {
-        SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false);//是学生且已选年级
+        SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生且已选年级
         Util.toast("选择成功");
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {

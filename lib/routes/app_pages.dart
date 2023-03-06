@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
@@ -71,6 +72,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.RoleTwoPage, page:()=>RoleTwoPage(),),
     GetPage(name: AppRoutes.ListeningPracticePage, page:()=>ListeningPracticePage(),),
     GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
+    GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
 
   ];
 }

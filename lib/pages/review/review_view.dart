@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/routes_utils.dart';
 import 'review_logic.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -104,12 +106,18 @@ class _ReviewPageState extends State<ReviewPage> {
                         Text("已消灭10个错题",style: TextStyle(color: Colors.white,fontSize: 14.sp),)
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 18.w),
-                      child: InkWell(
-                        child: Image.asset(R.imagesReviewJumpPractise,width:57.w,height: 24.w,),
+                    GestureDetector(
+                      onTap: (){
+                        RouterUtil.toNamed(AppRoutes.ErrorNotePage);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 18.w),
+                        child: InkWell(
+                          child: Image.asset(R.imagesReviewJumpPractise,width:57.w,height: 24.w,),
+                        ),
                       ),
                     )
+
                   ],
                 ),
               ),

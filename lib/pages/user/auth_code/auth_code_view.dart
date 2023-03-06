@@ -45,7 +45,7 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
   void initState() {
     super.initState();
     _phoneController = TextEditingController();
-    _startTimer(6);
+    _startTimer(60);
     logic.addListenerId(GetBuilderIds.resetPassword, () {
       Util.toast("修改成功");
       hideLoading();
@@ -53,7 +53,7 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
     });
 
     _phoneController.addListener(() {
-      if (_phoneController.text.length >= 4) {
+      if (_phoneController.text.length >= 6) {
         logic.sendResetPsd(widget.phone.toString(), _phoneController.text,
             widget.code.toString());
       }
@@ -61,8 +61,11 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
       // Util.toast(state.sendCodeResponse.data??"");
-      if(state.sendCodeResponse.code==1){
-        _startTimer(6);
+      if (state.sendCodeResponse.code == 1) {
+        Util.toast('发送成功');
+        _startTimer(60);
+      } else {
+        Util.toast('验证码错误');
       }
 
       hideLoading();

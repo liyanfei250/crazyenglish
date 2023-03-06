@@ -32,6 +32,7 @@ abstract class AppRoutes{
   static const RoleTwoPage = '/RoleTwoPage';
   static const ListeningPracticePage = '/ListeningPracticePage';
   static const DraggableDemo = '/DraggableDemo';
+  static const ErrorNotePage = '/ErrorNotePage';
 
 // static const LOGIN = '/login';
 

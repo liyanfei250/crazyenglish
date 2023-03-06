@@ -71,6 +71,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   String? _token;
   int tryTime = 0;
   var isHidePasswd = true.obs;
+  var isCanLogin = false.obs;
   var isUserLoginEnable = false.obs;
   var phoneStr = "".obs;
   var phoneCodeStr = "".obs;
@@ -156,7 +157,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         if (state.infoResponse.data?.identity == 3 &&
             state.infoResponse.data?.grade == 0) {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
-        }else{
+        } else {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
         }
 
@@ -483,18 +484,20 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                   ? logic.mobileLogin(phoneStr.value, phoneAuthStr.value)
                   : logic.passwordLogin(phoneStr.value, phoneCodeStr.value);
             },
-            child: Container(
-              height: 47.w,
-              decoration: BoxDecoration(
-                  color: AppColors.THEME_COLOR,
-                  borderRadius: const BorderRadius.all(Radius.circular(22))),
-              child: const Center(
-                child: Text(
-                  "登录",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+            child: Obx(() {
+              return Container(
+                height: 47.w,
+                decoration: BoxDecoration(
+                    color: getColor(isPhoneLog),
+                    borderRadius: const BorderRadius.all(Radius.circular(22))),
+                child: const Center(
+                  child: Text(
+                    "登录",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),
@@ -676,5 +679,17 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     setState(() {
       isShowPsd = !isShowPsd;
     });
+  }
+
+  Color getColor(isPhoneLog) {
+    if (isPhoneLog) {
+      return phoneStr.value.isEmpty || phoneAuthStr.value.isEmpty
+          ? Color(0xfff6c9c6)
+          : AppColors.THEME_COLOR;
+    } else {
+      return phoneStr.value.isEmpty || phoneCodeStr.value.isEmpty
+          ? Color(0xfff6c9c6)
+          : AppColors.THEME_COLOR;
+    }
   }
 }
