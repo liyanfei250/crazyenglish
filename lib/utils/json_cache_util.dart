@@ -19,6 +19,10 @@ class JsonCacheManageUtils{
   static final int APPVERSION = 0x07;
   static final int DATA_GROUP_DETAIL = 0x08;
 
+  // 胡一旭周报列表接口
+  static final int WeekListRespose = 0x09;
+  static final int WeekDirectoryResponse = 0x0A;
+
 
   // String contentJson;
 

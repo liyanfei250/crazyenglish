@@ -53,4 +53,14 @@ class Api {
   static String getPush = Config.ApiHost + "/push_record.site";
   static String getMobile =
       "https://api.verification.jpush.cn/v1/web/loginTokenVerify";
+
+
+  // 胡一旭接口
+  // 周报列表
+  static String getWeeklyList = Config.ApiHost+"/app/weekly/list";
+  // 周报目录
+  static String getWeeklyDirectory = Config.ApiHost+"/app/weekly/directory/tree";
+  //
+  static String getWeekDetail = Config.ApiHost+ "";
+
 }

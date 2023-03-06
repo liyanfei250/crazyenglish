@@ -1,9 +1,9 @@
-import '../../../entity/week_test_catalog_response.dart';
+import '../../../entity/week_directory_response.dart';
 import '../../../widgets/treeview/models/node.dart';
 
 class WeekTestCatalogState {
 
-  late WeekTestCatalogResponse weekTestCatalogResponse;
+  late WeekDirectoryResponse weekDirectoryResponse;
   late List<Node> nodes = [];
   WeekTestCatalogState() {
     ///Initialize variables

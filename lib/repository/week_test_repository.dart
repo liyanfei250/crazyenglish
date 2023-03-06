@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:crazyenglish/entity/week_directory_response.dart';
 import 'package:crazyenglish/entity/week_test_catalog_response.dart';
 import 'package:crazyenglish/entity/week_test_detail_response.dart';
-import 'package:crazyenglish/entity/week_test_list_response.dart' as weekTest;
+import 'package:crazyenglish/entity/week_list_response.dart' as weekTest;
 import 'package:dio/dio.dart';
 
 import '../api/api.dart';
@@ -22,13 +23,13 @@ class WeekTestRepository{
 
   Future<weekTest.Data> getWeekTestList(Map<String,String> req) async{
     BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekTestList,
+        .request(Method.get, Api.getWeeklyList,
         data: req,options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.msg!);
     }
     if(baseResp.getReturnData() !=null){
-      weekTest.WeekTestListResponse weekTestListResponse = weekTest.WeekTestListResponse.fromJson(baseResp.getReturnData());
+      weekTest.WeekListResponse weekTestListResponse = weekTest.WeekListResponse.fromJson(baseResp.getReturnData());
       return weekTestListResponse.data!;
     } else {
       return Future.error("返回weekTestListResponse为空");
@@ -36,16 +37,16 @@ class WeekTestRepository{
   }
 
 
-  Future<WeekTestCatalogResponse> getWeekTestCategory(String periodicaId) async{
+  Future<WeekDirectoryResponse> getWeekTestCategory(String periodicaId) async{
     BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekTestCategoryList+periodicaId,
+        .request(data:{"uuid":periodicaId},Method.get, Api.getWeeklyDirectory,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.msg!);
     }
     if(baseResp.getReturnData() !=null){
 
-      WeekTestCatalogResponse weekTestCatalogResponse = WeekTestCatalogResponse.fromJson(baseResp.getReturnData());
+      WeekDirectoryResponse weekTestCatalogResponse = WeekDirectoryResponse.fromJson(baseResp.getReturnData());
       return weekTestCatalogResponse!;
     } else {
       return Future.error("返回weekPaperResponse为空");

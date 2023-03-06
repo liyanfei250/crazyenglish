@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../entity/week_list_response.dart';
 import '../../../entity/week_test_catalog_response.dart';
 import '../../../entity/week_test_list_response.dart';
 import '../../../r.dart';
@@ -25,11 +26,11 @@ import 'week_test_catalog_logic.dart';
 
 class WeekTestCatalogPage extends BasePage {
 
-  Records? records;
+  Rows? records;
 
   WeekTestCatalogPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
-        Get.arguments is Records){
+        Get.arguments is Rows){
       records = Get.arguments;
     }
   }
@@ -349,13 +350,13 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
 
 
   void _onRefresh() async{
-    logic.getWeekTestCategory("${widget.records!.id}");
+    logic.getWeekTestCategory("${widget.records!.uuid}");
   }
 
   void _onLoading() async{
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getWeekTestCategory("${widget.records!.id}");
+    logic.getWeekTestCategory("${widget.records!.uuid}");
   }
 
   @override
