@@ -186,6 +186,8 @@ flutter:
     - images/bg_update_top.png
     - images/choice_correct.png
     - images/choice_error.png
+    - images/error_to_correct.png
+    - images/error_to_correct_over.png
     - images/home_search.png
     - images/icon_back.png
     - images/icon_back_black.png

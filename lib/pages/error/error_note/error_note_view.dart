@@ -115,27 +115,25 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
   }
 
   Widget listitemBigBg() {
-    return
-        Container(
-          margin:
-              EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
-          padding:
-              EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
-          width: double.infinity,
-          alignment: Alignment.topRight,
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                  offset: Offset(10, 20), // 阴影与容器的距离
-                  blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
-                  spreadRadius: 10.0,
-                )
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(10.w)),
-              color: AppColors.c_FFFFFFFF),
-          child: listitemBig(),
-        );
+    return Container(
+      margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
+      padding:
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+      width: double.infinity,
+      alignment: Alignment.topRight,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: listitemBig(),
+    );
   }
 
   Widget listitemBig() {
@@ -185,34 +183,59 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
             color: Colors.grey,
             height: 1.w,
           ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
           Row(
             children: [
-              Text(
-                value['title'],
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Image.asset(
-                R.imagesListenigLastIcon,
-                fit: BoxFit.cover,
-                width: 26.w,
-                height: 18.w,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        value['title'],
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff353e4d)),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 11.w)),
+                      Image.asset(
+                        R.imagesListenigLastIcon,
+                        fit: BoxFit.cover,
+                        width: 26.w,
+                        height: 18.w,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 4.w),
+                    child: Text(
+                      '正确率 9/15',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff858aa0)),
+                    ),
+                  ),
+                ],
               ),
               Expanded(child: Text('')),
-              Text(
-                '正确率 9/15',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff858aa0)),
+              Image.asset(
+                R.imagesErrorToCorrect,
+                fit: BoxFit.cover,
+                width: 41.w,
+                height: 15.w,
+              ),
+              Image.asset(
+                R.imagesErrorToCorrectOver,
+                fit: BoxFit.cover,
+                width: 56.w,
+                height: 56.w,
               )
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
         ],
       ),
     );
