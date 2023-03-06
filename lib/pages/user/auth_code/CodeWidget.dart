@@ -29,7 +29,7 @@ enum CodeStyle {
 class CodeWidget extends StatefulWidget {
   CodeWidget({
     Key? key,
-    this.maxLength = 4,
+    this.maxLength = 6,
     this.height = 50,
     this.mode = CodeMode.text,
     this.style = CodeStyle.line,

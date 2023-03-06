@@ -53,7 +53,7 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
     });
 
     _phoneController.addListener(() {
-      if (_phoneController.text.length >= 4) {
+      if (_phoneController.text.length >= 6) {
         logic.sendResetPsd(widget.phone.toString(), _phoneController.text,
             widget.code.toString());
       }
@@ -62,6 +62,7 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
     logic.addListenerId(GetBuilderIds.sendCode, () {
       // Util.toast(state.sendCodeResponse.data??"");
       if (state.sendCodeResponse.code == 1) {
+        Util.toast('发送成功');
         _startTimer(60);
       } else {
         Util.toast('验证码错误');
