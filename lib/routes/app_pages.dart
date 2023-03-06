@@ -11,6 +11,8 @@ import 'package:crazyenglish/pages/week_test/week_test_detail/week_test_detail_v
 import 'package:crazyenglish/pages/week_test/week_test_list/week_test_list_view.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
+import '../drawable_test/draggable_demo.dart';
+import '../drawable_test/draggable_demo.dart';
 import '../pages/buy/cashier/cashier_view.dart';
 import '../pages/buy/my_order_list/my_order_list_view.dart';
 import '../pages/buy/order_detail/view.dart';
@@ -68,6 +70,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.RolePage, page:()=>RolePage(),),
     GetPage(name: AppRoutes.RoleTwoPage, page:()=>RoleTwoPage(),),
     GetPage(name: AppRoutes.ListeningPracticePage, page:()=>ListeningPracticePage(),),
+    GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
 
   ];
 }
