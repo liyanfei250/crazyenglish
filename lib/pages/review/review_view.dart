@@ -44,6 +44,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 actions: [
                   InkWell(
                     onTap: (){
+                      RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: 18.w),

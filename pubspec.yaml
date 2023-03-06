@@ -291,6 +291,8 @@ flutter:
     - images/player_practise_pause.png
     - images/player_practise_play.png
     - images/player_practise_slide.png
+    - images/practice_black_bg.png
+    - images/practice_gold_top.png
     - images/practise_count_time_icon.png
     - images/practise_next_question_enable.png
     - images/practise_next_question_unable.png
@@ -331,6 +333,7 @@ flutter:
     - images/student_index_6.png
     - images/test_pause.png
     - images/test_play.png
+    - images/time_point_icon.png
     - images/torid_bottom.png
     - images/torid_close.png
     - images/torid_eye_hide.png

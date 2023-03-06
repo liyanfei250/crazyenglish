@@ -235,6 +235,10 @@ class R {
   static final String imagesPlayerPractisePlay = 'images/player_practise_play.png';
   /// ![](http://127.0.0.1:11/images/player_practise_slide.png)
   static final String imagesPlayerPractiseSlide = 'images/player_practise_slide.png';
+  /// ![](http://127.0.0.1:11/images/practice_black_bg.png)
+  static final String imagesPracticeBlackBg = 'images/practice_black_bg.png';
+  /// ![](http://127.0.0.1:11/images/practice_gold_top.png)
+  static final String imagesPracticeGoldTop = 'images/practice_gold_top.png';
   /// ![](http://127.0.0.1:11/images/practise_count_time_icon.png)
   static final String imagesPractiseCountTimeIcon = 'images/practise_count_time_icon.png';
   /// ![](http://127.0.0.1:11/images/practise_next_question_enable.png)
@@ -315,6 +319,8 @@ class R {
   static final String imagesTestPause = 'images/test_pause.png';
   /// ![](http://127.0.0.1:11/images/test_play.png)
   static final String imagesTestPlay = 'images/test_play.png';
+  /// ![](http://127.0.0.1:11/images/time_point_icon.png)
+  static final String imagesTimePointIcon = 'images/time_point_icon.png';
   /// ![](http://127.0.0.1:11/images/torid_bottom.png)
   static final String imagesToridBottom = 'images/torid_bottom.png';
   /// ![](http://127.0.0.1:11/images/torid_close.png)

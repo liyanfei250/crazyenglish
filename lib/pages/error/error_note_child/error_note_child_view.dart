@@ -55,7 +55,11 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [/*TabBarPage(_tabController, tabs)*/buildBg(), Expanded(child: _buildTableBarView())],
+      children: [
+        /*TabBarPage(_tabController, tabs)*/
+        buildBg(),
+        Expanded(child: _buildTableBarView())
+      ],
     );
   }
 
@@ -95,7 +99,8 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
             color: Color(0xfff2f5fc)),
         child: TabBar(
           onTap: (tab) => print(tab),
-          labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          labelStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           unselectedLabelStyle: const TextStyle(fontSize: 14),
           isScrollable: false,
           controller: _tabController,
