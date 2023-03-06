@@ -22,6 +22,7 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
     with SingleTickerProviderStateMixin {
   var _selectedIndex = 0.obs;
   final PageController pageController = PageController(keepPage: true);
+
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
 
@@ -44,12 +45,10 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
   }
 
   @override
-  void onCreate() {
-  }
+  void onCreate() {}
 
   @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +66,6 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
     );
   }
 
-
-
   AppBar buildBottomAppBar(String text) {
     return AppBar(
       backgroundColor: AppColors.c_FFFFFFFF,
@@ -83,54 +80,57 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
       leading: Util.buildBackWidget(context),
       elevation: 10.w,
       bottom: ErrorTopBar(
-          Container(
-            height: 40.w,
-            child: Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  buildBottomBar(0),
-                  buildBottomBar(1),
-                ],
-              ),
+        Container(
+          height: 40.w,
+          width: 120.w,
+          child: Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buildBottomBar(0),
+                buildBottomBar(1),
+              ],
             ),
           ),
+        ),
       ),
       shadowColor: const Color(0x1F000000),
     );
   }
 
-
-  Widget buildBottomBar(int index){
-    return Expanded(child:
-    InkWell(
-      onTap: (){
+  Widget buildBottomBar(int index) {
+    return Expanded(
+        child: InkWell(
+      onTap: () {
         _onItemTapped(index);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(padding: EdgeInsets.only(top: 6.w)),
-          Obx(()=>Text(
-            tabs[index],
-            style: TextStyle(
-                color: _selectedIndex.value == index ? Color(0xffeb5447):Colors.grey,
-                fontWeight: _selectedIndex.value == index ? FontWeight.bold:FontWeight.normal,
-                fontSize: 14.sp),
-          )),
+          Obx(() => Text(
+                tabs[index],
+                style: TextStyle(
+                    color: _selectedIndex.value == index
+                        ? Color(0xffeb5447)
+                        : Colors.grey,
+                    fontWeight: _selectedIndex.value == index
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    fontSize: 14.sp),
+              )),
           Padding(padding: EdgeInsets.only(top: 6.w)),
-          Obx(()=>Container(
-            width: 19.w,
-            height: 3.w,
-            decoration: BoxDecoration(
-                color: _selectedIndex.value == index ? Color(0xffeb5447):Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(1.5.w))
-            ),
-          ))
+          Obx(() => Container(
+                width: 19.w,
+                height: 3.w,
+                decoration: BoxDecoration(
+                    color: _selectedIndex.value == index
+                        ? Color(0xffeb5447)
+                        : Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(1.5.w))),
+              ))
         ],
       ),
-    )
-    );
+    ));
   }
-
 }

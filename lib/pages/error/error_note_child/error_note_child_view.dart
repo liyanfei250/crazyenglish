@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/error/error_note_child/TabBarPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,18 +13,19 @@ class ErrorNoteChildPage extends StatefulWidget {
 
   int type;
 
-  ErrorNoteChildPage(this.type,{Key? key}) : super(key: key);
+  ErrorNoteChildPage(this.type, {Key? key}) : super(key: key);
 
   @override
   _ErrorNoteChildPageState createState() => _ErrorNoteChildPageState();
 }
 
-class _ErrorNoteChildPageState extends State<ErrorNoteChildPage> with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin{
+class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(ErrorNoteChildLogic());
   final state = Get.find<ErrorNoteChildLogic>().state;
   late TabController _tabController;
 
-  final List<String> tabs = const[
+  final List<String> tabs = const [
     "听力",
     "阅读",
     "写作",
@@ -45,20 +47,15 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage> with SingleTick
   ];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _tabController = TabController(vsync: this,length: tabs.length);
+    _tabController = TabController(vsync: this, length: tabs.length);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        _buildTabBar(),
-        Expanded(child: _buildTableBarView())
-      ],
+      children: [/*TabBarPage(_tabController, tabs)*/buildBg(), Expanded(child: _buildTableBarView())],
     );
   }
 
@@ -68,55 +65,69 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage> with SingleTick
     super.dispose();
   }
 
-
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
       children: tabs.map((e) {
-        // switch(e){
-        //   case "听力":
-        //     return RecommendPage();
-        // }
-        return listitemBigBg();
-      }).toList()
-  );
+        return Container(
+          alignment: Alignment.center,
+          child: ListView(
+            children: listDataOne.map((value) {
+              return listitemBigBg();
+            }).toList(),
+          ),
+        );
+      }).toList());
 
-  Widget _buildTabBar() => TabBar(
-    onTap: (tab)=> print(tab),
-    controller: _tabController,
-    indicatorColor: AppColors.TAB_COLOR,
-    indicatorSize: TabBarIndicatorSize.label,
-    isScrollable: true,
-    labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
-    indicatorWeight: 3,
-    labelStyle: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR),
-    labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Tab(text:e)).toList(),
-  );
-
-  Widget listitemBigBg() {
-    return
-      Container(
+  Widget buildBg() => Container(
         margin:
-        EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
-        padding:
-        EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+            EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
         width: double.infinity,
-        alignment: Alignment.topRight,
+        height: 38.w,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-            boxShadow: [
+            /*boxShadow: [
               BoxShadow(
                 color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                offset: Offset(10, 20), // 阴影与容器的距离
-                blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
-                spreadRadius: 10.0,
+                offset: Offset(2, 4), // 阴影与容器的距离
               )
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(10.w)),
-            color: AppColors.c_FFFFFFFF),
-        child: listitemBig(),
+            ],*/
+            borderRadius: BorderRadius.all(Radius.circular(8.w)),
+            color: Color(0xfff2f5fc)),
+        child: TabBar(
+          onTap: (tab) => print(tab),
+          labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          unselectedLabelStyle: const TextStyle(fontSize: 14),
+          isScrollable: false,
+          controller: _tabController,
+          labelColor: Color(0xffffbc00),
+          indicatorWeight: 2,
+          indicatorPadding: const EdgeInsets.symmetric(horizontal: 28),
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: Color(0xffffbc00),
+          tabs: tabs.map((e) => Tab(text: e)).toList(),
+        ),
       );
+
+  Widget listitemBigBg() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
+      padding:
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+      width: double.infinity,
+      alignment: Alignment.topRight,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: listitemBig(),
+    );
   }
 
   Widget listitemBig() {
@@ -166,34 +177,59 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage> with SingleTick
             color: Colors.grey,
             height: 1.w,
           ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
           Row(
             children: [
-              Text(
-                value['title'],
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Image.asset(
-                R.imagesListenigLastIcon,
-                fit: BoxFit.cover,
-                width: 26.w,
-                height: 18.w,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        value['title'],
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff353e4d)),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 11.w)),
+                      Image.asset(
+                        R.imagesListenigLastIcon,
+                        fit: BoxFit.cover,
+                        width: 26.w,
+                        height: 18.w,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 4.w),
+                    child: Text(
+                      '正确率 9/15',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff858aa0)),
+                    ),
+                  ),
+                ],
               ),
               Expanded(child: Text('')),
-              Text(
-                '正确率 9/15',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff858aa0)),
+              Image.asset(
+                R.imagesErrorToCorrect,
+                fit: BoxFit.cover,
+                width: 41.w,
+                height: 15.w,
+              ),
+              Image.asset(
+                R.imagesErrorToCorrectOver,
+                fit: BoxFit.cover,
+                width: 56.w,
+                height: 56.w,
               )
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
         ],
       ),
     );
