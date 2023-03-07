@@ -1,11 +1,15 @@
+import 'dart:async';
+import 'dart:ui' as ui;
 import 'package:crazyenglish/pages/practtise_history/XFDashedLine.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../utils/colors.dart';
+import 'LeftLineWidget.dart';
 import 'practtise_history_logic.dart';
 
 class PracttiseHistoryPage extends BasePage {
@@ -17,9 +21,7 @@ class PracttiseHistoryPage extends BasePage {
 
 class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
   final logic = Get.put(Practtise_historyLogic());
-  final state = Get
-      .find<Practtise_historyLogic>()
-      .state;
+  final state = Get.find<Practtise_historyLogic>().state;
   List listDataOne = [
     {
       "title": "01.情景反应",
@@ -101,10 +103,10 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                     children: [
                       ClipOval(
                           child: Image.asset(
-                            R.imagesShopImageLogoTest,
-                            width: 42.w,
-                            height: 42.w,
-                          )),
+                        R.imagesShopImageLogoTest,
+                        width: 42.w,
+                        height: 42.w,
+                      )),
                       Padding(
                         padding: EdgeInsets.only(left: 12.w),
                         child: Text('练习训练：348次'),
@@ -116,15 +118,15 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(
-              top: 214.w,
-            ),
-            padding: EdgeInsets.only(
-                left: 14.w, right: 14.w, top: 10.w, bottom: 10.w),
-            width: double.infinity,
-            alignment: Alignment.topCenter,
-            decoration: BoxDecoration(
-              /*boxShadow: [
+              margin: EdgeInsets.only(
+                top: 214.w,
+              ),
+              padding: EdgeInsets.only(
+                  left: 14.w, right: 14.w, top: 10.w, bottom: 10.w),
+              width: double.infinity,
+              alignment: Alignment.topCenter,
+              decoration: BoxDecoration(
+                  /*boxShadow: [
                         BoxShadow(
                           color: AppColors.c_FFFFEBEB.withOpacity(0.5),
                           // 阴影的颜色
@@ -135,18 +137,19 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                           spreadRadius: 10.0,
                         )
                       ],*/
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12.w),
-                    topRight: Radius.circular(12.w)),
-                color: Colors.red),
-            child: ListView.builder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12.w),
+                      topRight: Radius.circular(12.w)),
+                  color: Colors.white),
+              child:
+                  newLayout() /*ListView.builder(
               shrinkWrap: true,
               itemCount: 10,
               itemBuilder: (BuildContext context, int index) {
                 return listitemBigBg();
               },
-            ),
-          )
+            ),*/
+              )
         ],
       ),
     );
@@ -160,52 +163,47 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
 
   Widget listitemBigBg() {
     return Container(
-      margin: EdgeInsets.only(top: 0.w, left: 18.w, right: 18.w, bottom: 0.w),
-      padding:
-      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
       color: Colors.yellow,
-      child: listitemBig(),
+      // child: listitemBig(),
+      child: newLayout(),
     );
   }
 
   Widget listitemBig() {
-    return
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(R.imagesTimePointIcon, width: 15.w, height: 15.w,),
-              Padding(
-                  padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-                  child: Text(
-                    '2023.2.24',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff1b1d2c),
-                        fontWeight: FontWeight.w500),
-                  )),
-              Expanded(child: Text('')),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ListView(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: listData.map((value) {
-                  return listitem(value);
-                }).toList(),
-              )
-            ],
-          ),
-
-        ],
-      );
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              R.imagesTimePointIcon,
+              width: 15.w,
+              height: 15.w,
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
+                child: Text(
+                  '2023.2.24',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff1b1d2c),
+                      fontWeight: FontWeight.w500),
+                )),
+            Expanded(child: Text('')),
+          ],
+        ),
+        ListView(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: listData.map((value) {
+            return listitem(value);
+          }).toList(),
+        )
+      ],
+    );
   }
 
   Widget listitem(value) {
@@ -243,6 +241,145 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
           Padding(padding: EdgeInsets.only(top: 20.w)),
         ],
       ),
+    );
+  }
+
+  Widget newLayout() {
+    return ListView(
+      shrinkWrap: true,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  // 圆和线
+                  height: 32,
+                  child: LeftLineWidget(
+                      showTop: false, showBottom: true, isLight: false),
+                ),
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    '天天乐超市（限时降价）已取货',
+                    style: TextStyle(fontSize: 18),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+              ],
+            ),
+            //这里需要自定义虚线BoxDecoration
+            Container(
+              decoration: BoxDecoration(
+                  border:
+                      Border(left: BorderSide(width: 2, color: Colors.grey))),
+              margin: EdgeInsets.only(left: 23),
+              padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: listData.map((value) {
+                  return listitem(value);
+                }).toList(),
+              ),
+            )
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  // 圆和线
+                  height: 32,
+                  child: LeftLineWidget(
+                      showTop: true, showBottom: true, isLight: false),
+                ),
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    '天天乐超市（限时降价）已取货',
+                    style: TextStyle(fontSize: 18),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  // 圆和线
+                  height: 100.w,
+                  child: LeftLineWidget(
+                      showTop: true, showBottom: true, isLight: true),
+                ),
+                Expanded(
+                    child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('配送员：吴立亮 18888888888'),
+                      Text('时间：2018-12-17 09:55:22'),
+                      Text('配送员：吴立亮 18888888888'),
+                      Text('时间：2018-12-17 09:55:22'),
+                    ],
+                  ),
+                ))
+              ],
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 1,
+              indent: 40.w,
+            )
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  // 圆和线
+                  height: 32,
+                  child: LeftLineWidget(
+                      showTop: true, showBottom: false, isLight: false),
+                ),
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    '天天乐超市（限时降价）已取货',
+                    style: TextStyle(fontSize: 18),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+              ],
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                      left: BorderSide(width: 2, color: Colors.transparent))),
+              margin: EdgeInsets.only(left: 23),
+              padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('配送员：吴立亮 18888888888'),
+                  Text('时间：2018-12-17 09:55:22')
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
     );
   }
 }
