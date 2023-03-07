@@ -174,10 +174,11 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             if((question!.list??[]).length > 0) {
               itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
             }
-          }else if(element.typeChildren == 5){ // 阅读填空
+          }else if(element.typeChildren == 5 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
             // 选择题
             itemList.add(buildQuestionType("填空题"));
             itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
+            isHebing = true;
           }
         }
         // else if(element.type == 3 ){  // 填空题
@@ -200,6 +201,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             children: itemList,
           ),
         ));
+        if(isHebing){
+          break;
+        }
       }
     }else{
       questionList.add(const SizedBox());
