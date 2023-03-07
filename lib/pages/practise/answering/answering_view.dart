@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
-import '../../../entity/week_detail_response.dart';
+import '../../../entity/week_detail_response.dart' as detail;
 import '../../../entity/week_test_detail_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -23,7 +23,7 @@ import 'answering_logic.dart';
 
 class AnsweringPage extends BasePage {
 
-  WeekDetailResponse? testDetailResponse;
+  detail.WeekDetailResponse? testDetailResponse;
 
   AnsweringPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
@@ -56,6 +56,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var canPre = false.obs;
   var canNext = true.obs;
   String initPageNum = "";
+  bool isUseData = true;
   @override
   void onCreate() {
     startTimer();
@@ -69,6 +70,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   Widget build(BuildContext context) {
 
     pages = buildQuestionList(widget.testDetailResponse!);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.testDetailResponse?.data?[0].title??"",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
@@ -91,77 +93,142 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height
               - AppBar().preferredSize.height - MediaQuery.of(context).padding.top),
-          child: Column(
-            children: [
-              Expanded(child: Container(
-                width: double.infinity,
-                child: pages[0],
-              ),),
-              Container(
-                margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        canPre.value = pages[0].pre();
-                        if(canPre.value){
-                          canNext.value = true;
-                        }
-                      },
-                      child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
-                    ),
-                    GetBuilder<AnsweringLogic>(
-                        id: GetBuilderIds.answerPageNum,
-                        builder: (logic){
-                          return Text(
-                            logic.state.pageChangeStr??" ",
-                            style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
-                          );
-                        }),
-                    InkWell(
-                      onTap: (){
-                        canNext.value = pages[0].next();
-                        if(canNext.value){
-                          canPre.value = true;
-                        }else{
-                          RouterUtil.toNamed(
-                              AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
-                        }
-                      },
-                      child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+          child: isUseData? useDataArray(pages[0]): useOptionArray(pages),
         ),
       ),
     );
   }
 
-  List<BaseQuestion> buildQuestionList(WeekDetailResponse weekTestDetailResponse){
+  Widget useDataArray(BaseQuestion page){
+    return Column(
+      children: [
+        Expanded(child: Container(
+          width: double.infinity,
+          child: page,
+        ),),
+        Container(
+          margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: (){
+                  canPre.value = page.pre();
+                  if(canPre.value){
+                    canNext.value = true;
+                  }
+                },
+                child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+              ),
+              GetBuilder<AnsweringLogic>(
+                  id: GetBuilderIds.answerPageNum,
+                  builder: (logic){
+                    return Text(
+                      logic.state.pageChangeStr??" ",
+                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                    );
+                  }),
+              InkWell(
+                onTap: (){
+                  canNext.value = page.next();
+                  if(canNext.value){
+                    canPre.value = true;
+                  }else{
+                    RouterUtil.toNamed(
+                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                  }
+                },
+                child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+
+  Widget useOptionArray(List<BaseQuestion> pages){
+    return Column(
+      children: [
+        Expanded(child: Container(
+          width: double.infinity,
+          child: pages[0],
+        ),),
+        Container(
+          margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: (){
+                  canPre.value = pages[0].pre();
+                  if(canPre.value){
+                    canNext.value = true;
+                  }
+                },
+                child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+              ),
+              GetBuilder<AnsweringLogic>(
+                  id: GetBuilderIds.answerPageNum,
+                  builder: (logic){
+                    return Text(
+                      logic.state.pageChangeStr??" ",
+                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                    );
+                  }),
+              InkWell(
+                onTap: (){
+                  canNext.value = pages[0].next();
+                  if(canNext.value){
+                    canPre.value = true;
+                  }else{
+                    RouterUtil.toNamed(
+                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                  }
+                },
+                child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+
+  List<BaseQuestion> buildQuestionList(detail.WeekDetailResponse weekTestDetailResponse){
     List<BaseQuestion> questionList = [];
     if(weekTestDetailResponse.data!=null){
-      weekTestDetailResponse.data!.forEach((element) {
-        switch(element.type){
+      int length = weekTestDetailResponse.data!.length;
+
+      for(detail.Data element in weekTestDetailResponse.data!){
+        switch(element.type) {
           case 1: // 听力题
             questionList.add(ListenQuestion(data: element));
+            isUseData = false;
             break;
-          case 2: // 选择题
-            questionList.add(ChoiseQuestion(data: element));
+          case 2: // 笔试题
+            if(element.typeChildren == 1){
+              // 单项选择题
+              questionList.add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
+              isUseData = true;
+              return questionList;
+            } else if(element.typeChildren == 2){ // 补全对话
+              questionList.add(GapQuestion(data: element));
+              isUseData = false;
+            } else if(element.typeChildren == 7){  // 写作题
+              isUseData = false;
+            } else {
+              questionList.add(ReadQuestion(data: element));
+              isUseData = false;
+            }
             break;
-          case 3: // 填空题
-            questionList.add(GapQuestion(data: element));
-            break;
-          case 4: // 阅读题
-            questionList.add(ReadQuestion(data: element));
-            break;
-          case 5: // 纠错
-            questionList.add(FixArticleQuestion(data: element));
         }
-      });
+        if(!isUseData){
+          break;
+        }
+      }
     }
     return questionList;
   }

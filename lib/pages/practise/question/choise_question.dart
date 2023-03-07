@@ -14,9 +14,9 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class ChoiseQuestion extends BaseQuestion {
-  Data data;
+  List<Data> datas;
 
-  ChoiseQuestion({required this.data,Key? key}) : super(key: key,);
+  ChoiseQuestion({required this.datas,Key? key}) : super(key: key,);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
@@ -28,7 +28,7 @@ class ChoiseQuestion extends BaseQuestion {
 
 class _ChoiseQuestionState extends BaseQuestionState<ChoiseQuestion> {
 
-  late Data element;
+  late List<Data> elements;
 
   @override
   getAnswers() {
@@ -38,7 +38,7 @@ class _ChoiseQuestionState extends BaseQuestionState<ChoiseQuestion> {
 
   @override
   void onCreate() {
-    element = widget.data;
+    elements = widget.datas;
   }
 
 
@@ -47,14 +47,14 @@ class _ChoiseQuestionState extends BaseQuestionState<ChoiseQuestion> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildQuestionType("填空题"),
-          Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          // buildQuestionType("填空题"),
+          // Visibility(
+          //     visible: element.title!=null && element.title!.isNotEmpty,
+          //     child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          getQuestionDetail(element),
+          // getQuestionDetail(element),
         ],
       ),
     );

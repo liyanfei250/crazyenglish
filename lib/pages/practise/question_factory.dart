@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/widgets/ChoiceImageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../base/widgetPage/dialog_manager.dart';
+import '../../entity/week_detail_response.dart';
 import '../../entity/week_test_detail_response.dart';
 import '../../utils/colors.dart';
 import '../../widgets/ChoiceRadioItem.dart';
@@ -60,6 +62,39 @@ class QuestionFactory{
     );
   }
 
+  static Widget buildSingleImgChoice(List<TiList> list,int answerIndex){
+    var choseItem = 0.obs;
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 12.w)),
+          Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: list.map(
+                    (e) => InkWell(
+                  onTap: (){
+                    choseItem.value = list.indexOf(e);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 12.w),
+                    child: ChoiceImageItem(
+                      getSelectedType(choseItem.value,list.indexOf(e)),
+                        list[answerIndex].text,
+                        e!.text!,
+                        e.img,
+                        140.w,
+                        140.w,
+                    ),
+                  ),
+                )
+            ).toList(),
+          ))
+        ],
+      ),
+    );
+  }
+
   static ChoiceRadioItemType getType(String rightAnswer,String choseItemValue,String myLabel){
     if(choseItemValue.isNotEmpty){
       if(choseItemValue == myLabel){
@@ -72,6 +107,18 @@ class QuestionFactory{
         return ChoiceRadioItemType.DEFAULT;
       }
 
+    }else{
+      return ChoiceRadioItemType.DEFAULT;
+    }
+  }
+
+  static ChoiceRadioItemType getSelectedType(int choseItemValue,int myLabel){
+    if(choseItemValue>=0){
+      if(choseItemValue == myLabel){
+        return ChoiceRadioItemType.SELECTED;
+      }else{
+        return ChoiceRadioItemType.DEFAULT;
+      }
     }else{
       return ChoiceRadioItemType.DEFAULT;
     }

@@ -74,7 +74,7 @@ class Node<T> {
   /// value. Excepted values include: 1, yes, true and their
   /// associated string values.
   static Node<T> fromMap<T>(Map<String, dynamic> map) {
-    String? _key = map['id'].toString()+"";
+    String? _key = map['uuid'].toString()+"";
     String _label = map['name'];
     var _data = map['childList'];
     List<Node> _children = [];
