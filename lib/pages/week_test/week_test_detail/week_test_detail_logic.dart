@@ -1,6 +1,7 @@
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/week_detail_response.dart';
 import '../../../entity/week_test_detail_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
@@ -25,9 +26,9 @@ class WeekTestDetailLogic extends GetxController {
 
   void getWeekTestDetail(String id) async{
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.WeekTestDetailResponse,labelId: id.toString()).then((value){
+        JsonCacheManageUtils.WeekDetailResponse,labelId: id.toString()).then((value){
       if(value!=null){
-        return WeekTestDetailResponse.fromJson(value as Map<String,dynamic>?);
+        return WeekDetailResponse.fromJson(value as Map<String,dynamic>?);
       }
     });
 
@@ -35,9 +36,9 @@ class WeekTestDetailLogic extends GetxController {
       state.weekTestDetailResponse = cache!;
       update([GetBuilderIds.weekTestDetailList]);
     }
-    WeekTestDetailResponse list = await weekTestRepository.getWeekTestDetail(id);
+    WeekDetailResponse list = await weekTestRepository.getWeekTestDetail(id);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.WeekTestDetailResponse,
+        JsonCacheManageUtils.WeekDetailResponse,
         labelId: id,
         list.toJson());
     state.weekTestDetailResponse = list!;

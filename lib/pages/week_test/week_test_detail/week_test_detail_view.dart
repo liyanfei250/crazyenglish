@@ -73,7 +73,7 @@ class _WeekTestDetailPageState extends BasePageState<WeekTestDetailPage> with Wi
       body: GetBuilder<WeekTestDetailLogic>(
         id: GetBuilderIds.weekTestDetailList,
         builder: (logic){
-          weekTestDetailResponse = logic.state.weekTestDetailResponse;
+          // weekTestDetailResponse = logic.state.weekTestDetailResponse;
           if(weekTestDetailResponse == null){
             return EmptyWidget("么有试题");
           }

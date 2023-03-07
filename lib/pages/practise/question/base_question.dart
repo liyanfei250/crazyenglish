@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../entity/week_test_detail_response.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
@@ -121,52 +121,52 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   Widget getQuestionDetail(Data element){
     questionList.clear();
-    if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
-      int questionNum = element.questionBankAppListVos!.length;
-      for(int i = 0 ;i< questionNum;i++){
-        QuestionBankAppListVos question = element.questionBankAppListVos![i];
-
-        List<Widget> itemList = [];
-        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
-
-        if(question.type == 2 || (
-            (question.type == 1 || question.type ==4)
-                && question.listenType == 1)){
-          // 选择题
-          itemList.add(buildQuestionType("选择题"));
-          itemList.add(Visibility(
-            visible: question!.title != null && question!.title!.isNotEmpty,
-            child: Text(
-              question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          if((question!.bankAnswerAppListVos??[]).length > 0) {
-            itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
-          }
-        }else if(question.type == 3 ){  // 填空题
-          itemList.add(buildQuestionType("填空题"));
-          itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
-
-        }else if(question.type == 5){
-          itemList.add(buildQuestionType("纠错题"));
-          itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
-        }else if(question.type == 12){
-          itemList.add(buildQuestionType("选择填空题"));
-          itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
-          itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
-          );
-        }
-
-        questionList.add(SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: itemList,
-          ),
-        ));
-      }
-    }else{
-      questionList.add(const SizedBox());
-    }
+    // if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
+    //   int questionNum = element.questionBankAppListVos!.length;
+    //   for(int i = 0 ;i< questionNum;i++){
+    //     QuestionBankAppListVos question = element.questionBankAppListVos![i];
+    //
+    //     List<Widget> itemList = [];
+    //     itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+    //
+    //     if(question.type == 2 || (
+    //         (question.type == 1 || question.type ==4)
+    //             && question.listenType == 1)){
+    //       // 选择题
+    //       itemList.add(buildQuestionType("选择题"));
+    //       itemList.add(Visibility(
+    //         visible: question!.title != null && question!.title!.isNotEmpty,
+    //         child: Text(
+    //           question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+    //         ),));
+    //       if((question!.bankAnswerAppListVos??[]).length > 0) {
+    //         itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
+    //       }
+    //     }else if(question.type == 3 ){  // 填空题
+    //       itemList.add(buildQuestionType("填空题"));
+    //       itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+    //
+    //     }else if(question.type == 5){
+    //       itemList.add(buildQuestionType("纠错题"));
+    //       itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
+    //     }else if(question.type == 12){
+    //       itemList.add(buildQuestionType("选择填空题"));
+    //       itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
+    //       itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
+    //       );
+    //     }
+    //
+    //     questionList.add(SingleChildScrollView(
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: itemList,
+    //       ),
+    //     ));
+    //   }
+    // }else{
+    //   questionList.add(const SizedBox());
+    // }
     if(logic!=null){
       logic.initPageStr("1/${questionList.length}");
     }

@@ -60,7 +60,7 @@ class Api {
   static String getWeeklyList = Config.ApiHost+"/app/weekly/list";
   // 周报目录
   static String getWeeklyDirectory = Config.ApiHost+"/app/weekly/directory/tree";
-  //
-  static String getWeekDetail = Config.ApiHost+ "";
+  // 周报详情
+  static String getWeekDetail = Config.ApiHost+ "/app/weekly/associate";
 
 }

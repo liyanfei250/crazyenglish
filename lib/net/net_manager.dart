@@ -177,9 +177,17 @@ class NetManager {
         response.statusCode == HttpStatus.created) {
       try {
         BaseResp baseResp = BaseResp.fromJson(response.data);
+
+        if (baseResp.code == HttpStatus.unauthorized) {
+          Util.toastLong("登录信息已失效，请重新登录");
+          SpUtil.putString(BaseConstant.loginTOKEN, "");
+          Util.getHeader();
+          RouterUtil.offAndToNamed(AppRoutes.LoginNew);
+        }
+
         baseResp.setReturnData(response.data);
         return baseResp;
-        // }
+
       } catch (e) {
         Util.toast("网络异常");
         return new Future.error(new DioError(
@@ -194,10 +202,10 @@ class NetManager {
             response.data['code'] != null &&
             //response.data['code'] == ResponseCode.status_token_invalid &&
             response.data['code'] == ResponseCode.status_token_invalid_new)) {
-      /*Util.toastLong("登录信息已失效，请重新登录");
+      Util.toastLong("登录信息已失效，请重新登录");
       SpUtil.putString(BaseConstant.loginTOKEN, "");
       Util.getHeader();
-      RouterUtil.offAndToNamed(AppRoutes.LOGIN);*/
+      RouterUtil.offAndToNamed(AppRoutes.LoginNew);
     } else {
       // Util.toast("网络异常 httpCode" +
       //     response.statusCode.toString() +

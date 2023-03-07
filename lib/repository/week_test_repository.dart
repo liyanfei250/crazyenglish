@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:crazyenglish/entity/week_directory_response.dart';
-import 'package:crazyenglish/entity/week_test_catalog_response.dart';
-import 'package:crazyenglish/entity/week_test_detail_response.dart';
 import 'package:crazyenglish/entity/week_list_response.dart' as weekTest;
 import 'package:dio/dio.dart';
 
@@ -10,6 +8,7 @@ import '../api/api.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
 import '../entity/user_info_response.dart';
+import '../entity/week_detail_response.dart' as weekDetail;
 import '../net/net_manager.dart';
 
 /**
@@ -19,6 +18,7 @@ import '../net/net_manager.dart';
  *
  * Description:
  */
+
 class WeekTestRepository{
 
   Future<weekTest.Data> getWeekTestList(Map<String,String> req) async{
@@ -54,16 +54,16 @@ class WeekTestRepository{
   }
 
 
-  Future<WeekTestDetailResponse> getWeekTestDetail(String id) async{
+  Future<weekDetail.WeekDetailResponse> getWeekTestDetail(String id) async{
     BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekTestDetail+id,
+        .request(data:{"uuid":id},Method.get, Api.getWeekDetail,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.msg!);
     }
     if(baseResp.getReturnData() !=null){
 
-      WeekTestDetailResponse weekTestDetailResponse = WeekTestDetailResponse.fromJson(baseResp.getReturnData());
+      weekDetail.WeekDetailResponse weekTestDetailResponse = weekDetail.WeekDetailResponse.fromJson(baseResp.getReturnData());
       return weekTestDetailResponse!;
     } else {
       return Future.error("返回weekTestDetailResponse为空");
@@ -100,8 +100,6 @@ class WeekTestRepository{
     } else {
       return Future.error("返回SendCodeResponse为空");
     }
-
-
   }
 
 

@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../entity/week_test_detail_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -22,7 +23,7 @@ import 'answering_logic.dart';
 
 class AnsweringPage extends BasePage {
 
-  WeekTestDetailResponse? testDetailResponse;
+  WeekDetailResponse? testDetailResponse;
 
   AnsweringPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
@@ -140,11 +141,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     );
   }
 
-  List<BaseQuestion> buildQuestionList(WeekTestDetailResponse weekTestDetailResponse){
+  List<BaseQuestion> buildQuestionList(WeekDetailResponse weekTestDetailResponse){
     List<BaseQuestion> questionList = [];
     if(weekTestDetailResponse.data!=null){
       weekTestDetailResponse.data!.forEach((element) {
-        switch(element.questionType){
+        switch(element.type){
           case 1: // 听力题
             questionList.add(ListenQuestion(data: element));
             break;
