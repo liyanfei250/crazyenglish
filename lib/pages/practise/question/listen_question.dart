@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../entity/week_test_detail_response.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/test_player_widget.dart';
 
@@ -57,12 +57,12 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           Visibility(
               visible: element.title!=null && element.title!.isNotEmpty,
               child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          // Visibility(
+          //     visible: element.name!=null && element.name!.isNotEmpty,
+          //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Visibility(
-              visible: element.name!=null && element.name!.isNotEmpty,
-              child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Visibility(
-              visible: element.type == 3 && element.content !=null && element.content!.isNotEmpty,
-              child: buildListenQuestion(element.content??"")),
+              visible: element.type == 1 && element.audio !=null && element.audio!.isNotEmpty,
+              child: buildListenQuestion(element.audio??"")),
           Expanded(child: getQuestionDetail(element)),
         ],
       ),

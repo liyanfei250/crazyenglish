@@ -22,6 +22,7 @@ class JsonCacheManageUtils{
   // 胡一旭周报列表接口
   static final int WeekListRespose = 0x09;
   static final int WeekDirectoryResponse = 0x0A;
+  static final int WeekDetailResponse = 0x0B;
 
 
   // String contentJson;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../entity/week_test_detail_response.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
@@ -121,40 +121,77 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   Widget getQuestionDetail(Data element){
     questionList.clear();
-    if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
-      int questionNum = element.questionBankAppListVos!.length;
+    if(element.options!=null && element.options!.length>0){
+      int questionNum = element.options!.length;
+      bool isHebing = false;
       for(int i = 0 ;i< questionNum;i++){
-        QuestionBankAppListVos question = element.questionBankAppListVos![i];
+        Options question = element.options![i];
 
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
-        if(question.type == 2 || (
-            (question.type == 1 || question.type ==4)
-                && question.listenType == 1)){
-          // 选择题
-          itemList.add(buildQuestionType("选择题"));
-          itemList.add(Visibility(
-            visible: question!.title != null && question!.title!.isNotEmpty,
-            child: Text(
-              question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          if((question!.bankAnswerAppListVos??[]).length > 0) {
-            itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
+        if(element.type == 1){
+          if(element.typeChildren == 1){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            // itemList.add(Visibility(
+            //   visible: question!.title != null && question!.title!.isNotEmpty,
+            //   child: Text(
+            //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            //   ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 2){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            itemList.add(Visibility(
+              visible: question!.name != null && question!.name!.isNotEmpty,
+              child: Text(
+                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
           }
-        }else if(question.type == 3 ){  // 填空题
-          itemList.add(buildQuestionType("填空题"));
-          itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
 
-        }else if(question.type == 5){
-          itemList.add(buildQuestionType("纠错题"));
-          itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
-        }else if(question.type == 12){
-          itemList.add(buildQuestionType("选择填空题"));
-          itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
-          itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
-          );
+        }else if(element.type == 2){
+          if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 4){ // 阅读选项
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 5){ // 阅读填空
+            // 选择题
+            itemList.add(buildQuestionType("填空题"));
+            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
+          }
         }
+        // else if(element.type == 3 ){  // 填空题
+        //   itemList.add(buildQuestionType("填空题"));
+        //   itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
+        // }else if(element.type == 5){
+        //   itemList.add(buildQuestionType("纠错题"));
+        //   itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
+        // }else if(element.type == 12){
+        //   itemList.add(buildQuestionType("选择填空题"));
+        //   itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
+        //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
+        //   );
+        // }
 
         questionList.add(SingleChildScrollView(
           child: Column(
