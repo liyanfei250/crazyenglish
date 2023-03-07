@@ -7,10 +7,17 @@ import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
+import '../../../entity/week_detail_response.dart' as detail;
 import 'writing_logic.dart';
 
 class WritingPage extends BasePage {
-  const WritingPage({Key? key}) : super(key: key);
+  detail.WeekDetailResponse? testDetailResponse;
+
+  WritingPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      testDetailResponse = Get.arguments["detail"];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToOrderDetailPageState();
@@ -19,7 +26,6 @@ class WritingPage extends BasePage {
 class _ToOrderDetailPageState extends BasePageState<WritingPage> {
   final logic = Get.put(WritingLogic());
   final state = Get.find<WritingLogic>().state;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +101,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
             ),
             Padding(padding: EdgeInsets.only(top: 8.w)),
             Text(
-              "假设你是育才中学学生会会长李华。你校将举办一次英语演讲比赛(speech contest)，希望附近某大学的外籍教师Smith女士来做评委。\n请参照以下比赛通知给她写一封信。",
+              widget.testDetailResponse?.data![0].content??"",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.sp,

@@ -22,12 +22,10 @@ import '../question/gap_question.dart';
 import 'answering_logic.dart';
 
 class AnsweringPage extends BasePage {
-
   detail.WeekDetailResponse? testDetailResponse;
 
-  AnsweringPage({Key? key}) : super(key: key){
-    if(Get.arguments!=null &&
-        Get.arguments is Map){
+  AnsweringPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
       testDetailResponse = Get.arguments["detail"];
     }
   }
@@ -41,7 +39,9 @@ class AnsweringPage extends BasePage {
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final logic = Get.put(AnsweringLogic());
-  final state = Get.find<AnsweringLogic>().state;
+  final state = Get
+      .find<AnsweringLogic>()
+      .state;
   bool isCountTime = true;
   late Timer _timer;
   var countTime = 0.obs;
@@ -57,23 +57,33 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var canNext = true.obs;
   String initPageNum = "";
   bool isUseData = true;
+
   @override
   void onCreate() {
     startTimer();
     logic.addListenerId(GetBuilderIds.answerPageInitNum, () {
       initPageNum = state.pageChangeStr;
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     pages = buildQuestionList(widget.testDetailResponse!);
+    bool isTitleNull = false;
+    if (widget.testDetailResponse?.data == null ||
+        widget.testDetailResponse?.data?.length! == 0) {
+      isTitleNull = true;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.testDetailResponse?.data?[0].title??"",style: TextStyle(color: AppColors.c_FF32374E,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+        title: Text(
+          isTitleNull ? "" :widget.testDetailResponse!.data![0].title.toString(),
+          style: TextStyle(
+              color: AppColors.c_FF32374E,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold),
+        ),
         leading: Util.buildBackWidget(context),
         actions: [
           Visibility(
@@ -81,64 +91,101 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(R.imagesPractiseCountTimeIcon,width: 18.w,height: 18.w,),
+                  Image.asset(
+                    R.imagesPractiseCountTimeIcon,
+                    width: 18.w,
+                    height: 18.w,
+                  ),
                   Padding(padding: EdgeInsets.only(left: 6.w)),
-                  Obx(()=>Text("$countTime",style: TextStyle(fontSize: 14.w,color: AppColors.c_FF353E4D),))
+                  Obx(() =>
+                      Text(
+                        "$countTime",
+                        style: TextStyle(
+                            fontSize: 14.w, color: AppColors.c_FF353E4D),
+                      ))
                 ],
               ))
         ],
       ),
-      backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height
-              - AppBar().preferredSize.height - MediaQuery.of(context).padding.top),
-          child: isUseData? useDataArray(pages[0]): useOptionArray(pages),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery
+                  .of(context)
+                  .size
+                  .height -
+                  AppBar().preferredSize.height -
+                  MediaQuery
+                      .of(context)
+                      .padding
+                      .top),
+          child: isUseData ? useDataArray(pages[0]) : useOptionArray(pages),
         ),
       ),
     );
   }
 
-  Widget useDataArray(BaseQuestion page){
+  Widget useDataArray(BaseQuestion page) {
     return Column(
       children: [
-        Expanded(child: Container(
-          width: double.infinity,
-          child: page,
-        ),),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            child: page,
+          ),
+        ),
         Container(
-          margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
+          margin:
+          EdgeInsets.only(left: 66.w, right: 66.w, top: 10.w, bottom: 10.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   canPre.value = page.pre();
-                  if(canPre.value){
+                  if (canPre.value) {
                     canNext.value = true;
                   }
                 },
-                child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+                child: Obx(() =>
+                    Image.asset(
+                      canPre.value
+                          ? R.imagesPractisePreQuestionEnable
+                          : R.imagesPractisePreQuestionUnable,
+                      width: 40.w,
+                      height: 40.w,
+                    )),
               ),
               GetBuilder<AnsweringLogic>(
                   id: GetBuilderIds.answerPageNum,
-                  builder: (logic){
+                  builder: (logic) {
                     return Text(
-                      logic.state.pageChangeStr??" ",
-                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                      logic.state.pageChangeStr ?? " ",
+                      style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.c_FF353E4D),
                     );
                   }),
               InkWell(
-                onTap: (){
+                onTap: () {
                   canNext.value = page.next();
-                  if(canNext.value){
+                  if (canNext.value) {
                     canPre.value = true;
-                  }else{
-                    RouterUtil.toNamed(
-                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                  } else {
+                    RouterUtil.toNamed(AppRoutes.ResultPage,
+                        arguments: {"detail": widget.testDetailResponse});
                   }
                 },
-                child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
+                child: Obx(() =>
+                    Image.asset(
+                      canNext.value
+                          ? R.imagesPractiseNextQuestionEnable
+                          : R.imagesPractiseNextQuestionUnable,
+                      width: 40.w,
+                      height: 40.w,
+                    )),
               )
             ],
           ),
@@ -147,48 +194,67 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     );
   }
 
-
-  Widget useOptionArray(List<BaseQuestion> pages){
+  Widget useOptionArray(List<BaseQuestion> pages) {
     return Column(
       children: [
-        Expanded(child: Container(
-          width: double.infinity,
-          child: pages[0],
-        ),),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            child: pages[0],
+          ),
+        ),
         Container(
-          margin: EdgeInsets.only(left: 66.w,right: 66.w,top: 10.w,bottom: 10.w),
+          margin:
+          EdgeInsets.only(left: 66.w, right: 66.w, top: 10.w, bottom: 10.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: (){
-                    bool beforeCan = canPre.value;
-                    canPre.value = pages[0].pre();
-                    if(beforeCan && !canPre.value){
-                      canNext.value = true;
-                    }
+                onTap: () {
+                  bool beforeCan = canPre.value;
+                  canPre.value = pages[0].pre();
+                  if (beforeCan && !canPre.value) {
+                    canNext.value = true;
+                  }
                 },
-                child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
+                child: Obx(() =>
+                    Image.asset(
+                      canPre.value
+                          ? R.imagesPractisePreQuestionEnable
+                          : R.imagesPractisePreQuestionUnable,
+                      width: 40.w,
+                      height: 40.w,
+                    )),
               ),
               GetBuilder<AnsweringLogic>(
                   id: GetBuilderIds.answerPageNum,
-                  builder: (logic){
+                  builder: (logic) {
                     return Text(
-                      logic.state.pageChangeStr??" ",
-                      style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),
+                      logic.state.pageChangeStr ?? " ",
+                      style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.c_FF353E4D),
                     );
                   }),
               InkWell(
-                onTap: (){
-                  if(canNext.value = false){
-                    RouterUtil.toNamed(
-                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
-                  }else{
+                onTap: () {
+                  if (canNext.value = false) {
+                    RouterUtil.toNamed(AppRoutes.ResultPage,
+                        arguments: {"detail": widget.testDetailResponse});
+                  } else {
                     canNext.value = pages[0].next();
                     canPre.value = true;
                   }
                 },
-                child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
+                child: Obx(() =>
+                    Image.asset(
+                      canNext.value
+                          ? R.imagesPractiseNextQuestionEnable
+                          : R.imagesPractiseNextQuestionUnable,
+                      width: 40.w,
+                      height: 40.w,
+                    )),
               )
             ],
           ),
@@ -197,28 +263,31 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     );
   }
 
-
-  List<BaseQuestion> buildQuestionList(detail.WeekDetailResponse weekTestDetailResponse){
+  List<BaseQuestion> buildQuestionList(
+      detail.WeekDetailResponse weekTestDetailResponse) {
     List<BaseQuestion> questionList = [];
-    if(weekTestDetailResponse.data!=null){
+    if (weekTestDetailResponse.data != null) {
       int length = weekTestDetailResponse.data!.length;
 
-      for(detail.Data element in weekTestDetailResponse.data!){
-        switch(element.type) {
+      for (detail.Data element in weekTestDetailResponse.data!) {
+        switch (element.type) {
           case 1: // 听力题
             questionList.add(ListenQuestion(data: element));
             isUseData = false;
             break;
           case 2: // 笔试题
-            if(element.typeChildren == 1){
+            if (element.typeChildren == 1) {
               // 单项选择题
-              questionList.add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
+              questionList
+                  .add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
               isUseData = true;
               return questionList;
-            } else if(element.typeChildren == 2){ // 补全对话
+            } else if (element.typeChildren == 2) {
+              // 补全对话
               questionList.add(GapQuestion(data: element));
               isUseData = false;
-            } else if(element.typeChildren == 7){  // 写作题
+            } else if (element.typeChildren == 7) {
+              // 写作题
               isUseData = false;
             } else {
               questionList.add(ReadQuestion(data: element));
@@ -226,7 +295,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             }
             break;
         }
-        if(!isUseData){
+        if (!isUseData) {
           break;
         }
       }
@@ -234,7 +303,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     return questionList;
   }
 
-  startTimer(){
+  startTimer() {
     const period = const Duration(seconds: 1);
     _timer = Timer.periodic(period, (timer) {
       countTime++;
@@ -247,11 +316,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     }
   }
 
-
   @override
   void onDestroy() {
     cancelTimer();
     Get.delete<AnsweringLogic>();
   }
-
 }
