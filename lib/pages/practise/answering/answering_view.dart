@@ -162,10 +162,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             children: [
               InkWell(
                 onTap: (){
-                  canPre.value = pages[0].pre();
-                  if(canPre.value){
-                    canNext.value = true;
-                  }
+                    bool beforeCan = canPre.value;
+                    canPre.value = pages[0].pre();
+                    if(beforeCan && !canPre.value){
+                      canNext.value = true;
+                    }
                 },
                 child: Obx(()=>Image.asset(canPre.value? R.imagesPractisePreQuestionEnable:R.imagesPractisePreQuestionUnable,width: 40.w,height: 40.w,)),
               ),
@@ -179,12 +180,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   }),
               InkWell(
                 onTap: (){
-                  canNext.value = pages[0].next();
-                  if(canNext.value){
-                    canPre.value = true;
-                  }else{
+                  if(canNext.value = false){
                     RouterUtil.toNamed(
                         AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                  }else{
+                    canNext.value = pages[0].next();
+                    canPre.value = true;
                   }
                 },
                 child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
