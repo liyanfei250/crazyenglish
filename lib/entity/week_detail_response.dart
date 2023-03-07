@@ -151,15 +151,18 @@ class Options {
   Options({
       num? answer, 
       String? name, 
+      String? value,
       List<TiList>? list,}){
     _answer = answer;
     _name = name;
     _list = list;
+    _value = value;
 }
 
   Options.fromJson(dynamic json) {
     _answer = json['answer'];
     _name = json['name'];
+    _value = json['value'];
     if (json['list'] != null) {
       _list = [];
       json['list'].forEach((v) {
@@ -169,22 +172,27 @@ class Options {
   }
   num? _answer;
   String? _name;
+  String? _value;
   List<TiList>? _list;
 Options copyWith({  num? answer,
   String? name,
+  String? value,
   List<TiList>? list,
 }) => Options(  answer: answer ?? _answer,
   name: name ?? _name,
+  value: value ?? _value,
   list: list ?? _list,
 );
   num? get answer => _answer;
   String? get name => _name;
+  String? get value => _value;
   List<TiList>? get list => _list;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['answer'] = _answer;
     map['name'] = _name;
+    map['value'] = _value;
     if (_list != null) {
       map['list'] = _list?.map((v) => v.toJson()).toList();
     }

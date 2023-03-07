@@ -123,22 +123,61 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     questionList.clear();
     if(element.options!=null && element.options!.length>0){
       int questionNum = element.options!.length;
+      bool isHebing = false;
       for(int i = 0 ;i< questionNum;i++){
         Options question = element.options![i];
 
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
-        if(element.type == 1 && element.typeChildren == 1){
-          // 选择题
-          itemList.add(buildQuestionType("选择题"));
-          // itemList.add(Visibility(
-          //   visible: question!.title != null && question!.title!.isNotEmpty,
-          //   child: Text(
-          //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-          //   ),));
-          if((question!.list??[]).length > 0) {
-            itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],question.answer!.toInt()));
+        if(element.type == 1){
+          if(element.typeChildren == 1){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            // itemList.add(Visibility(
+            //   visible: question!.title != null && question!.title!.isNotEmpty,
+            //   child: Text(
+            //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            //   ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 2){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            itemList.add(Visibility(
+              visible: question!.name != null && question!.name!.isNotEmpty,
+              child: Text(
+                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }
+
+        }else if(element.type == 2){
+          if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 4){ // 阅读选项
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 5){ // 阅读填空
+            // 选择题
+            itemList.add(buildQuestionType("填空题"));
+            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
           }
         }
         // else if(element.type == 3 ){  // 填空题

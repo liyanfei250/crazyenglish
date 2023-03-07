@@ -62,6 +62,40 @@ class QuestionFactory{
     );
   }
 
+  static Widget buildSingleTxtChoice(List<TiList> list,int answerIndex){
+    var choseItem = 0.obs;
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 12.w)),
+          Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: list.map(
+                    (e) => InkWell(
+                  onTap: (){
+                    choseItem.value = list.indexOf(e);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 12.w),
+                    child: ChoiceRadioItem(
+                        getSelectedType(choseItem.value,list.indexOf(e)),
+                        list[answerIndex].text,
+                        e!.text!,
+                        e!.text!,
+                        double.infinity,
+                        52.w
+                    ),
+                  ),
+                )
+            ).toList(),
+          ))
+        ],
+      ),
+    );
+  }
+
+
   static Widget buildSingleImgChoice(List<TiList> list,int answerIndex){
     var choseItem = 0.obs;
     return Container(
@@ -123,6 +157,124 @@ class QuestionFactory{
       return ChoiceRadioItemType.DEFAULT;
     }
   }
+
+  static Widget buildHuGapQuestion(List<Options>? list,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+    FocusScopeNode _scopeNode = FocusScopeNode();
+    int max = 0;
+    String gap = "____";
+
+    int gapIndex = -1;
+    String htmlContent = "";
+    for(Options option in list!){
+      htmlContent = htmlContent+(option.name??"")+gap;
+    }
+    while(htmlContent.contains(gap)){
+      gapKey++;
+      gapIndex++;
+      print("gapKey: $gapKey gapIndex:$gapIndex");
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex"></gap>');
+
+    }
+    return FocusScope(
+      node: _scopeNode,
+      child: Html(
+        data: htmlContent??"",
+        onImageTap: (url,context,attributes,element,){
+          if(url!=null && url!.startsWith('http')){
+            DialogManager.showPreViewImageDialog(
+                BackButtonBehavior.close, url);
+          }
+        },
+        style: {
+          // "p":Style(
+          //     fontSize:FontSize.large
+          // ),
+        },
+        tagsList: Html.tags..addAll(['gap']),
+        customRenders: {
+          tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+            String key = context.tree.element!.attributes["value"]??"unknown";
+            String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+            String content = "";
+            int num = 0;
+            var correctType = 0.obs;
+            try {
+              num = int.parse(gapIndex);
+              max = num;
+
+              if(list!=null && num< list!.length){
+                content = list![num].value!;
+              }else{
+                content = "";
+              }
+              print("num: $num content: $content");
+            } catch (e) {
+              e.printError();
+            }
+
+            return SizedBox(
+              width: 50.w,
+              child: Obx(()=>TextField(
+                  keyboardType: TextInputType.name,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: getInputColor(correctType.value)),
+                  decoration: InputDecoration(
+                    isDense:true,
+                    contentPadding: EdgeInsets.all(0.w),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1.w,
+                          color: getInputColor(correctType.value),
+                          style: BorderStyle.solid
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1.w,
+                          color: getInputColor(correctType.value),
+                          style: BorderStyle.solid
+                      ),
+                    ),
+                  ),
+                  onChanged: (text){
+                    print("intput:"+text+"  content:"+content);
+                    if(content.isNotEmpty){
+                      if(text.isNotEmpty){
+                        if(content.startsWith(text)){
+                          correctType.value = 1;
+                        }else{
+                          correctType.value = -1;
+                        }
+                      }else{
+                        correctType.value = 0;
+                      }
+                    }else{
+                      correctType.value = 0;
+                    }
+
+                  },
+                  onSubmitted: (text){
+
+                  },
+                  onEditingComplete: (){
+                    if(num < max){
+                      _scopeNode.nextFocus();
+                    }else{
+                      _scopeNode.unfocus();
+                    }
+
+                  },
+                  controller: getEditingControllerCallback(key))),
+
+            );
+          })
+        },
+
+      ),
+    );
+  }
+
 
   static Widget buildGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();

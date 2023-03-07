@@ -61,8 +61,8 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Visibility(
-              visible: element.type == 3 && element.content !=null && element.content!.isNotEmpty,
-              child: buildListenQuestion(element.content??"")),
+              visible: element.type == 1 && element.audio !=null && element.audio!.isNotEmpty,
+              child: buildListenQuestion(element.audio??"")),
           Expanded(child: getQuestionDetail(element)),
         ],
       ),
