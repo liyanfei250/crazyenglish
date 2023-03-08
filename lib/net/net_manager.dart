@@ -121,9 +121,12 @@ class NetManager {
   Options _checkOptions(method, options) {
     if (options == null) {
       options = new Options(method: method);
+    }else{
+      if((options!.contentType??"").isEmpty){
+        options.contentType =
+            ContentType.parse("application/x-www-form-urlencoded").toString();
+      }
     }
-    options.contentType =
-        ContentType.parse("application/x-www-form-urlencoded").toString();
     return options;
   }
 
