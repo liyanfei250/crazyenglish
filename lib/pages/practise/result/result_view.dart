@@ -5,19 +5,20 @@ import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../entity/week_test_detail_response.dart';
+import '../../../entity/commit_request.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
 import 'result_logic.dart';
 
 class ResultPage extends BasePage{
-  WeekTestDetailResponse? testDetailResponse;
+  CommitRequest? commitResponse;
 
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      testDetailResponse = Get.arguments["detail"];
+      commitResponse = Get.arguments["detail"];
     }
   }
 
@@ -39,8 +40,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   @override
   void onCreate() {
-    if(widget.testDetailResponse!.data![0].questionBankAppListVos!=null && widget.testDetailResponse!.data![0].questionBankAppListVos!.length>0) {
-      int questionNum = widget.testDetailResponse!.data![0].questionBankAppListVos!.length;
+    if(widget.commitResponse!.exercises![0].options!=null && widget.commitResponse!.exercises![0].options!.length>0) {
+      int questionNum = widget.commitResponse!.exercises![0].options!.length;
       _tabController = TabController(vsync: this, length: questionNum);
     }
 
@@ -51,7 +52,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
 
-    Widget resutl = buildQuestionResult(widget.testDetailResponse!.data![0]);
+    Widget resutl = buildQuestionResult(widget.commitResponse!.exercises![0]);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -76,7 +77,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
           child: Column(
             children: [
-              buildTransparentAppBar("Module Unit3"),
+              buildTransparentAppBar("${widget.commitResponse!.directory}"),
               buildTopIndicator(),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
@@ -370,49 +371,81 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   }
 
   Widget buildQuestionResult(Data element){
-    if(element.questionBankAppListVos!=null && element.questionBankAppListVos!.length>0){
-      int questionNum = element.questionBankAppListVos!.length;
+    questionList.clear();
+    if(element.options!=null && element.options!.length>0){
+      int questionNum = element.options!.length;
+      bool isHebing = false;
       for(int i = 0 ;i< questionNum;i++){
-        QuestionBankAppListVos question = element.questionBankAppListVos![i];
+        Options question = element.options![i];
 
         tabs.add("${i+1}");
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
-        if(question.type == 2 || (
-            (question.type == 1 || question.type ==4)
-                && question.listenType == 1)){
-          // 选择题
-          itemList.add(buildQuestionType("选择题"));
-          itemList.add(Visibility(
-            visible: question!.title != null && question!.title!.isNotEmpty,
-            child: Text(
-              question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          if((question!.bankAnswerAppListVos??[]).length > 0) {
-            itemList.add(QuestionFactory.buildSingleChoice(question!.bankAnswerAppListVos??[]));
+        if(element.type == 1){
+          if(element.typeChildren == 1){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            // itemList.add(Visibility(
+            //   visible: question!.title != null && question!.title!.isNotEmpty,
+            //   child: Text(
+            //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            //   ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 2){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            itemList.add(Visibility(
+              visible: question!.name != null && question!.name!.isNotEmpty,
+              child: Text(
+                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              ),));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
           }
-        }else if(question.type == 3 ){  // 填空题
-          itemList.add(buildQuestionType("填空题"));
-          // itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
-        }else if(question.type == 5){
-          itemList.add(buildQuestionType("纠错题"));
-          itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
+
+        }else if(element.type == 2){
+          if(element.typeChildren == 3){
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 4){ // 阅读选项
+            // 选择题
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+            }
+          }else if(element.typeChildren == 5 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
+            // 选择题
+            itemList.add(buildQuestionType("填空题"));
+            // itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
+            isHebing = true;
+          }
         }
 
-        questionList.add(Container(
-          margin: EdgeInsets.only(left: 18.w,right: 18.w),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: itemList,
-            ),
+        questionList.add(SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: itemList,
           ),
-        ),
-        );
+        ));
+        if(isHebing){
+          break;
+        }
       }
-    } else {
+    }else{
       questionList.add(const SizedBox());
     }
 

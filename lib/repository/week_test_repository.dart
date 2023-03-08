@@ -73,8 +73,8 @@ class WeekTestRepository{
 
   Future<CommitRequest> uploadWeekTest(CommitRequest commitRequest) async{
     BaseResp baseResp = await NetManager.getInstance()!
-        .request(data:commitRequest,Method.post, Api.postWeekCommit,
-        options: Options(method: Method.post));
+        .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
+        options: Options(method: Method.post,contentType: "application/json; charset=utf-8"));
     if (baseResp.code != ResponseCode.status_success) {
       return Future.error(baseResp.msg!);
     }
