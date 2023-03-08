@@ -12,6 +12,11 @@ class WeekDetailResponse {
     _msg = msg;
 }
 
+  @override
+  String toString() {
+    return 'WeekDetailResponse{_code: $_code, _data: $_data, _msg: $_msg}';
+  }
+
   WeekDetailResponse.fromJson(dynamic json) {
     _code = json['code'];
     if (json['data'] != null) {
@@ -65,8 +70,8 @@ class Data {
       dynamic content,
       List<Options>? options,
       String? answer, 
-      num? type, 
-      num? typeChildren, 
+      num? type, //type=2
+      num? typeChildren, //typeChildren=7
       String? audio,}){
     _uuid = uuid;
     _title = title;

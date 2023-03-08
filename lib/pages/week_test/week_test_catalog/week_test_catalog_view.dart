@@ -25,12 +25,10 @@ import '../week_test_detail/week_test_detail_logic.dart';
 import 'week_test_catalog_logic.dart';
 
 class WeekTestCatalogPage extends BasePage {
-
   Rows? records;
 
-  WeekTestCatalogPage({Key? key}) : super(key: key){
-    if(Get.arguments!=null &&
-        Get.arguments is Rows){
+  WeekTestCatalogPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Rows) {
       records = Get.arguments;
     }
   }
@@ -43,7 +41,8 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   final logic = Get.put(WeekTestCatalogLogic());
   final state = Get.find<WeekTestCatalogLogic>().state;
 
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   // WeekTestCatalogResponse? paperCategory;
   TreeViewController? treeViewController;
@@ -59,21 +58,26 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   @override
   void onCreate() {
     // TODO: implement onCreate
-    logic.addListenerId(GetBuilderIds.weekTestCatalogList,(){
+    logic.addListenerId(GetBuilderIds.weekTestCatalogList, () {
       hideLoading();
-      if(state.nodes!=null && state.nodes.length>0){
-        if(mounted && _refreshController!=null){
+      if (state.nodes != null && state.nodes.length > 0) {
+        if (mounted && _refreshController != null) {
           _refreshController.refreshCompleted();
           setState(() {});
         }
       }
     });
     logicDetail.addListenerId(GetBuilderIds.weekTestDetailList, () {
-      if(stateDetail.weekTestDetailResponse!=null){
-        RouterUtil.toNamed(
-            AppRoutes.AnsweringPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
-        // RouterUtil.toNamed(
-        //     AppRoutes.ResultPage,arguments: {"detail":stateDetail.weekTestDetailResponse});
+      if (stateDetail.weekTestDetailResponse != null &&
+          stateDetail.weekTestDetailResponse.data != null &&
+          stateDetail.weekTestDetailResponse.data!.length > 0 &&
+          stateDetail.weekTestDetailResponse.data![0].type == 2 &&
+          stateDetail.weekTestDetailResponse.data![0].typeChildren == 7) {
+        RouterUtil.toNamed(AppRoutes.WritingPage,
+            arguments: {"detail": stateDetail.weekTestDetailResponse});
+      } else {
+        RouterUtil.toNamed(AppRoutes.AnsweringPage,
+            arguments: {"detail": stateDetail.weekTestDetailResponse});
       }
     });
     _onRefresh();
@@ -108,58 +112,66 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       backgroundColor: AppColors.theme_bg,
       body: GetBuilder<WeekTestCatalogLogic>(
         id: GetBuilderIds.weekTestCatalogList,
-        builder: (logic){
-          if(logic.state.nodes!=null && logic.state.nodes.length>0){
-            if(treeViewController==null){
-              treeViewController = TreeViewController(children:logic.state.nodes!);
+        builder: (logic) {
+          if (logic.state.nodes != null && logic.state.nodes.length > 0) {
+            if (treeViewController == null) {
+              treeViewController =
+                  TreeViewController(children: logic.state.nodes!);
               List<tree.Node> nodes = treeViewController!.expandAll();
               nodes.forEach((element) {
-                nodeFirstParent.add(element!.key??"");
-                int length = element.children!=null ? element.children.length:0;
-                for(int i = 0;i<length;i++){
-                  if(i==length-1){
+                nodeFirstParent.add(element!.key ?? "");
+                int length =
+                    element.children != null ? element.children.length : 0;
+                for (int i = 0; i < length; i++) {
+                  if (i == length - 1) {
                     // 最后一个章
-                    if(element.children[i].children!=null && element.children[i].children!.length>0){
+                    if (element.children[i].children != null &&
+                        element.children[i].children!.length > 0) {
                       int childLength = element.children[i].children.length;
-                      nodeEnd.add(element.children[i].children[childLength-1].key??"");
+                      nodeEnd.add(
+                          element.children[i].children[childLength - 1].key ??
+                              "");
                     }
-                    nodeSecondEndParent.add(element.children[i].key??"");
+                    nodeSecondEndParent.add(element.children[i].key ?? "");
                   }
-                  nodeSecondParent.add(element.children[i].key??"");
+                  nodeSecondParent.add(element.children[i].key ?? "");
                 }
               });
-              treeViewController = TreeViewController(children:nodes!);
+              treeViewController = TreeViewController(children: nodes!);
             }
             return Container(
-              margin: EdgeInsets.only(top: 20.w,left: 14.w,right: 14.w,bottom: 20.w),
+              margin: EdgeInsets.only(
+                  top: 20.w, left: 14.w, right: 14.w, bottom: 20.w),
               decoration: BoxDecoration(
-                  boxShadow:[
+                  boxShadow: [
                     BoxShadow(
-                      color: AppColors.c_0FA50D1A.withOpacity(0.05),		// 阴影的颜色
-                      offset: Offset(10, 20),						// 阴影与容器的距离
-                      blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
+                      color: AppColors.c_0FA50D1A.withOpacity(0.05), // 阴影的颜色
+                      offset: Offset(10, 20), // 阴影与容器的距离
+                      blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
                       spreadRadius: 0,
                     )
                   ],
                   borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                  color: AppColors.c_FFFFFFFF
-              ),
+                  color: AppColors.c_FFFFFFFF),
               child: Column(
                 children: [
                   Expanded(
                     child: TreeView(
-                      controller: treeViewController!,
-                      nodeBuilder: (context, node)=>buildItem(context, node),
-                      onExpansionChanged: (key, expanded) {
-                        tree.Node? node = treeViewController!.getNode(key);
-                        if (node != null) {
-                          List<tree.Node> updated = treeViewController!.updateNode(key, node.copyWith(expanded: expanded));
-                          setState(() {
-                            treeViewController = treeViewController!.copyWith(children: updated);
-                          });
-                        }
-                      }
-                    ),
+                        controller: treeViewController!,
+                        nodeBuilder: (context, node) =>
+                            buildItem(context, node),
+                        onExpansionChanged: (key, expanded) {
+                          tree.Node? node = treeViewController!.getNode(key);
+                          if (node != null) {
+                            List<tree.Node> updated = treeViewController!
+                                .updateNode(
+                                    key, node.copyWith(expanded: expanded));
+                            setState(() {
+                              treeViewController = treeViewController!
+                                  .copyWith(children: updated);
+                            });
+                          }
+                        }),
                   )
                 ],
               ),
@@ -171,26 +183,26 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
     );
   }
 
-
-  Widget buildItem(BuildContext context, tree.Node node){
-    if(node.isParent){
+  Widget buildItem(BuildContext context, tree.Node node) {
+    if (node.isParent) {
       return Container(
         height: 48.w,
         alignment: Alignment.center,
         child: Column(
           children: [
-            Expanded(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
                     flex: 1,
                     child: Visibility(
-                        maintainAnimation: true,
-                        maintainState: true,
-                        maintainSize: true,
-                        visible: !nodeFirstParent.contains(node.key),
+                      maintainAnimation: true,
+                      maintainState: true,
+                      maintainSize: true,
+                      visible: !nodeFirstParent.contains(node.key),
                       child: Container(
-                          margin: EdgeInsets.only(left:22.w),
+                          margin: EdgeInsets.only(left: 22.w),
                           child: Visibility(
                             visible: node.parent,
                             child: DottedLine(
@@ -202,72 +214,83 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                             ),
                           )),
                     ),
-                    ),
-                Row(
-                  children: [
-                    Container(
-                        alignment: Alignment.center,
-                        width: 17.w,
-                        height: 17.w,
-                        margin: EdgeInsets.only(left:14.w,right: 14.w),
-                        decoration: BoxDecoration(
-                            color: AppColors.c_FFFF4D35,
-                            borderRadius: BorderRadius.all(Radius.circular(16.w))
-                        ),
-                        child: Text(node.expanded? "—":"+",style: TextStyle(color: AppColors.c_FFFFFFFF),)
-                    ),
-                    Container(
-                      width: 245.w,
-                      child: Text(node.label,
-                        overflow:TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                            color:nodeFirstParent.contains(node.key) && node.expanded? AppColors.c_FFFF4D35:AppColors.TEXT_BLACK_COLOR,
-                            fontSize: nodeFirstParent.contains(node.key) && node.expanded? 16.sp:14.sp,
-                            fontWeight: FontWeight.bold),),
-                    )
-
-                  ],
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Visibility(
-                    maintainAnimation: true,
-                    maintainState: true,
-                    maintainSize: true,
-                    visible: !((nodeSecondEndParent.contains(node.key) || nodeFirstParent.contains(node.key))&& !node.expanded),
-                    child: Container(
-                        margin: EdgeInsets.only(left:22.w),
-                        child: DottedLine(
-                          dashLength: 3.w,
-                          dashGapLength: 3.w,
-                          lineThickness: 2.w,
-                          dashColor: AppColors.c_FFE2E2E2,
-                          direction: Axis.vertical,
-                        )),
                   ),
-                ),
-              ],
-            ),),
+                  Row(
+                    children: [
+                      Container(
+                          alignment: Alignment.center,
+                          width: 17.w,
+                          height: 17.w,
+                          margin: EdgeInsets.only(left: 14.w, right: 14.w),
+                          decoration: BoxDecoration(
+                              color: AppColors.c_FFFF4D35,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.w))),
+                          child: Text(
+                            node.expanded ? "—" : "+",
+                            style: TextStyle(color: AppColors.c_FFFFFFFF),
+                          )),
+                      Container(
+                        width: 245.w,
+                        child: Text(
+                          node.label,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                              color: nodeFirstParent.contains(node.key) &&
+                                      node.expanded
+                                  ? AppColors.c_FFFF4D35
+                                  : AppColors.TEXT_BLACK_COLOR,
+                              fontSize: nodeFirstParent.contains(node.key) &&
+                                      node.expanded
+                                  ? 16.sp
+                                  : 14.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Visibility(
+                      maintainAnimation: true,
+                      maintainState: true,
+                      maintainSize: true,
+                      visible: !((nodeSecondEndParent.contains(node.key) ||
+                              nodeFirstParent.contains(node.key)) &&
+                          !node.expanded),
+                      child: Container(
+                          margin: EdgeInsets.only(left: 22.w),
+                          child: DottedLine(
+                            dashLength: 3.w,
+                            dashGapLength: 3.w,
+                            lineThickness: 2.w,
+                            dashColor: AppColors.c_FFE2E2E2,
+                            direction: Axis.vertical,
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Visibility(
-              maintainAnimation: true,
-              maintainState: true,
-              maintainSize: true,
-              visible: !(nodeSecondParent.contains(node.key)&& node.expanded),
-              child: Container(
-              height: 1.w,
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 44.w),
-              color: AppColors.c_FFEBEBEB,
-            ))
-
+                maintainAnimation: true,
+                maintainState: true,
+                maintainSize: true,
+                visible:
+                    !(nodeSecondParent.contains(node.key) && node.expanded),
+                child: Container(
+                  height: 1.w,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: 44.w),
+                  color: AppColors.c_FFEBEBEB,
+                ))
           ],
         ),
       );
-
-    }else{
+    } else {
       return InkWell(
-        onTap: (){
+        onTap: () {
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
           logicDetail.getWeekTestDetail(node.key);
@@ -285,7 +308,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                        margin: EdgeInsets.only(left:22.w),
+                        margin: EdgeInsets.only(left: 22.w),
                         child: DottedLine(
                           dashLength: 3.w,
                           dashGapLength: 3.w,
@@ -300,22 +323,23 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                       Container(
                         width: 12.w,
                         height: 12.w,
-                        margin: EdgeInsets.only(left:17.w,right: 18.w),
+                        margin: EdgeInsets.only(left: 17.w, right: 18.w),
                         decoration: BoxDecoration(
                             color: AppColors.c_FFFF4D35,
-                            borderRadius: BorderRadius.all(Radius.circular(16.w))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16.w))),
                       ),
                       Container(
                         width: 235.w,
-                        child: Text(node.label,
-                          overflow:TextOverflow.ellipsis,
+                        child: Text(
+                          node.label,
+                          overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: 14.sp,
-                              color:AppColors.TEXT_GRAY_COLOR),),
+                              color: AppColors.TEXT_GRAY_COLOR),
+                        ),
                       )
-
                     ],
                   ),
                   Expanded(
@@ -326,7 +350,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                       maintainSize: true,
                       visible: !nodeEnd.contains(node.key),
                       child: Container(
-                          margin: EdgeInsets.only(left:22.w),
+                          margin: EdgeInsets.only(left: 22.w),
                           child: DottedLine(
                             dashLength: 3.w,
                             dashGapLength: 3.w,
@@ -338,22 +362,23 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
                   ),
                 ],
               ),
-              Image.asset(R.imagesTreeEdit,width: 20.w,height: 20.w,)
+              Image.asset(
+                R.imagesTreeEdit,
+                width: 20.w,
+                height: 20.w,
+              )
             ],
           ),
         ),
       );
-
     }
   }
 
-
-
-  void _onRefresh() async{
+  void _onRefresh() async {
     logic.getWeekTestCategory("${widget.records!.uuid}");
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     logic.getWeekTestCategory("${widget.records!.uuid}");
