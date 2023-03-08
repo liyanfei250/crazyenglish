@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/pages/practise/question/choise_question.dart';
 import 'package:crazyenglish/pages/practise/question/fix_article_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
@@ -64,6 +65,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       initPageNum = state.pageChangeStr;
     });
 
+    logic.addListenerId(GetBuilderIds.commitAnswer, () {
+      RouterUtil.toNamed(
+          AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+    });
   }
 
   @override
@@ -134,8 +139,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   if(canNext.value){
                     canPre.value = true;
                   }else{
-                    RouterUtil.toNamed(
-                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+
+
                   }
                 },
                 child: Obx(()=> Image.asset(canNext.value? R.imagesPractiseNextQuestionEnable:R.imagesPractiseNextQuestionUnable,width: 40.w,height: 40.w,)),
@@ -180,9 +185,22 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   }),
               InkWell(
                 onTap: (){
-                  if(canNext.value = false){
-                    RouterUtil.toNamed(
-                        AppRoutes.ResultPage,arguments: {"detail":widget.testDetailResponse});
+                  if(canNext.value == false){
+                    Get.defaultDialog(
+                      textConfirm: "确定",
+                      textCancel: "取消",
+                      onConfirm:(){
+                        CommitRequest commitRequest = CommitRequest(
+                            muchTime: "2023-02-23 02:20:01",
+                            name: "测试",
+                            directory: "测试",
+                          exercises: widget.testDetailResponse!.data
+                        );
+                        logic.uploadWeekTest(commitRequest);
+                      }
+                    );
+                    // uploadWeekTest
+                    Util.toast("show");
                   }else{
                     canNext.value = pages[0].next();
                     canPre.value = true;

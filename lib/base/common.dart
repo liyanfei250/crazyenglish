@@ -108,5 +108,9 @@ class C{
   static const String REGISTER_PRIVACY_POLICY_LAW = "https://geeklei.cn:8443/user/policy"; // 隐私与政策
 
 
+}
 
+class HTTP_CODE{
+  static const int OK = 1;
+  static const int ERROR = 0;
 }

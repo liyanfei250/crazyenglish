@@ -62,8 +62,11 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildSingleTxtChoice(List<TiList> list,int answerIndex){
-    var choseItem = 0.obs;
+  static Widget buildSingleTxtChoice(List<TiList> list,int answerIndex,{int? defaultChooseIndex}){
+
+    var choseItem = (-1).obs;
+    choseItem.value = defaultChooseIndex??-1;
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,8 +99,9 @@ class QuestionFactory{
   }
 
 
-  static Widget buildSingleImgChoice(List<TiList> list,int answerIndex){
-    var choseItem = 0.obs;
+  static Widget buildSingleImgChoice(List<TiList> list,int answerIndex,{int? defaultChooseIndex}){
+    var choseItem = (-1).obs;
+    choseItem.value = defaultChooseIndex??-1;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

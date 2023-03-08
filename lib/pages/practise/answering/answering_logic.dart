@@ -1,10 +1,13 @@
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/commit_request.dart';
+import '../../../repository/week_test_repository.dart';
 import 'answering_state.dart';
 
 class AnsweringLogic extends GetxController {
   final AnsweringState state = AnsweringState();
+  final WeekTestRepository weekTestRepository = WeekTestRepository();
 
   @override
   void onReady() {
@@ -26,5 +29,11 @@ class AnsweringLogic extends GetxController {
   void initPageStr(String initPage){
     state.pageChangeStr = initPage;
     update([GetBuilderIds.answerPageInitNum]);
+  }
+
+  void uploadWeekTest(CommitRequest commitRequest) async{
+    CommitRequest commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
+    state.commitRequest = commitResponse;
+    update([GetBuilderIds.commitAnswer]);
   }
 }

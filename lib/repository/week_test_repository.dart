@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import '../api/api.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
+import '../entity/commit_request.dart';
 import '../entity/user_info_response.dart';
 import '../entity/week_detail_response.dart' as weekDetail;
 import '../net/net_manager.dart';
@@ -65,6 +66,21 @@ class WeekTestRepository{
 
       weekDetail.WeekDetailResponse weekTestDetailResponse = weekDetail.WeekDetailResponse.fromJson(baseResp.getReturnData());
       return weekTestDetailResponse!;
+    } else {
+      return Future.error("返回weekTestDetailResponse为空");
+    }
+  }
+
+  Future<CommitRequest> uploadWeekTest(CommitRequest commitRequest) async{
+    BaseResp baseResp = await NetManager.getInstance()!
+        .request(data:commitRequest,Method.post, Api.postWeekCommit,
+        options: Options(method: Method.post));
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.msg!);
+    }
+    if(baseResp.getReturnData() !=null){
+      CommitResponse commitResponse = CommitResponse.fromJson(baseResp.getReturnData());
+      return commitResponse.data!;
     } else {
       return Future.error("返回weekTestDetailResponse为空");
     }

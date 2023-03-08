@@ -61,8 +61,9 @@ class Data {
   Data({
       String? uuid, 
       String? title, 
-      dynamic content, 
-      List<Options>? options, 
+      num? student_answer,
+      dynamic content,
+      List<Options>? options,
       String? answer, 
       num? type, 
       num? typeChildren, 
@@ -72,6 +73,7 @@ class Data {
     _content = content;
     _options = options;
     // _answer = answer;
+    _student_answer = student_answer;
     _type = type;
     _typeChildren = typeChildren;
     _audio = audio;
@@ -88,6 +90,7 @@ class Data {
       });
     }
     // _answer = json['answer'];
+    _student_answer = json['student_answer'];
     _type = json['type'];
     _typeChildren = json['typeChildren'];
     _audio = json['audio'];
@@ -97,6 +100,7 @@ class Data {
   dynamic _content;
   List<Options>? _options;
   // String? _answer;
+  num? _student_answer;
   num? _type;
   num? _typeChildren;
   String? _audio;
@@ -105,6 +109,7 @@ Data copyWith({  String? uuid,
   dynamic content,
   List<Options>? options,
   String? answer,
+  num? student_answer,
   num? type,
   num? typeChildren,
   String? audio,
@@ -113,6 +118,7 @@ Data copyWith({  String? uuid,
   content: content ?? _content,
   options: options ?? _options,
   // answer: answer ?? _answer,
+  student_answer: student_answer ?? _student_answer,
   type: type ?? _type,
   typeChildren: typeChildren ?? _typeChildren,
   audio: audio ?? _audio,
@@ -122,6 +128,7 @@ Data copyWith({  String? uuid,
   dynamic get content => _content;
   List<Options>? get options => _options;
   // String? get answer => _answer;
+  num? get student_answer => _student_answer;
   num? get type => _type;
   num? get typeChildren => _typeChildren;
   String? get audio => _audio;
@@ -135,6 +142,7 @@ Data copyWith({  String? uuid,
       map['options'] = _options?.map((v) => v.toJson()).toList();
     }
     // map['answer'] = _answer;
+    map['student_answer'] = _student_answer;
     map['type'] = _type;
     map['typeChildren'] = _typeChildren;
     map['audio'] = _audio;
@@ -149,7 +157,8 @@ Data copyWith({  String? uuid,
 
 class Options {
   Options({
-      num? answer, 
+      num? answer,
+      num? student_answer,
       String? name, 
       String? value,
       List<TiList>? list,}){
@@ -161,6 +170,7 @@ class Options {
 
   Options.fromJson(dynamic json) {
     _answer = json['answer'];
+    _student_answer = json['student_answer'];
     _name = json['name'];
     _value = json['value'];
     if (json['list'] != null) {
@@ -171,14 +181,19 @@ class Options {
     }
   }
   num? _answer;
+  num? _student_answer;
   String? _name;
   String? _value;
   List<TiList>? _list;
-Options copyWith({  num? answer,
+Options copyWith({
+  num? answer,
+  num? student_answer,
   String? name,
   String? value,
   List<TiList>? list,
-}) => Options(  answer: answer ?? _answer,
+}) => Options(
+  answer: answer ?? _answer,
+  student_answer: student_answer ?? _student_answer,
   name: name ?? _name,
   value: value ?? _value,
   list: list ?? _list,
@@ -191,6 +206,7 @@ Options copyWith({  num? answer,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['answer'] = _answer;
+    map['student_answer'] = _student_answer;
     map['name'] = _name;
     map['value'] = _value;
     if (_list != null) {

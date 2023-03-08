@@ -183,6 +183,8 @@ class NetManager {
           SpUtil.putString(BaseConstant.loginTOKEN, "");
           Util.getHeader();
           RouterUtil.offAndToNamed(AppRoutes.LoginNew);
+        } else if(baseResp.code == HTTP_CODE.ERROR){
+          Util.toastLong(baseResp.msg??"服务出现问题");
         }
 
         baseResp.setReturnData(response.data);

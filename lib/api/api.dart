@@ -62,5 +62,7 @@ class Api {
   static String getWeeklyDirectory = Config.ApiHost+"/app/weekly/directory/tree";
   // 周报详情
   static String getWeekDetail = Config.ApiHost+ "/app/weekly/associate";
+  // 提交答案接口
+  static String postWeekCommit = Config.ApiHost+ "/app/weekly/commit";
 
 }
