@@ -22,7 +22,7 @@ class LeftLineWidget extends StatefulWidget {
     Key? key,
     required this.showTop,
     required this.showBottom,
-    required this.isLight,//如果为true 只画虚线，不画圆
+    required this.isLight, //如果为true 只画虚线，不画圆
   }) : super(key: key);
 
   @override
@@ -67,11 +67,11 @@ class _DrawPictureState extends State<LeftLineWidget> {
 class LeftLinePainter extends CustomPainter {
   static const double _topHeight = 16;
   static const Color _lightColor = Colors.deepPurpleAccent;
-  static const Color _normalColor =Colors.grey;
+  static const Color _normalColor = Colors.white;
 
   final bool showTop;
   final bool showBottom;
-  final bool isLight;//如果为true 只画虚线，不画圆
+  final bool isLight; //如果为true 只画虚线，不画圆
   ui.Image? _image;
 
   LeftLinePainter(this.showTop, this.showBottom, this.isLight, this._image);
@@ -82,14 +82,14 @@ class LeftLinePainter extends CustomPainter {
       double lineWidth = 2;
       double centerX = size.width / 2;
       Paint linePain = Paint();
-      linePain.color = showTop ? Colors.grey : Colors.transparent;
+      linePain.color = showTop ? Color(0xffd2d5dc) : Colors.transparent;
       linePain.strokeWidth = lineWidth;
       linePain.strokeCap = StrokeCap.square;
       // canvas.drawLine(Offset(centerX, 0), Offset(centerX, _topHeight), linePain);
       var dashHeightOne = 3;
       var dashSpaceOne = 3;
       double startYOne = 0;
-      var maxOne = size.height;
+      var maxOne = 10;
       final spaceOne = (dashSpaceOne + dashHeightOne);
       if (showTop) {
         while (startYOne < maxOne) {
@@ -102,16 +102,19 @@ class LeftLinePainter extends CustomPainter {
       Paint circlePaint = Paint();
       circlePaint.color = _normalColor;
       circlePaint.style = PaintingStyle.fill;
-      linePain.color = showBottom ? Colors.grey : Colors.transparent;
+      Paint circlePaintNew = Paint();
+      circlePaintNew.color = Color(0xfffff6f2);
+      circlePaintNew.style = PaintingStyle.fill;
+      linePain.color = showBottom ? Color(0xffd2d5dc): Colors.transparent;
       // canvas.drawLine(
       //     Offset(centerX, _topHeight), Offset(centerX, size.height), linePain);
 
-      var dashHeight = 3;
-      var dashSpace = 3;
+      var dashHeight = 2;
+      var dashSpace = 4;
       double startY = _topHeight;
       var max = size.height;
       final space = (dashSpace + dashHeight);
-      if(showBottom){
+      if (showBottom) {
         while (startY < max) {
           canvas.drawLine(Offset(centerX, startY),
               Offset(centerX, startY + dashHeight), linePain);
@@ -120,17 +123,19 @@ class LeftLinePainter extends CustomPainter {
       }
 
       double centerXNew = size.width / 4;
+      double centerXBad = size.width / 1.5;
       Paint newPaint = Paint();
       newPaint.strokeWidth = 1;
       newPaint.color = Color(0xffffbc00);
 
+      canvas.drawCircle(Offset(centerX, _topHeight), centerXBad, circlePaintNew);
       canvas.drawCircle(Offset(centerX, _topHeight), centerX, circlePaint);
       canvas.drawCircle(Offset(centerX, _topHeight), centerXNew, newPaint);
     } else {
       double lineWidth = 2;
       double centerX = size.width / 2;
       Paint linePain = Paint();
-      linePain.color = showTop ? Colors.grey : Colors.transparent;
+      linePain.color = showTop ? Color(0xffd2d5dc): Colors.transparent;
       linePain.strokeWidth = lineWidth;
       linePain.strokeCap = StrokeCap.square;
       // canvas.drawLine(Offset(centerX, 0), Offset(centerX, _topHeight), linePain);

@@ -229,6 +229,8 @@ class R {
   static final String imagesMyIconShare = 'images/my_icon_share.png';
   /// ![](http://127.0.0.1:11/images/my_top_bg.png)
   static final String imagesMyTopBg = 'images/my_top_bg.png';
+  /// ![](http://127.0.0.1:11/images/next_three_icon.png)
+  static final String imagesNextThreeIcon = 'images/next_three_icon.png';
   /// ![](http://127.0.0.1:11/images/player_practise_pause.png)
   static final String imagesPlayerPractisePause = 'images/player_practise_pause.png';
   /// ![](http://127.0.0.1:11/images/player_practise_play.png)
