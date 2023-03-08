@@ -71,8 +71,8 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
       if (stateDetail.weekTestDetailResponse != null &&
           stateDetail.weekTestDetailResponse.data != null &&
           stateDetail.weekTestDetailResponse.data!.length > 0 &&
-          stateDetail.weekTestDetailResponse.data![0].type == 2 &&
-          stateDetail.weekTestDetailResponse.data![0].typeChildren == 7) {
+          stateDetail.weekTestDetailResponse.data![0].type == 4 &&
+          stateDetail.weekTestDetailResponse.data![0].typeChildren == 1) {
         RouterUtil.toNamed(AppRoutes.WritingPage,
             arguments: {"detail": stateDetail.weekTestDetailResponse});
       } else {

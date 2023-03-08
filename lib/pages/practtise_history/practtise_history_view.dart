@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:crazyenglish/pages/practtise_history/CustomDecoration.dart';
+import 'package:crazyenglish/pages/practtise_history/MyDecoration.dart';
 import 'package:crazyenglish/pages/practtise_history/XFDashedLine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -141,15 +143,7 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                       topLeft: Radius.circular(12.w),
                       topRight: Radius.circular(12.w)),
                   color: Colors.white),
-              child:
-                  newLayout() /*ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) {
-                return listitemBigBg();
-              },
-            ),*/
-              )
+              child: newLayout())
         ],
       ),
     );
@@ -168,6 +162,48 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
       color: Colors.yellow,
       // child: listitemBig(),
       child: newLayout(),
+    );
+  }
+
+  Widget listitemBigBgNew(value, int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              // 圆和线
+              height: 35,
+              child: LeftLineWidget(
+                  showTop: index == 0 ? false : true,
+                  showBottom: true,
+                  isLight: false),
+            ),
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.only(top: 4),
+              child: Text(
+                '2023.2.24',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ))
+          ],
+        ),
+        //这里需要自定义虚线BoxDecoration
+        Container(
+          decoration: MyDecoration(),
+          margin: EdgeInsets.only(left: 24),
+          padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: listData.map((value) {
+              return listitem(value);
+            }).toList(),
+          ),
+        )
+      ],
     );
   }
 
@@ -214,172 +250,69 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
           Padding(padding: EdgeInsets.only(top: 20.w)),
           Row(
             children: [
-              Text(
-                value['title'],
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Image.asset(
-                R.imagesListenigLastIcon,
-                fit: BoxFit.cover,
-                width: 26.w,
-                height: 18.w,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value['title'],
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff353e4d)),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Container(
+                      width: 48.w,
+                      height: 17.w,
+                      margin: EdgeInsets.only(top: 7.w),
+                      padding: EdgeInsets.only(
+                          top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                          color: Color(0xfff3f3f6)),
+                      child: Text("16:48",
+                          style: TextStyle(
+                              color: Color(0xff656d8f),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 7.w, left: 13.w),
+                      child: Text(
+                        '60%正确率',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff898a93)),
+                      ),
+                    )
+                  ])
+                ],
               ),
               Expanded(child: Text('')),
-              Text(
-                '正确率 9/15',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff858aa0)),
-              )
+              Image.asset(
+                R.imagesNextThreeIcon,
+                fit: BoxFit.cover,
+                width: 10.w,
+                height: 10.w,
+              ),
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
         ],
       ),
     );
   }
 
   Widget newLayout() {
-    return ListView(
+    return ListView.builder(
       shrinkWrap: true,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // 圆和线
-                  height: 32,
-                  child: LeftLineWidget(
-                      showTop: false, showBottom: true, isLight: false),
-                ),
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Text(
-                    '天天乐超市（限时降价）已取货',
-                    style: TextStyle(fontSize: 18),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ))
-              ],
-            ),
-            //这里需要自定义虚线BoxDecoration
-            Container(
-              decoration: BoxDecoration(
-                  border:
-                      Border(left: BorderSide(width: 2, color: Colors.grey))),
-              margin: EdgeInsets.only(left: 23),
-              padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: listData.map((value) {
-                  return listitem(value);
-                }).toList(),
-              ),
-            )
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // 圆和线
-                  height: 32,
-                  child: LeftLineWidget(
-                      showTop: true, showBottom: true, isLight: false),
-                ),
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Text(
-                    '天天乐超市（限时降价）已取货',
-                    style: TextStyle(fontSize: 18),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ))
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // 圆和线
-                  height: 100.w,
-                  child: LeftLineWidget(
-                      showTop: true, showBottom: true, isLight: true),
-                ),
-                Expanded(
-                    child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('配送员：吴立亮 18888888888'),
-                      Text('时间：2018-12-17 09:55:22'),
-                      Text('配送员：吴立亮 18888888888'),
-                      Text('时间：2018-12-17 09:55:22'),
-                    ],
-                  ),
-                ))
-              ],
-            ),
-            Divider(
-              color: Colors.grey,
-              height: 1,
-              indent: 40.w,
-            )
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // 圆和线
-                  height: 32,
-                  child: LeftLineWidget(
-                      showTop: true, showBottom: false, isLight: false),
-                ),
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Text(
-                    '天天乐超市（限时降价）已取货',
-                    style: TextStyle(fontSize: 18),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ))
-              ],
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      left: BorderSide(width: 2, color: Colors.transparent))),
-              margin: EdgeInsets.only(left: 23),
-              padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('配送员：吴立亮 18888888888'),
-                  Text('时间：2018-12-17 09:55:22')
-                ],
-              ),
-            )
-          ],
-        ),
-      ],
+      itemCount: listDataOne.length,
+      itemBuilder: (BuildContext context, int index) {
+        return listitemBigBgNew(listDataOne[index], index);
+      },
     );
   }
 }
