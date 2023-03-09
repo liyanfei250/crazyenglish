@@ -42,9 +42,9 @@ class ChoiceRadioItem extends StatelessWidget {
       height: this.height,
       decoration: BoxDecoration(
         color: getBgColor(type),
-        borderRadius: BorderRadius.all(Radius.circular(2.w)),
+        borderRadius: BorderRadius.all(Radius.circular(7.w)),
         border: Border.all(
-          color: AppColors.c_FFEBEBEB,
+          color: getBorderColor(type),
             width: type == ChoiceRadioItemType.DEFAULT? 1.w:0,
         ),
       ),
@@ -89,13 +89,26 @@ class ChoiceRadioItem extends StatelessWidget {
   Color getBgColor(ChoiceRadioItemType type){
     switch(type){
       case ChoiceRadioItemType.SELECTED:
-        return AppColors.theme_bg;
+        return AppColors.c_FFF5F7FB;
       case ChoiceRadioItemType.WRONG_SELECTED:
         return AppColors.c_FFFCF0E2;
       case ChoiceRadioItemType.RIGHT_SELECTED:
         return AppColors.c_FFE5F9DE;
       default:
-        return AppColors.theme_bg;
+        return AppColors.c_FFFFFFFF;
+    }
+  }
+
+  Color getBorderColor(ChoiceRadioItemType type){
+    switch(type){
+      case ChoiceRadioItemType.SELECTED:
+        return AppColors.c_FFD2D5DC;
+      case ChoiceRadioItemType.WRONG_SELECTED:
+        return AppColors.c_FFFCF0E2;
+      case ChoiceRadioItemType.RIGHT_SELECTED:
+        return AppColors.c_FFE5F9DE;
+      default:
+        return AppColors.c_FFEBEBEB;
     }
   }
 }
