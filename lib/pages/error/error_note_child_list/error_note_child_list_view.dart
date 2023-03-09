@@ -33,15 +33,11 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(Error_note_child_listLogic());
   final noteLogic = Get.find<Error_noteLogic>();
-  final stateLogic = Get
-      .find<Error_noteLogic>()
-      .state;
-  final state = Get
-      .find<Error_note_child_listLogic>()
-      .state;
+  final stateLogic = Get.find<Error_noteLogic>().state;
+  final state = Get.find<Error_note_child_listLogic>().state;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -104,7 +100,6 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
           state.weekTestDetailResponse.data!.length > 0 &&
           state.weekTestDetailResponse.data![0].type == 4 &&
           state.weekTestDetailResponse.data![0].typeChildren == 1) {
-
         RouterUtil.toNamed(AppRoutes.WritingPage,
             arguments: {"detail": state.weekTestDetailResponse});
       } else {
@@ -170,7 +165,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
-      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
@@ -241,18 +236,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   Widget listitem(List<Directory> value, index) {
     return InkWell(
         onTap: () {
-          /*if (stateDetail.weekTestDetailResponse != null &&
-              stateDetail.weekTestDetailResponse.data != null &&
-              stateDetail.weekTestDetailResponse.data!.length > 0 &&
-              stateDetail.weekTestDetailResponse.data![0].type == 4 &&
-              stateDetail.weekTestDetailResponse.data![0].typeChildren == 1) {
-            RouterUtil.toNamed(AppRoutes.WritingPage,
-                arguments: {"detail": stateDetail.weekTestDetailResponse});
-          } else {
-            RouterUtil.toNamed(AppRoutes.AnsweringPage,
-                arguments: {"detail": stateDetail.weekTestDetailResponse});
-          }*/
-          logic.getWeekTestDetail(value[index].uuid!);
+          if (value[index].correction == 0) {
+            logic.getWeekTestDetail(value[index].uuid!);
+          }
         },
         child: Container(
           child: Column(
@@ -312,17 +298,17 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                     padding: EdgeInsets.only(right: 10.w),
                     child: value[index].correction == 0
                         ? Image.asset(
-                      R.imagesErrorToCorrect,
-                      fit: BoxFit.cover,
-                      width: 41.w,
-                      height: 15.w,
-                    )
+                            R.imagesErrorToCorrect,
+                            fit: BoxFit.cover,
+                            width: 41.w,
+                            height: 15.w,
+                          )
                         : Image.asset(
-                      R.imagesErrorToCorrectOver,
-                      fit: BoxFit.cover,
-                      width: 60.w,
-                      height: 60.w,
-                    ),
+                            R.imagesErrorToCorrectOver,
+                            fit: BoxFit.cover,
+                            width: 60.w,
+                            height: 60.w,
+                          ),
                   )
                 ],
               ),
