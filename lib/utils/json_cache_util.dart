@@ -24,6 +24,7 @@ class JsonCacheManageUtils{
   static final int WeekDirectoryResponse = 0x0A;
   static final int WeekDetailResponse = 0x0B;
   static final int ErrorNoteResponse = 0x0C;
+  static final int ErrorNoteDetailResponse = 0x0D;
 
 
   // String contentJson;

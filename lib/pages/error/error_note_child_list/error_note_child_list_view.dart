@@ -9,7 +9,9 @@ import '../../../base/widgetPage/loading.dart';
 import '../../../entity/error_note_response.dart' as errorDate;
 import '../../../entity/error_note_response.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../error_note/error_note_logic.dart';
 import 'error_note_child_list_logic.dart';
@@ -31,11 +33,15 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(Error_note_child_listLogic());
   final noteLogic = Get.find<Error_noteLogic>();
-  final stateLogic = Get.find<Error_noteLogic>().state;
-  final state = Get.find<Error_note_child_listLogic>().state;
+  final stateLogic = Get
+      .find<Error_noteLogic>()
+      .state;
+  final state = Get
+      .find<Error_note_child_listLogic>()
+      .state;
 
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -89,6 +95,21 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             setState(() {});
           }
         }
+      }
+    });
+
+    logic.addListenerId(GetBuilderIds.errorDetailList, () {
+      if (state.weekTestDetailResponse != null &&
+          state.weekTestDetailResponse.data != null &&
+          state.weekTestDetailResponse.data!.length > 0 &&
+          state.weekTestDetailResponse.data![0].type == 4 &&
+          state.weekTestDetailResponse.data![0].typeChildren == 1) {
+
+        RouterUtil.toNamed(AppRoutes.WritingPage,
+            arguments: {"detail": state.weekTestDetailResponse});
+      } else {
+        RouterUtil.toNamed(AppRoutes.AnsweringPage,
+            arguments: {"detail": state.weekTestDetailResponse});
       }
     });
     _onRefresh();
@@ -149,7 +170,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
-          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
@@ -186,7 +207,10 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             Expanded(child: Text('')),
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text(weekPaperList![index].lastTime!.isNotEmpty ?TimeUtil.getFormatTime(weekPaperList![index].lastTime!): "",
+              child: Text(
+                  weekPaperList![index].lastTime!.isNotEmpty
+                      ? TimeUtil.getFormatTime(weekPaperList![index].lastTime!)
+                      : "",
                   style: TextStyle(
                       fontSize: 10,
                       color: Color(0xff353e4d),
@@ -215,82 +239,99 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   }
 
   Widget listitem(List<Directory> value, index) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Divider(
-            color: Colors.grey,
-            height: 1.w,
-          ),
-          Padding(padding: EdgeInsets.only(top: 14.w)),
-          Row(
+    return InkWell(
+        onTap: () {
+          /*if (stateDetail.weekTestDetailResponse != null &&
+              stateDetail.weekTestDetailResponse.data != null &&
+              stateDetail.weekTestDetailResponse.data!.length > 0 &&
+              stateDetail.weekTestDetailResponse.data![0].type == 4 &&
+              stateDetail.weekTestDetailResponse.data![0].typeChildren == 1) {
+            RouterUtil.toNamed(AppRoutes.WritingPage,
+                arguments: {"detail": stateDetail.weekTestDetailResponse});
+          } else {
+            RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                arguments: {"detail": stateDetail.weekTestDetailResponse});
+          }*/
+          logic.getWeekTestDetail(value[index].uuid!);
+        },
+        child: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+              Divider(
+                color: Colors.grey,
+                height: 1.w,
+              ),
+              Padding(
+                  padding: EdgeInsets.only(
+                      top: value[index].correction == 1 ? 10.w : 14.w)),
+              Row(
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        value[index].name ?? "",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff353e4d)),
+                      Row(
+                        children: [
+                          Text(
+                            value[index].name ?? "",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff353e4d)),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 11.w)),
+                          Visibility(
+                            child: Image.asset(
+                              R.imagesListenigLastIcon,
+                              fit: BoxFit.cover,
+                              width: 26.w,
+                              height: 18.w,
+                            ),
+                            visible: index == 0,
+                          ),
+                        ],
                       ),
-                      Padding(padding: EdgeInsets.only(left: 11.w)),
-                      Visibility(
-                        child: Image.asset(
-                          R.imagesListenigLastIcon,
-                          fit: BoxFit.cover,
-                          width: 26.w,
-                          height: 18.w,
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.w),
+                        child: Text(
+                          '正确率' +
+                              value[index].exercisesSuccess.toString() +
+                              "/" +
+                              value[index].exercisesTotal.toString(),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff858aa0)),
                         ),
-                        visible: index == 0,
                       ),
                     ],
                   ),
+                  Expanded(child: Text('')),
                   Padding(
-                    padding: EdgeInsets.only(top: 4.w),
-                    child: Text(
-                      '正确率' +
-                          value[index].exercisesSuccess.toString() +
-                          "/" +
-                          value[index].exercisesTotal.toString(),
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff858aa0)),
+                    padding: EdgeInsets.only(right: 10.w),
+                    child: value[index].correction == 0
+                        ? Image.asset(
+                      R.imagesErrorToCorrect,
+                      fit: BoxFit.cover,
+                      width: 41.w,
+                      height: 15.w,
+                    )
+                        : Image.asset(
+                      R.imagesErrorToCorrectOver,
+                      fit: BoxFit.cover,
+                      width: 60.w,
+                      height: 60.w,
                     ),
-                  ),
+                  )
                 ],
               ),
-              Expanded(child: Text('')),
               Padding(
-                padding: EdgeInsets.only(right: 10.w),
-                child: value[index].correction == 1
-                    ? Image.asset(
-                        R.imagesErrorToCorrect,
-                        fit: BoxFit.cover,
-                        width: 41.w,
-                        height: 15.w,
-                      )
-                    : Image.asset(
-                        R.imagesErrorToCorrectOver,
-                        fit: BoxFit.cover,
-                        width: 60.w,
-                        height: 60.w,
-                      ),
-              )
+                  padding: EdgeInsets.only(
+                      top: value[index].correction == 1 ? 10.w : 14.w)),
             ],
           ),
-          Padding(
-              padding: EdgeInsets.only(
-                  top: value[index].correction == 1 ? 10.w : 14.w)),
-        ],
-      ),
-    );
+        ));
   }
 
   void _onRefresh() async {
