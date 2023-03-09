@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../error_note_child/error_note_child_view.dart';
 import 'error_note_logic.dart';
@@ -36,6 +37,8 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
   void _onItemTapped(int index) {
     _selectedIndex.value = index;
     pageController!.jumpToPage(_selectedIndex.value);
+    logic.update([GetBuilderIds.changeNoteList]);
+    state.correction = index == 0 ? 0 : 1;
   }
 
   @override

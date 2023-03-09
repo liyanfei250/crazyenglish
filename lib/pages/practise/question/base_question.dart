@@ -140,13 +140,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             //   ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],question.answer!.toInt()));
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!)));
             }
           }else if(element.typeChildren == 2){
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
             }
           }else if(element.typeChildren == 3){
             // 选择题
@@ -157,7 +157,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
                 question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
               ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
             }
           }
 
@@ -166,13 +166,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
             }
           }else if(element.typeChildren == 4){ // 阅读选项
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],question.answer!.toInt()));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
             }
           }else if(element.typeChildren == 5 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
             // 选择题

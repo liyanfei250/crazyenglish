@@ -504,6 +504,11 @@ class NetManager {
         "  path: " +
         request.path;
   }
+  /// get Options Str.
+  String _getOptionsBody(RequestOptions request) {
+    return "body: " +
+        request.data ;
+  }
 
   /// print Data Str.
   void _printDataStr(String tag, Object? value) {

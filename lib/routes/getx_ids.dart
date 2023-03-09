@@ -20,12 +20,15 @@ class GetBuilderIds {
   static const String weekTestList = "weekTestList";
   static const String weekTestCatalogList = "weekTestCatalogList";
   static const String weekTestDetailList = "weekTestDetailList";
+  static const String errorDetailList = "errorNoteDetailList";
   static const String datagroupDetailResponse = "datagroupDetailResponse";
   static const String APPVERSION = "APPVERSION";
   static const String shopList = "shopList";
   static const String answerPageNum = "answerPageNum";
   static const String answerPageInitNum = "answerPageInitNum";
   static const String commitAnswer = "commitAnswer";
+  static const String errorNoteTestList = "errorNoteTestList";
+  static const String changeNoteList = "changeNoteList";
 
 
 

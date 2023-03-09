@@ -64,5 +64,9 @@ class Api {
   static String getWeekDetail = Config.ApiHost+ "/app/weekly/associate";
   // 提交答案接口
   static String postWeekCommit = Config.ApiHost+ "/app/weekly/commit";
+  //根据用户错题本
+  static String getErrotList = Config.ApiHost+ "/app/exercises/error/weekly";
+  //错题本item详情
+  static String getErrotListDetail = Config.ApiHost+ "/app/exercises/error";
 
 }

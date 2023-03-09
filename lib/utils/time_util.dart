@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 /**
@@ -8,7 +9,7 @@ import 'package:intl/intl.dart';
  * Description:
  */
 
-class TimeUtil{
+class TimeUtil {
   static String getMiaoFenOptional(int time) {
     int miao = time % 60;
     int fen = (time / 60).toInt();
@@ -53,10 +54,24 @@ class TimeUtil{
   static int getDistanceDay(String startDateStr) {
     DateFormat dateFormat = DateFormat("yyyy/MM/dd");
     DateTime dateTime = dateFormat.parse(startDateStr);
-    print(startDateStr+":"+dateTime.toString());
+    print(startDateStr + ":" + dateTime.toString());
     var now = new DateTime.now();
     var difference = dateTime.difference(now);
     return difference.inDays;
   }
 
+  static String getFormatTime(String startDateStr) {
+    if (startDateStr.isNotEmpty && startDateStr.length > 17) {
+      try {
+        var finalTime = startDateStr.substring(0, 16).replaceAll('T', ' ');
+        var retuValue = finalTime.replaceAll('-', '.').toString();
+        return retuValue;
+      } catch (e) {
+        e.printError();
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
 }

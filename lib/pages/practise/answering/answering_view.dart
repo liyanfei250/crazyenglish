@@ -24,10 +24,12 @@ import 'answering_logic.dart';
 
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
+  var uuid;
 
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       testDetailResponse = Get.arguments["detail"];
+      uuid = Get.arguments["error_uuid"];
     }
   }
 

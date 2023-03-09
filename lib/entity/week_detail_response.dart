@@ -162,8 +162,8 @@ Data copyWith({  String? uuid,
 
 class Options {
   Options({
-      num? answer,
-      num? student_answer,
+      String? answer,
+      String? student_answer,
       String? name, 
       String? value,
       List<TiList>? list,}){
@@ -174,8 +174,8 @@ class Options {
 }
 
   Options.fromJson(dynamic json) {
-    _answer = json['answer'];
-    _student_answer = json['student_answer'];
+    _answer = json['answer'].toString();
+    _student_answer = json['student_answer'].toString();
     _name = json['name'];
     _value = json['value'];
     if (json['list'] != null) {
@@ -185,14 +185,14 @@ class Options {
       });
     }
   }
-  num? _answer;
-  num? _student_answer;
+  String? _answer;
+  String? _student_answer;
   String? _name;
   String? _value;
   List<TiList>? _list;
 Options copyWith({
-  num? answer,
-  num? student_answer,
+  String? answer,
+  String? student_answer,
   String? name,
   String? value,
   List<TiList>? list,
@@ -203,7 +203,7 @@ Options copyWith({
   value: value ?? _value,
   list: list ?? _list,
 );
-  num? get answer => _answer;
+  String? get answer => _answer;
   String? get name => _name;
   String? get value => _value;
   List<TiList>? get list => _list;
