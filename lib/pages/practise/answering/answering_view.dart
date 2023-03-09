@@ -298,7 +298,16 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             questionList.add(ListenQuestion(data: element));
             isUseData = false;
             break;
-          case 2: // 笔试题
+          case 2: // 阅读题
+            if (element.typeChildren == 7) {
+              // 写作题
+              isUseData = false;
+            } else {
+              questionList.add(ReadQuestion(data: element));
+              isUseData = false;
+            }
+            break;
+          case 3: // 语言综合训练
             if (element.typeChildren == 1) {
               // 单项选择题
               questionList
@@ -309,11 +318,14 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               // 补全对话
               questionList.add(GapQuestion(data: element));
               isUseData = false;
-            } else if (element.typeChildren == 7) {
+            } else if (element.typeChildren == 3){
+              // 完型填空
+
+            }
+            break;
+          case 4: // 写作题
+            if (element.typeChildren == 7) {
               // 写作题
-              isUseData = false;
-            } else {
-              questionList.add(ReadQuestion(data: element));
               isUseData = false;
             }
             break;
