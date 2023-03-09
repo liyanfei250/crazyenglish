@@ -60,4 +60,23 @@ class ErrorNoteRepository {
       return Future.error("返回weekTestDetailResponse为空");
     }
   }
+
+  Future<errorDetail.WeekDetailResponse> getPracticerecordsDetail(
+      uuid) async {
+    BaseResp baseResp = await NetManager.getInstance()!.request(
+        data: {"uuid": uuid},
+        Method.get,
+        Api.getPracticerecordsDetail,
+        options: Options(method: Method.get));
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.msg!);
+    }
+    if (baseResp.getReturnData() != null) {
+      errorDetail.WeekDetailResponse practiceListResponse =
+      errorDetail.WeekDetailResponse.fromJson(baseResp.getReturnData());
+      return practiceListResponse!;
+    } else {
+      return Future.error("返回weekTestDetailResponse为空");
+    }
+  }
 }

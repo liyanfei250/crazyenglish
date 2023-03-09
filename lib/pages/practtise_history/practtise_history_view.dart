@@ -7,6 +7,7 @@ import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import '../../base/AppUtil.dart';
 import '../../entity/practice_list_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -31,23 +32,6 @@ class PracttiseHistoryPage extends BasePage {
 class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
   final logic = Get.put(Practtise_historyLogic());
   final state = Get.find<Practtise_historyLogic>().state;
-
-  /*List listDataOne = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.期末综合能力评估试题",
-      "type": 0,
-    },
-    {"title": "02.期末综合能力评估试题", "type": 1},
-  ];*/
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -87,13 +71,17 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 14.w, right: 14.w),
-                      child: Image.asset(
-                        R.imagesIconBackBlack,
-                        fit: BoxFit.fill,
-                        color: Colors.white,
-                        width: 18.w,
-                        height: 18.w,
-                      ),
+                      child: InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Image.asset(
+                            R.imagesIconBackBlack,
+                            fit: BoxFit.fill,
+                            color: Colors.white,
+                            width: 18.w,
+                            height: 18.w,
+                          )),
                     ),
                     Expanded(
                         flex: 1,
@@ -211,6 +199,13 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
 
   @override
   void onCreate() {
+    logic.addListenerId(GetBuilderIds.getPracticeListDetail, () {
+
+
+      RouterUtil.toNamed(AppRoutes.ResultPage,
+          arguments: {"detail": state.weekTestDetailResponse});
+    });
+
     logic.addListenerId(GetBuilderIds.getPracticeList, () {
       hideLoading();
       if (state.list != null && state.list != null) {
@@ -250,16 +245,6 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
 
   @override
   void onDestroy() {}
-
-  /*Widget listitemBigBg() {
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.topRight,
-      color: Colors.yellow,
-      // child: listitemBig(),
-      child: newLayout(),
-    );
-  }*/
 
   Widget listitemBigBgNew(Rows value, int index) {
     return Column(
@@ -303,46 +288,11 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
     );
   }
 
-  /*Widget listitemBig() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              R.imagesTimePointIcon,
-              width: 15.w,
-              height: 15.w,
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-                child: Text(
-                  '2023.2.24',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xff1b1d2c),
-                      fontWeight: FontWeight.w500),
-                )),
-            Expanded(child: Text('')),
-          ],
-        ),
-        ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          children: listData.map((value) {
-            return listitem(value);
-          }).toList(),
-        )
-      ],
-    );
-  }*/
-
   Widget listitem(ListBean value) {
     return Container(
       child: InkWell(
           onTap: () {
-
+            logic.getPracCordsDetail(value.uuid!);
           },
           child: Column(
             mainAxisSize: MainAxisSize.min,

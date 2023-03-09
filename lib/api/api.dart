@@ -70,5 +70,7 @@ class Api {
   static String getErrotListDetail = Config.ApiHost+ "/app/exercises/error";
   //获取练习记录目录
   static String getPracticerecords = Config.ApiHost+ "/app/practicerecords/list/date";
+  //获取练习记录详情
+  static String getPracticerecordsDetail = Config.ApiHost+ "/app/practicerecords/exercises";
 
 }
