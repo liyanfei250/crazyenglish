@@ -33,20 +33,6 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
     {"title": "语法", "type": 4},
   ];
 
-  List listDataOne = [
-    {"title": "01.情景反应", "type": 0},
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-  ];
-
   @override
   void initState() {
     super.initState();

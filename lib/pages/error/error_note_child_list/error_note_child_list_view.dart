@@ -1,3 +1,4 @@
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ import '../../../entity/error_note_response.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../error_note/error_note_logic.dart';
 import 'error_note_child_list_logic.dart';
 
 class ErrorNoteChildListPage extends StatefulWidget {
@@ -28,28 +30,10 @@ class ErrorNoteChildListPage extends StatefulWidget {
 class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(Error_note_child_listLogic());
+  final noteLogic = Get.find<Error_noteLogic>();
+  final stateLogic = Get.find<Error_noteLogic>().state;
   final state = Get.find<Error_note_child_listLogic>().state;
 
-  final List<String> tabs = const [
-    "听力",
-    "阅读",
-    "写作",
-    "语法",
-  ];
-
-  List listDataOne = [
-    {"title": "01.情景反应", "type": 0},
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-  ];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
@@ -61,7 +45,21 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   @override
   void initState() {
     super.initState();
-    logic.addListenerId(GetBuilderIds.errorNoteTestList, () {
+    print('type==' +
+        widget.type.toString() +
+        'typeTwo==' +
+        widget.typeTwo.toString());
+
+    /*noteLogic.addListenerId(GetBuilderIds.changeNoteList, () {
+      currentPageNo = 1;
+      logic.getList(
+          stateLogic.correction, widget.typeTwo, pageStartIndex, pageSize);
+    });*/
+
+    logic.addListenerId(
+        GetBuilderIds.errorNoteTestList +
+            widget.type.toString() +
+            widget.typeTwo.toString(), () {
       hideLoading();
       if (state.list != null && state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -188,7 +186,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             Expanded(child: Text('')),
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text(weekPaperList![index].lastTime ?? "",
+              child: Text(weekPaperList![index].lastTime!.isNotEmpty ?TimeUtil.getFormatTime(weekPaperList![index].lastTime!): "",
                   style: TextStyle(
                       fontSize: 10,
                       color: Color(0xff353e4d),
@@ -287,7 +285,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               )
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: value[index].correction == 1?10.w:14.w)),
+          Padding(
+              padding: EdgeInsets.only(
+                  top: value[index].correction == 1 ? 10.w : 14.w)),
         ],
       ),
     );
@@ -306,6 +306,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   @override
   void dispose() {
     Get.delete<Error_note_child_listLogic>();
+    Get.delete<Error_noteLogic>();
     _refreshController.dispose();
     super.dispose();
   }
