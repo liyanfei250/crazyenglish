@@ -15,12 +15,13 @@ class Practtise_historyLogic extends GetxController {
 
   void getPracCords(page, pageSize) async {
     PracticeListResponse sendCodeResponse =
-    await resposi.getPracticerecords(page, pageSize);
-    if(sendCodeResponse.data!=null&&sendCodeResponse.data!.rows!=null){
+        await resposi.getPracticerecords(page, pageSize);
+    if (sendCodeResponse.data != null && sendCodeResponse.data!.rows != null) {
       state.list = sendCodeResponse.data!.rows!;
     }
-    if(sendCodeResponse.data!=null&&sendCodeResponse.data!.exercisesTotal!=null){
-      state.totalNum = sendCodeResponse.data!.exercisesTotal!.toInt();
+    if (sendCodeResponse.data != null &&
+        sendCodeResponse.data!.exercisesTotal != null) {
+      state.totalNum = int.parse(sendCodeResponse.data!.exercisesTotal!);
     }
     state.pageNo = page;
     update([GetBuilderIds.getPracticeList]);

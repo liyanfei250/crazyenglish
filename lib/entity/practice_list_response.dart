@@ -51,7 +51,7 @@ class Data {
   Data({
       num? count, 
       List<Rows>? rows, 
-      num? exercisesTotal,}){
+      String? exercisesTotal,}){
     _count = count;
     _rows = rows;
     _exercisesTotal = exercisesTotal;
@@ -65,21 +65,21 @@ class Data {
         _rows?.add(Rows.fromJson(v));
       });
     }
-    _exercisesTotal = json['exercises_total'];
+    _exercisesTotal = json['exercises_total'].toString();
   }
   num? _count;
   List<Rows>? _rows;
-  num? _exercisesTotal;
+  String? _exercisesTotal;
 Data copyWith({  num? count,
   List<Rows>? rows,
-  num? exercisesTotal,
+  String? exercisesTotal,
 }) => Data(  count: count ?? _count,
   rows: rows ?? _rows,
   exercisesTotal: exercisesTotal ?? _exercisesTotal,
 );
   num? get count => _count;
   List<Rows>? get rows => _rows;
-  num? get exercisesTotal => _exercisesTotal;
+  String? get exercisesTotal => _exercisesTotal;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
