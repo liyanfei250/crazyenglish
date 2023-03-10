@@ -66,7 +66,7 @@ class Data {
   Data({
       String? uuid, 
       String? title, 
-      num? student_answer,
+      String? student_answer,
       dynamic content,
       List<Options>? options,
       String? answer, 
@@ -99,7 +99,7 @@ class Data {
       });
     }
     // _answer = json['answer'];
-    _student_answer = json['student_answer'];
+    _student_answer = json['student_answer'].toString();
     _type = json['type'];
     _typeChildren = json['typeChildren'];
     _audio = json['audio'];
@@ -111,7 +111,7 @@ class Data {
   dynamic _content;
   List<Options>? _options;
   // String? _answer;
-  num? _student_answer;
+  String? _student_answer;
   num? _type;
   num? _typeChildren;
   String? _audio;
@@ -122,7 +122,7 @@ Data copyWith({  String? uuid,
   dynamic content,
   List<Options>? options,
   String? answer,
-  num? student_answer,
+  String? student_answer,
   num? type,
   num? typeChildren,
   String? audio,
@@ -145,7 +145,7 @@ Data copyWith({  String? uuid,
   dynamic get content => _content;
   List<Options>? get options => _options;
   // String? get answer => _answer;
-  num? get student_answer => _student_answer;
+  String? get student_answer => _student_answer;
   num? get type => _type;
   num? get typeChildren => _typeChildren;
   String? get audio => _audio;

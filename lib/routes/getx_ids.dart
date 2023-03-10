@@ -27,6 +27,7 @@ class GetBuilderIds {
   static const String answerPageNum = "answerPageNum";
   static const String answerPageInitNum = "answerPageInitNum";
   static const String commitAnswer = "commitAnswer";
+  static const String commitAnswerWriting = "commitAnswer";
   static const String errorNoteTestList = "errorNoteTestList";
   static const String changeNoteList = "changeNoteList";
   static const String getPracticeList = "getPracticeList";
