@@ -169,29 +169,36 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           }
 
         }else if(element.type == 2){
-          if(element.typeChildren == 3){
+          if(element.typeChildren == 1){ // 阅读理解选项
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
               itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
-          }else if(element.typeChildren == 4){ // 阅读选项
+          }else if(element.typeChildren == 2){ // 阅读填空
             // 选择题
-            itemList.add(buildQuestionType("选择题"));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }else if(element.typeChildren == 5 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
+            itemList.add(buildQuestionType("填空题"));
+            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
+            isHebing = true;
+          }else  if(element.typeChildren == 3){ // 阅读理解对话
             // 选择题
+            itemList.add(buildQuestionType("简单题"));
+            itemList.add(Visibility(
+              visible: question!.name != null && question!.name!.isNotEmpty,
+              child: Text(
+                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              ),));
+            itemList.add(QuestionFactory.buildShortAnswerQuestion(question.value??"",0,makeEditController));
+          }
+        } else if(element.type == 3 ){ // 语言综合训练
+          if (element.typeChildren == 2){
+            // 补全对话
             itemList.add(buildQuestionType("填空题"));
             itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
             isHebing = true;
           }
         }
-        // else if(element.type == 3 ){  // 填空题
-        //   itemList.add(buildQuestionType("填空题"));
-        //   itemList.add(QuestionFactory.buildGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeEditController));
-        // }else if(element.type == 5){
+        // else if(element.type == 5){
         //   itemList.add(buildQuestionType("纠错题"));
         //   itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
         // }else if(element.type == 12){

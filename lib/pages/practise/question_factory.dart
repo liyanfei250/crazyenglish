@@ -279,6 +279,46 @@ class QuestionFactory{
     );
   }
 
+  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+    var correctType = 0.obs;
+    TextEditingController controller = TextEditingController();
+    return SizedBox(
+      width: 50.w,
+      child: Obx(()=>TextField(
+          keyboardType: TextInputType.name,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: getInputColor(correctType.value)),
+          decoration: InputDecoration(
+            isDense:true,
+            contentPadding: EdgeInsets.all(0.w),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  width: 1.w,
+                  color: getInputColor(correctType.value),
+                  style: BorderStyle.solid
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  width: 1.w,
+                  color: getInputColor(correctType.value),
+                  style: BorderStyle.solid
+              ),
+            ),
+          ),
+          onChanged: (text){
+
+          },
+          onSubmitted: (text){
+
+          },
+          onEditingComplete: (){
+          },
+          controller: controller)),
+    );
+  }
+
 
   static Widget buildGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
