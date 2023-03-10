@@ -3,13 +3,21 @@ import 'dart:ui' as ui;
 import 'package:crazyenglish/pages/practtise_history/CustomDecoration.dart';
 import 'package:crazyenglish/pages/practtise_history/MyDecoration.dart';
 import 'package:crazyenglish/pages/practtise_history/XFDashedLine.dart';
+import 'package:crazyenglish/utils/time_util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import '../../base/AppUtil.dart';
+import '../../entity/practice_list_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
+import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import 'LeftLineWidget.dart';
 import 'practtise_history_logic.dart';
@@ -24,22 +32,16 @@ class PracttiseHistoryPage extends BasePage {
 class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
   final logic = Get.put(Practtise_historyLogic());
   final state = Get.find<Practtise_historyLogic>().state;
-  List listDataOne = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.期末综合能力评估试题",
-      "type": 0,
-    },
-    {"title": "02.期末综合能力评估试题", "type": 1},
-  ];
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  final int pageSize = 10;
+  int currentPageNo = 1;
+  String totalNum = "";
+
+  List<Rows> weekPaperList = [];
+  final int pageStartIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +71,17 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 14.w, right: 14.w),
-                      child: Image.asset(
-                        R.imagesIconBackBlack,
-                        fit: BoxFit.fill,
-                        color: Colors.white,
-                        width: 18.w,
-                        height: 18.w,
-                      ),
+                      child: InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Image.asset(
+                            R.imagesIconBackBlack,
+                            fit: BoxFit.fill,
+                            color: Colors.white,
+                            width: 18.w,
+                            height: 18.w,
+                          )),
                     ),
                     Expanded(
                         flex: 1,
@@ -111,7 +117,12 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                       )),
                       Padding(
                         padding: EdgeInsets.only(left: 12.w),
-                        child: Text('练习训练：348次'),
+                        child: InkWell(
+                          onTap: () {
+                            //logic.getPracCords(1, 10);
+                          },
+                          child: Text('练习训练：' + totalNum + ' 次'),
+                        ),
                       )
                     ],
                   ),
@@ -124,7 +135,7 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                 top: 214.w,
               ),
               padding: EdgeInsets.only(
-                  left: 14.w, right: 14.w, top: 10.w, bottom: 10.w),
+                  left: 14.w, right: 14.w, top: 20.w, bottom: 10.w),
               width: double.infinity,
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
@@ -143,29 +154,99 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                       topLeft: Radius.circular(12.w),
                       topRight: Radius.circular(12.w)),
                   color: Colors.white),
-              child: newLayout())
+              child: SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: WaterDropHeader(),
+                footer: CustomFooter(
+                  builder: (BuildContext context, LoadStatus? mode) {
+                    Widget body;
+                    if (mode == LoadStatus.idle) {
+                      body = Text("");
+                    } else if (mode == LoadStatus.loading) {
+                      body = CupertinoActivityIndicator();
+                    } else if (mode == LoadStatus.failed) {
+                      body = Text("");
+                    } else if (mode == LoadStatus.canLoading) {
+                      body = Text("release to load more");
+                    } else {
+                      body = Text("");
+                    }
+                    return Container(
+                      height: 55.0,
+                      child: Center(child: body),
+                    );
+                  },
+                ),
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        buildItem,
+                        childCount: weekPaperList.length,
+                      ),
+                    ),
+                  ],
+                ),
+              ))
         ],
       ),
     );
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+    logic.addListenerId(GetBuilderIds.getPracticeListDetail, () {
+
+
+      RouterUtil.toNamed(AppRoutes.ResultPage,
+          arguments: {"detail": state.weekTestDetailResponse});
+    });
+
+    logic.addListenerId(GetBuilderIds.getPracticeList, () {
+      hideLoading();
+      if (state.list != null && state.list != null) {
+        totalNum = state.totalNum.toString();
+        if (state.pageNo == currentPageNo + 1) {
+          weekPaperList = state.list;
+          currentPageNo++;
+          weekPaperList.addAll(state!.list!);
+          if (mounted && _refreshController != null) {
+            _refreshController.loadComplete();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        } else if (state.pageNo == pageStartIndex) {
+          currentPageNo = pageStartIndex;
+          weekPaperList.clear();
+          weekPaperList.addAll(state.list!);
+          if (mounted && _refreshController != null) {
+            _refreshController.refreshCompleted();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        }
+      }
+    });
+    _onRefresh();
+    showLoading("");
+  }
 
   @override
   void onDestroy() {}
 
-  Widget listitemBigBg() {
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.topRight,
-      color: Colors.yellow,
-      // child: listitemBig(),
-      child: newLayout(),
-    );
-  }
-
-  Widget listitemBigBgNew(value, int index) {
+  Widget listitemBigBgNew(Rows value, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -184,7 +265,7 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
                 child: Container(
               padding: EdgeInsets.only(top: 4),
               child: Text(
-                '2023.2.24',
+                value.date ?? '',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -198,7 +279,7 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
           padding: EdgeInsets.fromLTRB(22, 0, 16, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: listData.map((value) {
+            children: value.list!.map((value) {
               return listitem(value);
             }).toList(),
           ),
@@ -207,112 +288,114 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
     );
   }
 
-  Widget listitemBig() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              R.imagesTimePointIcon,
-              width: 15.w,
-              height: 15.w,
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-                child: Text(
-                  '2023.2.24',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xff1b1d2c),
-                      fontWeight: FontWeight.w500),
-                )),
-            Expanded(child: Text('')),
-          ],
-        ),
-        ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          children: listData.map((value) {
-            return listitem(value);
-          }).toList(),
-        )
-      ],
-    );
-  }
-
-  Widget listitem(value) {
+  Widget listitem(ListBean value) {
     return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 20.w)),
-          Row(
+      child: InkWell(
+          onTap: () {
+            logic.getPracCordsDetail(value.uuid!);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Padding(padding: EdgeInsets.only(top: 20.w)),
+              Row(
                 children: [
-                  Text(
-                    value['title'],
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff353e4d)),
-                  ),
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Container(
-                      width: 48.w,
-                      height: 17.w,
-                      margin: EdgeInsets.only(top: 7.w),
-                      padding: EdgeInsets.only(
-                          top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(2.w)),
-                          color: Color(0xfff3f3f6)),
-                      child: Text("16:48",
-                          style: TextStyle(
-                              color: Color(0xff656d8f),
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 7.w, left: 13.w),
-                      child: Text(
-                        '60%正确率',
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.weeklyName ?? '',
                         style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff898a93)),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff353e4d)),
                       ),
-                    )
-                  ])
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 48.w,
+                              height: 17.w,
+                              margin: EdgeInsets.only(top: 7.w),
+                              padding: EdgeInsets.only(
+                                  top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2.w)),
+                                  color: Color(0xfff3f3f6)),
+                              child: Text(
+                                  TimeUtil.getFormatTimeHHmm(
+                                      value.createdAt.toString()),
+                                  style: TextStyle(
+                                      color: Color(0xff656d8f),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 7.w, left: 13.w),
+                              child: Text(
+                                value.exercisesSuccess.toString() +
+                                    "/" +
+                                    value.exercisesTotal.toString() +
+                                    '正确率',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff898a93)),
+                              ),
+                            )
+                          ])
+                    ],
+                  ),
+                  Expanded(child: Text('')),
+                  Image.asset(
+                    R.imagesNextThreeIcon,
+                    fit: BoxFit.cover,
+                    width: 10.w,
+                    height: 10.w,
+                  ),
                 ],
               ),
-              Expanded(child: Text('')),
-              Image.asset(
-                R.imagesNextThreeIcon,
-                fit: BoxFit.cover,
-                width: 10.w,
-                height: 10.w,
-              ),
+              Padding(padding: EdgeInsets.only(top: 10.w)),
             ],
-          ),
-          Padding(padding: EdgeInsets.only(top: 10.w)),
-        ],
-      ),
+          )),
     );
   }
 
   Widget newLayout() {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: listDataOne.length,
+      itemCount: weekPaperList.length,
       itemBuilder: (BuildContext context, int index) {
-        return listitemBigBgNew(listDataOne[index], index);
+        return listitemBigBgNew(weekPaperList[index], index);
       },
     );
+  }
+
+  Widget buildItem(BuildContext context, int index) {
+    return InkWell(
+        onTap: () {
+          //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
+        },
+        child: listitemBigBgNew(weekPaperList[index], index));
+  }
+
+  void _onRefresh() async {
+    currentPageNo = pageStartIndex;
+    logic.getPracCords(pageStartIndex, pageSize);
+  }
+
+  void _onLoading() async {
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    logic.getPracCords(currentPageNo, pageSize);
+  }
+
+  @override
+  void dispose() {
+    Get.delete<Practtise_historyLogic>();
+    _refreshController.dispose();
+    super.dispose();
   }
 }

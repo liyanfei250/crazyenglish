@@ -51,7 +51,11 @@ class _ToListeningPracticePageState
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+    // logic.getPracCords(1, 10);
+
+    // logic.addListenerId(key, () { })
+  }
 
   @override
   void onDestroy() {}

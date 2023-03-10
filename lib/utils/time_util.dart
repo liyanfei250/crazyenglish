@@ -60,6 +60,20 @@ class TimeUtil {
     return difference.inDays;
   }
 
+  static String getFormatTimeHHmm(String startDateStr) {
+    if (startDateStr.isNotEmpty && startDateStr.length > 17) {
+      try {
+        var finalTime = startDateStr.substring(11, 16).replaceAll('T', ' ');
+        var retuValue = finalTime.replaceAll('-', ':').toString();
+        return retuValue;
+      } catch (e) {
+        e.printError();
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
   static String getFormatTime(String startDateStr) {
     if (startDateStr.isNotEmpty && startDateStr.length > 17) {
       try {
