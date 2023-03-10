@@ -225,20 +225,40 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
 
   Widget _listShow() => Expanded(
           child: Container(
-        height: 180.w,
-        child: Text(exList,
-            style: TextStyle(
-                color: Color(0xff353e4d),
-                fontSize: 12.sp,
-                wordSpacing: 2.0,
-                height: 3),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 5),
-      ));
+            height: 190.w,
+              child: SelectionArea(
+        child: Html(
+          data: TextUtil.weekDetail.replaceFirst("###content###",
+              widget.testDetailResponse?.data![0].modelessay ?? ""),
+          onImageTap: (
+            url,
+            context,
+            attributes,
+            element,
+          ) {
+            if (url != null && url!.startsWith('http')) {
+              DialogManager.showPreViewImageDialog(
+                  BackButtonBehavior.close, url);
+            }
+          },
+          style: {
+            "p": Style(fontSize: FontSize.large),
+            "sentence": Style(
+                textDecorationStyle: TextDecorationStyle.dashed,
+                textDecorationColor: AppColors.THEME_COLOR),
+            "hr": Style(
+              margin: Margins.only(left: 0, right: 0, top: 10.w, bottom: 10.w),
+              padding: EdgeInsets.all(0),
+              border: Border(bottom: BorderSide(color: Colors.grey)),
+            )
+          },
+          tagsList: Html.tags..addAll(['sentence']),
+        ),
+      )));
 
   Widget _rightShow() => Container(
         width: 90.w,
-        height: 180.w,
+        height: 190.w,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -249,7 +269,11 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
                 Util.toast("查看范文");
                 showDialog(
                   context: context,
-                  builder: (context) => WritDialog(exTile, exList),
+                  builder: (context) => WritDialog(
+                      exTile,
+                      exList,
+                      widget.testDetailResponse?.data![0].modelessay_text ??
+                          ""),
                 );
               },
               child: Image.asset(
@@ -301,7 +325,6 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
                 InkWell(
                     onTap: () {
                       //RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
-
                     },
                     child: Image.asset(
                       R.imagesToridClose,

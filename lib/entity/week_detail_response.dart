@@ -70,6 +70,8 @@ class Data {
       dynamic content,
       List<Options>? options,
       String? answer, 
+      String? modelessay,
+      String? modelessay_text,
       num? type, //type=2
       num? typeChildren, //typeChildren=7
       String? audio,}){
@@ -81,6 +83,8 @@ class Data {
     _student_answer = student_answer;
     _type = type;
     _typeChildren = typeChildren;
+    _modelessay = modelessay;
+    _modelessay_text = modelessay_text;
     _audio = audio;
 }
 
@@ -99,6 +103,8 @@ class Data {
     _type = json['type'];
     _typeChildren = json['typeChildren'];
     _audio = json['audio'];
+    _modelessay = json['modelessay'];
+    _modelessay_text = json['modelessay_text'];
   }
   String? _uuid;
   String? _title;
@@ -109,6 +115,8 @@ class Data {
   num? _type;
   num? _typeChildren;
   String? _audio;
+  String? _modelessay;
+  String? _modelessay_text;
 Data copyWith({  String? uuid,
   String? title,
   dynamic content,
@@ -118,6 +126,8 @@ Data copyWith({  String? uuid,
   num? type,
   num? typeChildren,
   String? audio,
+  String? modelessay,
+  String? modelessay_text,
 }) => Data(  uuid: uuid ?? _uuid,
   title: title ?? _title,
   content: content ?? _content,
@@ -126,6 +136,8 @@ Data copyWith({  String? uuid,
   student_answer: student_answer ?? _student_answer,
   type: type ?? _type,
   typeChildren: typeChildren ?? _typeChildren,
+  modelessay: modelessay ?? _modelessay,
+  modelessay_text: modelessay_text ?? _modelessay_text,
   audio: audio ?? _audio,
 );
   String? get uuid => _uuid;
@@ -137,6 +149,8 @@ Data copyWith({  String? uuid,
   num? get type => _type;
   num? get typeChildren => _typeChildren;
   String? get audio => _audio;
+  String? get modelessay => _modelessay;
+  String? get modelessay_text => _modelessay_text;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -150,6 +164,8 @@ Data copyWith({  String? uuid,
     map['student_answer'] = _student_answer;
     map['type'] = _type;
     map['typeChildren'] = _typeChildren;
+    map['modelessay'] = _modelessay;
+    map['modelessay_text'] = _modelessay_text;
     map['audio'] = _audio;
     return map;
   }

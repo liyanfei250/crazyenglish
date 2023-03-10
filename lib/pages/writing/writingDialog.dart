@@ -1,15 +1,20 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import '../../base/widgetPage/dialog_manager.dart';
 import '../../r.dart';
+import '../../utils/text_util.dart';
 
 class WritDialog extends Dialog {
   final String title;
   final String content;
+  final String htmlContent;
 
   _showTimer(context) {
     var timer;
@@ -20,7 +25,7 @@ class WritDialog extends Dialog {
     });
   }
 
-  WritDialog(this.title, this.content);
+  WritDialog(this.title, this.content, this.htmlContent);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +67,40 @@ class WritDialog extends Dialog {
                       ))
                 ],
               ),
-              Text(title,
+              Expanded(child:SelectionArea(
+                child: SingleChildScrollView(
+                  child: Html(
+                    data: TextUtil.weekDetail
+                        .replaceFirst("###content###", htmlContent ?? ""),
+                    onImageTap: (
+                        url,
+                        context,
+                        attributes,
+                        element,
+                        ) {
+                      if (url != null && url!.startsWith('http')) {
+                        DialogManager.showPreViewImageDialog(
+                            BackButtonBehavior.close, url);
+                      }
+                    },
+                    style: {
+                      "p": Style(fontSize: FontSize.large),
+                      "sentence": Style(
+                          textDecorationStyle: TextDecorationStyle.dashed,
+                          textDecorationColor: AppColors.THEME_COLOR),
+                      "hr": Style(
+                        margin: Margins.only(
+                            left: 0, right: 0, top: 10.w, bottom: 10.w),
+                        padding: EdgeInsets.all(0),
+                        border: Border(bottom: BorderSide(color: Colors.grey)),
+                      )
+                    },
+                    tagsList: Html.tags..addAll(['sentence']),
+                  ),
+                ),
+              ) )
+
+              /*Text(title,
                   style: TextStyle(
                       color: Color(0xff353e4d),
                       fontSize: 18.sp,
@@ -78,7 +116,8 @@ class WritDialog extends Dialog {
                       wordSpacing: 2.0,
                       height: 1.5),
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 5),
+                  maxLines: 5)*/
+              ,
             ],
           ),
         ));
