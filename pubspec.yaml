@@ -188,6 +188,7 @@ flutter:
     - images/choice_error.png
     - images/collec_prac_icon.png
     - images/collec_words_error.png
+    - images/collec_word_icon.png
     - images/error_to_correct.png
     - images/error_to_correct_over.png
     - images/home_search.png

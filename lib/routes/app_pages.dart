@@ -30,7 +30,6 @@ import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
-import '../pages/splash_page.dart';
 import '../pages/user/login/login_view.dart';
 import '../pages/writing/writing_view.dart';
 import '../xfyy/text_to_voice.dart';
@@ -42,7 +41,6 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> SplashPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> TestApp(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPageNew(),),
-    GetPage(name: AppRoutes.INITIAL, page:()=> SplashPage(),),
     GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> MyHomePage(title: "ceshi",),),

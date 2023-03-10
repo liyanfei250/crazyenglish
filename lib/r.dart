@@ -29,6 +29,8 @@ class R {
   static final String imagesCollecPracIcon = 'images/collec_prac_icon.png';
   /// ![](http://127.0.0.1:11/images/collec_words_error.png)
   static final String imagesCollecWordsError = 'images/collec_words_error.png';
+  /// ![](http://127.0.0.1:11/images/collec_word_icon.png)
+  static final String imagesCollecWordIcon = 'images/collec_word_icon.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct.png)
   static final String imagesErrorToCorrect = 'images/error_to_correct.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct_over.png)

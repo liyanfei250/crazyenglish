@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,9 +20,11 @@ class ErrorColectPrctePage extends BasePage {
 
 class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final logic = Get.put(Collect_practicLogic());
-  final state = Get.find<Collect_practicLogic>().state;
+  final state = Get
+      .find<Collect_practicLogic>()
+      .state;
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -41,6 +44,17 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       "type": 0,
     },
     {"title": "02.对话理解", "type": 1},
+  ];
+
+  List searchList = [
+    {
+      "title": "全部",
+      "type": 0,
+    },
+    {"title": "最近查看", "type": 1},
+    {"title": "听力题", "type": 1},
+    {"title": "阅读题", "type": 1},
+    {"title": "写作题", "type": 1},
   ];
 
   @override
@@ -78,11 +92,47 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.only(
-                    bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
-                child: SearchBar(
+                    bottom: 0.w, top: 12.w, left: 33.w, right: 33.w),
+                child: Container(
                   width: double.infinity,
                   height: 28.w,
+                  margin: EdgeInsets.only(top: 16.w, bottom: 20.w),
+                  decoration: BoxDecoration(
+                      color: AppColors.c_FFFFFFFF,
+                      borderRadius: BorderRadius.all(Radius.circular(14.w))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(padding: EdgeInsets.only(left: 7.w)),
+                      Image.asset(
+                        R.imagesHomeSearch,
+                        width: 16.w,
+                        height: 16.w,
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 6.w)),
+                      Text(
+                        "搜索",
+                        style: TextStyle(
+                            fontSize: 12.sp, color: Color(0xffb3b7c0)),
+                      )
+                    ],
+                  ),
                 ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                  margin: EdgeInsets.only(
+                      bottom: 0.w, top: 0.w, left: 33.w, right: 33.w),
+                  child: Wrap(
+                      spacing: 6.0, // 主轴(水平)方向间距
+                      runSpacing: 1.0, // 纵轴（垂直）方向间距
+                      alignment: WrapAlignment.start,
+                      children: searchList.map((e) {
+                        return listitem(e);
+                      }).toList()
+                  )
               ),
             ),
             SliverList(
@@ -97,11 +147,27 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     );
   }
 
+  Widget listitem(value) {
+    return ActionChip(
+      // padding: EdgeInsets.only(top: 4.w,bottom: 4.w),
+      // labelPadding:EdgeInsets.only(top: 0.w,bottom: 0.w) ,
+      onPressed: (){
+        Util.toast(value['title']);
+      },
+      label: Text(
+        value['title'],
+        style: TextStyle(
+            fontSize: 10, fontWeight: FontWeight.w400),
+      ),
+      backgroundColor: Colors.white,
+    );
+  }
+
   Widget listitemBigBg() {
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
-          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
@@ -129,20 +195,20 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
                 child: Text(
-                  '2023年02月09日 14:50:39',
+                  '七年级新课程第29期',
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff858aa0),
+                      fontSize: 16,
+                      color: Color(0xff353e4d),
                       fontWeight: FontWeight.w500),
                 )),
             Expanded(child: Text('')),
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text('已完成',
+              child: Text('2023.2.27 16:48',
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff353e4d),
-                      fontWeight: FontWeight.w600)),
+                      fontSize: 10,
+                      color: Color(0xff656d8f),
+                      fontWeight: FontWeight.w400)),
             ),
           ],
         ),
@@ -150,17 +216,17 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-                padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
+                padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
                 child: Text(
                   '01.情景反应',
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff858aa0),
-                      fontWeight: FontWeight.w500),
+                      fontSize: 14,
+                      color: Color(0xff353e4d),
+                      fontWeight: FontWeight.w400),
                 )),
             Expanded(child: Text('')),
             Padding(
-              padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
+              padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
               child: Image.asset(
                 R.imagesCollecPracIcon,
                 width: 46.w,
@@ -175,8 +241,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
               'As winter approaches, warm-blooded animals have two ways to cope with the cold. The first is , building a layer of fat under the skin and shedding their svelte As winter approaches, warm-blooded animals...',
               style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff858aa0),
-                  fontWeight: FontWeight.w500),
+                  color: Color(0xff353e4d),
+                  height: 1.5,
+                  fontWeight: FontWeight.w400),
             )),
       ],
     );
