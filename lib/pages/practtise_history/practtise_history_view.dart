@@ -201,7 +201,6 @@ class _ToPracttiseHistoryPageState extends BasePageState<PracttiseHistoryPage> {
   void onCreate() {
     logic.addListenerId(GetBuilderIds.getPracticeListDetail, () {
 
-
       RouterUtil.toNamed(AppRoutes.ResultPage,
           arguments: {"detail": state.weekTestDetailResponse});
     });
