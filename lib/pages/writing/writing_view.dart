@@ -8,7 +8,10 @@ import 'package:get/get.dart';
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../base/widgetPage/dialog_manager.dart';
+import '../../entity/commit_request.dart';
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../../entity/week_detail_response.dart' as detail;
@@ -30,11 +33,13 @@ class WritingPage extends BasePage {
 
 class _ToOrderDetailPageState extends BasePageState<WritingPage> {
   final logic = Get.put(WritingLogic());
-  final state = Get.find<WritingLogic>().state;
+  final state = Get
+      .find<WritingLogic>()
+      .state;
   var exTile = "Everyone Favorite Fruit";
   var exList =
       "Everyone has favorite fruit. My favorite fruit is filled with the purple grape. It is sour. Because I like to eat sour fruit.She is a vine. The purple coat package in the body. A very beautiful. Like a purple pearls. In the sunshine. The glow of beauty. People have seen.Dear friends are you favorite fruit is what? Introduce to me ok?";
-
+  final TextEditingController writController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,15 +52,22 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+
+    logic.addListenerId(GetBuilderIds.commitAnswerWriting, () {
+      RouterUtil.offAndToNamed(
+          AppRoutes.ResultPage,arguments: {"detail":state.commitRequest});
+    });
+  }
 
   @override
   void onDestroy() {}
 
-  Widget _buildClassArea() => Container(
+  Widget _buildClassArea() =>
+      Container(
         width: double.infinity,
         margin:
-            EdgeInsets.only(right: 20.w, left: 20.w, top: 17.w, bottom: 17.w),
+        EdgeInsets.only(right: 20.w, left: 20.w, top: 17.w, bottom: 17.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -113,12 +125,10 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
               child: Html(
                 data: TextUtil.weekDetail.replaceFirst("###content###",
                     widget.testDetailResponse?.data![0].content ?? ""),
-                onImageTap: (
-                  url,
-                  context,
-                  attributes,
-                  element,
-                ) {
+                onImageTap: (url,
+                    context,
+                    attributes,
+                    element,) {
                   if (url != null && url!.startsWith('http')) {
                     DialogManager.showPreViewImageDialog(
                         BackButtonBehavior.close, url);
@@ -155,10 +165,11 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
         ),
       );
 
-  Widget _inputCard() => Container(
+  Widget _inputCard() =>
+      Container(
         margin: EdgeInsets.only(top: 14.w),
         padding:
-            EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
+        EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
         width: double.infinity,
         alignment: Alignment.topRight,
         decoration: BoxDecoration(
@@ -176,7 +187,18 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             InkWell(
-              onTap: () => Util.toast("提交"),
+              onTap: () {
+                Util.toast("写作提交");
+                CommitRequest commitRequest = CommitRequest(
+                    muchTime: "2023-02-23 02:20:01",
+                    name: "测试写作题",
+                    directory: "1cddffb0-bcef-11ed-8e11-530450f105f5",
+                    directory_uuid: "1cddffb0-bcef-11ed-8e11-530450f105f5",
+                    exercises: widget.testDetailResponse!.data
+                );
+                logic.uploadWritingTest(commitRequest);
+                Get.back();
+              },
               child: Image.asset(
                 R.imagesWritingCommitButton,
                 width: 57.w,
@@ -187,22 +209,24 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
               autofocus: true,
               maxLines: 100,
               minLines: 10,
+              controller: writController,
               style: TextStyle(color: Color(0xff353e4d), fontSize: 12.sp),
               decoration: InputDecoration(
-                  //提示信息
+                //提示信息
                   hintText: "请在这里开始答题吧～",
                   border: InputBorder.none,
                   hintStyle:
-                      TextStyle(color: Color(0xffb3b7c6), fontSize: 12.sp)),
+                  TextStyle(color: Color(0xffb3b7c6), fontSize: 12.sp)),
             )
           ],
         ),
       );
 
-  Widget _buildClassCard(int index) => Container(
+  Widget _buildClassCard(int index) =>
+      Container(
         margin: EdgeInsets.only(top: 20.w),
         padding:
-            EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
+        EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
         width: double.infinity,
         alignment: Alignment.topRight,
         decoration: BoxDecoration(
@@ -223,40 +247,41 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
         ),
       );
 
-  Widget _listShow() => Expanded(
+  Widget _listShow() =>
+      Expanded(
           child: Container(
-            height: 190.w,
+              height: 190.w,
               child: SelectionArea(
-        child: Html(
-          data: TextUtil.weekDetail.replaceFirst("###content###",
-              widget.testDetailResponse?.data![0].modelessay ?? ""),
-          onImageTap: (
-            url,
-            context,
-            attributes,
-            element,
-          ) {
-            if (url != null && url!.startsWith('http')) {
-              DialogManager.showPreViewImageDialog(
-                  BackButtonBehavior.close, url);
-            }
-          },
-          style: {
-            "p": Style(fontSize: FontSize.large),
-            "sentence": Style(
-                textDecorationStyle: TextDecorationStyle.dashed,
-                textDecorationColor: AppColors.THEME_COLOR),
-            "hr": Style(
-              margin: Margins.only(left: 0, right: 0, top: 10.w, bottom: 10.w),
-              padding: EdgeInsets.all(0),
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-            )
-          },
-          tagsList: Html.tags..addAll(['sentence']),
-        ),
-      )));
+                child: Html(
+                  data: TextUtil.weekDetail.replaceFirst("###content###",
+                      widget.testDetailResponse?.data![0].modelessay ?? ""),
+                  onImageTap: (url,
+                      context,
+                      attributes,
+                      element,) {
+                    if (url != null && url!.startsWith('http')) {
+                      DialogManager.showPreViewImageDialog(
+                          BackButtonBehavior.close, url);
+                    }
+                  },
+                  style: {
+                    "p": Style(fontSize: FontSize.large),
+                    "sentence": Style(
+                        textDecorationStyle: TextDecorationStyle.dashed,
+                        textDecorationColor: AppColors.THEME_COLOR),
+                    "hr": Style(
+                      margin: Margins.only(
+                          left: 0, right: 0, top: 10.w, bottom: 10.w),
+                      padding: EdgeInsets.all(0),
+                      border: Border(bottom: BorderSide(color: Colors.grey)),
+                    )
+                  },
+                  tagsList: Html.tags..addAll(['sentence']),
+                ),
+              )));
 
-  Widget _rightShow() => Container(
+  Widget _rightShow() =>
+      Container(
         width: 90.w,
         height: 190.w,
         child: Column(
@@ -269,11 +294,12 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
                 Util.toast("查看范文");
                 showDialog(
                   context: context,
-                  builder: (context) => WritDialog(
-                      exTile,
-                      exList,
-                      widget.testDetailResponse?.data![0].modelessay_text ??
-                          ""),
+                  builder: (context) =>
+                      WritDialog(
+                          exTile,
+                          exList,
+                          widget.testDetailResponse?.data![0].modelessay_text ??
+                              ""),
                 );
               },
               child: Image.asset(
