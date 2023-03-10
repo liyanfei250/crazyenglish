@@ -25,188 +25,240 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(R.imagesReviewTopBg),
-              fit: BoxFit.cover
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.imagesReviewTopBg), fit: BoxFit.cover),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              title: Text(
+                "复习巩固",
+                style: TextStyle(
+                    color: AppColors.c_FF353E4D,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w700),
+              ),
+              backgroundColor: Colors.transparent,
+              actions: [
+                InkWell(
+                  onTap: () {
+                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 18.w),
+                    child: Image.asset(
+                      R.imagesReviewPractiseHistory,
+                      width: 93.w,
+                      height: 30.w,
+                    ),
+                  ),
+                )
+              ],
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppBar(
-                elevation: 0,
-                automaticallyImplyLeading:false,
-                title: Text("复习巩固",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
-                backgroundColor:Colors.transparent,
-                actions: [
-                  InkWell(
-                    onTap: (){
-                      RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
+            Container(
+              margin: EdgeInsets.only(left: 18.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "195",
+                        style: TextStyle(
+                            color: AppColors.c_FF353E4D,
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text("累计练习（10个）",
+                          style: TextStyle(
+                            color: AppColors.c_FF434863,
+                            fontSize: 12.sp,
+                          ))
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 56.w)),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "10",
+                        style: TextStyle(
+                            color: AppColors.c_FF353E4D,
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text("今日练习（10个）",
+                          style: TextStyle(
+                            color: AppColors.c_FF434863,
+                            fontSize: 12.sp,
+                          ))
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 97.w,
+              padding: EdgeInsets.only(left: 27.w, right: 30.w, top: 37.w),
+              margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 18.w),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(R.imagesWrongQuestionItem),
+                      fit: BoxFit.contain)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            R.imagesReviewReadingTag,
+                            width: 27.w,
+                            height: 14.w,
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 3.w)),
+                          Text(
+                            "累计错误5次",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "已消灭10个错题",
+                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      )
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      RouterUtil.toNamed(AppRoutes.ErrorNotePage);
                     },
                     child: Container(
-                      margin: EdgeInsets.only(right: 18.w),
-                      child: Image.asset(R.imagesReviewPractiseHistory,width: 93.w,height: 30.w,),
+                      margin: EdgeInsets.only(top: 18.w),
+                      child: InkWell(
+                        child: Image.asset(
+                          R.imagesReviewJumpPractise,
+                          width: 57.w,
+                          height: 24.w,
+                        ),
+                      ),
                     ),
                   )
                 ],
               ),
-              Container(
-                margin: EdgeInsets.only(left: 18.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("195",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 26.sp,fontWeight: FontWeight.w500),),
-                        Text("累计练习（10个）",style: TextStyle(color: AppColors.c_FF434863,fontSize: 12.sp,))
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(left: 56.w)),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("10",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 26.sp,fontWeight: FontWeight.w500),),
-                        Text("今日练习（10个）",style: TextStyle(color: AppColors.c_FF434863,fontSize: 12.sp,))
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 97.w,
-                padding: EdgeInsets.only(left: 27.w,right: 30.w,top: 37.w),
-                margin: EdgeInsets.only(left: 18.w,right: 18.w,top: 18.w),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(R.imagesWrongQuestionItem),
-                    fit: BoxFit.contain
-                  )
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(R.imagesReviewReadingTag,width: 27.w,height: 14.w,),
-                            Padding(padding: EdgeInsets.only(left: 3.w)),
-                            Text("累计错误5次",style: TextStyle(color: Colors.white,fontSize: 14.sp),),
-                          ],
-                        ),
-                        Text("已消灭10个错题",style: TextStyle(color: Colors.white,fontSize: 14.sp),)
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        RouterUtil.toNamed(AppRoutes.ErrorNotePage);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 18.w),
-                        child: InkWell(
-                          child: Image.asset(R.imagesReviewJumpPractise,width:57.w,height: 24.w,),
-                        ),
-                      ),
-                    )
-
-                  ],
-                ),
-              ),
-              _buildFavor()
-            ],
-          ),
+            ),
+            _buildFavor()
+          ],
         ),
+      ),
     );
   }
 
-  Widget _buildFavor(){
-
-    return Expanded(child: Container(
+  Widget _buildFavor() {
+    return Expanded(
+        child: Container(
       margin: EdgeInsets.only(top: 23.w),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-            begin:Alignment.topCenter,
-            end:Alignment.bottomCenter,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
-          Color(0xffffffff),
-          Color(0xfff6f8fc),
-        ]),
+              Color(0xffffffff),
+              Color(0xfff6f8fc),
+            ]),
       ),
-      padding: EdgeInsets.only(left: 18.w,right: 18.w),
+      padding: EdgeInsets.only(left: 18.w, right: 18.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 18.w,top: 19.w,bottom: 17.w),
-            child: Text("我的收藏",style: TextStyle(color: AppColors.c_FF353E4D,
-                fontWeight: FontWeight.w500,fontSize: 16.sp),),
+            margin: EdgeInsets.only(left: 18.w, top: 19.w, bottom: 17.w),
+            child: Text(
+              "我的收藏",
+              style: TextStyle(
+                  color: AppColors.c_FF353E4D,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.sp),
+            ),
           ),
           Container(
             decoration: BoxDecoration(
-              boxShadow:[
+              boxShadow: [
                 BoxShadow(
-                  color: AppColors.c_FFFDD9AF.withOpacity(0.1),		// 阴影的颜色
-                  offset: Offset(0.w, 1.w),						// 阴影与容器的距离
-                  blurRadius: 2.w,							// 高斯的标准偏差与盒子的形状卷积。
+                  color: AppColors.c_FFFDD9AF.withOpacity(0.1), // 阴影的颜色
+                  offset: Offset(0.w, 1.w), // 阴影与容器的距离
+                  blurRadius: 2.w, // 高斯的标准偏差与盒子的形状卷积。
                   spreadRadius: 2.w,
                 ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(10.w)),
             ),
-            child:
-            Container(
+            child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(R.imagesReviewFavorQuestionBg),
-                      fit: BoxFit.cover
-                  )
-
-              ),
+                      fit: BoxFit.cover)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildFavorItem(0),
-                  Divider(color: AppColors.c_FFD2D5DC,indent: 15.w,endIndent: 15.w,),
+                  Divider(
+                    color: AppColors.c_FFD2D5DC,
+                    indent: 15.w,
+                    endIndent: 15.w,
+                  ),
                   _buildFavorItem(1),
                 ],
               ),
             ),
-
           ),
-
         ],
       ),
     ));
   }
 
-  Widget _buildFavorItem(int type ){
+  Widget _buildFavorItem(int type) {
     String icon = R.imagesReviewFavorQuestionIcon;
     String title = "收藏题目19个";
     String subTitle = "复习题目7个";
 
-    if(type == 0){
+    if (type == 0) {
       icon = R.imagesReviewFavorQuestionIcon;
       title = "收藏题目19个";
       subTitle = "复习题目7个";
-    }else{
+    } else {
       icon = R.imagesReviewFavorWordsIcon;
       title = "收藏单词19个";
       subTitle = "复习单词7个";
     }
     return Container(
       height: 78.w,
-      padding: EdgeInsets.only(left: 20.w,right: 25.w),
+      padding: EdgeInsets.only(left: 20.w, right: 25.w),
       child: InkWell(
+        onTap: () {
+          if (type == 0) {
+            RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
+                arguments: {'type', 0});
+          } else {
+            RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
+                arguments: {'type', 1});
+          }
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -214,20 +266,37 @@ class _ReviewPageState extends State<ReviewPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(icon,width: 41.w,height: 37.w,),
+                Image.asset(
+                  icon,
+                  width: 41.w,
+                  height: 37.w,
+                ),
                 Padding(padding: EdgeInsets.only(left: 22.w)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(title,style: TextStyle(color: AppColors.c_FF353E4D,
-                        fontWeight: FontWeight.w500,fontSize: 16.sp),),
-                    Text(subTitle,style: TextStyle(color:AppColors.c_FF898A93,fontSize: 12.sp),)
+                    Text(
+                      title,
+                      style: TextStyle(
+                          color: AppColors.c_FF353E4D,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.sp),
+                    ),
+                    Text(
+                      subTitle,
+                      style: TextStyle(
+                          color: AppColors.c_FF898A93, fontSize: 12.sp),
+                    )
                   ],
                 )
               ],
             ),
-            Image.asset(R.imagesMyIconRightArrow,width: 14.w,height: 14.w,)
+            Image.asset(
+              R.imagesMyIconRightArrow,
+              width: 14.w,
+              height: 14.w,
+            )
           ],
         ),
       ),
