@@ -316,11 +316,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               return questionList;
             } else if (element.typeChildren == 2) {
               // 补全对话
-              questionList.add(GapQuestion(data: element));
+              questionList.add(ReadQuestion(data: element));
               isUseData = false;
             } else if (element.typeChildren == 3){
               // 完型填空
-
+              questionList.add(ReadQuestion(data: element));
+              isUseData = false;
             }
             break;
           case 4: // 写作题

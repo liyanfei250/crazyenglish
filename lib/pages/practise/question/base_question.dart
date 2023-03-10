@@ -196,6 +196,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             itemList.add(buildQuestionType("填空题"));
             itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
             isHebing = true;
+          } else if(element.typeChildren == 1){ // 单选题
+
+          } else if(element.typeChildren == 3){
+            itemList.add(buildQuestionType("选择题"));
+            if((question!.list??[]).length > 0) {
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
+            }
           }
         }
         // else if(element.type == 5){
@@ -236,6 +243,54 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       children: questionList,
     );
   }
+
+  // 单选题结构不一致所以这么处理
+  Widget getSingleQuestionDetail(List<Data> datas){
+    questionList.clear();
+    for(Data element in datas){
+      if(element!=null && element.options!.length>0){
+          List<Widget> itemList = [];
+          itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+          itemList.add(Visibility(
+            visible: element!.title != null && element!.title!.isNotEmpty,
+            child: Text(
+              element!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          if(element.type == 3 ){ // 语言综合训练
+            if(element.typeChildren == 1){ // 单选题 or 多选题
+              if((element.options??[]).length > 0) {
+                itemList.add(QuestionFactory.buildSingleOptionsTxtChoice(element.options!,-1));
+              }
+            }
+          }
+
+          questionList.add(SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: itemList,
+            ),
+          ));
+      }else{
+        questionList.add(const SizedBox());
+      }
+    }
+
+    if(logic!=null){
+      logic.initPageStr("1/${questionList.length}");
+    }
+    return PageView(
+      controller: pageController,
+      physics: _neverScroll,
+      onPageChanged: (int value){
+        if(logic!=null){
+          logic.updatePageStr("${(value+1)}/${questionList.length}");
+        }
+      },
+      children: questionList,
+    );
+  }
+
 
   @override
   int getQuestionCount() {

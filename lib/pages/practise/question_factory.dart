@@ -99,6 +99,44 @@ class QuestionFactory{
   }
 
 
+  static Widget buildSingleOptionsTxtChoice(List<Options> list,int answerIndex,{int? defaultChooseIndex}){
+
+    var choseItem = (-1).obs;
+    choseItem.value = defaultChooseIndex??-1;
+
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 12.w)),
+          Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: list.map(
+                    (e) => InkWell(
+                  onTap: (){
+                    choseItem.value = list.indexOf(e);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 12.w),
+                    child: ChoiceRadioItem(
+                        getSelectedType(choseItem.value,list.indexOf(e)),
+                        "",
+                        e.list![0].text!,
+                        e.list![0].text!,
+                        double.infinity,
+                        52.w
+                    ),
+                  ),
+                )
+            ).toList(),
+          ))
+        ],
+      ),
+    );
+  }
+
+
+
   static Widget buildSingleImgChoice(List<TiList> list,int answerIndex,{int? defaultChooseIndex}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
