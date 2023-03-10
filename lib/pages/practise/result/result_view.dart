@@ -392,13 +392,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             //   ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 2){
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 3){
             // 选择题
@@ -409,7 +409,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                 question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
               ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren ==4){
             // 选择题
@@ -421,13 +421,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 2){ // 阅读选项
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 3 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
             // 选择题
@@ -440,7 +440,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             // 单项选择题
             itemList.add(buildQuestionType("单项选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 2){ // 阅读选项
             // 选择题
@@ -452,7 +452,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             // 选择题
             itemList.add(buildQuestionType("完型填空"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }
         }

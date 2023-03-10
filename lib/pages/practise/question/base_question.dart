@@ -1,8 +1,11 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/pages/practise/question_factory.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
@@ -140,13 +143,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             //   ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 2){
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 3){
             // 选择题
@@ -157,8 +160,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
                 question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
               ),));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
+          }else if(element.typeChildren == 4){
+            itemList.add(buildReadQuestion(element.content??""));
+            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
+            isHebing = true;
           }
 
         }else if(element.type == 2){
@@ -166,13 +173,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 4){ // 阅读选项
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!)));
+              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
             }
           }else if(element.typeChildren == 5 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
             // 选择题
@@ -226,6 +233,43 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   @override
   int getQuestionCount() {
     return questionList.length;
+  }
+
+  Widget buildReadQuestion(String? htmlContent){
+    return Container(
+      height: 204.w,
+      margin: EdgeInsets.only(top: 17.w,bottom: 18.w),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8.w)),
+          border: Border.all(color: AppColors.c_FFD2D5DC,width: 0.4.w)
+      ),
+      child: SingleChildScrollView(
+        child:  Html(
+          data: htmlContent??"",
+          onImageTap: (url,context,attributes,element,){
+            if(url!=null && url!.startsWith('http')){
+              DialogManager.showPreViewImageDialog(
+                  BackButtonBehavior.close, url);
+            }
+          },
+          style: {
+            // "p":Style(
+            //     fontSize:FontSize.large
+            // ),
+
+            "hr":Style(
+              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+              padding: EdgeInsets.all(0),
+              border: Border(bottom: BorderSide(color: Colors.grey)),
+            )
+          },
+          tagsList: Html.tags..addAll(['gap']),
+          customRenders: {
+          },
+
+        ),
+      ),
+    );
   }
 
   @override

@@ -83,7 +83,7 @@ class QuestionFactory{
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
                         getSelectedType(choseItem.value,list.indexOf(e)),
-                        list[answerIndex].text,
+                        answerIndex>=0? list[answerIndex].text:"",
                         e!.text!,
                         e!.text!,
                         double.infinity,
@@ -118,7 +118,7 @@ class QuestionFactory{
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(
                       getSelectedType(choseItem.value,list.indexOf(e)),
-                        list[answerIndex].text,
+                        answerIndex>=0? list[answerIndex].text:"",
                         e!.text!,
                         e.img,
                         140.w,
