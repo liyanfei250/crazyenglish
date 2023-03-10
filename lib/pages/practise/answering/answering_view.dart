@@ -29,7 +29,7 @@ class AnsweringPage extends BasePage {
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       testDetailResponse = Get.arguments["detail"];
-      uuid = Get.arguments["error_uuid"];
+      uuid = Get.arguments["uuid"];
     }
   }
 
@@ -128,77 +128,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       .of(context)
                       .padding
                       .top),
-          child: isUseData ? useDataArray(pages[0]) : useOptionArray(pages),
+          child: useOptionArray(pages),
         ),
       ),
-    );
-  }
-
-  Widget useDataArray(BaseQuestion page) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            child: page,
-          ),
-        ),
-        Container(
-          margin:
-          EdgeInsets.only(left: 66.w, right: 66.w, top: 10.w, bottom: 10.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  canPre.value = page.pre();
-                  if (canPre.value) {
-                    canNext.value = true;
-                  }
-                },
-                child: Obx(() =>
-                    Image.asset(
-                      canPre.value
-                          ? R.imagesPractisePreQuestionEnable
-                          : R.imagesPractisePreQuestionUnable,
-                      width: 40.w,
-                      height: 40.w,
-                    )),
-              ),
-              GetBuilder<AnsweringLogic>(
-                  id: GetBuilderIds.answerPageNum,
-                  builder: (logic) {
-                    return Text(
-                      logic.state.pageChangeStr ?? " ",
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.c_FF353E4D),
-                    );
-                  }),
-              InkWell(
-                onTap: () {
-                  canNext.value = page.next();
-                  if (canNext.value) {
-                    canPre.value = true;
-                  } else {
-                    RouterUtil.toNamed(AppRoutes.ResultPage,
-                        arguments: {"detail": widget.testDetailResponse});
-                  }
-                },
-                child: Obx(() =>
-                    Image.asset(
-                      canNext.value
-                          ? R.imagesPractiseNextQuestionEnable
-                          : R.imagesPractiseNextQuestionUnable,
-                      width: 40.w,
-                      height: 40.w,
-                    )),
-              )
-            ],
-          ),
-        )
-      ],
     );
   }
 
@@ -258,7 +190,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                             muchTime: "2023-02-23 02:20:01",
                             name: "测试",
                             directory: "1cddffb0-bcef-11ed-8e11-530450f105f5",
-                            directory_uuid: "1cddffb0-bcef-11ed-8e11-530450f105f5",
+                            directory_uuid: widget.uuid,
                           exercises: widget.testDetailResponse!.data
                         );
                         logic.uploadWeekTest(commitRequest);

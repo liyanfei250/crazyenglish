@@ -34,6 +34,7 @@ class WeekTestDetailLogic extends GetxController {
 
     if(cache is WeekTestDetailResponse) {
       state.weekTestDetailResponse = cache!;
+      state.uuid = id;
       update([GetBuilderIds.weekTestDetailList]);
     }
     WeekDetailResponse list = await weekTestRepository.getWeekTestDetail(id);
@@ -42,6 +43,7 @@ class WeekTestDetailLogic extends GetxController {
         labelId: id,
         list.toJson());
     state.weekTestDetailResponse = list!;
+    state.uuid = id;
     update([GetBuilderIds.weekTestDetailList]);
   }
 }
