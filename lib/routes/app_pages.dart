@@ -22,6 +22,7 @@ import '../pages/buy/order_sure/order_sure_view.dart';
 import '../pages/buy/shop/shop_view.dart';
 import '../pages/buy/shop_car/shop_car_view.dart';
 import '../pages/buy/shoplist/view.dart';
+import '../pages/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/practise/result/result_view.dart';
@@ -73,6 +74,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
     GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=>PracttiseHistoryPage(),),
+    GetPage(name: AppRoutes.ErrorNoteCollectPage, page:()=>ErrorNoteCollectPage(),),
 
   ];
 }
