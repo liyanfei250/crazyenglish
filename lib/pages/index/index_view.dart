@@ -251,14 +251,17 @@ class _IndexPageState extends BasePageState<IndexPage>
             SizedBox(
               width: 18.w,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _item_word(),
-                _item_word(),
-                _item_word(),
-              ],
-            )
+            Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 3,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: _item_word(),
+                      );
+                    })),
           ],
         ),
       );
@@ -277,7 +280,7 @@ class _IndexPageState extends BasePageState<IndexPage>
             width: 10.w,
           ),
           Text(
-            "令人满意的；有利的；熟练的；好的",
+            "令人满意的；有利的；",
             style: TextStyle(
                 fontSize: 8.sp,
                 fontStyle: FontStyle.normal,
@@ -429,8 +432,7 @@ LinearGradient _getLinearGradient(Color left, Color right,
       end: end,
     );
 
-Widget _listOne(value) =>
-    Container(
+Widget _listOne(value) => Container(
       padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
