@@ -78,7 +78,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
             arguments: {"detail": stateDetail.weekTestDetailResponse});
       } else {
         RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            arguments: {"detail": stateDetail.weekTestDetailResponse});
+            arguments: {"detail": stateDetail.weekTestDetailResponse,"uuid":stateDetail.uuid});
       }
     });
     _onRefresh();
