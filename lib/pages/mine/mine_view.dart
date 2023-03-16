@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../config.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
@@ -18,9 +19,56 @@ class MinePage extends BasePage {
 
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
-  final state = Get
-      .find<MineLogic>()
-      .state;
+  final state = Get.find<MineLogic>().state;
+
+  void onClickPosition(int position) {
+    switch (position) {
+      case 4:
+        RouterUtil.toNamed(AppRoutes.SettingPage);
+        break;
+      case 5:
+        var role = '';
+        if (Config.isTeacher!) {
+          role = '学生端';
+        } else {
+          role = '教师端';
+        }
+        showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("提示"),
+              content:  Text("您确定要切换到" + role + "吗？"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("取消"),
+                  onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+                ),
+                TextButton(
+                  child: Text("确定"),
+                  onPressed: () {
+                    Navigator.of(context).pop(true); //关闭对话框
+                    // ... 执行
+                    if (Config.isTeacher!) {
+                      RouterUtil.offAndToNamed(AppRoutes.HOME);
+                      Config.isTeacher = false;
+                    } else {
+                      RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+                      Config.isTeacher = true;
+                    }
+
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+        break;
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,38 +93,36 @@ class _MinePageState extends BasePageState<MinePage> {
                       Padding(padding: EdgeInsets.only(left: 15.w)),
                       isLogin //是否登录
                           ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                              onTap: () =>
-                                  RouterUtil.toNamed(AppRoutes.LoginNew),
-                              child: Text(
-                                "吴尊",
-                                style: TextStyle(
-                                    color: AppColors.c_FFFFFFFF,
-                                    fontSize: 20.w),
-                              )),
-                          //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                          Text(
-                            "要读的书太多，没时间写签名",
-                            style: TextStyle(
-                                color: AppColors.c_FFFFEBEB,
-                                fontSize: 16.sp),
-                          )
-                        ],
-                      )
-                          :
-                      GestureDetector(
-                          onTap: () {
-                            RouterUtil.toNamed(AppRoutes.LoginNew);
-                          },
-                          child: Container(
-                            child: Text("未登录",
-                                style: TextStyle(
-                                    color: AppColors.c_FFFFEBEB,
-                                    fontSize: 16.sp)),
-                          )
-                      )
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                    onTap: () =>
+                                        RouterUtil.toNamed(AppRoutes.LoginNew),
+                                    child: Text(
+                                      "吴尊",
+                                      style: TextStyle(
+                                          color: AppColors.c_FFFFFFFF,
+                                          fontSize: 20.w),
+                                    )),
+                                //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                                Text(
+                                  "要读的书太多，没时间写签名",
+                                  style: TextStyle(
+                                      color: AppColors.c_FFFFEBEB,
+                                      fontSize: 16.sp),
+                                )
+                              ],
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                RouterUtil.toNamed(AppRoutes.LoginNew);
+                              },
+                              child: Container(
+                                child: Text("未登录",
+                                    style: TextStyle(
+                                        color: AppColors.c_FFFFEBEB,
+                                        fontSize: 16.sp)),
+                              ))
                     ],
                   ),
                 ),
@@ -123,19 +169,17 @@ class _MinePageState extends BasePageState<MinePage> {
                 height: 30.w,
               ),
               4),
+          buildItem(
+              "切换用户",
+              Image(
+                image: AssetImage("images/my_icon_setting.png"),
+                width: 30.w,
+                height: 30.w,
+              ),
+              5),
         ],
       ),
     );
-  }
-
-  void onClickPosition(int position) {
-    switch (position) {
-      case 4:
-        RouterUtil.toNamed(AppRoutes.SettingPage);
-        break;
-      default:
-        break;
-    }
   }
 
   Widget buildItem(String menu, Image icon, int position) {

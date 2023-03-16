@@ -186,6 +186,12 @@ flutter:
     - images/bg_update_top.png
     - images/choice_correct.png
     - images/choice_error.png
+    - images/class_fun_0.png
+    - images/class_fun_1.png
+    - images/class_fun_2.png
+    - images/class_fun_3.png
+    - images/class_fun_4.png
+    - images/class_qrcode.png
     - images/collec_prac_icon.png
     - images/collec_words_error.png
     - images/collec_word_icon.png
@@ -284,6 +290,8 @@ flutter:
     - images/login_role_student.png
     - images/login_role_teacher.png
     - images/login_top_bg.png
+    - images/make1.jpg
+    - images/make2.jpg
     - images/my_icon_coupon.png
     - images/my_icon_help.png
     - images/my_icon_order.png
@@ -292,6 +300,14 @@ flutter:
     - images/my_icon_share.png
     - images/my_top_bg.png
     - images/next_three_icon.png
+    - images/num_index0.png
+    - images/num_index1.png
+    - images/num_index2.png
+    - images/num_index3.png
+    - images/num_index4.png
+    - images/num_index5.png
+    - images/num_index6.png
+    - images/num_index7.png
     - images/player_practise_pause.png
     - images/player_practise_play.png
     - images/player_practise_slide.png
@@ -328,6 +344,7 @@ flutter:
     - images/splash_welcome_1.png
     - images/splash_welcome_2.png
     - images/student_day_words.png
+    - images/student_head.png
     - images/student_index_0.png
     - images/student_index_1.png
     - images/student_index_2.png
@@ -335,6 +352,17 @@ flutter:
     - images/student_index_4.png
     - images/student_index_5.png
     - images/student_index_6.png
+    - images/student_info.png
+    - images/student_notify.png
+    - images/student_notify_parent.png
+    - images/teacher_class_top.png
+    - images/teacher_day_words.png
+    - images/teacher_day_words_bg.png
+    - images/teacher_home_btn_pop.png
+    - images/teacher_progress.png
+    - images/teacher_scan.png
+    - images/teacher_student_state.png
+    - images/teacher_words_bg.png
     - images/test_pause.png
     - images/test_play.png
     - images/time_point_icon.png

@@ -62,6 +62,7 @@ class AppColors {
   static Color TEXT_COLOR = Color(0xFF424966);
   static Color TEXT_GRAY_COLOR = Color(0xFF717171);
   static Color TAB_COLOR = Color(0xFFFEDD00);
+  static Color TAB_COLOR2 = Color(0xFFFEB444);
   static Color c_33FEDD00 = Color(0x33FEDD00);
   static Color TEXT_BLACK_COLOR = Color(0xFF282828);
   static Color theme_bg = Color(0xFFF6F8FC);

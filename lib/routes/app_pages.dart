@@ -1,8 +1,13 @@
+import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/error/error_note/error_note_view.dart';
+import 'package:crazyenglish/pages/home_teacher_page.dart';
 import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
+import 'package:crazyenglish/pages/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/practtise_history/practtise_history_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
+import 'package:crazyenglish/pages/student/student_view.dart';
+import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
 import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/user/set_psd/set_psd_view.dart';
@@ -75,6 +80,12 @@ abstract class AppPages {
     GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=>PracttiseHistoryPage(),),
     GetPage(name: AppRoutes.ErrorNoteCollectPage, page:()=>ErrorNoteCollectPage(),),
+
+    GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
+    GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),
+    GetPage(name: AppRoutes.TEACHER_CLASS, page:()=>ClassPage(),),
+    GetPage(name: AppRoutes.TEACHER_STUDENT, page:()=>StudentPage(),),
+    GetPage(name: AppRoutes.TEACHER_Index, page:()=>TeacherIndexPage(),),
 
   ];
 }

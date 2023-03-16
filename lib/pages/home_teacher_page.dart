@@ -1,4 +1,6 @@
+import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/config/config_logic.dart';
+import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,17 +8,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
 
-import '../base/common.dart';
-import '../routes/getx_ids.dart';
 import '../base/AppUtil.dart';
+import '../base/common.dart';
+import '../entity/login/login_util.dart';
+import '../r.dart';
+import '../routes/app_pages.dart';
+import '../routes/getx_ids.dart';
+import '../routes/routes_utils.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
 import 'app_update_panel/app_update_panel_logic.dart';
-import 'course/course_view.dart';
+import 'index/index_teacher_view.dart';
 import 'index/index_view.dart';
 import 'mine/mine_view.dart';
-import 'review/review_view.dart';
 import 'dart:io' as io;
 
 /**
@@ -26,14 +31,14 @@ import 'dart:io' as io;
  *
  * Description:
  */
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeTeacherPage extends StatefulWidget {
+  const HomeTeacherPage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomeTeacherPage> {
   final PageController pageController = PageController(keepPage: true);
   List<Widget> pages = <Widget>[];
 
@@ -49,13 +54,13 @@ class _HomePageState extends State<HomePage> {
 
   List<String> bottomTitles = [
     "首页",
-    "复习",
+    "班级",
     "我的",
   ];
 
   List<String> titles = [
     "首页",
-    "复习",
+    "班级",
     "我的",
   ];
 
@@ -70,12 +75,6 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     Util.initWhenEnterMain();
-    appUpdatePanelLogic.getAppUserInfo();
-    appUpdatePanelLogic.addListenerId(GetBuilderIds.getUserInfo, () {
-      if(appUpdatePanelState.infoResponse!=null){
-        // todo
-      }
-    });
     appUpdatePanelLogic.getAppVersion();
     appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
       if(appUpdatePanelState.checkUpdateResp!=null){
@@ -103,12 +102,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // 解决Flutter 不同终端屏幕适配问题，传入context和设计稿子上的宽高
-    //ScreenAdaper.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色
-        statusBarIconBrightness: Brightness.light, //状态栏图标颜色
+        statusBarIconBrightness: Brightness.dark, //状态栏图标颜色
         statusBarBrightness: Brightness.dark,  //状态栏亮度
         systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
         systemNavigationBarColor: Colors.white,  //导航栏颜色
@@ -117,15 +114,31 @@ class _HomePageState extends State<HomePage> {
         systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
     ),
         child: Scaffold(
-          // extendBody: true,
-          body: PageView(
-            controller: pageController,
-            physics: _neverScroll,
-            children: const [
-              IndexPage(),
-              ReviewPage(),
-              MinePage()
-            ],
+          extendBody: true,
+          backgroundColor: AppColors.theme_bg,
+          body: SafeArea(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(()=>Offstage(
+                    offstage: _selectedIndex.value == 3,
+                    child: Container(),
+                  )),
+                  Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        physics: _neverScroll,
+                        children: const [
+                          IndexTeacherPage(),
+                          ClassPage(),
+                          MinePage()
+                        ],
+                      )
+                  )
+                ],
+              ),
+            ),
           ),
           bottomNavigationBar: buildBottomRowBar(),
         ),);
@@ -147,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                 spreadRadius: 0.w,
               ),
             ],
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.w),topRight: Radius.circular(10.w)),
+            borderRadius: BorderRadius.all(Radius.circular(6.w)),
           ),
           child: Center(
             child: Row(
@@ -183,12 +196,12 @@ class _HomePageState extends State<HomePage> {
           Obx(()=>Image.asset(
             fit:BoxFit.contain,
             "images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
-            height: 24.w,)),
-          Padding(padding: EdgeInsets.only(top: 6.w)),
+            height: 26.w,)),
+          Padding(padding: EdgeInsets.only(top: 4.w)),
           Obx(()=>Text(
             bottomTitles[index],
             style: TextStyle(
-                color: _selectedIndex.value == index ? AppColors.c_FFEB5447:AppColors.c_FF828282,
+                color: _selectedIndex.value == index ? AppColors.c_FF585858:AppColors.c_FF828282,
                 fontWeight: _selectedIndex.value == index ? FontWeight.bold:FontWeight.normal,
                 fontSize: 10.sp),
           )),

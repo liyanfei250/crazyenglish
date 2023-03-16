@@ -25,6 +25,18 @@ class R {
   static final String imagesChoiceCorrect = 'images/choice_correct.png';
   /// ![](http://127.0.0.1:11/images/choice_error.png)
   static final String imagesChoiceError = 'images/choice_error.png';
+  /// ![](http://127.0.0.1:11/images/class_fun_0.png)
+  static final String imagesClassFun0 = 'images/class_fun_0.png';
+  /// ![](http://127.0.0.1:11/images/class_fun_1.png)
+  static final String imagesClassFun1 = 'images/class_fun_1.png';
+  /// ![](http://127.0.0.1:11/images/class_fun_2.png)
+  static final String imagesClassFun2 = 'images/class_fun_2.png';
+  /// ![](http://127.0.0.1:11/images/class_fun_3.png)
+  static final String imagesClassFun3 = 'images/class_fun_3.png';
+  /// ![](http://127.0.0.1:11/images/class_fun_4.png)
+  static final String imagesClassFun4 = 'images/class_fun_4.png';
+  /// ![](http://127.0.0.1:11/images/class_qrcode.png)
+  static final String imagesClassQrcode = 'images/class_qrcode.png';
   /// ![](http://127.0.0.1:11/images/collec_prac_icon.png)
   static final String imagesCollecPracIcon = 'images/collec_prac_icon.png';
   /// ![](http://127.0.0.1:11/images/collec_words_error.png)
@@ -221,6 +233,10 @@ class R {
   static final String imagesLoginRoleTeacher = 'images/login_role_teacher.png';
   /// ![](http://127.0.0.1:11/images/login_top_bg.png)
   static final String imagesLoginTopBg = 'images/login_top_bg.png';
+  /// ![](http://127.0.0.1:11/images/make1.jpg)
+  static final String imagesMake1 = 'images/make1.jpg';
+  /// ![](http://127.0.0.1:11/images/make2.jpg)
+  static final String imagesMake2 = 'images/make2.jpg';
   /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)
   static final String imagesMyIconCoupon = 'images/my_icon_coupon.png';
   /// ![](http://127.0.0.1:11/images/my_icon_help.png)
@@ -237,6 +253,22 @@ class R {
   static final String imagesMyTopBg = 'images/my_top_bg.png';
   /// ![](http://127.0.0.1:11/images/next_three_icon.png)
   static final String imagesNextThreeIcon = 'images/next_three_icon.png';
+  /// ![](http://127.0.0.1:11/images/num_index0.png)
+  static final String imagesNumIndex0 = 'images/num_index0.png';
+  /// ![](http://127.0.0.1:11/images/num_index1.png)
+  static final String imagesNumIndex1 = 'images/num_index1.png';
+  /// ![](http://127.0.0.1:11/images/num_index2.png)
+  static final String imagesNumIndex2 = 'images/num_index2.png';
+  /// ![](http://127.0.0.1:11/images/num_index3.png)
+  static final String imagesNumIndex3 = 'images/num_index3.png';
+  /// ![](http://127.0.0.1:11/images/num_index4.png)
+  static final String imagesNumIndex4 = 'images/num_index4.png';
+  /// ![](http://127.0.0.1:11/images/num_index5.png)
+  static final String imagesNumIndex5 = 'images/num_index5.png';
+  /// ![](http://127.0.0.1:11/images/num_index6.png)
+  static final String imagesNumIndex6 = 'images/num_index6.png';
+  /// ![](http://127.0.0.1:11/images/num_index7.png)
+  static final String imagesNumIndex7 = 'images/num_index7.png';
   /// ![](http://127.0.0.1:11/images/player_practise_pause.png)
   static final String imagesPlayerPractisePause = 'images/player_practise_pause.png';
   /// ![](http://127.0.0.1:11/images/player_practise_play.png)
@@ -309,6 +341,8 @@ class R {
   static final String imagesSplashWelcome2 = 'images/splash_welcome_2.png';
   /// ![](http://127.0.0.1:11/images/student_day_words.png)
   static final String imagesStudentDayWords = 'images/student_day_words.png';
+  /// ![](http://127.0.0.1:11/images/student_head.png)
+  static final String imagesStudentHead = 'images/student_head.png';
   /// ![](http://127.0.0.1:11/images/student_index_0.png)
   static final String imagesStudentIndex0 = 'images/student_index_0.png';
   /// ![](http://127.0.0.1:11/images/student_index_1.png)
@@ -323,6 +357,28 @@ class R {
   static final String imagesStudentIndex5 = 'images/student_index_5.png';
   /// ![](http://127.0.0.1:11/images/student_index_6.png)
   static final String imagesStudentIndex6 = 'images/student_index_6.png';
+  /// ![](http://127.0.0.1:11/images/student_info.png)
+  static final String imagesStudentInfo = 'images/student_info.png';
+  /// ![](http://127.0.0.1:11/images/student_notify.png)
+  static final String imagesStudentNotify = 'images/student_notify.png';
+  /// ![](http://127.0.0.1:11/images/student_notify_parent.png)
+  static final String imagesStudentNotifyParent = 'images/student_notify_parent.png';
+  /// ![](http://127.0.0.1:11/images/teacher_class_top.png)
+  static final String imagesTeacherClassTop = 'images/teacher_class_top.png';
+  /// ![](http://127.0.0.1:11/images/teacher_day_words.png)
+  static final String imagesTeacherDayWords = 'images/teacher_day_words.png';
+  /// ![](http://127.0.0.1:11/images/teacher_day_words_bg.png)
+  static final String imagesTeacherDayWordsBg = 'images/teacher_day_words_bg.png';
+  /// ![](http://127.0.0.1:11/images/teacher_home_btn_pop.png)
+  static final String imagesTeacherHomeBtnPop = 'images/teacher_home_btn_pop.png';
+  /// ![](http://127.0.0.1:11/images/teacher_progress.png)
+  static final String imagesTeacherProgress = 'images/teacher_progress.png';
+  /// ![](http://127.0.0.1:11/images/teacher_scan.png)
+  static final String imagesTeacherScan = 'images/teacher_scan.png';
+  /// ![](http://127.0.0.1:11/images/teacher_student_state.png)
+  static final String imagesTeacherStudentState = 'images/teacher_student_state.png';
+  /// ![](http://127.0.0.1:11/images/teacher_words_bg.png)
+  static final String imagesTeacherWordsBg = 'images/teacher_words_bg.png';
   /// ![](http://127.0.0.1:11/images/test_pause.png)
   static final String imagesTestPause = 'images/test_pause.png';
   /// ![](http://127.0.0.1:11/images/test_play.png)

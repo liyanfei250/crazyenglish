@@ -36,6 +36,12 @@ abstract class AppRoutes{
   static const PractiseHistoryPage = '/PractiseHistoryPage';
   static const ErrorNoteCollectPage = '/ErrorNoteCollectPage';
 
+  static const TEACHER_HOME = '/teacher_home';
+  static const TEACHER_WORK = '/teacher_work';
+  static const TEACHER_CLASS = '/teacher_class';
+  static const TEACHER_STUDENT = '/teacher_student';
+  static const TEACHER_Index = '/TEACHER_Index';
+
 // static const LOGIN = '/login';
 
 }
