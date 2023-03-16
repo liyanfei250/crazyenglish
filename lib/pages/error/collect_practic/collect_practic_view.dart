@@ -20,11 +20,9 @@ class ErrorColectPrctePage extends BasePage {
 
 class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final logic = Get.put(Collect_practicLogic());
-  final state = Get
-      .find<Collect_practicLogic>()
-      .state;
+  final state = Get.find<Collect_practicLogic>().state;
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -52,9 +50,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       "type": 0,
     },
     {"title": "最近查看", "type": 1},
-    {"title": "听力题", "type": 1},
-    {"title": "阅读题", "type": 1},
-    {"title": "写作题", "type": 1},
+    {"title": "听力题", "type": 2},
+    {"title": "阅读题", "type": 3},
+    {"title": "写作题", "type": 4},
   ];
 
   @override
@@ -131,9 +129,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                       alignment: WrapAlignment.start,
                       children: searchList.map((e) {
                         return listitem(e);
-                      }).toList()
-                  )
-              ),
+                      }).toList())),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -147,17 +143,22 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     );
   }
 
+  Widget test(value) {
+    var newlist = searchList.where((element) => element['type'] > 1);
+    return listitem(newlist);
+  }
+
   Widget listitem(value) {
     return ActionChip(
       // padding: EdgeInsets.only(top: 4.w,bottom: 4.w),
       // labelPadding:EdgeInsets.only(top: 0.w,bottom: 0.w) ,
-      onPressed: (){
-        Util.toast(value['title']);
+      onPressed: () {
+        //Util.toast(value['title']);
+        Util.toast(value['type'].toString());
       },
       label: Text(
         value['title'],
-        style: TextStyle(
-            fontSize: 10, fontWeight: FontWeight.w400),
+        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
       ),
       backgroundColor: Colors.white,
     );
@@ -167,7 +168,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
-      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
