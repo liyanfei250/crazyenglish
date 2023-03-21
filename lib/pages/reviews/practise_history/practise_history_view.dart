@@ -95,7 +95,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             padding: EdgeInsets.only(left: 38.w,right: 38.w),
             decoration: BoxDecoration(
               color: AppColors.c_FFFFFFFF,
-
             ),
             child: TableCalendar<Event>(
               firstDay: kFirstDay,
@@ -114,7 +113,17 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
               startingDayOfWeek: StartingDayOfWeek.monday,
               daysOfWeekStyle: DaysOfWeekStyle(
                   dowTextFormatter:(date, locale){
-                    return DateFormat.E("en_US").format(date);
+                    String week =  DateFormat.E("en_US").format(date);
+                    switch(week){
+                      case "Mon": return "一";
+                      case "Tue": return "二";
+                      case "Wed": return "三";
+                      case "Thu": return "四";
+                      case "Fri": return "五";
+                      case "Sat": return "六";
+                      case "Sun": return "日";
+                    }
+                    return week;
                   }
               ),
               headerStyle: HeaderStyle(
