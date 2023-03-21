@@ -1,5 +1,5 @@
-import '../../entity/practice_list_response.dart';
-import '../../entity/week_detail_response.dart';
+import '../../../entity/practice_list_response.dart';
+import '../../../entity/week_detail_response.dart';
 
 class Practtise_historyState {
   List<Rows> list = [];

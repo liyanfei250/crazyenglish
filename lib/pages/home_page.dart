@@ -16,7 +16,7 @@ import 'app_update_panel/app_update_panel_logic.dart';
 import 'course/course_view.dart';
 import 'index/index_view.dart';
 import 'mine/mine_view.dart';
-import 'review/review_view.dart';
+import 'reviews/review/review_view.dart';
 import 'dart:io' as io;
 
 /**

@@ -1,24 +1,24 @@
 import 'dart:async';
 import 'dart:ui' as ui;
-import 'package:crazyenglish/pages/practtise_history/CustomDecoration.dart';
-import 'package:crazyenglish/pages/practtise_history/MyDecoration.dart';
-import 'package:crazyenglish/pages/practtise_history/XFDashedLine.dart';
+import 'package:crazyenglish/pages/reviews/practtise_history/CustomDecoration.dart';
+import 'package:crazyenglish/pages/reviews/practtise_history/MyDecoration.dart';
+import 'package:crazyenglish/pages/reviews/practtise_history/XFDashedLine.dart';
 import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import '../../base/AppUtil.dart';
-import '../../entity/practice_list_response.dart';
+import '../../../base/AppUtil.dart';
+import '../../../entity/practice_list_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../r.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/getx_ids.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/colors.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
 import 'LeftLineWidget.dart';
 import 'practtise_history_logic.dart';
 

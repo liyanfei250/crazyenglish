@@ -1,10 +1,10 @@
 import 'package:crazyenglish/pages/class/class_view.dart';
-import 'package:crazyenglish/pages/error/error_note/error_note_view.dart';
+import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
 import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
 import 'package:crazyenglish/pages/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
-import 'package:crazyenglish/pages/practtise_history/practtise_history_view.dart';
+import 'package:crazyenglish/pages/reviews/practtise_history/practtise_history_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
 import 'package:crazyenglish/pages/student/student_view.dart';
 import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
@@ -27,10 +27,11 @@ import '../pages/buy/order_sure/order_sure_view.dart';
 import '../pages/buy/shop/shop_view.dart';
 import '../pages/buy/shop_car/shop_car_view.dart';
 import '../pages/buy/shoplist/view.dart';
-import '../pages/error/error_note_collect/error_note_collect_view.dart';
+import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/practise/result/result_view.dart';
+import '../pages/reviews/practise_history/practise_history_view.dart';
 import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
@@ -78,7 +79,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.ListeningPracticePage, page:()=>ListeningPracticePage(),),
     GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
     GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
-    GetPage(name: AppRoutes.PractiseHistoryPage, page:()=>PracttiseHistoryPage(),),
     GetPage(name: AppRoutes.ErrorNoteCollectPage, page:()=>ErrorNoteCollectPage(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
@@ -86,6 +86,8 @@ abstract class AppPages {
     GetPage(name: AppRoutes.TEACHER_CLASS, page:()=>ClassPage(),),
     GetPage(name: AppRoutes.TEACHER_STUDENT, page:()=>StudentPage(),),
     GetPage(name: AppRoutes.TEACHER_Index, page:()=>TeacherIndexPage(),),
+
+    GetPage(name: AppRoutes.PractiseHistoryPage, page:()=>Practise_historyPage(),),
 
   ];
 }
