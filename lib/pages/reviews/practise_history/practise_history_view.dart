@@ -1,11 +1,14 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/reviews/practtise_history/MyDecoration.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:timelines/timelines.dart';
 
 import '../../../r.dart';
+import '../practtise_history/LeftLineWidget.dart';
 import 'practise_history_logic.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -89,12 +92,15 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNormalAppBar("练习记录"),
+      backgroundColor: const Color(0xfff8f9fb),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.only(left: 38.w,right: 38.w),
             decoration: BoxDecoration(
               color: AppColors.c_FFFFFFFF,
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.w),bottomRight: Radius.circular(20.w)),
             ),
             child: TableCalendar<Event>(
               firstDay: kFirstDay,
@@ -184,32 +190,105 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             ),
           ),
           const SizedBox(height: 8.0),
-          Expanded(
+          ValueListenableBuilder<List<Event>>(
+              valueListenable: _selectedEvents,
+              builder: (context,value,_){
+            return Visibility(
+                visible: value.length > 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 24.w,
+                      child: LeftLineWidget(
+                        showBottom: true,
+                        showTop: false,
+                        isLight: false,
+                      ),
+                    ),
+                    Text("${_selectedDay?.year}年${_selectedDay?.month}月${_selectedDay?.day}日",
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(color: Color(0xff151619),fontSize: 14.w,fontWeight: FontWeight.w500),
+                    )
+                  ],));
+          }),
+          Container(
+            decoration: MyDecoration(),
+            margin: EdgeInsets.only(left: 24),
+            padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
             child: ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
-                  },
+                return Container(
+                  decoration: BoxDecoration(
+                      borderRadius:BorderRadius.all( Radius.circular(13.w)),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xfffbf4f2),
+                          offset: Offset(0,0),
+                          blurRadius: 20,
+                          spreadRadius: 0,
+                        )]
+                  ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: value.map((element) {
+                      return Container(
+                        height: 83.w,
+                        padding: EdgeInsets.only(left: 28.2,right: 24.w),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
+                                    Padding(padding: EdgeInsets.only(top: 11.w)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          width: 48.w,
+                                          height: 17.w,
+                                          alignment: Alignment.center,
+                                          margin: EdgeInsets.only(right: 13.w),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xfffff7ed),
+                                            borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                                          ),
+                                          child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
+                                        ),
+                                        Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
+                              ],
+                            ),),
+                            Visibility(
+                                visible: true,
+                                child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
+
+                          ],
+                        )
+                      );
+                    }).toList(),
+                  ),
                 );
               },
             ),
-          ),
+          )
         ],
       ),
     );
