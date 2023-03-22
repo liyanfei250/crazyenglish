@@ -108,7 +108,6 @@ dependencies:
   syncfusion_flutter_sliders: ^20.4.51
   syncfusion_flutter_core: ^20.4.52
   table_calendar: ^3.0.9
-  timelines: ^0.1.0
 
 
 dev_dependencies:
