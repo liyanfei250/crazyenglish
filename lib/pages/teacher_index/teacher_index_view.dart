@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../base/AppUtil.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
@@ -20,50 +21,116 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
 
-
   final List<String> functionTxt = [
-    "周报题库",
-    "作业布置",
-    "电子教材",
-    "周报商城",
-    "开始直播",
-    "课程录制",
-    "打卡日历",
-    "试题编写",
+    "英语周报",
+    "每周题库",
+    "历史作业",
+    "试卷库",
+    "商城",
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 14.w),
-      child: SingleChildScrollView(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AppBar(
+                automaticallyImplyLeading: false,
+                title: _buildSearchBar(),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 14.w,right: 14.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(padding: EdgeInsets.only(top: 16.w)),
+                    adsBanner,
+                    Padding(padding: EdgeInsets.only(top: 22.w)),
+                    GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: functionTxt.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5),
+                        itemBuilder: (_, int position) {
+                          String e = functionTxt[position];
+                          return _buildFuncAreaItem(e);
+                        }),
+                    Padding(padding: EdgeInsets.only(top: 20.w)),
+                    _buildClassArea(),
+                  ],
+                ),
+              )],
+          ),
+        )) /*Container(
+        margin: EdgeInsets.symmetric(horizontal: 14.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(padding: EdgeInsets.only(top: 9.w)),
+            Padding(padding: EdgeInsets.only(top: 16.w)),
             adsBanner,
-            Padding(padding: EdgeInsets.only(top: 13.w)),
+            Padding(padding: EdgeInsets.only(top: 22.w)),
             GridView.builder(
-                shrinkWrap:true,
+                shrinkWrap: true,
                 itemCount: functionTxt.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-                itemBuilder: (_,int position){
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5),
+                itemBuilder: (_, int position) {
                   String e = functionTxt[position];
                   return _buildFuncAreaItem(e);
                 }),
             Padding(padding: EdgeInsets.only(top: 12.w)),
-            Image.asset(R.imagesTeacherDayWords,width: 123.w,height: 22.w,),
-            _buildPlayBar(),
-            Padding(padding: EdgeInsets.only(top: 8.w)),
-            Image.asset(R.imagesTeacherStudentState,width: 159.w,height: 22.w,),
             _buildClassArea(),
-
           ],
-        ),
-      ),
-    );
+        ))*/;
   }
-
+  Widget _buildSearchBar() => Container(
+    margin: EdgeInsets.only( top: 15.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ClipOval(
+          child: Image.asset(
+            R.imagesShopImageLogoTest,
+            width: 32.w,
+            height: 32.w,
+          ),
+        ),
+        Container(
+          width: 291.w,
+          height: 28.w,
+          padding: EdgeInsets.only(left: 11.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16.w)),
+              color: Colors.white),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                R.imagesHomeSearchIc,
+                fit: BoxFit.cover,
+                width: 16.w,
+                height: 16.w,
+              ),
+              Padding(padding: EdgeInsets.only(left: 9.w)),
+              Text(
+                "英语周报教师端",
+                style: TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
   Widget get adsBanner {
     return Container(
       width: double.infinity,
@@ -94,186 +161,311 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   ///banner条目适配器
   List<Widget> makeBanner() {
     List<Widget> items = [];
-    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
-    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
-    items.add(Image.asset(R.imagesIndexAd,fit:BoxFit.fill,width: double.infinity,height: 130.w,));
+    items.add(Image.asset(
+      R.imagesIndexAd,
+      fit: BoxFit.fill,
+      width: double.infinity,
+      height: 130.w,
+    ));
+    items.add(Image.asset(
+      R.imagesIndexAd,
+      fit: BoxFit.fill,
+      width: double.infinity,
+      height: 130.w,
+    ));
+    items.add(Image.asset(
+      R.imagesIndexAd,
+      fit: BoxFit.fill,
+      width: double.infinity,
+      height: 130.w,
+    ));
     return items;
   }
 
   Widget _buildFuncAreaItem(String e) => InkWell(
-    onTap: (){
-      switch(e){
-        case "周报题库":
-          RouterUtil.toNamed(AppRoutes.WeeklyTestList);
-          break;
-        case "周报阅读":
-          RouterUtil.toNamed(AppRoutes.WeeklyList);
-          break;
-        case "试题编写":
-        case "作业布置":
-          RouterUtil.toNamed(AppRoutes.TEACHER_WORK);
-          break;
-      }
-    },
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset("images/num_index${functionTxt.indexOf(e)}.png",width: 40.w,height: 40.w,),
-        Padding(padding: EdgeInsets.only(bottom: 2.w)),
-        Text(e,style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_BLACK_COLOR),)
-      ],
-    ),
-  );
-
-  Widget _buildPlayBar() => Container(
-    width: double.infinity,
-    height: 95.w,
-    padding: EdgeInsets.only(left: 10.w),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6.w)),
-        image: DecorationImage(
-            image: AssetImage(R.imagesTeacherDayWordsBg),
-            fit: BoxFit.cover
-        )
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Stack(alignment: Alignment.bottomLeft,
-          children: [
-            Image.asset(R.imagesTeacherWordsBg,width: 53.w,height: 10.w,),
-            Text("Good ",style: TextStyle(fontSize:26.sp,color: Color(0xFF353e4d),))
-          ],
-        ),
-        Padding(padding: EdgeInsets.only(left: 11.w)),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text("adj. ",style: TextStyle(fontSize:10.sp,color: Color(0xFF353e4d),)),
-                Text("令人满意的；有利的；熟练的；好的",style: TextStyle(fontSize:12.sp,color: Color(0xFF353e4d),)),
-              ],
-            ),
-            Row(
-              children: [
-                Text("adv. ",style: TextStyle(fontSize:10.sp,color: Color(0xFF353e4d),)),
-                Text("好地",style: TextStyle(fontSize:12.sp,color: Color(0xFF353e4d),)),
-              ],
-            ),
-            Row(
-              children: [
-                Text("n.    ",style: TextStyle(fontSize:10.sp,color: Color(0xFF353e4d),)),
-                Text("善行；好处；美德",style: TextStyle(fontSize:12.sp,color: Color(0xFF353e4d),)),
-              ],
-            ),
-          ],
-        )
-
-      ],
-    ),
-  );
-
-  Widget _buildTopBar() => Container(
-    margin: EdgeInsets.only(left: 14.w,right: 14.w,top: 7.w),
-    height: 48.w,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Image.asset(R.imagesLaunchLogo,fit:BoxFit.cover,width: 22.w,height: 22.w,),
-        Column(
+        onTap: () {
+          switch (e) {
+            case "每周题库":
+              RouterUtil.toNamed(AppRoutes.WeeklyTestList);
+              break;
+            case "英语周报":
+              RouterUtil.toNamed(AppRoutes.WeeklyList);
+              break;
+            case "历史作业":
+              RouterUtil.toNamed(AppRoutes.TEACHER_WORK);
+              break;
+            case "试卷库":
+              RouterUtil.toNamed(AppRoutes.TEACHER_WORK);
+              break;
+            case "商城":
+              RouterUtil.toNamed(AppRoutes.ShoppingListPage);
+              break;
+          }
+        },
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(R.imagesIndexSearch,fit:BoxFit.cover,width: 22.w,height: 22.w,),
-            Text("扫一扫"),
+            ClipOval(
+              child: Image.asset(
+                "images/num_index${functionTxt.indexOf(e)}.png",
+                width: 42.w,
+                height: 42.w,
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(bottom: 8.w)),
+            Text(
+              e,
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff353e4d)),
+            )
           ],
-        )
-      ],
-    ),
-  );
-
-  Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.only(left: 14.w,right: 14.w,top: 7.w),
-    height: 28.w,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 274.w,
-          height: 28.w,
-          padding: EdgeInsets.only(left: 11.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-              color: AppColors.c_FFF0F0F0
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(R.imagesIndexSearch,fit:BoxFit.cover,width: 22.w,height: 22.w,),
-              Padding(padding: EdgeInsets.only(left: 9.w)),
-              Text("疯狂英语",style: TextStyle(fontSize:16.sp,color: AppColors.TEXT_GRAY_COLOR),)
-            ],
-          ),
         ),
-        Image.asset(R.imagesIndexMsg,width: 26.w,height: 22.w,)
-      ],
-    ),
-  );
-
-  Widget _buildTeacherCard(int index) => Container(
-    decoration: BoxDecoration(
-        boxShadow:[
-          BoxShadow(
-            color: AppColors.c_FFFFEBEB.withOpacity(0.5),		// 阴影的颜色
-            offset: Offset(10, 20),						// 阴影与容器的距离
-            blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
-            spreadRadius: 10.0,
-          )
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(6.w)),
-        color: AppColors.c_FFFFFFFF
-    ),
-    width: 103.w,
-    height: 144.w,
-    alignment: Alignment.center,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(R.imagesIndexTeacherIcon2,width: 70.w,height: 70.w,),
-        Padding(padding: EdgeInsets.only(top: 8.w)),
-        Text("Slience",style: TextStyle(fontSize:12.sp,color: AppColors.c_FF101010),),
-        Padding(padding: EdgeInsets.only(top: 1.w)),
-        Text("金牌讲师",style: TextStyle(fontSize:12.sp,color: AppColors.TEXT_BLACK_COLOR),),
-        Padding(padding: EdgeInsets.only(top: 2.w)),
-        Container(
-          width: 68.w,
-          height: 20.w,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.w)),
-              color: AppColors.c_FFFF4D35
-          ),
-          child: Text("了解老师",style: TextStyle(fontSize:12.sp,color: AppColors.c_FFFFFFFF),),
-        )
-      ],
-    ),
-  );
+      );
 
   Widget _buildClassArea() => Container(
-    width: double.infinity,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(padding: EdgeInsets.only(left: 4.w)),
-        _buildClassCard(0),
-        _buildClassCard(1),
-        Padding(padding: EdgeInsets.only(top: 16.w)),
-      ],
-    ),
-  );
+        width: double.infinity,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(padding: EdgeInsets.only(left: 4.w)),
+            //我的期刊
+            buildImageWithClickableIcon(
+              R.imagesHomeMyJournals,
+              () {
+                Util.toast('我的期刊');
+              },
+            ),
+            _createListView(),
+            SizedBox(
+              height: 20.w,
+            ),
+            //待办工作
+            buildImageWithClickableIcon(
+              R.imagesHomeTodo,
+              () {
+                Util.toast('待办工作');
+              },
+            ),
+            SizedBox(
+              height: 16.w,
+            ),
+            Container(
+              width: double.infinity,
+              height: 74.w,
+              margin: EdgeInsets.only(left: 4.w, right: 4.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  _buildItem(context, R.imagesHomeWorkTips, '待提醒', '(10)'),
+                  Container(
+                    width: 1,
+                    margin: EdgeInsets.only(top: 18.w, bottom: 18.w),
+                    height: double.infinity,
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                  _buildItem(context, R.imagesHomeWorkChange, '待批改', '(10)'),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20.w,
+            ),
+            //推荐期刊
+            buildImageWithClickableIcon(
+              R.imagesHomeRecommendJournals,
+              () {
+                Util.toast('推荐期刊');
+              },
+            ),
+            SizedBox(
+              height: 16.w,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 4.w, right: 4.w),
+              padding: EdgeInsets.only(left: 4.w, right: 4.w),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _buildListItems(),
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 16.w)),
+          ],
+        ),
+      );
 
+  List<Widget> _buildListItems() {
+    List<Widget> items = [];
+    // 假设数据列表为 data，这里只是简单列举
+    List data = ['1', '2', '3', '4'];
+    if (data.isEmpty) {
+      // 如果数据列表为空，返回一个占位图组件
+      items.add(
+        Center(
+          heightFactor: 4.0,
+          child: Text('没有数据'),
+        ),
+      );
+    } else {
+      // 否则返回原来的 ListView.builder 组件
+      items.add(
+        ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.only(
+                  top: 20.w, bottom: 20.w, left: 4.w, right: 4.w),
+              padding: EdgeInsets.only(left: 4.w, right: 4.w),
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                        height: 54.w,
+                        margin: EdgeInsets.only(left: 4.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Everyones Heart",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Color(0xff3e454e)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "everyones heart have a hero",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff898a93),
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        )),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    child: Image.asset(
+                      R.imagesShopImageLogoTest,
+                      width: 54.w,
+                      height: 54.w,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+    return items;
+  }
+
+  Widget _buildItem(
+      BuildContext context, String imagePath, String text, String text2) {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            imagePath,
+            width: 44.w,
+            height: 44.w,
+          ),
+          SizedBox(
+            width: 10.w,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff353e4d)),
+              ),
+              SizedBox(
+                height: 2.w,
+              ),
+              Text(
+                text2,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xffed702d)),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildImageWithClickableIcon(
+      String imagePath, void Function()? onPress) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 4.w,
+        ),
+        Image.asset(
+          imagePath,
+          width: 102,
+          height: 42,
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: onPress,
+            child: Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.only(right: 6.w),
+              child: Image.asset(
+                R.imagesHomeNextIcBlack,
+                width: 10,
+                height: 10,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildClassCard(int index) => Container(
       margin: EdgeInsets.only(top: 10.w),
@@ -281,18 +473,17 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
       height: 65.w,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          boxShadow:[
+          boxShadow: [
             BoxShadow(
-              color: AppColors.c_FFFFEBEB.withOpacity(0.5),		// 阴影的颜色
-              offset: Offset(10, 20),						// 阴影与容器的距离
-              blurRadius: 45.0,							// 高斯的标准偏差与盒子的形状卷积。
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
               spreadRadius: 10.0,
             )
           ],
           borderRadius: BorderRadius.all(Radius.circular(10.w)),
-          color: AppColors.c_FFFFFFFF
-      ),
-      child:Stack(
+          color: AppColors.c_FFFFFFFF),
+      child: Stack(
         alignment: Alignment.center,
         children: [
           Row(
@@ -300,16 +491,30 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
             children: [
               Padding(padding: EdgeInsets.only(left: 20.w)),
               Expanded(
-                  flex:1,
+                  flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(padding: EdgeInsets.only(top: 7.w)),
-                      Text("初 160 完形填空 Module 1 Unit3",style: TextStyle(fontWeight:FontWeight.bold,fontSize:16.sp,color: AppColors.c_FF101010),),
-                      Text("剩余时间：7小时29分钟",style: TextStyle(fontSize:10.sp,color: AppColors.TEXT_GRAY_COLOR),),
+                      Text(
+                        "初 160 完形填空 Module 1 Unit3",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: AppColors.c_FF101010),
+                      ),
+                      Text(
+                        "剩余时间：7小时29分钟",
+                        style: TextStyle(
+                            fontSize: 10.sp, color: AppColors.TEXT_GRAY_COLOR),
+                      ),
                     ],
                   )),
-              Image.asset(R.imagesTeacherHomeBtnPop,width: 11.w,height: 11.w,),
+              Image.asset(
+                R.imagesTeacherHomeBtnPop,
+                width: 11.w,
+                height: 11.w,
+              ),
               Padding(padding: EdgeInsets.only(left: 10.w)),
             ],
           ),
@@ -320,24 +525,148 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: AppColors.c_FFFFBC00,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.w),topRight: Radius.circular(10.w))
-                  // FFBC00
-                ),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10.w),
+                        topRight: Radius.circular(10.w))
+                    // FFBC00
+                    ),
                 // color: AppColors.darkGray,
-                width: 68.w,height: 18.w,
-                child: Text("进度：7/99",style: TextStyle(fontSize: 10.sp,color: AppColors.c_FFFFFFFF),),
-
-              )
-          )
+                width: 68.w,
+                height: 18.w,
+                child: Text(
+                  "进度：7/99",
+                  style:
+                      TextStyle(fontSize: 10.sp, color: AppColors.c_FFFFFFFF),
+                ),
+              ))
           // Align(
           //     alignment: Alignment.topRight,
           //   child: Image.asset(R.imagesIndexClassNew,width: 56.w,height: 18.w,)
           // )
-
         ],
-      )
-  );
+      ));
+  var _future = Future.delayed(Duration(seconds: 2), () {
+    return '老王，一个有态度的程序员'; //模拟json字符串
+  });
 
+  //构建FutureBuilder控件：
+  Widget _createListView() {
+    return FutureBuilder(
+        future: _future,
+        builder: (context, snapshot) {
+          var widget;
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              widget = _loadingErrorWidget();
+            } else {
+              widget = _dataWidget(snapshot.data);
+            }
+          } else {
+            widget = _loadingWidget();
+          }
+          return widget;
+        });
+  }
+
+  //构建loading控件：
+  _loadingWidget() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  //数据加载成功，构建数据展示控件：
+  _dataWidget(data) {
+    return Container(
+        height: 100.w,
+        margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 18.w),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 4,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.only(
+                  left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+              padding: EdgeInsets.only(left: 4.w, right: 4.w),
+              width: 288.w,
+              height: 98.w,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(13)),
+                    child: Image.asset(
+                      R.imagesHomeShowBuy,
+                      width: 52.w,
+                      height: 74.w,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        height: 74.w,
+                        margin: EdgeInsets.only(left: 4.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "高一综合阅读",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Color(0xff3e454e)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "everyones heart have a hero",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff898a93),
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "796阅读",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xff8b8f94),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            );
+          },
+        ));
+  }
+
+//构建网络加载失败控件：
+  _loadingErrorWidget() {
+    return Image.asset(
+      R.imagesHomeMyListNoData,
+      width: double.infinity,
+      height: 98.w,
+    );
+  }
 
   @override
   void dispose() {

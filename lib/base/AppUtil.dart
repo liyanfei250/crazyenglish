@@ -322,8 +322,9 @@ class Util {
   }
 
   static bool isLoginPassword(String input) {
-    RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,20}$");
+    //RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,20}$");
     // RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+    RegExp mobile = new RegExp(r"^(?=.[A-Za-z])(?=.\d)(?=.[@!%*#?&])[A-Za-z\d@!!%#?&]{8,20}$");
     return mobile.hasMatch(input);
   }
 }

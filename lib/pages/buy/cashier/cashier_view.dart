@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/buy/cashier/Countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,7 @@ class _ToCashierPageState extends BasePageState<CashierPage> {
                 textAlign: TextAlign.center,
               ),
               CounterDownPage(),
+              Countdown(seconds: 60),
               Container(
                 color: Colors.white,
                 margin: EdgeInsets.only(top: 10.w),

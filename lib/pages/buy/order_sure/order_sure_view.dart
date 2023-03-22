@@ -140,28 +140,6 @@ class _ToOrderSurePageState extends BasePageState<OrderSurePage> {
                 textAlign: TextAlign.center),
           ),
         )
-        /* child: Center(
-          child: Row(
-          mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(padding: EdgeInsets.only(left: 7.w)),
-              Image.asset(
-                R.imagesHomeSearch,
-                width: 18.w,
-                height: 18.w,
-              ),
-              Padding(padding: EdgeInsets.only(left: 6.w)),
-              Text(
-                "+添加地址",
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.red,
-                    fontWeight: FontWeight.w600),
-              )
-            ],
-          ))*/
-
         ,
       ));
 

@@ -45,6 +45,7 @@ class _HomePageState extends State<HomeTeacherPage> {
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   var _selectedIndex = 0.obs;
+
   // final trackLogic = Get.put(TrackEffectsLogic());
   // final userCenterLogic = Get.put(UserCenterLogic());
   final appUpdatePanelLogic = Get.put(AppUpdatePanelLogic());
@@ -64,41 +65,37 @@ class _HomePageState extends State<HomeTeacherPage> {
     "我的",
   ];
 
-
   void _onItemTapped(int index) {
     _selectedIndex.value = index;
     pageController!.jumpToPage(_selectedIndex.value);
   }
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     Util.initWhenEnterMain();
     appUpdatePanelLogic.getAppVersion();
     appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
-      if(appUpdatePanelState.checkUpdateResp!=null){
+      if (appUpdatePanelState.checkUpdateResp != null) {
         showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
       }
     });
     // dataGroupLogic.getConfig();
     dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
-      if(dataGroupState.groupQUESTION_TYPE.data!=null){
+      if (dataGroupState.groupQUESTION_TYPE.data != null) {
         dataGroupState.groupQUESTION_TYPE.data!.forEach((e) {
-          DataGroup.questionType[e.value!] = e.label??"";
+          DataGroup.questionType[e.value!] = e.label ?? "";
         });
       }
     });
   }
 
   @override
-  void dispose(){
+  void dispose() {
     // Get.delete<TrackEffectsLogic>();
     // Get.delete<UserCenterLogic>();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +124,7 @@ class _HomePageState extends State<HomeTeacherPage> {
                       controller: pageController,
                       physics: _neverScroll,
                       children: const [
-                        IndexTeacherPage(),
+                        TeacherIndexPage(),
                         ClassPage(),
                         MinePage()
                       ],
@@ -136,23 +133,24 @@ class _HomePageState extends State<HomeTeacherPage> {
               ],
             ),
           ),
-          bottomNavigationBar: buildBottomRowBar(),
-        ),);
+        bottomNavigationBar: buildBottomRowBar(),
+      ),
+    );
   }
 
-  Widget buildBottomRowBar(){
+  Widget buildBottomRowBar() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height:56.w,
+          height: 56.w,
           decoration: BoxDecoration(
             color: AppColors.c_FFFFFFFF,
-            boxShadow:[
+            boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),		// 阴影的颜色
-                offset: Offset(0.w, -10.w),						// 阴影与容器的距离
-                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                color: Colors.black.withOpacity(0.05), // 阴影的颜色
+                offset: Offset(0.w, -10.w), // 阴影与容器的距离
+                blurRadius: 10.w, // 高斯的标准偏差与盒子的形状卷积。
                 spreadRadius: 0.w,
               ),
             ],
@@ -172,43 +170,47 @@ class _HomePageState extends State<HomeTeacherPage> {
         Visibility(
             visible: io.Platform.isIOS,
             child: Container(
-          color: AppColors.c_FFFFFFFF,
-          height:22.w,
-          width: double.infinity,
-        ))
+              color: AppColors.c_FFFFFFFF,
+              height: 22.w,
+              width: double.infinity,
+            ))
       ],
     );
   }
 
-  Widget buildBottomBar(int index){
-    return Expanded(child:
-    InkWell(
-      onTap: (){
+  Widget buildBottomBar(int index) {
+    return Expanded(
+        child: InkWell(
+      onTap: () {
         _onItemTapped(index);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Obx(()=>Image.asset(
-            fit:BoxFit.contain,
-            "images/icon_tab${index+1}_${_selectedIndex.value == index ? "pressed":"normal"}.png",
-            height: 26.w,)),
+          Obx(() => Image.asset(
+                fit: BoxFit.contain,
+                "images/icon_tab${index + 1}_${_selectedIndex.value == index ? "pressed" : "normal"}.png",
+                height: 26.w,
+              )),
           Padding(padding: EdgeInsets.only(top: 4.w)),
-          Obx(()=>Text(
-            bottomTitles[index],
-            style: TextStyle(
-                color: _selectedIndex.value == index ? AppColors.c_FF585858:AppColors.c_FF828282,
-                fontWeight: _selectedIndex.value == index ? FontWeight.bold:FontWeight.normal,
-                fontSize: 10.sp),
-          )),
+          Obx(() => Text(
+                bottomTitles[index],
+                style: TextStyle(
+                    color: _selectedIndex.value == index
+                        ? AppColors.c_FF585858
+                        : AppColors.c_FF828282,
+                    fontWeight: _selectedIndex.value == index
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    fontSize: 10.sp),
+              )),
         ],
       ),
-    )
-    );
+    ));
   }
 
-  void showAppUpgrade(CheckUpdateResp resp){
-    if ((resp.forceUpdate??0)>0) {
+  void showAppUpgrade(CheckUpdateResp resp) {
+    if ((resp.forceUpdate ?? 0) > 0) {
       AppUpgrade.appUpgrade(
         context,
         resp,
@@ -228,5 +230,4 @@ class _HomePageState extends State<HomeTeacherPage> {
       );
     }
   }
-
 }
