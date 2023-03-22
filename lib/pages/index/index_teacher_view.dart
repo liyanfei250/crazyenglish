@@ -27,9 +27,17 @@ class _IndexTeacherPageState extends BasePageState<IndexTeacherPage>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [_buildSearchBar(), Expanded(child: TeacherIndexPage())],
-    );
+    return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.cover),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [_buildSearchBar(), Expanded(child: TeacherIndexPage())],
+          ),
+        ));
   }
 
   Widget _buildSearchBar() => Container(
@@ -51,7 +59,7 @@ class _IndexTeacherPageState extends BasePageState<IndexTeacherPage>
               padding: EdgeInsets.only(left: 11.w),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(16.w)),
-                  color: Color(0xffffffff)),
+                  color: Colors.white),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

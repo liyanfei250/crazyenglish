@@ -32,8 +32,46 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 14.w),
-      child: SingleChildScrollView(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AppBar(
+                automaticallyImplyLeading: false,
+                title: _buildSearchBar(),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 14.w,right: 14.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(padding: EdgeInsets.only(top: 16.w)),
+                    adsBanner,
+                    Padding(padding: EdgeInsets.only(top: 22.w)),
+                    GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: functionTxt.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5),
+                        itemBuilder: (_, int position) {
+                          String e = functionTxt[position];
+                          return _buildFuncAreaItem(e);
+                        }),
+                    Padding(padding: EdgeInsets.only(top: 20.w)),
+                    _buildClassArea(),
+                  ],
+                ),
+              )],
+          ),
+        )) /*Container(
+        margin: EdgeInsets.symmetric(horizontal: 14.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,11 +90,47 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
             Padding(padding: EdgeInsets.only(top: 12.w)),
             _buildClassArea(),
           ],
-        ),
-      ),
-    );
+        ))*/;
   }
-
+  Widget _buildSearchBar() => Container(
+    margin: EdgeInsets.only( top: 15.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ClipOval(
+          child: Image.asset(
+            R.imagesShopImageLogoTest,
+            width: 32.w,
+            height: 32.w,
+          ),
+        ),
+        Container(
+          width: 291.w,
+          height: 28.w,
+          padding: EdgeInsets.only(left: 11.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16.w)),
+              color: Colors.white),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                R.imagesHomeSearchIc,
+                fit: BoxFit.cover,
+                width: 16.w,
+                height: 16.w,
+              ),
+              Padding(padding: EdgeInsets.only(left: 9.w)),
+              Text(
+                "英语周报教师端",
+                style: TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
   Widget get adsBanner {
     return Container(
       width: double.infinity,
@@ -163,88 +237,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                 Util.toast('我的期刊');
               },
             ),
-            Image.asset(
-              R.imagesHomeMyListNoData,
-              width: double.infinity,
-              height: 98.w,
-            ),
-            Container(
-                height: 100.w,
-                margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 18.w),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: EdgeInsets.only(
-                          left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
-                      padding: EdgeInsets.only(left: 4.w, right: 4.w),
-                      width: 288.w,
-                      height: 98.w,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(13)),
-                            child: Image.asset(
-                              R.imagesHomeShowBuy,
-                              width: 52.w,
-                              height: 74.w,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                                height: 74.w,
-                                margin: EdgeInsets.only(left: 4.w),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "高一综合阅读",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          color: Color(0xff3e454e)),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      "everyones heart have a hero",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Color(0xff898a93),
-                                          fontWeight: FontWeight.w400),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      "796阅读",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xff8b8f94),
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                )),
+            _createListView(),
             SizedBox(
               height: 20.w,
             ),
@@ -291,7 +284,6 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               height: 20.w,
             ),
             //推荐期刊
-            _createListView(),
             buildImageWithClickableIcon(
               R.imagesHomeRecommendJournals,
               () {
@@ -553,9 +545,10 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           // )
         ],
       ));
-  var _future = Future.delayed(Duration(seconds: 5), () {
-    return '老王，一个有态度的程序员';
+  var _future = Future.delayed(Duration(seconds: 2), () {
+    return '老王，一个有态度的程序员'; //模拟json字符串
   });
+
   //构建FutureBuilder控件：
   Widget _createListView() {
     return FutureBuilder(
@@ -587,27 +580,91 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
 
   //数据加载成功，构建数据展示控件：
   _dataWidget(data) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return Container(
-            height: 60,
-            alignment: Alignment.center,
-            child: Text(
-              '$index',
-              style: TextStyle(fontSize: 20),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-        itemCount: 10);
+    return Container(
+        height: 100.w,
+        margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 18.w),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 4,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.only(
+                  left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+              padding: EdgeInsets.only(left: 4.w, right: 4.w),
+              width: 288.w,
+              height: 98.w,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(13)),
+                    child: Image.asset(
+                      R.imagesHomeShowBuy,
+                      width: 52.w,
+                      height: 74.w,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        height: 74.w,
+                        margin: EdgeInsets.only(left: 4.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "高一综合阅读",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Color(0xff3e454e)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "everyones heart have a hero",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff898a93),
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "796阅读",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xff8b8f94),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            );
+          },
+        ));
   }
 
 //构建网络加载失败控件：
   _loadingErrorWidget() {
-    return Center(
-      child: Text('数据加载失败，请重试。'),
+    return Image.asset(
+      R.imagesHomeMyListNoData,
+      width: double.infinity,
+      height: 98.w,
     );
   }
 

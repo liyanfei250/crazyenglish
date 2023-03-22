@@ -99,151 +99,9 @@ class _IndexPageState extends BasePageState<IndexPage>
                         Util.toast('我的期刊');
                       },
                     ),
-                    Container(
-                        height: 100.w,
-                        margin: EdgeInsets.only(left: 8.w, right: 8.w),
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              margin: EdgeInsets.all(10),
-                              padding: EdgeInsets.only(left: 4.w, right: 4.w),
-                              width: 288.w,
-                              height: 98.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(13),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    spreadRadius: 2,
-                                    blurRadius: 2,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(13)),
-                                    child: Image.asset(
-                                      R.imagesHomeShowBuy,
-                                      width: 52.w,
-                                      height: 74.w,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                        height: 74.w,
-                                        margin: EdgeInsets.only(left: 4.w),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "高一综合阅读",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  color: Color(0xff3e454e)),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              "everyones heart have a hero",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Color(0xff898a93),
-                                                  fontWeight: FontWeight.w400),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              "796阅读",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xff8b8f94),
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )),
-                    //待办工作
-                    buildImageWithClickableIcon(
-                      R.imagesHomeTodo,
-                      () {
-                        Util.toast('待办工作');
-                      },
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 74.w,
-                      margin: EdgeInsets.only(left: 18.w, right: 18.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          _buildItem(
-                              context, R.imagesHomeWorkTips, '待提醒', '(10)'),
-                          Container(
-                            width: 1,
-                            margin: EdgeInsets.only(top: 18.w, bottom: 18.w),
-                            height: double.infinity,
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
-                          _buildItem(
-                              context, R.imagesHomeWorkChange, '待批改', '(10)'),
-                        ],
-                      ),
-                    ),
-                    //推荐期刊
-                    buildImageWithClickableIcon(
-                      R.imagesHomeRecommendJournals,
-                      () {
-                        Util.toast('推荐期刊');
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(14),
-                      padding: EdgeInsets.only(left: 4.w, right: 4.w),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: _buildListItems(),
-                      ),
-                    )
+                    _createListView(),
+                    Padding(padding: EdgeInsets.only(top: 14.w)),
+                    _buildClassArea(),
                   ],
                 ),
               )
@@ -274,7 +132,7 @@ class _IndexPageState extends BasePageState<IndexPage>
               alignment: Alignment.centerRight,
               margin: EdgeInsets.only(right: 20),
               child: Image.asset(
-                R.imagesIconToNext,
+                R.imagesHomeNextIcBlack,
                 width: 10,
                 height: 10,
               ),
@@ -285,120 +143,6 @@ class _IndexPageState extends BasePageState<IndexPage>
     );
   }
 
-  Widget _buildItem(
-      BuildContext context, String imagePath, String text, String text2) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: 44.w,
-            height: 44.w,
-          ),
-          SizedBox(
-            width: 10.w,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff353e4d)),
-              ),
-              SizedBox(height: 2.w,),
-              Text(
-                text2,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffed702d)),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _buildListItems() {
-    List<Widget> items = [];
-    // 假设数据列表为 data，这里只是简单列举
-    List data = ['1', '2', '3', '4'];
-    if (data.isEmpty) {
-      // 如果数据列表为空，返回一个占位图组件
-      items.add(
-        Center(
-          heightFactor: 4.0,
-          child: Text('没有数据'),
-        ),
-      );
-    } else {
-      // 否则返回原来的 ListView.builder 组件
-      items.add(
-        ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(
-                  top: 20.w, bottom: 20.w, left: 18.w, right: 18.w),
-              padding: EdgeInsets.only(left: 4.w, right: 4.w),
-              width: double.infinity,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                        height: 54.w,
-                        margin: EdgeInsets.only(left: 4.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Everyones Heart",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Color(0xff3e454e)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              "everyones heart have a hero",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff898a93),
-                                  fontWeight: FontWeight.w400),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        )),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    child: Image.asset(
-                      R.imagesShopImageLogoTest,
-                      width: 54.w,
-                      height: 54.w,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    }
-    return items;
-  }
 
   Widget get adsBanner {
     return Container(
@@ -501,7 +245,81 @@ class _IndexPageState extends BasePageState<IndexPage>
           ),
         ),
       );
+  Widget _buildClassArea() => Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage(R.imagesIndexTodayTodo), fit: BoxFit.cover),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 22.w,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 14.w,
+            ),
+            Text(
+              "我的任务",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.sp,
+                  color: Color(0xff151619)),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: (){
 
+                },
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.only(right: 20),
+                  child: Image.asset(
+                    R.imagesHomeNextIcBlack,
+                    width: 10,
+                    height: 10,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        _buildClassCard(0),
+      ],
+    ),
+  );
+
+  Widget _buildClassCard(int index) => Container(
+      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
+      padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 2.w, bottom: 2.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: ListView.separated(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return _listOne(listData[index]);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(height: 1, color: Color(0xffd2d5dc));
+        },
+        itemCount: listData.length,
+      ));
   Widget _buildSearchBar() => Container(
         margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 7.w),
         width: double.infinity,
@@ -544,7 +362,128 @@ class _IndexPageState extends BasePageState<IndexPage>
           ],
         ),
       );
+  var _future = Future.delayed(Duration(seconds: 2), () {
+    return '老王，一个有态度的程序员';//模拟json字符串
+  });
 
+  //构建FutureBuilder控件：
+  Widget _createListView() {
+    return FutureBuilder(
+        future: _future,
+        builder: (context, snapshot) {
+          var widget;
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              widget = _loadingErrorWidget();
+            } else {
+              widget = _dataWidget(snapshot.data);
+            }
+          } else {
+            widget = _loadingWidget();
+          }
+          return widget;
+        });
+  }
+
+  //构建loading控件：
+  _loadingWidget() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  //数据加载成功，构建数据展示控件：
+  _dataWidget(data) {
+    return Container(
+        height: 100.w,
+        margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 18.w),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 4,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.only(
+                  left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+              padding: EdgeInsets.only(left: 4.w, right: 4.w),
+              width: 288.w,
+              height: 98.w,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(13)),
+                    child: Image.asset(
+                      R.imagesHomeShowBuy,
+                      width: 52.w,
+                      height: 74.w,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        height: 74.w,
+                        margin: EdgeInsets.only(left: 4.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "高一综合阅读",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Color(0xff3e454e)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "everyones heart have a hero",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff898a93),
+                                  fontWeight: FontWeight.w400),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "796阅读",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xff8b8f94),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            );
+          },
+        ));
+  }
+
+//构建网络加载失败控件：
+  _loadingErrorWidget() {
+    return  Image.asset(
+      R.imagesHomeMyListNoData,
+      width: double.infinity,
+      height: 98.w,
+    );
+  }
   @override
   bool get wantKeepAlive => true;
 
@@ -632,31 +571,11 @@ Widget _listOne(value) => Container(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w700)),
                     SizedBox(width: 30.w),
-                    Container(
-                      width: 25.w,
-                      height: 12.w,
-                      padding: EdgeInsets.only(
-                          top: 2.w, bottom: 2.w, left: 5.w, right: 5.w),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(7.w)),
-                          color: Color(0xfff0e9ff)),
-                      child: Text("默认",
-                          style: TextStyle(
-                              color: Color(0xffc66afe),
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w600)),
-                    )
                   ],
                 ),
               ],
             ),
           ),
-          Image.asset(
-            R.imagesIconToNext,
-            width: 14.w,
-            height: 14.w,
-          )
         ],
       ),
     );
