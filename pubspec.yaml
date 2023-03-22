@@ -56,7 +56,7 @@ dependencies:
   #购物车
   provider: ^6.0.0
 # 日期时间处理
-  intl: ^0.17.0
+  intl: ^0.18.0
 
   #设置http代理
   http_proxy_override: ^1.0.0
@@ -107,6 +107,7 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   syncfusion_flutter_sliders: ^20.4.51
   syncfusion_flutter_core: ^20.4.52
+  table_calendar: ^3.0.9
 
 
 dev_dependencies:
@@ -197,6 +198,9 @@ flutter:
     - images/collec_word_icon.png
     - images/error_to_correct.png
     - images/error_to_correct_over.png
+    - images/history_jump_arrow.png
+    - images/history_next_month.png
+    - images/history_pre_month.png
     - images/home_my_journals.png
     - images/home_my_list_no_data.png
     - images/home_next_ic_black.png

@@ -1,13 +1,13 @@
-import 'package:crazyenglish/pages/error/error_note/error_top_bar.dart';
+import 'package:crazyenglish/pages/reviews/error/error_note/error_top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../base/AppUtil.dart';
-import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../r.dart';
-import '../../../routes/getx_ids.dart';
-import '../../../utils/colors.dart';
+import '../../../../base/AppUtil.dart';
+import '../../../../base/widgetPage/base_page_widget.dart';
+import '../../../../r.dart';
+import '../../../../routes/getx_ids.dart';
+import '../../../../utils/colors.dart';
 import '../error_note_child/error_note_child_view.dart';
 import 'error_note_logic.dart';
 

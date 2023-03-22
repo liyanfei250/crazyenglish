@@ -33,13 +33,13 @@ class _MyBoxPainter extends BoxPainter {
 
     // canvas.drawLine(leftTop, leftBottom, painter);
     //绘制底部的分割线
-    canvas.drawLine(leftBottom, rightBottom, painterBottom);
+    // canvas.drawLine(leftBottom, rightBottom, painterBottom);
 
     var dashHeightOne = 3;
     var dashSpaceOne = 3;
     var startX = leftTop.dx;
     double startYOne = leftTop.dy;
-    var maxOne = size!.height;
+    var maxOne = size!.height-40;
     final spaceOne = (dashSpaceOne + dashHeightOne);
     while (startYOne < maxOne + leftTop.dy) {
       canvas.drawLine(Offset(startX, startYOne),

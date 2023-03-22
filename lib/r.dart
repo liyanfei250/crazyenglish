@@ -47,6 +47,12 @@ class R {
   static final String imagesErrorToCorrect = 'images/error_to_correct.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct_over.png)
   static final String imagesErrorToCorrectOver = 'images/error_to_correct_over.png';
+  /// ![](http://127.0.0.1:11/images/history_jump_arrow.png)
+  static final String imagesHistoryJumpArrow = 'images/history_jump_arrow.png';
+  /// ![](http://127.0.0.1:11/images/history_next_month.png)
+  static final String imagesHistoryNextMonth = 'images/history_next_month.png';
+  /// ![](http://127.0.0.1:11/images/history_pre_month.png)
+  static final String imagesHistoryPreMonth = 'images/history_pre_month.png';
   /// ![](http://127.0.0.1:11/images/home_my_journals.png)
   static final String imagesHomeMyJournals = 'images/home_my_journals.png';
   /// ![](http://127.0.0.1:11/images/home_my_list_no_data.png)

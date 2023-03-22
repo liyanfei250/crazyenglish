@@ -1,32 +1,59 @@
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../r.dart';
-import '../../../utils/colors.dart';
-import '../../../widgets/search_bar.dart';
-import 'collect_words_logic.dart';
+import '../../../../base/widgetPage/base_page_widget.dart';
+import '../../../../r.dart';
+import '../../../../utils/colors.dart';
+import '../../../../widgets/search_bar.dart';
+import 'collect_practic_logic.dart';
 
-class ErrorColectWordPage extends BasePage {
-  const ErrorColectWordPage({Key? key}) : super(key: key);
+class ErrorColectPrctePage extends BasePage {
+  const ErrorColectPrctePage({Key? key}) : super(key: key);
 
   @override
-  BasePageState<BasePage> getState() => _ToErrorColectWordPageState();
+  BasePageState<BasePage> getState() => _ToErrorColectPrctePageState();
 }
 
-class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
-  final logic = Get.put(Collect_wordsLogic());
-  final state = Get.find<Collect_wordsLogic>().state;
-
+class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
+  final logic = Get.put(Collect_practicLogic());
+  final state = Get.find<Collect_practicLogic>().state;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
+  List listDataOne = [
+    {
+      "title": "01.情景反应",
+      "type": 0,
+    },
+    {"title": "02.对话理解", "type": 1},
+    {"title": "03.语篇理解", "type": 2},
+    {"title": "04.听力填空", "type": 3},
+  ];
+  List listData = [
+    {
+      "title": "01.情景反应",
+      "type": 0,
+    },
+    {"title": "02.对话理解", "type": 1},
+  ];
+
+  List searchList = [
+    {
+      "title": "全部",
+      "type": 0,
+    },
+    {"title": "最近查看", "type": 1},
+    {"title": "听力题", "type": 2},
+    {"title": "阅读题", "type": 3},
+    {"title": "写作题", "type": 4},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +90,11 @@ class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.only(
-                    bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
+                    bottom: 0.w, top: 12.w, left: 33.w, right: 33.w),
                 child: Container(
                   width: double.infinity,
                   height: 28.w,
-                  margin: EdgeInsets.only(top: 16.w, bottom: 30.w),
+                  margin: EdgeInsets.only(top: 16.w, bottom: 20.w),
                   decoration: BoxDecoration(
                       color: AppColors.c_FFFFFFFF,
                       borderRadius: BorderRadius.all(Radius.circular(14.w))),
@@ -83,7 +110,7 @@ class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
                       ),
                       Padding(padding: EdgeInsets.only(left: 6.w)),
                       Text(
-                        "搜词",
+                        "搜索",
                         style: TextStyle(
                             fontSize: 12.sp, color: Color(0xffb3b7c0)),
                       )
@@ -92,15 +119,48 @@ class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
                 ),
               ),
             ),
+            SliverToBoxAdapter(
+              child: Container(
+                  margin: EdgeInsets.only(
+                      bottom: 0.w, top: 0.w, left: 33.w, right: 33.w),
+                  child: Wrap(
+                      spacing: 6.0, // 主轴(水平)方向间距
+                      runSpacing: 1.0, // 纵轴（垂直）方向间距
+                      alignment: WrapAlignment.start,
+                      children: searchList.map((e) {
+                        return listitem(e);
+                      }).toList())),
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
-                childCount: 9,
+                childCount: listDataOne.length,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget test(value) {
+    var newlist = searchList.where((element) => element['type'] > 1);
+    return listitem(newlist);
+  }
+
+  Widget listitem(value) {
+    return ActionChip(
+      // padding: EdgeInsets.only(top: 4.w,bottom: 4.w),
+      // labelPadding:EdgeInsets.only(top: 0.w,bottom: 0.w) ,
+      onPressed: () {
+        //Util.toast(value['title']);
+        Util.toast(value['type'].toString());
+      },
+      label: Text(
+        value['title'],
+        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
+      ),
+      backgroundColor: Colors.white,
     );
   }
 
@@ -136,23 +196,56 @@ class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
                 child: Text(
-                  '2023年02月09日 14:50:39',
+                  '七年级新课程第29期',
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff858aa0),
+                      fontSize: 16,
+                      color: Color(0xff353e4d),
                       fontWeight: FontWeight.w500),
                 )),
             Expanded(child: Text('')),
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text('已完成',
+              child: Text('2023.2.27 16:48',
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff353e4d),
-                      fontWeight: FontWeight.w600)),
+                      fontSize: 10,
+                      color: Color(0xff656d8f),
+                      fontWeight: FontWeight.w400)),
             ),
           ],
         ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
+                child: Text(
+                  '01.情景反应',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff353e4d),
+                      fontWeight: FontWeight.w400),
+                )),
+            Expanded(child: Text('')),
+            Padding(
+              padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
+              child: Image.asset(
+                R.imagesCollecPracIcon,
+                width: 46.w,
+                height: 13.w,
+              ),
+            ),
+          ],
+        ),
+        Padding(
+            padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
+            child: Text(
+              'As winter approaches, warm-blooded animals have two ways to cope with the cold. The first is , building a layer of fat under the skin and shedding their svelte As winter approaches, warm-blooded animals...',
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff353e4d),
+                  height: 1.5,
+                  fontWeight: FontWeight.w400),
+            )),
       ],
     );
   }
@@ -162,102 +255,16 @@ class _ToErrorColectWordPageState extends BasePageState<ErrorColectWordPage> {
       onTap: () {
         //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory);
       },
-      child: _buildPlayBar(),
+      child: listitemBigBg(),
     );
   }
-
-  Widget _buildPlayBar() => Container(
-        width: double.infinity,
-        height: 64.w,
-        margin: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.w),
-        padding:
-            EdgeInsets.only(left: 24.w, right: 10.w, top: 10.w, bottom: 10.w),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(R.imagesCollecWordsError),
-              fit: BoxFit.fitWidth),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Group",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26.sp,
-                  fontStyle: FontStyle.italic,
-                  color: AppColors.c_FFFFFFFF),
-            ),
-            SizedBox(
-              width: 18.w,
-            ),
-            Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: _item_word(),
-                      );
-                    })),
-            /* Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _item_word(),
-                _item_word(),
-                _item_word(),
-              ],
-            )*/
-            Padding(
-              padding: EdgeInsets.only(right: 34.w),
-              child: Image.asset(
-                R.imagesCollecWordIcon,
-                width: 37.w,
-                height: 10.w,
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _item_word() => Container(
-        padding: EdgeInsets.only(top: 2.w, bottom: 2.w),
-        child: Row(
-          children: [
-            Text(
-              "adj.",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 8.sp,
-                  fontStyle: FontStyle.normal,
-                  color: AppColors.c_FFFFFFFF),
-            ),
-            SizedBox(
-              width: 10.w,
-            ),
-            Expanded(child: Text(
-              "令人满意的；有利的；熟练的；好的sdfsdfasdfsdfsdfsdfsdfsdfsdfsdfsdf",
-              style: TextStyle(
-                  fontSize: 8.sp,
-                  fontStyle: FontStyle.normal,
-                  color: AppColors.c_FFFFFFFF),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ))
-            ,
-          ],
-        ),
-      );
 
   @override
   void onCreate() {}
 
   @override
   void onDestroy() {
-    Get.delete<Collect_wordsLogic>();
+    Get.delete<Collect_practicLogic>();
     _refreshController.dispose();
   }
 

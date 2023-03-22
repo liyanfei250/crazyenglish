@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-import '../../../api/api.dart';
-import '../../../entity/base_resp.dart';
-import '../../../entity/practice_list_response.dart';
-import '../../../entity/week_detail_response.dart' as errorDetail;
-import '../../../net/net_manager.dart';
+import '../../../../api/api.dart';
+import '../../../../entity/base_resp.dart';
+import '../../../../entity/practice_list_response.dart';
+import '../../../../entity/week_detail_response.dart' as errorDetail;
+import '../../../../net/net_manager.dart';
 import 'package:crazyenglish/entity/error_note_response.dart' as errorTest;
 
 class ErrorNoteRepository {

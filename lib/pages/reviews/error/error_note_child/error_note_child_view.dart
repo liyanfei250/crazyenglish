@@ -1,10 +1,10 @@
-import 'package:crazyenglish/pages/error/error_note_child_list/error_note_child_list_view.dart';
+import 'package:crazyenglish/pages/reviews/error/error_note_child_list/error_note_child_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../r.dart';
-import '../../../utils/colors.dart';
+import '../../../../r.dart';
+import '../../../../utils/colors.dart';
 import 'error_note_child_logic.dart';
 
 class ErrorNoteChildPage extends StatefulWidget {

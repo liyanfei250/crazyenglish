@@ -1,4 +1,4 @@
-import 'package:crazyenglish/pages/error/error_note_child_list/ErrorNoteRepository.dart';
+import 'package:crazyenglish/pages/reviews/error/error_note_child_list/ErrorNoteRepository.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/practice_list_response.dart';

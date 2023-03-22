@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../../../entity/error_note_response.dart';
-import '../../../entity/week_detail_response.dart' as weekDetail;
-import '../../../entity/week_test_detail_response.dart' as weekTestDetail;
-import '../../../routes/getx_ids.dart';
-import '../../../utils/json_cache_util.dart';
+import '../../../../entity/error_note_response.dart';
+import '../../../../entity/week_detail_response.dart' as weekDetail;
+import '../../../../entity/week_test_detail_response.dart' as weekTestDetail;
+import '../../../../routes/getx_ids.dart';
+import '../../../../utils/json_cache_util.dart';
 import 'ErrorNoteRepository.dart';
 import 'error_note_child_list_state.dart';
 

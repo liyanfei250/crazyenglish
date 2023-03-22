@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../../entity/practice_list_response.dart';
-import '../../entity/week_detail_response.dart';
-import '../../entity/week_test_detail_response.dart';
-import '../../routes/getx_ids.dart';
-import '../../utils/json_cache_util.dart';
+import '../../../entity/practice_list_response.dart';
+import '../../../entity/week_detail_response.dart';
+import '../../../entity/week_test_detail_response.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../utils/json_cache_util.dart';
 import '../error/error_note_child_list/ErrorNoteRepository.dart';
 import 'practtise_history_state.dart';
 
