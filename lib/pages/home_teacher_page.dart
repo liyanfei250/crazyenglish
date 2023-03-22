@@ -100,40 +100,36 @@ class _HomePageState extends State<HomeTeacherPage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        //状态栏颜色
-        statusBarIconBrightness: Brightness.light,
-        //状态栏图标颜色
-        statusBarBrightness: Brightness.dark,
-        //状态栏亮度
-        systemStatusBarContrastEnforced: true,
-        //系统状态栏对比度强制
-        systemNavigationBarColor: Colors.white,
-        //导航栏颜色
-        systemNavigationBarIconBrightness: Brightness.light,
-        //导航栏图标颜色
-        systemNavigationBarDividerColor: Colors.transparent,
-        //系统导航栏分隔线颜色
-        systemNavigationBarContrastEnforced: true, //系统导航栏对比度强制
-      ),
-      child: Scaffold(
-        extendBody: true,
-        backgroundColor: AppColors.theme_bg,
-        body:  Container(
+        value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,//状态栏颜色
+        statusBarIconBrightness: Brightness.light, //状态栏图标颜色
+        statusBarBrightness: Brightness.dark,  //状态栏亮度
+        systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
+        systemNavigationBarColor: Colors.white,  //导航栏颜色
+        systemNavigationBarIconBrightness: Brightness.light,//导航栏图标颜色
+        systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
+        systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
+    ),
+        child: Scaffold(
+          body: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() => Offstage(
-                      offstage: _selectedIndex.value == 3,
-                      child: Container(),
-                    )),
+                Obx(()=>Offstage(
+                  offstage: _selectedIndex.value == 3,
+                  child: Container(),
+                )),
                 Expanded(
                     child: PageView(
-                  controller: pageController,
-                  physics: _neverScroll,
-                  children: const [TeacherIndexPage(), ClassPage(), MinePage()],
-                ))
+                      controller: pageController,
+                      physics: _neverScroll,
+                      children: const [
+                        TeacherIndexPage(),
+                        ClassPage(),
+                        MinePage()
+                      ],
+                    )
+                )
               ],
             ),
           ),
