@@ -321,7 +321,7 @@ class _IndexPageState extends BasePageState<IndexPage>
         itemCount: listData.length,
       ));
   Widget _buildSearchBar() => Container(
-        margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 7.w),
+        margin: EdgeInsets.only( top: 7.w),
         width: double.infinity,
         height: 28.w,
         child: Row(
@@ -342,12 +342,12 @@ class _IndexPageState extends BasePageState<IndexPage>
                   Image.asset(
                     R.imagesIndexSearch,
                     fit: BoxFit.cover,
-                    width: 22.w,
-                    height: 22.w,
+                    width: 16.w,
+                    height: 16.w,
                   ),
                   Padding(padding: EdgeInsets.only(left: 9.w)),
                   Text(
-                    "疯狂英语",
+                    "搜词/翻译",
                     style: TextStyle(
                         fontSize: 16.sp, color: AppColors.TEXT_GRAY_COLOR),
                   )
