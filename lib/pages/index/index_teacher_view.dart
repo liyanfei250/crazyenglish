@@ -41,7 +41,12 @@ class _IndexTeacherPageState extends BasePageState<IndexTeacherPage> with Single
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSearchBar(),
+        AppBar(
+          automaticallyImplyLeading: false,
+          title: _buildSearchBar(),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
         _buildTabBar(),
         Expanded(child: _buildTableBarView())
       ],

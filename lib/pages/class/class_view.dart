@@ -35,19 +35,26 @@ class _ClassPageState extends State<ClassPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFFCF5E6),Color(0xFFF6F8FC)]
-        )
-      ),
-      child: Column(
-        children: [
-          _buildTabBar(),
-          Expanded(child: _buildTableBarView())
-        ],
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFFCF5E6),Color(0xFFF6F8FC)]
+            )
+        ),
+        child: Column(
+          children: [
+            AppBar(
+              automaticallyImplyLeading: false,
+              title: _buildTabBar(),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            Expanded(child: _buildTableBarView())
+          ],
+        ),
       ),
     );
   }
