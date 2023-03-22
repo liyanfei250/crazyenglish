@@ -47,8 +47,28 @@ class R {
   static final String imagesErrorToCorrect = 'images/error_to_correct.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct_over.png)
   static final String imagesErrorToCorrectOver = 'images/error_to_correct_over.png';
+  /// ![](http://127.0.0.1:11/images/home_my_journals.png)
+  static final String imagesHomeMyJournals = 'images/home_my_journals.png';
+  /// ![](http://127.0.0.1:11/images/home_my_list_no_data.png)
+  static final String imagesHomeMyListNoData = 'images/home_my_list_no_data.png';
+  /// ![](http://127.0.0.1:11/images/home_next_ic_black.png)
+  static final String imagesHomeNextIcBlack = 'images/home_next_ic_black.png';
+  /// ![](http://127.0.0.1:11/images/home_recommend_journals.png)
+  static final String imagesHomeRecommendJournals = 'images/home_recommend_journals.png';
   /// ![](http://127.0.0.1:11/images/home_search.png)
   static final String imagesHomeSearch = 'images/home_search.png';
+  /// ![](http://127.0.0.1:11/images/home_search_ic.png)
+  static final String imagesHomeSearchIc = 'images/home_search_ic.png';
+  /// ![](http://127.0.0.1:11/images/home_show_buy.png)
+  static final String imagesHomeShowBuy = 'images/home_show_buy.png';
+  /// ![](http://127.0.0.1:11/images/home_teach_bg.png)
+  static final String imagesHomeTeachBg = 'images/home_teach_bg.png';
+  /// ![](http://127.0.0.1:11/images/home_todo.png)
+  static final String imagesHomeTodo = 'images/home_todo.png';
+  /// ![](http://127.0.0.1:11/images/home_work_change.png)
+  static final String imagesHomeWorkChange = 'images/home_work_change.png';
+  /// ![](http://127.0.0.1:11/images/home_work_tips.png)
+  static final String imagesHomeWorkTips = 'images/home_work_tips.png';
   /// ![](http://127.0.0.1:11/images/icon_back.png)
   static final String imagesIconBack = 'images/icon_back.png';
   /// ![](http://127.0.0.1:11/images/icon_back_black.png)

@@ -15,93 +15,63 @@ class IndexTeacherPage extends BasePage {
   BasePageState<BasePage> getState() => _IndexTeacherPageState();
 }
 
-class _IndexTeacherPageState extends BasePageState<IndexTeacherPage> with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin{
+class _IndexTeacherPageState extends BasePageState<IndexTeacherPage>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
-  late TabController _tabController;
-
-  final List<String> tabs = const[
-    "精选",
-    "错题本",
-    "精品试卷",
-    "音标练习",
-    "听写单词",
-    "朗读",
-  ];
-
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _tabController = TabController(vsync: this,length: tabs.length);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        _buildSearchBar(),
-        _buildTabBar(),
-        Expanded(child: _buildTableBarView())
-      ],
+      children: [_buildSearchBar(), Expanded(child: TeacherIndexPage())],
     );
   }
 
-
-  Widget _buildTableBarView() => TabBarView(
-      controller: _tabController,
-      children: tabs.map((e) {
-        switch(e){
-          case "精选":
-            return TeacherIndexPage();
-        }
-        return Container();
-      }).toList()
-  );
-
-  Widget _buildTabBar() => TabBar(
-    onTap: (tab)=> print(tab),
-    controller: _tabController,
-    indicatorColor: AppColors.TAB_COLOR,
-    indicatorSize: TabBarIndicatorSize.label,
-    isScrollable: true,
-    labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
-    indicatorWeight: 3,
-    labelStyle: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR),
-    labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Tab(text:e)).toList(),
-  );
-
   Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.only(left: 14.w,right: 14.w,top: 7.w),
-    height: 28.w,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 294.w,
-          height: 28.w,
-          padding: EdgeInsets.only(left: 11.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-              color: AppColors.c_FFF0F0F0
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(R.imagesIndexSearch,fit:BoxFit.cover,width: 22.w,height: 22.w,),
-              Padding(padding: EdgeInsets.only(left: 9.w)),
-              Text("搜索/翻译",style: TextStyle(fontSize:16.sp,color: AppColors.TEXT_GRAY_COLOR),)
-            ],
-          ),
+        margin: EdgeInsets.only(left: 19.w, right: 19.w, top: 15.w),
+        padding: EdgeInsets.only(bottom: 10.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipOval(
+              child: Image.asset(
+                R.imagesShopImageLogoTest,
+                width: 32.w,
+                height: 32.w,
+              ),
+            ),
+            Container(
+              width: 291.w,
+              height: 28.w,
+              padding: EdgeInsets.only(left: 11.w),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16.w)),
+                  color: Color(0xffffffff)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    R.imagesHomeSearchIc,
+                    fit: BoxFit.cover,
+                    width: 16.w,
+                    height: 16.w,
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 9.w)),
+                  Text(
+                    "英语周报教师端",
+                    style: TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
-        Image.asset(R.imagesTeacherScan,width: 22.w,height: 22.w,)
-      ],
-    ),
-  );
+      );
 
   @override
   bool get wantKeepAlive => true;

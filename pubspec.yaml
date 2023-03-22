@@ -197,7 +197,17 @@ flutter:
     - images/collec_word_icon.png
     - images/error_to_correct.png
     - images/error_to_correct_over.png
+    - images/home_my_journals.png
+    - images/home_my_list_no_data.png
+    - images/home_next_ic_black.png
+    - images/home_recommend_journals.png
     - images/home_search.png
+    - images/home_search_ic.png
+    - images/home_show_buy.png
+    - images/home_teach_bg.png
+    - images/home_todo.png
+    - images/home_work_change.png
+    - images/home_work_tips.png
     - images/icon_back.png
     - images/icon_back_black.png
     - images/icon_back_blue.png
