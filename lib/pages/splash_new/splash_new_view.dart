@@ -52,7 +52,7 @@ class SplashNewPageState extends State<SplashPageNew> {
   }
 
   void _goMain() {
-    if (Config.isTeacher!) {
+    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME, isNeedCheckLogin: true);
     } else {
       RouterUtil.offAndToNamed(AppRoutes.HOME, isNeedCheckLogin: true);

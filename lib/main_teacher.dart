@@ -13,10 +13,9 @@ import 'routes/app_pages.dart';
 
 void main() {
   Config.env = Env.PRODUCT;
-  Config.isTeacher = true;
   Global.init(() {
     runApp(BlocWrapper(child: MyApp()));
-  });
+  },isTeacher: true);
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();

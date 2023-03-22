@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../base/common.dart';
 import '../../config.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
+import '../../utils/sp_util.dart';
 import 'mine_logic.dart';
 
 class MinePage extends BasePage {
@@ -28,7 +30,7 @@ class _MinePageState extends BasePageState<MinePage> {
         break;
       case 5:
         var role = '';
-        if (Config.isTeacher!) {
+        if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
           role = '学生端';
         } else {
           role = '教师端';
@@ -49,12 +51,12 @@ class _MinePageState extends BasePageState<MinePage> {
                   onPressed: () {
                     Navigator.of(context).pop(true); //关闭对话框
                     // ... 执行
-                    if (Config.isTeacher!) {
+                    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
                       RouterUtil.offAndToNamed(AppRoutes.HOME);
-                      Config.isTeacher = false;
+                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,false);
                     } else {
                       RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
-                      Config.isTeacher = true;
+                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,true);
                     }
 
                   },

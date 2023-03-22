@@ -16,7 +16,7 @@ import 'AppUtil.dart';
 
 class Global {
   //初始化全局信息
-  static Future init(VoidCallback callback) async {
+  static Future init(VoidCallback callback,{bool isTeacher = false}) async {
     WidgetsFlutterBinding.ensureInitialized();
     if(Platform.isAndroid || Platform.isIOS){
     //  设置http代理
@@ -26,6 +26,10 @@ class Global {
 
     // BotToastInit();
     await SpUtil.getInstance();
+    if(isTeacher){
+      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,isTeacher);
+    }
+
     if(Platform.isAndroid || Platform.isIOS){
       await FkUserAgent.init();
 
