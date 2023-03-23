@@ -89,7 +89,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                       )
                     ],
                   ),
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -114,7 +114,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                         ),
                       )
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),
