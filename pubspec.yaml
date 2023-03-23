@@ -56,7 +56,7 @@ dependencies:
   provider: ^6.0.0
 # 日期时间处理
   intl: ^0.18.0
-
+  qr_code_scanner: ^1.0.1
   #设置http代理
   http_proxy_override: ^1.0.0
   #GetX状态管理框架 https://pub.flutter-io.cn/packages/get

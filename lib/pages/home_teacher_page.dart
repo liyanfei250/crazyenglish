@@ -1,3 +1,6 @@
+import 'dart:io' as io;
+
+import 'package:crazyenglish/entity/check_update_resp.dart';
 import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
@@ -6,23 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:crazyenglish/entity/check_update_resp.dart';
 
 import '../base/AppUtil.dart';
 import '../base/common.dart';
-import '../entity/login/login_util.dart';
-import '../r.dart';
-import '../routes/app_pages.dart';
 import '../routes/getx_ids.dart';
-import '../routes/routes_utils.dart';
 import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
 import 'app_update_panel/app_update_panel_logic.dart';
-import 'index/index_teacher_view.dart';
-import 'index/index_view.dart';
 import 'mine/mine_view.dart';
-import 'dart:io' as io;
 
 /**
  * Time: 2022/9/16 16:33
