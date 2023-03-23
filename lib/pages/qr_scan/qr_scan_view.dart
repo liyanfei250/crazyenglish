@@ -33,14 +33,13 @@ class _QRViewExampleState extends State<QRViewExample> {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
-
   }
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 1), () {
-      controller!.resumeCamera();//模拟json字符串
+      controller!.resumeCamera(); //模拟json字符串
     });
   }
 
