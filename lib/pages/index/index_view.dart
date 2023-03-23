@@ -143,7 +143,6 @@ class _IndexPageState extends BasePageState<IndexPage>
     );
   }
 
-
   Widget get adsBanner {
     return Container(
       width: double.infinity,
@@ -245,53 +244,52 @@ class _IndexPageState extends BasePageState<IndexPage>
           ),
         ),
       );
+
   Widget _buildClassArea() => Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage(R.imagesIndexTodayTodo), fit: BoxFit.cover),
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          height: 22.w,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.imagesIndexTodayTodo), fit: BoxFit.cover),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 14.w,
+              height: 22.w,
             ),
-            Text(
-              "我的任务",
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16.sp,
-                  color: Color(0xff151619)),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: (){
-
-                },
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.only(right: 20),
-                  child: Image.asset(
-                    R.imagesHomeNextIcBlack,
-                    width: 10,
-                    height: 10,
-                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 14.w,
                 ),
-              ),
-            )
+                Text(
+                  "我的任务",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.sp,
+                      color: Color(0xff151619)),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      margin: EdgeInsets.only(right: 20),
+                      child: Image.asset(
+                        R.imagesHomeNextIcBlack,
+                        width: 10,
+                        height: 10,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            _buildClassCard(0),
           ],
         ),
-        _buildClassCard(0),
-      ],
-    ),
-  );
+      );
 
   Widget _buildClassCard(int index) => Container(
       margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
@@ -320,8 +318,9 @@ class _IndexPageState extends BasePageState<IndexPage>
         },
         itemCount: listData.length,
       ));
+
   Widget _buildSearchBar() => Container(
-        margin: EdgeInsets.only( top: 7.w),
+        margin: EdgeInsets.only(top: 7.w),
         width: double.infinity,
         height: 28.w,
         child: Row(
@@ -354,16 +353,21 @@ class _IndexPageState extends BasePageState<IndexPage>
                 ],
               ),
             )),
-            Image.asset(
-              R.imagesIndexScan,
-              width: 18.w,
-              height: 18.w,
-            )
+            GestureDetector(
+              onTap: () {
+                RouterUtil.toNamed(AppRoutes.QRViewPage);
+              },
+              child: Image.asset(
+                R.imagesIndexScan,
+                width: 18.w,
+                height: 18.w,
+              ),
+            ),
           ],
         ),
       );
   var _future = Future.delayed(Duration(seconds: 2), () {
-    return '老王，一个有态度的程序员';//模拟json字符串
+    return '老王，一个有态度的程序员'; //模拟json字符串
   });
 
   //构建FutureBuilder控件：
@@ -478,12 +482,13 @@ class _IndexPageState extends BasePageState<IndexPage>
 
 //构建网络加载失败控件：
   _loadingErrorWidget() {
-    return  Image.asset(
+    return Image.asset(
       R.imagesHomeMyListNoData,
       width: double.infinity,
       height: 98.w,
     );
   }
+
   @override
   bool get wantKeepAlive => true;
 

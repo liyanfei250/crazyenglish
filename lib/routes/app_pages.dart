@@ -1,4 +1,5 @@
 import 'package:crazyenglish/pages/class/class_view.dart';
+import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
 import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
@@ -80,6 +81,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
     GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
     GetPage(name: AppRoutes.ErrorNoteCollectPage, page:()=>ErrorNoteCollectPage(),),
+    GetPage(name: AppRoutes.QRViewPage, page:()=>QRViewExample(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
     GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),
