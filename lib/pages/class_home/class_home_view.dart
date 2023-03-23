@@ -21,10 +21,8 @@ class _ClassHomePageState extends State<ClassHomePage> {
 
   final List<String> functionTxt = [
     "公告",
-    "答疑",
-    "课件",
-    "班级作业",
-    "班级群",
+    "作业",
+    "班级",
   ];
 
   @override
@@ -33,14 +31,12 @@ class _ClassHomePageState extends State<ClassHomePage> {
 
       children: [
         Container(
-          width: 331.w,
-          height: 180.w,
+          width: 337.w,
+          height: 273.w,
           alignment: Alignment.centerRight,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(R.imagesTeacherClassTop),
-              fit: BoxFit.cover
-            )
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20.w))
           ),
           child: Image.asset(R.imagesClassQrcode,width: 77.w,height: 77.w,),
         ),

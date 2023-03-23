@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../r.dart';
 import '../../utils/colors.dart';
 import '../class_home/class_home_view.dart';
 import 'class_logic.dart';
@@ -36,25 +37,22 @@ class _ClassPageState extends State<ClassPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFFFCF5E6),Color(0xFFF6F8FC)]
-            )
-        ),
-        child: Column(
-          children: [
-            AppBar(
-              automaticallyImplyLeading: false,
-              title: _buildTabBar(),
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            ),
-            Expanded(child: _buildTableBarView())
-          ],
-        ),
+      backgroundColor: const Color(0xfff8f9fb),
+      body: Stack(
+        children: [
+          Image.asset(R.imagesTeacherClassTop,width: double.infinity),
+          Column(
+            children: [
+              AppBar(
+                automaticallyImplyLeading: false,
+                title: _buildTabBar(),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              Expanded(child: _buildTableBarView())
+            ],
+          )
+        ],
       ),
     );
   }
