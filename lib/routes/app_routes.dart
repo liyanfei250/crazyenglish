@@ -43,6 +43,11 @@ abstract class AppRoutes{
   static const TEACHER_STUDENT = '/teacher_student';
   static const TEACHER_Index = '/TEACHER_Index';
 
-// static const LOGIN = '/login';
+  static const AssignHomeworkPage = '/AssignHomeworkPage';
+  static const ChooseExamPaperPage = '/ChooseExamPaperPage';
+  static const ChooseHistoryHomeworkPage = '/ChooseHistoryHomeworkPage';
+  static const ChooseJournalPage = '/ChooseJournalPage';
+  static const ChooseQuestionPage = '/ChooseQuestionPage';
+  static const ChooseStudentPage = '/ChooseStudentPage';
 
 }

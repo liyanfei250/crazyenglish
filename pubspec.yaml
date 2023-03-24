@@ -91,7 +91,7 @@ dependencies:
   dotted_line: ^3.1.0
   flutter_image_compress: ^1.1.3
   sign_in_with_apple: ^4.2.0
-  flutter_inapp_purchase: ^5.3.1
+  flutter_inapp_purchase: 5.3.1
   flutter_sound: ^9.2.13
   audio_session: 0.1.6
   flutter_html: 3.0.0-alpha.6
@@ -293,6 +293,7 @@ flutter:
     - images/icon_intensive_listening_show_word_yes_clicked.png
     - images/icon_tab3_pressed.png
     - images/practise_pre_question_unable.png
+    - images/complete_btn.png
     - images/choice_error.png
     - images/review_reading_tag.png
     - images/index_icon_1.png

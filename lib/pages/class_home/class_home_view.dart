@@ -113,6 +113,9 @@ class _ClassHomePageState extends State<ClassHomePage> {
   Widget _buildFuncAreaItem(String e) => InkWell(
     onTap: (){
       switch(e){
+        case "作业":
+          RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
+          break;
       }
     },
     child: Column(

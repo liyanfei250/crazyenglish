@@ -239,6 +239,8 @@ class R {
   static final String imagesIconTab3Pressed = 'images/icon_tab3_pressed.png';
   /// ![](http://127.0.0.1:11/images/practise_pre_question_unable.png)
   static final String imagesPractisePreQuestionUnable = 'images/practise_pre_question_unable.png';
+  /// ![](http://127.0.0.1:11/images/complete_btn.png)
+  static final String imagesCompleteBtn = 'images/complete_btn.png';
   /// ![](http://127.0.0.1:11/images/choice_error.png)
   static final String imagesChoiceError = 'images/choice_error.png';
   /// ![](http://127.0.0.1:11/images/review_reading_tag.png)
