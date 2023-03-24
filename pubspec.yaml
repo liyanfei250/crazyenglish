@@ -191,6 +191,13 @@ flutter:
     - images/class_fun_2.png
     - images/class_fun_3.png
     - images/class_fun_4.png
+    - images/class_info_bg.png
+    - images/class_info_name.png
+    - images/class_info_photo.png
+    - images/class_info_teacher_age.png
+    - images/class_info_teacher_name.png
+    - images/class_info_teacher_phone_num.png
+    - images/class_info_teacher_sex.png
     - images/class_qrcode.png
     - images/collec_prac_icon.png
     - images/collec_words_error.png

@@ -35,6 +35,20 @@ class R {
   static final String imagesClassFun3 = 'images/class_fun_3.png';
   /// ![](http://127.0.0.1:11/images/class_fun_4.png)
   static final String imagesClassFun4 = 'images/class_fun_4.png';
+  /// ![](http://127.0.0.1:11/images/class_info_bg.png)
+  static final String imagesClassInfoBg = 'images/class_info_bg.png';
+  /// ![](http://127.0.0.1:11/images/class_info_name.png)
+  static final String imagesClassInfoName = 'images/class_info_name.png';
+  /// ![](http://127.0.0.1:11/images/class_info_photo.png)
+  static final String imagesClassInfoPhoto = 'images/class_info_photo.png';
+  /// ![](http://127.0.0.1:11/images/class_info_teacher_age.png)
+  static final String imagesClassInfoTeacherAge = 'images/class_info_teacher_age.png';
+  /// ![](http://127.0.0.1:11/images/class_info_teacher_name.png)
+  static final String imagesClassInfoTeacherName = 'images/class_info_teacher_name.png';
+  /// ![](http://127.0.0.1:11/images/class_info_teacher_phone_num.png)
+  static final String imagesClassInfoTeacherPhoneNum = 'images/class_info_teacher_phone_num.png';
+  /// ![](http://127.0.0.1:11/images/class_info_teacher_sex.png)
+  static final String imagesClassInfoTeacherSex = 'images/class_info_teacher_sex.png';
   /// ![](http://127.0.0.1:11/images/class_qrcode.png)
   static final String imagesClassQrcode = 'images/class_qrcode.png';
   /// ![](http://127.0.0.1:11/images/collec_prac_icon.png)
