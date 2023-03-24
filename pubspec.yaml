@@ -204,6 +204,7 @@ flutter:
     - images/choice_correct.png
     - images/player_practise_slide.png
     - images/torid_three_show.png
+    - images/class_info_teacher_age.png
     - images/icon_close_round_black.png
     - images/icon_tab3_normal.png
     - images/index_class_new.png
@@ -217,6 +218,7 @@ flutter:
     - images/icon_transmission_speed_20.png
     - images/weekly_item_shadow.png
     - images/icon_transmission_speed_08.png
+    - images/class_info_bg.png
     - images/student_notify.png
     - images/review_favor_words_icon.png
     - images/home_recommend_journals.png
@@ -285,6 +287,7 @@ flutter:
     - images/student_index_6.png
     - images/article_share.png
     - images/writing_title_bg.png
+    - images/qr_scan_ic.png
     - images/icon_player_pause_clicked.png
     - images/teacher_home_btn_pop.png
     - images/splash_center_image.png
@@ -306,6 +309,7 @@ flutter:
     - images/icon_intensive_listening_show_word_no_clicked.png
     - images/icon_tab4_pressed.png
     - images/article_woman_play.png
+    - images/class_info_teacher_name.png
     - images/login_role_teacher.png
     - images/my_icon_coupon.png
     - images/icon_player_play_clicked.png
@@ -315,7 +319,9 @@ flutter:
     - images/icon_intensive_listening_show_word_no.png
     - images/student_notify_parent.png
     - images/splash.png
+    - images/class_info_teacher_sex.png
     - images/home_search.png
+    - images/class_info_name.png
     - images/index_icon_2.png
     - images/listenig_last_icon.png
     - images/welcome_icon.png
@@ -325,6 +331,7 @@ flutter:
     - images/weekly_fabulous.png
     - images/icon_transmission_speed_12_clicked.png
     - images/index_icon_3.png
+    - images/class_info_photo.png
     - images/icon_to_next.png
     - images/weekly_collect.png
     - images/article_listen_pause.png
@@ -344,6 +351,7 @@ flutter:
     - images/history_pre_month.png
     - images/index_today_todo.png
     - images/article_listen_play.png
+    - images/class_info_teacher_phone_num.png
     - images/collec_prac_icon.png
     - images/icon_intensive_listening_translate_yes.png
     - images/index_icon_4.png

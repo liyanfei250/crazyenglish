@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../routes/app_pages.dart';
 import 'qr_scan_logic.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -33,95 +36,63 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      controller!.resumeCamera(); //模拟json字符串
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (result != null)
-                    Text(
-                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  else
-                    const Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+        body: Stack(
+      children: [
+        _buildQrView(context),
+        Positioned(
+            child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          centerTitle: true,
+          title: Text(
+            "扫一扫",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16.0,
+            ),
+          ),
+        )),
+        Visibility(
+          visible: false,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Camera facing ${describeEnum(snapshot.data!)}');
-                                } else {
-                                  return const Text('loading');
-                                }
-                              },
-                            )),
-                      )
+                      if (result != null)
+                        Text(
+                            'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                      else
+                        const Text('Scan a code'),
                     ],
                   ),
-                  /*Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('pause',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('resume',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      )
-                    ],
-                  ),*/
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -149,6 +120,11 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        if (scanData != null) {
+          Util.toast('${describeEnum(result!.format)} Data: ${result!.code}');
+          RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextClass);
+          //RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextAudio);
+        }
       });
     });
   }
