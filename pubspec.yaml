@@ -233,6 +233,7 @@ flutter:
     - images/home_todo.png
     - images/my_icon_help.png
     - images/next_three_icon.png
+    - images/icon_choose_center.png
     - images/torid_four_show.png
     - images/teacher_day_words_bg.png
     - images/article_man_play.png
@@ -286,6 +287,7 @@ flutter:
     - images/student_index_4.png
     - images/student_index_6.png
     - images/article_share.png
+    - images/home_work_as_exam.png
     - images/writing_title_bg.png
     - images/qr_scan_ic.png
     - images/icon_player_pause_clicked.png
@@ -342,6 +344,7 @@ flutter:
     - images/index_class_more.png
     - images/bg_update_top.png
     - images/teacher_class_top.png
+    - images/home_work_time.png
     - images/weekly_bg.png
     - images/result_favor.png
     - images/torid_one_hide.png
@@ -371,6 +374,7 @@ flutter:
     - images/icon_transmission_speed_20_selected.png
     - images/icon_intensive_listening_loop_yes_clicked.png
     - images/home_work_change.png
+    - images/icon_home_work_asign.png
     - images/icon_transmission_speed_12.png
     - images/reading_default.png
     - images/login_top_bg.png
@@ -381,6 +385,7 @@ flutter:
     - images/teacher_words_bg.png
     - images/icon_intensive_listening_translate_yes_not_enabled.png
     - images/article_listen_derfault.png
+    - images/icon_back_white.png
     - images/index_ad.png
     - images/num_index5.png
     - images/icon_transmission_speed_10.png
