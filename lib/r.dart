@@ -87,8 +87,12 @@ class R {
   static final String imagesHomeTeachBg = 'images/home_teach_bg.png';
   /// ![](http://127.0.0.1:11/images/home_todo.png)
   static final String imagesHomeTodo = 'images/home_todo.png';
+  /// ![](http://127.0.0.1:11/images/home_work_as_exam.png)
+  static final String imagesHomeWorkAsExam = 'images/home_work_as_exam.png';
   /// ![](http://127.0.0.1:11/images/home_work_change.png)
   static final String imagesHomeWorkChange = 'images/home_work_change.png';
+  /// ![](http://127.0.0.1:11/images/home_work_time.png)
+  static final String imagesHomeWorkTime = 'images/home_work_time.png';
   /// ![](http://127.0.0.1:11/images/home_work_tips.png)
   static final String imagesHomeWorkTips = 'images/home_work_tips.png';
   /// ![](http://127.0.0.1:11/images/icon_back.png)
@@ -97,12 +101,18 @@ class R {
   static final String imagesIconBackBlack = 'images/icon_back_black.png';
   /// ![](http://127.0.0.1:11/images/icon_back_blue.png)
   static final String imagesIconBackBlue = 'images/icon_back_blue.png';
+  /// ![](http://127.0.0.1:11/images/icon_back_white.png)
+  static final String imagesIconBackWhite = 'images/icon_back_white.png';
+  /// ![](http://127.0.0.1:11/images/icon_choose_center.png)
+  static final String imagesIconChooseCenter = 'images/icon_choose_center.png';
   /// ![](http://127.0.0.1:11/images/icon_close.png)
   static final String imagesIconClose = 'images/icon_close.png';
   /// ![](http://127.0.0.1:11/images/icon_close_round_black.png)
   static final String imagesIconCloseRoundBlack = 'images/icon_close_round_black.png';
   /// ![](http://127.0.0.1:11/images/icon_home_me_default_head.png)
   static final String imagesIconHomeMeDefaultHead = 'images/icon_home_me_default_head.png';
+  /// ![](http://127.0.0.1:11/images/icon_home_work_asign.png)
+  static final String imagesIconHomeWorkAsign = 'images/icon_home_work_asign.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_no.png)
   static final String imagesIconIntensiveListeningLoopNo = 'images/icon_intensive_listening_loop_no.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_no_clicked.png)

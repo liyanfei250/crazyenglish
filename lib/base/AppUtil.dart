@@ -95,6 +95,27 @@ class Util {
     );
   }
 
+  static Widget buildWhiteWidget(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Get.back();
+      },
+      child: Center(
+        child: Container(
+          width: Util.setWidth(20) as double?,
+          height: Util.setWidth(20) as double?,
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(left: Util.setWidth(13) as double),
+          child: Image.asset(
+            R.imagesIconBackWhite,
+            fit: BoxFit.fill,
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget buildCloseWidget(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
