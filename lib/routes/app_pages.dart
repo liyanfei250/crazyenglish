@@ -28,6 +28,12 @@ import '../pages/buy/order_sure/order_sure_view.dart';
 import '../pages/buy/shop/shop_view.dart';
 import '../pages/buy/shop_car/shop_car_view.dart';
 import '../pages/buy/shoplist/view.dart';
+import '../pages/homework/assign_homework/assign_homework_view.dart';
+import '../pages/homework/choose_exam_paper/choose_exam_paper_view.dart';
+import '../pages/homework/choose_history_homework/choose_history_homework_view.dart';
+import '../pages/homework/choose_journal/choose_journal_view.dart';
+import '../pages/homework/choose_question/choose_question_view.dart';
+import '../pages/homework/choose_student/choose_student_view.dart';
 import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/intensive_listening/intensive_listening_view.dart';
@@ -93,7 +99,14 @@ abstract class AppPages {
     GetPage(name: AppRoutes.TEACHER_STUDENT, page:()=>StudentPage(),),
     GetPage(name: AppRoutes.TEACHER_Index, page:()=>TeacherIndexPage(),),
 
-    GetPage(name: AppRoutes.PractiseHistoryPage, page:()=>Practise_historyPage(),),
+    GetPage(name: AppRoutes.PractiseHistoryPage, page:()=> Practise_historyPage(),),
+
+    GetPage(name: AppRoutes.AssignHomeworkPage , page:()=> AssignHomeworkPage(),),
+    GetPage(name: AppRoutes.ChooseExamPaperPage , page:()=> ChooseExamPaperPage(),),
+    GetPage(name: AppRoutes.ChooseHistoryHomeworkPage , page:()=> ChooseHistoryHomeworkPage(),),
+    GetPage(name: AppRoutes.ChooseJournalPage , page:()=> ChooseJournalPage(),),
+    GetPage(name: AppRoutes.ChooseQuestionPage , page:()=> ChooseQuestionPage(),),
+    GetPage(name: AppRoutes.ChooseStudentPage , page:()=> ChooseStudentPage(),),
 
   ];
 }
