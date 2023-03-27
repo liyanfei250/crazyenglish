@@ -388,6 +388,7 @@ flutter:
     - images/student_notify.png
     - images/student_notify_ic.png
     - images/student_notify_parent.png
+    - images/student_no_date.png
     - images/teacher_class_top.png
     - images/teacher_day_words.png
     - images/teacher_day_words_bg.png

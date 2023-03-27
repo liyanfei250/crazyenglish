@@ -109,6 +109,24 @@ class _ClassHomePageState extends State<ClassHomePage> {
             padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
           ),
+          buildContainerNodate()
+        ],
+      ),
+    );
+  }
+
+  Widget buildContainerNodate() {
+    return Container(
+      padding: EdgeInsets.only(top: 30.w,bottom: 30.w),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Image.asset(
+            R.imagesStudentNoDate,
+            width: 138.w,
+            height: 138.w,
+          ),
+          SizedBox(height: 20.w,),
         ],
       ),
     );

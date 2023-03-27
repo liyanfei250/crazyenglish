@@ -427,6 +427,8 @@ class R {
   static final String imagesStudentNotifyIc = 'images/student_notify_ic.png';
   /// ![](http://127.0.0.1:11/images/student_notify_parent.png)
   static final String imagesStudentNotifyParent = 'images/student_notify_parent.png';
+  /// ![](http://127.0.0.1:11/images/student_no_date.png)
+  static final String imagesStudentNoDate = 'images/student_no_date.png';
   /// ![](http://127.0.0.1:11/images/teacher_class_top.png)
   static final String imagesTeacherClassTop = 'images/teacher_class_top.png';
   /// ![](http://127.0.0.1:11/images/teacher_day_words.png)
