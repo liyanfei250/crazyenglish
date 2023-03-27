@@ -359,6 +359,14 @@ class R {
   static final String imagesReviewTopBg = 'images/review_top_bg.png';
   /// ![](http://127.0.0.1:11/images/review_wrong_question_item.png)
   static final String imagesReviewWrongQuestionItem = 'images/review_wrong_question_item.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_back15.png)
+  static final String imagesScanResultBack15 = 'images/scan_result_back15.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_broadcast.png)
+  static final String imagesScanResultBroadcast = 'images/scan_result_broadcast.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_fast15.png)
+  static final String imagesScanResultFast15 = 'images/scan_result_fast15.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_suspend.png)
+  static final String imagesScanResultSuspend = 'images/scan_result_suspend.png';
   /// ![](http://127.0.0.1:11/images/shop_address_location_icon.png)
   static final String imagesShopAddressLocationIcon = 'images/shop_address_location_icon.png';
   /// ![](http://127.0.0.1:11/images/shop_car_num_icon.png)
