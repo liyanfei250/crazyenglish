@@ -22,7 +22,9 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Scaffold(
+        body: Stack(
+          alignment: Alignment.center,
       children: [
         _buildBgView(context),
         Positioned(
@@ -41,7 +43,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
         )),
         Positioned(top: 116.w, child: _buildClassCard(0))
       ],
-    );
+    ));
   }
 
   Widget _buildBgView(BuildContext context) {
@@ -155,7 +157,8 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                                 },
                                 child: Text(
                                   '是',
-                                  style: TextStyle(color: Colors.white,fontSize: 16.sp),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16.sp),
                                 ),
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.red,

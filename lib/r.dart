@@ -151,6 +151,8 @@ class R {
   static final String imagesIconHomeMeDefaultHead = 'images/icon_home_me_default_head.png';
   /// ![](http://127.0.0.1:11/images/index_icon_9.png)
   static final String imagesIndexIcon9 = 'images/index_icon_9.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_fast15.png)
+  static final String imagesScanResultFast15 = 'images/scan_result_fast15.png';
   /// ![](http://127.0.0.1:11/images/student_index_2.png)
   static final String imagesStudentIndex2 = 'images/student_index_2.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct.png)
@@ -389,6 +391,8 @@ class R {
   static final String imagesIconPlayerPause = 'images/icon_player_pause.png';
   /// ![](http://127.0.0.1:11/images/num_index6.png)
   static final String imagesNumIndex6 = 'images/num_index6.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_back15.png)
+  static final String imagesScanResultBack15 = 'images/scan_result_back15.png';
   /// ![](http://127.0.0.1:11/images/my_icon_setting.png)
   static final String imagesMyIconSetting = 'images/my_icon_setting.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_pressed.png)
@@ -409,6 +413,8 @@ class R {
   static final String imagesReadingDefault = 'images/reading_default.png';
   /// ![](http://127.0.0.1:11/images/login_top_bg.png)
   static final String imagesLoginTopBg = 'images/login_top_bg.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_suspend.png)
+  static final String imagesScanResultSuspend = 'images/scan_result_suspend.png';
   /// ![](http://127.0.0.1:11/images/index_class_thumb1.png)
   static final String imagesIndexClassThumb1 = 'images/index_class_thumb1.png';
   /// ![](http://127.0.0.1:11/images/practise_count_time_icon.png)
@@ -465,6 +471,8 @@ class R {
   static final String imagesIconTransmissionSpeed15 = 'images/icon_transmission_speed_15.png';
   /// ![](http://127.0.0.1:11/images/welcome_txt.png)
   static final String imagesWelcomeTxt = 'images/welcome_txt.png';
+  /// ![](http://127.0.0.1:11/images/scan_result_broadcast.png)
+  static final String imagesScanResultBroadcast = 'images/scan_result_broadcast.png';
   /// ![](http://127.0.0.1:11/images/index_icon_play.png)
   static final String imagesIndexIconPlay = 'images/index_icon_play.png';
   /// ![](http://127.0.0.1:11/images/article_listen_press.png)

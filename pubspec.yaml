@@ -249,6 +249,7 @@ flutter:
     - images/icon_transmission_speed_05_clicked.png
     - images/icon_home_me_default_head.png
     - images/index_icon_9.png
+    - images/scan_result_fast15.png
     - images/student_index_2.png
     - images/error_to_correct.png
     - images/wrong_question_item.png
@@ -368,6 +369,7 @@ flutter:
     - images/icon_tab1_pressed.png
     - images/icon_player_pause.png
     - images/num_index6.png
+    - images/scan_result_back15.png
     - images/my_icon_setting.png
     - images/icon_tab2_pressed.png
     - images/teacher_progress.png
@@ -378,6 +380,7 @@ flutter:
     - images/icon_transmission_speed_12.png
     - images/reading_default.png
     - images/login_top_bg.png
+    - images/scan_result_suspend.png
     - images/index_class_thumb1.png
     - images/practise_count_time_icon.png
     - images/error_to_correct_over.png
@@ -406,6 +409,7 @@ flutter:
     - images/icon_player_after_play.png
     - images/icon_transmission_speed_15.png
     - images/welcome_txt.png
+    - images/scan_result_broadcast.png
     - images/index_icon_play.png
     - images/article_listen_press.png
     - images/shop_car_num_icon.png
