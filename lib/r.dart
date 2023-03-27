@@ -413,6 +413,8 @@ class R {
   static final String imagesStudentInfo = 'images/student_info.png';
   /// ![](http://127.0.0.1:11/images/student_notify.png)
   static final String imagesStudentNotify = 'images/student_notify.png';
+  /// ![](http://127.0.0.1:11/images/student_notify_ic.png)
+  static final String imagesStudentNotifyIc = 'images/student_notify_ic.png';
   /// ![](http://127.0.0.1:11/images/student_notify_parent.png)
   static final String imagesStudentNotifyParent = 'images/student_notify_parent.png';
   /// ![](http://127.0.0.1:11/images/teacher_class_top.png)
@@ -431,6 +433,8 @@ class R {
   static final String imagesTeacherStudentState = 'images/teacher_student_state.png';
   /// ![](http://127.0.0.1:11/images/teacher_words_bg.png)
   static final String imagesTeacherWordsBg = 'images/teacher_words_bg.png';
+  /// ![](http://127.0.0.1:11/images/teach_class_add.png)
+  static final String imagesTeachClassAdd = 'images/teach_class_add.png';
   /// ![](http://127.0.0.1:11/images/test_pause.png)
   static final String imagesTestPause = 'images/test_pause.png';
   /// ![](http://127.0.0.1:11/images/test_play.png)

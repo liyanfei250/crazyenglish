@@ -70,27 +70,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                 ),
               )],
           ),
-        )) /*Container(
-        margin: EdgeInsets.symmetric(horizontal: 14.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 16.w)),
-            adsBanner,
-            Padding(padding: EdgeInsets.only(top: 22.w)),
-            GridView.builder(
-                shrinkWrap: true,
-                itemCount: functionTxt.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5),
-                itemBuilder: (_, int position) {
-                  String e = functionTxt[position];
-                  return _buildFuncAreaItem(e);
-                }),
-            Padding(padding: EdgeInsets.only(top: 12.w)),
-            _buildClassArea(),
-          ],
-        ))*/;
+        )) ;
   }
   Widget _buildSearchBar() => Container(
     margin: EdgeInsets.only( top: 15.w),
