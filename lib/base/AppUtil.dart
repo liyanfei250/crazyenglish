@@ -95,6 +95,77 @@ class Util {
     );
   }
 
+  static  Widget buildCheckBox(GestureTapCallback callback,{bool chooseEnable = true}){
+    return InkWell(
+      onTap: () {
+        callback.call();
+      },
+      child: Container(
+        width: 16.w,
+        height: 16.w,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xfff19e59),
+                Color(0xffec5f2a),
+              ]),
+          borderRadius: BorderRadius.all(Radius.circular(6.w)),
+          boxShadow:[
+            BoxShadow(
+              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
+              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
+              blurRadius: 6.w,							// 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 0.w,
+            ),
+          ],
+        ),
+        child: Visibility(
+          visible: chooseEnable,
+          child: Image.asset(
+            R.imagesIconChooseCenter,
+            width: 12.w,
+            height: 12.w,
+          ),
+        ),
+      ),
+    );
+  }
+
+  static  Widget buildHomeworkNormalBtn(GestureTapCallback callback,String text,{bool enable = true}){
+    return InkWell(
+      onTap: (){
+        callback.call();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 28.w),
+        height: 28.w,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                enable? Color(0xfff19e59):Color(0x80f19e59),
+                enable? Color(0xffec5f2a):Color(0x80ec5f2a),
+              ]),
+          borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
+          boxShadow:[
+            BoxShadow(
+              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
+              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
+              blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 0.w,
+            ),
+          ],
+        ),
+        child: Text("$text",style: TextStyle(color: Colors.white),),
+      ),
+    );
+  }
+
+
   static Widget buildWhiteWidget(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

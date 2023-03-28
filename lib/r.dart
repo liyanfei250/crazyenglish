@@ -399,6 +399,8 @@ class R {
   static final String imagesIconTab2Pressed = 'images/icon_tab2_pressed.png';
   /// ![](http://127.0.0.1:11/images/teacher_progress.png)
   static final String imagesTeacherProgress = 'images/teacher_progress.png';
+  /// ![](http://127.0.0.1:11/images/home_work_question_filter.png)
+  static final String imagesHomeWorkQuestionFilter = 'images/home_work_question_filter.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_selected.png)
   static final String imagesIconTransmissionSpeed20Selected = 'images/icon_transmission_speed_20_selected.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_yes_clicked.png)

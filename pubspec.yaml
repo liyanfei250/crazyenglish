@@ -373,6 +373,7 @@ flutter:
     - images/my_icon_setting.png
     - images/icon_tab2_pressed.png
     - images/teacher_progress.png
+    - images/home_work_question_filter.png
     - images/icon_transmission_speed_20_selected.png
     - images/icon_intensive_listening_loop_yes_clicked.png
     - images/home_work_change.png
