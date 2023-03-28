@@ -1,9 +1,11 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../r.dart';
+import '../../routes/app_pages.dart';
 import '../../utils/colors.dart';
 import '../class_home/class_home_view.dart';
 import 'class_logic.dart';
@@ -94,7 +96,6 @@ class _ClassPageState extends State<ClassPage>
       ),
       child: GestureDetector(
         onTap: () {
-          Util.toast('message');
           setState(() {
             extend = !extend;
           });
@@ -110,17 +111,22 @@ class _ClassPageState extends State<ClassPage>
               duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
               vsync: this,
-              child: Container(
-                width: extend ? 44.w : 0.w,
-                child: Center(
-                  child: Text(
-                    '新建班级',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xffed702d),
-                        fontSize: 10.sp),
+              child: GestureDetector(
+                onTap: () {
+                  RouterUtil.toNamed(AppRoutes.Teacher_Class_Create);
+                },
+                child: Container(
+                  width: extend ? 44.w : 0.w,
+                  child: Center(
+                    child: Text(
+                      '新建班级',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffed702d),
+                          fontSize: 10.sp),
+                    ),
                   ),
                 ),
               ),

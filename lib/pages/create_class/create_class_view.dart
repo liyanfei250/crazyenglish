@@ -1,30 +1,71 @@
-import 'package:crazyenglish/utils/MyImageLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../utils/colors.dart';
-import 'class_message_logic.dart';
+import '../../utils/permissions/permissions_util.dart';
+import 'create_class_logic.dart';
+import 'dart:io' as FileNew;
 
-class Class_messagePage extends BasePage {
-  const Class_messagePage({Key? key}) : super(key: key);
+class Create_classPage extends BasePage {
+  const Create_classPage({Key? key}) : super(key: key);
 
   @override
-  BasePageState<BasePage> getState() => _ToClassMessagePageState();
+  BasePageState<BasePage> getState() => _ToCreateClassPageState();
 }
 
-class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
-  final logic = Get.put(Class_messageLogic());
-  final state = Get.find<Class_messageLogic>().state;
+class _ToCreateClassPageState extends BasePageState<Create_classPage> {
+  final logic = Get.put(Create_classLogic());
+  final state = Get.find<Create_classLogic>().state;
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  bool _hasText = false;
+  FileNew.File? _image;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = FileNew.File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_onTextChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onTextChanged);
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      _hasText = _controller.text.isNotEmpty;
+    });
+  }
+
+  void _clearText() {
+    _controller.clear();
+    _onTextChanged();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          alignment: Alignment.center,
+      alignment: Alignment.center,
       children: [
         _buildBgView(context),
         Positioned(
@@ -34,7 +75,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
           leading: Util.buildBackWidget(context),
           centerTitle: true,
           title: Text(
-            "班级信息",
+            "新建班级",
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
@@ -43,7 +84,67 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
         )),
         Positioned(top: 116.w, child: _buildClassCard(0))
       ],
-    ));
+    )); /*Scaffold(
+      appBar: buildNormalAppBar("新建班级"),
+      backgroundColor: AppColors.theme_bg,
+      body: Container(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '班级名称',
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d)),
+                ),
+                Container(
+                  width: 200.w,
+                  alignment: Alignment.topCenter,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                        controller: _controller,
+                        focusNode: _focusNode,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                          border: InputBorder.none,
+                          hintText: '请输入内容',
+                        ),
+                      )),
+                      Visibility(
+                        visible: _hasText,
+                        child: IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: _clearText,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            buildItemClass('讲师名称', '张玉华'),
+            buildItemClass('讲师性别', '女'),
+            buildItemClass('讲师教龄', '3年'),
+            buildItemClass('联系电话', '19834638273'),
+            buildItemClassLode('班级照片', '班级照片'),
+            buildItemClassLode('班级二维码', '生成二维码'),
+
+            ElevatedButton(onPressed: (){
+
+            }, child: Text('生成二维码'))
+          ],
+        ),
+      ),
+    );*/
   }
 
   Widget _buildBgView(BuildContext context) {
@@ -77,14 +178,45 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 70.w,
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //       image: AssetImage(R.imagesClassInfoBg),
-                  //       fit: BoxFit.cover),
-                  // ),
-                  child: _myHorizontalLayout(
-                      R.imagesClassInfoName, "班级名称:", "七年级一班"),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        R.imagesClassInfoName,
+                        width: 16.w,
+                        height: 16.w,
+                      ),
+                      SizedBox(width: 12.w),
+                      Text(
+                        '班级名称：',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.sp,
+                            color: Color(0xff353e4d)),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                          child: TextField(
+                        controller: _controller,
+                        focusNode: _focusNode,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 12),
+                            border: InputBorder.none,
+                            hintText: '请输入班级名称',
+                            hintStyle: TextStyle(fontSize: 14.sp)),
+                      )),
+                      Visibility(
+                        visible: _hasText,
+                        child: IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: _clearText,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
@@ -178,15 +310,11 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                     width: 270.w,
                     height: 48.w,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Color(0xfff19e59),
                       borderRadius: BorderRadius.circular(24.0),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 2.0,
-                      ),
                     ),
                     child: Text(
-                      '加入班级',
+                      '创建班级',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -202,9 +330,31 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
             )),
       );
 
+  Widget buildItemClass(String first, String second) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          first,
+          style: TextStyle(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xff353e4d)),
+        ),
+        Expanded(child: Text('')),
+        Text(second,
+            style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff353e4d))),
+      ],
+    );
+  }
+
   Widget _myHorizontalLayoutImage(
           String iconData, String title, String subtitle) =>
       Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.only(top: 17.w, bottom: 17.w),
@@ -276,6 +426,41 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
           )
         ],
       );
+
+  Widget buildItemClassLode(String first, String second) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          '班级照片',
+          style: TextStyle(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xff353e4d)),
+        ),
+        GestureDetector(
+          onTap: () async {
+            await PermissionsUtil.checkPermissions(
+                context, "为了正常访问相册，需要您授权以下权限", [RequestPermissionsTag.PHOTOS],
+                () {
+              _pickImage();
+            });
+          },
+          child: _image == null
+              ? Text('上传照片',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d)))
+              : Image.file(
+                  FileNew.File(_image!.path),
+                  width: 100.w,
+                  height: 100.w,
+                ),
+        ),
+      ],
+    );
+  }
 
   @override
   void onCreate() {}
