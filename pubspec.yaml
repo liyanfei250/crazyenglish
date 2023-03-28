@@ -34,6 +34,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  flutter_speed_dial: ^6.2.0
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.2.9
   dio: ^4.0.6
@@ -247,6 +248,7 @@ flutter:
     - images/article_collect_press.png
     - images/xunfei_english.png
     - images/icon_transmission_speed_05_clicked.png
+    - images/student_no_date.png
     - images/icon_home_me_default_head.png
     - images/index_icon_9.png
     - images/scan_result_fast15.png
@@ -322,6 +324,7 @@ flutter:
     - images/icon_intensive_listening_show_word_no.png
     - images/student_notify_parent.png
     - images/splash.png
+    - images/student_notify_ic.png
     - images/class_info_teacher_sex.png
     - images/home_search.png
     - images/class_info_name.png
@@ -386,6 +389,7 @@ flutter:
     - images/practise_count_time_icon.png
     - images/error_to_correct_over.png
     - images/num_index7.png
+    - images/teach_class_add.png
     - images/teacher_words_bg.png
     - images/icon_intensive_listening_translate_yes_not_enabled.png
     - images/article_listen_derfault.png

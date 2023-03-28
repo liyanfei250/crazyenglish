@@ -147,6 +147,8 @@ class R {
   static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_clicked.png)
   static final String imagesIconTransmissionSpeed05Clicked = 'images/icon_transmission_speed_05_clicked.png';
+  /// ![](http://127.0.0.1:11/images/student_no_date.png)
+  static final String imagesStudentNoDate = 'images/student_no_date.png';
   /// ![](http://127.0.0.1:11/images/icon_home_me_default_head.png)
   static final String imagesIconHomeMeDefaultHead = 'images/icon_home_me_default_head.png';
   /// ![](http://127.0.0.1:11/images/index_icon_9.png)
@@ -297,6 +299,8 @@ class R {
   static final String imagesStudentNotifyParent = 'images/student_notify_parent.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
   static final String imagesSplash = 'images/splash.png';
+  /// ![](http://127.0.0.1:11/images/student_notify_ic.png)
+  static final String imagesStudentNotifyIc = 'images/student_notify_ic.png';
   /// ![](http://127.0.0.1:11/images/class_info_teacher_sex.png)
   static final String imagesClassInfoTeacherSex = 'images/class_info_teacher_sex.png';
   /// ![](http://127.0.0.1:11/images/home_search.png)
@@ -425,6 +429,8 @@ class R {
   static final String imagesErrorToCorrectOver = 'images/error_to_correct_over.png';
   /// ![](http://127.0.0.1:11/images/num_index7.png)
   static final String imagesNumIndex7 = 'images/num_index7.png';
+  /// ![](http://127.0.0.1:11/images/teach_class_add.png)
+  static final String imagesTeachClassAdd = 'images/teach_class_add.png';
   /// ![](http://127.0.0.1:11/images/teacher_words_bg.png)
   static final String imagesTeacherWordsBg = 'images/teacher_words_bg.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_not_enabled.png)
