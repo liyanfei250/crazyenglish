@@ -22,7 +22,7 @@ class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,Ho
   final state = Get.find<ChooseQuestionLogic>().state;
 
   @override
-  String getDataId(HomeworkQuestionResponse n) {
+  String getDataId(String key,HomeworkQuestionResponse n) {
     assert(n.id !=null);
     return n.id!;
   }

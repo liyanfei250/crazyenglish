@@ -32,7 +32,7 @@ class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Home
   ];
 
   @override
-  String getDataId(HomeworkStudentResponse n) {
+  String getDataId(String key,HomeworkStudentResponse n) {
     assert(n.id !=null);
     return n.id!;
   }

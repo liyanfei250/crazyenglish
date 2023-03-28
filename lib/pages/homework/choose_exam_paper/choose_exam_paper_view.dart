@@ -1,5 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/entity/exam_paper_response.dart';
+import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,7 +16,7 @@ class ChooseExamPaperPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseExamPaperPageState();
 }
 
-class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,ExamPaperResponse> {
+class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,HomeworkExamPaperResponse> {
   final logic = Get.put(ChooseExamPaperLogic());
   final state = Get.find<ChooseExamPaperLogic>().state;
 
@@ -119,7 +119,7 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
   }
 
   @override
-  String getDataId(ExamPaperResponse n) {
+  String getDataId(String key,HomeworkExamPaperResponse n) {
     assert(n.id !=null);
     return n.id!;
   }

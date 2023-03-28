@@ -2,17 +2,17 @@
 /// id : "123"
 /// name : "测试"
 
-class ExamPaperResponse {
-  ExamPaperResponse({
-      num? code, 
-      String? id, 
+class HomeworkExamPaperResponse {
+  HomeworkExamPaperResponse({
+      num? code,
+      String? id,
       String? name,}){
     _code = code;
     _id = id;
     _name = name;
 }
 
-  ExamPaperResponse.fromJson(dynamic json) {
+  HomeworkExamPaperResponse.fromJson(dynamic json) {
     _code = json['code'];
     _id = json['id'];
     _name = json['name'];
@@ -20,10 +20,10 @@ class ExamPaperResponse {
   num? _code;
   String? _id;
   String? _name;
-ExamPaperResponse copyWith({  num? code,
+  HomeworkExamPaperResponse copyWith({  num? code,
   String? id,
   String? name,
-}) => ExamPaperResponse(  code: code ?? _code,
+}) => HomeworkExamPaperResponse(  code: code ?? _code,
   id: id ?? _id,
   name: name ?? _name,
 );

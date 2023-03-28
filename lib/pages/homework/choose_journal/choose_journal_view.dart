@@ -22,7 +22,7 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Home
   final state = Get.find<ChooseJournalLogic>().state;
 
   @override
-  String getDataId(HomeworkJournalResponse n) {
+  String getDataId(String key,HomeworkJournalResponse n) {
     assert(n.id !=null);
     return n.id!;
   }

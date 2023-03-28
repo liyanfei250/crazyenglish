@@ -1,5 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/entity/exam_paper_response.dart';
+import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,13 +16,13 @@ class ChooseHistoryHomeworkPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseHistoryHomeworkPageState();
 }
 
-class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryHomeworkPage,ExamPaperResponse> {
+class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryHomeworkPage,HomeworkExamPaperResponse> {
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
 
   @override
-  String getDataId(ExamPaperResponse n) {
+  String getDataId(String key,HomeworkExamPaperResponse n) {
     assert(n.id !=null);
     return n.id!;
   }
@@ -38,7 +38,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             children: [
               AppBar(
                 automaticallyImplyLeading: false,
-                title: Text("布置作业"),
+                title: Text("历史作业"),
                 elevation: 0,
                 backgroundColor: Colors.transparent,
               ),
@@ -47,7 +47,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   width: double.infinity,
                   margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20.w)),
                   ),
                   child: Column(

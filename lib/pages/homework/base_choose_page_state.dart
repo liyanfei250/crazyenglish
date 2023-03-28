@@ -17,54 +17,76 @@ import '../../utils/colors.dart';
  */
 abstract class BaseChoosePageState<T extends BasePage,N> extends BasePageState<T> {
 
-  List<N>? dataList;
+  // {key,List<N>} key是tab分类：班级、期刊等
+  Map<String,List<N>?> dataList = {};
 
-  Map<String,bool> isSelectedMap = {};
+  // {key,{id,bool}}  key是tab分类：班级、期刊等；id 是学生、习题等id
+  Map<String,Map<String,bool>> isSelectedMap = {};
 
-  String getDataId(N n);
+  // key
+  String getDataId(String key,N n);
 
+  // 切换key时 需要更新此字段
   var hasSelectedAllFlag = false.obs;
 
   var hasSelectedNum = 0.obs;
 
-  void addSelected(N n,bool isSelected){
+  void addSelected(String key,N n,bool isSelected){
     if(!isSelected){
       hasSelectedAllFlag.value = false;
     }
-    isSelectedMap[getDataId(n)] = isSelected;
+    if(isSelectedMap[key]==null){
+      isSelectedMap[key] = {};
+    }
+    isSelectedMap[key]![getDataId(key,n)] = isSelected;
     hasSelectedNum.value = countSelectedNum();
   }
 
   int countSelectedNum(){
     int totalNum = 0;
-    for(N n in dataList!){
-      String id = getDataId(n);
-      if(isSelectedMap.containsKey(id) && isSelectedMap[id]!){
-        totalNum+1;
+    dataList.forEach((key, value) {
+      if(value!=null){
+        for(N n in value!){
+          String id = getDataId(key,n);
+          if(isSelectedMap[key]!=null && (isSelectedMap[key]![id]??false)){
+            totalNum+1;
+          }
+        }
       }
-    }
+    });
+
     return totalNum;
   }
 
-  bool isDataSelected(N n){
-    String id = getDataId(n);
-    if(isSelectedMap.containsKey(id)){
-      return isSelectedMap[id]??false;
+  bool isDataSelected(String key,N n){
+    String id = getDataId(key,n);
+    if(isSelectedMap.containsKey(key) && isSelectedMap[key]!.containsKey(id)){
+      return isSelectedMap[key]![id]??false;
     }else{
       return false;
     }
   }
 
-  bool hasSelectedAll(){
-    for(N n in dataList!){
-      String id = getDataId(n);
-      if(isSelectedMap.containsKey(id) && !isSelectedMap[id]!){
-        hasSelectedAllFlag.value = false;
-        return false;
+  bool hasSelectedAll(String key){
+    if(dataList.containsKey(key)
+        && dataList[key]!.length>0){
+      List<N> datas = dataList[key]!;
+      for(N n in datas!){
+        String id = getDataId(key,n);
+        if(!isSelectedMap.containsKey(key)
+            || !isSelectedMap[key]!.containsKey(id)
+            || (isSelectedMap[key]![id]??false)
+        ){
+          hasSelectedAllFlag.value = false;
+          return false;
+        }
       }
+      hasSelectedAllFlag.value = true;
+      return true;
+    }else{
+      return false;
     }
-    hasSelectedAllFlag.value = true;
-    return true;
+
   }
 
 
