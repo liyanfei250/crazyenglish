@@ -8,6 +8,8 @@ import '../../base/AppUtil.dart';
 import '../../r.dart';
 import '../../utils/colors.dart';
 import 'class_home_logic.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
 
 class ClassHomePage extends StatefulWidget {
   const ClassHomePage({Key? key}) : super(key: key);
@@ -59,11 +61,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
                     ],
                   ),
                 ),
-                Image.asset(
-                  R.imagesClassQrcode,
-                  width: 77.w,
-                  height: 77.w,
-                )
+                buildContainerQr(R.imagesClassQrcode),
               ],
             ),
           ),
@@ -115,9 +113,38 @@ class _ClassHomePageState extends State<ClassHomePage> {
     );
   }
 
+  Widget buildContainerQr(String imageUrl) {
+    return Container(
+      alignment: Alignment.center,
+      width: 99.w,
+      height: 114.w,
+      decoration: BoxDecoration(
+          color: Color(0xfffff7ed),
+          borderRadius: BorderRadius.all(Radius.circular(20.w))),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          QrImage(
+            data: "Hello, World!",
+            version: QrVersions.auto,
+            size: 87.w,
+          ),
+          Text(
+            '班级二维码',
+            style: TextStyle(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w400,
+                color: Color(0xffed702d)),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildContainerNodate() {
     return Container(
-      padding: EdgeInsets.only(top: 30.w,bottom: 30.w),
+      padding: EdgeInsets.only(top: 30.w, bottom: 30.w),
       alignment: Alignment.center,
       child: Column(
         children: [
@@ -126,7 +153,9 @@ class _ClassHomePageState extends State<ClassHomePage> {
             width: 138.w,
             height: 138.w,
           ),
-          SizedBox(height: 20.w,),
+          SizedBox(
+            height: 20.w,
+          ),
         ],
       ),
     );

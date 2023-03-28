@@ -7,10 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../routes/app_pages.dart';
-import 'qr_scan_logic.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import '../../utils/permissions/permissions_util.dart';
+
+
 
 class QRViewExample extends StatefulWidget {
   const QRViewExample({Key? key}) : super(key: key);
@@ -47,52 +50,52 @@ class _QRViewExampleState extends State<QRViewExample> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-      children: [
-        _buildQrView(context),
-        Positioned(
-            child: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-          centerTitle: true,
-          title: Text(
-            "扫一扫",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16.0,
-            ),
-          ),
-        )),
-        Visibility(
-          visible: false,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      if (result != null)
-                        Text(
-                            'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                      else
-                        const Text('Scan a code'),
-                    ],
+          children: [
+            _buildQrView(context),
+            Positioned(
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Get.back();
+                    },
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    ));
+                  centerTitle: true,
+                  title: Text(
+                    "扫一扫",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                )),
+            Visibility(
+              visible: false,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          if (result != null)
+                            Text(
+                                'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                          else
+                            const Text('Scan a code'),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -122,8 +125,8 @@ class _QRViewExampleState extends State<QRViewExample> {
         result = scanData;
         if (scanData != null) {
           Util.toast('${describeEnum(result!.format)} Data: ${result!.code}');
-          RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextClass);
-          // RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextAudio);
+          // RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextClass);
+          RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextAudio);
         }
       });
     });
@@ -144,3 +147,5 @@ class _QRViewExampleState extends State<QRViewExample> {
     super.dispose();
   }
 }
+
+
