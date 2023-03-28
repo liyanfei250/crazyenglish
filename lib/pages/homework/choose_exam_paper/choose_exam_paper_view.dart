@@ -1,10 +1,12 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/exam_paper_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../base_choose_page_state.dart';
 import 'choose_exam_paper_logic.dart';
 
 class ChooseExamPaperPage extends BasePage {
@@ -14,7 +16,7 @@ class ChooseExamPaperPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseExamPaperPageState();
 }
 
-class _ChooseExamPaperPageState extends BasePageState<ChooseExamPaperPage> {
+class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,ExamPaperResponse> {
   final logic = Get.put(ChooseExamPaperLogic());
   final state = Get.find<ChooseExamPaperLogic>().state;
 
@@ -29,7 +31,7 @@ class _ChooseExamPaperPageState extends BasePageState<ChooseExamPaperPage> {
             children: [
               AppBar(
                 automaticallyImplyLeading: false,
-                title: Text("布置作业"),
+                title: Text("试卷库"),
                 elevation: 0,
                 backgroundColor: Colors.transparent,
               ),
@@ -114,5 +116,11 @@ class _ChooseExamPaperPageState extends BasePageState<ChooseExamPaperPage> {
   @override
   void onDestroy() {
     // TODO: implement onDestroy
+  }
+
+  @override
+  String getDataId(ExamPaperResponse n) {
+    assert(n.id !=null);
+    return n.id!;
   }
 }

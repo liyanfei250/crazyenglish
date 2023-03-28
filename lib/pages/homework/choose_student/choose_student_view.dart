@@ -1,10 +1,13 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/HomeworkStudentResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../base_choose_page_state.dart';
 import 'choose_student_logic.dart';
 
 class ChooseStudentPage extends BasePage {
@@ -14,9 +17,25 @@ class ChooseStudentPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseStudentPageState();
 }
 
-class _ChooseStudentPageState extends BasePageState<ChooseStudentPage> {
+class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,HomeworkStudentResponse> {
   final logic = Get.put(ChooseStudentLogic());
   final state = Get.find<ChooseStudentLogic>().state;
+  late TabController _tabController;
+
+  final List<String> tabs = const[
+    "初一1班",
+    "初一2班",
+    "初一3班",
+    "初一4班",
+    "初一5班",
+    "初一6班",
+  ];
+
+  @override
+  String getDataId(HomeworkStudentResponse n) {
+    assert(n.id !=null);
+    return n.id!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +48,12 @@ class _ChooseStudentPageState extends BasePageState<ChooseStudentPage> {
             children: [
               AppBar(
                 automaticallyImplyLeading: false,
-                title: Text("布置作业"),
+                title: Row(
+                  children: [
+                    Util.buildWhiteWidget(context),
+                    Text("学生选择"),
+                  ],
+                ),
                 elevation: 0,
                 backgroundColor: Colors.transparent,
               ),
@@ -38,7 +62,7 @@ class _ChooseStudentPageState extends BasePageState<ChooseStudentPage> {
                   width: double.infinity,
                   margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20.w)),
                   ),
                   child: Column(
@@ -48,57 +72,28 @@ class _ChooseStudentPageState extends BasePageState<ChooseStudentPage> {
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 53.w,bottom: 30.w,right: 58.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text("全选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                        Padding(padding: EdgeInsets.only(left: 36.w)),
-                        Text("已选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                      ],
-                    ),
-                    InkWell(
-                      onTap: (){
-
-                      },
-                      child: Container(
-                        width: 77.w,
-                        height: 28.w,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xfff19e59),
-                                Color(0xffec5f2a),
-                              ]),
-                          borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
-                          boxShadow:[
-                            BoxShadow(
-                              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
-                              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
-                              blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
-                              spreadRadius: 0.w,
-                            ),
-                          ],
-                        ),
-                        child: Text("完成",style: TextStyle(color: Colors.white),),
-                      ),
-                    )
-                  ],
-                ),
-              )
+              buildBottomWidget()
             ],
           )
         ],
       ),
     );
   }
+
+  Widget _buildTabBar() => TabBar(
+    onTap: (tab)=> print(tab),
+    controller: _tabController,
+    indicatorColor: AppColors.TAB_COLOR2,
+    indicatorSize: TabBarIndicatorSize.label,
+    isScrollable: true,
+    labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
+    padding: EdgeInsets.symmetric(horizontal: 10.w),
+    indicatorWeight: 3,
+    labelStyle: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),
+    unselectedLabelStyle: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR),
+    labelColor: AppColors.TEXT_COLOR,
+    tabs: tabs.map((e) => Tab(text:e)).toList(),
+  );
 
   @override
   void dispose() {

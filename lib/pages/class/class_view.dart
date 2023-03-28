@@ -71,7 +71,6 @@ class _ClassPageState extends State<ClassPage>
                 });
               },
               childWhenDragging: Container(),
-              dragAnchor: DragAnchor.child,
             ),
           )
         ],

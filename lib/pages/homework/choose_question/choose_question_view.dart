@@ -1,10 +1,13 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/HomeworkQuestionResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../base_choose_page_state.dart';
 import 'choose_question_logic.dart';
 
 class ChooseQuestionPage extends BasePage {
@@ -14,9 +17,15 @@ class ChooseQuestionPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseQuestionPageState();
 }
 
-class _ChooseQuestionPageState extends BasePageState<ChooseQuestionPage> {
+class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,HomeworkQuestionResponse> {
   final logic = Get.put(ChooseQuestionLogic());
   final state = Get.find<ChooseQuestionLogic>().state;
+
+  @override
+  String getDataId(HomeworkQuestionResponse n) {
+    assert(n.id !=null);
+    return n.id!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,36 +38,13 @@ class _ChooseQuestionPageState extends BasePageState<ChooseQuestionPage> {
             children: [
               AppBar(
                 automaticallyImplyLeading: false,
-                title: Text("布置作业"),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.all(Radius.circular(20.w)),
-                  ),
-                  child: Column(
-                    children: [
-
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 53.w,bottom: 30.w,right: 58.w),
-                child: Row(
+                title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("全选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                        Padding(padding: EdgeInsets.only(left: 36.w)),
-                        Text("已选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
+                        Util.buildWhiteWidget(context),
+                        Text("习题选择"),
                       ],
                     ),
                     InkWell(
@@ -66,8 +52,8 @@ class _ChooseQuestionPageState extends BasePageState<ChooseQuestionPage> {
 
                       },
                       child: Container(
-                        width: 77.w,
-                        height: 28.w,
+                        height: 27.w,
+                        width: 27.w,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -87,14 +73,40 @@ class _ChooseQuestionPageState extends BasePageState<ChooseQuestionPage> {
                             ),
                           ],
                         ),
-                        child: Text("完成",style: TextStyle(color: Colors.white),),
+                        child: Image.asset(R.imagesHomeWorkQuestionFilter,width: 14.w,height: 14.w,),
                       ),
                     )
                   ],
                 ),
-              )
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                  ),
+                  child: Column(
+                    children: [
+
+                    ],
+                  ),
+                ),
+              ),
+              buildBottomWidget()
             ],
-          )
+          ),
+          Visibility(child: Column(
+            children: [
+              AppBar(
+
+              ),
+
+            ],
+          ))
         ],
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/exam_paper_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../base_choose_page_state.dart';
 import 'choose_history_homework_logic.dart';
 
 class ChooseHistoryHomeworkPage extends BasePage {
@@ -14,9 +16,16 @@ class ChooseHistoryHomeworkPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseHistoryHomeworkPageState();
 }
 
-class _ChooseHistoryHomeworkPageState extends BasePageState<ChooseHistoryHomeworkPage> {
+class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryHomeworkPage,ExamPaperResponse> {
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
+
+
+  @override
+  String getDataId(ExamPaperResponse n) {
+    assert(n.id !=null);
+    return n.id!;
+  }
 
   @override
   Widget build(BuildContext context) {

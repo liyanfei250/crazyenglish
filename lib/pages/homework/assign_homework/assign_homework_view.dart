@@ -1,12 +1,13 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
-import '../base_homework_page_state.dart';
 import 'assign_homework_logic.dart';
 
 /**
@@ -19,7 +20,7 @@ class AssignHomeworkPage extends BasePage {
   BasePageState<BasePage> getState() => _AssignHomeworkPageState();
 }
 
-class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage> {
+class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
   final logic = Get.put(AssignHomeworkLogic());
   final state = Get.find<AssignHomeworkLogic>().state;
   final TextEditingController _editingController = TextEditingController();
@@ -49,7 +50,7 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                     Row(
                       children: [
                         Util.buildWhiteWidget(context),
-                        Text("布置作业"),
+                        Text("布置作业",style: TextStyle(color: Colors.white),),
                       ],
                     ),
                     InkWell(
@@ -159,9 +160,11 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                             color: AppColors.c_FFFFF7ED,
                                             borderRadius: BorderRadius.all(Radius.circular(8.w))
                                         ),
-                                        child: Text("${chooseStudentInfo.value}"),
+                                        child: Text("${chooseStudentInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
-                                  buildHomeworkNormalBtn(() { }, "选择"),
+                                  Util.buildHomeworkNormalBtn(() {
+                                    RouterUtil.toNamed(AppRoutes.ChooseStudentPage);
+                                  }, "选择"),
                                 ],
                               ),
                             )
@@ -186,9 +189,11 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                             color: AppColors.c_FFFFF7ED,
                                             borderRadius: BorderRadius.all(Radius.circular(8.w))
                                         ),
-                                        child: Text("${chooseQuestionsInfo.value}"),
+                                        child: Text("${chooseQuestionsInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
-                                  buildHomeworkNormalBtn(() { }, "选择"),
+                                  Util.buildHomeworkNormalBtn(() {
+                                    RouterUtil.toNamed(AppRoutes.ChooseQuestionPage);
+                                  }, "选择"),
                                 ],
                               ),
                             )
@@ -213,9 +218,11 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                             color: AppColors.c_FFFFF7ED,
                                             borderRadius: BorderRadius.all(Radius.circular(8.w))
                                         ),
-                                        child: Text("${chooseJournalInfo.value}"),
+                                        child: Text("${chooseJournalInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
-                                  buildHomeworkNormalBtn(() { }, "选择"),
+                                  Util.buildHomeworkNormalBtn(() {
+                                    RouterUtil.toNamed(AppRoutes.ChooseJournalPage);
+                                  }, "选择"),
                                 ],
                               ),
                             )
@@ -236,7 +243,7 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                       color: AppColors.c_FFFFF7ED,
                                       borderRadius: BorderRadius.all(Radius.circular(16.5.w))
                                   ),
-                                  child: Text("${chooesEndDateInfo.value}"),
+                                  child: Text("${chooesEndDateInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                 )),
                             InkWell(
                               onTap: (){
@@ -254,7 +261,7 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                           children: [
                             buildTipsWidget("是否存入个人试卷库"),
                             Padding(padding: EdgeInsets.only(left: 12.w)),
-                            Obx(() => buildCheckBox((){
+                            Obx(() => Util.buildCheckBox((){
                               chooseAsExam.value = !chooseAsExam.value;
                             },chooseEnable: chooseAsExam.value)),
                           ],
@@ -278,9 +285,11 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                             color: AppColors.c_FFFFF7ED,
                                             borderRadius: BorderRadius.all(Radius.circular(8.w))
                                         ),
-                                        child: Text("${chooseExamPaperInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,)),
+                                        child: Text("${chooseExamPaperInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
-                                  buildHomeworkNormalBtn(() { }, "选择"),
+                                  Util.buildHomeworkNormalBtn(() {
+                                    RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage);
+                                  }, "选择"),
                                 ],
                               ),
                             )
@@ -305,9 +314,11 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
                                             color: AppColors.c_FFFFF7ED,
                                             borderRadius: BorderRadius.all(Radius.circular(8.w))
                                         ),
-                                        child: Text("${chooesHistoryInfo.value}"),
+                                        child: Text("${chooesHistoryInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
-                                  buildHomeworkNormalBtn(() { }, "选择"),
+                                  Util.buildHomeworkNormalBtn(() {
+                                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage);
+                                  }, "选择"),
                                 ],
                               ),
                             )
@@ -343,5 +354,23 @@ class _AssignHomeworkPageState extends BaseHomeworkPageState<AssignHomeworkPage>
   @override
   void onDestroy() {
     // TODO: implement onDestroy
+  }
+
+  Widget buildTipsWidget(String text){
+    return  Stack(
+      children: [
+        Container(
+          height: 17.w,
+          decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.c_FFFCEFD8,width: 5.w,))
+          ),
+          child: Text("${text}",style: TextStyle(color: Colors.transparent)),
+        ),
+        Container(
+          height: 17.w,
+          child: Text("${text} :",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
+        ),
+      ],
+    );
   }
 }
