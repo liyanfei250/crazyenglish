@@ -49,6 +49,7 @@ dependencies:
   web_socket_channel: ^2.2.0
 
   image_picker: ^0.8.6
+  image_gallery_saver: ^1.7.1 # 添加这一行
   # 状态管理
   flutter_bloc: ^7.2.0
   flutter_native_image: ^0.0.6+1
@@ -196,6 +197,7 @@ flutter:
     - images/class_fun_4.png
     - images/class_info_bg.png
     - images/class_info_name.png
+    - images/class_info_next.png
     - images/class_info_photo.png
     - images/class_info_teacher_age.png
     - images/class_info_teacher_name.png
@@ -349,6 +351,10 @@ flutter:
     - images/practise_pre_question_enable.png
     - images/practise_pre_question_unable.png
     - images/qr_scan_ic.png
+    - images/ranking_four.png
+    - images/ranking_one.png
+    - images/ranking_three.png
+    - images/ranking_two.png
     - images/reading_default.png
     - images/result_answer_card_tips.png
     - images/result_favor.png

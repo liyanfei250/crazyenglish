@@ -10,7 +10,6 @@ import '../../utils/colors.dart';
 import 'class_home_logic.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-
 class ClassHomePage extends StatefulWidget {
   const ClassHomePage({Key? key}) : super(key: key);
 
@@ -287,6 +286,10 @@ class _ClassHomePageState extends State<ClassHomePage> {
           switch (e) {
             case "作业":
               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
+              break;
+            case "班级":
+              RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+                  arguments: {'isShowAdd':0});
               break;
           }
         },

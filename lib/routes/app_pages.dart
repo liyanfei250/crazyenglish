@@ -42,6 +42,7 @@ import '../pages/practise/result/result_view.dart';
 import '../pages/reviews/practise_history/practise_history_view.dart';
 import '../pages/scan_audio_message/scan_audio_message_view.dart';
 import '../pages/scan_class_message/class_message_view.dart';
+import '../pages/student_ranking/student_ranking_view.dart';
 import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
@@ -93,6 +94,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.QRViewPage, page:()=>QRViewExample(),),
     GetPage(name: AppRoutes.QRViewPageNextClass, page:()=>Class_messagePage(),),
     GetPage(name: AppRoutes.QRViewPageNextAudio, page:()=>Scan_audio_messagePage(),),
+    GetPage(name: AppRoutes.StudentRankingPage, page:()=>Student_rankingPage(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
     GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),

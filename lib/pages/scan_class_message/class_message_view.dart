@@ -6,11 +6,19 @@ import 'package:get/get.dart';
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import 'class_message_logic.dart';
 
 class Class_messagePage extends BasePage {
-  const Class_messagePage({Key? key}) : super(key: key);
+  int? isShowAdd;
+
+  Class_messagePage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      isShowAdd = Get.arguments['isShowAdd'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToClassMessagePageState();
@@ -24,7 +32,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          alignment: Alignment.center,
+      alignment: Alignment.center,
       children: [
         _buildBgView(context),
         Positioned(
@@ -78,11 +86,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
               children: [
                 Container(
                   height: 70.w,
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //       image: AssetImage(R.imagesClassInfoBg),
-                  //       fit: BoxFit.cover),
-                  // ),
+                  alignment: Alignment.bottomLeft,
                   child: _myHorizontalLayout(
                       R.imagesClassInfoName, "班级名称:", "七年级一班"),
                 ),
@@ -94,6 +98,15 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
+                Visibility(
+                    visible: widget.isShowAdd == 0,
+                    child: _myHorizontalLayoutNum(
+                        R.imagesClassInfoTeacherName, "班级人数", "22人")),
+                Visibility(
+                    visible: widget.isShowAdd == 0,
+                    child: Divider(
+                      color: AppColors.c_FFD2D5DC,
+                    )),
                 _myHorizontalLayout(
                     R.imagesClassInfoTeacherName, "讲师名称:", "七年级一班"),
                 Divider(
@@ -114,89 +127,93 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                 SizedBox(
                   height: 36.w,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Center(
-                            child: Text(
-                              '是否加入当前班级：七年级一班',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                Visibility(
+                    visible: widget.isShowAdd == 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Center(
                                 child: Text(
-                                  '否',
+                                  '是否加入当前班级：七年级一班',
                                   style: TextStyle(
-                                      color: Color(0xff353e4d),
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    side: BorderSide(
-                                        color: Color(0xffd2d5dc), width: 1.0),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  // TODO: 处理确认按钮点击事件
-                                },
-                                child: Text(
-                                  '是',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.sp),
-                                ),
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
+                              content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '否',
+                                      style: TextStyle(
+                                          color: Color(0xff353e4d),
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        side: BorderSide(
+                                            color: Color(0xffd2d5dc),
+                                            width: 1.0),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // TODO: 处理确认按钮点击事件
+                                    },
+                                    child: Text(
+                                      '是',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16.sp),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 270.w,
-                    height: 48.w,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(24.0),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 2.0,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 270.w,
+                        height: 48.w,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(24.0),
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: Text(
+                          '加入班级',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      '加入班级',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
-                ),
+                    )),
                 SizedBox(
-                  height: 42.w,
+                  height: widget.isShowAdd == 1 ? 42.w : 0.w,
                 ),
               ],
             )),
@@ -228,7 +245,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
           Padding(
             padding: EdgeInsets.only(top: 17.w, bottom: 17.w),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(1.0),
               child: Image.network(
                 "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
                 width: 120.w,
@@ -274,6 +291,62 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                   color: Color(0xff353e4d)),
             )),
           )
+        ],
+      );
+
+  Widget _myHorizontalLayoutNum(
+          String iconData, String title, String subtitle) =>
+      Row(
+        children: [
+          Image.asset(
+            iconData,
+            width: 16.w,
+            height: 16.w,
+          ),
+          SizedBox(width: 12.w),
+          Text(
+            title,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 12.sp,
+                color: Color(0xff353e4d)),
+          ),
+          SizedBox(
+            width: 10.w,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
+            child: Text(
+              subtitle,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff353e4d)),
+            ),
+          ),
+          Expanded(child: Text('')),
+          GestureDetector(
+            onTap: () {
+              //RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextAudio);
+              RouterUtil.toNamed(AppRoutes.StudentRankingPage);
+            },
+            child: Text(
+              '学员排名',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12.sp,
+                  color: Color(0xffed702d)),
+            ),
+          ),
+          Align(
+            heightFactor: 1.3,
+            alignment: Alignment.bottomLeft,
+            child: Image.asset(
+              R.imagesClassInfoNext,
+              width: 30.w,
+              height: 30.w,
+            ),
+          ),
         ],
       );
 

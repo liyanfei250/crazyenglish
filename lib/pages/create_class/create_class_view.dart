@@ -203,80 +203,30 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                 SizedBox(
                   height: 36.w,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Center(
-                            child: Text(
-                              '是否加入当前班级：七年级一班',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  '否',
-                                  style: TextStyle(
-                                      color: Color(0xff353e4d),
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    side: BorderSide(
-                                        color: Color(0xffd2d5dc), width: 1.0),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // TODO: 处理确认按钮点击事件
-                                },
-                                child: Text(
-                                  '是',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.sp),
-                                ),
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 270.w,
-                    height: 48.w,
-                    decoration: BoxDecoration(
-                      color: Color(0xfff19e59),
-                      borderRadius: BorderRadius.circular(24.0),
+                Container(
+                  height: 47.w,
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 25.w, right: 25.w, top: 30.w),
+                  padding: EdgeInsets.only(left: 8.w, right: 8.w),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(25.w),
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFF19B57), Color(0xFFEC622D)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
                     ),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Util.toast('message');
+                    },
                     child: Text(
                       '创建班级',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: 16.sp),
                     ),
                   ),
                 ),

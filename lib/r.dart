@@ -41,6 +41,8 @@ class R {
   static final String imagesClassInfoBg = 'images/class_info_bg.png';
   /// ![](http://127.0.0.1:11/images/class_info_name.png)
   static final String imagesClassInfoName = 'images/class_info_name.png';
+  /// ![](http://127.0.0.1:11/images/class_info_next.png)
+  static final String imagesClassInfoNext = 'images/class_info_next.png';
   /// ![](http://127.0.0.1:11/images/class_info_photo.png)
   static final String imagesClassInfoPhoto = 'images/class_info_photo.png';
   /// ![](http://127.0.0.1:11/images/class_info_teacher_age.png)
@@ -347,6 +349,14 @@ class R {
   static final String imagesPractisePreQuestionUnable = 'images/practise_pre_question_unable.png';
   /// ![](http://127.0.0.1:11/images/qr_scan_ic.png)
   static final String imagesQrScanIc = 'images/qr_scan_ic.png';
+  /// ![](http://127.0.0.1:11/images/ranking_four.png)
+  static final String imagesRankingFour = 'images/ranking_four.png';
+  /// ![](http://127.0.0.1:11/images/ranking_one.png)
+  static final String imagesRankingOne = 'images/ranking_one.png';
+  /// ![](http://127.0.0.1:11/images/ranking_three.png)
+  static final String imagesRankingThree = 'images/ranking_three.png';
+  /// ![](http://127.0.0.1:11/images/ranking_two.png)
+  static final String imagesRankingTwo = 'images/ranking_two.png';
   /// ![](http://127.0.0.1:11/images/reading_default.png)
   static final String imagesReadingDefault = 'images/reading_default.png';
   /// ![](http://127.0.0.1:11/images/result_answer_card_tips.png)

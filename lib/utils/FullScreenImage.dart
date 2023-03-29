@@ -18,20 +18,20 @@ class _FullScreenImageState extends State<FullScreenImage> {
   @override
   void initState() {
     super.initState();
-    _position =Offset.zero;
+    _position = Offset.zero;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:GestureDetector(
+      body: GestureDetector(
         onScaleUpdate: (details) {
           setState(() {
             _scale = details.scale;
             _position += details.focalPoint - details.localFocalPoint;
           });
         },
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: Stack(
@@ -50,43 +50,9 @@ class _FullScreenImageState extends State<FullScreenImage> {
                 ),
               ),
             ),
-            /*Positioned(
-              top: 0,
-              right: 0,
-              child: IconButton(
-                icon: Icon(Icons.close, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.zoom_in, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        _scale *= 1.5;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.zoom_out, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        _scale /= 1.5;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),*/
           ],
         ),
-      ) ,
+      ),
     );
   }
 }
