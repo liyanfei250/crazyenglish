@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/HomeworkQuestionResponse.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
@@ -16,7 +17,7 @@ class ChooseExamPaperPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseExamPaperPageState();
 }
 
-class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,HomeworkExamPaperResponse> {
+class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,Question> {
   final logic = Get.put(ChooseExamPaperLogic());
   final state = Get.find<ChooseExamPaperLogic>().state;
 
@@ -119,8 +120,8 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
   }
 
   @override
-  String getDataId(String key,HomeworkExamPaperResponse n) {
+  String getDataId(String key,Question n) {
     assert(n.id !=null);
-    return n.id!;
+    return n.id!.toString();
   }
 }

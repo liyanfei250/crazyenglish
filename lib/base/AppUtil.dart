@@ -95,10 +95,12 @@ class Util {
     );
   }
 
-  static  Widget buildCheckBox(GestureTapCallback callback,{bool chooseEnable = true}){
+  static  Widget buildCheckBox(GestureTapCallback callback,{bool chooseEnable = false}){
+    var choose = chooseEnable.obs;
     return InkWell(
       onTap: () {
         callback.call();
+        choose.value = !choose.value;
       },
       child: Container(
         width: 16.w,
@@ -121,14 +123,14 @@ class Util {
             ),
           ],
         ),
-        child: Visibility(
-          visible: chooseEnable,
+        child: Obx(()=>Visibility(
+          visible: choose.value,
           child: Image.asset(
             R.imagesIconChooseCenter,
             width: 12.w,
             height: 12.w,
           ),
-        ),
+        )),
       ),
     );
   }

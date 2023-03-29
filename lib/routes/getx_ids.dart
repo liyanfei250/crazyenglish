@@ -32,6 +32,8 @@ class GetBuilderIds {
   static const String changeNoteList = "changeNoteList";
   static const String getPracticeList = "getPracticeList";
   static const String getPracticeListDetail = "getPracticeListDetail";
+  static const String getStudentList = "getStudentList";
+  static const String updateCheckBox = "updateCheckBox";
 
 
 
