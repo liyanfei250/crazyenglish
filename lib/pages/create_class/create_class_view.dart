@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../utils/FullScreenImage.dart';
 import '../../utils/colors.dart';
 import '../../utils/permissions/permissions_util.dart';
 import 'create_class_logic.dart';
@@ -24,6 +25,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool _hasText = false;
+  bool _hasImage = false;
   FileNew.File? _image;
 
   Future<void> _pickImage() async {
@@ -84,67 +86,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
         )),
         Positioned(top: 116.w, child: _buildClassCard(0))
       ],
-    )); /*Scaffold(
-      appBar: buildNormalAppBar("新建班级"),
-      backgroundColor: AppColors.theme_bg,
-      body: Container(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '班级名称',
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff353e4d)),
-                ),
-                Container(
-                  width: 200.w,
-                  alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: TextField(
-                        controller: _controller,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                          border: InputBorder.none,
-                          hintText: '请输入内容',
-                        ),
-                      )),
-                      Visibility(
-                        visible: _hasText,
-                        child: IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: _clearText,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            buildItemClass('讲师名称', '张玉华'),
-            buildItemClass('讲师性别', '女'),
-            buildItemClass('讲师教龄', '3年'),
-            buildItemClass('联系电话', '19834638273'),
-            buildItemClassLode('班级照片', '班级照片'),
-            buildItemClassLode('班级二维码', '生成二维码'),
-
-            ElevatedButton(onPressed: (){
-
-            }, child: Text('生成二维码'))
-          ],
-        ),
-      ),
-    );*/
+    ));
   }
 
   Widget _buildBgView(BuildContext context) {
@@ -178,8 +120,9 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.bottomLeft,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image.asset(
                         R.imagesClassInfoName,
@@ -190,30 +133,44 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                       Text(
                         '班级名称：',
                         style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp,
-                            color: Color(0xff353e4d)),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp,
+                          color: Color(0xff353e4d),
+                        ),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                      SizedBox(width: 4.w),
                       Expanded(
-                          child: TextField(
-                        controller: _controller,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 12),
+                        child: TextField(
+                          controller: _controller,
+                          focusNode: _focusNode,
+                          textAlignVertical: TextAlignVertical(y: -0.0),
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 14.sp),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              left: 0.w,
+                              right: 14.w,
+                              top: 0,
+                              bottom: 0,
+                            ),
                             border: InputBorder.none,
                             hintText: '请输入班级名称',
-                            hintStyle: TextStyle(fontSize: 14.sp)),
-                      )),
-                      Visibility(
-                        visible: _hasText,
-                        child: IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: _clearText,
+                            hintStyle: TextStyle(fontSize: 14.sp),
+                          ),
                         ),
+                      ),
+                      Visibility(
+                        child: Container(
+                          width: 30.w,
+                          height: 30.w,
+                          alignment: Alignment.bottomCenter,
+                          child: IconButton(
+                            padding: EdgeInsets.only(bottom: 0),
+                            icon: Icon(Icons.clear),
+                            onPressed: _clearText,
+                          ),
+                        ),
+                        visible: _hasText,
                       ),
                     ],
                   ),
@@ -374,18 +331,71 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                     fontSize: 12.sp,
                     color: Color(0xff353e4d)),
               )),
-          SizedBox(width: 10.0),
+          SizedBox(width: 12.w),
           Padding(
             padding: EdgeInsets.only(top: 17.w, bottom: 17.w),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
-                width: 120.w,
-                height: 80.w,
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: _image != null
+                ? GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder: (_, __, ___) =>
+                              FullScreenImage(imageFile: _image),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Hero(
+                      tag: 'imageHero',
+                      child: Image.file(
+                        FileNew.File(_image!.path),
+                        width: 120.w,
+                        height: 80.w,
+                      ),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () async {
+                      await PermissionsUtil.checkPermissions(
+                          context,
+                          "为了正常访问相册，需要您授权以下权限",
+                          [RequestPermissionsTag.PHOTOS], () {
+                        _pickImage();
+                      });
+                    },
+                    child: Container(
+                      width: 120.w,
+                      height: 80.w,
+                      alignment: Alignment.center,
+                      color: Color(0xffd2d5dc),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            R.imagesClassAddWhite,
+                            width: 14.w,
+                            height: 14.w,
+                          ),
+                          SizedBox(
+                            height: 7.w,
+                          ),
+                          Text(
+                            '从相册选择',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                    )),
           ),
         ],
       );
