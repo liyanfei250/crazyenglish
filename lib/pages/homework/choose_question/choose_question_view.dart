@@ -17,14 +17,14 @@ class ChooseQuestionPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseQuestionPageState();
 }
 
-class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,HomeworkQuestionResponse> {
+class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,Question> {
   final logic = Get.put(ChooseQuestionLogic());
   final state = Get.find<ChooseQuestionLogic>().state;
 
   @override
-  String getDataId(String key,HomeworkQuestionResponse n) {
+  String getDataId(String key,Question n) {
     assert(n.id !=null);
-    return n.id!;
+    return n.id!.toString();
   }
 
   @override

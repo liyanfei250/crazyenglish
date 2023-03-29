@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkStudentResponse.dart';
+import 'package:crazyenglish/pages/homework/choose_student/student_list/student_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ class ChooseStudentPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseStudentPageState();
 }
 
-class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,HomeworkStudentResponse> {
+class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Students> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(ChooseStudentLogic());
   final state = Get.find<ChooseStudentLogic>().state;
   late TabController _tabController;
@@ -32,9 +33,18 @@ class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Home
   ];
 
   @override
-  String getDataId(String key,HomeworkStudentResponse n) {
+  String getDataId(String key,Students n) {
     assert(n.id !=null);
-    return n.id!;
+    return n.id!.toString();
+  }
+
+  @override
+  void onCreate() {
+    _tabController = TabController(vsync: this, length: tabs.length);
+    currentKey.value = tabs[0];
+    _tabController.addListener(() {
+      currentKey.value = tabs[_tabController!.index];
+    });
   }
 
   @override
@@ -57,21 +67,22 @@ class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Home
                 elevation: 0,
                 backgroundColor: Colors.transparent,
               ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20.w)),
-                  ),
-                  child: Column(
-                    children: [
-
-                    ],
-                  ),
+              Expanded(child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(20.w)),
                 ),
-              ),
+                child: NestedScrollView(
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return [SliverToBoxAdapter(
+                      child: _buildTabBar(),
+                    )];
+                  },
+                  body: _buildTableBarView(),
+                ),
+              ),),
               buildBottomWidget()
             ],
           )
@@ -95,19 +106,27 @@ class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Home
     tabs: tabs.map((e) => Tab(text:e)).toList(),
   );
 
+
+  Widget _buildTableBarView() => TabBarView(
+      controller: _tabController,
+      children: tabs.map((e) {
+        return StudentListPage(chooseLogic: this,classId: e);
+      }).toList());
+
   @override
   void dispose() {
     Get.delete<ChooseStudentLogic>();
     super.dispose();
   }
 
-  @override
-  void onCreate() {
-    // TODO: implement onCreate
-  }
+
 
   @override
   void onDestroy() {
     // TODO: implement onDestroy
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

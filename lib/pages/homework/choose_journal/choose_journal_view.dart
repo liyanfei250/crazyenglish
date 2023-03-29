@@ -17,14 +17,14 @@ class ChooseJournalPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseJournalPageState();
 }
 
-class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,HomeworkJournalResponse> {
+class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Journals> {
   final logic = Get.put(ChooseJournalLogic());
   final state = Get.find<ChooseJournalLogic>().state;
 
   @override
-  String getDataId(String key,HomeworkJournalResponse n) {
+  String getDataId(String key,Journals n) {
     assert(n.id !=null);
-    return n.id!;
+    return n.id!.toString();
   }
 
   @override
