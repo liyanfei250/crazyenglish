@@ -139,68 +139,63 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
   Widget buildItem(BuildContext context, int index) {
     Students student = studentList[index];
 
-    return InkWell(
-      onTap: () {
-        // widget.chooseLogic.
-      },
-      child: Container(
-        height: 60.w,
-        margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
-        padding: EdgeInsets.only(left: 16.w),
-        width: double.infinity,
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ExtendedImage.network(
-                  studentList[index].img??"",
-                  cacheRawData: true,
-                  width: 36.w,
-                  height: 36.w,
-                  fit: BoxFit.fill,
-                  shape: BoxShape.circle,
-                  enableLoadState: true,
-                  loadStateChanged: (state){
-                    switch (state.extendedImageLoadState) {
-                      case LoadState.completed:
-                        return ExtendedRawImage(
-                          image: state.extendedImageInfo?.image,
-                          fit: BoxFit.cover,
-                        );
-                      default :
-                        return Image.asset(
-                          R.imagesStudentHead,
-                          fit: BoxFit.fill,
-                        );
-                    }
-                  },
-                ),
-                Padding(padding: EdgeInsets.only(left: 30.w)),
-                Text(
-                  "${student.name}",
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff353e4d)),
-                ),
-              ],
-            ),
-            GetBuilder<ChooseLogic>(
-              id: GetBuilderIds.updateCheckBox+widget.classId,
-              builder: (logic){
-                return Util.buildCheckBox(() {
-                  widget.chooseLogic.addSelected(widget.classId, student,
-                      !widget.chooseLogic.isDataSelected(widget.classId, student)
-                  );
-                },chooseEnable: widget.chooseLogic.isDataSelected(widget.classId, student));
-              },
-            )
-          ],
-        ),
+    return Container(
+      height: 60.w,
+      margin: EdgeInsets.only(left: 22.w, right: 22.w),
+      padding: EdgeInsets.only(left: 16.w),
+      width: double.infinity,
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ExtendedImage.network(
+                studentList[index].img??"",
+                cacheRawData: true,
+                width: 36.w,
+                height: 36.w,
+                fit: BoxFit.fill,
+                shape: BoxShape.circle,
+                enableLoadState: true,
+                loadStateChanged: (state){
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.completed:
+                      return ExtendedRawImage(
+                        image: state.extendedImageInfo?.image,
+                        fit: BoxFit.cover,
+                      );
+                    default :
+                      return Image.asset(
+                        R.imagesStudentHead,
+                        fit: BoxFit.fill,
+                      );
+                  }
+                },
+              ),
+              Padding(padding: EdgeInsets.only(left: 30.w)),
+              Text(
+                "${student.name}",
+                style: TextStyle(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d)),
+              ),
+            ],
+          ),
+          GetBuilder<ChooseLogic>(
+            id: GetBuilderIds.updateCheckBox+widget.classId,
+            builder: (logic){
+              return Util.buildCheckBox(() {
+                widget.chooseLogic.addSelected(widget.classId, student,
+                    !widget.chooseLogic.isDataSelected(widget.classId, student)
+                );
+              },chooseEnable: widget.chooseLogic.isDataSelected(widget.classId, student));
+            },
+          )
+        ],
       ),
     );
   }

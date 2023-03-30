@@ -317,7 +317,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                         child: Text("${chooesHistoryInfo.value}",style:TextStyle(color:AppColors.c_FFED702D,fontSize: 11.w)),
                                       )),
                                   Util.buildHomeworkNormalBtn(() {
-                                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage);
+                                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"isAssignHomework":true});
                                   }, "选择"),
                                 ],
                               ),

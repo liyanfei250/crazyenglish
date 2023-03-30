@@ -1,107 +1,253 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../entity/HomeworkQuestionResponse.dart';
+import '../../../base/AppUtil.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
+import '../choose_logic.dart';
 import 'choose_exam_paper_logic.dart';
 
 class ChooseExamPaperPage extends BasePage {
-  const ChooseExamPaperPage({Key? key}) : super(key: key);
+  bool isAssignHomework = true;
+  ChooseExamPaperPage({Key? key}) : super(key: key) {
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      isAssignHomework = Get.arguments[isAssignHomework]??false;
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ChooseExamPaperPageState();
 }
 
-class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,Question> {
+class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,Exampapers> {
   final logic = Get.put(ChooseExamPaperLogic());
   final state = Get.find<ChooseExamPaperLogic>().state;
+
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  final int pageSize = 20;
+  int currentPageNo = 1;
+  List<Exampapers> exampapers = [];
+  final int pageStartIndex = 1;
+
+  @override
+  void onCreate() {
+    currentKey.value = "0";
+    logic.addListenerId(GetBuilderIds.getExampersList,(){
+      hideLoading();
+      if(state.list!=null && state.list!=null){
+        if(state.pageNo == currentPageNo+1){
+          exampapers.addAll(state!.list!);
+          currentPageNo++;
+          if(mounted && _refreshController!=null){
+            _refreshController.loadComplete();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+
+            addData(currentKey.value, state!.list!);
+            setState(() {
+
+            });
+          }
+
+        }else if(state.pageNo == pageStartIndex){
+          currentPageNo = pageStartIndex;
+          exampapers.clear();
+          exampapers.addAll(state.list!);
+          if(mounted && _refreshController!=null){
+            _refreshController.refreshCompleted();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+            resetData(currentKey.value, state!.list!);
+            setState(() {
+            });
+          }
+
+        }
+      }
+    });
+    _onRefresh();
+    showLoading("加载中");
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
-      body: Stack(
+      backgroundColor: const Color(0xfff8f9fb),
+      appBar: AppBar(
+        backgroundColor: AppColors.c_FFFFFFFF,
+        centerTitle: true,
+        title: Text("个人试卷库",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp),),
+        leading: Util.buildBackWidget(context),
+        elevation: 0,
+        actions: [
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(right: 18.w),
+            child: Visibility(
+              visible: widget.isAssignHomework,
+              child: InkWell(
+                onTap: (){
+                  // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
+                },
+                child: Text("确定",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 14.sp),),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context,LoadStatus? mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text("");
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.failed){
+              body = Text("");
+            }
+            else if(mode == LoadStatus.canLoading){
+              body = Text("release to load more");
+            }
+            else{
+              body = Text("");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(padding: EdgeInsets.only(top: 4.w,bottom: 14.w),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  buildItem,
+                  childCount: exampapers.length,
+                ),
+              ),)
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onRefresh() async{
+    currentPageNo = pageStartIndex;
+    logic.getExampersList(pageStartIndex,pageSize);
+  }
+
+  void _onLoading() async{
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    logic.getExampersList(currentPageNo+1,pageSize);
+  }
+
+
+  Widget buildItem(BuildContext context, int index) {
+    Exampapers exampaper = exampapers[index];
+
+    return Container(
+      margin: EdgeInsets.only(left: 18.w, right: 18.w,top: 24.w),
+      padding: EdgeInsets.only(left: 27.w,right: 27.w,top: 3.w,bottom: 12.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(7.w)),
+        boxShadow:[
+          BoxShadow(
+            color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
+            offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+            blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+            spreadRadius: 0.w,
+          ),
+        ],
+      ),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(R.imagesTeacherClassTop,width: double.infinity),
-          Column(
+          Visibility(
+              visible: widget.isAssignHomework,
+              child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBar(
-                automaticallyImplyLeading: false,
-                title: Text("试卷库"),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 19.w,bottom:19.w,top:35.w,right: 19.w),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.all(Radius.circular(20.w)),
+              Padding(padding: EdgeInsets.only(top: 10.w)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GetBuilder<ChooseLogic>(
+                    id: GetBuilderIds.updateCheckBox+currentKey.value,
+                    builder: (logic){
+                      return Util.buildCheckBox(() {
+                        addSelected(currentKey.value, exampaper,
+                            !isDataSelected(currentKey.value, exampaper)
+                        );
+                      },chooseEnable: isDataSelected(currentKey.value, exampaper));
+                    },
                   ),
-                  child: Column(
-                    children: [
+                  InkWell(
+                    onTap: (){
 
-                    ],
-                  ),
-                ),
+                    },
+                    child: Image.asset(R.imagesExamPaperBrowse,width: 51.w,height: 19.w,),
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(left: 53.w,bottom: 30.w,right: 58.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text("全选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                        Padding(padding: EdgeInsets.only(left: 36.w)),
-                        Text("已选",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                      ],
-                    ),
-                    InkWell(
-                      onTap: (){
-
-                      },
-                      child: Container(
-                        width: 77.w,
-                        height: 28.w,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xfff19e59),
-                                Color(0xffec5f2a),
-                              ]),
-                          borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
-                          boxShadow:[
-                            BoxShadow(
-                              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
-                              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
-                              blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
-                              spreadRadius: 0.w,
-                            ),
-                          ],
-                        ),
-                        child: Text("完成",style: TextStyle(color: Colors.white),),
-                      ),
-                    )
-                  ],
-                ),
-              )
+              Container(margin:EdgeInsets.only(top: 14.w,bottom: 6.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
             ],
-          )
+          )),
+          buildLineItem(R.imagesExamPaperName,"试卷名称：${exampaper.name}"),
+          buildLineItem(R.imagesExamPaperTiCount,"题目数量：85道"),
+          buildLineItem(R.imagesExamPaperTiType,"试题类型：听力、阅读、写作"),
+          buildLineItem(R.imagesExamPaperTime,"组卷时间：2023年03月21日"),
         ],
       ),
     );
   }
+  
+  Widget buildLineItem(String img,String text){
+    return Container(
+      height: 38.w,
+      alignment: Alignment.centerLeft,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(img,width: 16.w,height: 16.w,),
+          Padding(padding: EdgeInsets.only(left: 9.w)),
+          Text(text,style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp,),),
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   void dispose() {
@@ -109,10 +255,7 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
     super.dispose();
   }
 
-  @override
-  void onCreate() {
-    // TODO: implement onCreate
-  }
+
 
   @override
   void onDestroy() {
@@ -120,7 +263,7 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
   }
 
   @override
-  String getDataId(String key,Question n) {
+  String getDataId(String key,Exampapers n) {
     assert(n.id !=null);
     return n.id!.toString();
   }
