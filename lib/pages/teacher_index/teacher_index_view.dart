@@ -172,10 +172,10 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               RouterUtil.toNamed(AppRoutes.WeeklyList);
               break;
             case "历史作业":
-              RouterUtil.toNamed(AppRoutes.TEACHER_WORK);
+              RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"isAssignHomework":false});
               break;
             case "试卷库":
-              RouterUtil.toNamed(AppRoutes.TEACHER_WORK);
+              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,arguments: {"isAssignHomework":false});
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ShoppingListPage);
@@ -249,14 +249,18 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               ),
               child: Row(
                 children: [
-                  _buildItem(context, R.imagesHomeWorkTips, '待提醒', '(10)'),
+                  _buildItem((){
+                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"needNotify":true});
+                  },context, R.imagesHomeWorkTips, '待提醒', '(10)'),
                   Container(
                     width: 1,
                     margin: EdgeInsets.only(top: 18.w, bottom: 18.w),
                     height: double.infinity,
                     color: Colors.grey.withOpacity(0.5),
                   ),
-                  _buildItem(context, R.imagesHomeWorkChange, '待批改', '(10)'),
+                  _buildItem((){
+                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"needCorrected":true});
+                  },context, R.imagesHomeWorkChange, '待批改', '(10)'),
                 ],
               ),
             ),
@@ -374,44 +378,49 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     return items;
   }
 
-  Widget _buildItem(
+  Widget _buildItem(GestureTapCallback callback,
       BuildContext context, String imagePath, String text, String text2) {
     return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: 44.w,
-            height: 44.w,
-          ),
-          SizedBox(
-            width: 10.w,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff353e4d)),
-              ),
-              SizedBox(
-                height: 2.w,
-              ),
-              Text(
-                text2,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffed702d)),
-              ),
-            ],
-          )
-        ],
+      child: InkWell(
+        onTap: (){
+          callback.call();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 44.w,
+              height: 44.w,
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff353e4d)),
+                ),
+                SizedBox(
+                  height: 2.w,
+                ),
+                Text(
+                  text2,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d)),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
