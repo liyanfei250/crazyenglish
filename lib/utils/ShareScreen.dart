@@ -1,27 +1,37 @@
 import 'dart:typed_data';
 
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../r.dart';
 
-class ShareScreen extends StatelessWidget {
+class ShareScreen extends StatefulWidget {
   final Uint8List imageBytes;
 
   ShareScreen({required this.imageBytes});
 
   @override
+  _ShareScreenState createState() => _ShareScreenState();
+}
+
+class _ShareScreenState extends State<ShareScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
+    return Stack(
         alignment: Alignment.center,
         children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.transparent,
+          ),
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
             height: MediaQuery.of(context).size.height * 0.8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                image: MemoryImage(imageBytes),
+                image: MemoryImage(widget.imageBytes),
                 fit: BoxFit.cover,
               ),
             ),
@@ -33,51 +43,93 @@ class ShareScreen extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
               },
-              child: Icon(
-                Icons.close,
-                color: Colors.white,
+              child: Image.asset(
+                R.imagesRankingClose,
+                width: 22.w,
+                height: 22.w,
               ),
             ),
           ),
           Positioned(
-            bottom: 20.w,
+            bottom: 1.w,
             left: 20.w,
             right: 20.w,
             child: Container(
               width: double.infinity,
-              height: 40.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
+              color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.favorite),
-                    onPressed: () {},
+                  GestureDetector(
+                    onTap: () {
+                      Util.toast('保存到相册');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          R.imagesRankingSaveToAlbum,
+                          width: 42.w,
+                          height: 42.w,
+                        ),
+                        SizedBox(height: 6.w),
+                        Text(
+                          '保存到相册',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.comment),
-                    onPressed: () {},
+                  GestureDetector(
+                    onTap: () {
+                      Util.toast('微信');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          R.imagesRankingShareWechat,
+                          width: 42.w,
+                          height: 42.w,
+                        ),
+                        SizedBox(height: 6.w),
+                        Text('微信',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400)),
+                      ],
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.share),
-                    onPressed: () {},
+                  GestureDetector(
+                    onTap: () {
+                      Util.toast('朋友圈');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          R.imagesRankingShareWechatMoments,
+                          width: 42.w,
+                          height: 42.w,
+                        ),
+                        SizedBox(height: 6.w),
+                        Text('朋友圈',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400)),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-            ),
-          ),
         ],
-      ),
-    );
+      );
   }
 }

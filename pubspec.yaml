@@ -351,8 +351,15 @@ flutter:
     - images/practise_pre_question_enable.png
     - images/practise_pre_question_unable.png
     - images/qr_scan_ic.png
+    - images/ranking_close.png
+    - images/ranking_first.png
     - images/ranking_four.png
     - images/ranking_one.png
+    - images/ranking_save_to_album.png
+    - images/ranking_second.png
+    - images/ranking_share_wechat.png
+    - images/ranking_share_wechat_moments.png
+    - images/ranking_third.png
     - images/ranking_three.png
     - images/ranking_two.png
     - images/reading_default.png

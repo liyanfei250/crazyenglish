@@ -349,10 +349,24 @@ class R {
   static final String imagesPractisePreQuestionUnable = 'images/practise_pre_question_unable.png';
   /// ![](http://127.0.0.1:11/images/qr_scan_ic.png)
   static final String imagesQrScanIc = 'images/qr_scan_ic.png';
+  /// ![](http://127.0.0.1:11/images/ranking_close.png)
+  static final String imagesRankingClose = 'images/ranking_close.png';
+  /// ![](http://127.0.0.1:11/images/ranking_first.png)
+  static final String imagesRankingFirst = 'images/ranking_first.png';
   /// ![](http://127.0.0.1:11/images/ranking_four.png)
   static final String imagesRankingFour = 'images/ranking_four.png';
   /// ![](http://127.0.0.1:11/images/ranking_one.png)
   static final String imagesRankingOne = 'images/ranking_one.png';
+  /// ![](http://127.0.0.1:11/images/ranking_save_to_album.png)
+  static final String imagesRankingSaveToAlbum = 'images/ranking_save_to_album.png';
+  /// ![](http://127.0.0.1:11/images/ranking_second.png)
+  static final String imagesRankingSecond = 'images/ranking_second.png';
+  /// ![](http://127.0.0.1:11/images/ranking_share_wechat.png)
+  static final String imagesRankingShareWechat = 'images/ranking_share_wechat.png';
+  /// ![](http://127.0.0.1:11/images/ranking_share_wechat_moments.png)
+  static final String imagesRankingShareWechatMoments = 'images/ranking_share_wechat_moments.png';
+  /// ![](http://127.0.0.1:11/images/ranking_third.png)
+  static final String imagesRankingThird = 'images/ranking_third.png';
   /// ![](http://127.0.0.1:11/images/ranking_three.png)
   static final String imagesRankingThree = 'images/ranking_three.png';
   /// ![](http://127.0.0.1:11/images/ranking_two.png)

@@ -1,20 +1,24 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/routes_utils.dart';
 import '../../utils/ShareScreen.dart';
 import '../../utils/permissions/permissions_util.dart';
 import 'student_ranking_logic.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+
 class Student_rankingPage extends BasePage {
   const Student_rankingPage({Key? key}) : super(key: key);
 
@@ -26,6 +30,13 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
   final logic = Get.put(Student_rankingLogic());
   final state = Get.find<Student_rankingLogic>().state;
   final GlobalKey _globalKey = GlobalKey();
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  final int pageSize = 10;
+  int currentPageNo = 1;
+  List<String> weekPaperList = [];
+  final int pageStartIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +104,8 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
               right: 18.w,
               child: GestureDetector(
                 onTap: () async {
-                  await PermissionsUtil.checkPermissions(
-                      context,
-                      "为了正常访问相册，需要您授权以下权限",
-                      [RequestPermissionsTag.PHOTOS], () {
+                  await PermissionsUtil.checkPermissions(context,
+                      "为了正常访问相册，需要您授权以下权限", [RequestPermissionsTag.PHOTOS], () {
                     _saveImage();
                   });
                 },
@@ -117,10 +126,9 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                   ),
                 ),
               )),
-          //点击右上角的"分享"按钮，将当前的屏幕显示的view截图，然后跳转到下个新界面，新界面顶部显示刚才截图的图片，width为屏幕的80%，顶部有close图标，点击可退出，图片底部横向均分三个按钮，整个新界面的背景带透明的阴影，类似dialog的效果
           Positioned(
               top: 244.w,
-              bottom: 30.w,
+              bottom: 86.w,
               left: 18.w,
               right: 18.w,
               child: Container(
@@ -138,13 +146,83 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                     ),
                   ],
                 ),
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropHeader(),
+                  footer: CustomFooter(
+                    builder: (BuildContext context, LoadStatus? mode) {
+                      Widget body;
+                      if (mode == LoadStatus.idle) {
+                        body = Text("");
+                      } else if (mode == LoadStatus.loading) {
+                        body = CupertinoActivityIndicator();
+                      } else if (mode == LoadStatus.failed) {
+                        body = Text("");
+                      } else if (mode == LoadStatus.canLoading) {
+                        body = Text("release to load more");
+                      } else {
+                        body = Text("");
+                      }
+                      return Container(
+                        height: 55.0,
+                        child: Center(child: body),
+                      );
+                    },
+                  ),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                '学生信息',
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff898a93)),
+                              ),
+                              Text(
+                                '努力值',
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff898a93)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Container(
+                          height: 0.5.w,
+                          color: Color(0xffd2d5dc),
+                          margin: EdgeInsets.only(top: 4.w,bottom: 12.w),
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          buildItem,
+                          childCount: 4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               )),
           Positioned(
               bottom: 0.w,
               left: 0.w,
               right: 0.w,
               child: Container(
-                height: 95,
+                height: 95.w,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(
@@ -158,19 +236,64 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                       Color(0xFFFFCEDB8),
                     ],
                   ),
+
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 44.w,
+                      margin: EdgeInsets.only(left: 31.w),
+                      alignment: Alignment.center,
+                      child: Text('99+',
+                          style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff353e4d))),
+                    ),
+                    SizedBox(
+                      width: 9.w,
+                    ),
+                    ClipOval(
+                      child: Image.asset(
+                        R.imagesStudentHead,
+                        width: 44.w,
+                        height: 44.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Text('张慧敏',
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff353e4d))),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text('99.1',
+                            style: TextStyle(
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff353e4d))),
+                      ),
+                    ),
+                  ],
                 ),
               ))
         ],
       ),
     ));
   }
+
   Future<void> _saveImage() async {
     if (!await Permission.storage.isGranted) {
       await Permission.storage.request();
     }
 
     RenderRepaintBoundary boundary =
-    _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+        _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
     ui.Image image = await boundary.toImage(pixelRatio: 2.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -187,9 +310,105 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
       );
     }
   }
+
+  Widget buildItem(BuildContext context, int index) {
+    return InkWell(
+      onTap: () {
+        //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
+      },
+      child: Container(
+        width: 332.w,
+        height: 50.w,
+        margin: EdgeInsets.only(top: 11.w, left: 22.w, right: 0.w),
+        padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _firstType(index),
+            SizedBox(
+              width: 22.w,
+            ),
+            ClipOval(
+              child: Image.asset(
+                R.imagesStudentHead,
+                width: 35.w,
+                height: 35.w,
+              ),
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Text('张慧敏',
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d))),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: Text('99.1',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff353e4d))),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onRefresh() async {
+    currentPageNo = pageStartIndex;
+    //logic.getList("2022-12-22",pageStartIndex,pageSize);
+  }
+
+  void _onLoading() async {
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    //logic.getList("2022-12-22",currentPageNo,pageSize);
+  }
+
   @override
   void onCreate() {}
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+    Get.delete<Student_rankingLogic>();
+    _refreshController.dispose();
+  }
+
+  Widget _firstType(int index) {
+    if (index == 0) {
+      return Image.asset(
+        R.imagesRankingFirst,
+        width: 24.w,
+        height: 44.w,
+      );
+    }
+    if (index == 1) {
+      return Image.asset(
+        R.imagesRankingSecond,
+        width: 24.w,
+        height: 44.w,
+      );
+    }
+    if (index == 2) {
+      return Image.asset(
+        R.imagesRankingThird,
+        width: 24.w,
+        height: 44.w,
+      );
+    } else {
+      return Container(
+        width: 26.w,
+        alignment: Alignment.center,
+        child: Text((index + 1).toString(),
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff898a93))),
+      );
+    }
+  }
 }
