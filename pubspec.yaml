@@ -49,6 +49,7 @@ dependencies:
   web_socket_channel: ^2.2.0
 
   image_picker: ^0.8.6
+  image_gallery_saver: ^1.7.1 # 添加这一行
   # 状态管理
   flutter_bloc: ^7.2.0
   flutter_native_image: ^0.0.6+1
@@ -182,6 +183,7 @@ flutter:
     - images/home_my_list_no_data.png
     - images/my_top_bg.png
     - images/weekly_item_eye.png
+    - images/ranking_one.png
     - images/shop_address_location_icon.png
     - images/weekly_de_browse.png
     - images/index_collection_words.png
@@ -253,15 +255,19 @@ flutter:
     - images/article_collect_press.png
     - images/xunfei_english.png
     - images/icon_transmission_speed_05_clicked.png
+    - images/ranking_close.png
+    - images/ranking_second.png
     - images/student_no_date.png
     - images/icon_home_me_default_head.png
     - images/index_icon_9.png
     - images/scan_result_fast15.png
+    - images/ranking_first.png
     - images/student_index_2.png
     - images/error_to_correct.png
     - images/wrong_question_item.png
     - images/student_index_0.png
     - images/teacher_scan.png
+    - images/ranking_share_wechat_moments.png
     - images/icon_back_black.png
     - images/review_practise_history.png
     - images/practise_next_question_unable.png
@@ -271,6 +277,7 @@ flutter:
     - images/icon_intensive_listening_translate_no_clicked.png
     - images/icon_transmission_speed_10_clicked.png
     - images/index_msg.png
+    - images/ranking_third.png
     - images/icon_tab4_normal.png
     - images/home_teach_bg.png
     - images/splash_center_text.png
@@ -299,6 +306,7 @@ flutter:
     - images/home_work_as_exam.png
     - images/writing_title_bg.png
     - images/qr_scan_ic.png
+    - images/ranking_four.png
     - images/icon_player_pause_clicked.png
     - images/teacher_home_btn_pop.png
     - images/splash_center_image.png
@@ -312,6 +320,7 @@ flutter:
     - images/review_reading_tag.png
     - images/index_icon_1.png
     - images/icon_tab2_normal.png
+    - images/class_info_next.png
     - images/student_day_words.png
     - images/icon_transmission_speed_08_selected.png
     - images/torid_four_hide.png
@@ -334,6 +343,7 @@ flutter:
     - images/class_info_teacher_sex.png
     - images/home_search.png
     - images/class_info_name.png
+    - images/ranking_three.png
     - images/index_icon_2.png
     - images/listenig_last_icon.png
     - images/welcome_icon.png
@@ -363,8 +373,10 @@ flutter:
     - images/result_unfavor.png
     - images/history_pre_month.png
     - images/index_today_todo.png
+    - images/ranking_share_wechat.png
     - images/article_listen_play.png
     - images/class_info_teacher_phone_num.png
+    - images/ranking_save_to_album.png
     - images/collec_prac_icon.png
     - images/icon_intensive_listening_translate_yes.png
     - images/index_icon_4.png
@@ -384,6 +396,7 @@ flutter:
     - images/icon_tab2_pressed.png
     - images/teacher_progress.png
     - images/home_work_question_filter.png
+    - images/ranking_two.png
     - images/icon_transmission_speed_20_selected.png
     - images/icon_intensive_listening_loop_yes_clicked.png
     - images/home_work_change.png

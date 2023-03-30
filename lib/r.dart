@@ -13,6 +13,8 @@ class R {
   static final String imagesMyTopBg = 'images/my_top_bg.png';
   /// ![](http://127.0.0.1:11/images/weekly_item_eye.png)
   static final String imagesWeeklyItemEye = 'images/weekly_item_eye.png';
+  /// ![](http://127.0.0.1:11/images/ranking_one.png)
+  static final String imagesRankingOne = 'images/ranking_one.png';
   /// ![](http://127.0.0.1:11/images/shop_address_location_icon.png)
   static final String imagesShopAddressLocationIcon = 'images/shop_address_location_icon.png';
   /// ![](http://127.0.0.1:11/images/weekly_de_browse.png)
@@ -155,6 +157,10 @@ class R {
   static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_clicked.png)
   static final String imagesIconTransmissionSpeed05Clicked = 'images/icon_transmission_speed_05_clicked.png';
+  /// ![](http://127.0.0.1:11/images/ranking_close.png)
+  static final String imagesRankingClose = 'images/ranking_close.png';
+  /// ![](http://127.0.0.1:11/images/ranking_second.png)
+  static final String imagesRankingSecond = 'images/ranking_second.png';
   /// ![](http://127.0.0.1:11/images/student_no_date.png)
   static final String imagesStudentNoDate = 'images/student_no_date.png';
   /// ![](http://127.0.0.1:11/images/icon_home_me_default_head.png)
@@ -163,6 +169,8 @@ class R {
   static final String imagesIndexIcon9 = 'images/index_icon_9.png';
   /// ![](http://127.0.0.1:11/images/scan_result_fast15.png)
   static final String imagesScanResultFast15 = 'images/scan_result_fast15.png';
+  /// ![](http://127.0.0.1:11/images/ranking_first.png)
+  static final String imagesRankingFirst = 'images/ranking_first.png';
   /// ![](http://127.0.0.1:11/images/student_index_2.png)
   static final String imagesStudentIndex2 = 'images/student_index_2.png';
   /// ![](http://127.0.0.1:11/images/error_to_correct.png)
@@ -173,6 +181,8 @@ class R {
   static final String imagesStudentIndex0 = 'images/student_index_0.png';
   /// ![](http://127.0.0.1:11/images/teacher_scan.png)
   static final String imagesTeacherScan = 'images/teacher_scan.png';
+  /// ![](http://127.0.0.1:11/images/ranking_share_wechat_moments.png)
+  static final String imagesRankingShareWechatMoments = 'images/ranking_share_wechat_moments.png';
   /// ![](http://127.0.0.1:11/images/icon_back_black.png)
   static final String imagesIconBackBlack = 'images/icon_back_black.png';
   /// ![](http://127.0.0.1:11/images/review_practise_history.png)
@@ -191,6 +201,8 @@ class R {
   static final String imagesIconTransmissionSpeed10Clicked = 'images/icon_transmission_speed_10_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_msg.png)
   static final String imagesIndexMsg = 'images/index_msg.png';
+  /// ![](http://127.0.0.1:11/images/ranking_third.png)
+  static final String imagesRankingThird = 'images/ranking_third.png';
   /// ![](http://127.0.0.1:11/images/icon_tab4_normal.png)
   static final String imagesIconTab4Normal = 'images/icon_tab4_normal.png';
   /// ![](http://127.0.0.1:11/images/home_teach_bg.png)
@@ -247,6 +259,8 @@ class R {
   static final String imagesWritingTitleBg = 'images/writing_title_bg.png';
   /// ![](http://127.0.0.1:11/images/qr_scan_ic.png)
   static final String imagesQrScanIc = 'images/qr_scan_ic.png';
+  /// ![](http://127.0.0.1:11/images/ranking_four.png)
+  static final String imagesRankingFour = 'images/ranking_four.png';
   /// ![](http://127.0.0.1:11/images/icon_player_pause_clicked.png)
   static final String imagesIconPlayerPauseClicked = 'images/icon_player_pause_clicked.png';
   /// ![](http://127.0.0.1:11/images/teacher_home_btn_pop.png)
@@ -273,6 +287,8 @@ class R {
   static final String imagesIndexIcon1 = 'images/index_icon_1.png';
   /// ![](http://127.0.0.1:11/images/icon_tab2_normal.png)
   static final String imagesIconTab2Normal = 'images/icon_tab2_normal.png';
+  /// ![](http://127.0.0.1:11/images/class_info_next.png)
+  static final String imagesClassInfoNext = 'images/class_info_next.png';
   /// ![](http://127.0.0.1:11/images/student_day_words.png)
   static final String imagesStudentDayWords = 'images/student_day_words.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_08_selected.png)
@@ -317,6 +333,8 @@ class R {
   static final String imagesHomeSearch = 'images/home_search.png';
   /// ![](http://127.0.0.1:11/images/class_info_name.png)
   static final String imagesClassInfoName = 'images/class_info_name.png';
+  /// ![](http://127.0.0.1:11/images/ranking_three.png)
+  static final String imagesRankingThree = 'images/ranking_three.png';
   /// ![](http://127.0.0.1:11/images/index_icon_2.png)
   static final String imagesIndexIcon2 = 'images/index_icon_2.png';
   /// ![](http://127.0.0.1:11/images/listenig_last_icon.png)
@@ -375,10 +393,14 @@ class R {
   static final String imagesHistoryPreMonth = 'images/history_pre_month.png';
   /// ![](http://127.0.0.1:11/images/index_today_todo.png)
   static final String imagesIndexTodayTodo = 'images/index_today_todo.png';
+  /// ![](http://127.0.0.1:11/images/ranking_share_wechat.png)
+  static final String imagesRankingShareWechat = 'images/ranking_share_wechat.png';
   /// ![](http://127.0.0.1:11/images/article_listen_play.png)
   static final String imagesArticleListenPlay = 'images/article_listen_play.png';
   /// ![](http://127.0.0.1:11/images/class_info_teacher_phone_num.png)
   static final String imagesClassInfoTeacherPhoneNum = 'images/class_info_teacher_phone_num.png';
+  /// ![](http://127.0.0.1:11/images/ranking_save_to_album.png)
+  static final String imagesRankingSaveToAlbum = 'images/ranking_save_to_album.png';
   /// ![](http://127.0.0.1:11/images/collec_prac_icon.png)
   static final String imagesCollecPracIcon = 'images/collec_prac_icon.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes.png)
@@ -417,6 +439,8 @@ class R {
   static final String imagesTeacherProgress = 'images/teacher_progress.png';
   /// ![](http://127.0.0.1:11/images/home_work_question_filter.png)
   static final String imagesHomeWorkQuestionFilter = 'images/home_work_question_filter.png';
+  /// ![](http://127.0.0.1:11/images/ranking_two.png)
+  static final String imagesRankingTwo = 'images/ranking_two.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_selected.png)
   static final String imagesIconTransmissionSpeed20Selected = 'images/icon_transmission_speed_20_selected.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_yes_clicked.png)
