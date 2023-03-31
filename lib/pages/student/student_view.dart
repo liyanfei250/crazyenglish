@@ -1,20 +1,14 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/watting_push/watting_push_view.dart';
 import 'package:crazyenglish/widgets/DashedLine.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
-import 'package:flutter_pickers/time_picker/model/pduration.dart';
-import 'package:flutter_pickers/time_picker/model/suffix.dart';
-import 'package:flutter_pickers/utils/check.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../base/AppUtil.dart';
 import '../../r.dart';
 import '../../utils/colors.dart';
-import '../../widgets/DatePicker.dart';
-import '../../widgets/my_text.dart';
 import 'student_logic.dart';
 
 class StudentPage extends BasePage {
@@ -45,10 +39,10 @@ class _StudentPageState extends BasePageState<StudentPage>
     DateMode.S: '',
   };
   List tabs = [
-    {"title": "听力", "type": 1},
-    {"title": "阅读", "type": 2},
-    {"title": "写作", "type": 3},
-    {"title": "语法", "type": 4},
+    {"title": "待提交", "type": 1},
+    {"title": "已完成", "type": 2},
+    {"title": "待批改", "type": 3},
+    {"title": "无数据", "type": 0},
   ];
 
   @override
@@ -94,182 +88,215 @@ class _StudentPageState extends BasePageState<StudentPage>
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  top: 19.w, bottom: 20.w, left: 25.w, right: 25.w),
-              margin: EdgeInsets.only(
-                  top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                      offset: Offset(2, 4), // 阴影与容器的距离
-                    )
-                  ],
-                  borderRadius: BorderRadius.all(Radius.circular(8.w)),
-                  color: Colors.white),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ClipOval(
-                      child: Image.asset(
-                    R.imagesShopImageLogoTest,
-                    width: 80.w,
-                    height: 80.w,
-                  )),
-                  SizedBox(
-                    height: 16.w,
-                  ),
-                  Text('张慧敏',
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff353e4d))),
-                  SizedBox(
-                    height: 4.w,
-                  ),
-                  Text('一班（初一）',
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff898a93))),
-                  SizedBox(
-                    height: 24.w,
-                  ),
-                  Row(
-                    children: [
-                      Text('学习总时长',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff353e4d))),
-                      Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                            child: DashedLine()),
-                      ),
-                      Text('343天20小时58分钟',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffed702d))),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6.w,
-                  ),
-                  Row(
-                    children: [
-                      Text('客观题正确率',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff353e4d))),
-                      Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                            child: DashedLine()),
-                      ),
-                      Text('85%',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffed702d))),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6.w,
-                  ),
-                  Row(
-                    children: [
-                      Text('主观题平均分',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff353e4d))),
-                      Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                            child: DashedLine()),
-                      ),
-                      Text('77分',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffed702d))),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6.w,
-                  ),
-                  Row(
-                    children: [
-                      Text('努力值',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff353e4d))),
-                      Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                            child: DashedLine()),
-                      ),
-                      Text('77分',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffed702d))),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.w,
-                  ),
-                  buildContainer('学习报告生成')
-                ],
-              ),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverToBoxAdapter(
+              child: buildContainerTop(),
             ),
-            /*GestureDetector(
-              onTap: () async {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "东八区 ${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)).subtract(Duration(days: 30)))}",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "东八区 ${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)))}",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+            SliverToBoxAdapter(
+              child: buildContainerTitle(),
             ),
-            _item('年月日', DateMode.YMD),*/
-            Container(
-              margin: EdgeInsets.only(
-                  top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                      offset: Offset(2, 4), // 阴影与容器的距离
-                    )
-                  ],
-                  borderRadius: BorderRadius.all(Radius.circular(8.w)),
-                  color: Colors.white),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [buildBg(), _buildTableBarView()],
-              ),
+            SliverPersistentHeader(
+              // 可以吸顶的TabBar
+              pinned: true,
+              delegate: CustomStickyTabBarDelegate(tabBar: buildTabBar()),
+            ),
+          ];
+        },
+        body: Container(
+          // padding:
+          // EdgeInsets.only(left: 2.w, right: 2.w),
+          margin:
+              EdgeInsets.only(top: 0.w, left: 18.w, right: 18.w, bottom: 10.w),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.w),
+                  bottomRight: Radius.circular(20.w)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: Offset(0, 3),
+                  blurRadius: 3,
+                  spreadRadius: 0,
+                ),
+              ],
+              color: Colors.white),
+          child: TabBarView(
+            controller: this._tabController,
+            children: <Widget>[
+              Watting_pushPage(1, 1),
+              Watting_pushPage(2, 1),
+              Watting_pushPage(3, 1),
+              Watting_pushPage(0, 1),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  TabBar buildTabBar() {
+    return TabBar(
+      onTap: (tab) => print(tab),
+      labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      unselectedLabelStyle: const TextStyle(fontSize: 14),
+      isScrollable: false,
+      controller: _tabController,
+      labelColor: Color(0xff353e4d),
+      indicatorWeight: 2,
+      indicatorPadding: const EdgeInsets.symmetric(horizontal: 40),
+      unselectedLabelColor: Colors.grey,
+      indicatorColor: Color(0xffffbc00),
+      tabs: tabs.map((e) => Tab(text: e['title'])).toList(),
+    );
+  }
+
+  Container buildContainerTitle() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 18.w, top: 26.w, left: 18.w, right: 33.w),
+      child: Text(
+        '作业情况',
+        style: TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 16.sp, color: Colors.black),
+      ),
+    );
+  }
+
+  Container buildContainerTop() {
+    return Container(
+      padding:
+          EdgeInsets.only(top: 19.w, bottom: 20.w, left: 25.w, right: 25.w),
+      margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(2, 4), // 阴影与容器的距离
             )
           ],
-        ),
+          borderRadius: BorderRadius.all(Radius.circular(8.w)),
+          color: Colors.white),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ClipOval(
+              child: Image.asset(
+            R.imagesShopImageLogoTest,
+            width: 80.w,
+            height: 80.w,
+          )),
+          SizedBox(
+            height: 16.w,
+          ),
+          Text('张慧敏',
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff353e4d))),
+          SizedBox(
+            height: 4.w,
+          ),
+          Text('一班（初一）',
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff898a93))),
+          SizedBox(
+            height: 24.w,
+          ),
+          Row(
+            children: [
+              Text('学习总时长',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d))),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                    child: DashedLine()),
+              ),
+              Text('343天20小时58分钟',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d))),
+            ],
+          ),
+          SizedBox(
+            height: 6.w,
+          ),
+          Row(
+            children: [
+              Text('客观题正确率',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d))),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                    child: DashedLine()),
+              ),
+              Text('85%',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d))),
+            ],
+          ),
+          SizedBox(
+            height: 6.w,
+          ),
+          Row(
+            children: [
+              Text('主观题平均分',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d))),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                    child: DashedLine()),
+              ),
+              Text('77分',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d))),
+            ],
+          ),
+          SizedBox(
+            height: 6.w,
+          ),
+          Row(
+            children: [
+              Text('努力值',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d))),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                    child: DashedLine()),
+              ),
+              Text('77分',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d))),
+            ],
+          ),
+          SizedBox(
+            height: 20.w,
+          ),
+          buildContainer('学习报告生成')
+        ],
       ),
     );
   }
@@ -303,91 +330,6 @@ class _StudentPageState extends BasePageState<StudentPage>
     );
   }
 
-  Widget _item(title, model) {
-    return Container(
-      color: Colors.white,
-      child: ListTile(
-          title: Text(title),
-          onTap: () {
-            _onClickItem(model);
-          },
-          trailing: MyText(
-              PicketUtil.strEmpty(selectData[model]) ? '暂无' : selectData[model],
-              color: Colors.grey,
-              rightpadding: 18)),
-    );
-  }
-
-  Widget _buildTableBarView() => SizedBox(
-        height: 2000.w,
-        child: TabBarView(
-          controller: _tabController,
-          children: tabs.map((e) {
-            return /*WaittingPutPage('widget.type')*/ Container(
-              color: Colors.red,
-            );
-          }).toList(),
-        ),
-      );
-
-  void _onClickItem(model) {
-    Pickers.showDatePicker(
-      context,
-      mode: model,
-      suffix: Suffix.normal(),
-
-      // selectDate: PDuration(month: 2),
-      minDate: PDuration(year: 2020, month: 2, day: 10),
-      maxDate: PDuration(second: 22),
-
-      // selectDate: PDuration(hour: 18, minute: 36, second: 36),
-      // minDate: PDuration(hour: 12, minute: 38, second: 3),
-      // maxDate: PDuration(hour: 12, minute: 40, second: 36),
-      onConfirm: (p) {
-        print('longer >>> 返回数据：$p');
-        setState(() {
-          switch (model) {
-            case DateMode.YMDHMS:
-              selectData[model] =
-                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.YMDHM:
-              selectData[model] =
-                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}';
-              break;
-            case DateMode.YMDH:
-              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}';
-              break;
-            case DateMode.YMD:
-              selectData[model] = '${p.year}-${p.month}-${p.day}';
-              break;
-            case DateMode.YM:
-              selectData[model] = '${p.year}-${p.month}';
-              break;
-            case DateMode.Y:
-              selectData[model] = '${p.year}-${p.month}';
-              break;
-            case DateMode.MDHMS:
-              selectData[model] =
-                  '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.HMS:
-              selectData[model] = '${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.MD:
-              selectData[model] = '${p.month}-${p.day}';
-              break;
-            case DateMode.S:
-              selectData[model] = '${p.second}';
-              break;
-          }
-        });
-      },
-      // onChanged: (p) => print(p),
-    );
-  }
-
-//帮我封装一个时间选择器，界面要求是横向两个text，第一个显示东八区当前时间往前推一个月，第二个显示东八区今天的时间，时间的格式是'YYYY年mm月dd日'。点击text，在当前界面弹出底部时间选择器，可以选择年月日，选择之后可以点击确定，选择之后可以点取消关闭底部时间选择器，text展示选择的时间
   Widget buildBg() => Container(
         margin:
             EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 0.w),
@@ -424,4 +366,56 @@ class _StudentPageState extends BasePageState<StudentPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class CustomStickyTabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
+
+  CustomStickyTabBarDelegate({required this.tabBar});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: EdgeInsets.only(left: 2.w, right: 2.w),
+      margin: EdgeInsets.only(top: 0.w, left: 18.w, right: 18.w, bottom: 0.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20.w), topLeft: Radius.circular(20.w)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              offset: Offset(0, -3),
+              blurRadius: 3,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              offset: Offset(-3, 0),
+              blurRadius: 3,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              offset: Offset(3, 0),
+              blurRadius: 3,
+              spreadRadius: 0,
+            ),
+          ],
+          color: Colors.white),
+      child: tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(covariant CustomStickyTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar;
+  }
 }

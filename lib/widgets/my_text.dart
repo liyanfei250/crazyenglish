@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class MyText extends StatelessWidget {
   const MyText(
-      this.data, {
-        Key? key,
-        this.letfpadding = 0,
-        this.toppadding = 0,
-        this.rightpadding = 0,
-        this.bottompadding = 0,
-        this.size = 15,
-        this.color = Colors.black87,
-        this.fontWeight = FontWeight.w400,
-        this.maxLines = 1000,
-      }) :
+    this.data, {
+    Key? key,
+    this.letfpadding = 0,
+    this.toppadding = 0,
+    this.rightpadding = 0,
+    this.bottompadding = 0,
+    this.size = 15,
+    this.color = Colors.black,
+    this.fontWeight = FontWeight.w600,
+    this.maxLines = 1,
+  }) :
 //        assert(
 //          data != null,
 //          'text 不能为空哦~',
