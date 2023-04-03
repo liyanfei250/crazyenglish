@@ -9,7 +9,13 @@ import '../../utils/colors.dart';
 import 'home_search_logic.dart';
 
 class HomeSearchPage extends BasePage {
-  const HomeSearchPage({Key? key}) : super(key: key);
+  var isteacher;
+
+  HomeSearchPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      isteacher = Get.arguments["isteacher"];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToHomeSearchPageState();
@@ -22,7 +28,7 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
   late TabController _tabController;
   TextEditingController _searchController = TextEditingController();
   bool _showClearButton = false;
-  List tabs = [
+  late List tabs = [
     {"title": "全部", "type": 1},
     {"title": "周报", "type": 2},
     {"title": "期刊", "type": 3},
@@ -33,6 +39,22 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
+    if (widget.isteacher) {
+      tabs = [
+        {"title": "全部", "type": 1},
+        {"title": "周报", "type": 2},
+        {"title": "期刊", "type": 3},
+        {"title": "商城", "type": 4},
+        {"title": "学生", "type": 5},
+      ];
+    } else {
+      tabs = [
+        {"title": "全部", "type": 1},
+        {"title": "周报", "type": 2},
+        {"title": "期刊", "type": 3},
+        {"title": "商城", "type": 4},
+      ];
+    }
   }
 
   @override
