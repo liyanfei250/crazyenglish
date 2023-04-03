@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/listening/listening_practice/MenuWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,10 +43,24 @@ class _ToListeningPracticePageState
     return Scaffold(
       appBar: buildNormalAppBar("听力·按顺序练习"),
       backgroundColor: AppColors.theme_bg,
-      body: ListView(
-        children: listDataOne.map((value) {
-          return listitemBigBg();
-        }).toList(),
+      body: Container(
+        child: Column(
+          children: [
+            MenuWidget(
+              title: '全部分类',
+              items: ['选项1', '选项2', '选项3', '高中十一年级', '选项5', '选项6'],
+              onSelected: (index) {
+                print('选中了第${index + 1}项');
+              },
+            ),
+            Expanded(
+                child: ListView(
+              children: listDataOne.map((value) {
+                return listitemBigBg();
+              }).toList(),
+            ))
+          ],
+        ),
       ),
     );
   }
@@ -62,7 +77,7 @@ class _ToListeningPracticePageState
 
   Widget listitemBigBg() {
     return Container(
-      margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w,bottom: 10.w),
+      margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
           EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
       width: double.infinity,
@@ -142,7 +157,13 @@ class _ToListeningPracticePageState
           Padding(padding: EdgeInsets.only(top: 20.w)),
           Row(
             children: [
-              Text(value['title'],style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Color(0xff353e4d)),),
+              Text(
+                value['title'],
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d)),
+              ),
               Padding(padding: EdgeInsets.only(left: 11.w)),
               Image.asset(
                 R.imagesListenigLastIcon,
@@ -151,7 +172,13 @@ class _ToListeningPracticePageState
                 height: 18.w,
               ),
               Expanded(child: Text('')),
-              Text('正确率 9/15',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w400,color: Color(0xff858aa0)),)
+              Text(
+                '正确率 9/15',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff858aa0)),
+              )
             ],
           ),
           Padding(padding: EdgeInsets.only(top: 20.w)),

@@ -417,6 +417,8 @@ class R {
   static final String imagesRankingSaveToAlbum = 'images/ranking_save_to_album.png';
   /// ![](http://127.0.0.1:11/images/collec_prac_icon.png)
   static final String imagesCollecPracIcon = 'images/collec_prac_icon.png';
+  /// ![](http://127.0.0.1:11/images/search_place_ic.png)
+  static final String imagesSearchPlaceIc = 'images/search_place_ic.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes.png)
   static final String imagesIconIntensiveListeningTranslateYes = 'images/icon_intensive_listening_translate_yes.png';
   /// ![](http://127.0.0.1:11/images/index_icon_4.png)
