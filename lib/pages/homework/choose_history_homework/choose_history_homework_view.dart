@@ -1,5 +1,7 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -250,7 +252,14 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
               Text("${history.name}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
               InkWell(
                 onTap: (){
-
+                  // HomeworkCompleteOverviewPage
+                  // // widget.needNotify?
+                  // // goToNextPage("去提醒") :
+                  // // widget.needCorrected?
+                  // // buildHasChecked(false,"待批改（18）"):
+                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage):
+                  RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage);
+                  // buildHasChecked(false,"未检查"),
                 },
                 child: widget.needNotify?
                           goToNextPage("去提醒") :

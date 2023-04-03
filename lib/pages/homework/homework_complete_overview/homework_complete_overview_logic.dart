@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import 'history_home_work_state.dart';
+import 'homework_complete_overview_state.dart';
 
-class HistoryHomeWorkLogic extends GetxController {
-  final HistoryHomeWorkState state = HistoryHomeWorkState();
+class HomeworkCompleteOverviewLogic extends GetxController {
+  final HomeworkCompleteOverviewState state = HomeworkCompleteOverviewState();
 
   @override
   void onReady() {
