@@ -374,6 +374,12 @@ flutter:
     - images/ranking_three.png
     - images/ranking_two.png
     - images/reading_default.png
+    - images/report_four.png
+    - images/report_one.png
+    - images/report_share_befor_date.png
+    - images/report_share_ic.png
+    - images/report_three.png
+    - images/report_two.png
     - images/result_answer_card_tips.png
     - images/result_favor.png
     - images/result_time_tips.png
