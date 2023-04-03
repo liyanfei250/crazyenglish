@@ -345,11 +345,15 @@ class _IndexPageState extends BasePageState<IndexPage>
                     height: 16.w,
                   ),
                   Padding(padding: EdgeInsets.only(left: 9.w)),
-                  Text(
-                    "搜词/翻译",
-                    style: TextStyle(
-                        fontSize: 16.sp, color: AppColors.TEXT_GRAY_COLOR),
-                  )
+                  GestureDetector(
+                      onTap: () {
+                        RouterUtil.toNamed(AppRoutes.HomeSearchPage);
+                      },
+                      child: Text(
+                        "搜词/翻译",
+                        style: TextStyle(
+                            fontSize: 16.sp, color: AppColors.TEXT_GRAY_COLOR),
+                      ))
                 ],
               ),
             )),

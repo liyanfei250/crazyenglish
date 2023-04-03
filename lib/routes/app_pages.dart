@@ -1,5 +1,6 @@
 import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/create_class/create_class_view.dart';
+import 'package:crazyenglish/pages/home_search/home_search_view.dart';
 import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
@@ -105,6 +106,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.TEACHER_STUDENT, page:()=>StudentPage(),),
     GetPage(name: AppRoutes.TEACHER_Index, page:()=>TeacherIndexPage(),),
     GetPage(name: AppRoutes.Teacher_Class_Create, page:()=>Create_classPage(),),
+    GetPage(name: AppRoutes.HomeSearchPage, page:()=>HomeSearchPage(),),
 
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=> Practise_historyPage(),),
 

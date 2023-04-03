@@ -439,6 +439,8 @@ class R {
   static final String imagesScanResultFast15 = 'images/scan_result_fast15.png';
   /// ![](http://127.0.0.1:11/images/scan_result_suspend.png)
   static final String imagesScanResultSuspend = 'images/scan_result_suspend.png';
+  /// ![](http://127.0.0.1:11/images/search_place_ic.png)
+  static final String imagesSearchPlaceIc = 'images/search_place_ic.png';
   /// ![](http://127.0.0.1:11/images/shop_address_location_icon.png)
   static final String imagesShopAddressLocationIcon = 'images/shop_address_location_icon.png';
   /// ![](http://127.0.0.1:11/images/shop_car_num_icon.png)

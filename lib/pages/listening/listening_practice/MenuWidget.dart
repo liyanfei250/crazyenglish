@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
+
 //筛选控件
 class MenuWidget extends StatefulWidget {
   final String title;
@@ -104,7 +105,9 @@ class _MenuWidgetState extends State<MenuWidget>
                     color: Color(0xffd2d5dc),
                   ),
                 ),
-                SizedBox(width: 4.w,)
+                SizedBox(
+                  width: 4.w,
+                )
               ],
             ),
           ),
