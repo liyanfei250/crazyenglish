@@ -57,5 +57,6 @@ abstract class AppRoutes{
   static const ChooseStudentPage = '/ChooseStudentPage';
 
   static const PreviewExamPaperPage = '/PreviewExamPaperPage';
+  static const HomeworkCompleteOverviewPage = '/HomeworkCompleteOverviewPage';
 
 }
