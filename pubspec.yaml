@@ -110,6 +110,7 @@ dependencies:
   syncfusion_flutter_sliders: ^20.4.51
   syncfusion_flutter_core: ^20.4.52
   table_calendar: ^3.0.9
+  grouped_list: ^5.1.2
 
 
 dev_dependencies:
