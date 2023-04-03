@@ -38,6 +38,7 @@ class GetBuilderIds {
   static const String getExampersList = "getExampersList";
   static const String getHistoryHomeworkList = "getHistoryHomeworkList";
   static const String updateCheckBox = "updateCheckBox";
+  static const String getExamper = "getExamper";
 
 
 

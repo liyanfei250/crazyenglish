@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
@@ -214,7 +216,7 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
                   ),
                   InkWell(
                     onTap: (){
-
+                      RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage);
                     },
                     child: Image.asset(R.imagesExamPaperBrowse,width: 51.w,height: 19.w,),
                   )
@@ -223,10 +225,21 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
               Container(margin:EdgeInsets.only(top: 14.w,bottom: 6.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
             ],
           )),
-          buildLineItem(R.imagesExamPaperName,"试卷名称：${exampaper.name}"),
-          buildLineItem(R.imagesExamPaperTiCount,"题目数量：85道"),
-          buildLineItem(R.imagesExamPaperTiType,"试题类型：听力、阅读、写作"),
-          buildLineItem(R.imagesExamPaperTime,"组卷时间：2023年03月21日"),
+          InkWell(
+            onTap: (){
+              RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildLineItem(R.imagesExamPaperName,"试卷名称：${exampaper.name}"),
+                buildLineItem(R.imagesExamPaperTiCount,"题目数量：85道"),
+                buildLineItem(R.imagesExamPaperTiType,"试题类型：听力、阅读、写作"),
+                buildLineItem(R.imagesExamPaperTime,"组卷时间：2023年03月21日"),
+              ],
+            ),
+          )
         ],
       ),
     );
