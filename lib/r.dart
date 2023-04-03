@@ -393,6 +393,18 @@ class R {
   static final String imagesRankingTwo = 'images/ranking_two.png';
   /// ![](http://127.0.0.1:11/images/reading_default.png)
   static final String imagesReadingDefault = 'images/reading_default.png';
+  /// ![](http://127.0.0.1:11/images/report_four.png)
+  static final String imagesReportFour = 'images/report_four.png';
+  /// ![](http://127.0.0.1:11/images/report_one.png)
+  static final String imagesReportOne = 'images/report_one.png';
+  /// ![](http://127.0.0.1:11/images/report_share_befor_date.png)
+  static final String imagesReportShareBeforDate = 'images/report_share_befor_date.png';
+  /// ![](http://127.0.0.1:11/images/report_share_ic.png)
+  static final String imagesReportShareIc = 'images/report_share_ic.png';
+  /// ![](http://127.0.0.1:11/images/report_three.png)
+  static final String imagesReportThree = 'images/report_three.png';
+  /// ![](http://127.0.0.1:11/images/report_two.png)
+  static final String imagesReportTwo = 'images/report_two.png';
   /// ![](http://127.0.0.1:11/images/result_answer_card_tips.png)
   static final String imagesResultAnswerCardTips = 'images/result_answer_card_tips.png';
   /// ![](http://127.0.0.1:11/images/result_favor.png)

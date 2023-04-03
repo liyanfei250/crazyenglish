@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../base/AppUtil.dart';
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../r.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/ShareScreen.dart';
-import '../../utils/permissions/permissions_util.dart';
+import '../../../base/AppUtil.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../r.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/ShareScreen.dart';
+import '../../../utils/permissions/permissions_util.dart';
 import 'student_ranking_logic.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'dart:typed_data';

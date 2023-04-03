@@ -6,9 +6,11 @@ import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../base/AppUtil.dart';
-import '../../r.dart';
-import '../../utils/colors.dart';
+import '../../../base/AppUtil.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
 import 'student_logic.dart';
 
 class StudentPage extends BasePage {
@@ -314,7 +316,9 @@ class _StudentPageState extends BasePageState<StudentPage>
         ),
       ),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          RouterUtil.toNamed(AppRoutes.LearningReportPage);
+        },
         child: Padding(
           padding:
               EdgeInsets.only(left: 7.w, right: 7.w, bottom: 5.w, top: 5.w),
