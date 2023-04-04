@@ -215,10 +215,13 @@ flutter:
     - images/player_practise_slide.png
     - images/torid_three_show.png
     - images/class_info_teacher_age.png
+    - images/class_report_first_bg.png
     - images/icon_close_round_black.png
     - images/icon_tab3_normal.png
+    - images/class_report_first.png
     - images/index_class_new.png
     - images/home_show_buy.png
+    - images/class_report_second_user.png
     - images/make2.jpg
     - images/icon_back.png
     - images/icon_intensive_listening_show_word_yes.png
@@ -234,6 +237,7 @@ flutter:
     - images/review_favor_words_icon.png
     - images/class_add_white.png
     - images/home_recommend_journals.png
+    - images/class_report_third.png
     - images/index_search.png
     - images/index_scan.png
     - images/result_time_tips.png
@@ -280,6 +284,7 @@ flutter:
     - images/student_info.png
     - images/index_icon_10.png
     - images/icon_intensive_listening_translate_no_clicked.png
+    - images/class_report_third_bg.png
     - images/icon_transmission_speed_10_clicked.png
     - images/index_msg.png
     - images/ranking_third.png
@@ -291,6 +296,7 @@ flutter:
     - images/collec_words_error.png
     - images/torid_two_show.png
     - images/login_logo_top.png
+    - images/class_report_first_user.png
     - images/result_answer_card_tips.png
     - images/test_play.png
     - images/item_play.png
@@ -314,6 +320,7 @@ flutter:
     - images/ranking_four.png
     - images/icon_player_pause_clicked.png
     - images/teacher_home_btn_pop.png
+    - images/class_report_gold_bg.png
     - images/splash_center_image.png
     - images/commen_no_date.png
     - images/index_day_word.png
@@ -341,6 +348,7 @@ flutter:
     - images/my_icon_coupon.png
     - images/icon_player_play_clicked.png
     - images/login_agree_selected.png
+    - images/class_report_bg.png
     - images/icon_intensive_listening_translate_no_not_enabled.png
     - images/icon_intensive_listening_loop_yes.png
     - images/icon_intensive_listening_show_word_no.png
@@ -375,6 +383,7 @@ flutter:
     - images/teacher_class_top.png
     - images/home_work_time.png
     - images/weekly_bg.png
+    - images/class_report_gold.png
     - images/result_favor.png
     - images/torid_one_hide.png
     - images/practise_next_question_enable.png
@@ -393,6 +402,7 @@ flutter:
     - images/iv_no_show.png
     - images/home_search_ic.png
     - images/torid_five_show.png
+    - images/class_report_second.png
     - images/exam_uncheck.png
     - images/my_icon_order.png
     - images/index_icon_5.png
@@ -431,6 +441,7 @@ flutter:
     - images/icon_transmission_speed_10.png
     - images/splash_bottom_logo.png
     - images/torid_two_hide.png
+    - images/class_report_second_bg.png
     - images/icon_transmission_speed_08_clicked.png
     - images/icon_transmission_speed_05.png
     - images/class_fun_4.png

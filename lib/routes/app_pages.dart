@@ -36,6 +36,7 @@ import '../pages/homework/choose_history_homework/choose_history_homework_view.d
 import '../pages/homework/choose_journal/choose_journal_view.dart';
 import '../pages/homework/choose_question/choose_question_view.dart';
 import '../pages/homework/choose_student/choose_student_view.dart';
+import '../pages/homework/class_practise_report/class_practise_report_view.dart';
 import '../pages/homework/homework_complete_overview/homework_complete_overview_view.dart';
 import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
@@ -124,6 +125,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.PreviewExamPaperPage , page:()=> PreviewExamPaperPage(),),
     GetPage(name: AppRoutes.HomeworkCompleteOverviewPage , page:()=> HomeworkCompleteOverviewPage(),),
     GetPage(name: AppRoutes.SchoolReportListPage , page:()=> SchoolReportListPage(),),
+    GetPage(name: AppRoutes.ClassPractiseReportPage , page:()=> ClassPractiseReportPage(),),
 
   ];
 }

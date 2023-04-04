@@ -125,13 +125,18 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                         width: 0.4.w,
                         height: 18.w,
                         color: AppColors.c_FFD2D5DC,),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(R.imagesIconPractiseReport,width: 20.w,height: 20.w,),
-                          Padding(padding: EdgeInsets.only(left:8.w)),
-                          Text("练习报告",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),),
-                        ],
+                      InkWell(
+                        onTap: (){
+                          RouterUtil.toNamed(AppRoutes.ClassPractiseReportPage);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(R.imagesIconPractiseReport,width: 20.w,height: 20.w,),
+                            Padding(padding: EdgeInsets.only(left:8.w)),
+                            Text("练习报告",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),),
+                          ],
+                        ),
                       )
                     ],
                   )
