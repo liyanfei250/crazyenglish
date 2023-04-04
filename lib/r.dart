@@ -75,14 +75,20 @@ class R {
   static final String imagesToridThreeShow = 'images/torid_three_show.png';
   /// ![](http://127.0.0.1:11/images/class_info_teacher_age.png)
   static final String imagesClassInfoTeacherAge = 'images/class_info_teacher_age.png';
+  /// ![](http://127.0.0.1:11/images/class_report_first_bg.png)
+  static final String imagesClassReportFirstBg = 'images/class_report_first_bg.png';
   /// ![](http://127.0.0.1:11/images/icon_close_round_black.png)
   static final String imagesIconCloseRoundBlack = 'images/icon_close_round_black.png';
   /// ![](http://127.0.0.1:11/images/icon_tab3_normal.png)
   static final String imagesIconTab3Normal = 'images/icon_tab3_normal.png';
+  /// ![](http://127.0.0.1:11/images/class_report_first.png)
+  static final String imagesClassReportFirst = 'images/class_report_first.png';
   /// ![](http://127.0.0.1:11/images/index_class_new.png)
   static final String imagesIndexClassNew = 'images/index_class_new.png';
   /// ![](http://127.0.0.1:11/images/home_show_buy.png)
   static final String imagesHomeShowBuy = 'images/home_show_buy.png';
+  /// ![](http://127.0.0.1:11/images/class_report_second_user.png)
+  static final String imagesClassReportSecondUser = 'images/class_report_second_user.png';
   /// ![](http://127.0.0.1:11/images/make2.jpg)
   static final String imagesMake2 = 'images/make2.jpg';
   /// ![](http://127.0.0.1:11/images/icon_back.png)
@@ -113,6 +119,8 @@ class R {
   static final String imagesClassAddWhite = 'images/class_add_white.png';
   /// ![](http://127.0.0.1:11/images/home_recommend_journals.png)
   static final String imagesHomeRecommendJournals = 'images/home_recommend_journals.png';
+  /// ![](http://127.0.0.1:11/images/class_report_third.png)
+  static final String imagesClassReportThird = 'images/class_report_third.png';
   /// ![](http://127.0.0.1:11/images/index_search.png)
   static final String imagesIndexSearch = 'images/index_search.png';
   /// ![](http://127.0.0.1:11/images/index_scan.png)
@@ -205,6 +213,8 @@ class R {
   static final String imagesIndexIcon10 = 'images/index_icon_10.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_no_clicked.png)
   static final String imagesIconIntensiveListeningTranslateNoClicked = 'images/icon_intensive_listening_translate_no_clicked.png';
+  /// ![](http://127.0.0.1:11/images/class_report_third_bg.png)
+  static final String imagesClassReportThirdBg = 'images/class_report_third_bg.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_10_clicked.png)
   static final String imagesIconTransmissionSpeed10Clicked = 'images/icon_transmission_speed_10_clicked.png';
   /// ![](http://127.0.0.1:11/images/index_msg.png)
@@ -227,6 +237,8 @@ class R {
   static final String imagesToridTwoShow = 'images/torid_two_show.png';
   /// ![](http://127.0.0.1:11/images/login_logo_top.png)
   static final String imagesLoginLogoTop = 'images/login_logo_top.png';
+  /// ![](http://127.0.0.1:11/images/class_report_first_user.png)
+  static final String imagesClassReportFirstUser = 'images/class_report_first_user.png';
   /// ![](http://127.0.0.1:11/images/result_answer_card_tips.png)
   static final String imagesResultAnswerCardTips = 'images/result_answer_card_tips.png';
   /// ![](http://127.0.0.1:11/images/test_play.png)
@@ -273,6 +285,8 @@ class R {
   static final String imagesIconPlayerPauseClicked = 'images/icon_player_pause_clicked.png';
   /// ![](http://127.0.0.1:11/images/teacher_home_btn_pop.png)
   static final String imagesTeacherHomeBtnPop = 'images/teacher_home_btn_pop.png';
+  /// ![](http://127.0.0.1:11/images/class_report_gold_bg.png)
+  static final String imagesClassReportGoldBg = 'images/class_report_gold_bg.png';
   /// ![](http://127.0.0.1:11/images/splash_center_image.png)
   static final String imagesSplashCenterImage = 'images/splash_center_image.png';
   /// ![](http://127.0.0.1:11/images/commen_no_date.png)
@@ -327,6 +341,8 @@ class R {
   static final String imagesIconPlayerPlayClicked = 'images/icon_player_play_clicked.png';
   /// ![](http://127.0.0.1:11/images/login_agree_selected.png)
   static final String imagesLoginAgreeSelected = 'images/login_agree_selected.png';
+  /// ![](http://127.0.0.1:11/images/class_report_bg.png)
+  static final String imagesClassReportBg = 'images/class_report_bg.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_no_not_enabled.png)
   static final String imagesIconIntensiveListeningTranslateNoNotEnabled = 'images/icon_intensive_listening_translate_no_not_enabled.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_loop_yes.png)
@@ -395,6 +411,8 @@ class R {
   static final String imagesHomeWorkTime = 'images/home_work_time.png';
   /// ![](http://127.0.0.1:11/images/weekly_bg.png)
   static final String imagesWeeklyBg = 'images/weekly_bg.png';
+  /// ![](http://127.0.0.1:11/images/class_report_gold.png)
+  static final String imagesClassReportGold = 'images/class_report_gold.png';
   /// ![](http://127.0.0.1:11/images/result_favor.png)
   static final String imagesResultFavor = 'images/result_favor.png';
   /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
@@ -431,6 +449,8 @@ class R {
   static final String imagesHomeSearchIc = 'images/home_search_ic.png';
   /// ![](http://127.0.0.1:11/images/torid_five_show.png)
   static final String imagesToridFiveShow = 'images/torid_five_show.png';
+  /// ![](http://127.0.0.1:11/images/class_report_second.png)
+  static final String imagesClassReportSecond = 'images/class_report_second.png';
   /// ![](http://127.0.0.1:11/images/exam_uncheck.png)
   static final String imagesExamUncheck = 'images/exam_uncheck.png';
   /// ![](http://127.0.0.1:11/images/my_icon_order.png)
@@ -507,6 +527,8 @@ class R {
   static final String imagesSplashBottomLogo = 'images/splash_bottom_logo.png';
   /// ![](http://127.0.0.1:11/images/torid_two_hide.png)
   static final String imagesToridTwoHide = 'images/torid_two_hide.png';
+  /// ![](http://127.0.0.1:11/images/class_report_second_bg.png)
+  static final String imagesClassReportSecondBg = 'images/class_report_second_bg.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_08_clicked.png)
   static final String imagesIconTransmissionSpeed08Clicked = 'images/icon_transmission_speed_08_clicked.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05.png)
