@@ -28,6 +28,9 @@ class _MinePageState extends BasePageState<MinePage> {
       case 4:
         RouterUtil.toNamed(AppRoutes.SettingPage);
         break;
+      case 6:
+        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage);
+        break;
       case 5:
         var role = '';
         if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
@@ -179,6 +182,14 @@ class _MinePageState extends BasePageState<MinePage> {
                 height: 30.w,
               ),
               5),
+          buildItem(
+              "题目反馈",
+              Image(
+                image: AssetImage("images/my_icon_setting.png"),
+                width: 30.w,
+                height: 30.w,
+              ),
+              6),
         ],
       ),
     );

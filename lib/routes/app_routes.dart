@@ -48,6 +48,7 @@ abstract class AppRoutes{
   static const TEACHER_Index = '/TEACHER_Index';
   static const Teacher_Class_Create = '/Teacher_Class_Create';
   static const HomeSearchPage = '/HomeSearchPage';
+  static const QuestionFeedbackPage = '/QuestionFeedbackPage';
 
   static const AssignHomeworkPage = '/AssignHomeworkPage';
   static const ChooseExamPaperPage = '/ChooseExamPaperPage';
