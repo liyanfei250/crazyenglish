@@ -1,9 +1,11 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
 import 'homework_complete_overview_logic.dart';
 
@@ -106,13 +108,18 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(R.imagesIconSchoolReport,width: 20.w,height: 20.w,),
-                          Padding(padding: EdgeInsets.only(left:8.w)),
-                          Text("成绩单",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),),
-                        ],
+                      InkWell(
+                        onTap:(){
+                          RouterUtil.toNamed(AppRoutes.SchoolReportListPage);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(R.imagesIconSchoolReport,width: 20.w,height: 20.w,),
+                            Padding(padding: EdgeInsets.only(left:8.w)),
+                            Text("成绩单",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),),
+                          ],
+                        ),
                       ),
                       Container(
                         width: 0.4.w,

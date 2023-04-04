@@ -357,6 +357,8 @@ class R {
   static final String imagesIconPlayerBeforPlay = 'images/icon_player_befor_play.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_20_clicked.png)
   static final String imagesIconTransmissionSpeed20Clicked = 'images/icon_transmission_speed_20_clicked.png';
+  /// ![](http://127.0.0.1:11/images/school_report_right_arrow.png)
+  static final String imagesSchoolReportRightArrow = 'images/school_report_right_arrow.png';
   /// ![](http://127.0.0.1:11/images/practice_black_bg.png)
   static final String imagesPracticeBlackBg = 'images/practice_black_bg.png';
   /// ![](http://127.0.0.1:11/images/weekly_fabulous.png)
