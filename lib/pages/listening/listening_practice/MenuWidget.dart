@@ -94,7 +94,7 @@ class _MenuWidgetState extends State<MenuWidget>
                   ),
                 ),
                 Expanded(child: Text('')),
-                GestureDetector(
+                /*GestureDetector(
                   onTap: () {
                     Util.toast("lll");
                   },
@@ -104,7 +104,7 @@ class _MenuWidgetState extends State<MenuWidget>
                     height: 18.w,
                     color: Color(0xffd2d5dc),
                   ),
-                ),
+                ),*/
                 SizedBox(
                   width: 4.w,
                 )
