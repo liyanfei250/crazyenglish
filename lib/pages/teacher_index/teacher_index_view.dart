@@ -47,7 +47,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                 backgroundColor: Colors.transparent,
               ),
               Container(
-                margin: EdgeInsets.only(left: 14.w,right: 14.w),
+                margin: EdgeInsets.only(left: 14.w, right: 14.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,8 +58,9 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         itemCount: functionTxt.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 5),
                         itemBuilder: (_, int position) {
                           String e = functionTxt[position];
                           return _buildFuncAreaItem(e);
@@ -68,49 +69,59 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                     _buildClassArea(),
                   ],
                 ),
-              )],
-          ),
-        )) ;
-  }
-  Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.only( top: 15.w),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ClipOval(
-          child: Image.asset(
-            R.imagesShopImageLogoTest,
-            width: 32.w,
-            height: 32.w,
-          ),
-        ),
-        Container(
-          width: 291.w,
-          height: 28.w,
-          padding: EdgeInsets.only(left: 11.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(16.w)),
-              color: Colors.white),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                R.imagesHomeSearchIc,
-                fit: BoxFit.cover,
-                width: 16.w,
-                height: 16.w,
-              ),
-              Padding(padding: EdgeInsets.only(left: 9.w)),
-              Text(
-                "英语周报教师端",
-                style: TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
               )
             ],
           ),
+        ));
+  }
+
+  Widget _buildSearchBar() => Container(
+        margin: EdgeInsets.only(top: 15.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipOval(
+              child: Image.asset(
+                R.imagesShopImageLogoTest,
+                width: 32.w,
+                height: 32.w,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                    arguments: {'isteacher': true});
+              },
+              child: Container(
+                width: 291.w,
+                height: 28.w,
+                padding: EdgeInsets.only(left: 11.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16.w)),
+                    color: Colors.white),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      R.imagesHomeSearchIc,
+                      fit: BoxFit.cover,
+                      width: 16.w,
+                      height: 16.w,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 9.w)),
+                    Text(
+                      "英语周报教师端",
+                      style:
+                          TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
-      ],
-    ),
-  );
+      );
+
   Widget get adsBanner {
     return Container(
       width: double.infinity,
@@ -172,10 +183,12 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               RouterUtil.toNamed(AppRoutes.WeeklyList);
               break;
             case "历史作业":
-              RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"isAssignHomework":false});
+              RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+                  arguments: {"isAssignHomework": false});
               break;
             case "试卷库":
-              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,arguments: {"isAssignHomework":false});
+              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
+                  arguments: {"isAssignHomework": false});
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ShoppingListPage);
@@ -249,18 +262,20 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               ),
               child: Row(
                 children: [
-                  _buildItem((){
-                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"needNotify":true});
-                  },context, R.imagesHomeWorkTips, '待提醒', '(10)'),
+                  _buildItem(() {
+                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+                        arguments: {"needNotify": true});
+                  }, context, R.imagesHomeWorkTips, '待提醒', '(10)'),
                   Container(
                     width: 1,
                     margin: EdgeInsets.only(top: 18.w, bottom: 18.w),
                     height: double.infinity,
                     color: Colors.grey.withOpacity(0.5),
                   ),
-                  _buildItem((){
-                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,arguments: {"needCorrected":true});
-                  },context, R.imagesHomeWorkChange, '待批改', '(10)'),
+                  _buildItem(() {
+                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+                        arguments: {"needCorrected": true});
+                  }, context, R.imagesHomeWorkChange, '待批改', '(10)'),
                 ],
               ),
             ),
@@ -378,11 +393,11 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     return items;
   }
 
-  Widget _buildItem(GestureTapCallback callback,
-      BuildContext context, String imagePath, String text, String text2) {
+  Widget _buildItem(GestureTapCallback callback, BuildContext context,
+      String imagePath, String text, String text2) {
     return Expanded(
       child: InkWell(
-        onTap: (){
+        onTap: () {
           callback.call();
         },
         child: Row(

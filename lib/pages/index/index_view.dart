@@ -347,7 +347,8 @@ class _IndexPageState extends BasePageState<IndexPage>
                   Padding(padding: EdgeInsets.only(left: 9.w)),
                   GestureDetector(
                       onTap: () {
-                        RouterUtil.toNamed(AppRoutes.HomeSearchPage);
+                        RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                            arguments: {'isteacher': true});
                       },
                       child: Text(
                         "搜词/翻译",
@@ -415,9 +416,7 @@ class _IndexPageState extends BasePageState<IndexPage>
             return Container(
               margin: EdgeInsets.only(
                   left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
-              padding: EdgeInsets.only(left: 4.w, right: 4.w),
               width: 288.w,
-              height: 98.w,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(13),
@@ -432,20 +431,26 @@ class _IndexPageState extends BasePageState<IndexPage>
               ),
               child: Row(
                 children: [
+                  SizedBox(
+                    width: 14.w,
+                  ),
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(13)),
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
                     child: Image.asset(
-                      R.imagesHomeShowBuy,
+                      R.imagesSearchPlaceIc,
                       width: 52.w,
                       height: 74.w,
                     ),
+                  ),
+                  SizedBox(
+                    width: 14.w,
                   ),
                   Expanded(
                     child: Container(
                         height: 74.w,
                         margin: EdgeInsets.only(left: 4.w),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
