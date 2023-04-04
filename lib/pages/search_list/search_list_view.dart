@@ -109,7 +109,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
       },
       child: Container(
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
-        padding: EdgeInsets.only(left: 16.w),
+        padding: EdgeInsets.only(left: 16.w,top: 14.w,bottom: 14.w),
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -129,13 +129,14 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
               R.imagesStudentHead,
               width: 80.w,
               height: 100.w,
+              fit: BoxFit.fill,
             ),
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Container(
-              width: 220.w,
               height: 100.w,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildItemClassStudent('姓名：', '张慧敏'),
                   buildItemClassStudent('班级：', '初一（3）班'),
@@ -160,7 +161,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
         Text(
           first,
           style: TextStyle(
-              fontSize: 11.sp,
+              fontSize: 8.sp,
               fontWeight: FontWeight.w500,
               color: Color(0xff353e4d)),
         ),
@@ -169,7 +170,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: 9.sp,
               fontWeight: FontWeight.w500,
               color: Color(0xff353e4d)),
         ),
