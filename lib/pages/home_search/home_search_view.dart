@@ -1,5 +1,6 @@
 import 'package:crazyenglish/pages/search_list/search_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -59,16 +60,20 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: Colors.transparent,
+        ),
         child: Scaffold(
             body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        searchView(),
-        buildBg(),
-        Expanded(child: _buildTableBarView())
-      ],
-    )));
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            searchView(statusBarHeight),
+            buildBg(),
+            Expanded(child: _buildTableBarView())
+          ],
+        )));
   }
 
   Widget _buildTableBarView() => TabBarView(
@@ -100,9 +105,9 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
         ),
       );
 
-  Widget searchView() {
+  Widget searchView(padding) {
     return Container(
-      padding: EdgeInsets.only(bottom: 16.w),
+      padding: EdgeInsets.only(top: padding, bottom: 16.w),
       color: Colors.white,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
