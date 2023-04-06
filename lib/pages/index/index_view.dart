@@ -72,14 +72,6 @@ class _IndexPageState extends BasePageState<IndexPage>
                     Padding(padding: EdgeInsets.only(top: 9.w)),
                     adsBanner,
                     Padding(padding: EdgeInsets.only(top: 13.w)),
-                    // GridView.builder(
-                    //     shrinkWrap:true,
-                    //     itemCount: functionTxt.length,
-                    //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
-                    //     itemBuilder: (_,int position){
-                    //       String e = functionTxt[position];
-                    //       return _buildFuncAreaItem(e);
-                    //     }),
                     Container(
                       height: 80.w,
                       margin: EdgeInsets.symmetric(horizontal: 14.w),
@@ -205,19 +197,23 @@ class _IndexPageState extends BasePageState<IndexPage>
               RouterUtil.toNamed(AppRoutes.WeeklyList);
               break;
             case "写作训练":
-              RouterUtil.toNamed(AppRoutes.WritingPage);
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+                  arguments: {'type': 3});
               break;
             case "综合口语":
               RouterUtil.toNamed(AppRoutes.TextToVoice);
               break;
             case "阅读理解":
-              RouterUtil.toNamed(AppRoutes.INITIALNew);
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+                  arguments: {'type': 2});
               break;
             case "综合听力":
-              RouterUtil.toNamed(AppRoutes.ListeningPracticePage);
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+                  arguments: {'type': 1});
               break;
             case "语言运用":
-              RouterUtil.toNamed(AppRoutes.LOGIN);
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+                  arguments: {'type': 4});
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ToShoppingPage);
@@ -327,37 +323,38 @@ class _IndexPageState extends BasePageState<IndexPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: Container(
-              width: double.infinity,
-              height: 28.w,
-              margin: EdgeInsets.only(right: 26.w),
-              padding: EdgeInsets.only(left: 11.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(14.w)),
-                  color: AppColors.c_FFFFFFFF),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    R.imagesIndexSearch,
-                    fit: BoxFit.cover,
-                    width: 16.w,
-                    height: 16.w,
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 9.w)),
-                  GestureDetector(
-                      onTap: () {
-                        RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                            arguments: {'isteacher': true});
-                      },
-                      child: Text(
-                        "搜词/翻译",
-                        style: TextStyle(
-                            fontSize: 16.sp, color: AppColors.TEXT_GRAY_COLOR),
-                      ))
-                ],
-              ),
-            )),
+                child: GestureDetector(
+                    onTap: () {
+                      RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                          arguments: {'isteacher': true});
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 28.w,
+                      margin: EdgeInsets.only(right: 26.w),
+                      padding: EdgeInsets.only(left: 11.w),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(14.w)),
+                          color: AppColors.c_FFFFFFFF),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            R.imagesIndexSearch,
+                            fit: BoxFit.cover,
+                            width: 16.w,
+                            height: 16.w,
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 9.w)),
+                          Text(
+                            "搜词/翻译",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: AppColors.TEXT_GRAY_COLOR),
+                          )
+                        ],
+                      ),
+                    ))),
             GestureDetector(
               onTap: () {
                 RouterUtil.toNamed(AppRoutes.QRViewPage);

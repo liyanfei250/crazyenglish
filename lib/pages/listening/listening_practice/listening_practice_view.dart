@@ -9,7 +9,13 @@ import '../../../utils/colors.dart';
 import 'listening_practice_logic.dart';
 
 class ListeningPracticePage extends BasePage {
-  const ListeningPracticePage({Key? key}) : super(key: key);
+  var type;
+
+  ListeningPracticePage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      type = Get.arguments["type"];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToListeningPracticePageState();
@@ -38,10 +44,25 @@ class _ToListeningPracticePageState
     {"title": "04.听力填空", "type": 3},
   ];
 
+  late var textTitle ;
+
   @override
   Widget build(BuildContext context) {
+
+    if(widget.type ==1){
+      textTitle = "听力·按顺序练习";
+    }
+    if(widget.type ==2){
+      textTitle = "阅读·按顺序练习";
+    }
+    if(widget.type ==3){
+      textTitle = "写作·按顺序练习";
+    }
+    if(widget.type ==4){
+      textTitle = "词语运用·按顺序练习";
+    }
     return Scaffold(
-      appBar: buildNormalAppBar("听力·按顺序练习"),
+      appBar: buildNormalAppBar(textTitle),
       backgroundColor: AppColors.theme_bg,
       body: Container(
         child: Column(
