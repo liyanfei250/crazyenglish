@@ -34,6 +34,7 @@ abstract class AppRoutes{
   static const DraggableDemo = '/DraggableDemo';
   static const ErrorNotePage = '/ErrorNotePage';
   static const PractiseHistoryPage = '/PractiseHistoryPage';
+  static const HomeworkHistoryPage = '/HomeworkHistoryPage';
   static const ErrorNoteCollectPage = '/ErrorNoteCollectPage';
   static const QRViewPage = '/QRViewPage';
   static const QRViewPageNextClass = '/QRViewPageNextClass';

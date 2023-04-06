@@ -7,7 +7,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../r.dart';
+import '../r.dart';
 
 /// create by 张风捷特烈 on 2020/10/10
 /// contact me by email 1981462002@qq.com

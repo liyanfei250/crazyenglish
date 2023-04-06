@@ -45,21 +45,6 @@ class _ReviewPageState extends State<ReviewPage> {
                     fontWeight: FontWeight.w700),
               ),
               backgroundColor: Colors.transparent,
-              actions: [
-                InkWell(
-                  onTap: () {
-                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 18.w),
-                    child: Image.asset(
-                      R.imagesReviewPractiseHistory,
-                      width: 93.w,
-                      height: 30.w,
-                    ),
-                  ),
-                )
-              ],
             ),
             Container(
               margin: EdgeInsets.only(left: 18.w),
@@ -162,7 +147,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 ],
               ),
             ),
-            _buildFavor()
+            _buildFavor(),
           ],
         ),
       ),
@@ -216,13 +201,55 @@ class _ReviewPageState extends State<ReviewPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildFavorItem(0),
+                  _buildItem((){
+                    RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
+                        arguments: {'type', 0});
+                  },title: "收藏题目19个",subTitle: "复习题目7个",icon: R.imagesReviewFavorQuestionIcon),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 18.w, top: 19.w, bottom: 17.w),
+            child: Text(
+              "练习记录",
+              style: TextStyle(
+                  color: AppColors.c_FF353E4D,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.sp),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.c_FFFDD9AF.withOpacity(0.1), // 阴影的颜色
+                  offset: Offset(0.w, 1.w), // 阴影与容器的距离
+                  blurRadius: 2.w, // 高斯的标准偏差与盒子的形状卷积。
+                  spreadRadius: 2.w,
+                ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(10.w)),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(R.imagesReviewFavorQuestionBg),
+                      fit: BoxFit.cover)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildItem((){
+                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage,);
+                  },title: "历史作业",subTitle: "历史作业17套",icon: R.imagesReviewHistoryHomework),
                   Divider(
                     color: AppColors.c_FFD2D5DC,
                     indent: 15.w,
                     endIndent: 15.w,
                   ),
-                  _buildFavorItem(1),
+                  _buildItem((){
+                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage,);
+                  },title: "练习记录",subTitle: "练习记录27条",icon: R.imagesReviewPractiseRecord),
                 ],
               ),
             ),
@@ -232,32 +259,14 @@ class _ReviewPageState extends State<ReviewPage> {
     ));
   }
 
-  Widget _buildFavorItem(int type) {
-    String icon = R.imagesReviewFavorQuestionIcon;
-    String title = "收藏题目19个";
-    String subTitle = "复习题目7个";
 
-    if (type == 0) {
-      icon = R.imagesReviewFavorQuestionIcon;
-      title = "收藏题目19个";
-      subTitle = "复习题目7个";
-    } else {
-      icon = R.imagesReviewFavorWordsIcon;
-      title = "收藏单词19个";
-      subTitle = "复习单词7个";
-    }
+  Widget _buildItem(GestureTapCallback onTap,{String? icon, String? title,String? subTitle}){
     return Container(
       height: 78.w,
       padding: EdgeInsets.only(left: 20.w, right: 25.w),
       child: InkWell(
         onTap: () {
-          if (type == 0) {
-            RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
-                arguments: {'type', 0});
-          } else {
-            RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
-                arguments: {'type', 1});
-          }
+          onTap.call();
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,7 +276,7 @@ class _ReviewPageState extends State<ReviewPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  icon,
+                  icon!,
                   width: 41.w,
                   height: 37.w,
                 ),
@@ -277,14 +286,14 @@ class _ReviewPageState extends State<ReviewPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      title,
+                      title!,
                       style: TextStyle(
                           color: AppColors.c_FF353E4D,
                           fontWeight: FontWeight.w500,
                           fontSize: 16.sp),
                     ),
                     Text(
-                      subTitle,
+                      subTitle!,
                       style: TextStyle(
                           color: AppColors.c_FF898A93, fontSize: 12.sp),
                     )
@@ -302,6 +311,8 @@ class _ReviewPageState extends State<ReviewPage> {
       ),
     );
   }
+
+
 
   @override
   void dispose() {
