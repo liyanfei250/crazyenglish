@@ -5,7 +5,6 @@ import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
-import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
 import 'package:crazyenglish/pages/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
@@ -39,6 +38,8 @@ import '../pages/homework/class_practise_report/class_practise_report_view.dart'
 import '../pages/homework/homework_complete_overview/homework_complete_overview_view.dart';
 import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
+import '../pages/jingang/listening_practice/listening_practice_view.dart';
+import '../pages/jingang/result_overview/result_overview_view.dart';
 import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/practise/result/result_view.dart';
@@ -88,6 +89,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
     GetPage(name: AppRoutes.ResultPage, page:()=>ResultPage(),),
+    GetPage(name: AppRoutes.ResultOverviewPage, page:()=>ResultOverviewPage(),),
     GetPage(name: AppRoutes.SetPsdPage, page:()=>SetPsdPage(),),
     GetPage(name: AppRoutes.AuthCodePage, page:()=>AuthCodePage(),),
     GetPage(name: AppRoutes.RolePage, page:()=>RolePage(),),
