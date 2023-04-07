@@ -74,6 +74,7 @@ class _StudentPageState extends BasePageState<StudentPage>
           InkWell(
             onTap: () {
               // 点击事件处理逻辑
+              RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),

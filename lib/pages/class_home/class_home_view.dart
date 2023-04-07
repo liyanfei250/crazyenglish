@@ -78,22 +78,27 @@ class _ClassHomePageState extends State<ClassHomePage> {
                   return _buildFuncAreaItem(e);
                 }),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "学生列表",
-                  style: TextStyle(
-                      fontSize: 18.sp, color: AppColors.TEXT_BLACK_COLOR),
-                ),
-                Image.asset(
-                  R.imagesHomeNextIcBlack,
-                  width: 9.w,
-                  height: 9.w,
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              RouterUtil.toNamed(AppRoutes.StudentListPage);
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "学生列表",
+                    style: TextStyle(
+                        fontSize: 18.sp, color: AppColors.TEXT_BLACK_COLOR),
+                  ),
+                  Image.asset(
+                    R.imagesHomeNextIcBlack,
+                    width: 9.w,
+                    height: 9.w,
+                  )
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -289,7 +294,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
               break;
             case "班级":
               RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-                  arguments: {'isShowAdd':0});
+                  arguments: {'isShowAdd': 0});
               break;
           }
         },

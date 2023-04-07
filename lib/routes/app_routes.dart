@@ -41,6 +41,7 @@ abstract class AppRoutes{
   static const QRViewPageNextAudio = '/QRViewPageNextAudio';
   static const StudentRankingPage = '/StudentRankingPage';
   static const LearningReportPage = '/LearningReportPage';
+  static const StudentListPage = '/StudentListPage';
 
   static const TEACHER_HOME = '/teacher_home';
   static const TEACHER_WORK = '/teacher_work';

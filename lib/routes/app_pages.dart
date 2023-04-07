@@ -9,6 +9,7 @@ import 'package:crazyenglish/pages/home_teacher_page.dart';
 import 'package:crazyenglish/pages/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
+import 'package:crazyenglish/pages/student_list/student_list_view.dart';
 import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
 import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
@@ -104,6 +105,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.QRViewPageNextAudio, page:()=>Scan_audio_messagePage(),),
     GetPage(name: AppRoutes.StudentRankingPage, page:()=>Student_rankingPage(),),
     GetPage(name: AppRoutes.LearningReportPage, page:()=>LearningReportPage(),),
+    GetPage(name: AppRoutes.StudentListPage, page:()=>StudentListPage(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
     GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),
