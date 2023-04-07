@@ -41,7 +41,6 @@ import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
 import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
-import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/practise/result/result_view.dart';
 import '../pages/reviews/homework_history/homework_history_view.dart';
 import '../pages/reviews/practise_history/practise_history_view.dart';
@@ -78,7 +77,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
     GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
-    GetPage(name: AppRoutes.IntensiveListeningPage, page:()=>IntensiveListeningPage(),),
     GetPage(name: AppRoutes.ToShoppingPage, page:()=>ToShoppingPage(),),
     GetPage(name: AppRoutes.ShoppingListPage, page:()=>ShoppingListPage(),),
     GetPage(name: AppRoutes.ShopCarPage, page:()=>ShopCarPage(),),
