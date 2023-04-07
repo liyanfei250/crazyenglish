@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
@@ -78,7 +79,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           child: Column(
             children: [
               buildTransparentAppBar("${widget.commitResponse!.directory}"),
-              buildTopIndicator(),
+              Util.buildTopIndicator(),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
                 decoration: BoxDecoration(
@@ -112,9 +113,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              buildAnswerState(1),
-                              buildAnswerState(2),
-                              buildAnswerState(3),
+                              Util.buildAnswerState(1),
+                              Util.buildAnswerState(2),
+                              Util.buildAnswerState(3),
                             ],
                           )
                         ],
@@ -135,167 +136,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
         ),
       ),);
-  }
-
-  Widget buildAnswerState(int state){
-    String text = "未答";
-    BoxDecoration decoration;
-    if ( state == 1 ) { // 未答
-      text = "未答";
-      decoration = BoxDecoration(
-          color: AppColors.c_FFF5F7FA,
-          borderRadius: BorderRadius.all(Radius.circular(22.w)),
-          border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
-      );
-    } else if(state == 2){   // 答对
-      text = "答对";
-      decoration = BoxDecoration(
-        color: AppColors.c_FF62C5A2,
-        borderRadius: BorderRadius.all(Radius.circular(22.w)),
-      );
-    } else {  // 答错
-      text = "答错";
-      decoration = BoxDecoration(
-        color: AppColors.c_FFEC6560,
-        borderRadius: BorderRadius.all(Radius.circular(22.w)),
-      );
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(padding: EdgeInsets.only(left: 13.w)),
-        Container(
-          width: 10.w,
-          height: 10.w,
-          decoration: decoration,
-        ),
-        Padding(padding: EdgeInsets.only(left: 3.w)),
-        Text(text,style: TextStyle(fontWeight: FontWeight.w500,color: AppColors.c_FF878DA6,fontSize: 12.sp),)
-      ],
-    );
-  }
-
-  Widget buildTopIndicator(){
-    final customWidth01 =
-    CustomSliderWidths(trackWidth: 6, progressBarWidth: 20, shadowWidth: 20);
-    final customColors01 = CustomSliderColors(
-        dotColor: Colors.white.withOpacity(0.8),
-        trackColor: HexColor('#FFB648').withOpacity(0.6),
-        progressBarColors: [
-          AppColors.c_FFFFB648,
-          AppColors.c_FFFFB648,
-        ],
-        shadowColor: HexColor('#FFD7E2'),
-        shadowMaxOpacity: 0.08);
-
-    final info = InfoProperties(
-        mainLabelStyle: TextStyle(
-            color: Colors.white, fontSize: 60, fontWeight: FontWeight.w100));
-    return Container(
-      width: double.infinity,
-      height: 224.w,
-      margin: EdgeInsets.only(left: 18.w,right: 18.w),
-      decoration: BoxDecoration(
-        color: AppColors.c_FFFFFFFF,
-        boxShadow:[
-          BoxShadow(
-            color: AppColors.c_FFD0C5B4,		// 阴影的颜色
-            offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-            blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
-            spreadRadius: 1.w,
-          ),
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(10.w)),
-      ),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            width:193.w,
-            height: 193.w,
-            margin: EdgeInsets.only(top: 30.w),
-            child: SleekCircularSlider(
-              min: 0,
-              max: 100,
-              initialValue: 60,
-              appearance: CircularSliderAppearance(
-                  customWidths: customWidth01,
-                  customColors: customColors01,
-                  infoProperties: info,
-                  startAngle: 180,
-                  angleRange: 180,
-                  size: 350.0.w),
-              onChange: (double value) {
-                // callback providing a value while its being changed (with a pan gesture)
-              },
-              onChangeStart: (double startValue) {
-                // callback providing a starting value (when a pan gesture starts)
-              },
-              onChangeEnd: (double endValue) {
-                // callback providing an ending value (when a pan gesture ends)
-              },
-              innerWidget: (double value) {
-                //This the widget that will show current value
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(padding: EdgeInsets.only(top: 31.w)),
-                    Text("正确率",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF898A93),),
-                    Text("6",style: TextStyle(fontSize: 40.w,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
-                    Text("/10题",style: TextStyle(fontSize: 12.w,fontWeight: FontWeight.w500,color: AppColors.c_FF898A93),),
-                  ],
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 13.w,right: 13.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 0.2.w,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: 150.w),
-                  color: AppColors.c_FFD2D5DC,
-                ),
-                Padding(padding: EdgeInsets.only(top: 14.w)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(R.imagesResultTimeTips,width: 12.w,height: 12.w,),
-                        Padding(padding: EdgeInsets.only(left: 7.w)),
-                        Text("答题用时：",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
-                      ],
-                    ),
-                    Text("08:41",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
-                  ],
-                ),
-                Padding(padding: EdgeInsets.only(top: 9.w)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(R.imagesResultVectorTips,width: 12.w,height: 12.w,),
-                        Padding(padding: EdgeInsets.only(left: 7.w)),
-                        Text("习题类型：",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
-                      ],
-                    ),
-                    Text("Module1 Unit3 听力",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
   }
 
   Widget _buildTabBar() => TabBar(

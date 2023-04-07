@@ -208,7 +208,6 @@ class _Reading_detailPageState extends BasePageState<Reading_detailPage> with Wi
               margin: EdgeInsets.only(left:17.w,right: 22.w),
               child: InkWell(
                 onTap: (){
-                  RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 },
                 child: Image.asset(R.imagesArticleCollectDefault),
               ),

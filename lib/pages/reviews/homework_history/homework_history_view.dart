@@ -1,27 +1,28 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/widgets/MyDecoration.dart';
-import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../../../r.dart';
-import '../../../widgets/LeftLineWidget.dart';
-import 'practise_history_logic.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'utils.dart';
+import '../../../r.dart';
+import '../../../utils/colors.dart';
+import '../../../widgets/LeftLineWidget.dart';
+import '../../../widgets/MyDecoration.dart';
+import '../practise_history/utils.dart';
+import 'homework_history_logic.dart';
 
-class Practise_historyPage extends BasePage {
-  const Practise_historyPage({Key? key}) : super(key: key);
+class HomeworkHistoryPage extends BasePage {
+  const HomeworkHistoryPage({Key? key}) : super(key: key);
+
   @override
-  BasePageState<BasePage> getState() => _Practise_historyPageState();
+  BasePageState<HomeworkHistoryPage> getState() => _HomeworkHistoryPageState();
 }
 
-class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
-  final logic = Get.put(Practise_historyLogic());
-  final state = Get.find<Practise_historyLogic>().state;
+class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
+  final logic = Get.put(HomeworkHistoryLogic());
+  final state = Get.find<HomeworkHistoryLogic>().state;
+
 
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -90,7 +91,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNormalAppBar("练习记录"),
+      appBar: buildNormalAppBar("历史作业"),
       backgroundColor: const Color(0xfff8f9fb),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,14 +133,14 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                   }
               ),
               headerStyle: HeaderStyle(
-                  formatButtonVisible:false,
-                  titleCentered:true,
-                  leftChevronMargin: EdgeInsets.only(left: 0),
-                  leftChevronPadding: EdgeInsets.only(left: 8.w),
-                  leftChevronIcon: Image.asset(R.imagesHistoryPreMonth,width: 12.w,height: 12.w,),
-                  rightChevronIcon: Image.asset(R.imagesHistoryNextMonth,width: 12.w,height: 12.w,),
-                  rightChevronMargin: EdgeInsets.only(right: 0),
-                  rightChevronPadding: EdgeInsets.only(right: 8.w),
+                formatButtonVisible:false,
+                titleCentered:true,
+                leftChevronMargin: EdgeInsets.only(left: 0),
+                leftChevronPadding: EdgeInsets.only(left: 8.w),
+                leftChevronIcon: Image.asset(R.imagesHistoryPreMonth,width: 12.w,height: 12.w,),
+                rightChevronIcon: Image.asset(R.imagesHistoryNextMonth,width: 12.w,height: 12.w,),
+                rightChevronMargin: EdgeInsets.only(right: 0),
+                rightChevronPadding: EdgeInsets.only(right: 8.w),
               ),
               calendarStyle: CalendarStyle(
                 markersMaxCount:1,
@@ -192,27 +193,27 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
           ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
               builder: (context,value,_){
-            return Visibility(
-                visible: value.length > 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 24.w,
-                      child: LeftLineWidget(
-                        showBottom: true,
-                        showTop: false,
-                        isLight: false,
-                      ),
-                    ),
-                    Text("${_selectedDay?.year}年${_selectedDay?.month}月${_selectedDay?.day}日",
-                      softWrap: true,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Color(0xff151619),fontSize: 14.w,fontWeight: FontWeight.w500),
-                    )
-                  ],));
-          }),
+                return Visibility(
+                    visible: value.length > 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 24.w,
+                          child: LeftLineWidget(
+                            showBottom: true,
+                            showTop: false,
+                            isLight: false,
+                          ),
+                        ),
+                        Text("${_selectedDay?.year}年${_selectedDay?.month}月${_selectedDay?.day}日",
+                          softWrap: true,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Color(0xff151619),fontSize: 14.w,fontWeight: FontWeight.w500),
+                        )
+                      ],));
+              }),
           Container(
             decoration: MyDecoration(),
             margin: EdgeInsets.only(left: 24),
@@ -236,51 +237,51 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                     shrinkWrap: true,
                     children: value.map((element) {
                       return Container(
-                        height: 83.w,
-                        padding: EdgeInsets.only(left: 28.2,right: 24.w),
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
-                                    Padding(padding: EdgeInsets.only(top: 11.w)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          width: 48.w,
-                                          height: 17.w,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(right: 13.w),
-                                          decoration: BoxDecoration(
-                                            color: Color(0xfffff7ed),
-                                            borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                          height: 83.w,
+                          padding: EdgeInsets.only(left: 28.2,right: 24.w),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
+                                      Padding(padding: EdgeInsets.only(top: 11.w)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: 48.w,
+                                            height: 17.w,
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(right: 13.w),
+                                            decoration: BoxDecoration(
+                                              color: Color(0xfffff7ed),
+                                              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                                            ),
+                                            child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
                                           ),
-                                          child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
-                                        ),
-                                        Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
-                              ],
-                            ),),
-                            Visibility(
-                                visible: true,
-                                child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
+                                          Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
+                                ],
+                              ),),
+                              Visibility(
+                                  visible: true,
+                                  child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
 
-                          ],
-                        )
+                            ],
+                          )
                       );
                     }).toList(),
                   ),
@@ -296,7 +297,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   @override
   void dispose() {
     _selectedEvents.dispose();
-    Get.delete<Practise_historyLogic>();
+    Get.delete<HomeworkHistoryLogic>();
     super.dispose();
   }
 

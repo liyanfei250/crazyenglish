@@ -1,11 +1,13 @@
-import 'package:crazyenglish/pages/listening/listening_practice/MenuWidget.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import 'MenuWidget.dart';
 import 'listening_practice_logic.dart';
 
 class ListeningPracticePage extends BasePage {
@@ -18,10 +20,10 @@ class ListeningPracticePage extends BasePage {
   }
 
   @override
-  BasePageState<BasePage> getState() => _ToListeningPracticePageState();
+  BasePageState<BasePage> getState() => ToListeningPracticePageState();
 }
 
-class _ToListeningPracticePageState
+class ToListeningPracticePageState
     extends BasePageState<ListeningPracticePage> {
   final logic = Get.put(Listening_practiceLogic());
   final state = Get.find<Listening_practiceLogic>().state;
@@ -135,13 +137,18 @@ class _ToListeningPracticePageState
                       fontWeight: FontWeight.w500),
                 )),
             Expanded(child: Text('')),
-            Padding(
-              padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text('期刊成绩',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff353e4d),
-                      fontWeight: FontWeight.w600)),
+            InkWell(
+              onTap: (){
+                RouterUtil.toNamed(AppRoutes.ResultOverviewPage);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
+                child: Text('期刊成绩',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xff353e4d),
+                        fontWeight: FontWeight.w600)),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 2.w, top: 9.w, bottom: 17.w),

@@ -14,7 +14,6 @@ abstract class AppRoutes{
   static const WeeklyTestCategory = '/WeeklyTestCategory';
   static const WeeklyTestDetail = '/WeeklyTestDetail';
 
-  static const IntensiveListeningPage = '/IntensiveListeningPage';
   static const ToShoppingPage = '/ToShoppingPage';
   static const ShoppingListPage = '/ShoppingListPage';
   static const ShopCarPage = '/ShopCarPage';
@@ -26,6 +25,7 @@ abstract class AppRoutes{
   static const WritingPage = '/WritingPage';
   static const AnsweringPage = '/AnsweringPage';
   static const ResultPage = '/ResultPage';
+  static const ResultOverviewPage = '/ResultOverviewPage';
   static const SetPsdPage = '/SetPsdPage';
   static const AuthCodePage = '/AuthCodePage';
   static const RolePage = '/RolePage';
@@ -34,6 +34,7 @@ abstract class AppRoutes{
   static const DraggableDemo = '/DraggableDemo';
   static const ErrorNotePage = '/ErrorNotePage';
   static const PractiseHistoryPage = '/PractiseHistoryPage';
+  static const HomeworkHistoryPage = '/HomeworkHistoryPage';
   static const ErrorNoteCollectPage = '/ErrorNoteCollectPage';
   static const QRViewPage = '/QRViewPage';
   static const QRViewPageNextClass = '/QRViewPageNextClass';

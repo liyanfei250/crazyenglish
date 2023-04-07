@@ -6,10 +6,8 @@ import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
-import 'package:crazyenglish/pages/listening/listening_practice/listening_practice_view.dart';
 import 'package:crazyenglish/pages/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
-import 'package:crazyenglish/pages/reviews/practtise_history/practtise_history_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
 import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
 import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
@@ -41,10 +39,12 @@ import '../pages/homework/class_practise_report/class_practise_report_view.dart'
 import '../pages/homework/homework_complete_overview/homework_complete_overview_view.dart';
 import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
+import '../pages/jingang/listening_practice/listening_practice_view.dart';
+import '../pages/jingang/result_overview/result_overview_view.dart';
 import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
-import '../pages/intensive_listening/intensive_listening_view.dart';
 import '../pages/practise/result/result_view.dart';
+import '../pages/reviews/homework_history/homework_history_view.dart';
 import '../pages/reviews/practise_history/practise_history_view.dart';
 import '../pages/scan_audio_message/scan_audio_message_view.dart';
 import '../pages/scan_class_message/class_message_view.dart';
@@ -79,7 +79,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
     GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
-    GetPage(name: AppRoutes.IntensiveListeningPage, page:()=>IntensiveListeningPage(),),
     GetPage(name: AppRoutes.ToShoppingPage, page:()=>ToShoppingPage(),),
     GetPage(name: AppRoutes.ShoppingListPage, page:()=>ShoppingListPage(),),
     GetPage(name: AppRoutes.ShopCarPage, page:()=>ShopCarPage(),),
@@ -91,6 +90,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
     GetPage(name: AppRoutes.ResultPage, page:()=>ResultPage(),),
+    GetPage(name: AppRoutes.ResultOverviewPage, page:()=>ResultOverviewPage(),),
     GetPage(name: AppRoutes.SetPsdPage, page:()=>SetPsdPage(),),
     GetPage(name: AppRoutes.AuthCodePage, page:()=>AuthCodePage(),),
     GetPage(name: AppRoutes.RolePage, page:()=>RolePage(),),
@@ -116,6 +116,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.MyTaskPage, page:()=>MyTaskPage(),),
 
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=> Practise_historyPage(),),
+    GetPage(name: AppRoutes.HomeworkHistoryPage, page:()=> HomeworkHistoryPage(),),
 
     GetPage(name: AppRoutes.AssignHomeworkPage , page:()=> AssignHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseExamPaperPage , page:()=> ChooseExamPaperPage(),),

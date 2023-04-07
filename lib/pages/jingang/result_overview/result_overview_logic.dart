@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import 'intensive_listening_state.dart';
+import 'result_overview_state.dart';
 
-class IntensiveListeningLogic extends GetxController {
-  final IntensiveListeningState state = IntensiveListeningState();
+class ResultOverviewLogic extends GetxController {
+  final ResultOverviewState state = ResultOverviewState();
 
   @override
   void onReady() {
@@ -15,9 +15,5 @@ class IntensiveListeningLogic extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
-  }
-
-  void getLrcResponse() async{
-
   }
 }
