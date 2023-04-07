@@ -23,7 +23,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final state = Get.find<Collect_practicLogic>().state;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-
+  bool _showClearButton = false;
+  final TextEditingController _searchController = TextEditingController();
   final int pageSize = 10;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
@@ -54,6 +55,25 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     {"title": "阅读题", "type": 3},
     {"title": "写作题", "type": 4},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // 监听输入框内容变化
+    _searchController.addListener(() {
+      setState(() {
+        _showClearButton = _searchController.text.isNotEmpty;
+      });
+    });
+  }
+
+// 清空输入框内容
+  void _clearSearchText() {
+    setState(() {
+      _searchController.text = '';
+      _showClearButton = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +112,12 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                 margin: EdgeInsets.only(
                     bottom: 0.w, top: 12.w, left: 33.w, right: 33.w),
                 child: Container(
-                  width: double.infinity,
                   height: 28.w,
                   margin: EdgeInsets.only(top: 16.w, bottom: 20.w),
                   decoration: BoxDecoration(
-                      color: AppColors.c_FFFFFFFF,
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(14.w))),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(padding: EdgeInsets.only(left: 7.w)),
@@ -109,11 +127,43 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                         height: 16.w,
                       ),
                       Padding(padding: EdgeInsets.only(left: 6.w)),
-                      Text(
-                        "搜索",
-                        style: TextStyle(
-                            fontSize: 12.sp, color: Color(0xffb3b7c0)),
-                      )
+                      Expanded(
+                        child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              hintText: '搜索',
+                              border: InputBorder.none,
+                              isDense: true,
+                              hintStyle: TextStyle(color: Color(0xffb3b7c0)),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 4.w),
+                            ),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                            ),
+                            onTap: () {
+                              if (_searchController.text.isNotEmpty) {
+                                _searchController.selection =
+                                    TextSelection.fromPosition(
+                                  TextPosition(
+                                      offset: _searchController.text.length),
+                                );
+                              }
+                            }),
+                      ),
+                      if (_showClearButton)
+                        GestureDetector(
+                          onTap: _clearSearchText,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Icon(
+                              Icons.clear,
+                              size: 16.w,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -155,6 +205,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       onPressed: () {
         //Util.toast(value['title']);
         Util.toast(value['type'].toString());
+        _searchController.text = value['title'];
       },
       label: Text(
         value['title'],
@@ -254,6 +305,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     return InkWell(
       onTap: () {
         //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory);
+        //todo 点击跳转到新的界面
+        Util.toast("跳转到目录页");
       },
       child: listitemBigBg(),
     );

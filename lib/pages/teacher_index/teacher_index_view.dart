@@ -235,11 +235,21 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               height: 20.w,
             ),
             //待办工作
-            buildImageWithClickableIcon(
-              R.imagesHomeTodo,
-              () {
-                Util.toast('待办工作');
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 19.w,
+                ),
+                Image.asset(
+                  R.imagesHomeTodo,
+                  width: 102,
+                  height: 42,
+                ),
+                Expanded(
+                  child: Text(''),
+                ),
+              ],
             ),
             SizedBox(
               height: 16.w,
@@ -442,32 +452,34 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
 
   Widget buildImageWithClickableIcon(
       String imagePath, void Function()? onPress) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 4.w,
-        ),
-        Image.asset(
-          imagePath,
-          width: 102,
-          height: 42,
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: onPress,
-            child: Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.only(right: 6.w),
-              child: Image.asset(
-                R.imagesHomeNextIcBlack,
-                width: 10,
-                height: 10,
-              ),
-            ),
+    return GestureDetector(
+      onTap: onPress,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 19.w,
           ),
-        ),
-      ],
+          Image.asset(
+            imagePath,
+            width: 102,
+            height: 42,
+          ),
+          Expanded(
+            child: Text(''),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 42,
+            margin: EdgeInsets.only(right: 20),
+            child: Image.asset(
+              R.imagesHomeNextIcBlack,
+              width: 10,
+              height: 10,
+            ),
+          )
+        ],
+      ),
     );
   }
 

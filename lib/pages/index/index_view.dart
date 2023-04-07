@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../entity/error_note_response.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
@@ -22,7 +23,8 @@ class _IndexPageState extends BasePageState<IndexPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
-
+  var jsons =
+      '{code: 1, data: {count: 2, rows: [{uuid: 1cdd1550-bcef-11ed-8e11-530450f105f5, name: 测试全部题型用, img: https://test-1315843937.cos.ap-beijing.myqcloud.com/1aba8370-bcef-11ed-8e11-530450f105f5tiancaia1.jpg, weekTime: 2023-03-05T16:00:00.000Z, see: 0}, {uuid: 6b01ee40-be16-11ed-abb8-4bd615e260c3, name: 七年级新目标, img: https://test-1315843937.cos.ap-beijing.myqcloud.com/53fe3500-be16-11ed-abb8-4bd615e260c3tiancai483f30cbf856f2868f89ce5bca0dc58.png, weekTime: 2023-02-28T16:00:00.000Z, see: 0}]}, msg: }';
   final List<String> functionTxt = [
     "周报阅读",
     "周报题库",
@@ -85,6 +87,7 @@ class _IndexPageState extends BasePageState<IndexPage>
                     ),
                     Padding(padding: EdgeInsets.only(top: 12.w)),
                     //我的期刊
+                    //todo 我的期刊跳转到期刊的列表，之前的页面复用
                     buildImageWithClickableIcon(
                       R.imagesHomeMyJournals,
                       () {
@@ -106,32 +109,34 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   Widget buildImageWithClickableIcon(
       String imagePath, void Function()? onPress) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 19.w,
-        ),
-        Image.asset(
-          imagePath,
-          width: 102,
-          height: 42,
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: onPress,
-            child: Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.only(right: 20),
-              child: Image.asset(
-                R.imagesHomeNextIcBlack,
-                width: 10,
-                height: 10,
-              ),
-            ),
+    return GestureDetector(
+      onTap: onPress,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 19.w,
           ),
-        ),
-      ],
+          Image.asset(
+            imagePath,
+            width: 102,
+            height: 42,
+          ),
+          Expanded(
+            child: Text(''),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 42,
+            margin: EdgeInsets.only(right: 20),
+            child: Image.asset(
+              R.imagesHomeNextIcBlack,
+              width: 10,
+              height: 10,
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -253,34 +258,38 @@ class _IndexPageState extends BasePageState<IndexPage>
             SizedBox(
               height: 22.w,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 14.w,
-                ),
-                Text(
-                  "我的任务",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.sp,
-                      color: Color(0xff151619)),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      margin: EdgeInsets.only(right: 20),
-                      child: Image.asset(
-                        R.imagesHomeNextIcBlack,
-                        width: 10,
-                        height: 10,
-                      ),
+            GestureDetector(
+              onTap: () {
+                //新的界面
+                RouterUtil.toNamed(AppRoutes.MyTaskPage);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 14.w,
+                  ),
+                  Text(
+                    "我的任务",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.sp,
+                        color: Color(0xff151619)),
+                  ),
+                  Expanded(
+                    child: Text(''),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right: 20),
+                    child: Image.asset(
+                      R.imagesHomeNextIcBlack,
+                      width: 10,
+                      height: 10,
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
             _buildClassCard(0),
           ],
@@ -410,76 +419,82 @@ class _IndexPageState extends BasePageState<IndexPage>
           scrollDirection: Axis.horizontal,
           itemCount: 4,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(
-                  left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
-              width: 288.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(13),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 14.w,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    child: Image.asset(
-                      R.imagesSearchPlaceIc,
-                      width: 52.w,
-                      height: 74.w,
+            return GestureDetector(
+              onTap: () {
+                //todo 去具体的某一个期刊的列表界面，带上id
+                Util.toast('具体的某一期刊界面');
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+                width: 288.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                  SizedBox(
-                    width: 14.w,
-                  ),
-                  Expanded(
-                    child: Container(
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      child: Image.asset(
+                        R.imagesSearchPlaceIc,
+                        width: 52.w,
                         height: 74.w,
-                        margin: EdgeInsets.only(left: 4.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "高一综合阅读",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Color(0xff3e454e)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              "everyones heart have a hero",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff898a93),
-                                  fontWeight: FontWeight.w400),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "796阅读",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xff8b8f94),
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )),
-                  ),
-                ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    Expanded(
+                      child: Container(
+                          height: 74.w,
+                          margin: EdgeInsets.only(left: 4.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "高一综合阅读",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Color(0xff3e454e)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "everyones heart have a hero",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xff898a93),
+                                    fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "796阅读",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff8b8f94),
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -535,58 +550,64 @@ LinearGradient _getLinearGradient(Color left, Color right,
       end: end,
     );
 
-Widget _listOne(value) => Container(
-      padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(children: [
-                  Container(
-                    width: 27.w,
-                    height: 14.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        gradient: yellowGreen(),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(7.w),
-                            topRight: Radius.circular(7.w),
-                            bottomRight: Radius.circular(7.w),
-                            bottomLeft: Radius.circular(0.w)),
-                        color: Color(0xfff0e9ff)),
-                    child: Text("7/99",
+Widget _listOne(value) => InkWell(
+      onTap: () {
+        //todo 需要接入真实的数据
+        RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: 4);
+      },
+      child: Container(
+        padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(children: [
+                    Container(
+                      width: 27.w,
+                      height: 14.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          gradient: yellowGreen(),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(7.w),
+                              topRight: Radius.circular(7.w),
+                              bottomRight: Radius.circular(7.w),
+                              bottomLeft: Radius.circular(0.w)),
+                          color: Color(0xfff0e9ff)),
+                      child: Text("7/99",
+                          style: TextStyle(
+                              color: Color(0xff8b8f9f),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w700)),
+                    ),
+                    SizedBox(width: 10.w),
+                    Text(value['title'],
                         style: TextStyle(
-                            color: Color(0xff8b8f9f),
-                            fontSize: 8.sp,
-                            fontWeight: FontWeight.w700)),
+                            color: Color(0xff353e4d),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600)),
+                  ]),
+                  SizedBox(
+                    height: 5.w,
                   ),
-                  SizedBox(width: 10.w),
-                  Text(value['title'],
-                      style: TextStyle(
-                          color: Color(0xff353e4d),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600)),
-                ]),
-                SizedBox(
-                  height: 5.w,
-                ),
-                Row(
-                  children: [
-                    Text("剩余时间：7小时29分钟",
-                        style: TextStyle(
-                            color: Color(0xff8b8f9f),
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700)),
-                    SizedBox(width: 30.w),
-                  ],
-                ),
-              ],
+                  Row(
+                    children: [
+                      Text("剩余时间：7小时29分钟",
+                          style: TextStyle(
+                              color: Color(0xff8b8f9f),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700)),
+                      SizedBox(width: 30.w),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
