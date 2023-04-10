@@ -179,7 +179,8 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        BaseResp baseResp = BaseResp.fromJson(response.data);
+        Map<String, dynamic> _dataMap = _decodeData(response)!;
+        BaseResp baseResp = BaseResp.fromJson(_dataMap);
 
         if (baseResp.code == HttpStatus.unauthorized) {
           Util.toastLong("登录信息已失效，请重新登录");
@@ -190,7 +191,7 @@ class NetManager {
           Util.toastLong(baseResp.msg??"服务出现问题");
         }
 
-        baseResp.setReturnData(response.data);
+        baseResp.setReturnData(_dataMap);
         return baseResp;
 
       } catch (e) {
