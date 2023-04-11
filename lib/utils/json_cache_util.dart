@@ -32,6 +32,7 @@ class JsonCacheManageUtils{
   static final int HomeworkExamPaperResponse = 0x12;
   static final int HomeworkHistoryResponse = 0x13;
   static final int QuestionListResponse = 0x14;
+  static final int ResultListResponse = 0x15;
 
 
   // String contentJson;
