@@ -21,12 +21,6 @@ class _ClassHomePageState extends State<ClassHomePage> {
   final logic = Get.put(ClassHomeLogic());
   final state = Get.find<ClassHomeLogic>().state;
 
-  final List<String> functionTxt = [
-    "公告",
-    "作业",
-    "班级",
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -60,43 +54,75 @@ class _ClassHomePageState extends State<ClassHomePage> {
                     ],
                   ),
                 ),
-                buildContainerQr(R.imagesClassQrcode),
+                Column(
+                  children: [
+                    buildContainerQr(R.imagesClassMyClassBefore),
+                    SizedBox(
+                      height: 15.w,
+                    ),
+                    Container(
+                      height: 22.w,
+                      padding: EdgeInsets.only(left: 8.w, right: 8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20.w),
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFF19B57), Color(0xFFEC622D)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+                              arguments: {'isShowAdd': 0});
+                        },
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              R.imagesStudentNotifyIc,
+                              width: 10.w,
+                              height: 10.w,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 6.w),
+                              child: Text(
+                                "我的班级",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    fontSize: 10.sp),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 26.w, left: 40.w, right: 40.w),
-            child: GridView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                itemCount: functionTxt.length,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-                itemBuilder: (_, int position) {
-                  String e = functionTxt[position];
-                  return _buildFuncAreaItem(e);
-                }),
           ),
           GestureDetector(
             onTap: () {
               RouterUtil.toNamed(AppRoutes.StudentListPage);
             },
             child: Container(
-              margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
+              margin: EdgeInsets.only(top: 30.w, left: 22.w, right: 22.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  Expanded(
+                      child: Text(
                     "学生列表",
                     style: TextStyle(
                         fontSize: 18.sp, color: AppColors.TEXT_BLACK_COLOR),
-                  ),
+                  )),
                   Image.asset(
                     R.imagesHomeNextIcBlack,
                     width: 9.w,
                     height: 9.w,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -180,7 +206,18 @@ class _ClassHomePageState extends State<ClassHomePage> {
       ),
       child: GestureDetector(
         onTap: () {
+          //todo  提醒的接口
           Util.toast('message');
+          // switch (first) {
+          //   case '提醒学生':
+          //     return _emptyView;
+          //     break;
+          //   case '提醒家长':
+          //     return _emptyView;
+          //     break;
+          //   default:
+          //     return null;
+          // }
         },
         child: Row(
           children: [
@@ -285,38 +322,6 @@ class _ClassHomePageState extends State<ClassHomePage> {
       ),
     );
   }
-
-  Widget _buildFuncAreaItem(String e) => InkWell(
-        onTap: () {
-          switch (e) {
-            case "作业":
-              RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
-              break;
-            case "班级":
-              RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-                  arguments: {'isShowAdd': 0});
-              break;
-          }
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              "images/class_fun_${functionTxt.indexOf(e)}.png",
-              width: 40.w,
-              height: 40.w,
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 15.w)),
-            Text(
-              e,
-              style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Color(0xff898a93),
-                  fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
-      );
 
   Widget buildItemClassStudent(String first, String second) {
     return Row(

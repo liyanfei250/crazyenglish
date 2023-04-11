@@ -26,6 +26,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     "每周题库",
     "历史作业",
     "试卷库",
+    "作业",
     "商城",
   ];
 
@@ -189,6 +190,9 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
             case "试卷库":
               RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
                   arguments: {"isAssignHomework": false});
+              break;
+            case "作业":
+              RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ShoppingListPage);
