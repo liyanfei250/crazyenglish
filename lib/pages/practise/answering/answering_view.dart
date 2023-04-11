@@ -13,23 +13,25 @@ import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../entity/week_detail_response.dart' as detail;
-import '../../../entity/week_test_detail_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../question/base_question.dart';
-import '../question/gap_question.dart';
 import 'answering_logic.dart';
 
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
+  int parentIndex = 0;
+  int childIndex = 0;
 
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       testDetailResponse = Get.arguments["detail"];
       uuid = Get.arguments["uuid"];
+      parentIndex = Get.arguments["parentIndex"];
+      childIndex = Get.arguments["childIndex"];
     }
   }
 
@@ -59,7 +61,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var canPre = false.obs;
   var canNext = true.obs;
   String initPageNum = "";
-  bool isUseData = true;
 
   @override
   void onCreate() {
@@ -70,7 +71,13 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
     logic.addListenerId(GetBuilderIds.commitAnswer, () {
       RouterUtil.offAndToNamed(
-          AppRoutes.ResultPage,arguments: {"detail":state.commitRequest});
+          AppRoutes.ResultPage,arguments: {
+            "detail": widget.testDetailResponse,
+            "uuid":widget.uuid,
+            "parentIndex":widget.parentIndex,
+            "childIndex":widget.childIndex,
+            // "detail":state.commitRequest,
+      });
     });
   }
 
@@ -224,19 +231,17 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     if (weekTestDetailResponse.data != null) {
       int length = weekTestDetailResponse.data!.length;
 
-      for (detail.Data element in weekTestDetailResponse.data!) {
+      if(widget.parentIndex < length){
+        detail.Data element = weekTestDetailResponse.data![widget.parentIndex];
         switch (element.type) {
           case 1: // 听力题
             questionList.add(ListenQuestion(data: element));
-            isUseData = false;
             break;
           case 2: // 阅读题
             if (element.typeChildren == 7) {
               // 写作题
-              isUseData = false;
             } else {
               questionList.add(ReadQuestion(data: element));
-              isUseData = false;
             }
             break;
           case 3: // 语言综合训练
@@ -244,27 +249,20 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               // 单项选择题
               questionList
                   .add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
-              isUseData = true;
               return questionList;
             } else if (element.typeChildren == 2) {
               // 补全对话
               questionList.add(ReadQuestion(data: element));
-              isUseData = false;
             } else if (element.typeChildren == 3){
               // 完型填空
               questionList.add(ReadQuestion(data: element));
-              isUseData = false;
             }
             break;
           case 4: // 写作题
             if (element.typeChildren == 7) {
               // 写作题
-              isUseData = false;
             }
             break;
-        }
-        if (!isUseData) {
-          break;
         }
       }
     }

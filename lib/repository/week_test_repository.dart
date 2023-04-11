@@ -97,18 +97,23 @@ class WeekTestRepository{
   }
 
   Future<CommitRequest> uploadWeekTest(CommitRequest commitRequest) async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
-        options: Options(method: Method.post,contentType: "application/json; charset=utf-8"));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
-    }
-    if(baseResp.getReturnData() !=null){
-      CommitResponse commitResponse = CommitResponse.fromJson(baseResp.getReturnData());
+
+    // if(Util.isTestMode()){
+      CommitResponse commitResponse = CommitResponse(1,"",CommitRequest());
       return commitResponse.data!;
-    } else {
-      return Future.error("返回weekTestDetailResponse为空");
-    }
+    // }
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
+    //     options: Options(method: Method.post,contentType: "application/json; charset=utf-8"));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.msg!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //   CommitResponse commitResponse = CommitResponse.fromJson(baseResp.getReturnData());
+    //   return commitResponse.data!;
+    // } else {
+    //   return Future.error("返回weekTestDetailResponse为空");
+    // }
   }
 
   Future<CheckUpdateResp> getAppVersion() async{
