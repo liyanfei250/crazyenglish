@@ -46,4 +46,6 @@ class WeekTestDetailLogic extends GetxController {
     state.uuid = id;
     update([GetBuilderIds.weekTestDetailList]);
   }
+
+
 }

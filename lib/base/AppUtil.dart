@@ -34,6 +34,14 @@ class Util {
     return null;
   }
 
+  static bool isTestMode(){
+    if(Config.env == Env.TEST){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   static String parseHtmlString(String? htmlString) {
     var document = parse(htmlString);
     return document.body!.text;

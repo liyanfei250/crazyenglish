@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 /// <BaseResp<T> 返回 status code msg data.
 class BaseResp {
-  int? code;
+  num? code;
   String? msg;
   dynamic _returnData;
 
@@ -28,14 +28,14 @@ class BaseResp {
 
   BaseResp.fromJson(dynamic json) {
     code = json['code'];
-    msg = json['msg'];
+    msg = json['msg']??"";
   }
 }
 
 /// <BaseRespR<T> 返回 status code msg data Response.
 class BaseRespR<T> {
   String? status;
-  int? code;
+  num? code;
   String? msg;
   T data;
   Response response;

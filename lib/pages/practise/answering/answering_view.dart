@@ -287,6 +287,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   @override
   void onDestroy() {
     cancelTimer();
+
     Get.delete<AnsweringLogic>();
   }
 }
