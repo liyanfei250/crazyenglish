@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:grouped_list/sliver_grouped_list.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../entity/QuestionListResponse.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
 import 'result_overview_logic.dart';
@@ -23,8 +26,21 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   final logic = Get.put(ResultOverviewLogic());
   final state = Get.find<ResultOverviewLogic>().state;
 
+  final int pageSize = 20;
+  int currentPageNo = 1;
+  List<Questions> questionList = [];
+  final int pageStartIndex = 1;
+
+
+  @override
+  void onCreate() {
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    logic.getQuestionList("1", 1, 15);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色
@@ -92,6 +108,18 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 24.w)),
+                    GetBuilder<ResultOverviewLogic>(
+                        id: "1",
+                        builder: (logic){
+                          questionList = state.list;
+                          return Expanded(child: GroupedListView<Questions,num>(
+                            groupBy: (element) => element.groupId??0,
+                            groupSeparatorBuilder: buildSeparatorBuilder,
+                            elements: questionList,
+                            itemBuilder: buildItem,
+                          ),);
+                        }
+                    )
                   ],
                 ),
               ))
@@ -101,15 +129,167 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
       ),);
   }
 
+
+  Widget buildGroupHeader(Questions question){
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.w),topRight: Radius.circular(7.w)),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            height: 20.w,
+            width: 85.w,
+            decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: AppColors.c_FFFCEFD8,width: 3.w,))
+            ),
+          ),
+          Container(
+            height: 20.w,
+            child: Text("${question.groupName}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSeparatorBuilder(num question){
+    return Container(
+      padding: EdgeInsets.only(left: 18.w,right: 18.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                  width: 134.w,
+                  height: 35.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xfff19e59),
+                          Color(0xffec5f2a),
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                  ),
+                  child: Text("查看详解",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                  width: 134.w,
+                  height: 35.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xfff19e59),
+                          Color(0xffec5f2a),
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                  ),
+                  child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                ),
+              ),
+            ],
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  Widget buildItem(BuildContext context, Questions question) {
+    return Container(
+      padding: EdgeInsets.only(left: 18.w,right: 18.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildGroupHeader(question),
+          Text("听力训练",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
+          Padding(padding: EdgeInsets.only(top: 14.w)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildTab("1", 1),
+              buildTab("2", 2),
+              buildTab("3", 3),
+              buildTab("4", 4),
+              buildTab("5", 1),
+              buildTab("6", 1),
+            ],
+          ),
+          Text("词语运用",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
+          Padding(padding: EdgeInsets.only(top: 14.w)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildTab("1", 1),
+              buildTab("2", 2),
+              buildTab("3", 3),
+              buildTab("4", 4),
+              buildTab("5", 1),
+              buildTab("6", 1),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget buildTab(String e,int state){
+
+    BoxDecoration decoration;
+    Color textColor = Colors.white;
+    if(state == 1){
+      decoration = BoxDecoration(
+          color: AppColors.c_FFF5F7FA,
+          borderRadius: BorderRadius.all(Radius.circular(22.w)),
+          border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
+      );
+      textColor = AppColors.c_FFD6D9DB;
+    }else if(state == 2){
+      decoration = BoxDecoration(
+        color: AppColors.c_FF62C5A2,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    }else{
+      decoration = BoxDecoration(
+        color: AppColors.c_FFEC6560,
+        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+      );
+    }
+
+    return Container(
+      width: 34.w,
+      height: 34.w,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(bottom: 9.w),
+      decoration: decoration,
+      child: Text(e,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
+    );
+  }
+
   @override
   void dispose() {
     Get.delete<ResultOverviewLogic>();
     super.dispose();
-  }
-
-  @override
-  void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import '../../../entity/week_detail_response.dart' as detail;
 
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
@@ -15,11 +15,19 @@ import 'result_logic.dart';
 
 class ResultPage extends BasePage{
   CommitRequest? commitResponse;
+  detail.WeekDetailResponse? testDetailResponse;
+  var uuid;
+  int parentIndex = 0;
+  int childIndex = 0;
 
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      commitResponse = Get.arguments["detail"];
+      // commitResponse = Get.arguments["detail"];
+      testDetailResponse = Get.arguments["detail"];
+      uuid = Get.arguments["uuid"];
+      parentIndex = Get.arguments["parentIndex"];
+      childIndex = Get.arguments["childIndex"];
     }
   }
 
@@ -41,8 +49,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   @override
   void onCreate() {
-    if(widget.commitResponse!.exercises![0].options!=null && widget.commitResponse!.exercises![0].options!.length>0) {
-      int questionNum = widget.commitResponse!.exercises![0].options!.length;
+    if(widget.testDetailResponse!.data![widget.parentIndex].options!=null && widget.testDetailResponse!.data![widget.parentIndex].options!.length>0) {
+      int questionNum = widget.testDetailResponse!.data![widget.parentIndex].options!.length;
       _tabController = TabController(vsync: this, length: questionNum);
     }
 
@@ -53,7 +61,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
 
-    Widget resutl = buildQuestionResult(widget.commitResponse!.exercises![0]);
+    Widget resutl = buildQuestionResult(widget.testDetailResponse!.data![widget.parentIndex]);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -78,7 +86,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
           child: Column(
             children: [
-              buildTransparentAppBar("${widget.commitResponse!.directory}"),
+              buildTransparentAppBar("widget.commitResponse!.directory"),
               Util.buildTopIndicator(),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
