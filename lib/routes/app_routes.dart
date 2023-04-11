@@ -52,6 +52,7 @@ abstract class AppRoutes{
   static const HomeSearchPage = '/HomeSearchPage';
   static const QuestionFeedbackPage = '/QuestionFeedbackPage';
   static const MyTaskPage = '/MyTaskPage';
+  static const PersonInfoPage = '/PersonInfoPage';
 
   static const AssignHomeworkPage = '/AssignHomeworkPage';
   static const ChooseExamPaperPage = '/ChooseExamPaperPage';

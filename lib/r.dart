@@ -343,6 +343,22 @@ class R {
   static final String imagesMake1 = 'images/make1.jpg';
   /// ![](http://127.0.0.1:11/images/make2.jpg)
   static final String imagesMake2 = 'images/make2.jpg';
+  /// ![](http://127.0.0.1:11/images/mine_about_us.png)
+  static final String imagesMineAboutUs = 'images/mine_about_us.png';
+  /// ![](http://127.0.0.1:11/images/mine_advice.png)
+  static final String imagesMineAdvice = 'images/mine_advice.png';
+  /// ![](http://127.0.0.1:11/images/mine_appraise.png)
+  static final String imagesMineAppraise = 'images/mine_appraise.png';
+  /// ![](http://127.0.0.1:11/images/mine_class.png)
+  static final String imagesMineClass = 'images/mine_class.png';
+  /// ![](http://127.0.0.1:11/images/mine_history_work.png)
+  static final String imagesMineHistoryWork = 'images/mine_history_work.png';
+  /// ![](http://127.0.0.1:11/images/mine_order.png)
+  static final String imagesMineOrder = 'images/mine_order.png';
+  /// ![](http://127.0.0.1:11/images/mine_phone.png)
+  static final String imagesMinePhone = 'images/mine_phone.png';
+  /// ![](http://127.0.0.1:11/images/mine_setting.png)
+  static final String imagesMineSetting = 'images/mine_setting.png';
   /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)
   static final String imagesMyIconCoupon = 'images/my_icon_coupon.png';
   /// ![](http://127.0.0.1:11/images/my_icon_help.png)

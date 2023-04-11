@@ -22,6 +22,8 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
+  final TextStyle textStyle = TextStyle(
+      fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
   void onClickPosition(int position) {
     switch (position) {
@@ -43,7 +45,7 @@ class _MinePageState extends BasePageState<MinePage> {
           builder: (context) {
             return AlertDialog(
               title: Text("提示"),
-              content:  Text("您确定要切换到" + role + "吗？"),
+              content: Text("您确定要切换到" + role + "吗？"),
               actions: <Widget>[
                 TextButton(
                   child: Text("取消"),
@@ -56,12 +58,11 @@ class _MinePageState extends BasePageState<MinePage> {
                     // ... 执行
                     if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
                       RouterUtil.offAndToNamed(AppRoutes.HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,false);
+                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, false);
                     } else {
                       RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,true);
+                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, true);
                     }
-
                   },
                 ),
               ],
@@ -77,172 +78,239 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: Column(
         children: [
-          Stack(
-            children: [
-              Image.asset(R.imagesMyTopBg),
-              Container(
-                margin: EdgeInsets.only(top: 69.w, left: 16.w),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      ClipOval(
-                          child: CircleAvatar(
-                              radius: 30.w,
-                              backgroundColor: Colors.white,
-                              backgroundImage: AssetImage(
-                                  "images/icon_home_me_default_head.png"))),
-                      Padding(padding: EdgeInsets.only(left: 15.w)),
-                      isLogin //是否登录
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                    onTap: () =>
-                                        RouterUtil.toNamed(AppRoutes.LoginNew),
-                                    child: Text(
-                                      "吴尊",
-                                      style: TextStyle(
-                                          color: AppColors.c_FFFFFFFF,
-                                          fontSize: 20.w),
-                                    )),
-                                //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                                Text(
-                                  "要读的书太多，没时间写签名",
+          Container(
+            width: double.infinity,
+            height: 120.w + statusBarHeight,
+            margin: EdgeInsets.only(
+              top: statusBarHeight,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              image: DecorationImage(
+                  image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
+            ),
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 30.w, left: 18.w),
+              child: GestureDetector(
+                onTap: () {
+                  RouterUtil.toNamed(AppRoutes.PersonInfoPage);
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                        child: Image.asset(
+                      R.imagesIconHomeMeDefaultHead,
+                      width: 54.w,
+                      height: 54.w,
+                    )),
+                    Padding(padding: EdgeInsets.only(left: 15.w)),
+                    isLogin //是否登录
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                  onTap: () =>
+                                      RouterUtil.toNamed(AppRoutes.LoginNew),
+                                  child: Text(
+                                    "吴尊",
+                                    style: TextStyle(
+                                        color: Color(0xff353e4d),
+                                        fontSize: 20.w),
+                                  )),
+                              //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                              Text(
+                                "要读的书太多，没时间写签名",
+                                style: TextStyle(
+                                    color: Color(0xff898a93), fontSize: 10.sp),
+                              )
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              RouterUtil.toNamed(AppRoutes.LoginNew);
+                            },
+                            child: Container(
+                              child: Text("未登录",
                                   style: TextStyle(
                                       color: AppColors.c_FFFFEBEB,
-                                      fontSize: 16.sp),
-                                )
-                              ],
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                RouterUtil.toNamed(AppRoutes.LoginNew);
-                              },
-                              child: Container(
-                                child: Text("未登录",
-                                    style: TextStyle(
-                                        color: AppColors.c_FFFFEBEB,
-                                        fontSize: 16.sp)),
-                              ))
-                    ],
-                  ),
+                                      fontSize: 16.sp)),
+                            )),
+                    Expanded(
+                      child: Text(''),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: 42,
+                      margin: EdgeInsets.only(right: 20),
+                      child: Image.asset(
+                        R.imagesHomeNextIcBlack,
+                        width: 10,
+                        height: 10,
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-          buildItem(
-              "我的订单",
-              Image(
-                image: AssetImage(R.imagesMyIconOrder),
-                width: 30.w,
-                height: 30.w,
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+            margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(13),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                buildItemType('我的班级', R.imagesMineClass),
+                buildItemType('我的订单', R.imagesMineOrder),
+                buildItemType('历史作业', R.imagesMineHistoryWork),
+              ],
+            ),
+          ),
+          Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+              margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-              0),
-          buildItem(
-              "我的优惠券",
-              Image(
-                image: AssetImage(R.imagesMyIconCoupon),
-                width: 30.w,
-                height: 30.w,
-              ),
-              1),
-          buildItem(
-              "分享给好友",
-              Image(
-                image: AssetImage(R.imagesMyIconShare),
-                width: 30.w,
-                height: 30.w,
-              ),
-              2),
-          buildItem(
-              "帮助",
-              Image(
-                image: AssetImage(R.imagesMyIconHelp),
-                width: 30.w,
-                height: 30.w,
-              ),
-              3),
-          buildItem(
-              "设置",
-              Image(
-                image: AssetImage("images/my_icon_setting.png"),
-                width: 30.w,
-                height: 30.w,
-              ),
-              4),
-          buildItem(
-              "切换用户",
-              Image(
-                image: AssetImage("images/my_icon_setting.png"),
-                width: 30.w,
-                height: 30.w,
-              ),
-              5),
-          buildItem(
-              "题目反馈",
-              Image(
-                image: AssetImage("images/my_icon_setting.png"),
-                width: 30.w,
-                height: 30.w,
-              ),
-              6),
+              child: Column(
+                children: [
+                  buildItem(
+                      "给我们评价",
+                      Image(
+                        image: AssetImage(R.imagesMineAppraise),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      0),
+                  buildItem(
+                      "意见反馈",
+                      Image(
+                        image: AssetImage(R.imagesMineAdvice),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      0),
+                  buildItem(
+                      "关于我们",
+                      Image(
+                        image: AssetImage(R.imagesMineAboutUs),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      0),
+                  buildItem(
+                      "我的设置",
+                      Image(
+                        image: AssetImage(R.imagesMineSetting),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      4),
+                  buildItem(
+                      "切换用户",
+                      Image(
+                        image: AssetImage("images/my_icon_setting.png"),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      5),
+                  buildItem(
+                      "题目反馈",
+                      Image(
+                        image: AssetImage("images/my_icon_setting.png"),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      6),
+                ],
+              )),
         ],
       ),
     );
   }
 
+  Widget buildItemType(String menu, String icon) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          icon,
+          height: 31.w,
+          width: 31.w,
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        Text(
+          menu,
+          style: textStyle,
+        )
+      ],
+    );
+  }
+
   Widget buildItem(String menu, Image icon, int position) {
     return Container(
-        padding: EdgeInsets.only(left: 26.5.w),
+        padding: EdgeInsets.only(left: 24.w),
         height: 58.5.w,
         child: GestureDetector(
           onTap: () {
             onClickPosition(position);
           },
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Container(
-                height: 57.5.w,
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    icon,
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 15.w,
-                      ),
-                      child: Text(
-                        menu,
-                        style: TextStyle(
-                          color: AppColors.c_FF32374E,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(""),
-                    ),
-                    Image.asset(
-                      'images/my_icon_right_arrow.png',
-                      height: 13.w,
-                      width: 13.w,
-                    ),
-                    Padding(padding: EdgeInsets.only(right: 11.8.w)),
-                  ],
+          child: Row(
+            children: [
+              icon,
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10.w,
+                ),
+                child: Text(
+                  menu,
+                  style: TextStyle(
+                    color: AppColors.c_FF32374E,
+                    fontSize: 14,
+                  ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(left: 55.w),
-                child: Divider(
-                  height: 0.5.w,
-                  color: AppColors.c_FFECECEC,
-                ),
+              Expanded(
+                child: Text(""),
               ),
+              Image.asset(
+                R.imagesHomeNextIcBlack,
+                height: 7.w,
+                width: 11.w,
+              ),
+              Padding(padding: EdgeInsets.only(right: 25.w)),
             ],
           ),
         ));

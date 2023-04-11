@@ -2,6 +2,7 @@ import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/create_class/create_class_view.dart';
 import 'package:crazyenglish/pages/home_search/home_search_view.dart';
 import 'package:crazyenglish/pages/my_task/my_task_view.dart';
+import 'package:crazyenglish/pages/person_info/person_info_view.dart';
 import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
@@ -116,6 +117,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.HomeSearchPage, page:()=>HomeSearchPage(),),
     GetPage(name: AppRoutes.QuestionFeedbackPage, page:()=>QuestionFeedbackPage(),),
     GetPage(name: AppRoutes.MyTaskPage, page:()=>MyTaskPage(),),
+    GetPage(name: AppRoutes.PersonInfoPage, page:()=>PersonInfoPage(),),
 
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=> Practise_historyPage(),),
     GetPage(name: AppRoutes.HomeworkHistoryPage, page:()=> HomeworkHistoryPage(),),
