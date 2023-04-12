@@ -7,6 +7,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../base/AppUtil.dart';
 import '../../base/common.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
@@ -37,6 +38,12 @@ class SplashNewPageState extends State<SplashPageNew> {
   @override
   void initState() {
     super.initState();
+    //测试
+    SpUtil.putBool(BaseConstant.ISLOGING, true);
+    SpUtil.putString(
+        BaseConstant.loginTOKEN, '++++6666');
+    Util.getHeader();
+    //测试
     _init();
   }
 
@@ -48,7 +55,8 @@ class SplashNewPageState extends State<SplashPageNew> {
       if (!firstInstall) {
         _goMain();
       }
-    });
+    }
+    );
   }
 
   void _goMain() {

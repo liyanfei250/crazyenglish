@@ -3,10 +3,18 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../base/common.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/routes_utils.dart';
+import '../../utils/FullScreenImage.dart';
+import '../../utils/permissions/permissions_util.dart';
+import '../../utils/sp_util.dart';
 import 'person_info_logic.dart';
+import 'dart:io' as FileNew;
 
 class PersonInfoPage extends BasePage {
   const PersonInfoPage({Key? key}) : super(key: key);
@@ -22,6 +30,19 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
       fontSize: 14, color: Color(0xff4d3535), fontWeight: FontWeight.w500);
   final TextStyle textSenStyle = TextStyle(
       fontSize: 12, color: Color(0xff898a93), fontWeight: FontWeight.w500);
+  final TextStyle styleScend = TextStyle(
+      fontSize: 11, color: Color(0xff4d3535), fontWeight: FontWeight.w400);
+  FileNew.File? _image;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = FileNew.File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +58,70 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
           Stack(
             alignment: Alignment.center,
             children: [
-              ClipOval(
-                  child: Image.asset(
-                R.imagesIconHomeMeDefaultHead,
-                width: 56.w,
-                height: 56.w,
-              )),
+              _image != null
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 500),
+                            pageBuilder: (_, __, ___) =>
+                                FullScreenImage(imageFile: _image),
+                            transitionsBuilder: (_, animation, __, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        tag: 'imageHero',
+                        child: ClipOval(
+                          child: Image.file(
+                            FileNew.File(_image!.path),
+                            width: 56.w,
+                            height: 56.w,
+                          ),
+                        ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () async {
+                        await PermissionsUtil.checkPermissions(
+                            context,
+                            "为了正常访问相册，需要您授权以下权限",
+                            [RequestPermissionsTag.PHOTOS], () {
+                          _pickImage();
+                        });
+                      },
+                      child: ClipOval(
+                          child: Image.asset(
+                        R.imagesIconHomeMeDefaultHead,
+                        width: 56.w,
+                        height: 56.w,
+                      )),
+                    ),
               Positioned(
-                  bottom: 0.w,
-                  left: 1.w,
-                  right: 1.w,
-                  child: Image.asset(
-                    R.imagesMinePhone,
-                    width: 31.w,
-                    height: 19.w,
-                  )),
+                bottom: 0.w,
+                left: 1.w,
+                right: 1.w,
+                child: GestureDetector(
+                    onTap: () async {
+                      await PermissionsUtil.checkPermissions(
+                          context,
+                          "为了正常访问相册，需要您授权以下权限",
+                          [RequestPermissionsTag.PHOTOS], () {
+                        _pickImage();
+                      });
+                    },
+                    child: Image.asset(
+                      R.imagesMinePhone,
+                      width: 31.w,
+                      height: 19.w,
+                    )),
+              ),
             ],
           ),
           Container(
@@ -73,7 +143,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
               ),
               child: Text(
                 '头像一自然年只能提交一次，无论是否修改成功，提交即消耗本年度修改次数，请谨慎提交。',
-                style: textStyle,
+                style: styleScend,
               )),
           Container(
               width: double.infinity,
@@ -156,30 +226,62 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 ],
               )),
           Expanded(child: Text('')),
-          Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 25.w,bottom: 30.w),
-              padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Text(
-                '退出当前帐号',
-                style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff353e4d)),
-              ))
+          GestureDetector(
+            onTap: () {
+              showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("提示"),
+                    content: Text("您确定要退出吗？"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text("取消"),
+                        onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+                      ),
+                      TextButton(
+                        child: Text("确定"),
+                        onPressed: () {
+                          Navigator.of(context).pop(true); //关闭对话框
+                          // ... 执行
+                          //退出
+                          SpUtil.putBool(BaseConstant.ISLOGING, false);
+                          SpUtil.putString(BaseConstant.loginTOKEN, '');
+                          //直接去首页
+                          RouterUtil.offAndToNamed(AppRoutes.HOME);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(
+                    left: 18.w, right: 18.w, top: 25.w, bottom: 30.w),
+                padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  '退出当前帐号',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff353e4d)),
+                )),
+          ),
         ],
       ),
     );
@@ -192,10 +294,23 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
 
         switch (menu) {
           case '修改昵称':
-            Util.toast(menu);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return NicknameDialog(
+                  currentNickname: 'John Smith',
+                  onUpdateNickname: (newNickname) {
+                    print('New nickname: $newNickname');
+                  },
+                );
+              },
+            );
             break;
           case '修改密码':
-            Util.toast(menu);
+            RouterUtil.toNamed(AppRoutes.SetPsdPage);
+            break;
+          case '更换手机号':
+            RouterUtil.toNamed(AppRoutes.ChangePhonePage);
             break;
           default:
             return null;
@@ -241,4 +356,80 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
 
   @override
   void onDestroy() {}
+}
+
+class NicknameDialog extends StatefulWidget {
+  final String currentNickname;
+  final Function(String) onUpdateNickname;
+
+  NicknameDialog(
+      {required this.currentNickname, required this.onUpdateNickname});
+
+  @override
+  _NicknameDialogState createState() => _NicknameDialogState();
+}
+
+class _NicknameDialogState extends State<NicknameDialog> {
+  late TextEditingController _nicknameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nicknameController = TextEditingController(text: widget.currentNickname);
+  }
+
+  @override
+  void dispose() {
+    _nicknameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '修改昵称',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _nicknameController,
+              decoration: InputDecoration(
+                labelText: '昵称',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('取消'),
+                ),
+                SizedBox(width: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    widget.onUpdateNickname(_nicknameController.text);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('确定'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

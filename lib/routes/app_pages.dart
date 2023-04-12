@@ -1,3 +1,5 @@
+import 'package:crazyenglish/pages/about_us/about_us_view.dart';
+import 'package:crazyenglish/pages/change_phone/change_phone_view.dart';
 import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/create_class/create_class_view.dart';
 import 'package:crazyenglish/pages/home_search/home_search_view.dart';
@@ -107,6 +109,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.StudentRankingPage, page:()=>Student_rankingPage(),),
     GetPage(name: AppRoutes.LearningReportPage, page:()=>LearningReportPage(),),
     GetPage(name: AppRoutes.StudentListPage, page:()=>StudentListPage(),),
+    GetPage(name: AppRoutes.ChangePhonePage, page:()=>ChangePhonePage(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
     GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),
@@ -118,6 +121,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.QuestionFeedbackPage, page:()=>QuestionFeedbackPage(),),
     GetPage(name: AppRoutes.MyTaskPage, page:()=>MyTaskPage(),),
     GetPage(name: AppRoutes.PersonInfoPage, page:()=>PersonInfoPage(),),
+    GetPage(name: AppRoutes.AboutUsPage, page:()=>AboutUsPage(),),
 
     GetPage(name: AppRoutes.PractiseHistoryPage, page:()=> Practise_historyPage(),),
     GetPage(name: AppRoutes.HomeworkHistoryPage, page:()=> HomeworkHistoryPage(),),

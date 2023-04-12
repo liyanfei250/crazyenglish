@@ -42,6 +42,7 @@ abstract class AppRoutes{
   static const StudentRankingPage = '/StudentRankingPage';
   static const LearningReportPage = '/LearningReportPage';
   static const StudentListPage = '/StudentListPage';
+  static const ChangePhonePage = '/ChangePhonePage';
 
   static const TEACHER_HOME = '/teacher_home';
   static const TEACHER_WORK = '/teacher_work';
@@ -53,6 +54,7 @@ abstract class AppRoutes{
   static const QuestionFeedbackPage = '/QuestionFeedbackPage';
   static const MyTaskPage = '/MyTaskPage';
   static const PersonInfoPage = '/PersonInfoPage';
+  static const AboutUsPage = '/AboutUsPage';
 
   static const AssignHomeworkPage = '/AssignHomeworkPage';
   static const ChooseExamPaperPage = '/ChooseExamPaperPage';
