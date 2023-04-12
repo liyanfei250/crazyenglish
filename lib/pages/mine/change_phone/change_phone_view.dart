@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../base/AppUtil.dart';
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../r.dart';
-import '../../utils/colors.dart';
+import '../../../base/AppUtil.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../r.dart';
+import '../../../utils/colors.dart';
 import 'change_phone_logic.dart';
 
 class ChangePhonePage extends BasePage {

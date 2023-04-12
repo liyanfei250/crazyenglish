@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../base/common.dart';
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../r.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/colors.dart';
+import '../../../base/common.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/colors.dart';
 import 'about_us_logic.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

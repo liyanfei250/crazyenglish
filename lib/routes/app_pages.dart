@@ -1,10 +1,10 @@
-import 'package:crazyenglish/pages/about_us/about_us_view.dart';
-import 'package:crazyenglish/pages/change_phone/change_phone_view.dart';
 import 'package:crazyenglish/pages/class/class_view.dart';
 import 'package:crazyenglish/pages/create_class/create_class_view.dart';
 import 'package:crazyenglish/pages/home_search/home_search_view.dart';
+import 'package:crazyenglish/pages/mine/about_us/about_us_view.dart';
+import 'package:crazyenglish/pages/mine/change_phone/change_phone_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_view.dart';
 import 'package:crazyenglish/pages/my_task/my_task_view.dart';
-import 'package:crazyenglish/pages/person_info/person_info_view.dart';
 import 'package:crazyenglish/pages/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';

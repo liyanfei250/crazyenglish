@@ -5,14 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../base/common.dart';
-import '../../base/widgetPage/base_page_widget.dart';
-import '../../r.dart';
-import '../../routes/app_pages.dart';
-import '../../routes/routes_utils.dart';
-import '../../utils/FullScreenImage.dart';
-import '../../utils/permissions/permissions_util.dart';
-import '../../utils/sp_util.dart';
+import '../../../base/common.dart';
+import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
+import '../../../utils/FullScreenImage.dart';
+import '../../../utils/permissions/permissions_util.dart';
+import '../../../utils/sp_util.dart';
 import 'person_info_logic.dart';
 import 'dart:io' as FileNew;
 
