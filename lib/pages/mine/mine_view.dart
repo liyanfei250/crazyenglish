@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../base/AppUtil.dart';
 import '../../base/common.dart';
 import '../../config.dart';
 import '../../r.dart';
@@ -21,17 +22,24 @@ class MinePage extends BasePage {
 
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
-  final state = Get.find<MineLogic>().state;
+  final state = Get
+      .find<MineLogic>()
+      .state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
   void onClickPosition(int position) {
     switch (position) {
-      case 4:
-        RouterUtil.toNamed(AppRoutes.SettingPage);
+      case 1: //意见反馈
+        RouterUtil.toNamed(
+            AppRoutes.QuestionFeedbackPage, arguments: {'isFeedback': false});
+        break;
+      case 2: //关于我们
+        RouterUtil.toNamed(AppRoutes.AboutUsPage);
         break;
       case 6:
-        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage);
+        RouterUtil.toNamed(
+            AppRoutes.QuestionFeedbackPage, arguments: {'isFeedback': true});
         break;
       case 5:
         var role = '';
@@ -78,7 +86,10 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double statusBarHeight = MediaQuery
+        .of(context)
+        .padding
+        .top;
     return Scaffold(
       body: Column(
         children: [
@@ -105,43 +116,43 @@ class _MinePageState extends BasePageState<MinePage> {
                   children: [
                     ClipOval(
                         child: Image.asset(
-                      R.imagesIconHomeMeDefaultHead,
-                      width: 54.w,
-                      height: 54.w,
-                    )),
+                          R.imagesIconHomeMeDefaultHead,
+                          width: 54.w,
+                          height: 54.w,
+                        )),
                     Padding(padding: EdgeInsets.only(left: 15.w)),
                     isLogin //是否登录
                         ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                  onTap: () =>
-                                      RouterUtil.toNamed(AppRoutes.LoginNew),
-                                  child: Text(
-                                    "吴尊",
-                                    style: TextStyle(
-                                        color: Color(0xff353e4d),
-                                        fontSize: 20.w),
-                                  )),
-                              //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                              Text(
-                                "要读的书太多，没时间写签名",
-                                style: TextStyle(
-                                    color: Color(0xff898a93), fontSize: 10.sp),
-                              )
-                            ],
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              RouterUtil.toNamed(AppRoutes.LoginNew);
-                            },
-                            child: Container(
-                              child: Text("未登录",
-                                  style: TextStyle(
-                                      color: AppColors.c_FFFFEBEB,
-                                      fontSize: 16.sp)),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                            onTap: () =>
+                                RouterUtil.toNamed(AppRoutes.LoginNew),
+                            child: Text(
+                              "吴尊",
+                              style: TextStyle(
+                                  color: Color(0xff353e4d),
+                                  fontSize: 20.w),
                             )),
+                        //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                        Text(
+                          "要读的书太多，没时间写签名",
+                          style: TextStyle(
+                              color: Color(0xff898a93), fontSize: 10.sp),
+                        )
+                      ],
+                    )
+                        : GestureDetector(
+                        onTap: () {
+                          RouterUtil.toNamed(AppRoutes.LoginNew);
+                        },
+                        child: Container(
+                          child: Text("未登录",
+                              style: TextStyle(
+                                  color: AppColors.c_FFFFEBEB,
+                                  fontSize: 16.sp)),
+                        )),
                     Expanded(
                       child: Text(''),
                     ),
@@ -181,7 +192,9 @@ class _MinePageState extends BasePageState<MinePage> {
               children: [
                 buildItemType('我的班级', R.imagesMineClass),
                 buildItemType('我的订单', R.imagesMineOrder),
-                buildItemType('历史作业', R.imagesMineHistoryWork),
+                SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                    ? buildItemType('历史作业', R.imagesMineHistoryWork)
+                    : buildItemType('题目反馈', R.imagesMineHistoryWork),
               ],
             ),
           ),
@@ -218,7 +231,7 @@ class _MinePageState extends BasePageState<MinePage> {
                         width: 20.w,
                         height: 20.w,
                       ),
-                      0),
+                      1),
                   buildItem(
                       "关于我们",
                       Image(
@@ -226,15 +239,7 @@ class _MinePageState extends BasePageState<MinePage> {
                         width: 20.w,
                         height: 20.w,
                       ),
-                      0),
-                  buildItem(
-                      "我的设置",
-                      Image(
-                        image: AssetImage(R.imagesMineSetting),
-                        width: 20.w,
-                        height: 20.w,
-                      ),
-                      4),
+                      2),
                   buildItem(
                       "切换用户",
                       Image(
@@ -243,14 +248,6 @@ class _MinePageState extends BasePageState<MinePage> {
                         height: 20.w,
                       ),
                       5),
-                  buildItem(
-                      "题目反馈",
-                      Image(
-                        image: AssetImage("images/my_icon_setting.png"),
-                        width: 20.w,
-                        height: 20.w,
-                      ),
-                      6),
                 ],
               )),
         ],
@@ -259,23 +256,47 @@ class _MinePageState extends BasePageState<MinePage> {
   }
 
   Widget buildItemType(String menu, String icon) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          icon,
-          height: 31.w,
-          width: 31.w,
-        ),
-        SizedBox(
-          height: 3.w,
-        ),
-        Text(
-          menu,
-          style: textStyle,
-        )
-      ],
+    return GestureDetector(
+      onTap: () {
+        //todo 具体的跳转界面
+
+        switch (menu) {
+          case '我的班级':
+            RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+                arguments: {'isShowAdd': 0});
+            break;
+          case '我的订单':
+            RouterUtil.toNamed(AppRoutes.MyOrderPage);
+            break;
+          case '历史作业':
+            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+                arguments: {"isAssignHomework": false});
+            break;
+          case '题目反馈':
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage);
+            break;
+          default:
+            return null;
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            icon,
+            height: 31.w,
+            width: 31.w,
+          ),
+          SizedBox(
+            height: 3.w,
+          ),
+          Text(
+            menu,
+            style: textStyle,
+          )
+        ],
+      ),
     );
   }
 

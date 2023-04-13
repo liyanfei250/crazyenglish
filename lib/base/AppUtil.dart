@@ -34,10 +34,10 @@ class Util {
     return null;
   }
 
-  static bool isTestMode(){
-    if(Config.env == Env.TEST){
+  static bool isTestMode() {
+    if (Config.env == Env.TEST) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -105,23 +105,25 @@ class Util {
     );
   }
 
-  static Widget buildAnswerState(int state){
+  static Widget buildAnswerState(int state) {
     String text = "未答";
     BoxDecoration decoration;
-    if ( state == 1 ) { // 未答
+    if (state == 1) {
+      // 未答
       text = "未答";
       decoration = BoxDecoration(
           color: AppColors.c_FFF5F7FA,
           borderRadius: BorderRadius.all(Radius.circular(22.w)),
-          border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
-      );
-    } else if(state == 2){   // 答对
+          border: Border.all(color: AppColors.c_FFD6D9DB, width: 1.w));
+    } else if (state == 2) {
+      // 答对
       text = "答对";
       decoration = BoxDecoration(
         color: AppColors.c_FF62C5A2,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
       );
-    } else {  // 答错
+    } else {
+      // 答错
       text = "答错";
       decoration = BoxDecoration(
         color: AppColors.c_FFEC6560,
@@ -139,15 +141,20 @@ class Util {
           decoration: decoration,
         ),
         Padding(padding: EdgeInsets.only(left: 3.w)),
-        Text(text,style: TextStyle(fontWeight: FontWeight.w500,color: AppColors.c_FF878DA6,fontSize: 12.sp),)
+        Text(
+          text,
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColors.c_FF878DA6,
+              fontSize: 12.sp),
+        )
       ],
     );
   }
 
-
-  static Widget buildTopIndicator(){
-    final customWidth01 =
-    CustomSliderWidths(trackWidth: 6, progressBarWidth: 20, shadowWidth: 20);
+  static Widget buildTopIndicator() {
+    final customWidth01 = CustomSliderWidths(
+        trackWidth: 6, progressBarWidth: 20, shadowWidth: 20);
     final customColors01 = CustomSliderColors(
         dotColor: Colors.white.withOpacity(0.8),
         trackColor: HexColor('#FFB648').withOpacity(0.6),
@@ -164,14 +171,14 @@ class Util {
     return Container(
       width: double.infinity,
       height: 224.w,
-      margin: EdgeInsets.only(left: 18.w,right: 18.w),
+      margin: EdgeInsets.only(left: 18.w, right: 18.w),
       decoration: BoxDecoration(
         color: AppColors.c_FFFFFFFF,
-        boxShadow:[
+        boxShadow: [
           BoxShadow(
-            color: AppColors.c_FFD0C5B4,		// 阴影的颜色
-            offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-            blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
+            color: AppColors.c_FFD0C5B4, // 阴影的颜色
+            offset: Offset(0.w, 0.w), // 阴影与容器的距离
+            blurRadius: 3.w, // 高斯的标准偏差与盒子的形状卷积。
             spreadRadius: 1.w,
           ),
         ],
@@ -181,7 +188,7 @@ class Util {
         alignment: Alignment.topCenter,
         children: [
           Container(
-            width:193.w,
+            width: 193.w,
             height: 193.w,
             margin: EdgeInsets.only(top: 30.w),
             child: SleekCircularSlider(
@@ -210,16 +217,34 @@ class Util {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(padding: EdgeInsets.only(top: 31.w)),
-                    Text("正确率",style: TextStyle(fontSize: 14.w,fontWeight: FontWeight.w500,color: AppColors.c_FF898A93),),
-                    Text("6",style: TextStyle(fontSize: 40.w,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
-                    Text("/10题",style: TextStyle(fontSize: 12.w,fontWeight: FontWeight.w500,color: AppColors.c_FF898A93),),
+                    Text(
+                      "正确率",
+                      style: TextStyle(
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.c_FF898A93),
+                    ),
+                    Text(
+                      "6",
+                      style: TextStyle(
+                          fontSize: 40.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.c_FF1B1D2C),
+                    ),
+                    Text(
+                      "/10题",
+                      style: TextStyle(
+                          fontSize: 12.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.c_FF898A93),
+                    ),
                   ],
                 );
               },
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 13.w,right: 13.w),
+            padding: EdgeInsets.only(left: 13.w, right: 13.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -236,12 +261,28 @@ class Util {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(R.imagesResultTimeTips,width: 12.w,height: 12.w,),
+                        Image.asset(
+                          R.imagesResultTimeTips,
+                          width: 12.w,
+                          height: 12.w,
+                        ),
                         Padding(padding: EdgeInsets.only(left: 7.w)),
-                        Text("答题用时：",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
+                        Text(
+                          "答题用时：",
+                          style: TextStyle(
+                              fontSize: 12.w,
+                              color: AppColors.c_FFB3B7C6,
+                              fontWeight: FontWeight.w500),
+                        )
                       ],
                     ),
-                    Text("08:41",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
+                    Text(
+                      "08:41",
+                      style: TextStyle(
+                          fontSize: 12.w,
+                          color: AppColors.c_FFB3B7C6,
+                          fontWeight: FontWeight.w500),
+                    )
                   ],
                 ),
                 Padding(padding: EdgeInsets.only(top: 9.w)),
@@ -251,12 +292,28 @@ class Util {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(R.imagesResultVectorTips,width: 12.w,height: 12.w,),
+                        Image.asset(
+                          R.imagesResultVectorTips,
+                          width: 12.w,
+                          height: 12.w,
+                        ),
                         Padding(padding: EdgeInsets.only(left: 7.w)),
-                        Text("习题类型：",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
+                        Text(
+                          "习题类型：",
+                          style: TextStyle(
+                              fontSize: 12.w,
+                              color: AppColors.c_FFB3B7C6,
+                              fontWeight: FontWeight.w500),
+                        )
                       ],
                     ),
-                    Text("Module1 Unit3 听力",style: TextStyle(fontSize: 12.w,color: AppColors.c_FFB3B7C6 , fontWeight: FontWeight.w500),)
+                    Text(
+                      "Module1 Unit3 听力",
+                      style: TextStyle(
+                          fontSize: 12.w,
+                          color: AppColors.c_FFB3B7C6,
+                          fontWeight: FontWeight.w500),
+                    )
                   ],
                 )
               ],
@@ -267,7 +324,8 @@ class Util {
     );
   }
 
-  static  Widget buildCheckBox(GestureTapCallback callback,{bool chooseEnable = false}){
+  static Widget buildCheckBox(GestureTapCallback callback,
+      {bool chooseEnable = false}) {
     var choose = chooseEnable.obs;
     return InkWell(
       onTap: () {
@@ -286,30 +344,31 @@ class Util {
                 Color(0xffec5f2a),
               ]),
           borderRadius: BorderRadius.all(Radius.circular(6.w)),
-          boxShadow:[
+          boxShadow: [
             BoxShadow(
-              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
-              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
-              blurRadius: 6.w,							// 高斯的标准偏差与盒子的形状卷积。
+              color: Color(0xffee754f).withOpacity(0.25), // 阴影的颜色
+              offset: Offset(0.w, 4.w), // 阴影与容器的距离
+              blurRadius: 6.w, // 高斯的标准偏差与盒子的形状卷积。
               spreadRadius: 0.w,
             ),
           ],
         ),
-        child: Obx(()=>Visibility(
-          visible: choose.value,
-          child: Image.asset(
-            R.imagesIconChooseCenter,
-            width: 12.w,
-            height: 12.w,
-          ),
-        )),
+        child: Obx(() => Visibility(
+              visible: choose.value,
+              child: Image.asset(
+                R.imagesIconChooseCenter,
+                width: 12.w,
+                height: 12.w,
+              ),
+            )),
       ),
     );
   }
 
-  static  Widget buildHomeworkNormalBtn(GestureTapCallback callback,String text,{bool enable = true}){
+  static Widget buildHomeworkNormalBtn(GestureTapCallback callback, String text,
+      {bool enable = true}) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         callback.call();
       },
       child: Container(
@@ -321,24 +380,26 @@ class Util {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                enable? Color(0xfff19e59):Color(0x80f19e59),
-                enable? Color(0xffec5f2a):Color(0x80ec5f2a),
+                enable ? Color(0xfff19e59) : Color(0x80f19e59),
+                enable ? Color(0xffec5f2a) : Color(0x80ec5f2a),
               ]),
           borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
-          boxShadow:[
+          boxShadow: [
             BoxShadow(
-              color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
-              offset: Offset(0.w, 4.w),						// 阴影与容器的距离
-              blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
+              color: Color(0xffee754f).withOpacity(0.25), // 阴影的颜色
+              offset: Offset(0.w, 4.w), // 阴影与容器的距离
+              blurRadius: 8.w, // 高斯的标准偏差与盒子的形状卷积。
               spreadRadius: 0.w,
             ),
           ],
         ),
-        child: Text("$text",style: TextStyle(color: Colors.white),),
+        child: Text(
+          "$text",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
-
 
   static Widget buildWhiteWidget(BuildContext context) {
     return GestureDetector(
@@ -488,7 +549,7 @@ class Util {
     }
     return params;
   }*/
-  static Map<String, String> getHeaderParams()  {
+  static Map<String, String> getHeaderParams() {
     var appname = "crazyenglish";
     Map<String, String> params = {
       "Appname": appname,
@@ -588,9 +649,22 @@ class Util {
   }
 
   static bool isLoginPassword(String input) {
-    //RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,20}$");
-    // RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
-    RegExp mobile = new RegExp(r"^(?=.[A-Za-z])(?=.\d)(?=.[@!%*#?&])[A-Za-z\d@!!%#?&]{8,20}$");
-    return mobile.hasMatch(input);
+    RegExp passwordRegExp =
+        RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\d\s])[A-Za-z\d\W]{8,20}$');
+    return passwordRegExp.hasMatch(input);
+  }
+
+  static String formatPhoneNumber(String phoneNumber) {
+    if (phoneNumber.length <= 7) {
+      return phoneNumber;
+    }
+    String firstThree = phoneNumber.substring(0, 3);
+    String lastFour = phoneNumber.substring(phoneNumber.length - 4);
+    return '$firstThree****$lastFour';
+  }
+
+  static bool isPhoneNumberInChina(String phoneNumber) {
+    RegExp chinaPhoneNumberRegExp = RegExp(r'^1\d{10}$');
+    return chinaPhoneNumberRegExp.hasMatch(phoneNumber);
   }
 }

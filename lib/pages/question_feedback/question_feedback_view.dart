@@ -16,7 +16,13 @@ import '../../r.dart';
 import '../../utils/colors.dart';
 
 class QuestionFeedbackPage extends BasePage {
-  const QuestionFeedbackPage({Key? key}) : super(key: key);
+  bool isFeedback = false;
+
+  QuestionFeedbackPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      isFeedback = Get.arguments['isFeedback'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToQuestionFeedbackPageState();
@@ -51,7 +57,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         backgroundColor: AppColors.c_FFFFFFFF,
         centerTitle: true,
         title: Text(
-          '题目反馈',
+          widget.isFeedback ? '题目反馈' : '意见反馈',
           style: TextStyle(
             color: AppColors.c_FF32374E,
             fontSize: 18,
@@ -232,7 +238,6 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         crossAxisCount: 4, //每行三个
         crossAxisSpacing: 14.w,
         childAspectRatio: 1.0, //宽高比1：1
-
       ),
       itemBuilder: (context, index) {
         if (_imageFileList.length < maxFileCount) {

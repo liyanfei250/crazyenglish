@@ -80,7 +80,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
                         child: Row(
                           children: [
                             Image.asset(
-                              R.imagesStudentNotifyIc,
+                              R.imagesClassMyClassBefore,
                               width: 10.w,
                               height: 10.w,
                             ),
