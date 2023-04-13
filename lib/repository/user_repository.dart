@@ -29,7 +29,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getLogin, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     LoginResponse loginResponse =
@@ -50,7 +50,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getLogin, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Util.toast(baseResp.msg ?? "");
+      Util.toast(baseResp.message ?? "");
     }
     LoginResponse loginResponse =
         LoginResponse.fromJson(baseResp.getReturnData());
@@ -65,7 +65,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getLoginNew, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Util.toast(baseResp.msg ?? "");
+      Util.toast(baseResp.message ?? "");
     }
     LoginCodeResponse loginResponse =
         LoginCodeResponse.fromJson(baseResp.getReturnData());
@@ -77,10 +77,16 @@ class UserRepository {
   }
 
   Future<LoginNewResponse> passwordLogin(Map<String, String> req) async {
+    req.addAll({
+      "grant_type":"password",
+      "client_id":"app",
+      "client_secret":"a119ed01622927d54cd67e10cbb9f7ad",
+      "clientType":"0",
+      "type":"0"});
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getPsdLoginNew, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      Util.toast(baseResp.msg ?? "");
+      Util.toast(baseResp.message ?? "");
     }
     LoginNewResponse loginResponse =
         LoginNewResponse.fromJson(baseResp.getReturnData());
@@ -95,7 +101,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.get, Api.getSendCode + phone);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     SendCodeResponse sendCodeResponse =
@@ -111,7 +117,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getSendAuthCodeNew, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     SendCodeResponseNew sendCodeResponse =
@@ -128,7 +134,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getResetPsdNew, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     SendCodeResponseNew sendCodeResponse =
@@ -145,7 +151,7 @@ class UserRepository {
     BaseResp baseResp = await NetManager.getInstance()!
         .request(Method.post, Api.getChangeGrade, data: req);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     SendCodeResponseNew sendCodeResponse =
@@ -162,7 +168,7 @@ class UserRepository {
     BaseResp baseResp =
         await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     UserInfoResponse sendCodeResponse =

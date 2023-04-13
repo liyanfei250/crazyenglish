@@ -3,16 +3,16 @@ import 'package:dio/dio.dart';
 /// <BaseResp<T> 返回 status code msg data.
 class BaseResp {
   num? code;
-  String? msg;
+  String? message;
   dynamic _returnData;
 
-  BaseResp(this.code, this.msg);
+  BaseResp(this.code, this.message);
 
   @override
   String toString() {
     StringBuffer sb = new StringBuffer('{');
     sb.write(",\"code\":$code");
-    sb.write(",\"msg\":\"$msg\"");
+    sb.write(",\"msg\":\"$message\"");
     sb.write('}');
     return sb.toString();
   }
@@ -28,7 +28,7 @@ class BaseResp {
 
   BaseResp.fromJson(dynamic json) {
     code = json['code'];
-    msg = json['msg']??"";
+    message = json['message']??"";
   }
 }
 

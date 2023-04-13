@@ -13,7 +13,7 @@ class ErrorNoteRepository {
         Method.get, Api.getErrotList,
         data: req, options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if (baseResp.getReturnData() != null) {
       errorTest.ErrorNoteResponse errorTestListResponse =
@@ -31,7 +31,7 @@ class ErrorNoteRepository {
         Api.getErrotListDetail,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if (baseResp.getReturnData() != null) {
       errorDetail.WeekDetailResponse weekTestDetailResponse =
@@ -50,7 +50,7 @@ class ErrorNoteRepository {
         Api.getPracticerecords,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if (baseResp.getReturnData() != null) {
       PracticeListResponse practiceListResponse =
@@ -69,7 +69,7 @@ class ErrorNoteRepository {
         Api.getPracticerecordsDetail,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if (baseResp.getReturnData() != null) {
       errorDetail.WeekDetailResponse practiceListResponse =

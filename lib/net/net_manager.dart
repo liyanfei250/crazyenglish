@@ -28,7 +28,7 @@ class Method {
 }
 
 class ResponseCode {
-  static const int status_success = 1;
+  static const int status_success = 0;
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
@@ -179,8 +179,8 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        Map<String, dynamic> _dataMap = _decodeData(response)!;
-        BaseResp baseResp = BaseResp.fromJson(_dataMap);
+        // Map<String, dynamic> _dataMap = _decodeData(response)!;
+        BaseResp baseResp = BaseResp.fromJson(response.data);
 
         if (baseResp.code == HttpStatus.unauthorized) {
           Util.toastLong("登录信息已失效，请重新登录");
@@ -188,10 +188,10 @@ class NetManager {
           Util.getHeader();
           RouterUtil.offAndToNamed(AppRoutes.LoginNew);
         } else if(baseResp.code == HTTP_CODE.ERROR){
-          Util.toastLong(baseResp.msg??"服务出现问题");
+          Util.toastLong(baseResp.message??"服务出现问题");
         }
 
-        baseResp.setReturnData(_dataMap);
+        baseResp.setReturnData(response.data);
         return baseResp;
 
       } catch (e) {

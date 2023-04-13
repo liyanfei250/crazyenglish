@@ -28,7 +28,7 @@ class PaperCategory extends BaseResp{
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['code'] = code;
-    map['msg'] = msg;
+    map['message'] = message;
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }

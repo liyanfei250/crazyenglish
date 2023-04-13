@@ -20,7 +20,7 @@ class OtherRepository{
         .request(Method.get, Api.getDataGroupDetail+code,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
       DatagroupDetailResponse datagroupDetailResponse = DatagroupDetailResponse.fromJson(baseResp.getReturnData());
