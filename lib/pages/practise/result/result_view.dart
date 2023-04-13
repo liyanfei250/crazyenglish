@@ -9,6 +9,8 @@ import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../question/choise_question.dart';
 import '../question/listen_question.dart';
@@ -82,63 +84,147 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           child: Column(
             children: [
               buildTransparentAppBar("widget.commitResponse!.directory"),
-              Util.buildTopIndicator(),
-              Expanded(child: Container(
-                margin: EdgeInsets.only(top: 8.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow:[
-                    BoxShadow(
-                      color: AppColors.c_26D0C5B4,		// 阴影的颜色
-                      offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                      blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
-                      spreadRadius: 1.w,
+              Expanded(child: NestedScrollView(
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return [SliverToBoxAdapter(
+                      child: Util.buildTopIndicator(),
+                    )];
+                  },
+                  body: Container(
+                    margin: EdgeInsets.only(top: 8.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                          color: AppColors.c_26D0C5B4,		// 阴影的颜色
+                          offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+                          blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
+                          spreadRadius: 1.w,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(padding: EdgeInsets.only(top: 24.w)),
-                    Container(
-                      padding: EdgeInsets.only(left: 18.w,right: 18.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 24.w)),
+                        Container(
+                          padding: EdgeInsets.only(left: 18.w,right: 18.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
-                              Padding(padding: EdgeInsets.only(left: 9.w)),
-                              Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
+                                  Padding(padding: EdgeInsets.only(left: 9.w)),
+                                  Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                                ],
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Util.buildAnswerState(1),
+                                  Util.buildAnswerState(2),
+                                  Util.buildAnswerState(3),
+                                ],
+                              )
                             ],
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Util.buildAnswerState(1),
-                              Util.buildAnswerState(2),
-                              Util.buildAnswerState(3),
-                            ],
-                          )
-                        ],
-                      ),
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 24.w)),
+                        // _buildTabBar(),
+                        Container(
+                          height: 0.5.w,
+                          width: double.infinity,
+                          color: AppColors.c_FFD2D5DC,
+                        ),
+                        Expanded(child: buildQuestionResult(widget.testDetailResponse!.data![widget.parentIndex]),)
+                      ],
                     ),
-                    Padding(padding: EdgeInsets.only(top: 24.w)),
-                    // _buildTabBar(),
-                    Container(
-                      height: 0.5.w,
-                      width: double.infinity,
-                      color: AppColors.c_FFD2D5DC,
-                    ),
-                    buildQuestionResult(widget.testDetailResponse!.data![widget.parentIndex]),
-                  ],
-                ),
-              ))
+                  ))),
+
+              buildSeparatorBuilder(1),
             ],
           ),
         ),
       ),);
+  }
+
+  Widget buildSeparatorBuilder(num question){
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.only(left: 18.w,right: 18.w,bottom: 18.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: (){
+                  // 开始作答逻辑
+                  RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                      arguments: {"detail": widget.testDetailResponse,
+                        "uuid":"dd",
+                        "parentIndex":widget.parentIndex,
+                        "childIndex":0,
+                      });
+                },
+                child: Container(
+                  width: 134.w,
+                  height: 35.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xfff19e59),
+                          Color(0xffec5f2a),
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                  ),
+                  child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+                  // 开始作答逻辑 跳转到下一题
+                  if(widget.testDetailResponse!.data!.length > widget.parentIndex+1){
+                    RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                        arguments: {"detail": widget.testDetailResponse,
+                          "uuid":"dd",
+                          "parentIndex":widget.parentIndex+1,
+                          "childIndex":0,
+                        });
+                  }else{
+                    Util.toast("已经是最后一题");
+                  }
+
+                },
+                child: Container(
+                  width: 134.w,
+                  height: 35.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xfff19e59),
+                          Color(0xffec5f2a),
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                  ),
+                  child: Text("下一章",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                ),
+              ),
+            ],
+          ),
+
+        ],
+      ),
+    );
   }
 
   // Widget _buildTabBar() => TabBar(

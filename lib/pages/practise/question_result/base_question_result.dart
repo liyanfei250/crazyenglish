@@ -69,7 +69,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   List<Widget> questionList = [];
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
-  final logic = Get.find<AnsweringLogic>();
+  // final logic = Get.find<AnsweringLogic>();
   @override
   void initState(){
     super.initState();
@@ -229,16 +229,16 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     }else{
       questionList.add(const SizedBox());
     }
-    if(logic!=null){
-      logic.initPageStr("1/${questionList.length}");
-    }
+    // if(logic!=null){
+    //   logic.initPageStr("1/${questionList.length}");
+    // }
     return PageView(
       controller: pageController,
       physics: _neverScroll,
       onPageChanged: (int value){
-        if(logic!=null){
-          logic.updatePageStr("${(value+1)}/${questionList.length}");
-        }
+        // if(logic!=null){
+        //   logic.updatePageStr("${(value+1)}/${questionList.length}");
+        // }
       },
       children: questionList,
     );
@@ -276,16 +276,16 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
       }
     }
 
-    if(logic!=null){
-      logic.initPageStr("1/${questionList.length}");
-    }
+    // if(logic!=null){
+    //   logic.initPageStr("1/${questionList.length}");
+    // }
     return PageView(
       controller: pageController,
       physics: _neverScroll,
       onPageChanged: (int value){
-        if(logic!=null){
-          logic.updatePageStr("${(value+1)}/${questionList.length}");
-        }
+        // if(logic!=null){
+        //   logic.updatePageStr("${(value+1)}/${questionList.length}");
+        // }
       },
       children: questionList,
     );

@@ -105,7 +105,7 @@ class NetManager {
 
   static BaseOptions getDefOptions() {
     // BaseOptions options = new BaseOptions();
-    // options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
+    // options.contentType = ContentType.parse("application/json").toString();
     // options.connectTimeout = 1000 * 5;
     // options.receiveTimeout = 1000 * 10;
     return BaseOptions(
@@ -113,8 +113,7 @@ class NetManager {
       receiveTimeout: 60000,
       sendTimeout: 60 * 1000,
       method: Method.post,
-      contentType:
-          ContentType.parse("application/x-www-form-urlencoded").toString(),
+      contentType: ContentType.json.toString(),
     );
   }
 
@@ -123,8 +122,7 @@ class NetManager {
       options = new Options(method: method);
     }else{
       if((options!.contentType??"").isEmpty){
-        options.contentType =
-            ContentType.parse("application/x-www-form-urlencoded").toString();
+        options.contentType = ContentType.json.toString();
       }
     }
     return options;
@@ -151,6 +149,7 @@ class NetManager {
     try {
       if (method == Method.get) {
         response = await _dio.get(path,
+            options: _checkOptions(method, options),
             queryParameters: data, cancelToken: cancelToken);
       } else {
         response = await _dio.request(path,
