@@ -112,6 +112,6 @@ class C{
 }
 
 class HTTP_CODE{
-  static const int OK = 1;
-  static const int ERROR = 0;
+  static const int OK = 0;
+  static const int ERROR = 1;
 }

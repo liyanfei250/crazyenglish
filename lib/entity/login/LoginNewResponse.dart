@@ -4,35 +4,35 @@
 
 class LoginNewResponse {
   int? _code;
-  String? _msg;
-  Data? _data;
+  String? _message;
+  Data? _obj;
 
   int? get code => _code;
-  String? get msg => _msg;
-  Data? get data => _data;
+  String? get msg => _message;
+  Data? get data => _obj;
 
   LoginNewResponse({
     int? code,
     String? msg,
     Data? data}){
     _code = code;
-    _msg = msg;
-    _data = data;
+    _message = msg;
+    _obj = data;
   }
 
   LoginNewResponse.fromJson(dynamic json) {
     print("response =="+json.toString());
     _code = json['code'];
-    _msg = json['msg'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _message = json['msg'];
+    _obj = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['code'] = _code;
-    map['msg'] = _msg;
-    if (_data != null) {
-      map['data'] = _data?.toJson();
+    map['msg'] = _message;
+    if (_obj != null) {
+      map['obj'] = _obj?.toJson();
     }
     return map;
   }
@@ -56,12 +56,12 @@ class Data {
 
   Data.fromJson(dynamic json) {
     print("response =="+json.toString());
-    _accessToken = json['token'];
+    _accessToken = json['access_token'];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map['token'] = _accessToken;
+    map['access_token'] = _accessToken;
     return map;
   }
 

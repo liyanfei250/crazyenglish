@@ -21,7 +21,7 @@ class WeekRepository{
         .request(Method.get, Api.getWeekPaperList,
         data: req,options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
       WeekPaperResponse weekPaperResponse = WeekPaperResponse.fromJson(baseResp.getReturnData());
@@ -37,7 +37,7 @@ class WeekRepository{
         .request(Method.get, Api.getWeekPaperCategory+periodicaId,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
 
@@ -54,7 +54,7 @@ class WeekRepository{
         .request(Method.get, Api.getWeekPaperDetail+id,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
 

@@ -2,8 +2,8 @@ import '../config.dart';
 
 class Api {
   static String getUser = Config.ApiHost + "/user.site";
-  static String getLogin = Config.ApiHost + "/crazy-basic-auth/oauth/token";
-  static String getPsdLoginNew = "http://192.168.0.155/app/user/login";
+  static String getLogin = Config.ApiHost + "/oauth/token";
+  static String getPsdLoginNew = Config.ApiHost + "/oauth/token";
   static String getLoginNew = "http://192.168.0.155/app/user/login/sms";
   static String getResetPsdNew = "http://192.168.0.155/app/user/reset/sms";
 
@@ -72,5 +72,31 @@ class Api {
   static String getPracticerecords = Config.ApiHost+ "/app/practicerecords/list/date";
   //获取练习记录详情
   static String getPracticerecordsDetail = Config.ApiHost+ "/app/practicerecords/exercises";
+
+// 练习接口
+  // 周报列表接口
+  // 周报筛选列表接口
+  // 周报目录列表接口
+  // 题目详情接口（各种题型的数据定义，统计板块的区分）
+  // 金刚区接口
+  // 金刚区列表接口
+  // 金刚区筛选接口
+  // 期刊成绩接口
+  // 开始作答接口？
+  // 是否有上次未完成接口？
+  // 提交答案接口（各种题型包括写作题的数据上传格式定义）
+  // 结果页列表接口
+  // 题目反馈增加接口
+  // 题目反馈查询接口
+  // 收藏/取消收藏题目接口
+// 复习接口
+  // 复习首页接口调试
+  // 练习记录接口数据
+  // 错题本tab接口
+  // 错题本已订正、未订正列表接口
+  // 收藏题目最近搜索历史接口
+  // 收藏题目搜索接口
+  // 收藏列表接口
+
 
 }

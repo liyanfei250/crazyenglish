@@ -28,7 +28,7 @@ class Method {
 }
 
 class ResponseCode {
-  static const int status_success = 1;
+  static const int status_success = 0;
   static const int status_send_code_countdown = 9772; //倒计时时间
   static const int status_send_code_error = 9724; //验证码超时
   static const int status_sys_error = -1; //验证码超时
@@ -105,7 +105,7 @@ class NetManager {
 
   static BaseOptions getDefOptions() {
     // BaseOptions options = new BaseOptions();
-    // options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
+    // options.contentType = ContentType.parse("application/json").toString();
     // options.connectTimeout = 1000 * 5;
     // options.receiveTimeout = 1000 * 10;
     return BaseOptions(
@@ -113,8 +113,7 @@ class NetManager {
       receiveTimeout: 60000,
       sendTimeout: 60 * 1000,
       method: Method.post,
-      contentType:
-          ContentType.parse("application/x-www-form-urlencoded").toString(),
+      contentType: ContentType.json.toString(),
     );
   }
 
@@ -123,8 +122,7 @@ class NetManager {
       options = new Options(method: method);
     }else{
       if((options!.contentType??"").isEmpty){
-        options.contentType =
-            ContentType.parse("application/x-www-form-urlencoded").toString();
+        options.contentType = ContentType.json.toString();
       }
     }
     return options;
@@ -151,6 +149,7 @@ class NetManager {
     try {
       if (method == Method.get) {
         response = await _dio.get(path,
+            options: _checkOptions(method, options),
             queryParameters: data, cancelToken: cancelToken);
       } else {
         response = await _dio.request(path,
@@ -179,8 +178,8 @@ class NetManager {
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        Map<String, dynamic> _dataMap = _decodeData(response)!;
-        BaseResp baseResp = BaseResp.fromJson(_dataMap);
+        // Map<String, dynamic> _dataMap = _decodeData(response)!;
+        BaseResp baseResp = BaseResp.fromJson(response.data);
 
         if (baseResp.code == HttpStatus.unauthorized) {
           Util.toastLong("登录信息已失效，请重新登录");
@@ -188,10 +187,10 @@ class NetManager {
           Util.getHeader();
           RouterUtil.offAndToNamed(AppRoutes.LoginNew);
         } else if(baseResp.code == HTTP_CODE.ERROR){
-          Util.toastLong(baseResp.msg??"服务出现问题");
+          Util.toastLong(baseResp.message??"服务出现问题");
         }
 
-        baseResp.setReturnData(_dataMap);
+        baseResp.setReturnData(response.data);
         return baseResp;
 
       } catch (e) {

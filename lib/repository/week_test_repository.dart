@@ -36,7 +36,7 @@ class WeekTestRepository{
         .request(Method.get, Api.getWeeklyList,
         data: req,options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
       weekTest.WeekListResponse weekTestListResponse = weekTest.WeekListResponse.fromJson(baseResp.getReturnData());
@@ -60,7 +60,7 @@ class WeekTestRepository{
         .request(data:{"uuid":periodicaId},Method.get, Api.getWeeklyDirectory,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
 
@@ -85,7 +85,7 @@ class WeekTestRepository{
         .request(data:{"uuid":id},Method.get, Api.getWeekDetail,
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
 
@@ -106,7 +106,7 @@ class WeekTestRepository{
     //     .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
     //     options: Options(method: Method.post,contentType: "application/json; charset=utf-8"));
     // if (baseResp.code != ResponseCode.status_success) {
-    //   return Future.error(baseResp.msg!);
+    //   return Future.error(baseResp.message!);
     // }
     // if(baseResp.getReturnData() !=null){
     //   CommitResponse commitResponse = CommitResponse.fromJson(baseResp.getReturnData());
@@ -121,7 +121,7 @@ class WeekTestRepository{
         .request(Method.get, Api.getAppVersion+(Platform.isAndroid? "1":"2"),
         options: Options(method: Method.get));
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
     if(baseResp.getReturnData() !=null){
       CheckUpdateResponse checkUpdateResp = CheckUpdateResponse.fromJson(baseResp.getReturnData());
@@ -136,7 +136,7 @@ class WeekTestRepository{
     BaseResp baseResp =
     await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
     if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.msg!);
+      return Future.error(baseResp.message!);
     }
 
     UserInfoResponse sendCodeResponse =

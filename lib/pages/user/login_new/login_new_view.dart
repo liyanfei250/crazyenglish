@@ -137,7 +137,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putString(
             BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         Util.getHeader();
-        logic.getUserinfo();
+        // logic.getUserinfo();
+        RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {
         Util.toast("登录失败");
       }
