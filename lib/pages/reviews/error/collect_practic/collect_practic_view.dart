@@ -7,6 +7,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../base/widgetPage/base_page_widget.dart';
 import '../../../../r.dart';
+import '../../../../routes/app_pages.dart';
+import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/search_bar.dart';
 import 'collect_practic_logic.dart';
@@ -304,9 +306,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory);
         //todo 点击跳转到新的界面
         Util.toast("跳转到目录页");
+        // RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
       },
       child: listitemBigBg(),
     );
