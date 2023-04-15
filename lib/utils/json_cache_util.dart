@@ -35,6 +35,11 @@ class JsonCacheManageUtils{
   static final int ResultListResponse = 0x15;
 
 
+  static final int ReviewHomeResponse = 0x001;//复习界面
+  static final int PracRecordInfoResponse = 0x002;//练习记录
+  static final int ErrorNateTabList = 0x003;//错题本tab
+
+
   // String contentJson;
 
   // 加载缓存

@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/review/ReviewHomeDetail.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import 'review_logic.dart';
 
@@ -21,6 +23,31 @@ class ReviewPage extends StatefulWidget {
 class _ReviewPageState extends State<ReviewPage> {
   final logic = Get.put(ReviewLogic());
   final state = Get.find<ReviewLogic>().state;
+  ReviewHomeDetail? paperDetail;
+  @override
+  void initState() {
+    super.initState();
+
+    logic.addListenerId(GetBuilderIds.getReviewHomeDate,(){
+      if(state.paperDetail!=null){
+        paperDetail = state.paperDetail;
+        /*if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,10 +228,13 @@ class _ReviewPageState extends State<ReviewPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildItem((){
+                  _buildItem(() {
                     RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
                         arguments: {'type', 0});
-                  },title: "收藏题目19个",subTitle: "复习题目7个",icon: R.imagesReviewFavorQuestionIcon),
+                  },
+                      title: "收藏题目19个",
+                      subTitle: "复习题目7个",
+                      icon: R.imagesReviewFavorQuestionIcon),
                 ],
               ),
             ),
@@ -239,17 +269,27 @@ class _ReviewPageState extends State<ReviewPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildItem((){
-                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage,);
-                  },title: "历史作业",subTitle: "历史作业17套",icon: R.imagesReviewHistoryHomework),
+                  _buildItem(() {
+                    RouterUtil.toNamed(
+                      AppRoutes.PractiseHistoryPage,
+                    );
+                  },
+                      title: "历史作业",
+                      subTitle: "历史作业17套",
+                      icon: R.imagesReviewHistoryHomework),
                   Divider(
                     color: AppColors.c_FFD2D5DC,
                     indent: 15.w,
                     endIndent: 15.w,
                   ),
-                  _buildItem((){
-                    RouterUtil.toNamed(AppRoutes.PractiseHistoryPage,);
-                  },title: "练习记录",subTitle: "练习记录27条",icon: R.imagesReviewPractiseRecord),
+                  _buildItem(() {
+                    RouterUtil.toNamed(
+                      AppRoutes.PractiseHistoryPage,
+                    );
+                  },
+                      title: "练习记录",
+                      subTitle: "练习记录27条",
+                      icon: R.imagesReviewPractiseRecord),
                 ],
               ),
             ),
@@ -259,8 +299,8 @@ class _ReviewPageState extends State<ReviewPage> {
     ));
   }
 
-
-  Widget _buildItem(GestureTapCallback onTap,{String? icon, String? title,String? subTitle}){
+  Widget _buildItem(GestureTapCallback onTap,
+      {String? icon, String? title, String? subTitle}) {
     return Container(
       height: 78.w,
       padding: EdgeInsets.only(left: 20.w, right: 25.w),
@@ -311,8 +351,6 @@ class _ReviewPageState extends State<ReviewPage> {
       ),
     );
   }
-
-
 
   @override
   void dispose() {

@@ -73,6 +73,7 @@ class Api {
   //获取练习记录详情
   static String getPracticerecordsDetail = Config.ApiHost+ "/app/practicerecords/exercises";
 
+
 // 练习接口
   // 周报列表接口
   // 周报筛选列表接口
@@ -98,5 +99,12 @@ class Api {
   // 收藏题目搜索接口
   // 收藏列表接口
 
+
+  //获取复习首页的信息接口
+  static String getReviewHomeDetail = Config.ApiHost+ "/";
+  // 练习记录接口数据
+  static String getPracticeRecordList = Config.ApiHost+ "/";
+  // 错题本tab接口
+  static String getErrorNoteTabDateList = Config.ApiHost+ "/";
 
 }
