@@ -48,13 +48,7 @@ class GetBuilderIds {
   static const String getSearchRecord = "getSearchRecord";
   static const String getCollectListDate = "getCollectListDate";
   static const String toCollectDate = "toCollectDate";
-<<<<<<< HEAD
-  static const String toCancellCollectDate = "toCollectDate";
   static const String getHomeDateList = "getHomeDateList";
-=======
->>>>>>> adf425863684707b7d7e0237ee54b6ca8e6c32d9
-
-
 
 }
 
