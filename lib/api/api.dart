@@ -127,4 +127,8 @@ class Api {
 
   // 收藏取消
   static String toCancellCollect = Config.ApiHost + "/";
+
+  // 首页金刚区列表
+  static String getHomeList = Config.ApiHost + "/";
+
 }

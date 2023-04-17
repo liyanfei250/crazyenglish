@@ -1,4 +1,3 @@
-
 import 'dart:core';
 
 import 'package:crazyenglish/base/common.dart';
@@ -7,8 +6,7 @@ import 'dart:convert' as convert;
 import 'sp_util.dart';
 
 // 缓存查询 Key = "cache:"+dataType+":"+userId+":"+labelId;
-class JsonCacheManageUtils{
-
+class JsonCacheManageUtils {
   // dataType
   static final int WeekPaperResponse = 0x01;
   static final int PaperCategory = 0x02;
@@ -34,41 +32,40 @@ class JsonCacheManageUtils{
   static final int QuestionListResponse = 0x14;
   static final int ResultListResponse = 0x15;
 
-
-  static final int ReviewHomeResponse = 0x001;//复习界面
-  static final int PracRecordInfoResponse = 0x002;//练习记录
-  static final int ErrorNateTabList = 0x003;//错题本tab
-  static final int SearchRecordDate = 0x004;//收藏筛选
-  static final int SearchCollectListDate = 0x005;//收藏列表
-
+  static final int ReviewHomeResponse = 0x001; //复习界面
+  static final int PracRecordInfoResponse = 0x002; //练习记录
+  static final int ErrorNateTabList = 0x003; //错题本tab
+  static final int SearchRecordDate = 0x004; //收藏筛选
+  static final int SearchCollectListDate = 0x005; //收藏列表
+  static final int HomeListDate = 0x006; //首页金刚区
 
   // String contentJson;
 
   // 加载缓存
-  static Future<Map?> getCacheData(int dataType,{String? labelId}) async{
-    String key = makeKey(dataType,lableId: labelId);
+  static Future<Map?> getCacheData(int dataType, {String? labelId}) async {
+    String key = makeKey(dataType, lableId: labelId);
     String result = await SpUtil.getString(key);
-    if(!ObjectUtil.isEmpty(result)){
-      Map<String,dynamic>? map = convert.jsonDecode(result);
+    if (!ObjectUtil.isEmpty(result)) {
+      Map<String, dynamic>? map = convert.jsonDecode(result);
       return map;
     }
     return null;
   }
 
   // 存储数据
-  static void saveCacheData(int dataType,Map map,{String? labelId}){
-    String key = makeKey(dataType,lableId: labelId);
+  static void saveCacheData(int dataType, Map map, {String? labelId}) {
+    String key = makeKey(dataType, lableId: labelId);
     String data = convert.jsonEncode(map);
     SpUtil.putString(key, data);
   }
 
-  static String makeKey(int dataType,{String? lableId}){
+  static String makeKey(int dataType, {String? lableId}) {
     String userId = SpUtil.getString(BaseConstant.userId);
     String key;
-    if(lableId==null){
-      key = "cache:"+dataType.toString()+":"+userId+":";
-    }else{
-      key = "cache:"+dataType.toString()+":"+userId+":"+lableId;
+    if (lableId == null) {
+      key = "cache:" + dataType.toString() + ":" + userId + ":";
+    } else {
+      key = "cache:" + dataType.toString() + ":" + userId + ":" + lableId;
     }
     return key;
   }

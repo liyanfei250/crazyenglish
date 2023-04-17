@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../entity/error_note_response.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
@@ -47,6 +48,27 @@ class _IndexPageState extends BasePageState<IndexPage>
   @override
   void initState() {
     super.initState();
+
+    logic.getHomeList();
+    logic.addListenerId(GetBuilderIds.getHomeDateList, () {
+      if (state.paperDetail != null) {
+        /*paperDetail = state.paperDetail;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
   }
 
   @override
