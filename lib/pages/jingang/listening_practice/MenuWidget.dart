@@ -64,6 +64,7 @@ class _MenuWidgetState extends State<MenuWidget>
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(

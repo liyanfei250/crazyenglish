@@ -41,6 +41,14 @@ class GetBuilderIds {
   static const String updateCheckBox = "updateCheckBox";
   static const String getExamper = "getExamper";
 
+  //复习
+  static const String getReviewHomeDate = "getReviewHomeDate";
+  static const String getPracticeRecordList = "getPracticeRecordList";
+  static const String getErrorNoteTabDate = "getErrorNoteTabDate";
+  static const String getSearchRecord = "getSearchRecord";
+  static const String getCollectListDate = "getCollectListDate";
+  static const String toCollectDate = "toCollectDate";
+
 
 
 }

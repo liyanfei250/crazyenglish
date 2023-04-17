@@ -54,24 +54,33 @@ class Api {
   static String getMobile =
       "https://api.verification.jpush.cn/v1/web/loginTokenVerify";
 
-
   // 胡一旭接口
   // 周报列表
-  static String getWeeklyList = Config.ApiHost+"/app/weekly/list";
+  static String getWeeklyList = Config.ApiHost + "/app/weekly/list";
+
   // 周报目录
-  static String getWeeklyDirectory = Config.ApiHost+"/app/weekly/directory/tree";
+  static String getWeeklyDirectory =
+      Config.ApiHost + "/app/weekly/directory/tree";
+
   // 周报详情
-  static String getWeekDetail = Config.ApiHost+ "/app/weekly/associate";
+  static String getWeekDetail = Config.ApiHost + "/app/weekly/associate";
+
   // 提交答案接口
-  static String postWeekCommit = Config.ApiHost+ "/app/weekly/commit";
+  static String postWeekCommit = Config.ApiHost + "/app/weekly/commit";
+
   //根据用户错题本
-  static String getErrotList = Config.ApiHost+ "/app/exercises/error/weekly";
+  static String getErrotList = Config.ApiHost + "/app/exercises/error/weekly";
+
   //错题本item详情
-  static String getErrotListDetail = Config.ApiHost+ "/app/exercises/error";
+  static String getErrotListDetail = Config.ApiHost + "/app/exercises/error";
+
   //获取练习记录目录
-  static String getPracticerecords = Config.ApiHost+ "/app/practicerecords/list/date";
+  static String getPracticerecords =
+      Config.ApiHost + "/app/practicerecords/list/date";
+
   //获取练习记录详情
-  static String getPracticerecordsDetail = Config.ApiHost+ "/app/practicerecords/exercises";
+  static String getPracticerecordsDetail =
+      Config.ApiHost + "/app/practicerecords/exercises";
 
   // 开始作答接口
   static String getStartExam = Config.ApiHost+"/app/startExam";
@@ -101,6 +110,24 @@ class Api {
   // 收藏题目搜索接口
   // 收藏列表接口
 
+  //获取复习首页的信息接口
+  static String getReviewHomeDetail = Config.ApiHost + "/";
 
+  // 练习记录接口数据
+  static String getPracticeRecordList = Config.ApiHost + "/";
 
+  // 错题本tab接口
+  static String getErrorNoteTabDateList = Config.ApiHost + "/";
+
+  // 收藏题目最近搜索历史接口
+  static String getSearchRecordDateList = Config.ApiHost + "/";
+
+  // 收藏列表接口
+  static String getSearchCollectListDate = Config.ApiHost + "/";
+
+  // 收藏
+  static String toCollect = Config.ApiHost + "/";
+
+  // 收藏取消
+  static String toCancellCollect = Config.ApiHost + "/";
 }

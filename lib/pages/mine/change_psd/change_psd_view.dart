@@ -7,18 +7,18 @@ import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
-import 'change_phone_logic.dart';
+import 'change_psd_logic.dart';
 
-class ChangePhonePage extends BasePage {
-  const ChangePhonePage({Key? key}) : super(key: key);
+class ChangePsdPage extends BasePage {
+  const ChangePsdPage({Key? key}) : super(key: key);
 
   @override
   BasePageState<BasePage> getState() => _ToMyOrderPageState();
 }
 
-class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
-  final logic = Get.put(Change_phoneLogic());
-  final state = Get.find<Change_phoneLogic>().state;
+class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
+  final logic = Get.put(Change_psdLogic());
+  final state = Get.find<Change_psdLogic>().state;
   TextEditingController? _phoneController;
   var phoneCodeStr = "".obs;
   var phoneNumStr = "".obs;
@@ -34,37 +34,38 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildNormalAppBar("修改手机号"),
-        backgroundColor: AppColors.theme_bg,
-        body: SafeArea(
-          child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                hideKeyBoard();
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(padding: EdgeInsets.only(top: 25.w)),
-                  _getLoginInput(),
-                  Padding(padding: EdgeInsets.only(top: 10.w)),
-                  const Spacer(),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            left: 46.w, right: 46.w, bottom: 43.w),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
-                        ),
+      appBar: buildNormalAppBar("修改密码"),
+      backgroundColor: AppColors.theme_bg,
+      body: SafeArea(
+        child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              hideKeyBoard();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(padding: EdgeInsets.only(top: 25.w)),
+                _getLoginInput(),
+                Padding(padding: EdgeInsets.only(top: 10.w)),
+                const Spacer(),
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 46.w, right: 46.w, bottom: 43.w),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [],
                       ),
-                    ],
-                  )
-                ],
-              )),
-        ));
+                    ),
+                  ],
+                )
+              ],
+            )),
+      ),
+    );
   }
 
   ///收起键盘
@@ -135,13 +136,46 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('绑定手机号: '),
+          Text('旧密码: '),
           SizedBox(
             width: 14.w,
           ),
           Expanded(
-              child: Text(Util.formatPhoneNumber('13299195686'),
-                  style: TextStyle(fontSize: 15, color: Color(0xff898a93))))
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        obscureText: isShowPsd,
+                        style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (String str) {
+                          phoneCodeStr.value = str;
+                        },
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '请输入旧密码',
+                          hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
+                        ),
+                      )),
+                  InkWell(
+                    onTap: () {
+                      toPsdShow();
+                    },
+                    child: Container(
+                      width: 47.w,
+                      height: 47.w,
+                      padding: EdgeInsets.all(15.w),
+                      margin: EdgeInsets.only(right: 4.w),
+                      child: Image.asset(
+                        isShowPsd ? R.imagesLoginEyeClose : R.imagesLoginEyeOpen,
+                        width: 17.w,
+                        height: 17.w,
+                      ),
+                    ),
+                  )
+                ],
+              ))
         ],
       ),
     );
@@ -158,7 +192,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('更换手机号: '),
+          Text('新密码: '),
           SizedBox(
             width: 14.w,
           ),
@@ -176,10 +210,26 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: '请输入要更换的手机号',
+                  hintText: '请输入新密码',
                   hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
                 ),
               )),
+              InkWell(
+                onTap: () {
+                  toPsdShow();
+                },
+                child: Container(
+                  width: 47.w,
+                  height: 47.w,
+                  padding: EdgeInsets.all(15.w),
+                  margin: EdgeInsets.only(right: 4.w),
+                  child: Image.asset(
+                    isShowPsd ? R.imagesLoginEyeClose : R.imagesLoginEyeOpen,
+                    width: 17.w,
+                    height: 17.w,
+                  ),
+                ),
+              )
             ],
           ))
         ],

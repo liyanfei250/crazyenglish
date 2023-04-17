@@ -22,24 +22,22 @@ class MinePage extends BasePage {
 
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
-  final state = Get
-      .find<MineLogic>()
-      .state;
+  final state = Get.find<MineLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
   void onClickPosition(int position) {
     switch (position) {
       case 1: //意见反馈
-        RouterUtil.toNamed(
-            AppRoutes.QuestionFeedbackPage, arguments: {'isFeedback': false});
+        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
+            arguments: {'isFeedback': false});
         break;
       case 2: //关于我们
         RouterUtil.toNamed(AppRoutes.AboutUsPage);
         break;
       case 6:
-        RouterUtil.toNamed(
-            AppRoutes.QuestionFeedbackPage, arguments: {'isFeedback': true});
+        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
+            arguments: {'isFeedback': true});
         break;
       case 5:
         var role = '';
@@ -86,73 +84,80 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery
-        .of(context)
-        .padding
-        .top;
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
+      backgroundColor: Color(0xfff4f5f8),
       body: Column(
         children: [
           Container(
             width: double.infinity,
-            height: 120.w + statusBarHeight,
-            margin: EdgeInsets.only(
-              top: statusBarHeight,
-            ),
+            height: 180.w + statusBarHeight,
+            // margin: EdgeInsets.only(
+            //   top: statusBarHeight,
+            // ),
             decoration: BoxDecoration(
               color: Colors.red,
+              gradient: LinearGradient(
+                colors: [Color(0xffffdeac), Color(0xfff4f5f8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
               image: DecorationImage(
-                  image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
+                  image: AssetImage(R.imagesMineInfoTopBg), fit: BoxFit.cover),
             ),
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: GestureDetector(
                 onTap: () {
-                  RouterUtil.toNamed(AppRoutes.PersonInfoPage);
+                  RouterUtil.toNamed(AppRoutes.PersonInfoPage, arguments: {
+                    'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                        ? false
+                        : true
+                  });
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipOval(
                         child: Image.asset(
-                          R.imagesIconHomeMeDefaultHead,
-                          width: 54.w,
-                          height: 54.w,
-                        )),
+                      R.imagesIconHomeMeDefaultHead,
+                      width: 54.w,
+                      height: 54.w,
+                    )),
                     Padding(padding: EdgeInsets.only(left: 15.w)),
                     isLogin //是否登录
                         ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                            onTap: () =>
-                                RouterUtil.toNamed(AppRoutes.LoginNew),
-                            child: Text(
-                              "吴尊",
-                              style: TextStyle(
-                                  color: Color(0xff353e4d),
-                                  fontSize: 20.w),
-                            )),
-                        //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                        Text(
-                          "要读的书太多，没时间写签名",
-                          style: TextStyle(
-                              color: Color(0xff898a93), fontSize: 10.sp),
-                        )
-                      ],
-                    )
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                  onTap: () =>
+                                      RouterUtil.toNamed(AppRoutes.LoginNew),
+                                  child: Text(
+                                    "吴尊",
+                                    style: TextStyle(
+                                        color: Color(0xff353e4d),
+                                        fontSize: 20.w),
+                                  )),
+                              //TextButton(onPressed: toLogin(), child: Text("用户登录")),
+                              Text(
+                                "要读的书太多，没时间写签名",
+                                style: TextStyle(
+                                    color: Color(0xff898a93), fontSize: 10.sp),
+                              )
+                            ],
+                          )
                         : GestureDetector(
-                        onTap: () {
-                          RouterUtil.toNamed(AppRoutes.LoginNew);
-                        },
-                        child: Container(
-                          child: Text("未登录",
-                              style: TextStyle(
-                                  color: AppColors.c_FFFFEBEB,
-                                  fontSize: 16.sp)),
-                        )),
+                            onTap: () {
+                              RouterUtil.toNamed(AppRoutes.LoginNew);
+                            },
+                            child: Container(
+                              child: Text("未登录",
+                                  style: TextStyle(
+                                      color: AppColors.c_FFFFEBEB,
+                                      fontSize: 16.sp)),
+                            )),
                     Expanded(
                       child: Text(''),
                     ),

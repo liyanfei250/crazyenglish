@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../entity/review/PractiseHistoryDate.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../widgets/LeftLineWidget.dart';
 import 'practise_history_logic.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -31,13 +33,34 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-
+  PractiseHistoryDate? paperDetail;
   @override
   void initState() {
     super.initState();
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+
+    logic.getRecordInfo('0');
+    logic.addListenerId(GetBuilderIds.getPracticeRecordList,(){
+      if(state.paperDetail!=null){
+        paperDetail = state.paperDetail;
+        /*if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
   }
 
   List<Event> _getEventsForDay(DateTime day) {

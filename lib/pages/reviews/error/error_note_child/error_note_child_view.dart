@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../entity/review/ErrorNoteTabDate.dart';
 import '../../../../r.dart';
+import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
 import 'error_note_child_logic.dart';
 
@@ -24,7 +26,7 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
   final logic = Get.put(ErrorNoteChildLogic());
   final state = Get.find<ErrorNoteChildLogic>().state;
   late TabController _tabController;
-
+  ErrorNoteTabDate? paperDetail;
   //默认1。1听力，2阅读，3语言综合训练，4写作
   List tabs = [
     {"title": "听力", "type": 1},
@@ -37,6 +39,26 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
+    logic.getTabArrays(ErrorNoteChildPage.WAIT_CORRECT);
+    logic.addListenerId(GetBuilderIds.getPracticeRecordList,(){
+      if(state.paperDetail!=null){
+        paperDetail = state.paperDetail;
+        /*if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
   }
 
   @override

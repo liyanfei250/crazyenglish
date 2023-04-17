@@ -353,6 +353,8 @@ class R {
   static final String imagesMineClass = 'images/mine_class.png';
   /// ![](http://127.0.0.1:11/images/mine_history_work.png)
   static final String imagesMineHistoryWork = 'images/mine_history_work.png';
+  /// ![](http://127.0.0.1:11/images/mine_info_top_bg.png)
+  static final String imagesMineInfoTopBg = 'images/mine_info_top_bg.png';
   /// ![](http://127.0.0.1:11/images/mine_order.png)
   static final String imagesMineOrder = 'images/mine_order.png';
   /// ![](http://127.0.0.1:11/images/mine_phone.png)

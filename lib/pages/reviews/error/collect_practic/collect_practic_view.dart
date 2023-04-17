@@ -6,7 +6,12 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../base/widgetPage/base_page_widget.dart';
+import '../../../../entity/review/SearchCollectListDate.dart';
+import '../../../../entity/review/SearchRecordDate.dart';
 import '../../../../r.dart';
+import '../../../../routes/app_pages.dart';
+import '../../../../routes/getx_ids.dart';
+import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/search_bar.dart';
 import 'collect_practic_logic.dart';
@@ -28,6 +33,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final int pageSize = 10;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
+  SearchRecordDate? paperDetail;
   List listDataOne = [
     {
       "title": "01.情景反应",
@@ -55,6 +61,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     {"title": "阅读题", "type": 3},
     {"title": "写作题", "type": 4},
   ];
+  List<SearchCollectListDate> weekPaperList = [];
 
   @override
   void initState() {
@@ -65,6 +72,72 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         _showClearButton = _searchController.text.isNotEmpty;
       });
     });
+
+    logic.getSearchRecord('0');
+
+    //收藏筛选列表
+    logic.addListenerId(GetBuilderIds.getSearchRecord, () {
+      if (state.paperDetail != null) {
+        paperDetail = state.paperDetail;
+        /*if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+
+    //收藏列表
+    logic.addListenerId(GetBuilderIds.getCollectListDate, () {
+      hideLoading();
+      /*if(state.paperList!=null && state.paperList!=null){
+        if(state.pageNo == currentPageNo+1){
+          weekPaperList = state.paperList;
+          currentPageNo++;
+          weekPaperList.addAll(state!.paperList!);
+          if(mounted && _refreshController!=null){
+            _refreshController.loadComplete();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+            setState(() {
+
+            });
+          }
+        }else if(state.pageNo == pageStartIndex){
+          currentPageNo = pageStartIndex;
+          weekPaperList.clear();
+          weekPaperList.addAll(state.paperList!);
+          if(mounted && _refreshController!=null){
+            _refreshController.refreshCompleted();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+            setState(() {
+            });
+          }
+
+        }
+      }*/
+    });
+    _onRefresh();
+    // showLoading("");
+
+    //收藏
+    logic.addListenerId(GetBuilderIds.toCollectDate, () {});
   }
 
 // 清空输入框内容
@@ -277,12 +350,17 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                       fontWeight: FontWeight.w400),
                 )),
             Expanded(child: Text('')),
-            Padding(
-              padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
-              child: Image.asset(
-                R.imagesCollecPracIcon,
-                width: 46.w,
-                height: 13.w,
+            GestureDetector(
+              onTap: () {
+                logic.toCollect('id');
+              },
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
+                child: Image.asset(
+                  R.imagesCollecPracIcon,
+                  width: 46.w,
+                  height: 13.w,
+                ),
               ),
             ),
           ],
@@ -304,9 +382,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        //RouterUtil.toNamed(AppRoutes.WeeklyTestCategory);
         //todo 点击跳转到新的界面
         Util.toast("跳转到目录页");
+        // RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
       },
       child: listitemBigBg(),
     );
@@ -323,11 +401,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getList("2022-12-22",pageStartIndex,pageSize);
+    logic.getCollectList("2022-12-22", pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList("2022-12-22",currentPageNo,pageSize);
+    logic.getCollectList("2022-12-22", currentPageNo, pageSize);
   }
 }

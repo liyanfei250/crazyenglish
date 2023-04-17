@@ -17,7 +17,13 @@ import 'person_info_logic.dart';
 import 'dart:io' as FileNew;
 
 class PersonInfoPage extends BasePage {
-  const PersonInfoPage({Key? key}) : super(key: key);
+  bool isStudent = false;
+
+  PersonInfoPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      isStudent = Get.arguments['isStudent'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToMyOrderPageState();
@@ -203,25 +209,76 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                   ),
                 ],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
                 children: [
                   SizedBox(
-                    width: 29.w,
+                    height: 14.w,
                   ),
-                  Text(
-                    '所属学校',
-                    style: textStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 29.w,
+                      ),
+                      Text(
+                        '所属学校',
+                        style: textStyle,
+                      ),
+                      SizedBox(
+                        width: 38.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          '山西省第七实验中学',
+                          style: textSenStyle,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: 38.w,
+                    height: 14.w,
                   ),
-                  Expanded(
-                    child: Text(
-                      '山西省第七实验中学',
-                      style: textSenStyle,
+                  Visibility(
+                    child: Divider(),
+                    visible: widget.isStudent,
+                  ),
+                  Visibility(
+                    child: SizedBox(
+                      height: 14.w,
                     ),
+                    visible: widget.isStudent,
+                  ),
+                  Visibility(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 29.w,
+                        ),
+                        Text(
+                          '所属年级',
+                          style: textStyle,
+                        ),
+                        SizedBox(
+                          width: 38.w,
+                        ),
+                        Expanded(
+                          child: Text(
+                            '所属年级',
+                            style: textSenStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    visible: widget.isStudent,
+                  ),
+                  Visibility(
+                    child: SizedBox(
+                      height: 14.w,
+                    ),
+                    visible: widget.isStudent,
                   ),
                 ],
               )),
@@ -294,20 +351,10 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
 
         switch (menu) {
           case '修改昵称':
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return NicknameDialog(
-                  currentNickname: 'John Smith',
-                  onUpdateNickname: (newNickname) {
-                    print('New nickname: $newNickname');
-                  },
-                );
-              },
-            );
+            RouterUtil.toNamed(AppRoutes.ChangeNickNamePage);
             break;
           case '修改密码':
-            RouterUtil.toNamed(AppRoutes.SetPsdPage);
+            RouterUtil.toNamed(AppRoutes.ChangePsdPage);
             break;
           case '更换手机号':
             RouterUtil.toNamed(AppRoutes.ChangePhonePage);
