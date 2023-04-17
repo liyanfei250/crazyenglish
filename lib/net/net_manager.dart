@@ -50,10 +50,10 @@ class NetManager {
   String _codeKey = "code";
 
   /// BaseResp [String msg]字段 key, 默认：errorMsg.
-  String _msgKey = "msg";
+  String _msgKey = "message";
 
   /// BaseResp [T data]字段 key, 默认：data.
-  String _dataKey = "data";
+  String _dataKey = "obj";
 
   static NetManager? getInstance() {
     if (_instance == null) {
@@ -134,16 +134,10 @@ class NetManager {
   /// [data] The request data
   /// [options] The request options.
   /// <BaseResp<T> 返回 status code msg data .
-  Future<BaseResp> request(String method, String path,
+  /// BaseResp obj类型为T, 设置过去
+  Future<Map> request(String method, String path,
       {data, Options? options, CancelToken? cancelToken}) async {
     if (data is Map) {
-      // if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
-      //   data['user_id'] = SpUtil.getString(BaseConstant.userId);
-      // }
-      // data['app_id'] = Config.appId;
-      // data.remove("sign");
-      // String params = GetSign.getSign(data as Map<String, String?>);
-      // data['sign'] = params;
     }
     Response response;
     try {
@@ -158,8 +152,8 @@ class NetManager {
             cancelToken: cancelToken);
       }
     } catch (e) {
-      if (e is DioError && e.response != null) {
-        response = e!.response!;
+      if (e is DioError) {
+        Util.toast("网络异常");
         // Util.toastLong("网络异常 type:" +
         //     e.type.toString() +
         //     "\n" +
@@ -170,47 +164,38 @@ class NetManager {
         //         : "response 为null"));
       } else {
         Util.toastLong("网络异常");
-        return new Future.error(e);
       }
+      return new Future.error(e);
     }
 
     _printHttpLog(response);
     if (response.statusCode == HttpStatus.ok ||
         response.statusCode == HttpStatus.created) {
       try {
-        // Map<String, dynamic> _dataMap = _decodeData(response)!;
-        BaseResp baseResp = BaseResp.fromJson(response.data);
+        if (response.data is Map) {
+          return response.data;
 
-        if (baseResp.code == HttpStatus.unauthorized) {
-          Util.toastLong("登录信息已失效，请重新登录");
-          SpUtil.putString(BaseConstant.loginTOKEN, "");
-          Util.getHeader();
-          RouterUtil.offAndToNamed(AppRoutes.LoginNew);
-        } else if(baseResp.code == HTTP_CODE.ERROR){
-          Util.toastLong(baseResp.message??"服务出现问题");
+        } else {
+          Map<String, dynamic> _dataMap = _decodeData(response)!;
+          // _code = (_dataMap[_codeKey] is String)
+          //     ? int.tryParse(_dataMap[_codeKey])
+          //     : _dataMap[_codeKey];
+          // _msg = _dataMap[_msgKey];
+          // _data = _dataMap[_dataKey];
+          return _dataMap;
         }
-
-        baseResp.setReturnData(response.data);
-        return baseResp;
-
       } catch (e) {
+        // Util.toast("网络异常 httpCode" +
+        //     response.statusCode.toString() +
+        //     "\n" +
+        //     response.statusMessage);
         Util.toast("网络异常");
         return new Future.error(new DioError(
           response: response,
           error: "data parsing exception...",
-          type: DioErrorType.response,
-          requestOptions: RequestOptions(path: ''),
+          type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
         ));
       }
-    } else if (response.statusCode == HttpStatus.unauthorized ||
-        (response.data != null &&
-            response.data['code'] != null &&
-            //response.data['code'] == ResponseCode.status_token_invalid &&
-            response.data['code'] == ResponseCode.status_token_invalid_new)) {
-      Util.toastLong("登录信息已失效，请重新登录");
-      SpUtil.putString(BaseConstant.loginTOKEN, "");
-      Util.getHeader();
-      RouterUtil.offAndToNamed(AppRoutes.LoginNew);
     } else {
       // Util.toast("网络异常 httpCode" +
       //     response.statusCode.toString() +
@@ -221,196 +206,288 @@ class NetManager {
     return new Future.error(new DioError(
       response: response,
       error: "statusCode: $response.statusCode, service error",
-      type: DioErrorType.response,
-      requestOptions: RequestOptions(path: ''),
+      type: DioErrorType.response, requestOptions: RequestOptions(path: ''),
     ));
   }
 
+  // Future<BaseResp> request(String method, String path,
+  //     {data, Options? options, CancelToken? cancelToken}) async {
+  //   if (data is Map) {
+  //     // if (ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.userId))) {
+  //     //   data['user_id'] = SpUtil.getString(BaseConstant.userId);
+  //     // }
+  //     // data['app_id'] = Config.appId;
+  //     // data.remove("sign");
+  //     // String params = GetSign.getSign(data as Map<String, String?>);
+  //     // data['sign'] = params;
+  //   }
+  //   Response response;
+  //   try {
+  //     if (method == Method.get) {
+  //       response = await _dio.get(path,
+  //           options: _checkOptions(method, options),
+  //           queryParameters: data, cancelToken: cancelToken);
+  //     } else {
+  //       response = await _dio.request(path,
+  //           data: data,
+  //           options: _checkOptions(method, options),
+  //           cancelToken: cancelToken);
+  //     }
+  //   } catch (e) {
+  //     if (e is DioError && e.response != null) {
+  //       response = e!.response!;
+  //       // Util.toastLong("网络异常 type:" +
+  //       //     e.type.toString() +
+  //       //     "\n" +
+  //       //     e.message +
+  //       //     "\n" +
+  //       //     (e.response != null
+  //       //         ? e.response.statusCode.toString()
+  //       //         : "response 为null"));
+  //     } else {
+  //       Util.toastLong("网络异常");
+  //       return new Future.error(e);
+  //     }
+  //   }
+  //
+  //   _printHttpLog(response);
+  //   if (response.statusCode == HttpStatus.ok ||
+  //       response.statusCode == HttpStatus.created) {
+  //     try {
+  //       // Map<String, dynamic> _dataMap = _decodeData(response)!;
+  //       BaseResp baseResp = BaseResp.fromJson(response.data);
+  //
+  //       if (baseResp.code == HttpStatus.unauthorized) {
+  //         Util.toastLong("登录信息已失效，请重新登录");
+  //         SpUtil.putString(BaseConstant.loginTOKEN, "");
+  //         Util.getHeader();
+  //         RouterUtil.offAndToNamed(AppRoutes.LoginNew);
+  //       } else if(baseResp.code == HTTP_CODE.ERROR){
+  //         Util.toastLong(baseResp.message??"服务出现问题");
+  //       }
+  //
+  //       baseResp.setReturnData(response.data);
+  //       return baseResp;
+  //
+  //     } catch (e) {
+  //       Util.toast("网络异常");
+  //       return new Future.error(new DioError(
+  //         response: response,
+  //         error: "data parsing exception...",
+  //         type: DioErrorType.response,
+  //         requestOptions: RequestOptions(path: ''),
+  //       ));
+  //     }
+  //   } else if (response.statusCode == HttpStatus.unauthorized ||
+  //       (response.data != null &&
+  //           response.data['code'] != null &&
+  //           //response.data['code'] == ResponseCode.status_token_invalid &&
+  //           response.data['code'] == ResponseCode.status_token_invalid_new)) {
+  //     Util.toastLong("登录信息已失效，请重新登录");
+  //     SpUtil.putString(BaseConstant.loginTOKEN, "");
+  //     Util.getHeader();
+  //     RouterUtil.offAndToNamed(AppRoutes.LoginNew);
+  //   } else {
+  //     // Util.toast("网络异常 httpCode" +
+  //     //     response.statusCode.toString() +
+  //     //     "\n" +
+  //     //     response.statusMessage);
+  //     Util.toast("网络异常");
+  //   }
+  //   return new Future.error(new DioError(
+  //     response: response,
+  //     error: "statusCode: $response.statusCode, service error",
+  //     type: DioErrorType.response,
+  //     requestOptions: RequestOptions(path: ''),
+  //   ));
+  // }
+
+
   //上传文件
-  Future<BaseResp> uploadFile<T>(
-      String url, XFile file, Map<String, String> data) async {
-    var bytes = await file.readAsBytes();
-    String hash = sha256.convert(bytes).toString();
-    //第一步组装上传图片所需url
-    String sid = SpUtil.getString(BaseConstant.Sid);
-    String appId = Config.appId;
-    data.addAll({
-      "shaCode": hash,
-      "app_id": appId,
-      "sid": sid,
-    });
-    data.remove("sign");
-    String sign = GetSign.getSign(data);
-    MultipartFile multipartFile =
-        await MultipartFile.fromFile(file.path, filename: file.name);
-    FormData formData = FormData.fromMap({"file": multipartFile});
-    Response response;
-    try {
-      response = await _dio.request(url,
-          data: formData,
-          queryParameters: {
-            "shaCode": hash,
-            "app_id": appId,
-            "sign": sign,
-            "sid": sid,
-          },
-          options: new Options(
-              method: Method.post, contentType: "multipart/form-data"),
-          onSendProgress: (int progress, int total) {
-        print("上传进度 $progress 总量 $total");
-      });
-    } catch (e) {
-      return new BaseResp(-1, "上传失败" + e.toString());
-    }
-    _printHttpLog(response);
-    String _status;
-    int? _code;
-    String? _msg;
-    T? _data;
-    if (response.statusCode == HttpStatus.ok ||
-        response.statusCode == HttpStatus.created) {
-      try {
-        return BaseResp.fromJson(json);
-      } catch (e) {
-        // Util.toast("网络异常 httpCode" +
-        //     response.statusCode.toString() +
-        //     "\n" +
-        //     response.statusMessage);
-        Util.toast("网络异常");
-        return new Future.error(new DioError(
-            response: response,
-            error: "data parsing exception...",
-            type: DioErrorType.response,
-            requestOptions: RequestOptions(path: '')));
-      }
-    } else {
-      // Util.toast("网络异常 httpCode" +
-      //     response.statusCode.toString() +
-      //     "\n" +
-      //     response.statusMessage);
-      Util.toast("网络异常");
-    }
-
-    return new Future.error(new DioError(
-        response: response,
-        error: "statusCode: $response.statusCode, service error",
-        type: DioErrorType.response,
-        requestOptions: RequestOptions(path: '')));
-  }
-
-  //上传图片
-  Future<BaseResp> upLoadImage(
-      String url, XFile image, Map<String, String> data) async {
-    //拼装body体所需要的
-    String BOUNDARY = "------------------319831265358979362846";
-    String lineEnd = "\r\n";
-    String twoHyphens = "--";
-    //第一步组装上传图片所需url
-    String sid = SpUtil.getString(BaseConstant.Sid);
-    String appId = Config.appId;
-    data.addAll({"app_id": appId, "sid": sid});
-    String sign = GetSign.getSign(data);
-    //第二步从文件中获得文件名字
-    String path = image.path;
-    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-
-    String firstLine = twoHyphens + BOUNDARY + lineEnd;
-    String secondLine =
-        "Content-Disposition: form-data; name=\"image,jpeg\";filename=\"" +
-            "image.jpeg" +
-            "\"" +
-            lineEnd;
-    String thirdLine = "Content-Type: " + "image/jpeg" + lineEnd;
-    String forthLine = lineEnd;
-
-    Uint8List bytes;
-    ImageProperties properties =
-        await FlutterNativeImage.getImageProperties(image.path);
-    if (properties.width! > 500 && properties.height! > 500) {
-      var originX = (properties.width! - 500) / 2;
-      var originY = (properties.height! - 500) / 2;
-      File croppedFile = await FlutterNativeImage.cropImage(
-          image.path, originX.toInt(), originY.toInt(), 500, 500);
-      File compressedFile = await FlutterNativeImage.compressImage(
-          croppedFile.path,
-          quality: 50,
-          percentage: 50);
-      bytes = await File(compressedFile.path).readAsBytesSync();
-    } else {
-      bytes = await File(image.path).readAsBytesSync();
-    }
-
-    if (bytes == null) {
-      return BaseResp(-1, "操作失败");
-    }
-
-    // ImageProperties properties = await FlutterNativeImage.getImageProperties(image.path);
-    // File compressedFile = await FlutterNativeImage.compressImage(image.path, quality: 50,
-    //     targetWidth: 80,
-    //     targetHeight: (properties.height * 80 / properties.width).round());
-
-    // File compressedFile = await FlutterNativeImage.compressImage(file.path,
-    //     quality: quality, percentage: percentage);
-
-    String sixthLine = lineEnd;
-    String seventhLine = twoHyphens + BOUNDARY + twoHyphens + lineEnd;
-
-    List<int> preList =
-        utf8.encode(firstLine + secondLine + thirdLine + forthLine);
-    Uint8List pre = Uint8List.fromList(preList);
-
-    List<int> endList = utf8.encode(sixthLine + seventhLine);
-    Uint8List end = Uint8List.fromList(endList);
-
-    Uint8List allContent = Uint8List.fromList(pre + bytes + end);
-    dynamic response = null;
-    try {
-      response = await _dio.post<String>(url,
-          data: Stream.fromIterable(allContent.map((e) => [e])),
-          queryParameters: {"app_id": appId, "sid": sid, "sign": sign},
-          options: Options(sendTimeout: 60 * 1000,
-              // contentType:
-              //     "multipart/form-data;boundary=------------------319831265358979362846",
-              headers: {
-                "Connection": "Keep-Alive",
-                "Content-Type":
-                    "multipart/form-data;boundary=------------------319831265358979362846"
-              }));
-    } catch (e) {
-      return new BaseResp(-1, "上传失败" + e.toString());
-    }
-    int? _code;
-    String? _msg;
-    if (response.statusCode == HttpStatus.ok ||
-        response.statusCode == HttpStatus.created) {
-      try {
-        Map<String, dynamic> _dataMap = _decodeData(response)!;
-        _code = (_dataMap[_codeKey] is String)
-            ? int.tryParse(_dataMap[_codeKey])
-            : _dataMap[_codeKey];
-        _msg = _dataMap[_msgKey];
-        // if(_code == C.SID_INVALID){
-        //   // eventBus.fire(ChangeThemeEvent(Random().nextInt(7)));
-        // }else{
-        return new BaseResp(_code, _msg);
-        // }
-      } catch (e) {
-        return new BaseResp(
-            -1,
-            "网络异常 httpCode" +
-                response.statusCode.toString() +
-                "\n" +
-                response.statusMessage);
-      }
-    } else {
-      return new BaseResp(
-          -1,
-          "网络异常 httpCode" +
-              response.statusCode.toString() +
-              "\n" +
-              response.statusMessage);
-    }
-  }
+  // Future<BaseResp> uploadFile<T>(
+  //     String url, XFile file, Map<String, String> data) async {
+  //   var bytes = await file.readAsBytes();
+  //   String hash = sha256.convert(bytes).toString();
+  //   //第一步组装上传图片所需url
+  //   String sid = SpUtil.getString(BaseConstant.Sid);
+  //   String appId = Config.appId;
+  //   data.addAll({
+  //     "shaCode": hash,
+  //     "app_id": appId,
+  //     "sid": sid,
+  //   });
+  //   data.remove("sign");
+  //   String sign = GetSign.getSign(data);
+  //   MultipartFile multipartFile =
+  //       await MultipartFile.fromFile(file.path, filename: file.name);
+  //   FormData formData = FormData.fromMap({"file": multipartFile});
+  //   Response response;
+  //   try {
+  //     response = await _dio.request(url,
+  //         data: formData,
+  //         queryParameters: {
+  //           "shaCode": hash,
+  //           "app_id": appId,
+  //           "sign": sign,
+  //           "sid": sid,
+  //         },
+  //         options: new Options(
+  //             method: Method.post, contentType: "multipart/form-data"),
+  //         onSendProgress: (int progress, int total) {
+  //       print("上传进度 $progress 总量 $total");
+  //     });
+  //   } catch (e) {
+  //     return new BaseResp(-1, "上传失败" + e.toString());
+  //   }
+  //   _printHttpLog(response);
+  //   String _status;
+  //   int? _code;
+  //   String? _msg;
+  //   T? _data;
+  //   if (response.statusCode == HttpStatus.ok ||
+  //       response.statusCode == HttpStatus.created) {
+  //     try {
+  //       return BaseResp.fromJson(json);
+  //     } catch (e) {
+  //       // Util.toast("网络异常 httpCode" +
+  //       //     response.statusCode.toString() +
+  //       //     "\n" +
+  //       //     response.statusMessage);
+  //       Util.toast("网络异常");
+  //       return new Future.error(new DioError(
+  //           response: response,
+  //           error: "data parsing exception...",
+  //           type: DioErrorType.response,
+  //           requestOptions: RequestOptions(path: '')));
+  //     }
+  //   } else {
+  //     // Util.toast("网络异常 httpCode" +
+  //     //     response.statusCode.toString() +
+  //     //     "\n" +
+  //     //     response.statusMessage);
+  //     Util.toast("网络异常");
+  //   }
+  //
+  //   return new Future.error(new DioError(
+  //       response: response,
+  //       error: "statusCode: $response.statusCode, service error",
+  //       type: DioErrorType.response,
+  //       requestOptions: RequestOptions(path: '')));
+  // }
+  //
+  // //上传图片
+  // Future<BaseResp> upLoadImage(
+  //     String url, XFile image, Map<String, String> data) async {
+  //   //拼装body体所需要的
+  //   String BOUNDARY = "------------------319831265358979362846";
+  //   String lineEnd = "\r\n";
+  //   String twoHyphens = "--";
+  //   //第一步组装上传图片所需url
+  //   String sid = SpUtil.getString(BaseConstant.Sid);
+  //   String appId = Config.appId;
+  //   data.addAll({"app_id": appId, "sid": sid});
+  //   String sign = GetSign.getSign(data);
+  //   //第二步从文件中获得文件名字
+  //   String path = image.path;
+  //   var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+  //
+  //   String firstLine = twoHyphens + BOUNDARY + lineEnd;
+  //   String secondLine =
+  //       "Content-Disposition: form-data; name=\"image,jpeg\";filename=\"" +
+  //           "image.jpeg" +
+  //           "\"" +
+  //           lineEnd;
+  //   String thirdLine = "Content-Type: " + "image/jpeg" + lineEnd;
+  //   String forthLine = lineEnd;
+  //
+  //   Uint8List bytes;
+  //   ImageProperties properties =
+  //       await FlutterNativeImage.getImageProperties(image.path);
+  //   if (properties.width! > 500 && properties.height! > 500) {
+  //     var originX = (properties.width! - 500) / 2;
+  //     var originY = (properties.height! - 500) / 2;
+  //     File croppedFile = await FlutterNativeImage.cropImage(
+  //         image.path, originX.toInt(), originY.toInt(), 500, 500);
+  //     File compressedFile = await FlutterNativeImage.compressImage(
+  //         croppedFile.path,
+  //         quality: 50,
+  //         percentage: 50);
+  //     bytes = await File(compressedFile.path).readAsBytesSync();
+  //   } else {
+  //     bytes = await File(image.path).readAsBytesSync();
+  //   }
+  //
+  //   if (bytes == null) {
+  //     return BaseResp(-1, "操作失败");
+  //   }
+  //
+  //   // ImageProperties properties = await FlutterNativeImage.getImageProperties(image.path);
+  //   // File compressedFile = await FlutterNativeImage.compressImage(image.path, quality: 50,
+  //   //     targetWidth: 80,
+  //   //     targetHeight: (properties.height * 80 / properties.width).round());
+  //
+  //   // File compressedFile = await FlutterNativeImage.compressImage(file.path,
+  //   //     quality: quality, percentage: percentage);
+  //
+  //   String sixthLine = lineEnd;
+  //   String seventhLine = twoHyphens + BOUNDARY + twoHyphens + lineEnd;
+  //
+  //   List<int> preList =
+  //       utf8.encode(firstLine + secondLine + thirdLine + forthLine);
+  //   Uint8List pre = Uint8List.fromList(preList);
+  //
+  //   List<int> endList = utf8.encode(sixthLine + seventhLine);
+  //   Uint8List end = Uint8List.fromList(endList);
+  //
+  //   Uint8List allContent = Uint8List.fromList(pre + bytes + end);
+  //   dynamic response = null;
+  //   try {
+  //     response = await _dio.post<String>(url,
+  //         data: Stream.fromIterable(allContent.map((e) => [e])),
+  //         queryParameters: {"app_id": appId, "sid": sid, "sign": sign},
+  //         options: Options(sendTimeout: 60 * 1000,
+  //             // contentType:
+  //             //     "multipart/form-data;boundary=------------------319831265358979362846",
+  //             headers: {
+  //               "Connection": "Keep-Alive",
+  //               "Content-Type":
+  //                   "multipart/form-data;boundary=------------------319831265358979362846"
+  //             }));
+  //   } catch (e) {
+  //     return new BaseResp(-1, "上传失败" + e.toString());
+  //   }
+  //   int? _code;
+  //   String? _msg;
+  //   if (response.statusCode == HttpStatus.ok ||
+  //       response.statusCode == HttpStatus.created) {
+  //     try {
+  //       Map<String, dynamic> _dataMap = _decodeData(response)!;
+  //       _code = (_dataMap[_codeKey] is String)
+  //           ? int.tryParse(_dataMap[_codeKey])
+  //           : _dataMap[_codeKey];
+  //       _msg = _dataMap[_msgKey];
+  //       // if(_code == C.SID_INVALID){
+  //       //   // eventBus.fire(ChangeThemeEvent(Random().nextInt(7)));
+  //       // }else{
+  //       return new BaseResp(_code, _msg);
+  //       // }
+  //     } catch (e) {
+  //       return new BaseResp(
+  //           -1,
+  //           "网络异常 httpCode" +
+  //               response.statusCode.toString() +
+  //               "\n" +
+  //               response.statusMessage);
+  //     }
+  //   } else {
+  //     return new BaseResp(
+  //         -1,
+  //         "网络异常 httpCode" +
+  //             response.statusCode.toString() +
+  //             "\n" +
+  //             response.statusMessage);
+  //   }
+  // }
 
   /// Make http request with options.
   /// [method] The request method.

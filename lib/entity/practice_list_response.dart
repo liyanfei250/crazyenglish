@@ -1,43 +1,38 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// data : {"count":1,"rows":[{"date":"2023.03.09","list":[{"createdAt":"2023-03-09T07:46:13.000Z","uuid":"777e5d10-be4e-11ed-850e-43b63cbd7be7","weekly_name":"测试全部题型用","directory_name":"看图选择","exercises_success":3,"exercises_total":19},{"createdAt":"2023-03-09T07:46:02.000Z","uuid":"707ead30-be4e-11ed-850e-43b63cbd7be7","weekly_name":"测试全部题型用","directory_name":"看图选择","exercises_success":3,"exercises_total":19}]}],"exercises_total":38}
 /// msg : ""
 
-class PracticeListResponse {
+class PracticeListResponse extends BaseResp{
   PracticeListResponse({
       num? code, 
       Data? data, 
-      String? msg,}){
-    _code = code;
+      String? msg,}):super(code,msg){
     _data = data;
-    _msg = msg;
 }
 
-  PracticeListResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    _msg = json['msg'];
+  PracticeListResponse.fromJson(dynamic json):super.fromJson(json) {
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
-  num? _code;
   Data? _data;
-  String? _msg;
 PracticeListResponse copyWith({  num? code,
   Data? data,
   String? msg,
-}) => PracticeListResponse(  code: code ?? _code,
+}) => PracticeListResponse(
+  code: code ?? code,
   data: data ?? _data,
-  msg: msg ?? _msg,
+  msg: msg ?? message,
 );
-  num? get code => _code;
   Data? get data => _data;
-  String? get msg => _msg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
+    map['code'] = code;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
-    map['msg'] = _msg;
+    map['message'] = message;
     return map;
   }
 

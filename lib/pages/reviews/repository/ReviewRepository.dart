@@ -13,115 +13,80 @@ import '../../../net/net_manager.dart';
 
 class ReviewRepository {
   Future<ReviewHomeDetail> getReviewHomeDetail(String id) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getReviewHomeDetail,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      ReviewHomeDetail paperDetail =
-          ReviewHomeDetail.fromJson(baseResp.getReturnData());
+    ReviewHomeDetail paperDetail =
+    ReviewHomeDetail.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
       return paperDetail!;
-    } else {
-      return Future.error("返回ReviewHomeDetailResponse为空");
     }
   }
 
   Future<PractiseHistoryDate> getPracticeRecordList(String id) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getPracticeRecordList,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      PractiseHistoryDate paperDetail =
-          PractiseHistoryDate.fromJson(baseResp.getReturnData());
+    PractiseHistoryDate paperDetail =
+    PractiseHistoryDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
       return paperDetail!;
-    } else {
-      return Future.error("返回PracticeRecordListResponse为空");
     }
   }
 
   Future<ErrorNoteTabDate> getErrorNoteTabDate(String id) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getErrorNoteTabDateList,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      ErrorNoteTabDate paperDetail =
-          ErrorNoteTabDate.fromJson(baseResp.getReturnData());
+    ErrorNoteTabDate paperDetail =
+    ErrorNoteTabDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
       return paperDetail!;
-    } else {
-      return Future.error("返回ErrorNoteTabDateResponse为空");
     }
   }
 
   Future<SearchRecordDate> getSearchRecordList(String id) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getSearchRecordDateList,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      SearchRecordDate paperDetail =
-          SearchRecordDate.fromJson(baseResp.getReturnData());
-      return paperDetail!;
+    SearchRecordDate paperDetail = SearchRecordDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
     } else {
-      return Future.error("返回SearchRecordDateResponse为空");
+      return paperDetail!;
     }
   }
 
   Future<SearchCollectListDate> getCollectList(Map<String, String> req) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getSearchCollectListDate,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      SearchCollectListDate paperDetail =
-          SearchCollectListDate.fromJson(baseResp.getReturnData());
+    SearchCollectListDate paperDetail =
+    SearchCollectListDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
       return paperDetail!;
-    } else {
-      return Future.error("返回SearchCollectListDateResponse为空");
     }
   }
 
   //收藏
   Future<CollectDate> toCollect(Map<String, String> req) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.toCollect,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      CollectDate paperDetail = CollectDate.fromJson(baseResp.getReturnData());
+    CollectDate paperDetail = CollectDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
       return paperDetail!;
-    } else {
-      return Future.error("返回CollectDateResponse为空");
     }
   }
 
-  //收藏取消
-  Future<CancellCollectDate> toCancellCollect(Map<String, String> req) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
-        Method.get, Api.toCancellCollect,
-        options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      CancellCollectDate paperDetail =
-          CancellCollectDate.fromJson(baseResp.getReturnData());
-      return paperDetail!;
-    } else {
-      return Future.error("返回CancellCollectDateResponse为空");
-    }
-  }
 }

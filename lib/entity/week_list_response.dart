@@ -1,22 +1,30 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// data : {"count":1,"rows":[{"uuid":"97a4d850-b82f-11ed-a635-7735a2808abc","name":"英语周报新目标第二十三坎","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/c86f6370-b824-11ed-a987-e7929c6b8af4tiancaiTORID%E6%B5%81%E7%A8%8B%E5%9B%BE%20%281%29.png","weekTime":"2023-03-15T16:00:00.000Z","see":0}]}
 /// msg : ""
 
-class WeekListResponse {
+class WeekListResponse extends BaseResp{
   WeekListResponse({
       num? code, 
       Data? data, 
-      String? msg,}){
+      String? msg,}):super(code,msg){
     _code = code;
     _data = data;
     _msg = msg;
 }
 
-  WeekListResponse.fromJson(dynamic json) {
+  WeekListResponse.fromJson(dynamic json):super.fromJson(json)  {
     _code = json['code'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
     _msg = json['msg'];
   }
+
+  @override
+  WeekListResponse fromJson(dynamic) {
+    return WeekListResponse.fromJson(dynamic);
+  }
+
   num? _code;
   Data? _data;
   String? _msg;
@@ -35,9 +43,9 @@ WeekListResponse copyWith({  num? code,
     final map = <String, dynamic>{};
     map['code'] = _code;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
-    map['msg'] = _msg;
+    map['message'] = _msg;
     return map;
   }
 

@@ -10,6 +10,7 @@ import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
 import '../entity/commit_request.dart';
+import '../entity/start_exam.dart';
 import '../entity/user_info_response.dart';
 import '../entity/week_detail_response.dart' as weekDetail;
 import '../net/net_manager.dart';
@@ -32,18 +33,20 @@ class WeekTestRepository{
       return weekTestListResponse.data!;
     }
 
-    BaseResp baseResp = await NetManager.getInstance()!
+    Map baseResp = await NetManager.getInstance()!
         .request(Method.get, Api.getWeeklyList,
         data: req,options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-      weekTest.WeekListResponse weekTestListResponse = weekTest.WeekListResponse.fromJson(baseResp.getReturnData());
+
+    if(baseResp !=null){
+      weekTest.WeekListResponse weekTestListResponse = weekTest.WeekListResponse.fromJson(baseResp);
+      if (weekTestListResponse.code != ResponseCode.status_success) {
+        return Future.error(weekTestListResponse.message!);
+      }
       return weekTestListResponse.data!;
     } else {
       return Future.error("返回weekTestListResponse为空");
     }
+
   }
 
 
@@ -56,18 +59,19 @@ class WeekTestRepository{
       return weekTestCatalogResponse!;
     }
 
-    BaseResp baseResp = await NetManager.getInstance()!
+    Map map = await NetManager.getInstance()!
         .request(data:{"uuid":periodicaId},Method.get, Api.getWeeklyDirectory,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
 
-      WeekDirectoryResponse weekTestCatalogResponse = WeekDirectoryResponse.fromJson(baseResp.getReturnData());
-      return weekTestCatalogResponse!;
+    if ( map != null ) {
+      WeekDirectoryResponse weekTestCatalogResponse = WeekDirectoryResponse.fromJson(map);
+      if(weekTestCatalogResponse.code != ResponseCode.status_success){
+        return Future.error("返回WeekDirectoryResponse为空");
+      } else {
+        return weekTestCatalogResponse!;
+      }
     } else {
-      return Future.error("返回weekPaperResponse为空");
+      return Future.error("返回WeekDirectoryResponse为空");
     }
   }
 
@@ -81,26 +85,46 @@ class WeekTestRepository{
       return weekTestDetailResponse!;
     }
 
-    BaseResp baseResp = await NetManager.getInstance()!
+    Map map = await NetManager.getInstance()!
         .request(data:{"uuid":id},Method.get, Api.getWeekDetail,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
 
-      weekDetail.WeekDetailResponse weekTestDetailResponse = weekDetail.WeekDetailResponse.fromJson(baseResp.getReturnData());
-      return weekTestDetailResponse!;
+
+    if ( map != null ) {
+      weekDetail.WeekDetailResponse weekTestCatalogResponse = weekDetail.WeekDetailResponse.fromJson(map);
+      if(weekTestCatalogResponse.code != ResponseCode.status_success){
+        return Future.error("返回WeekDirectoryResponse为空");
+      } else {
+        return weekTestCatalogResponse!;
+      }
     } else {
-      return Future.error("返回weekTestDetailResponse为空");
+      return Future.error("返回WeekDirectoryResponse为空");
+    }
+
+  }
+
+  Future<StartExam> getStartExam(String id) async{
+    Map map = await NetManager.getInstance()!
+        .request(Method.get, Api.getStartExam,
+        options: Options(method: Method.get));
+
+    StartExam startExam = StartExam.fromJson(map);
+
+    if (startExam.code != ResponseCode.status_success) {
+      return Future.error(startExam.message!);
+    }
+    if(startExam.code ==0){
+      return startExam;
+    } else {
+      return Future.error("返回开始作答信息为空");
     }
   }
 
   Future<CommitRequest> uploadWeekTest(CommitRequest commitRequest) async{
 
     // if(Util.isTestMode()){
-      CommitResponse commitResponse = CommitResponse(1,"",CommitRequest());
-      return commitResponse.data!;
+    //   CommitResponse commitResponse = CommitResponse(1,"",CommitRequest());
+    //   return commitResponse.data!;
     // }
     // BaseResp baseResp = await NetManager.getInstance()!
     //     .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
@@ -114,40 +138,22 @@ class WeekTestRepository{
     // } else {
     //   return Future.error("返回weekTestDetailResponse为空");
     // }
+    return Future.error("返回weekTestDetailResponse为空");
   }
 
   Future<CheckUpdateResp> getAppVersion() async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getAppVersion+(Platform.isAndroid? "1":"2"),
-        options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-      CheckUpdateResponse checkUpdateResp = CheckUpdateResponse.fromJson(baseResp.getReturnData());
-      return checkUpdateResp!.data!;
-    } else {
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(Method.get, Api.getAppVersion+(Platform.isAndroid? "1":"2"),
+    //     options: Options(method: Method.get));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.message!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //   CheckUpdateResponse checkUpdateResp = CheckUpdateResponse.fromJson(baseResp.getReturnData());
+    //   return checkUpdateResp!.data!;
+    // } else {
       return Future.error("返回CheckUpdateResp为空");
-    }
+    // }
   }
-
-  //获取用户信息
-  Future<UserInfoResponse> getUserInfo() async {
-    BaseResp baseResp =
-    await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-
-    UserInfoResponse sendCodeResponse =
-    UserInfoResponse.fromJson(baseResp.getReturnData());
-    if (sendCodeResponse != null) {
-      return sendCodeResponse!;
-    } else {
-      return Future.error("返回SendCodeResponse为空");
-    }
-  }
-
-
 
 }

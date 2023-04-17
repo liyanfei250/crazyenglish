@@ -25,10 +25,10 @@ class AppUpdatePanelLogic extends GetxController {
     super.onClose();
   }
   void getAppUserInfo() async {
-    UserInfoResponse infoResponse = await weekTestRepository
-        .getUserInfo();
-    state.infoResponse = infoResponse;
-    update([GetBuilderIds.getUserInfo]);
+    // UserInfoResponse infoResponse = await weekTestRepository
+    //     .getUserInfo();
+    // state.infoResponse = infoResponse;
+    // update([GetBuilderIds.getUserInfo]);
   }
 
 

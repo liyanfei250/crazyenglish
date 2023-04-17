@@ -97,10 +97,4 @@ class Collect_practicLogic extends GetxController {
     state.collectDate = collectResponse;
     update([GetBuilderIds.toCollectDate]);
   }
-
-  void toCancellCollect(String id) async {
-    CancellCollectDate collectCancelResponse = await recordData.toCancellCollect({"mobile": id});
-    state.cancellCollectDate = collectCancelResponse;
-    update([GetBuilderIds.toCancellCollectDate]);
-  }
 }

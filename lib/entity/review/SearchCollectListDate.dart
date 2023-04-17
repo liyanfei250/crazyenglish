@@ -1,38 +1,30 @@
-class SearchCollectListDate {
-  SearchCollectListDate({num? code, String? data, String? msg}) {
-    _code = code;
+import '../base_resp.dart';
+
+class SearchCollectListDate extends BaseResp{
+  SearchCollectListDate({num? code, String? data, String? msg}):super(code,msg) {
     _data = data;
-    _msg = msg;
   }
 
-  SearchCollectListDate.fromJson(dynamic json) {
-    _code = json['code'];
+  SearchCollectListDate.fromJson(dynamic json):super.fromJson(json) {
     _data = json['data'];
-    _msg = json['msg'];
   }
 
-  num? _code;
   String? _data;
-  String? _msg;
 
   SearchCollectListDate copyWith({num? code, String? data, String? msg}) =>
       SearchCollectListDate(
-        code: code ?? _code,
+        code: code ?? code,
         data: data ?? _data,
-        msg: msg ?? _msg,
+        msg: msg ?? message,
       );
-
-  num? get code => _code;
 
   String? get data => _data;
 
-  String? get msg => _msg;
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
+    map['code'] = code;
     map['data'] = _data;
-    map['msg'] = _msg;
+    map['msg'] = message;
     return map;
   }
 }

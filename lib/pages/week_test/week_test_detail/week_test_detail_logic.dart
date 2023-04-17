@@ -1,9 +1,13 @@
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../entity/week_test_detail_response.dart';
+import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/json_cache_util.dart';
 import 'week_test_detail_state.dart';
 
@@ -23,8 +27,17 @@ class WeekTestDetailLogic extends GetxController {
     super.onClose();
   }
 
+  void getDetailAndStartExam(String id,{bool? enterResult}) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetail(id);
+    if(weekDetailResponse!=null){
+      getStartExam(id);
+    }else{
+      Util.toast("获取试题详情数据失败");
+    }
+  }
 
-  void getWeekTestDetail(String id) async{
+  // 获取试题详情页数据
+  Future<WeekDetailResponse> getWeekTestDetail(String id) async{
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.WeekDetailResponse,labelId: id.toString()).then((value){
       if(value!=null){
@@ -35,8 +48,13 @@ class WeekTestDetailLogic extends GetxController {
     if(cache is WeekTestDetailResponse) {
       state.weekTestDetailResponse = cache!;
       state.uuid = id;
-      update([GetBuilderIds.weekTestDetailList]);
+      getWeekTestDetailFromServer(id);
+      return cache!;
     }
+    return getWeekTestDetailFromServer(id);
+  }
+
+  Future<WeekDetailResponse> getWeekTestDetailFromServer(String id) async{
     WeekDetailResponse list = await weekTestRepository.getWeekTestDetail(id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.WeekDetailResponse,
@@ -44,8 +62,40 @@ class WeekTestDetailLogic extends GetxController {
         list.toJson());
     state.weekTestDetailResponse = list!;
     state.uuid = id;
-    update([GetBuilderIds.weekTestDetailList]);
+    return list;
+  }
+
+  void getStartExam(String id) async{
+    StartExam startExam = await weekTestRepository.getStartExam(id);
+    state.startExam = startExam;
+    state.uuid = id;
+    update([GetBuilderIds.startExam]);
   }
 
 
+  // 添加跳转题目详情监听
+  // 所有的跳转答题进结果页都走这里
+  // TODO 完善跳结果页流程
+  void addJumpToDetailListen(int parentIndex,int childIndex){
+    addListenerId(GetBuilderIds.startExam, () {
+      // TODO 区分一下 写作 还是 其它题
+      if (state.weekTestDetailResponse != null &&
+          state.weekTestDetailResponse.data != null &&
+          state.weekTestDetailResponse.data!.length > 0 &&
+          state.weekTestDetailResponse.data![0].type == 4 &&
+          state.weekTestDetailResponse.data![0].typeChildren == 1) {
+
+        RouterUtil.toNamed(AppRoutes.WritingPage,
+            arguments: {"detail": state.weekTestDetailResponse});
+      } else {
+        // TODO state.startExam 开始作答数据可在此处理
+        RouterUtil.toNamed(AppRoutes.AnsweringPage,
+            arguments: {"detail": state.weekTestDetailResponse,
+              "uuid":state.uuid,
+              "parentIndex":parentIndex,
+              "childIndex":childIndex,
+            });
+      }
+    });
+  }
 }

@@ -17,9 +17,9 @@ class PeriodicaId_response extends BaseResp{
 }
 
   PeriodicaId_response.fromJson(dynamic json):super.fromJson(json) {
-    if (json['data'] != null) {
+    if (json['obj'] != null) {
       _data = [];
-      json['data'].forEach((v) {
+      json['obj'].forEach((v) {
         _data?.add(Data.fromJson(v));
       });
     }
@@ -28,9 +28,15 @@ class PeriodicaId_response extends BaseResp{
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
+  }
+
+  @override
+  fromJson(dynamic) {
+    // TODO: implement fromJson
+    throw UnimplementedError();
   }
 
 }

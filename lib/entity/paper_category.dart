@@ -17,9 +17,9 @@ class PaperCategory extends BaseResp{
   }
 
   PaperCategory.fromJson(dynamic json):super.fromJson(json) {
-    if (json['data'] != null) {
+    if (json['obj'] != null) {
       _data = [];
-      json['data'].forEach((v) {
+      json['obj'].forEach((v) {
         _data?.add(Data.fromJson(v));
       });
     }
@@ -30,9 +30,15 @@ class PaperCategory extends BaseResp{
     map['code'] = code;
     map['message'] = message;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
+  }
+
+  @override
+  fromJson(dynamic) {
+    // TODO: implement fromJson
+    throw UnimplementedError();
   }
 
 }

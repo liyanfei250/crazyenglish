@@ -138,8 +138,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {});
-    //收藏取消
-    logic.addListenerId(GetBuilderIds.toCancellCollectDate, () {});
   }
 
 // 清空输入框内容
@@ -355,7 +353,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             GestureDetector(
               onTap: () {
                 logic.toCollect('id');
-                logic.toCancellCollect('id');
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),

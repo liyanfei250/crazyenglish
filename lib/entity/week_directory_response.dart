@@ -14,9 +14,9 @@ class WeekDirectoryResponse {
 
   WeekDirectoryResponse.fromJson(dynamic json) {
     _code = json['code'];
-    if (json['data'] != null) {
+    if (json['obj'] != null) {
       _data = [];
-      json['data'].forEach((v) {
+      json['obj'].forEach((v) {
         _data?.add(Data.fromJson(v));
       });
     }
@@ -40,9 +40,9 @@ WeekDirectoryResponse copyWith({  num? code,
     final map = <String, dynamic>{};
     map['code'] = _code;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
     }
-    map['msg'] = _msg;
+    map['message'] = _msg;
     return map;
   }
 

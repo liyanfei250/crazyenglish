@@ -67,24 +67,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         }
       }
     });
-    logicDetail.addListenerId(GetBuilderIds.weekTestDetailList, () {
-      if (stateDetail.weekTestDetailResponse != null &&
-          stateDetail.weekTestDetailResponse.data != null &&
-          stateDetail.weekTestDetailResponse.data!.length > 0 &&
-          stateDetail.weekTestDetailResponse.data![0].type == 4 &&
-          stateDetail.weekTestDetailResponse.data![0].typeChildren == 1) {
-
-        RouterUtil.toNamed(AppRoutes.WritingPage,
-            arguments: {"detail": stateDetail.weekTestDetailResponse});
-      } else {
-        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            arguments: {"detail": stateDetail.weekTestDetailResponse,
-              "uuid":stateDetail.uuid,
-              "parentIndex":0,
-              "childIndex":0,
-            });
-      }
-    });
+    logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     showLoading("");
   }
@@ -298,7 +281,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         onTap: () {
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
-          logicDetail.getWeekTestDetail(node.key);
+          logicDetail.getDetailAndStartExam(node.key);
           showLoading("");
         },
         child: Container(

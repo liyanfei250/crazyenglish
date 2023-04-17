@@ -47,7 +47,7 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
         };
         RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
       } else {
-        Util.toast(state.sendCodeResponse.msg!);
+        Util.toast(state.sendCodeResponse.message!);
       }
     });
   }

@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 
 /// <BaseResp<T> 返回 status code msg data.
-class BaseResp {
+class BaseResp{
   num? code;
   String? message;
-  dynamic _returnData;
 
   BaseResp(this.code, this.message);
 
@@ -15,15 +14,6 @@ class BaseResp {
     sb.write(",\"msg\":\"$message\"");
     sb.write('}');
     return sb.toString();
-  }
-
-
-  dynamic getReturnData(){
-   return _returnData;
-  }
-
-  void setReturnData(dynamic value) {
-    _returnData = value;
   }
 
   BaseResp.fromJson(dynamic json) {

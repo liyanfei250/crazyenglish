@@ -17,52 +17,52 @@ import '../net/net_manager.dart';
 class WeekRepository{
 
   Future<WeekPaper> getWeekPaperList(Map<String,String> req) async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekPaperList,
-        data: req,options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-      WeekPaperResponse weekPaperResponse = WeekPaperResponse.fromJson(baseResp.getReturnData());
-      return weekPaperResponse.data!;
-    } else {
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(Method.get, Api.getWeekPaperList,
+    //     data: req,options: Options(method: Method.get));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.message!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //   WeekPaperResponse weekPaperResponse = WeekPaperResponse.fromJson(baseResp.getReturnData());
+    //   return weekPaperResponse.data!;
+    // } else {
       return Future.error("返回weekPaperResponse为空");
-    }
+    // }
   }
 
 
   Future<PaperCategory> getWeekPaperCategory(String periodicaId) async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekPaperCategory+periodicaId,
-        options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-
-      PaperCategory paperCategory = PaperCategory.fromJson(baseResp.getReturnData());
-      return paperCategory!;
-    } else {
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(Method.get, Api.getWeekPaperCategory+periodicaId,
+    //     options: Options(method: Method.get));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.message!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //
+    //   PaperCategory paperCategory = PaperCategory.fromJson(baseResp.getReturnData());
+    //   return paperCategory!;
+    // } else {
       return Future.error("返回weekPaperResponse为空");
-    }
+    // }
   }
 
 
   Future<PaperDetail> getWeekPaperDetail(String id) async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getWeekPaperDetail+id,
-        options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-
-      PaperDetail paperDetail = PaperDetail.fromJson(baseResp.getReturnData());
-      return paperDetail!;
-    } else {
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(Method.get, Api.getWeekPaperDetail+id,
+    //     options: Options(method: Method.get));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.message!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //
+    //   PaperDetail paperDetail = PaperDetail.fromJson(baseResp.getReturnData());
+    //   return paperDetail!;
+    // } else {
       return Future.error("返回weekPaperResponse为空");
-    }
+    // }
   }
 
 

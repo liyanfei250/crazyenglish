@@ -1,43 +1,37 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// data : {"count":1,"rows":[{"uuid":"c36ee3b0-bd6e-11ed-ae3c-85d1093b78b2","name":"测试全部题型用","nameTitle":"测试期数","lastTime":"2023-03-08T05:55:20.000Z","directory":[{"uuid":"c378a7b0-bd6e-11ed-ae3c-85d1093b78b2","name":"对话理解","correction":0,"exercises_total":1,"exercises_success":0},{"uuid":"cf445a60-bd75-11ed-b4f2-f13a1127ad8d","name":"看图选择","correction":0,"exercises_total":1,"exercises_success":0}]}]}
 /// msg : ""
 
-class ErrorNoteResponse {
+class ErrorNoteResponse extends BaseResp{
   ErrorNoteResponse({
       num? code, 
       Data? data, 
-      String? msg,}){
-    _code = code;
+      String? msg,}):super(code,msg){
     _data = data;
-    _msg = msg;
 }
 
-  ErrorNoteResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    _msg = json['msg'];
+  ErrorNoteResponse.fromJson(dynamic json):super.fromJson(json) {
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
-  num? _code;
   Data? _data;
-  String? _msg;
 ErrorNoteResponse copyWith({  num? code,
   Data? data,
   String? msg,
-}) => ErrorNoteResponse(  code: code ?? _code,
+}) => ErrorNoteResponse(  code: code ?? code,
   data: data ?? _data,
-  msg: msg ?? _msg,
+  msg: msg ?? message,
 );
-  num? get code => _code;
   Data? get data => _data;
-  String? get msg => _msg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
+    map['code'] = code;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
-    map['msg'] = _msg;
+    map['message'] = message;
     return map;
   }
 

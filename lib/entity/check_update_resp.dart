@@ -1,39 +1,25 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// msg : "系统正常"
 /// data : {"appId":1011,"version":"1.0.1","versionNum":101,"isUpdate":true,"description":"版本升级","forceUpdate":true,"linkUrl":"https://test-1315843937.cos.ap-beijing.myqcloud.com/apk/crazyenglish.apk"}
 
-class CheckUpdateResponse {
-  int? _code;
-  String? _msg;
+class CheckUpdateResponse extends BaseResp{
   CheckUpdateResp? _data;
 
-  int? get code => _code;
-  String? get msg => _msg;
   CheckUpdateResp? get data => _data;
 
   CheckUpdateResponse({
       int? code, 
       String? msg,
-    CheckUpdateResp? data}){
-    _code = code;
-    _msg = msg;
+    CheckUpdateResp? data}):super(code,msg){
+    code = code;
+    msg = msg;
     _data = data;
 }
 
-  CheckUpdateResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
-    _data = json['data'] != null ? CheckUpdateResp.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
-    if (_data != null) {
-      map['data'] = _data?.toJson();
-    }
-    return map;
+  CheckUpdateResponse.fromJson(dynamic json):super.fromJson(json) {
+    _data = json['obj'] != null ? CheckUpdateResp.fromJson(json['obj']) : null;
   }
 
 }

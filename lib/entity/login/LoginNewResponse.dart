@@ -1,36 +1,30 @@
+import '../base_resp.dart';
+
 /// code : 1
 /// data : {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtc2ciOiJcIntcXFwidXVpZFxcXCI6XFxcIjIxMzIxMzIxNFxcXCJ9XCIiLCJpYXQiOjE2Nzc2NTM3OTYsImV4cCI6MTY3Nzc0MDE5Nn0.mRCB_lsbC6Uvv5Scb4V0Ru5tLlNvk4HWNNy9JmkQ9Vs"}
 /// msg : ""
 
-class LoginNewResponse {
-  int? _code;
-  String? _message;
+class LoginNewResponse extends BaseResp{
   Data? _obj;
 
-  int? get code => _code;
-  String? get msg => _message;
   Data? get data => _obj;
 
   LoginNewResponse({
     int? code,
     String? msg,
-    Data? data}){
-    _code = code;
-    _message = msg;
+    Data? data}):super(code,msg){
     _obj = data;
   }
 
-  LoginNewResponse.fromJson(dynamic json) {
+  LoginNewResponse.fromJson(dynamic json):super.fromJson(json) {
     print("response =="+json.toString());
-    _code = json['code'];
-    _message = json['msg'];
     _obj = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _message;
+    map['code'] = code;
+    map['message'] = message;
     if (_obj != null) {
       map['obj'] = _obj?.toJson();
     }
