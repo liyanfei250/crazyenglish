@@ -38,6 +38,8 @@ class JsonCacheManageUtils{
   static final int ReviewHomeResponse = 0x001;//复习界面
   static final int PracRecordInfoResponse = 0x002;//练习记录
   static final int ErrorNateTabList = 0x003;//错题本tab
+  static final int SearchRecordDate = 0x004;//收藏筛选
+  static final int SearchCollectListDate = 0x005;//收藏列表
 
 
   // String contentJson;

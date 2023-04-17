@@ -35,7 +35,7 @@ class _ToErrorNoteCollectPageState extends BasePageState<ErrorNoteCollectPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildBottomAppBar("错题本"),
+      appBar: buildBottomAppBar("收藏题目"),
       backgroundColor: AppColors.theme_bg,
       body: TabBarView(controller: _tabController,
           //构建

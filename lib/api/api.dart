@@ -106,5 +106,9 @@ class Api {
   static String getPracticeRecordList = Config.ApiHost+ "/";
   // 错题本tab接口
   static String getErrorNoteTabDateList = Config.ApiHost+ "/";
+  // 收藏题目最近搜索历史接口
+  static String getSearchRecordDateList = Config.ApiHost+ "/";
+  // 收藏列表接口
+  static String getSearchCollectListDate = Config.ApiHost+ "/";
 
 }

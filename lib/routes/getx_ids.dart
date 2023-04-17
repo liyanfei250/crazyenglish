@@ -44,6 +44,8 @@ class GetBuilderIds {
   static const String getReviewHomeDate = "getReviewHomeDate";
   static const String getPracticeRecordList = "getPracticeRecordList";
   static const String getErrorNoteTabDate = "getErrorNoteTabDate";
+  static const String getSearchRecord = "getSearchRecord";
+  static const String getCollectListDate = "getCollectListDate";
 
 
 
