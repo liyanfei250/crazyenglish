@@ -83,7 +83,7 @@ class Api {
       Config.ApiHost + "/app/practicerecords/exercises";
 
   // 开始作答接口
-  static String getStartExam = Config.ApiHost+"/app/startExam";
+  static String getStartExam = Config.ApiHost + "/app/startExam";
 
 // 练习接口
   // 周报列表接口
@@ -134,4 +134,12 @@ class Api {
   // 首页金刚区列表
   static String getHomeList = Config.ApiHost + "/";
 
+  // 首页金刚区列表听力筛选条件
+  static String getHomeListChoiceDate = Config.ApiHost + "/";
+
+  // 首页金刚区听力列表
+  static String getHomeSecondListDate = Config.ApiHost + "/";
+
+  // 首页金刚区周报筛选
+  static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";
 }

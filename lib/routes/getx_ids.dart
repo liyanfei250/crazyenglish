@@ -49,6 +49,9 @@ class GetBuilderIds {
   static const String getCollectListDate = "getCollectListDate";
   static const String toCollectDate = "toCollectDate";
   static const String getHomeDateList = "getHomeDateList";
+  static const String getHomeListChoiceDate = "getHomeListChoiceDate";
+  static const String getHomeSecondListDate = "getHomeSecondListDate";
+  static const String getHomeWeeklyChoiceDate = "getHomeWeeklyChoiceDate";
 
 }
 
