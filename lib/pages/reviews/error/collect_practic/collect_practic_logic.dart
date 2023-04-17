@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../../../entity/review/CancellCollectDate.dart';
+import '../../../../entity/review/CollectDate.dart';
 import '../../../../entity/review/SearchCollectListDate.dart';
 import '../../../../entity/review/SearchRecordDate.dart';
 import '../../../../routes/getx_ids.dart';
@@ -36,21 +38,23 @@ class Collect_practicLogic extends GetxController {
     }
   }
 
-  void getCollectList(String weekTime,int page,int pageSize) async{
-    Map<String,String> req= {};
+  void getCollectList(String weekTime, int page, int pageSize) async {
+    Map<String, String> req = {};
     // req["weekTime"] = weekTime;
     req["current"] = "$page";
     req["size"] = "$pageSize";
 
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.SearchCollectListDate,labelId: weekTime.toString()).then((value){
-      if(value!=null){
-        return SearchCollectListDate.fromJson(value as Map<String,dynamic>?);
+            JsonCacheManageUtils.SearchCollectListDate,
+            labelId: weekTime.toString())
+        .then((value) {
+      if (value != null) {
+        return SearchCollectListDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==1 && cache is SearchCollectListDate && cache!=null) {
+    if (page == 1 && cache is SearchCollectListDate && cache != null) {
       state.paperList = cache!;
       //todo 具体的参数获取
       // if(state.paperList.length < pageSize){
@@ -62,7 +66,7 @@ class Collect_practicLogic extends GetxController {
     }
 
     SearchCollectListDate list = await recordData.getCollectList(req);
-    if(page ==1){
+    if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.SearchCollectListDate,
           labelId: weekTime.toString(),
@@ -86,5 +90,17 @@ class Collect_practicLogic extends GetxController {
     //   }
     // }
     update([GetBuilderIds.getCollectListDate]);
+  }
+
+  void toCollect(String id) async {
+    CollectDate collectResponse = await recordData.toCollect({"mobile": id});
+    state.collectDate = collectResponse;
+    update([GetBuilderIds.toCollectDate]);
+  }
+
+  void toCancellCollect(String id) async {
+    CancellCollectDate collectCancelResponse = await recordData.toCancellCollect({"mobile": id});
+    state.cancellCollectDate = collectCancelResponse;
+    update([GetBuilderIds.toCancellCollectDate]);
   }
 }

@@ -76,8 +76,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     logic.getSearchRecord('0');
 
     //收藏筛选列表
-    logic.addListenerId(GetBuilderIds.getSearchRecord,(){
-      if(state.paperDetail!=null){
+    logic.addListenerId(GetBuilderIds.getSearchRecord, () {
+      if (state.paperDetail != null) {
         paperDetail = state.paperDetail;
         /*if(mounted && _refreshController!=null){
           if(paperDetail!.data!=null
@@ -97,7 +97,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     });
 
     //收藏列表
-    logic.addListenerId(GetBuilderIds.getCollectListDate,(){
+    logic.addListenerId(GetBuilderIds.getCollectListDate, () {
       hideLoading();
       /*if(state.paperList!=null && state.paperList!=null){
         if(state.pageNo == currentPageNo+1){
@@ -134,7 +134,12 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       }*/
     });
     _onRefresh();
-    showLoading("");
+    // showLoading("");
+
+    //收藏
+    logic.addListenerId(GetBuilderIds.toCollectDate, () {});
+    //收藏取消
+    logic.addListenerId(GetBuilderIds.toCancellCollectDate, () {});
   }
 
 // 清空输入框内容
@@ -347,12 +352,18 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                       fontWeight: FontWeight.w400),
                 )),
             Expanded(child: Text('')),
-            Padding(
-              padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
-              child: Image.asset(
-                R.imagesCollecPracIcon,
-                width: 46.w,
-                height: 13.w,
+            GestureDetector(
+              onTap: () {
+                logic.toCollect('id');
+                logic.toCancellCollect('id');
+              },
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
+                child: Image.asset(
+                  R.imagesCollecPracIcon,
+                  width: 46.w,
+                  height: 13.w,
+                ),
               ),
             ),
           ],
@@ -393,11 +404,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getCollectList("2022-12-22",pageStartIndex,pageSize);
+    logic.getCollectList("2022-12-22", pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getCollectList("2022-12-22",currentPageNo,pageSize);
+    logic.getCollectList("2022-12-22", currentPageNo, pageSize);
   }
 }
