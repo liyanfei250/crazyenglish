@@ -1,39 +1,31 @@
 
-class HomeListDate {
-  HomeListDate({num? code, String? data, String? msg}) {
-    _code = code;
+import '../base_resp.dart';
+
+class HomeListDate extends BaseResp{
+  HomeListDate({num? code, String? data, String? msg}):super(code,msg) {
     _data = data;
-    _msg = msg;
   }
 
-  HomeListDate.fromJson(dynamic json) {
-    _code = json['code'];
-    _data = json['data'];
-    _msg = json['msg'];
+  HomeListDate.fromJson(dynamic json):super.fromJson(json) {
+    _data = json['obj'];
   }
 
-  num? _code;
   String? _data;
-  String? _msg;
 
   HomeListDate copyWith({num? code, String? data, String? msg}) =>
       HomeListDate(
-        code: code ?? _code,
+        code: code ?? code,
         data: data ?? _data,
-        msg: msg ?? _msg,
+        msg: msg ?? message,
       );
-
-  num? get code => _code;
 
   String? get data => _data;
 
-  String? get msg => _msg;
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['data'] = _data;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['obj'] = _data;
+    map['msg'] = message;
     return map;
   }
 }

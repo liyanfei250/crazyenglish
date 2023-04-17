@@ -7,18 +7,16 @@ import '../../net/net_manager.dart';
 
 class HomeViewRepository {
   Future<HomeListDate> getHomeList(String id) async {
-    BaseResp baseResp = await NetManager.getInstance()!.request(
+    Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getHomeList,
         options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if (baseResp.getReturnData() != null) {
-      HomeListDate paperDetail =
-          HomeListDate.fromJson(baseResp.getReturnData());
+    HomeListDate paperDetail =
+    HomeListDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    }else{
+
       return paperDetail!;
-    } else {
-      return Future.error("返回HomeListDateResponse为空");
     }
   }
 }
