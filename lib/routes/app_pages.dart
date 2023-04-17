@@ -59,7 +59,6 @@ import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
 import '../pages/week_read/reading_list/reading_list_view.dart';
-import '../pages/user/login/login_view.dart';
 import '../pages/writing/writing_view.dart';
 import '../xfyy/text_to_voice.dart';
 
@@ -76,7 +75,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),
     GetPage(name: AppRoutes.LoginNew, page:()=> LoginNewPage(),),
     GetPage(name: AppRoutes.TextToVoice, page:()=> TextToVoice(),),
-    GetPage(name: AppRoutes.LOGIN, page:()=>LoginPage(),),
     GetPage(name: AppRoutes.WeeklyList, page:()=>ReadingListPage(),),
     GetPage(name: AppRoutes.PaperCategory, page:()=>Reading_catalogPage(),),
     GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),

@@ -29,15 +29,15 @@ class WeekPaperResponse {
   WeekPaperResponse.fromJson(dynamic json) {
     _code = json['code'];
     _msg = json['msg'];
-    _data = json['data'] != null ? WeekPaper.fromJson(json['data']) : null;
+    _data = json['obj'] != null ? WeekPaper.fromJson(json['obj']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['code'] = _code;
-    map['msg'] = _msg;
+    map['message'] = _msg;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
     return map;
   }

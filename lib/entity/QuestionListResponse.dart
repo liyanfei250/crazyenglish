@@ -15,7 +15,7 @@ class QuestionListResponse {
   QuestionListResponse.fromJson(dynamic json) {
     _code = json['code'];
     _msg = json['msg'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
   num? _code;
   String? _msg;
@@ -34,9 +34,9 @@ QuestionListResponse copyWith({  num? code,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['code'] = _code;
-    map['msg'] = _msg;
+    map['message'] = _msg;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
     return map;
   }

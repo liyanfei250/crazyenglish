@@ -281,7 +281,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         onTap: () {
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
-          logicDetail.getWeekTestDetail(node.key);
+          logicDetail.getDetailAndStartExam(node.key);
           showLoading("");
         },
         child: Container(

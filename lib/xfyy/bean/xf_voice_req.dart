@@ -14,7 +14,7 @@ class XfVoiceReq {
   XfVoiceReq.fromJson(dynamic json) {
     common = json['common'] != null ? CommonV.fromJson(json['common']) : null;
     business = json['business'] != null ? BusinessV.fromJson(json['business']) : null;
-    data = json['data'] != null ? DataV.fromJson(json['data']) : null;
+    data = json['obj'] != null ? DataV.fromJson(json['obj']) : null;
   }
   CommonV? common;
   BusinessV? business;
@@ -29,7 +29,7 @@ class XfVoiceReq {
       map['business'] = business?.toJson();
     }
     if (data != null) {
-      map['data'] = data?.toJson();
+      map['obj'] = data?.toJson();
     }
     return map;
   }

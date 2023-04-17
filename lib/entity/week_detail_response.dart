@@ -1,53 +1,48 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// data : [{"uuid":"1af949a0-b89b-11ed-a625-db6b4cef49c7","title":"本题共有5个小题，每小题你将听到一组对话。请你从每小题所给的A、B、C三幅图片中，选出与你所听到的信息相关联的一项，并将其字母标号填入题前括号内。","content":null,"options":[{"answer":1,"name":"","list":[{"text":"A、","image":"","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/07ac08b0-b89b-11ed-a625-db6b4cef49c7tiancaia1.jpg"},{"text":"B、","image":"","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/0bfa5430-b89b-11ed-a625-db6b4cef49c7tiancaia2.jpg"}]},{"answer":0,"name":"","list":[{"text":"A、","image":"","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/1022a120-b89b-11ed-a625-db6b4cef49c7tiancaib1.jpg"},{"text":"B、","image":"","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/16a6b860-b89b-11ed-a625-db6b4cef49c7tiancaib2.jpg"}]}],"answer":"","type":1,"typeChildren":1,"audio":"https://test-1315843937.cos.ap-beijing.myqcloud.com/70e6d9d0-b838-11ed-ab49-1363b805246btiancai90543416759913213894402778867738048744382.mp3"}]
 /// msg : ""
 
-class WeekDetailResponse {
+class WeekDetailResponse extends BaseResp{
   WeekDetailResponse({
       num? code, 
       List<Data>? data, 
-      String? msg,}){
-    _code = code;
+      String? msg,}):super(code,msg){
     _data = data;
-    _msg = msg;
 }
 
   @override
   String toString() {
-    return 'WeekDetailResponse{_code: $_code, _data: $_data, _msg: $_msg}';
+    return 'WeekDetailResponse{_code: $code, _data: $_data, _msg: $message}';
   }
 
-  WeekDetailResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    if (json['data'] != null) {
+  WeekDetailResponse.fromJson(dynamic json):super.fromJson(json) {
+    if (json['obj'] != null) {
       _data = [];
-      json['data'].forEach((v) {
+      json['obj'].forEach((v) {
         _data?.add(Data.fromJson(v));
       });
     }
-    _msg = json['msg'];
   }
-  num? _code;
+
   List<Data>? _data;
-  String? _msg;
 WeekDetailResponse copyWith({  num? code,
   List<Data>? data,
   String? msg,
-}) => WeekDetailResponse(  code: code ?? _code,
+}) => WeekDetailResponse(  code: code ?? code,
   data: data ?? _data,
-  msg: msg ?? _msg,
+  msg: msg ?? msg,
 );
-  num? get code => _code;
   List<Data>? get data => _data;
-  String? get msg => _msg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
+    map['code'] = code;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
     }
-    map['msg'] = _msg;
+    map['message'] = message;
     return map;
   }
 

@@ -1,43 +1,37 @@
+import 'base_resp.dart';
+
 /// code : 1
 /// data : {"uuid":"09aae430-b812-11ed-90c4-ef9a5923117d","username":null,"avatar":null,"nickname":null,"identity":3,"grade":12}
 /// msg : ""
 
-class UserInfoResponse {
+class UserInfoResponse extends BaseResp{
   UserInfoResponse({
-      num? code, 
-      Data? data, 
-      String? msg,}){
-    _code = code;
+      num? code,
+      Data? data,
+      String? msg,}):super(code,msg){
     _data = data;
-    _msg = msg;
 }
 
-  UserInfoResponse.fromJson(dynamic json) {
-    _code = json['code'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    _msg = json['msg'];
+  UserInfoResponse.fromJson(dynamic json):super.fromJson(json) {
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
-  num? _code;
   Data? _data;
-  String? _msg;
 UserInfoResponse copyWith({  num? code,
   Data? data,
   String? msg,
-}) => UserInfoResponse(  code: code ?? _code,
+}) => UserInfoResponse(  code: code ?? code,
   data: data ?? _data,
-  msg: msg ?? _msg,
+  msg: msg ?? message,
 );
-  num? get code => _code;
   Data? get data => _data;
-  String? get msg => _msg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
+    map['code'] = code;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
-    map['msg'] = _msg;
+    map['message'] = message;
     return map;
   }
 

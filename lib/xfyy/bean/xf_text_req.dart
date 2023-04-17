@@ -14,7 +14,7 @@ class XfTextReq {
   XfTextReq.fromJson(dynamic json) {
     common = json['common'] != null ? Common.fromJson(json['common']) : null;
     business = json['business'] != null ? Business.fromJson(json['business']) : null;
-    data = json['data'] != null ? DataReq.fromJson(json['data']) : null;
+    data = json['obj'] != null ? DataReq.fromJson(json['obj']) : null;
   }
   Common? common;
   Business? business;
@@ -29,7 +29,7 @@ class XfTextReq {
       map['business'] = business?.toJson();
     }
     if (data != null) {
-      map['data'] = data?.toJson();
+      map['obj'] = data?.toJson();
     }
     return map;
   }

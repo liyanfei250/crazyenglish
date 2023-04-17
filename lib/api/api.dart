@@ -74,7 +74,7 @@ class Api {
   static String getPracticerecordsDetail = Config.ApiHost+ "/app/practicerecords/exercises";
 
   // 开始作答接口
-  static String getStartExam = Config.ApiHost+"startExam";
+  static String getStartExam = Config.ApiHost+"/app/startExam";
 
 // 练习接口
   // 周报列表接口

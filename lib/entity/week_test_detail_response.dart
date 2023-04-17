@@ -23,9 +23,9 @@ class WeekTestDetailResponse {
   WeekTestDetailResponse.fromJson(dynamic json) {
     _code = json['code'];
     _msg = json['msg'];
-    if (json['data'] != null) {
+    if (json['obj'] != null) {
       _data = [];
-      json['data'].forEach((v) {
+      json['obj'].forEach((v) {
         _data?.add(Data.fromJson(v));
       });
     }
@@ -34,9 +34,9 @@ class WeekTestDetailResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['code'] = _code;
-    map['msg'] = _msg;
+    map['message'] = _msg;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
   }

@@ -48,10 +48,10 @@ class WeekTestDetailLogic extends GetxController {
     if(cache is WeekTestDetailResponse) {
       state.weekTestDetailResponse = cache!;
       state.uuid = id;
-      getWeekTestDetail(id);
+      getWeekTestDetailFromServer(id);
       return cache!;
     }
-    return getWeekTestDetail(id);
+    return getWeekTestDetailFromServer(id);
   }
 
   Future<WeekDetailResponse> getWeekTestDetailFromServer(String id) async{

@@ -16,17 +16,17 @@ import '../net/net_manager.dart';
 class OtherRepository{
 
   Future<DatagroupDetailResponse> getDataGroupDetail(String code) async{
-    BaseResp baseResp = await NetManager.getInstance()!
-        .request(Method.get, Api.getDataGroupDetail+code,
-        options: Options(method: Method.get));
-    if (baseResp.code != ResponseCode.status_success) {
-      return Future.error(baseResp.message!);
-    }
-    if(baseResp.getReturnData() !=null){
-      DatagroupDetailResponse datagroupDetailResponse = DatagroupDetailResponse.fromJson(baseResp.getReturnData());
-      return datagroupDetailResponse;
-    } else {
+    // BaseResp baseResp = await NetManager.getInstance()!
+    //     .request(Method.get, Api.getDataGroupDetail+code,
+    //     options: Options(method: Method.get));
+    // if (baseResp.code != ResponseCode.status_success) {
+    //   return Future.error(baseResp.message!);
+    // }
+    // if(baseResp.getReturnData() !=null){
+    //   DatagroupDetailResponse datagroupDetailResponse = DatagroupDetailResponse.fromJson(baseResp.getReturnData());
+    //   return datagroupDetailResponse;
+    // } else {
       return Future.error("返回datagroupDetailResponse为空");
-    }
+    // }
   }
 }

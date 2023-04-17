@@ -22,7 +22,7 @@ class XfRes {
     _code = json['code'];
     _message = json['message'];
     _sid = json['sid'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
   }
   int? _code;
   String? _message;
@@ -40,7 +40,7 @@ class XfRes {
     map['message'] = _message;
     map['sid'] = _sid;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['obj'] = _data?.toJson();
     }
     return map;
   }
