@@ -76,6 +76,7 @@ class WeekTestDetailLogic extends GetxController {
   // 添加跳转题目详情监听
   // 所有的跳转答题进结果页都走这里
   // TODO 完善跳结果页流程
+  // TODO 引入的地方需要处理监听的添加与删除逻辑
   void addJumpToDetailListen(int parentIndex,int childIndex){
     addListenerId(GetBuilderIds.startExam, () {
       // TODO 区分一下 写作 还是 其它题

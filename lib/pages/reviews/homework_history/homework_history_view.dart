@@ -9,6 +9,7 @@ import '../../../r.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/LeftLineWidget.dart';
 import '../../../widgets/MyDecoration.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../practise_history/utils.dart';
 import 'homework_history_logic.dart';
 
@@ -22,7 +23,8 @@ class HomeworkHistoryPage extends BasePage {
 class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
   final logic = Get.put(HomeworkHistoryLogic());
   final state = Get.find<HomeworkHistoryLogic>().state;
-
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -39,6 +41,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    logicDetail.addJumpToDetailListen(0, 0);
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -243,39 +246,45 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
-                                      Padding(padding: EdgeInsets.only(top: 11.w)),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            width: 48.w,
-                                            height: 17.w,
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsets.only(right: 13.w),
-                                            decoration: BoxDecoration(
-                                              color: Color(0xfffff7ed),
-                                              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                              InkWell(
+                                onTap: (){
+                                  logicDetail.getDetailAndStartExam("0");
+                                  showLoading("");
+                                },
+                                child: Expanded(child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
+                                        Padding(padding: EdgeInsets.only(top: 11.w)),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              width: 48.w,
+                                              height: 17.w,
+                                              alignment: Alignment.center,
+                                              margin: EdgeInsets.only(right: 13.w),
+                                              decoration: BoxDecoration(
+                                                color: Color(0xfffff7ed),
+                                                borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                                              ),
+                                              child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
                                             ),
-                                            child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
-                                          ),
-                                          Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
-                                ],
-                              ),),
+                                            Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
+                                  ],
+                                ),),
+                              ),
                               Visibility(
                                   visible: true,
                                   child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
@@ -298,6 +307,8 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
   void dispose() {
     _selectedEvents.dispose();
     Get.delete<HomeworkHistoryLogic>();
+    Get.delete<WeekTestDetailLogic>();
+
     super.dispose();
   }
 

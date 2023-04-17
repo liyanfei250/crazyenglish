@@ -14,6 +14,7 @@ import '../../../../routes/getx_ids.dart';
 import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/search_bar.dart';
+import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'collect_practic_logic.dart';
 
 class ErrorColectPrctePage extends BasePage {
@@ -26,6 +27,9 @@ class ErrorColectPrctePage extends BasePage {
 class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final logic = Get.put(Collect_practicLogic());
   final state = Get.find<Collect_practicLogic>().state;
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
+
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   bool _showClearButton = false;
@@ -133,6 +137,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         }
       }*/
     });
+    logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     // showLoading("");
 
@@ -382,9 +387,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        //todo 点击跳转到新的界面
-        Util.toast("跳转到目录页");
-        // RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,arguments: weekPaperList![index]);
+        logicDetail.getDetailAndStartExam("0");
       },
       child: listitemBigBg(),
     );
@@ -396,6 +399,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   @override
   void onDestroy() {
     Get.delete<Collect_practicLogic>();
+    Get.delete<WeekTestDetailLogic>();
     _refreshController.dispose();
   }
 

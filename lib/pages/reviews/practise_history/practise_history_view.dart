@@ -10,6 +10,7 @@ import '../../../entity/review/PractiseHistoryDate.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../widgets/LeftLineWidget.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'practise_history_logic.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -24,6 +25,8 @@ class Practise_historyPage extends BasePage {
 class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   final logic = Get.put(Practise_historyLogic());
   final state = Get.find<Practise_historyLogic>().state;
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -61,6 +64,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
       }
     });
+
+    logicDetail.addJumpToDetailListen(0, 0);
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -265,39 +270,45 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
-                                    Padding(padding: EdgeInsets.only(top: 11.w)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          width: 48.w,
-                                          height: 17.w,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(right: 13.w),
-                                          decoration: BoxDecoration(
-                                            color: Color(0xfffff7ed),
-                                            borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                            InkWell(
+                              onTap: (){
+                                logicDetail.getDetailAndStartExam("0");
+                                showLoading("");
+                              },
+                              child: Expanded(child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
+                                      Padding(padding: EdgeInsets.only(top: 11.w)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: 48.w,
+                                            height: 17.w,
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(right: 13.w),
+                                            decoration: BoxDecoration(
+                                              color: Color(0xfffff7ed),
+                                              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                                            ),
+                                            child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
                                           ),
-                                          child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
-                                        ),
-                                        Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
-                              ],
-                            ),),
+                                          Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
+                                ],
+                              ),),
+                            ),
                             Visibility(
                                 visible: true,
                                 child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
@@ -320,6 +331,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   void dispose() {
     _selectedEvents.dispose();
     Get.delete<Practise_historyLogic>();
+    Get.delete<WeekTestDetailLogic>();
     super.dispose();
   }
 
