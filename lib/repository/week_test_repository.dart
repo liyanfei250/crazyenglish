@@ -10,6 +10,7 @@ import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
 import '../entity/commit_request.dart';
+import '../entity/start_exam.dart';
 import '../entity/user_info_response.dart';
 import '../entity/week_detail_response.dart' as weekDetail;
 import '../net/net_manager.dart';
@@ -93,6 +94,21 @@ class WeekTestRepository{
       return weekTestDetailResponse!;
     } else {
       return Future.error("返回weekTestDetailResponse为空");
+    }
+  }
+
+  Future<StartExam> getStartExam(String id) async{
+    StartExam baseResp = await NetManager.getInstance()!
+        .request(Method.get, Api.getStartExam,
+        options: Options(method: Method.get)) as StartExam;
+
+    if (baseResp.code != ResponseCode.status_success) {
+      return Future.error(baseResp.message!);
+    }
+    if(baseResp.code ==0){
+      return baseResp;
+    } else {
+      return Future.error("返回开始作答信息为空");
     }
   }
 
