@@ -11,7 +11,6 @@ import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/search_bar.dart';
 import '../collect_practic/collect_practic_view.dart';
-import '../collect_words/collect_words_view.dart';
 import '../error_note_child/error_note_child_view.dart';
 import 'error_note_collect_logic.dart';
 

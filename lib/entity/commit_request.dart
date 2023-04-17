@@ -16,6 +16,8 @@ class CommitResponse extends BaseResp{
     _data = data;
   }
 
+  CommitRequest? get data => _data;
+
   @override
   String toString() {
     StringBuffer sb = new StringBuffer('{');
@@ -28,7 +30,7 @@ class CommitResponse extends BaseResp{
   }
 
   CommitResponse.fromJson(dynamic json):super.fromJson(json) {
-    _data = CommitRequest.fromJson(json['obj']);
+    _data = json['obj'] != null ? CommitRequest.fromJson(json['obj']) : null;
   }
 }
 
@@ -37,13 +39,11 @@ class CommitRequest {
       String? muchTime, 
       String? name, 
       String? directory,
-      String? directory_uuid,
-      List<Data>? exercises,}){
+      String? directory_uuid}){
     _muchTime = muchTime;
     _name = name;
     _directory = directory;
     _directory_uuid = directory_uuid;
-    _exercises = exercises;
 }
 
   CommitRequest.fromJson(dynamic json) {
@@ -51,34 +51,24 @@ class CommitRequest {
     _name = json['name'];
     _directory = json['directory'];
     _directory_uuid = json['directory_uuid'];
-    if (json['exercises'] != null) {
-      _exercises = [];
-      json['exercises'].forEach((v) {
-        _exercises?.add(Data.fromJson(v));
-      });
-    }
   }
   String? _muchTime;
   String? _name;
   String? _directory;
   String? _directory_uuid;
-  List<Data>? _exercises;
 CommitRequest copyWith({  String? muchTime,
   String? name,
   String? directory,
   String? directory_uuid,
-  List<Data>? exercises,
 }) => CommitRequest(  muchTime: muchTime ?? _muchTime,
   name: name ?? _name,
   directory: directory ?? _directory,
   directory_uuid: directory_uuid ?? _directory_uuid,
-  exercises: exercises ?? _exercises,
 );
   String? get muchTime => _muchTime;
   String? get name => _name;
   String? get directory => _directory;
   String? get directory_uuid => _directory_uuid;
-  List<Data>? get exercises => _exercises;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -86,9 +76,6 @@ CommitRequest copyWith({  String? muchTime,
     map['name'] = _name;
     map['directory'] = _directory;
     map['directory_uuid'] = _directory_uuid;
-    if (_exercises != null) {
-      map['exercises'] = _exercises?.map((v) => v.toJson()).toList();
-    }
     return map;
   }
 

@@ -198,7 +198,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                             name: "测试",
                             directory: "1cddffb0-bcef-11ed-8e11-530450f105f5",
                             directory_uuid: widget.uuid,
-                          exercises: widget.testDetailResponse!.data
                         );
                         logic.uploadWeekTest(commitRequest);
                         Get.back();

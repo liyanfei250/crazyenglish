@@ -37,8 +37,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   List<Rows> weekPaperList = [];
   final int pageStartIndex = 1;
 
-
-
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.weekTestList,(){

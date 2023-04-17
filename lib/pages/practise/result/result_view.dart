@@ -12,6 +12,7 @@ import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../question/choise_question.dart';
 import '../question/listen_question.dart';
 import '../question/read_question.dart';
@@ -45,6 +46,9 @@ class ResultPage extends BasePage{
 class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(ResultLogic());
   final state = Get.find<ResultLogic>().state;
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
+
 
   late TabController _tabController;
 
@@ -163,12 +167,14 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               InkWell(
                 onTap: (){
                   // 开始作答逻辑
-                  RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                      arguments: {"detail": widget.testDetailResponse,
-                        "uuid":"dd",
-                        "parentIndex":widget.parentIndex,
-                        "childIndex":0,
-                      });
+                  // RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                  //     arguments: {"detail": widget.testDetailResponse,
+                  //       "uuid":"dd",
+                  //       "parentIndex":widget.parentIndex,
+                  //       "childIndex":0,
+                  //     });
+                  logicDetail.getDetailAndStartExam("0");
+                  showLoading("");
                 },
                 child: Container(
                   width: 134.w,
@@ -191,12 +197,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                 onTap: (){
                   // 开始作答逻辑 跳转到下一题
                   if(widget.testDetailResponse!.data!.length > widget.parentIndex+1){
-                    RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                        arguments: {"detail": widget.testDetailResponse,
-                          "uuid":"dd",
-                          "parentIndex":widget.parentIndex+1,
-                          "childIndex":0,
-                        });
+                    // RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                    //     arguments: {"detail": widget.testDetailResponse,
+                    //       "uuid":"dd",
+                    //       "parentIndex":widget.parentIndex+1,
+                    //       "childIndex":0,
+                    //     });
+                    logicDetail.getDetailAndStartExam("0");
                   }else{
                     Util.toast("已经是最后一题");
                   }
@@ -328,118 +335,11 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     return Container();
   }
 
-  // Widget buildQuestionResult2(Data element){
-  //   questionList.clear();
-  //   if(element.options!=null && element.options!.length>0){
-  //     int questionNum = element.options!.length;
-  //     bool isHebing = false;
-  //     for(int i = 0 ;i< questionNum;i++){
-  //       Options question = element.options![i];
-  //
-  //       tabs.add("${i+1}");
-  //       List<Widget> itemList = [];
-  //       itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
-  //
-  //       if(element.type == 1){
-  //         if(element.typeChildren == 1){
-  //           // 选择题
-  //           itemList.add(buildQuestionType("选择题"));
-  //           // itemList.add(Visibility(
-  //           //   visible: question!.title != null && question!.title!.isNotEmpty,
-  //           //   child: Text(
-  //           //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-  //           //   ),));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren == 2){
-  //           // 选择题
-  //           itemList.add(buildQuestionType("选择题"));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren == 3){
-  //           // 选择题
-  //           itemList.add(buildQuestionType("选择题"));
-  //           itemList.add(Visibility(
-  //             visible: question!.name != null && question!.name!.isNotEmpty,
-  //             child: Text(
-  //               question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-  //             ),));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren ==4){
-  //           // 选择题
-  //           itemList.add(buildQuestionType("填空题"));
-  //         }
-  //
-  //       }else if(element.type == 2){
-  //         if(element.typeChildren == 1){
-  //           // 选择题
-  //           itemList.add(buildQuestionType("选择题"));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren == 2){ // 阅读选项
-  //           // 选择题
-  //           itemList.add(buildQuestionType("选择题"));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren == 3 || element.typeChildren == 6){ // 阅读填空 阅读理解 对话
-  //           // 选择题
-  //           itemList.add(buildQuestionType("填空题"));
-  //           // itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
-  //           isHebing = true;
-  //         }
-  //       }else if(element.type == 3){
-  //         if(element.typeChildren == 1){
-  //           // 单项选择题
-  //           itemList.add(buildQuestionType("单项选择题"));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }else if(element.typeChildren == 2){ // 阅读选项
-  //           // 选择题
-  //           itemList.add(buildQuestionType("补全对话"));
-  //           // itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
-  //           isHebing = true;
-  //
-  //         }else if(element.typeChildren == 3){ // 阅读填空 阅读理解 对话
-  //           // 选择题
-  //           itemList.add(buildQuestionType("完型填空"));
-  //           if((question!.list??[]).length > 0) {
-  //             itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-  //           }
-  //         }
-  //       }
-  //
-  //       questionList.add(SingleChildScrollView(
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: itemList,
-  //         ),
-  //       ));
-  //       if(isHebing){
-  //         break;
-  //       }
-  //     }
-  //   }else{
-  //     questionList.add(const SizedBox());
-  //   }
-  //
-  //   return Expanded(child: TabBarView(
-  //     controller: _tabController,
-  //     children: questionList,
-  //   ));
-  // }
-
 
   @override
   void onDestroy() {
     Get.delete<ResultLogic>();
+    Get.delete<WeekTestDetailLogic>();
   }
 
   @override
