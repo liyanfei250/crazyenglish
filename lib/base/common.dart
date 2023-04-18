@@ -50,6 +50,38 @@ class DataGroup{
   static Map<String,String> questionType = {};
 }
 
+// 题型
+class QuestionType{
+
+  static const int single_choice = 1; /// 单选题
+  static const int multi_choice = 2;  /// 多选题
+  static const int judge_choice = 3;  /// 判断题
+  static const int normal_gap = 4;  /// 常规填空题
+  static const int translate_gap = 5;  /// 翻译填空题
+  static const int to_complete_gap = 6;  /// 补全填空题
+  static const int complete_filling = 7;  /// 完型填空题
+  static const int select_words_filling = 8;  /// 选词填空
+  static const int select_filling = 9;  /// 选择填空
+  static const int normal_reading = 10;  /// 常规填空题
+  static const int question_reading = 11;  /// 简单填空题
+
+}
+
+// 题型分类
+class QuestionTypeClassify{
+
+  static const int listening = 1;  /// 听力
+  static const int reading = 2;  /// 阅读
+  static const int writing = 3;  /// 写作
+  static const int spoken = 4;  /// 口语
+  static const int vocabulary = 5;  /// 词汇
+  static const int phrase = 6;  /// 短语
+  static const int grammer = 7;  /// 语法
+  static const int sentence = 8;  /// 句子
+  static const int others = 9;  /// 其它
+}
+
+
 class PayType{
   static const String APPLE = "apple";
   static const String WX = "wx";
