@@ -9,6 +9,7 @@ import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import 'MenuWidget.dart';
 import 'listening_practice_logic.dart';
@@ -67,6 +68,28 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
+
+    logic.getChoiceMap('');
+
+    logic.addListenerId(GetBuilderIds.getHomeListChoiceDate, () {
+      if (state.paperDetail != null) {
+        /*paperDetail = state.paperDetail;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
   }
 
   @override
@@ -180,12 +203,12 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getList("2022-12-22",pageStartIndex,pageSize);
+    logic.getList("2022-12-22",pageStartIndex,pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList("2022-12-22",currentPageNo,pageSize);
+    logic.getList("2022-12-22",currentPageNo,pageSize);
   }
 
   @override
