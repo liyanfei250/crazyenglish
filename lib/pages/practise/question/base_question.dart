@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
@@ -134,7 +135,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
         if(element.type == 1){
-          if(element.typeChildren == 1){
+          if(element.typeChildren == QuestionType.single_choice){
             // 选择题
             itemList.add(buildQuestionType("选择题"));
             // itemList.add(Visibility(

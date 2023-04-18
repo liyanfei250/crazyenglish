@@ -46,7 +46,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        getType(answer,choseItem.value,e.logoAnswer??"K"),
+                        _getType(answer,choseItem.value,e.logoAnswer??"K"),
                         choseItem.value,
                         e.logoAnswer??"K",
                         e!.content!,
@@ -82,7 +82,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        getSelectedType(choseItem.value,list.indexOf(e)),
+                        _getSelectedType(choseItem.value,list.indexOf(e)),
                         answerIndex>=0? list[answerIndex].text:"",
                         e!.text!,
                         e!.text!,
@@ -119,7 +119,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        getSelectedType(choseItem.value,list.indexOf(e)),
+                        _getSelectedType(choseItem.value,list.indexOf(e)),
                         "",
                         e.list![0].text!,
                         e.list![0].text!,
@@ -155,7 +155,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(
-                      getSelectedType(choseItem.value,list.indexOf(e)),
+                      _getSelectedType(choseItem.value,list.indexOf(e)),
                         answerIndex>=0? list[answerIndex].text:"",
                         e!.text!,
                         e.img,
@@ -171,33 +171,54 @@ class QuestionFactory{
     );
   }
 
-  static ChoiceRadioItemType getType(String rightAnswer,String choseItemValue,String myLabel){
-    if(choseItemValue.isNotEmpty){
-      if(choseItemValue == myLabel){
-        if(rightAnswer == choseItemValue){
-          return ChoiceRadioItemType.RIGHT_SELECTED;
-        }else{
-          return ChoiceRadioItemType.WRONG_SELECTED;
-        }
-      }else{
-        return ChoiceRadioItemType.DEFAULT;
-      }
 
-    }else{
-      return ChoiceRadioItemType.DEFAULT;
-    }
-  }
+  /// 纠错题 空部分
+  static Widget buildFixProblemQuestion(List<BankAnswerAppListVos>? list,String htmlContent){
 
-  static ChoiceRadioItemType getSelectedType(int choseItemValue,int myLabel){
-    if(choseItemValue>=0){
-      if(choseItemValue == myLabel){
-        return ChoiceRadioItemType.SELECTED;
-      }else{
-        return ChoiceRadioItemType.DEFAULT;
-      }
-    }else{
-      return ChoiceRadioItemType.DEFAULT;
-    }
+    TextEditingController? _inputController;
+    _inputController = TextEditingController(
+      text: htmlContent??"",
+    );
+    // list!=null && list.length>0 && list[0].content!=null && list[0].content!.isNotEmpty? list[0].content!:""
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 8.w,right: 5.w),
+          child: Text(
+            htmlContent,
+            style: TextStyle(
+              fontSize: 16.sp,),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 8.w,right: 5.w,top: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 7.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+              color: AppColors.c_4DD9D9D9
+          ),
+          child: TextField(
+            controller: _inputController,
+            keyboardType: TextInputType.multiline,
+            minLines: 10,
+            maxLines: 20,
+            style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 16.sp,
+                height: 1.5,
+                textBaseline: TextBaseline.alphabetic
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              enabledBorder: InputBorder.none,
+              hintText: "请输入改正后的文字",
+            ),
+          ),
+        )
+
+      ],
+    );
   }
 
   static Widget buildHuGapQuestion(List<Options>? list,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
@@ -260,21 +281,21 @@ class QuestionFactory{
                   keyboardType: TextInputType.name,
                   maxLines: 1,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: getInputColor(correctType.value)),
+                  style: TextStyle(color: _getInputColor(correctType.value)),
                   decoration: InputDecoration(
                     isDense:true,
                     contentPadding: EdgeInsets.all(0.w),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           width: 1.w,
-                          color: getInputColor(correctType.value),
+                          color: _getInputColor(correctType.value),
                           style: BorderStyle.solid
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           width: 1.w,
-                          color: getInputColor(correctType.value),
+                          color: _getInputColor(correctType.value),
                           style: BorderStyle.solid
                       ),
                     ),
@@ -326,21 +347,21 @@ class QuestionFactory{
           keyboardType: TextInputType.name,
           maxLines: 1,
           textAlign: TextAlign.center,
-          style: TextStyle(color: getInputColor(correctType.value)),
+          style: TextStyle(color: _getInputColor(correctType.value)),
           decoration: InputDecoration(
             isDense:true,
             contentPadding: EdgeInsets.all(0.w),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                   width: 1.w,
-                  color: getInputColor(correctType.value),
+                  color: _getInputColor(correctType.value),
                   style: BorderStyle.solid
               ),
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                   width: 1.w,
-                  color: getInputColor(correctType.value),
+                  color: _getInputColor(correctType.value),
                   style: BorderStyle.solid
               ),
             ),
@@ -414,21 +435,21 @@ class QuestionFactory{
                   keyboardType: TextInputType.name,
                   maxLines: 1,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: getInputColor(correctType.value)),
+                  style: TextStyle(color: _getInputColor(correctType.value)),
                   decoration: InputDecoration(
                     isDense:true,
                     contentPadding: EdgeInsets.all(0.w),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           width: 1.w,
-                          color: getInputColor(correctType.value),
+                          color: _getInputColor(correctType.value),
                           style: BorderStyle.solid
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           width: 1.w,
-                          color: getInputColor(correctType.value),
+                          color: _getInputColor(correctType.value),
                           style: BorderStyle.solid
                       ),
                     ),
@@ -471,6 +492,7 @@ class QuestionFactory{
     );
   }
 
+  /// 选择填空题
   static Widget buildSelectGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent,int gapKey,GetFocusNodeControllerCallback getFocusNodeControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
@@ -576,7 +598,7 @@ class QuestionFactory{
     );
   }
 
-  static Color getInputColor(int type){
+  static Color _getInputColor(int type){
     switch(type){
       case 0:
         return AppColors.c_FF101010;
@@ -587,54 +609,6 @@ class QuestionFactory{
       default:
         return AppColors.c_FF101010;
     }
-  }
-
-  static Widget buildFixProblemQuestion(List<BankAnswerAppListVos>? list,String htmlContent){
-
-    TextEditingController? _inputController;
-    _inputController = TextEditingController(
-      text: htmlContent??"",
-    );
-    // list!=null && list.length>0 && list[0].content!=null && list[0].content!.isNotEmpty? list[0].content!:""
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 8.w,right: 5.w),
-          child: Text(
-            htmlContent,
-            style: TextStyle(
-              fontSize: 16.sp,),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 8.w,right: 5.w,top: 10.w),
-          padding: EdgeInsets.symmetric(horizontal: 7.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2.w)),
-              color: AppColors.c_4DD9D9D9
-          ),
-          child: TextField(
-            controller: _inputController,
-            keyboardType: TextInputType.multiline,
-            minLines: 10,
-            maxLines: 20,
-            style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 16.sp,
-                height: 1.5,
-                textBaseline: TextBaseline.alphabetic
-            ),
-            decoration: InputDecoration(
-              isDense: true,
-              enabledBorder: InputBorder.none,
-              hintText: "请输入改正后的文字",
-            ),
-          ),
-        )
-
-      ],
-    );
   }
 
   static Widget buildSelectAnswerQuestion(List<String> answers){
@@ -683,6 +657,36 @@ class QuestionFactory{
         );
       },
     );
+  }
+
+
+  static ChoiceRadioItemType _getType(String rightAnswer,String choseItemValue,String myLabel){
+    if(choseItemValue.isNotEmpty){
+      if(choseItemValue == myLabel){
+        if(rightAnswer == choseItemValue){
+          return ChoiceRadioItemType.RIGHT_SELECTED;
+        }else{
+          return ChoiceRadioItemType.WRONG_SELECTED;
+        }
+      }else{
+        return ChoiceRadioItemType.DEFAULT;
+      }
+
+    }else{
+      return ChoiceRadioItemType.DEFAULT;
+    }
+  }
+
+  static ChoiceRadioItemType _getSelectedType(int choseItemValue,int myLabel){
+    if(choseItemValue>=0){
+      if(choseItemValue == myLabel){
+        return ChoiceRadioItemType.SELECTED;
+      }else{
+        return ChoiceRadioItemType.DEFAULT;
+      }
+    }else{
+      return ChoiceRadioItemType.DEFAULT;
+    }
   }
 
 

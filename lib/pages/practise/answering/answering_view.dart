@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
-import 'package:crazyenglish/pages/practise/question/choise_question.dart';
-import 'package:crazyenglish/pages/practise/question/fix_article_question.dart';
+import 'package:crazyenglish/pages/practise/question/others_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question/read_question.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../entity/week_detail_response.dart' as detail;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -20,6 +20,7 @@ import '../../../utils/colors.dart';
 import '../question/base_question.dart';
 import 'answering_logic.dart';
 
+/// 核心逻辑：答题页
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
@@ -233,35 +234,33 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         detail.Data element = weekTestDetailResponse.data![widget.parentIndex];
         switch (element.type) {
-          case 1: // 听力题
+          case QuestionTypeClassify.listening: // 听力题
             questionList.add(ListenQuestion(data: element));
             break;
-          case 2: // 阅读题
-            if (element.typeChildren == 7) {
-              // 写作题
-            } else {
-              questionList.add(ReadQuestion(data: element));
-            }
+          case QuestionTypeClassify.reading: // 阅读题
+            questionList.add(ReadQuestion(data: element));
             break;
-          case 3: // 语言综合训练
-            if (element.typeChildren == 1) {
-              // 单项选择题
-              questionList
-                  .add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
-              return questionList;
-            } else if (element.typeChildren == 2) {
-              // 补全对话
-              questionList.add(ReadQuestion(data: element));
-            } else if (element.typeChildren == 3){
-              // 完型填空
-              questionList.add(ReadQuestion(data: element));
-            }
-            break;
-          case 4: // 写作题
-            if (element.typeChildren == 7) {
-              // 写作题
-            }
-            break;
+          default:
+            Util.toast("题型分类${element.type}还未解析");
+          // case QuestionTypeClassify.: // 语言综合训练
+          //   if (element.typeChildren == 1) {
+          //     // 单项选择题
+          //     questionList
+          //         .add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
+          //     return questionList;
+          //   } else if (element.typeChildren == 2) {
+          //     // 补全对话
+          //     questionList.add(ReadQuestion(data: element));
+          //   } else if (element.typeChildren == 3){
+          //     // 完型填空
+          //     questionList.add(ReadQuestion(data: element));
+          //   }
+          //   break;
+          // case 4: // 写作题
+          //   if (element.typeChildren == 7) {
+          //     // 写作题
+          //   }
+          //   break;
         }
       }
     }

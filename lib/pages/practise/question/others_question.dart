@@ -13,20 +13,20 @@ import '../../../entity/week_detail_response.dart';
  * Description:
  */
 
-class ChoiseQuestion extends BaseQuestion {
+class OthersQuestion extends BaseQuestion {
   List<Data> datas;
 
-  ChoiseQuestion({required this.datas,Key? key}) : super(key: key,);
+  OthersQuestion({required this.datas,Key? key}) : super(key: key,);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
     // TODO: implement getState
-    return _ChoiseQuestionState();
+    return _OthersQuestionState();
   }
 
 }
 
-class _ChoiseQuestionState extends BaseQuestionState<ChoiseQuestion> {
+class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   late List<Data> elements;
 

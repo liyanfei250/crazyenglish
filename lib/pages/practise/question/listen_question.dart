@@ -11,7 +11,7 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description:
+ * Description: 听力题
  */
 class ListenQuestion extends BaseQuestion {
   Data data;

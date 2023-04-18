@@ -13,7 +13,7 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
-import '../question/choise_question.dart';
+import '../question/others_question.dart';
 import '../question/listen_question.dart';
 import '../question/read_question.dart';
 import '../question_factory.dart';
