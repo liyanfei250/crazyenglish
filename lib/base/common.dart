@@ -51,7 +51,7 @@ class DataGroup{
 }
 
 // 题型
-class QuestionType{
+class QuestionType {
 
   static const int single_choice = 1; /// 单选题
   static const int multi_choice = 2;  /// 多选题
@@ -62,13 +62,15 @@ class QuestionType{
   static const int complete_filling = 7;  /// 完型填空题
   static const int select_words_filling = 8;  /// 选词填空
   static const int select_filling = 9;  /// 选择填空
-  static const int normal_reading = 10;  /// 常规填空题
-  static const int question_reading = 11;  /// 简单填空题
+  static const int normal_reading = 10;  /// 常规阅读题
+  static const int question_reading = 11;  /// 简单阅读题
+  static const int translate_question = 12;  /// 中英文互译
+  static const int writing_question = 13;  /// 写作题
 
 }
 
 // 题型分类
-class QuestionTypeClassify{
+class QuestionTypeClassify {
 
   static const int listening = 1;  /// 听力
   static const int reading = 2;  /// 阅读

@@ -5,6 +5,8 @@ class WeekTestDetailState {
   WeekDetailResponse weekTestDetailResponse = WeekDetailResponse();
   StartExam startExam = StartExam();
   String uuid = "";
+  bool enterResult = false;
+  bool isOffCurrentPage = false;
   WeekTestDetailState() {
     ///Initialize variables
   }

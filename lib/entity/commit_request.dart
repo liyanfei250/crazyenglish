@@ -34,48 +34,93 @@ class CommitResponse extends BaseResp{
   }
 }
 
+
 class CommitRequest {
   CommitRequest({
-      String? muchTime, 
-      String? name, 
-      String? directory,
-      String? directory_uuid}){
-    _muchTime = muchTime;
-    _name = name;
-    _directory = directory;
-    _directory_uuid = directory_uuid;
-}
+    List<AnswerList>? answerList,}){
+    _answerList = answerList;
+  }
 
   CommitRequest.fromJson(dynamic json) {
-    _muchTime = json['much_time'];
-    _name = json['name'];
-    _directory = json['directory'];
-    _directory_uuid = json['directory_uuid'];
+    if (json['answerList'] != null) {
+      _answerList = [];
+      json['answerList'].forEach((v) {
+        _answerList?.add(AnswerList.fromJson(v));
+      });
+    }
   }
-  String? _muchTime;
-  String? _name;
-  String? _directory;
-  String? _directory_uuid;
-CommitRequest copyWith({  String? muchTime,
-  String? name,
-  String? directory,
-  String? directory_uuid,
-}) => CommitRequest(  muchTime: muchTime ?? _muchTime,
-  name: name ?? _name,
-  directory: directory ?? _directory,
-  directory_uuid: directory_uuid ?? _directory_uuid,
-);
-  String? get muchTime => _muchTime;
-  String? get name => _name;
-  String? get directory => _directory;
-  String? get directory_uuid => _directory_uuid;
+  List<AnswerList>? _answerList;
+  CommitRequest copyWith({  List<AnswerList>? answerList,
+  }) => CommitRequest(  answerList: answerList ?? _answerList,
+  );
+  List<AnswerList>? get answerList => _answerList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['much_time'] = _muchTime;
-    map['name'] = _name;
-    map['directory'] = _directory;
-    map['directory_uuid'] = _directory_uuid;
+    if (_answerList != null) {
+      map['answerList'] = _answerList?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// id : "1"
+/// answer : "A"
+/// correctAnswer : "B"
+/// isRight : 1
+/// sort : 1
+
+class AnswerList {
+  AnswerList({
+    String? id,
+    String? answer,
+    String? correctAnswer,
+    num? isRight,
+    num? sort,}){
+    _id = id;
+    _answer = answer;
+    _correctAnswer = correctAnswer;
+    _isRight = isRight;
+    _sort = sort;
+  }
+
+  AnswerList.fromJson(dynamic json) {
+    _id = json['id'];
+    _answer = json['answer'];
+    _correctAnswer = json['correctAnswer'];
+    _isRight = json['isRight'];
+    _sort = json['sort'];
+  }
+  String? _id;
+  String? _answer;
+  String? _correctAnswer;
+  num? _isRight;
+  num? _sort;
+  AnswerList copyWith({  String? id,
+    String? answer,
+    String? correctAnswer,
+    num? isRight,
+    num? sort,
+  }) => AnswerList(  id: id ?? _id,
+    answer: answer ?? _answer,
+    correctAnswer: correctAnswer ?? _correctAnswer,
+    isRight: isRight ?? _isRight,
+    sort: sort ?? _sort,
+  );
+  String? get id => _id;
+  String? get answer => _answer;
+  String? get correctAnswer => _correctAnswer;
+  num? get isRight => _isRight;
+  num? get sort => _sort;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['answer'] = _answer;
+    map['correctAnswer'] = _correctAnswer;
+    map['isRight'] = _isRight;
+    map['sort'] = _sort;
     return map;
   }
 

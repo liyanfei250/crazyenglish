@@ -21,6 +21,14 @@ import '../question/base_question.dart';
 import 'answering_logic.dart';
 
 /// 核心逻辑：答题页
+/// 参数：
+/// answerMode: 作答模式： 作答模式（1）； 继续作答模式（2）； 错题本模式（3） 浏览模式（4）
+/// brotherNode: 兄弟节点列表数据 默认空
+/// nodeId: 目录Id
+/// parentIndex: 跳转父题索引 默认0
+/// childIndex: 子题索引 默认0
+/// examDetail: 试题数据
+/// examResult: 历史作答数据 默认空
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
@@ -195,10 +203,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       content: Text("是否确定提交答案"),
                       onConfirm:(){
                         CommitRequest commitRequest = CommitRequest(
-                            muchTime: "2023-02-23 02:20:01",
-                            name: "测试",
-                            directory: "1cddffb0-bcef-11ed-8e11-530450f105f5",
-                            directory_uuid: widget.uuid,
                         );
                         logic.uploadWeekTest(commitRequest);
                         Get.back();

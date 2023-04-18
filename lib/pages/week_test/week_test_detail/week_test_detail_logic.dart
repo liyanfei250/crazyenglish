@@ -27,11 +27,11 @@ class WeekTestDetailLogic extends GetxController {
     super.onClose();
   }
 
-  void getDetailAndStartExam(String id,{bool? enterResult}) async {
+  void getDetailAndStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false}) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetail(id);
     if(weekDetailResponse!=null){
-      getStartExam(id);
-    }else{
+      getStartExam(id,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage);
+    } else {
       Util.toast("获取试题详情数据失败");
     }
   }
@@ -65,10 +65,12 @@ class WeekTestDetailLogic extends GetxController {
     return list;
   }
 
-  void getStartExam(String id) async{
+  void getStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false}) async{
     StartExam startExam = await weekTestRepository.getStartExam(id);
     state.startExam = startExam;
     state.uuid = id;
+    state.enterResult = enterResult??false;
+    state.isOffCurrentPage = isOffCurrentPage??false;
     update([GetBuilderIds.startExam]);
   }
 
@@ -86,17 +88,34 @@ class WeekTestDetailLogic extends GetxController {
           state.weekTestDetailResponse.data![0].type == 4 &&
           state.weekTestDetailResponse.data![0].typeChildren == 1) {
 
-        RouterUtil.toNamed(AppRoutes.WritingPage,
-            arguments: {"detail": state.weekTestDetailResponse});
+        if(state.isOffCurrentPage){
+          RouterUtil.offAndToNamed(AppRoutes.WritingPage,
+              arguments: {"detail": state.weekTestDetailResponse});
+        }else{
+          RouterUtil.toNamed(AppRoutes.WritingPage,
+              arguments: {"detail": state.weekTestDetailResponse});
+        }
+
       } else {
         // TODO state.startExam 开始作答数据可在此处理
-        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            arguments: {"detail": state.weekTestDetailResponse,
-              "uuid":state.uuid,
-              "parentIndex":parentIndex,
-              "childIndex":childIndex,
-            });
+        if(state.isOffCurrentPage){
+          RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+              arguments: {"detail": state.weekTestDetailResponse,
+                "uuid":state.uuid,
+                "parentIndex":parentIndex,
+                "childIndex":childIndex,
+              });
+        }else{
+          RouterUtil.toNamed(AppRoutes.AnsweringPage,
+              arguments: {"detail": state.weekTestDetailResponse,
+                "uuid":state.uuid,
+                "parentIndex":parentIndex,
+                "childIndex":childIndex,
+              });
+        }
+
       }
     });
   }
+
 }

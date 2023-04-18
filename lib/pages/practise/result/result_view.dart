@@ -19,6 +19,15 @@ import '../question/read_question.dart';
 import '../question_factory.dart';
 import 'result_logic.dart';
 
+/// 核心逻辑：结果页
+/// 参数：
+/// answerMode: 作答模式： 作答模式（1）； 继续作答模式（2）； 错题本模式（3） 浏览模式（4）
+/// brotherNode: 兄弟节点列表数据 默认空
+/// nodeId: 目录Id
+/// parentIndex: 跳转父题索引 默认0
+/// childIndex: 子题索引 默认0
+/// examDetail: 试题数据
+/// examResult: 历史作答数据 默认空
 class ResultPage extends BasePage{
   CommitRequest? commitResponse;
   detail.WeekDetailResponse? testDetailResponse;
@@ -197,17 +206,34 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                 onTap: (){
                   // 开始作答逻辑 跳转到下一题
                   if(widget.testDetailResponse!.data!.length > widget.parentIndex+1){
-                    // RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                    //     arguments: {"detail": widget.testDetailResponse,
-                    //       "uuid":"dd",
-                    //       "parentIndex":widget.parentIndex+1,
-                    //       "childIndex":0,
-                    //     });
-                    logicDetail.getDetailAndStartExam("0");
-                  }else{
-                    Util.toast("已经是最后一题");
+                    // TODO 不用请求了 直接下一题，除非是下一节
+                    logicDetail.getStartExam("0",);
+                    var nextHasResult = false;
+                    if(nextHasResult){  // 跳结果页
+                      RouterUtil.offAndToNamed(AppRoutes.ResultPage,
+                          arguments: {"detail": widget.testDetailResponse,
+                            "uuid":"dd",
+                            "parentIndex":widget.parentIndex+1,
+                            "childIndex":0,
+                          });
+                    } else {
+                      // 跳作答页
+                      RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                      arguments: {"detail": widget.testDetailResponse,
+                        "uuid":"dd",
+                        "parentIndex":widget.parentIndex+1,
+                        "childIndex":0,
+                      });
+                    }
+                  } else {
+                    // 有下一节且有内容
+                    var hasNext = true;
+                    if (hasNext) {
+                      logicDetail.getDetailAndStartExam("0",enterResult: true,isOffCurrentPage:true);
+                    } else {
+                      Util.toast("已经是最后一题");
+                    }
                   }
-
                 },
                 child: Container(
                   width: 134.w,
