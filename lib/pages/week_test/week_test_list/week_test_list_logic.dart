@@ -1,6 +1,7 @@
 import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/review/HomeWeeklyChoiceDate.dart';
 import '../../../repository/week_test_repository.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
@@ -71,4 +72,29 @@ class WeekTestListLogic extends GetxController {
     update([GetBuilderIds.weekTestList]);
   }
 
+
+  void getChoiceMap(String id) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.HomeWeeklyListChoiceDate,
+        labelId: id.toString())
+        .then((value) {
+      if (value != null) {
+        return HomeWeeklyChoiceDate.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is HomeWeeklyChoiceDate) {
+      state.paperDetail = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeWeeklyChoiceDate]);
+    }
+    HomeWeeklyChoiceDate list = await weekTestListResponse.getHomeWeeklyChoiceDate(id);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeWeeklyListChoiceDate, labelId: id, list.toJson());
+    state.paperDetail = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeWeeklyChoiceDate]);
+    }
+  }
 }

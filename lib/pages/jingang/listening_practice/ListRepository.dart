@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../api/api.dart';
 import '../../../entity/review/HomeListChoiceDate.dart';
 import '../../../entity/review/HomeSecondListDate.dart';
+import '../../../entity/review/HomeWeeklyChoiceDate.dart';
 import '../../../net/net_manager.dart';
 
 class ListRepository {
@@ -30,16 +31,4 @@ class ListRepository {
     }
   }
 
-  Future<HomeSecondListDate> getHomeWeeklyChoiceDate(
-      Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeWeeklyChoiceDate,
-        options: Options(method: Method.get));
-    HomeSecondListDate paperDetail = HomeSecondListDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
 }

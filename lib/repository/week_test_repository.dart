@@ -10,6 +10,7 @@ import '../base/AppUtil.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
 import '../entity/commit_request.dart';
+import '../entity/review/HomeWeeklyChoiceDate.dart';
 import '../entity/start_exam.dart';
 import '../entity/user_info_response.dart';
 import '../entity/week_detail_response.dart' as weekDetail;
@@ -152,4 +153,16 @@ class WeekTestRepository{
     // }
   }
 
+  Future<HomeWeeklyChoiceDate> getHomeWeeklyChoiceDate(
+      String id) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getHomeWeeklyChoiceDate,
+        options: Options(method: Method.get));
+    HomeWeeklyChoiceDate paperDetail = HomeWeeklyChoiceDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 }
