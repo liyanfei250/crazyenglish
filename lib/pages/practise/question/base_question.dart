@@ -137,8 +137,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
-        if(element.questionType == QuestionType.single_choice
-            || element.questionType == QuestionType.normal_reading){
+        if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.normal_reading){
           // 选择题
           itemList.add(buildQuestionType("选择题"));
           itemList.add(Visibility(
@@ -148,30 +148,30 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             ),));
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,int.parse(question.answer!.isEmpty?"-1":question.answer!)));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question));
           }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question,int.parse(question.answer!.isEmpty?"-1":question.answer!)));
+            itemList.add(QuestionFactory.buildSingleImgChoice(question));
           }
 
-        }else if(element.questionType == QuestionType.multi_choice){
+        }else if(element.questionTypeStr == QuestionType.multi_choice){
 
-        }else if(element.questionType == QuestionType.judge_choice){
+        }else if(element.questionTypeStr == QuestionType.judge_choice){
 
-        }else if(element.questionType == QuestionType.normal_gap) {
+        }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(buildQuestionType("填空题"));
           itemList.add(buildReadQuestion(element.content ?? ""));
           itemList.add(QuestionFactory.buildHuGapQuestion(
               question, 0, makeEditController));
-        }else if(element.questionType == QuestionType.question_reading){
+        }else if(element.questionTypeStr == QuestionType.question_reading){
 
         }
-        // else if(element.questionType == QuestionType.select_words_filling){
+        // else if(element.questionTypeStr == QuestionType.select_words_filling){
         //   itemList.add(buildQuestionType("选择填空题"));
         //   itemList.add(QuestionFactory.buildSelectGapQuestion(element.optionsList,element!.content!,0,makeFocusNodeController));
         //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
         //   );
         // }
-        // else if(element.questionType == QuestionType.correction_question){
+        // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));
         //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
         // }

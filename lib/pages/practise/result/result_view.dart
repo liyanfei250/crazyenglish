@@ -334,7 +334,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   }
 
   Widget buildQuestionResult(SubjectVoList element){
-    switch (element.classify) {
+    switch (element.classifyValue) {
       case QuestionTypeClassify.listening: // 听力题
         return ListenQuestion(data: element);
       case QuestionTypeClassify.reading: // 阅读题

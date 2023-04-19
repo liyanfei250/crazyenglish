@@ -22,7 +22,7 @@ import 'question/base_question.dart';
 
 class QuestionFactory{
 
-  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,{int? defaultChooseIndex}){
+  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -43,7 +43,7 @@ class QuestionFactory{
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
                         _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        answerIndex>=0? subtopicVoList.correctAnswer:"",
+                        subtopicVoList.answer,
                         e!.sequence!,
                         e!.content!,
                         double.infinity,
@@ -97,7 +97,7 @@ class QuestionFactory{
 
 
 
-  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,int answerIndex,{int? defaultChooseIndex}){
+  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
     return Container(
@@ -116,7 +116,7 @@ class QuestionFactory{
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(
                       _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        answerIndex>=0? subtopicVoList!.correctAnswer!:"",
+                        subtopicVoList!.answer,
                         e!.sequence!,
                         e.img,
                         140.w,

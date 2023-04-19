@@ -85,7 +85,7 @@ class WeekTestDetailLogic extends GetxController {
       if (state.weekDetailResponse != null &&
           state.weekDetailResponse.obj != null &&
           state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classify == QuestionTypeClassify.writing) {
+          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
 
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.WritingPage,

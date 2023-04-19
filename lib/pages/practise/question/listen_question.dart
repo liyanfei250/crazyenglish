@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +62,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Visibility(
-              visible: element.type == 1 && element.audio !=null && element.audio!.isNotEmpty,
+              visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
           Expanded(child: getQuestionDetail(element)),
         ],

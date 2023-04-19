@@ -3,6 +3,7 @@ import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:crazyenglish/pages/practise/question_result/base_question_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../base/common.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/test_player_widget.dart';
@@ -62,7 +63,7 @@ class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionR
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Visibility(
-              visible: element.type == 1 && element.audio !=null && element.audio!.isNotEmpty,
+              visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
           Expanded(child: getQuestionDetail(element)),
         ],

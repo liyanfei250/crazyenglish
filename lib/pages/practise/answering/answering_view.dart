@@ -240,14 +240,14 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
       if(widget.parentIndex < length){
         detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
-        if(element.questionType == QuestionType.select_words_filling){
+        if(element.questionTypeStr == QuestionType.select_words_filling){
           questionList.add(SelectWordsFillingQuestion(data: element));
-        }else if (element.questionType == QuestionType.select_filling){
+        }else if (element.questionTypeStr == QuestionType.select_filling){
           questionList.add(SelectFillingQuestion(data: element));
-        }else if(element.questionType == QuestionType.complete_filling){
+        }else if(element.questionTypeStr == QuestionType.complete_filling){
           questionList.add(CompleteFillingQuestion(data: element));
         }else{
-          switch (element.classify) {
+          switch (element.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
               questionList.add(ListenQuestion(data: element));
               break;
@@ -255,7 +255,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               questionList.add(ReadQuestion(data: element));
               break;
             default:
-              Util.toast("题型分类${element.type}还未解析");
+              questionList.add(OthersQuestion(data: element));
+              Util.toast("题型分类${element.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {
           //     // 单项选择题
