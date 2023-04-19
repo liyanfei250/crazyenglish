@@ -142,4 +142,10 @@ class Api {
 
   // 首页金刚区周报筛选
   static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";
+
+  // 首页我的期刊列表
+  static String getHomeMyJournalListDate = Config.ApiHost + "/";
+
+  // 首页我的任务
+  static String getHomeMyTasksDate = Config.ApiHost + "/";
 }

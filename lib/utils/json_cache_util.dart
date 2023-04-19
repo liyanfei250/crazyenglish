@@ -41,6 +41,8 @@ class JsonCacheManageUtils {
   static final int HomeListChoiceDate = 0x007; //金刚区听力筛选
   static final int SecondListDate = 0x008; //听力列表内容
   static final int HomeWeeklyListChoiceDate = 0x009; //周报列表筛选内容
+  static final int HomeMyJournalDate = 0x010; //首页我的期刊列表
+  static final int HomeMyTasks = 0x011; //首页我的任务
 
   // String contentJson;
 
