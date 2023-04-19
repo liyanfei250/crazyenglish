@@ -13,7 +13,7 @@ import 'base_question_result.dart';
  * Description:
  */
 class GapQuestionResult extends BaseQuestionResult {
-  Data data;
+  SubjectVoList data;
 
   GapQuestionResult({required this.data,Key? key}) : super(key: key,);
 
@@ -28,7 +28,7 @@ class GapQuestionResult extends BaseQuestionResult {
 
 class _GapQuestionResultState extends BaseQuestionResultState<GapQuestionResult> {
 
-  late Data element;
+  late SubjectVoList element;
 
   @override
   getAnswers() {
@@ -50,8 +50,8 @@ class _GapQuestionResultState extends BaseQuestionResultState<GapQuestionResult>
         children: [
           buildQuestionType("填空题"),
           Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),

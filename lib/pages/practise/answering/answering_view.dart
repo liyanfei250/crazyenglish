@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
+import 'package:crazyenglish/pages/practise/question/complete_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question/others_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question/read_question.dart';
+import 'package:crazyenglish/pages/practise/question/select_filling_question.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,11 +20,16 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../question/base_question.dart';
+import '../question/select_words_filling_question.dart';
 import 'answering_logic.dart';
 
 /// 核心逻辑：答题页
 /// 参数：
-/// answerMode: 作答模式： 作答模式（1）； 继续作答模式（2）； 错题本模式（3） 浏览模式（4）
+/// answerMode: 作答模式：
+///   作答模式（1）：没有上次作答记录 从第一道题开始 并计时
+///   继续作答模式（2）：有上次作答记录 从第n道题开始 接着上次时间继续计时
+///   错题本模式（3） ：直接跳到这道错题 ，一页题要反显其它答案 ；结果页不显示正确答案
+///   浏览模式（4）
 /// brotherNode: 兄弟节点列表数据 默认空
 /// nodeId: 目录Id
 /// parentIndex: 跳转父题索引 默认0
@@ -59,6 +66,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   bool isCountTime = true;
   late Timer _timer;
   var countTime = 0.obs;
+  var title = "".obs;
 
   List<BaseQuestion> pages = <BaseQuestion>[];
 
@@ -93,16 +101,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   @override
   Widget build(BuildContext context) {
     pages = buildQuestionList(widget.testDetailResponse!);
-    bool isTitleNull = false;
-    if (widget.testDetailResponse?.data == null ||
-        widget.testDetailResponse?.data?.length! == 0) {
-      isTitleNull = true;
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isTitleNull ? "" :widget.testDetailResponse!.data![0].title.toString(),
+          widget.testDetailResponse!.obj!.name??"未获取到标题",
           style: TextStyle(
               color: AppColors.c_FF32374E,
               fontSize: 18.sp,
@@ -232,20 +235,27 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   List<BaseQuestion> buildQuestionList(
       detail.WeekDetailResponse weekTestDetailResponse) {
     List<BaseQuestion> questionList = [];
-    if (weekTestDetailResponse.data != null) {
-      int length = weekTestDetailResponse.data!.length;
+    if (weekTestDetailResponse.obj != null) {
+      int length = weekTestDetailResponse.obj!.subjectVoList!.length;
 
       if(widget.parentIndex < length){
-        detail.Data element = weekTestDetailResponse.data![widget.parentIndex];
-        switch (element.type) {
-          case QuestionTypeClassify.listening: // 听力题
-            questionList.add(ListenQuestion(data: element));
-            break;
-          case QuestionTypeClassify.reading: // 阅读题
-            questionList.add(ReadQuestion(data: element));
-            break;
-          default:
-            Util.toast("题型分类${element.type}还未解析");
+        detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
+        if(element.questionType == QuestionType.select_words_filling){
+          questionList.add(SelectWordsFillingQuestion(data: element));
+        }else if (element.questionType == QuestionType.select_filling){
+          questionList.add(SelectFillingQuestion(data: element));
+        }else if(element.questionType == QuestionType.complete_filling){
+          questionList.add(CompleteFillingQuestion(data: element));
+        }else{
+          switch (element.classify) {
+            case QuestionTypeClassify.listening: // 听力题
+              questionList.add(ListenQuestion(data: element));
+              break;
+            case QuestionTypeClassify.reading: // 阅读题
+              questionList.add(ReadQuestion(data: element));
+              break;
+            default:
+              Util.toast("题型分类${element.type}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {
           //     // 单项选择题
@@ -265,7 +275,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           //     // 写作题
           //   }
           //   break;
+          }
         }
+
       }
     }
     return questionList;

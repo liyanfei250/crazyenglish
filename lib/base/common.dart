@@ -57,8 +57,8 @@ class QuestionType {
   static const int multi_choice = 2;  /// 多选题
   static const int judge_choice = 3;  /// 判断题
   static const int normal_gap = 4;  /// 常规填空题
-  static const int translate_gap = 5;  /// 翻译填空题
-  static const int to_complete_gap = 6;  /// 补全填空题
+  static const int translate_filling = 5;  /// 翻译填空题
+  static const int completion_filling = 6;  /// 补全填空题
   static const int complete_filling = 7;  /// 完型填空题
   static const int select_words_filling = 8;  /// 选词填空
   static const int select_filling = 9;  /// 选择填空
@@ -66,6 +66,7 @@ class QuestionType {
   static const int question_reading = 11;  /// 简单阅读题
   static const int translate_question = 12;  /// 中英文互译
   static const int writing_question = 13;  /// 写作题
+  static const int correction_question = 14;  /// 短文改错题
 
 }
 

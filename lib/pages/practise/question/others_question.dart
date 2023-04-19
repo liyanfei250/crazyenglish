@@ -14,9 +14,9 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class OthersQuestion extends BaseQuestion {
-  List<Data> datas;
+  SubjectVoList data;
 
-  OthersQuestion({required this.datas,Key? key}) : super(key: key,);
+  OthersQuestion({required this.data,Key? key}) : super(key: key);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
@@ -28,7 +28,7 @@ class OthersQuestion extends BaseQuestion {
 
 class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
-  late List<Data> elements;
+  late SubjectVoList element;
 
   @override
   getAnswers() {
@@ -38,7 +38,7 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   @override
   void onCreate() {
-    elements = widget.datas;
+    element = widget.data;
   }
 
 
@@ -51,7 +51,7 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildQuestionType("单选题"),
-          Expanded(child:getSingleQuestionDetail(elements)),
+          Expanded(child:getQuestionDetail(element)),
         ],
       ),
     );

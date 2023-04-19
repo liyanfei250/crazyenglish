@@ -2,7 +2,7 @@ import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 
 class WeekTestDetailState {
-  WeekDetailResponse weekTestDetailResponse = WeekDetailResponse();
+  WeekDetailResponse weekDetailResponse = WeekDetailResponse();
   StartExam startExam = StartExam();
   String uuid = "";
   bool enterResult = false;

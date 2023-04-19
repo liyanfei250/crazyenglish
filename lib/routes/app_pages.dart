@@ -82,7 +82,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
-    GetPage(name: AppRoutes.WeeklyTestDetail, page:()=>WeekTestDetailPage(),),
     GetPage(name: AppRoutes.ToShoppingPage, page:()=>ToShoppingPage(),),
     GetPage(name: AppRoutes.ShoppingListPage, page:()=>ShoppingListPage(),),
     GetPage(name: AppRoutes.ShopCarPage, page:()=>ShopCarPage(),),

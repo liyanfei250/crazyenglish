@@ -14,7 +14,7 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
  * Description: 听力题
  */
 class ListenQuestion extends BaseQuestion {
-  Data data;
+  SubjectVoList data;
 
   ListenQuestion({required this.data,Key? key}) : super(key: key);
 
@@ -30,7 +30,7 @@ class ListenQuestion extends BaseQuestion {
 class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
 
   AudioPlayer audioPlayer  = AudioPlayer();
-  late Data element;
+  late SubjectVoList element;
 
   @override
   getAnswers() {
@@ -55,8 +55,8 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
         children: [
           buildQuestionType("听力题"),
           Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
