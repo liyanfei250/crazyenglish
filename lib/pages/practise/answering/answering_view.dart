@@ -245,7 +245,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }else if (element.questionTypeStr == QuestionType.select_filling){
           questionList.add(SelectFillingQuestion(data: element));
         }else if(element.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(CompleteFillingQuestion(data: element));
+          questionList.add(ReadQuestion(data: element));
         }else{
           switch (element.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题

@@ -138,6 +138,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
         if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.complete_filling
             || element.questionTypeStr == QuestionType.normal_reading){
           // 选择题
           itemList.add(buildQuestionType("选择题"));
