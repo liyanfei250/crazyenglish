@@ -67,7 +67,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         }
       }
     });
-    logicDetail.addJumpToDetailListen(1, 2);
+    logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     showLoading("");
   }

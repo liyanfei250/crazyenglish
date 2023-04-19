@@ -124,7 +124,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
             SelectionArea(
               child: Html(
                 data: TextUtil.weekDetail.replaceFirst("###content###",
-                    widget.testDetailResponse?.data![0].content ?? ""),
+                    widget.testDetailResponse?.obj!.subjectVoList![0].content ?? ""),
                 onImageTap: (url,
                     context,
                     attributes,
@@ -254,7 +254,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
               child: SelectionArea(
                 child: Html(
                   data: TextUtil.weekDetail.replaceFirst("###content###",
-                      widget.testDetailResponse?.data![0].modelessay ?? ""),
+                      widget.testDetailResponse?.obj!.subjectVoList![0].content ?? ""),
                   onImageTap: (url,
                       context,
                       attributes,
@@ -298,7 +298,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
                       WritDialog(
                           exTile,
                           exList,
-                          widget.testDetailResponse?.data![0].modelessay_text ??
+                          widget.testDetailResponse?.obj!.subjectVoList![0].content ??
                               ""),
                 );
               },

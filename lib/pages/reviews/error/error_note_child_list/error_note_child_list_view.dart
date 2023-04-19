@@ -13,6 +13,7 @@ import '../../../../routes/app_pages.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
+import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../error_note/error_note_logic.dart';
 import 'error_note_child_list_logic.dart';
 
@@ -35,6 +36,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   final noteLogic = Get.find<Error_noteLogic>();
   final stateLogic = Get.find<Error_noteLogic>().state;
   final state = Get.find<Error_note_child_listLogic>().state;
+
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -94,19 +98,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
       }
     });
 
-    logic.addListenerId(GetBuilderIds.errorDetailList, () {
-      if (state.weekTestDetailResponse != null &&
-          state.weekTestDetailResponse.data != null &&
-          state.weekTestDetailResponse.data!.length > 0 &&
-          state.weekTestDetailResponse.data![0].type == 4 &&
-          state.weekTestDetailResponse.data![0].typeChildren == 1) {
-        RouterUtil.toNamed(AppRoutes.WritingPage,
-            arguments: {"detail": state.weekTestDetailResponse});
-      } else {
-        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            arguments: {"detail": state.weekTestDetailResponse});
-      }
-    });
+    logicDetail.addJumpToDetailListen(0, 0);
+
     _onRefresh();
     showLoading("");
   }
@@ -237,7 +230,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     return InkWell(
         onTap: () {
           if (value[index].correction == 0) {
-            logic.getWeekTestDetail(value[index].uuid!);
+            logicDetail.getDetailAndStartExam(value[index].uuid!);
+            showLoading("");
           }
         },
         child: Container(

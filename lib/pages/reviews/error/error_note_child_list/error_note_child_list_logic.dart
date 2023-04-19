@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../../entity/error_note_response.dart';
 import '../../../../entity/week_detail_response.dart' as weekDetail;
-import '../../../../entity/week_test_detail_response.dart' as weekTestDetail;
+import '../../../../entity/week_detail_response.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/json_cache_util.dart';
 import 'ErrorNoteRepository.dart';
@@ -69,8 +69,8 @@ class Error_note_child_listLogic extends GetxController {
       }
     });
 
-    if(cache is weekTestDetail.WeekTestDetailResponse) {
-      state.weekTestDetailResponse = cache!;
+    if(cache is WeekDetailResponse) {
+      state.weekDetailResponse = cache!;
       update([GetBuilderIds.errorDetailList]);
     }
     weekDetail.WeekDetailResponse list = await errorNoteResponse.getErrorNoteDetail(id);
@@ -78,7 +78,7 @@ class Error_note_child_listLogic extends GetxController {
         JsonCacheManageUtils.ErrorNoteDetailResponse,
         labelId: id,
         list.toJson());
-    state.weekTestDetailResponse = list!;
+    state.weekDetailResponse = list!;
     update([GetBuilderIds.errorDetailList]);
   }
 }

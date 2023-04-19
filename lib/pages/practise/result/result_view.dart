@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,11 +64,11 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   @override
   void onCreate() {
-    if(widget.testDetailResponse!.data![widget.parentIndex].options!=null && widget.testDetailResponse!.data![widget.parentIndex].options!.length>0) {
-      int questionNum = widget.testDetailResponse!.data![widget.parentIndex].options!.length;
+    // 计算小题数量 TODO 逻辑还需修改
+    if(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].optionsList!=null && widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].optionsList!.length>0) {
+      int questionNum = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].optionsList!.length;
       _tabController = TabController(vsync: this, length: questionNum);
     }
-
   }
 
   @override
@@ -151,7 +152,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                           width: double.infinity,
                           color: AppColors.c_FFD2D5DC,
                         ),
-                        Expanded(child: buildQuestionResult(widget.testDetailResponse!.data![widget.parentIndex]),)
+                        Expanded(child: buildQuestionResult(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex]),)
                       ],
                     ),
                   ))),
@@ -205,7 +206,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               InkWell(
                 onTap: (){
                   // 开始作答逻辑 跳转到下一题
-                  if(widget.testDetailResponse!.data!.length > widget.parentIndex+1){
+                  if(widget.testDetailResponse!.obj!.subjectVoList!.length > widget.parentIndex+1){
                     // TODO 不用请求了 直接下一题，除非是下一节
                     logicDetail.getStartExam("0",);
                     var nextHasResult = false;
@@ -332,12 +333,11 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     );
   }
 
-  Widget buildQuestionResult(Data element){
-    switch (element.type) {
-      case 1: // 听力题
+  Widget buildQuestionResult(SubjectVoList element){
+    switch (element.classifyValue) {
+      case QuestionTypeClassify.listening: // 听力题
         return ListenQuestion(data: element);
-      case 2: // 阅读题
-      case 3:
+      case QuestionTypeClassify.reading: // 阅读题
         return ReadQuestion(data: element);
       // case 3: // 语言综合训练
       //   if (element.typeChildren == 1) {

@@ -5,7 +5,7 @@ class Error_note_child_listState {
   List<errorData.Rows> list = [];
   bool hasMore = true;
   int pageNo = 0;
-  WeekDetailResponse weekTestDetailResponse = WeekDetailResponse();
+  WeekDetailResponse weekDetailResponse = WeekDetailResponse();
   Error_note_child_listState() {
     ///Initialize variables
   }

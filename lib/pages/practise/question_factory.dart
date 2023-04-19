@@ -8,7 +8,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/week_detail_response.dart';
-import '../../entity/week_test_detail_response.dart';
 import '../../utils/colors.dart';
 import '../../widgets/ChoiceRadioItem.dart';
 import 'question/base_question.dart';
@@ -23,14 +22,11 @@ import 'question/base_question.dart';
 
 class QuestionFactory{
 
-  static Widget buildSingleChoice(List<BankAnswerAppListVos> list){
-    var choseItem = "".obs;
-    String answer = "B";
-    list.forEach((element) {
-      if(element.isAnswer??false){
-        answer = element.logoAnswer??"K";
-      }
-    });
+  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
+
+    var choseItem = (-1).obs;
+    choseItem.value = defaultChooseIndex??-1;
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,17 +34,17 @@ class QuestionFactory{
           Padding(padding: EdgeInsets.only(top: 12.w)),
           Obx(() => Column(
             mainAxisSize: MainAxisSize.min,
-            children: list.map(
+            children: subtopicVoList!.optionsList!.map(
                     (e) => InkWell(
                   onTap: (){
-                    choseItem.value = e.logoAnswer??"K";
+                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        _getType(answer,choseItem.value,e.logoAnswer??"K"),
-                        choseItem.value,
-                        e.logoAnswer??"K",
+                        _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        subtopicVoList.answer,
+                        e!.sequence!,
                         e!.content!,
                         double.infinity,
                         52.w
@@ -62,7 +58,8 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildSingleTxtChoice(List<TiList> list,int answerIndex,{int? defaultChooseIndex}){
+
+  static Widget buildSingleOptionsTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,{int? defaultChooseIndex}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -74,55 +71,18 @@ class QuestionFactory{
           Padding(padding: EdgeInsets.only(top: 12.w)),
           Obx(() => Column(
             mainAxisSize: MainAxisSize.min,
-            children: list.map(
+            children: subtopicVoList!.optionsList!.map(
                     (e) => InkWell(
                   onTap: (){
-                    choseItem.value = list.indexOf(e);
+                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        _getSelectedType(choseItem.value,list.indexOf(e)),
-                        answerIndex>=0? list[answerIndex].text:"",
-                        e!.text!,
-                        e!.text!,
-                        double.infinity,
-                        52.w
-                    ),
-                  ),
-                )
-            ).toList(),
-          ))
-        ],
-      ),
-    );
-  }
-
-
-  static Widget buildSingleOptionsTxtChoice(List<Options> list,int answerIndex,{int? defaultChooseIndex}){
-
-    var choseItem = (-1).obs;
-    choseItem.value = defaultChooseIndex??-1;
-
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 12.w)),
-          Obx(() => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: list.map(
-                    (e) => InkWell(
-                  onTap: (){
-                    choseItem.value = list.indexOf(e);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 12.w),
-                    child: ChoiceRadioItem(
-                        _getSelectedType(choseItem.value,list.indexOf(e)),
+                        _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         "",
-                        e.list![0].text!,
-                        e.list![0].text!,
+                        e.sequence!,
+                        e.content!,
                         double.infinity,
                         52.w
                     ),
@@ -137,7 +97,7 @@ class QuestionFactory{
 
 
 
-  static Widget buildSingleImgChoice(List<TiList> list,int answerIndex,{int? defaultChooseIndex}){
+  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
     return Container(
@@ -147,17 +107,17 @@ class QuestionFactory{
           Padding(padding: EdgeInsets.only(top: 12.w)),
           Obx(() => Column(
             mainAxisSize: MainAxisSize.min,
-            children: list.map(
+            children: subtopicVoList!.optionsList!.map(
                     (e) => InkWell(
                   onTap: (){
-                    choseItem.value = list.indexOf(e);
+                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(
-                      _getSelectedType(choseItem.value,list.indexOf(e)),
-                        answerIndex>=0? list[answerIndex].text:"",
-                        e!.text!,
+                      _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        subtopicVoList!.answer,
+                        e!.sequence!,
                         e.img,
                         140.w,
                         140.w,
@@ -173,7 +133,7 @@ class QuestionFactory{
 
 
   /// 纠错题 空部分
-  static Widget buildFixProblemQuestion(List<BankAnswerAppListVos>? list,String htmlContent){
+  static Widget buildFixProblemQuestion(SubjectVoList subjectVoList,String htmlContent){
 
     TextEditingController? _inputController;
     _inputController = TextEditingController(
@@ -221,16 +181,16 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildHuGapQuestion(List<Options>? list,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  static Widget buildHuGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
     String htmlContent = "";
-    for(Options option in list!){
-      htmlContent = htmlContent+(option.name??"")+gap;
-    }
+    // for(Options option in list!){
+    //   htmlContent = htmlContent+(option.name??"")+gap;
+    // }
     while(htmlContent.contains(gap)){
       gapKey++;
       gapIndex++;
@@ -265,11 +225,11 @@ class QuestionFactory{
               num = int.parse(gapIndex);
               max = num;
 
-              if(list!=null && num< list!.length){
-                content = list![num].value!;
-              }else{
+              // if(subtopicVoList!=null && num< subtopicVoList!.length){
+              //   content = list![num].value!;
+              // }else{
                 content = "";
-              }
+              // }
               print("num: $num content: $content");
             } catch (e) {
               e.printError();
@@ -379,7 +339,7 @@ class QuestionFactory{
   }
 
 
-  static Widget buildGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  static Widget buildGapQuestion(SubjectVoList subjectVoList,String htmlContent,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -419,11 +379,11 @@ class QuestionFactory{
               num = int.parse(gapIndex);
               max = num;
 
-              if(list!=null && num< list!.length){
-                content = list![num].content!;
-              }else{
+              // if(list!=null && num< list!.length){
+              //   content = list![num].content!;
+              // }else{
                 content = "";
-              }
+              // }
               print("num: $num content: $content");
             } catch (e) {
               e.printError();
@@ -493,7 +453,7 @@ class QuestionFactory{
   }
 
   /// 选择填空题
-  static Widget buildSelectGapQuestion(List<BankAnswerAppListVos>? list,String htmlContent,int gapKey,GetFocusNodeControllerCallback getFocusNodeControllerCallback){
+  static Widget buildSelectGapQuestion(SubjectVoList subjectVoList,String htmlContent,int gapKey,GetFocusNodeControllerCallback getFocusNodeControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -533,11 +493,11 @@ class QuestionFactory{
               num = int.parse(gapIndex);
               max = num;
 
-              if(list!=null && num< list!.length){
-                content = list![num].content!;
-              }else{
+              // if(list!=null && num< list!.length){
+              //   content = list![num].content!;
+              // }else{
                 content = "";
-              }
+              // }
               print("num: $num content: $content");
             } catch (e) {
               e.printError();

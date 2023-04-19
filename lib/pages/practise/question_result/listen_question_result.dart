@@ -3,6 +3,7 @@ import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:crazyenglish/pages/practise/question_result/base_question_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../base/common.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/test_player_widget.dart';
@@ -15,7 +16,7 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
  * Description:
  */
 class ListenQuestionResult extends BaseQuestionResult {
-  Data data;
+  SubjectVoList data;
 
   ListenQuestionResult({required this.data,Key? key}) : super(key: key);
 
@@ -31,7 +32,7 @@ class ListenQuestionResult extends BaseQuestionResult {
 class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionResult> {
 
   AudioPlayer audioPlayer  = AudioPlayer();
-  late Data element;
+  late SubjectVoList element;
 
   @override
   getAnswers() {
@@ -56,13 +57,13 @@ class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionR
         children: [
           buildQuestionType("听力题"),
           Visibility(
-              visible: element.title!=null && element.title!.isNotEmpty,
-              child: Text(element.title??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Visibility(
-              visible: element.type == 1 && element.audio !=null && element.audio!.isNotEmpty,
+              visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
           Expanded(child: getQuestionDetail(element)),
         ],

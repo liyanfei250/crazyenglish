@@ -123,97 +123,58 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     );
   }
 
-  Widget getQuestionDetail(Data element){
+  Widget getQuestionDetail(SubjectVoList element){
     questionList.clear();
-    if(element.options!=null && element.options!.length>0){
-      int questionNum = element.options!.length;
-      bool isHebing = false;
+
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
       for(int i = 0 ;i< questionNum;i++){
-        Options question = element.options![i];
+        SubtopicVoList question = element.subtopicVoList![i];
 
         List<Widget> itemList = [];
         itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
-        if(element.type == 1){
-          if(element.typeChildren == QuestionType.single_choice){
-            // 选择题
-            itemList.add(buildQuestionType("选择题"));
-            // itemList.add(Visibility(
-            //   visible: question!.title != null && question!.title!.isNotEmpty,
-            //   child: Text(
-            //     question!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            //   ),));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleImgChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }else if(element.typeChildren == 2){
-            // 选择题
-            itemList.add(buildQuestionType("选择题"));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }else if(element.typeChildren == 3){
-            // 选择题
-            itemList.add(buildQuestionType("选择题"));
-            itemList.add(Visibility(
-              visible: question!.name != null && question!.name!.isNotEmpty,
-              child: Text(
-                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-              ),));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }else if(element.typeChildren == 4){
-            itemList.add(buildReadQuestion(element.content??""));
-            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
-            isHebing = true;
+        if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.complete_filling
+            || element.questionTypeStr == QuestionType.normal_reading){
+          // 选择题
+          itemList.add(buildQuestionType("选择题"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          // TODO 判断是否是图片选择题的逻辑需要修改
+          if(question.optionsList![0].content!.isNotEmpty){
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question));
+          }else{
+            itemList.add(QuestionFactory.buildSingleImgChoice(question));
           }
 
-        }else if(element.type == 2){
-          if(element.typeChildren == 1){ // 阅读理解选项
-            // 选择题
-            itemList.add(buildQuestionType("选择题"));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }else if(element.typeChildren == 2){ // 阅读填空
-            // 选择题
-            itemList.add(buildQuestionType("填空题"));
-            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
-            isHebing = true;
-          }else  if(element.typeChildren == 3){ // 阅读理解对话
-            // 选择题
-            itemList.add(buildQuestionType("简单题"));
-            itemList.add(Visibility(
-              visible: question!.name != null && question!.name!.isNotEmpty,
-              child: Text(
-                question!.name!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-              ),));
-            itemList.add(QuestionFactory.buildShortAnswerQuestion(question.value??"",0,makeEditController));
-          }
-        } else if(element.type == 3 ){ // 语言综合训练
-          if (element.typeChildren == 2){
-            // 补全对话
-            itemList.add(buildQuestionType("填空题"));
-            itemList.add(QuestionFactory.buildHuGapQuestion(element.options??[],0,makeEditController));
-            isHebing = true;
-          } else if(element.typeChildren == 1){ // 单选题
+        }else if(element.questionTypeStr == QuestionType.multi_choice){
 
-          } else if(element.typeChildren == 3){
-            itemList.add(buildQuestionType("选择题"));
-            if((question!.list??[]).length > 0) {
-              itemList.add(QuestionFactory.buildSingleTxtChoice(question!.list??[],int.parse(question.answer!.isEmpty?"-1":question.answer!)));
-            }
-          }
+        }else if(element.questionTypeStr == QuestionType.judge_choice){
+
+        }else if(element.questionTypeStr == QuestionType.normal_gap) {
+          itemList.add(buildQuestionType("填空题"));
+          itemList.add(buildReadQuestion(element.content ?? ""));
+          itemList.add(QuestionFactory.buildHuGapQuestion(
+              question, 0, makeEditController));
+        }else if(element.questionTypeStr == QuestionType.question_reading){
+
         }
-        // else if(element.type == 5){
-        //   itemList.add(buildQuestionType("纠错题"));
-        //   itemList.add(QuestionFactory.buildFixProblemQuestion(question!.bankAnswerAppListVos,question!.title!));
-        // }else if(element.type == 12){
+        // else if(element.questionTypeStr == QuestionType.select_words_filling){
         //   itemList.add(buildQuestionType("选择填空题"));
-        //   itemList.add(QuestionFactory.buildSelectGapQuestion(question!.bankAnswerAppListVos,question!.title!,0,makeFocusNodeController));
+        //   itemList.add(QuestionFactory.buildSelectGapQuestion(element.optionsList,element!.content!,0,makeFocusNodeController));
         //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
         //   );
+        // }
+        // else if(element.questionTypeStr == QuestionType.correction_question){
+        //   itemList.add(buildQuestionType("纠错题"));
+        //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
         // }
 
         questionList.add(SingleChildScrollView(
@@ -223,57 +184,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             children: itemList,
           ),
         ));
-        if(isHebing){
-          break;
-        }
-      }
-    }else{
-      questionList.add(const SizedBox());
-    }
-    if(logic!=null){
-      logic.initPageStr("1/${questionList.length}");
-    }
-    return PageView(
-      controller: pageController,
-      physics: _neverScroll,
-      onPageChanged: (int value){
-        if(logic!=null){
-          logic.updatePageStr("${(value+1)}/${questionList.length}");
-        }
-      },
-      children: questionList,
-    );
-  }
-
-  // 单选题结构不一致所以这么处理
-  Widget getSingleQuestionDetail(List<Data> datas){
-    questionList.clear();
-    for(Data element in datas){
-      if(element!=null && element.options!.length>0){
-          List<Widget> itemList = [];
-          itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
-          itemList.add(Visibility(
-            visible: element!.title != null && element!.title!.isNotEmpty,
-            child: Text(
-              element!.title!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          if(element.type == 3 ){ // 语言综合训练
-            if(element.typeChildren == 1){ // 单选题 or 多选题
-              if((element.options??[]).length > 0) {
-                itemList.add(QuestionFactory.buildSingleOptionsTxtChoice(element.options!,-1));
-              }
-            }
-          }
-
-          questionList.add(SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: itemList,
-            ),
-          ));
-      }else{
-        questionList.add(const SizedBox());
       }
     }
 

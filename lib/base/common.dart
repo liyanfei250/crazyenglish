@@ -53,19 +53,20 @@ class DataGroup{
 // 题型
 class QuestionType {
 
-  static const int single_choice = 1; /// 单选题
-  static const int multi_choice = 2;  /// 多选题
-  static const int judge_choice = 3;  /// 判断题
-  static const int normal_gap = 4;  /// 常规填空题
-  static const int translate_gap = 5;  /// 翻译填空题
-  static const int to_complete_gap = 6;  /// 补全填空题
-  static const int complete_filling = 7;  /// 完型填空题
-  static const int select_words_filling = 8;  /// 选词填空
-  static const int select_filling = 9;  /// 选择填空
-  static const int normal_reading = 10;  /// 常规阅读题
-  static const int question_reading = 11;  /// 简单阅读题
-  static const int translate_question = 12;  /// 中英文互译
-  static const int writing_question = 13;  /// 写作题
+  static const String single_choice = "single_choice"; /// 单选题
+  static const String multi_choice = "multi_choice";  /// 多选题
+  static const String judge_choice = "judge_choice";  /// 判断题
+  static const String normal_gap = "normal_gap";  /// 常规填空题
+  static const String translate_filling = "translate_filling";  /// 翻译填空题
+  static const String completion_filling = "completion_filling";  /// 补全填空题
+  static const String complete_filling = "complete_filling";  /// 完型填空题
+  static const String select_words_filling = "select_words_filling";  /// 选词填空
+  static const String select_filling = "select_filling";  /// 选择填空
+  static const String normal_reading = "normal_reading";  /// 常规阅读题
+  static const String question_reading = "question_reading";  /// 简单阅读题
+  static const String translate_question = "translate_question";  /// 中英文互译
+  static const String writing_question = "writing_question";  /// 写作题
+  static const String correction_question = "correction_question";  /// 短文改错题
 
 }
 
