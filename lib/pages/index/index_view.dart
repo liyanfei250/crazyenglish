@@ -49,10 +49,53 @@ class _IndexPageState extends BasePageState<IndexPage>
   void initState() {
     super.initState();
 
+    //获取金刚区列表
     logic.getHomeList();
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.paperDetail != null) {
         /*paperDetail = state.paperDetail;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+    //获取我的期刊列表
+    logic.getMyJournalList();
+    logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
+      if (state.myJournalDetail != null) {
+        /*myJournalDetail = state.myJournalDetail;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+    //获取我的任务
+    logic.getMyTasks();
+    logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
+      if (state.myTask != null) {
+        /*myTask = state.myTask;
         if(mounted && _refreshController!=null){
           if(paperDetail!.data!=null
               && paperDetail!.data!.videoFile!=null
