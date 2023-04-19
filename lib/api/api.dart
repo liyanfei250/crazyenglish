@@ -148,4 +148,10 @@ class Api {
 
   // 首页我的任务
   static String getHomeMyTasksDate = Config.ApiHost + "/";
+
+  // 首页顶部搜索
+  static String getHomeSearchListDate = Config.ApiHost + "/";
+
+  // 首页扫描班级信息
+  static String getHClassInfoDate = Config.ApiHost + "/";
 }

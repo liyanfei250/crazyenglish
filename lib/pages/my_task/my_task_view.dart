@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../base/widgetPage/base_page_widget.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
@@ -38,6 +39,31 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
 
   // List<Rows> weekPaperList = [];
   final int pageStartIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    //获取我的任务
+    logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
+      if (state.paperList != null) {
+        /*paperList = state.paperList;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +123,12 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getList("2022-12-22",pageStartIndex,pageSize);
+    logic.getMyTasks("2022-12-22",pageStartIndex,pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList("2022-12-22",currentPageNo,pageSize);
+    logic.getMyTasks("2022-12-22",currentPageNo,pageSize);
   }
 
   Widget buildItem(BuildContext context, int index) {
