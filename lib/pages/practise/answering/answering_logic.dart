@@ -2,6 +2,7 @@ import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/commit_request.dart';
+import '../../../entity/week_detail_response.dart';
 import '../../../repository/week_test_repository.dart';
 import 'answering_state.dart';
 
@@ -35,8 +36,30 @@ class AnsweringLogic extends GetxController {
     update([GetBuilderIds.answerPageInitNum]);
   }
 
-  void uploadWeekTest(CommitAnswer commitRequest) async{
-    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
+  void uploadWeekTest(SubjectVoList subjectVoList) async{
+
+
+    List<SubtopicAnswerVo> subtopicAnswerVoList = [];
+    state.subtopicAnswerVoMap.forEach((key, value) {
+      subtopicAnswerVoList.add(value);
+    });
+
+    SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
+        subjectId: subjectVoList.id,
+        isSubjectivity: subjectVoList.isSubjectivity,
+        questionTypeStr: subjectVoList.questionTypeStr,
+        subtopicAnswerVo: subtopicAnswerVoList);
+
+    List<SubjectAnswerVo> subjectAnswerVoList = [];
+    subjectAnswerVoList.add(subjectAnswerVo);
+
+    CommitAnswer commitAnswer = CommitAnswer(journalId: subjectVoList.journalId,
+        journalCatalogueId: subjectVoList.journalCatalogueId,
+        type: "1",
+        examId: 0,
+        subjectAnswerVo:subjectAnswerVoList);
+
+    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);
     state.commitAnswer = commitResponse;
     update([GetBuilderIds.commitAnswer]);
   }

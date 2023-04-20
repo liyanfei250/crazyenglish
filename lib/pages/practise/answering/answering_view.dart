@@ -77,7 +77,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var canPre = false.obs;
   var canNext = true.obs;
   String initPageNum = "";
-
+  detail.SubjectVoList? currentSubjectVoList;
   @override
   void onCreate() {
     startTimer();
@@ -204,9 +204,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       textCancel: "取消",
                       content: Text("是否确定提交答案"),
                       onConfirm:(){
-                        CommitAnswer commitRequest = CommitAnswer(
-                        );
-                        logic.uploadWeekTest(commitRequest);
+                        if(currentSubjectVoList!=null){
+                          logic.uploadWeekTest(currentSubjectVoList!);
+                        }else{
+                          Util.toast("未获取到试题信息");
+                        }
+
                         Get.back();
                       }
                     );
@@ -238,24 +241,24 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       int length = weekTestDetailResponse.obj!.subjectVoList!.length;
 
       if(widget.parentIndex < length){
-        detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
-        if(element.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(data: element));
-        }else if (element.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(data: element));
-        }else if(element.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(data: element));
+        currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
+        if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
+          questionList.add(SelectWordsFillingQuestion(data: currentSubjectVoList!));
+        }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
+          questionList.add(SelectFillingQuestion(data: currentSubjectVoList!));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
+          questionList.add(ReadQuestion(data: currentSubjectVoList!));
         }else{
-          switch (element.classifyValue) {
+          switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(data: element));
+              questionList.add(ListenQuestion(data: currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(data: element));
+              questionList.add(ReadQuestion(data: currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestion(data: element));
-              Util.toast("题型分类${element.questionTypeName}还未解析");
+              questionList.add(OthersQuestion(data: currentSubjectVoList!));
+              Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {
           //     // 单项选择题

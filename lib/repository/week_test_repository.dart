@@ -129,7 +129,7 @@ class WeekTestRepository{
     }
     Map map = await NetManager.getInstance()!
         .request(data:commitRequest.toJson(),Method.post, Api.postWeekCommit,
-        options: Options(method: Method.post,));
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     CommitResponse commitResponse = CommitResponse.fromJson(map);
     if (commitResponse.code != ResponseCode.status_success) {
       return Future.error(commitResponse.message!);
