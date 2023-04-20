@@ -19,7 +19,7 @@ class Config {
 
   static final String TEST_APP_ID = "1001";
   static final String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static final String TEST_API_DOMAIN = "http://192.168.0.155";
+  static final String TEST_API_DOMAIN = "http://82.157.164.83:9000";
 
   static String get appId {
     switch (env) {

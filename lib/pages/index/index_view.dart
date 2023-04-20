@@ -50,7 +50,7 @@ class _IndexPageState extends BasePageState<IndexPage>
     super.initState();
 
     //获取金刚区列表
-    logic.getHomeList();
+    logic.getHomeList('classify_type');
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.paperDetail != null) {
         /*paperDetail = state.paperDetail;

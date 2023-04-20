@@ -26,7 +26,7 @@ class Login_newLogic extends GetxController {
     super.onClose();
   }
 
-  void mobileLogin(String phone, String phoneCode) async {
+  void  mobileLogin(String phone, String phoneCode) async {
     LoginCodeResponse loginResponse = await userRepository
         .mobileNewLogin({"mobile": phone, "code": phoneCode});
     state.loginResponseTwo = loginResponse;

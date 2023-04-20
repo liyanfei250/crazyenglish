@@ -3,7 +3,7 @@ import '../config.dart';
 class Api {
   static String getUser = Config.ApiHost + "/user.site";
   static String getLogin = Config.ApiHost + "/oauth/token";
-  static String getPsdLoginNew = Config.ApiHost + "/oauth/token";
+  static String getPsdLoginNew =  "http://82.157.164.83:9000/oauth/token";
   static String getLoginNew = "http://192.168.0.155/app/user/login/sms";
   static String getResetPsdNew = "http://192.168.0.155/app/user/reset/sms";
 
@@ -110,6 +110,13 @@ class Api {
   // 收藏题目搜索接口
   // 收藏列表接口
 
+  // 金刚区接口 // 周报筛选字典接口
+  static String getHomeKingList = Config.ApiHost + "/question/dictionary/getByType/";
+  // 周报列表接口
+  static String getHomeWeeklyList = Config.ApiHost + "/question/exercise/getWeeklyReoprtsList";
+  // 周报目录列表
+  static String getHomeWeeklyDirectoryList = Config.ApiHost + "/question/exercise/getCatalogueByJournalId/";
+
   //获取复习首页的信息接口
   static String getReviewHomeDetail = Config.ApiHost + "/";
 
@@ -154,16 +161,22 @@ class Api {
 
   // 首页扫描班级信息
   static String getHClassInfoDate = Config.ApiHost + "/";
+
   // 提交反馈信息
   static String postContentDate = Config.ApiHost + "/";
+
   // 提交头像
   static String toPushHeaderImage = Config.ApiHost + "/";
+
   // 获取个人信息
   static String getPersonInfo = Config.ApiHost + "/";
+
   // 修改昵称
   static String toChangeNickName = Config.ApiHost + "/";
+
   // 修改密码
   static String toChangePassword = Config.ApiHost + "/";
+
   // 修改手机号
   static String toChangePhoneNum = Config.ApiHost + "/";
 }
