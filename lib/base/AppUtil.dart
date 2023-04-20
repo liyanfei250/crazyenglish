@@ -567,7 +567,7 @@ class Util {
       "Imei": "223232323",
     };
     if (SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty) {
-      params["Authorization"] = SpUtil.getString(BaseConstant.loginTOKEN);
+      params["Authorization"] = "Bearer "+SpUtil.getString(BaseConstant.loginTOKEN);
     }
     return params;
   }

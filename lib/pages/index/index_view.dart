@@ -53,6 +53,7 @@ class _IndexPageState extends BasePageState<IndexPage>
     logic.getHomeList('classify_type');
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.paperDetail != null) {
+        Util.toast(state.paperDetail.obj![0].name!);
         /*paperDetail = state.paperDetail;
         if(mounted && _refreshController!=null){
           if(paperDetail!.data!=null

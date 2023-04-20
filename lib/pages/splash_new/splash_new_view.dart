@@ -39,10 +39,10 @@ class SplashNewPageState extends State<SplashPageNew> {
   void initState() {
     super.initState();
     //测试
-    SpUtil.putBool(BaseConstant.ISLOGING, true);
-    SpUtil.putString(
-        BaseConstant.loginTOKEN, '++++6666');
-    Util.getHeader();
+    // SpUtil.putBool(BaseConstant.ISLOGING, true);
+    // SpUtil.putString(
+    //     BaseConstant.loginTOKEN, '++++6666');
+    // Util.getHeader();
     //测试
     _init();
   }
