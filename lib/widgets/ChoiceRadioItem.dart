@@ -9,7 +9,7 @@ import '../utils/colors.dart';
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description:
+ * Description: 默认 未选中，作答选中，反显正确，反显错误
  */
 enum ChoiceRadioItemType {DEFAULT,SELECTED,RIGHT_SELECTED,WRONG_SELECTED}
 

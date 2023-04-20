@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../entity/commit_request.dart';
 import 'result_state.dart';
 
 class ResultLogic extends GetxController {

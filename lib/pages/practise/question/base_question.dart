@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/week_detail_response.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
@@ -49,6 +50,10 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   }
   bool pre(){
     return baseQuestionState.pre();
+  }
+
+  void jumpToQuestion(int index) {
+    baseQuestionState.jumpToQuestion(index);
   }
 
   int getQuestionCount(){
@@ -148,11 +153,19 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             ),));
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question));
+            itemList.add(GetBuilder<AnsweringLogic>(
+                id: GetBuilderIds.subjectId+(question.subjectId??0).toString(),
+                builder: (logic) {
+                  logic.state.commitResponse!=null;
+                  return QuestionFactory.buildSingleTxtChoice(question,true);
+                }));
           }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question));
+            itemList.add(GetBuilder<AnsweringLogic>(
+                id: GetBuilderIds.subjectId+(question.subjectId??0).toString(),
+                builder: (logic) {
+                  return QuestionFactory.buildSingleImgChoice(question,true);
+                }));
           }
-
         }else if(element.questionTypeStr == QuestionType.multi_choice){
 
         }else if(element.questionTypeStr == QuestionType.judge_choice){
@@ -273,6 +286,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }else{
       return false;
     }
+  }
+
+
+  @override
+  void jumpToQuestion(int index) {
+    currentPage = index;
+    pageController.jumpToPage(currentPage);
   }
 
   TextEditingController makeEditController(String key){

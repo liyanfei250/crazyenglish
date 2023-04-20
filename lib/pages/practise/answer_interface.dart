@@ -10,5 +10,6 @@ mixin AnswerMixin{
   getAnswers();
   bool next();
   bool pre();
+  void jumpToQuestion(int index);
   int getQuestionCount();
 }

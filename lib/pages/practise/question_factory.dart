@@ -22,7 +22,7 @@ import 'question/base_question.dart';
 
 class QuestionFactory{
 
-  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
+  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -36,9 +36,9 @@ class QuestionFactory{
             mainAxisSize: MainAxisSize.min,
             children: subtopicVoList!.optionsList!.map(
                     (e) => InkWell(
-                  onTap: (){
+                  onTap: isClickEnable? (){
                     choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                  },
+                  }:null,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
@@ -97,7 +97,7 @@ class QuestionFactory{
 
 
 
-  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,{int? defaultChooseIndex}){
+  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
     return Container(
@@ -109,9 +109,9 @@ class QuestionFactory{
             mainAxisSize: MainAxisSize.min,
             children: subtopicVoList!.optionsList!.map(
                     (e) => InkWell(
-                  onTap: (){
+                  onTap: isClickEnable?(){
                     choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                  },
+                  }:null,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(

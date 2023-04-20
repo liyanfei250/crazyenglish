@@ -21,6 +21,10 @@ class AnsweringLogic extends GetxController {
     super.onClose();
   }
 
+  void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
+    state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
+  }
+
   void updatePageStr(String pageStr){
     state.pageChangeStr = pageStr;
     update([GetBuilderIds.answerPageNum]);

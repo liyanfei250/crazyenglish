@@ -4,10 +4,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
-import '../answering/answering_logic.dart';
 import '../../../entity/week_detail_response.dart';
 import '../question_factory.dart';
 
@@ -50,6 +50,10 @@ abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
     return baseQuestionState.pre();
   }
 
+  void jumpToQuestion(int index) {
+    baseQuestionState.jumpToQuestion(index);
+  }
+
   int getQuestionCount(){
     return baseQuestionState.getQuestionCount();
   }
@@ -68,7 +72,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   List<Widget> questionList = [];
   int currentPage = 0;
-  final selectGapGetxController = Get.put(SelectGapGetxController());
+  // final selectGapGetxController = Get.put(SelectGapGetxController());
   // final logic = Get.find<AnsweringLogic>();
   @override
   void initState(){
@@ -124,6 +128,65 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
 
   Widget getQuestionDetail(SubjectVoList element){
     questionList.clear();
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
+      for(int i = 0 ;i< questionNum;i++){
+        SubtopicVoList question = element.subtopicVoList![i];
+
+        List<Widget> itemList = [];
+        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+
+        if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.complete_filling
+            || element.questionTypeStr == QuestionType.normal_reading){
+          // 选择题
+          itemList.add(buildQuestionType("选择题"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          // TODO 判断是否是图片选择题的逻辑需要修改
+          if(question.optionsList![0].content!.isNotEmpty){
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true));
+          }else{
+            itemList.add(QuestionFactory.buildSingleImgChoice(question,true));
+          }
+        }else if(element.questionTypeStr == QuestionType.multi_choice){
+
+        }else if(element.questionTypeStr == QuestionType.judge_choice){
+
+        }else if(element.questionTypeStr == QuestionType.normal_gap) {
+          itemList.add(buildQuestionType("填空题"));
+          itemList.add(buildReadQuestion(element.content ?? ""));
+          itemList.add(QuestionFactory.buildHuGapQuestion(
+              question, 0, makeEditController));
+        }else if(element.questionTypeStr == QuestionType.question_reading){
+
+        }
+        // else if(element.questionTypeStr == QuestionType.select_words_filling){
+        //   itemList.add(buildQuestionType("选择填空题"));
+        //   itemList.add(QuestionFactory.buildSelectGapQuestion(element.optionsList,element!.content!,0,makeFocusNodeController));
+        //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
+        //   );
+        // }
+        // else if(element.questionTypeStr == QuestionType.correction_question){
+        //   itemList.add(buildQuestionType("纠错题"));
+        //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
+        // }
+
+        questionList.add(SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: itemList,
+          ),
+        ));
+      }
+    }
 
     // if(logic!=null){
     //   logic.initPageStr("1/${questionList.length}");
@@ -213,6 +276,13 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     }
   }
 
+
+  @override
+  void jumpToQuestion(int index) {
+    currentPage = index;
+    pageController.jumpToPage(currentPage);
+  }
+
   TextEditingController makeEditController(String key){
     if(gapEditController[key] == null){
       TextEditingController controller = TextEditingController();
@@ -262,7 +332,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   @override
   void dispose() {
     print(tag + "dispose\n");
-    Get.delete<SelectGapGetxController>();
+    // Get.delete<SelectGapGetxController>();
     onDestroy();
     super.dispose();
   }
@@ -274,58 +344,4 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   }
 
 
-}
-
-class SelectGapGetxController extends GetxController{
-  // 答案 列表
-  List<String> indexContentList = [];
-
-  // 填空的 焦点 key-bool
-  var hasFocusMap = {}.obs;
-  // 填空的内容
-  var contentMap = {}.obs;
-  // 答案索引-填空索引
-  var answerIndexToGapIndexMap = {}.obs;
-
-  bool nextFocus = false;
-
-  initContent(List<String> list){
-    indexContentList.clear();
-    indexContentList.addAll(list);
-  }
-
-  updateFocus(String key,bool hasFocus){
-    if(hasFocus){
-      hasFocusMap.value.keys.toList().forEach((element) {
-        hasFocusMap.value.addIf(true, element, false);
-      });
-      hasFocusMap.value.addIf(true, key, hasFocus);
-      hasFocusMap.value.keys.toList().forEach((element) {
-        update([element]);
-      });
-      // update([key]);
-    } else {
-      hasFocusMap.value.addIf(true, key, hasFocus);
-      update([key]);
-    }
-  }
-
-  updateContent(String key,String contentTxt){
-    contentMap.value.addIf(true, key, contentTxt);
-    if(contentTxt.isNotEmpty){
-      nextFocus = true;
-    }else{
-      nextFocus = false;
-    }
-    update([key]);
-  }
-
-  resetNextFocus(){
-    nextFocus = false;
-  }
-
-  updateIndex(String answerIndex,String gapIndex){
-    answerIndexToGapIndexMap.value.addIf(true, answerIndex, gapIndex);
-    update([answerIndex]);
-  }
 }
