@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/pages/practise/question_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -25,7 +26,7 @@ typedef GetEditingControllerCallback = TextEditingController Function(String key
 typedef GetFocusNodeControllerCallback = FocusNode Function(String key);
 typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
-
+typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 
 abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   late BaseQuestionState baseQuestionState;
@@ -76,10 +77,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+
   @override
   void initState(){
     super.initState();
     onCreate();
+
     tag = tag+curPage;
     print(tag + "initState\n");
   }
@@ -153,18 +156,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             ),));
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(GetBuilder<AnsweringLogic>(
-                id: GetBuilderIds.subjectId+(question.subjectId??0).toString(),
-                builder: (logic) {
-                  logic.state.commitResponse!=null;
-                  return QuestionFactory.buildSingleTxtChoice(question,true);
-                }));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true,userAnswerCallback: userAnswerCallback));
           }else{
-            itemList.add(GetBuilder<AnsweringLogic>(
-                id: GetBuilderIds.subjectId+(question.subjectId??0).toString(),
-                builder: (logic) {
-                  return QuestionFactory.buildSingleImgChoice(question,true);
-                }));
+            itemList.add(QuestionFactory.buildSingleImgChoice(question,true,userAnswerCallback: userAnswerCallback));
           }
         }else if(element.questionTypeStr == QuestionType.multi_choice){
 
@@ -303,6 +297,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }else{
       return gapEditController[key]!;
     }
+  }
+
+  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo){
+    logic.updateUserAnswer((subtopicAnswerVo.subtopicId??1).toString(), subtopicAnswerVo);
   }
 
   FocusNode makeFocusNodeController(String key){

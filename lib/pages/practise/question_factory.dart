@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/widgets/ChoiceImageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -22,7 +23,7 @@ import 'question/base_question.dart';
 
 class QuestionFactory{
 
-  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex}){
+  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex,UserAnswerCallback? userAnswerCallback}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -38,6 +39,14 @@ class QuestionFactory{
                     (e) => InkWell(
                   onTap: isClickEnable? (){
                     choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
+                    if(userAnswerCallback!=null){
+                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
+                          optionId:e.id,
+                          userAnswer: e.sequence,
+                          answer: subtopicVoList.answer,
+                          isCorrect: subtopicVoList.answer== e.sequence);
+                      userAnswerCallback.call(subtopicAnswerVo);
+                    }
                   }:null,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
@@ -97,7 +106,7 @@ class QuestionFactory{
 
 
 
-  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex}){
+  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex, UserAnswerCallback? userAnswerCallback}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
     return Container(
@@ -111,6 +120,14 @@ class QuestionFactory{
                     (e) => InkWell(
                   onTap: isClickEnable?(){
                     choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
+                    if(userAnswerCallback!=null){
+                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
+                          optionId:e.id,
+                          userAnswer: e.sequence,
+                          answer: subtopicVoList.answer,
+                          isCorrect: subtopicVoList.answer== e.sequence);
+                      userAnswerCallback.call(subtopicAnswerVo);
+                    }
                   }:null,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
