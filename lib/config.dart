@@ -10,7 +10,7 @@ class Config {
   // 内网环境
   static final String NEIBU_APP_ID = "1001";
   static final String NEIBU_SECURITY_KEY = "f6448a1aa06b4779b39549c5f5f0aa32";
-  static final String NEIBU_API_DOMAIN = "http://82.157.164.83:5000";
+  static final String NEIBU_API_DOMAIN = "http://82.157.164.83:9000";
 
   // 外网环境
   static final String PRODUCT_APP_ID = "1001";

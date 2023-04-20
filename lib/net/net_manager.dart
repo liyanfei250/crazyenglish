@@ -114,8 +114,7 @@ class NetManager {
       sendTimeout: 60 * 1000,
       method: Method.post,
       contentType:
-        // ContentType.parse("application/x-www-form-urlencoded").toString(),
-      ContentType.parse("application/json").toString(),
+      ContentType.parse("application/x-www-form-urlencoded").toString(),
     );
   }
 
@@ -124,8 +123,7 @@ class NetManager {
       options = new Options(method: method);
     }else{
       if((options!.contentType??"").isEmpty){
-        // options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
-        options.contentType = ContentType.parse("application/json").toString();
+        options.contentType = ContentType.parse("application/x-www-form-urlencoded").toString();
       }
     }
     return options;

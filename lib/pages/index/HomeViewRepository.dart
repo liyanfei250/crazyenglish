@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:crazyenglish/entity/home/PersonInfo.dart';
 import 'package:dio/dio.dart';
 
@@ -164,7 +166,7 @@ class HomeViewRepository {
   //金刚区列表和周报筛选
   Future<HomeKingDate> getHomeKingList(String type) async {
     Map map = await NetManager.getInstance()!
-        .request(Method.get, Api.getHomeKingList + type);
+        .request(Method.get,options: Options(contentType: ContentType.json.toString()), Api.getHomeKingList + type);
     HomeKingDate sendCodeResponse = HomeKingDate.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);

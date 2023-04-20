@@ -50,7 +50,7 @@ class _IndexPageState extends BasePageState<IndexPage>
     super.initState();
 
     //获取金刚区列表
-    logic.getHomeList('classify_type');
+
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.paperDetail != null) {
         Util.toast(state.paperDetail.obj![0].name!);
@@ -71,6 +71,7 @@ class _IndexPageState extends BasePageState<IndexPage>
 
       }
     });
+    logic.getHomeList('classify_type');
     //获取我的期刊列表
     logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
