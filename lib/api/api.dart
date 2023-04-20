@@ -154,4 +154,16 @@ class Api {
 
   // 首页扫描班级信息
   static String getHClassInfoDate = Config.ApiHost + "/";
+  // 提交反馈信息
+  static String postContentDate = Config.ApiHost + "/";
+  // 提交头像
+  static String toPushHeaderImage = Config.ApiHost + "/";
+  // 获取个人信息
+  static String getPersonInfo = Config.ApiHost + "/";
+  // 修改昵称
+  static String toChangeNickName = Config.ApiHost + "/";
+  // 修改密码
+  static String toChangePassword = Config.ApiHost + "/";
+  // 修改手机号
+  static String toChangePhoneNum = Config.ApiHost + "/";
 }

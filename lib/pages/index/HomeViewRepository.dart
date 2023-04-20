@@ -1,8 +1,11 @@
+import 'package:crazyenglish/entity/home/PersonInfo.dart';
 import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
+import '../../entity/SendCodeResponseNew.dart';
 import '../../entity/base_resp.dart';
 import '../../entity/home/ClassInfoDate.dart';
+import '../../entity/home/CommentDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
@@ -60,6 +63,7 @@ class HomeViewRepository {
       return paperDetail!;
     }
   }
+
   //获取班级信息
   Future<ClassInfoDate> getClassInfo(String id) async {
     Map map = await NetManager.getInstance()!.request(
@@ -70,6 +74,97 @@ class HomeViewRepository {
       return Future.error(paperDetail.message!);
     } else {
       return paperDetail!;
+    }
+  }
+
+  //提交反馈信息
+  Future<CommentDate> toPushContent(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.postContentDate,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //提交头像
+  Future<CommentDate> toPushHeaderImage(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toPushHeaderImage,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //获取个人信息
+  Future<PersonInfo> getPersonInfo(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getPersonInfo,
+        options: Options(method: Method.get));
+    PersonInfo paperDetail = PersonInfo.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //修改昵称
+  Future<CommentDate> toChangeNickName(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toChangeNickName,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+  //修改密码
+  Future<CommentDate> toChangePassword(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toChangePassword,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+  //修改手机号
+  Future<CommentDate> toChangePhoneNum(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toChangePhoneNum,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<SendCodeResponseNew> sendCodeNew(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!
+        .request(Method.post, Api.getSendAuthCodeNew, data: req);
+    SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
+    if (sendCodeResponse.code != ResponseCode.status_success) {
+      return Future.error(sendCodeResponse.message!);
+    }
+
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回SendCodeResponse为空");
     }
   }
 }

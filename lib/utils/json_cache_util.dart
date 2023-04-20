@@ -45,6 +45,7 @@ class JsonCacheManageUtils {
   static final int HomeMyTasks = 0x011; //首页我的任务
   static final int HomeTopSearch = 0x012; //首页搜索
   static final int HomeTopScan = 0x013; //首页扫一扫班级
+  static final int PersonInfo = 0x014; //个人中心个人信息
 
   // String contentJson;
 

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import 'change_nick_name_logic.dart';
 
@@ -25,6 +26,9 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    logic.addListenerId(GetBuilderIds.toChangeNickName, () {
+      //todo nickname
+    });
   }
 
   @override
@@ -87,6 +91,8 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
                 onPressed: () {
                   // 点击按钮触发的逻辑
                   Util.toast('修改');
+
+                  logic.changeNickName('');
                 },
               ),
             ),

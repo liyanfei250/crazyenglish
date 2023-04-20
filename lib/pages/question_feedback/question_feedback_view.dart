@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/colors.dart';
 
 class QuestionFeedbackPage extends BasePage {
@@ -51,6 +52,14 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    logic.addListenerId(GetBuilderIds.toPushContent, () {
+      Util.toast('提交成功');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +81,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
             onTap: () {
               // 点击事件处理逻辑
               _upLoadImage();
+              logic.postContent('');
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
