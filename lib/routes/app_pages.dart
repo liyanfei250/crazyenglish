@@ -19,8 +19,6 @@ import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
 import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/user/set_psd/set_psd_view.dart';
-import 'package:crazyenglish/pages/week_read/reading_catalog/reading_catalog_view.dart';
-import 'package:crazyenglish/pages/week_read/reading_detail/reading_detail_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_catalog/week_test_catalog_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_detail/week_test_detail_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_list/week_test_list_view.dart';
@@ -60,7 +58,6 @@ import '../pages/teacher_class/student_ranking/student_ranking_view.dart';
 import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
-import '../pages/week_read/reading_list/reading_list_view.dart';
 import '../pages/writing/writing_view.dart';
 import '../xfyy/text_to_voice.dart';
 
@@ -76,10 +73,6 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> MyHomePage(title: "ceshi",),),
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),
     GetPage(name: AppRoutes.LoginNew, page:()=> LoginNewPage(),),
-    GetPage(name: AppRoutes.TextToVoice, page:()=> TextToVoice(),),
-    GetPage(name: AppRoutes.WeeklyList, page:()=>ReadingListPage(),),
-    GetPage(name: AppRoutes.PaperCategory, page:()=>Reading_catalogPage(),),
-    GetPage(name: AppRoutes.PaperDetail, page:()=>Reading_detailPage(),),
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),
     GetPage(name: AppRoutes.ToShoppingPage, page:()=>ToShoppingPage(),),

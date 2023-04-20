@@ -263,15 +263,9 @@ class _IndexPageState extends BasePageState<IndexPage>
             case "周报题库":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
-            case "周报阅读":
-              RouterUtil.toNamed(AppRoutes.WeeklyList);
-              break;
             case "写作训练":
               RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
                   arguments: {'type': 3});
-              break;
-            case "综合口语":
-              RouterUtil.toNamed(AppRoutes.TextToVoice);
               break;
             case "阅读理解":
               RouterUtil.toNamed(AppRoutes.ListeningPracticePage,

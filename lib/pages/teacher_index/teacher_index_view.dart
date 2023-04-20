@@ -177,11 +177,9 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   Widget _buildFuncAreaItem(String e) => InkWell(
         onTap: () {
           switch (e) {
-            case "每周题库":
+            case "英语周报":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
-            case "英语周报":
-              RouterUtil.toNamed(AppRoutes.WeeklyList);
               break;
             case "历史作业":
               RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,

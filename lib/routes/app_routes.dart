@@ -6,10 +6,6 @@ abstract class AppRoutes{
   static const HOME = '/home';
   static const LoginNew = '/loginNew';
   static const LOGIN = '/login';
-  static const WeeklyList = '/weeklyList';
-  static const PaperCategory = '/PaperCategory';
-  static const PaperDetail = '/PaperDetail';
-  static const TextToVoice = '/TextToVoice';
   static const WeeklyTestList = '/weeklyTestList';
   static const WeeklyTestCategory = '/WeeklyTestCategory';
   static const WeeklyTestDetail = '/WeeklyTestDetail';
