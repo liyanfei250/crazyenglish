@@ -137,6 +137,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         }
       }*/
     });
+
     logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     // showLoading("");

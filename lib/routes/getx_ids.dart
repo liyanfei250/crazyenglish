@@ -54,6 +54,14 @@ class GetBuilderIds {
   static const String getHomeWeeklyChoiceDate = "getHomeWeeklyChoiceDate";
   static const String getHomeMyJournalDate = "getHomeMyJournalDate";
   static const String getMyTasksDate = "getMyTasksDate";
+  static const String getHomeSearchDate = "getHomeSearchDate";
+  static const String getHomeScanDate = "getHomeScanDate";
+  static const String toPushContent = "toPushContent";
+  static const String toPushHeaderImage = "toPushHeaderImage";
+  static const String getPersonInfo = "getPersonInfo";
+  static const String toChangeNickName = "toChangeNickName";
+  static const String toChangePassword = "toChangePassword";
+  static const String toChangePhoneNumber = "toChangePhoneNumber";
 
 }
 

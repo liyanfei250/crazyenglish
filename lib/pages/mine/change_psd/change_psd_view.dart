@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import 'change_psd_logic.dart';
 
@@ -29,6 +30,10 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
     super.initState();
     isShowPsd = false;
     _phoneController = TextEditingController();
+    logic.toChangePassword('id');
+    logic.addListenerId(GetBuilderIds.toChangePassword, () {
+      //todo
+    });
   }
 
   @override
@@ -105,6 +110,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
               }
               //todo 发送验证码，去验证码界面
               // logic.sendCode(_phoneController!.text);
+
             },
             child: Container(
               height: 47.w,

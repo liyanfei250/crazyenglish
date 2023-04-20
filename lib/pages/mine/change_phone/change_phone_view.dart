@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import 'change_phone_logic.dart';
 
@@ -29,6 +32,25 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
     super.initState();
     isShowPsd = false;
     _phoneController = TextEditingController();
+    logic.toChangePhoneNum('id');
+    logic.addListenerId(GetBuilderIds.toChangePhoneNumber, () {
+      //todo
+    });
+
+    logic.addListenerId(GetBuilderIds.sendCode, () {
+      // Util.toast(state.sendCodeResponse.data??"");
+      hideLoading();
+      // Util.toast(state.sendCodeResponse.data??"");
+      if (state.sendCodeResponse.code == 1) {
+        var date = {
+          'phone': _phoneController!.text,
+          'code': phoneCodeStr.value
+        };
+        RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
+      } else {
+        Util.toast(state.sendCodeResponse.message!);
+      }
+    });
   }
 
   @override
@@ -103,7 +125,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
                 return;
               }
               //todo 发送验证码，去验证码界面
-              // logic.sendCode(_phoneController!.text);
+              logic.sendCode(_phoneController!.text);
             },
             child: Container(
               height: 47.w,

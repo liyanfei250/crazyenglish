@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crazyenglish/utils/MyImageLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +9,7 @@ import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import 'class_message_logic.dart';
@@ -27,6 +30,31 @@ class Class_messagePage extends BasePage {
 class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
   final logic = Get.put(Class_messageLogic());
   final state = Get.find<Class_messageLogic>().state;
+
+  @override
+  void initState() {
+    super.initState();
+    logic.getClassInfo();
+    logic.addListenerId(GetBuilderIds.getHomeScanDate, () {
+      if (state.paperDetail != null) {
+        /*paperDetail = state.paperDetail;
+        if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -56,6 +56,9 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
         {"title": "商城", "type": 4},
       ];
     }
+
+    //搜索数据，之后数据更新
+    logic.getSearchList("2022-12-22", 0, 1);
   }
 
   @override

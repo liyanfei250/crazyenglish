@@ -9,6 +9,7 @@ import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/FullScreenImage.dart';
 import '../../../utils/permissions/permissions_util.dart';
@@ -48,6 +49,23 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
         _image = FileNew.File(pickedFile.path);
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    //从本地或者接口获取个人信息
+    logic.getPersonInfo('');
+    logic.addListenerId(GetBuilderIds.getPersonInfo, () {
+      //todo 用户信息
+    });
+
+    logic.postImageContent('');
+    logic.addListenerId(GetBuilderIds.toPushHeaderImage, () {
+      Util.toast('头像更换成功');
+      //todo 头像
+    });
   }
 
   @override

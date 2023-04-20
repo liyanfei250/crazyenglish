@@ -9,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import 'search_list_logic.dart';
@@ -33,6 +34,48 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   int currentPageNo = 1;
   final int pageStartIndex = 1;
 
+
+  @override
+  void initState() {
+    super.initState();
+    //收藏列表
+    logic.addListenerId(GetBuilderIds.getHomeSearchDate, () {
+      hideLoading();
+      /*if(state.paperList!=null && state.paperList!=null){
+        if(state.pageNo == currentPageNo+1){
+          weekPaperList = state.paperList;
+          currentPageNo++;
+          weekPaperList.addAll(state!.paperList!);
+          if(mounted && _refreshController!=null){
+            _refreshController.loadComplete();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+            setState(() {
+
+            });
+          }
+        }else if(state.pageNo == pageStartIndex){
+          currentPageNo = pageStartIndex;
+          weekPaperList.clear();
+          weekPaperList.addAll(state.paperList!);
+          if(mounted && _refreshController!=null){
+            _refreshController.refreshCompleted();
+            if(!state!.hasMore){
+              _refreshController.loadNoData();
+            }else{
+              _refreshController.resetNoData();
+            }
+            setState(() {
+            });
+          }
+
+        }
+      }*/
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -319,6 +362,9 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     // logic.getList(widget.type, widget.typeTwo, pageStartIndex, pageSize);
+    //搜索数据，之后数据更新
+    logic.getSearchList("2022-12-22", pageStartIndex, pageSize);
+
   }
 
   void _onLoading() async {

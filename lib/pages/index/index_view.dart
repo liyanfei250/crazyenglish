@@ -586,12 +586,10 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }
 
