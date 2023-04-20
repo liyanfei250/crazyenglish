@@ -1,9 +1,10 @@
+import '../../entity/home/HomeKingDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/review/HomeListDate.dart';
 
 class IndexState {
-  HomeListDate paperDetail = HomeListDate();
+  HomeKingDate paperDetail = HomeKingDate();
   HomeMyJournalListDate myJournalDetail = HomeMyJournalListDate();
   HomeMyTasksDate myTask = HomeMyTasksDate();
   IndexState() {

@@ -6,6 +6,7 @@ import '../../entity/SendCodeResponseNew.dart';
 import '../../entity/base_resp.dart';
 import '../../entity/home/ClassInfoDate.dart';
 import '../../entity/home/CommentDate.dart';
+import '../../entity/home/HomeKingDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
@@ -13,17 +14,6 @@ import '../../entity/review/HomeListDate.dart';
 import '../../net/net_manager.dart';
 
 class HomeViewRepository {
-  Future<HomeListDate> getHomeList(String id) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeList,
-        options: Options(method: Method.get));
-    HomeListDate paperDetail = HomeListDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
 
   //获取首页我的期刊，学生端
   Future<HomeMyJournalListDate> getMyJournalList(String id) async {
@@ -128,6 +118,7 @@ class HomeViewRepository {
       return paperDetail!;
     }
   }
+
   //修改密码
   Future<CommentDate> toChangePassword(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!.request(
@@ -140,6 +131,7 @@ class HomeViewRepository {
       return paperDetail!;
     }
   }
+
   //修改手机号
   Future<CommentDate> toChangePhoneNum(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!.request(
@@ -153,10 +145,27 @@ class HomeViewRepository {
     }
   }
 
+  //发验证
   Future<SendCodeResponseNew> sendCodeNew(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!
         .request(Method.post, Api.getSendAuthCodeNew, data: req);
     SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
+    if (sendCodeResponse.code != ResponseCode.status_success) {
+      return Future.error(sendCodeResponse.message!);
+    }
+
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回SendCodeResponse为空");
+    }
+  }
+
+  //金刚区列表和周报筛选
+  Future<HomeKingDate> getHomeKingList(String type) async {
+    Map map = await NetManager.getInstance()!
+        .request(Method.get, Api.getHomeKingList + type);
+    HomeKingDate sendCodeResponse = HomeKingDate.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
     }

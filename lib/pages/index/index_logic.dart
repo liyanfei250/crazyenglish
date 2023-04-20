@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/index/HomeViewRepository.dart';
 import 'package:get/get.dart';
 
+import '../../entity/home/HomeKingDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/review/HomeListDate.dart';
@@ -22,27 +23,27 @@ class IndexLogic extends GetxController {
     super.onClose();
   }
 
-  void getHomeList() async {
+  void getHomeList(String type) async {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.HomeListDate)
         .then((value) {
       if (value != null) {
-        return HomeListDate.fromJson(value as Map<String, dynamic>?);
+        return HomeKingDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeListDate) {
+    if (cache is HomeKingDate) {
       state.paperDetail = cache!;
       hasCache = true;
-      update([GetBuilderIds.getSearchRecord]);
+      update([GetBuilderIds.getHomeDateList]);
     }
-    HomeListDate list = await homeViewRepository.getHomeList('');
+    HomeKingDate list = await homeViewRepository.getHomeKingList(type);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeListDate,list.toJson());
     state.paperDetail = list!;
     if (!hasCache) {
-      update([GetBuilderIds.getSearchRecord]);
+      update([GetBuilderIds.getHomeDateList]);
     }
   }
 
