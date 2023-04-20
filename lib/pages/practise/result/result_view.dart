@@ -30,7 +30,7 @@ import 'result_logic.dart';
 /// examDetail: 试题数据
 /// examResult: 历史作答数据 默认空
 class ResultPage extends BasePage{
-  CommitRequest? commitResponse;
+  CommitAnswer? commitAnswer;
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
   int parentIndex = 0;

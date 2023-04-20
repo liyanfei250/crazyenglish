@@ -121,10 +121,10 @@ class WeekTestRepository{
     }
   }
 
-  Future<CommitRequest> uploadWeekTest(CommitRequest commitRequest) async{
+  Future<CommitAnswer> uploadWeekTest(CommitAnswer commitRequest) async{
 
     if(Util.isTestMode()){
-      CommitResponse commitResponse = CommitResponse(code:1,msg:"",data:CommitRequest());
+      CommitResponse commitResponse = CommitResponse(code:1,msg:"",data:CommitAnswer());
       return commitResponse.data!;
     }
     Map map = await NetManager.getInstance()!

@@ -189,7 +189,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
             InkWell(
               onTap: () {
                 Util.toast("写作提交");
-                CommitRequest commitRequest = CommitRequest(
+                CommitAnswer commitRequest = CommitAnswer(
                     // muchTime: "2023-02-23 02:20:01",
                     // name: "测试写作题",
                     // directory: "1cddffb0-bcef-11ed-8e11-530450f105f5",

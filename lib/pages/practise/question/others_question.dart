@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/colors.dart';
@@ -50,7 +51,10 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildQuestionType("单选题"),
+          buildQuestionType(QuestionType.getName(element.questionTypeStr!)),
+          Visibility(
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           Expanded(child:getQuestionDetail(element)),
         ],
       ),

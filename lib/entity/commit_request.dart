@@ -6,17 +6,17 @@ import 'base_resp.dart';
 import 'week_detail_response.dart';
 
 class CommitResponse extends BaseResp{
-  CommitRequest? _data;
+  CommitAnswer? _data;
 
   CommitResponse({
     int? code,
     String? msg,
-    CommitRequest? data
+    CommitAnswer? data
     }):super(code,msg){
     _data = data;
   }
 
-  CommitRequest? get data => _data;
+  CommitAnswer? get data => _data;
 
   @override
   String toString() {
@@ -30,97 +30,187 @@ class CommitResponse extends BaseResp{
   }
 
   CommitResponse.fromJson(dynamic json):super.fromJson(json) {
-    _data = json['obj'] != null ? CommitRequest.fromJson(json['obj']) : null;
+    _data = json['obj'] != null ? CommitAnswer.fromJson(json['obj']) : null;
   }
 }
 
-
-class CommitRequest {
-  CommitRequest({
-    List<AnswerList>? answerList,}){
-    _answerList = answerList;
+class CommitAnswer {
+  CommitAnswer({
+    num? journalId,
+    num? journalCatalogueId,
+    String? type,
+    num? examId,
+    List<SubjectAnswerVo>? subjectAnswerVo,}){
+    _journalId = journalId;
+    _journalCatalogueId = journalCatalogueId;
+    _type = type;
+    _examId = examId;
+    _subjectAnswerVo = subjectAnswerVo;
   }
 
-  CommitRequest.fromJson(dynamic json) {
-    if (json['answerList'] != null) {
-      _answerList = [];
-      json['answerList'].forEach((v) {
-        _answerList?.add(AnswerList.fromJson(v));
+  CommitAnswer.fromJson(dynamic json) {
+    _journalId = json['journalId'];
+    _journalCatalogueId = json['journalCatalogueId'];
+    _type = json['type'];
+    _examId = json['examId'];
+    if (json['subjectAnswerVo'] != null) {
+      _subjectAnswerVo = [];
+      json['subjectAnswerVo'].forEach((v) {
+        _subjectAnswerVo?.add(SubjectAnswerVo.fromJson(v));
       });
     }
   }
-  List<AnswerList>? _answerList;
-  CommitRequest copyWith({  List<AnswerList>? answerList,
-  }) => CommitRequest(  answerList: answerList ?? _answerList,
+  num? _journalId;
+  num? _journalCatalogueId;
+  String? _type;
+  num? _examId;
+  List<SubjectAnswerVo>? _subjectAnswerVo;
+  CommitAnswer copyWith({  num? journalId,
+    num? journalCatalogueId,
+    String? type,
+    num? examId,
+    List<SubjectAnswerVo>? subjectAnswerVo,
+  }) => CommitAnswer(  journalId: journalId ?? _journalId,
+    journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
+    type: type ?? _type,
+    examId: examId ?? _examId,
+    subjectAnswerVo: subjectAnswerVo ?? _subjectAnswerVo,
   );
-  List<AnswerList>? get answerList => _answerList;
+  num? get journalId => _journalId;
+  num? get journalCatalogueId => _journalCatalogueId;
+  String? get type => _type;
+  num? get examId => _examId;
+  List<SubjectAnswerVo>? get subjectAnswerVo => _subjectAnswerVo;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (_answerList != null) {
-      map['answerList'] = _answerList?.map((v) => v.toJson()).toList();
+    map['journalId'] = _journalId;
+    map['journalCatalogueId'] = _journalCatalogueId;
+    map['type'] = _type;
+    map['examId'] = _examId;
+    if (_subjectAnswerVo != null) {
+      map['subjectAnswerVo'] = _subjectAnswerVo?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-/// id : "1"
-/// answer : "A"
-/// correctAnswer : "B"
-/// isRight : 1
-/// sort : 1
+/// subjectId : 1
+/// isSubjectivity : true
+/// questionTypeStr : ""
+/// subtopicAnswerVo : [{"subtopicId":1,"optionId":1,"userAnswer":"A","answer":"A","isCorrect":true},{"subtopicId":1,"optionId":1,"userAnswer":"A,B,C","answer":"A","isCorrect":true},{"subtopicId":1,"optionId":1,"userAnswer":"A,B,C;A,B","answer":"A","isCorrect":true}]
 
-class AnswerList {
-  AnswerList({
-    String? id,
-    String? answer,
-    String? correctAnswer,
-    num? isRight,
-    num? sort,}){
-    _id = id;
-    _answer = answer;
-    _correctAnswer = correctAnswer;
-    _isRight = isRight;
-    _sort = sort;
+class SubjectAnswerVo {
+  SubjectAnswerVo({
+    num? subjectId,
+    bool? isSubjectivity,
+    String? questionTypeStr,
+    List<SubtopicAnswerVo>? subtopicAnswerVo,}){
+    _subjectId = subjectId;
+    _isSubjectivity = isSubjectivity;
+    _questionTypeStr = questionTypeStr;
+    _subtopicAnswerVo = subtopicAnswerVo;
   }
 
-  AnswerList.fromJson(dynamic json) {
-    _id = json['id'];
-    _answer = json['answer'];
-    _correctAnswer = json['correctAnswer'];
-    _isRight = json['isRight'];
-    _sort = json['sort'];
+  SubjectAnswerVo.fromJson(dynamic json) {
+    _subjectId = json['subjectId'];
+    _isSubjectivity = json['isSubjectivity'];
+    _questionTypeStr = json['questionTypeStr'];
+    if (json['subtopicAnswerVo'] != null) {
+      _subtopicAnswerVo = [];
+      json['subtopicAnswerVo'].forEach((v) {
+        _subtopicAnswerVo?.add(SubtopicAnswerVo.fromJson(v));
+      });
+    }
   }
-  String? _id;
-  String? _answer;
-  String? _correctAnswer;
-  num? _isRight;
-  num? _sort;
-  AnswerList copyWith({  String? id,
-    String? answer,
-    String? correctAnswer,
-    num? isRight,
-    num? sort,
-  }) => AnswerList(  id: id ?? _id,
-    answer: answer ?? _answer,
-    correctAnswer: correctAnswer ?? _correctAnswer,
-    isRight: isRight ?? _isRight,
-    sort: sort ?? _sort,
+  num? _subjectId;
+  bool? _isSubjectivity;
+  String? _questionTypeStr;
+  List<SubtopicAnswerVo>? _subtopicAnswerVo;
+  SubjectAnswerVo copyWith({  num? subjectId,
+    bool? isSubjectivity,
+    String? questionTypeStr,
+    List<SubtopicAnswerVo>? subtopicAnswerVo,
+  }) => SubjectAnswerVo(  subjectId: subjectId ?? _subjectId,
+    isSubjectivity: isSubjectivity ?? _isSubjectivity,
+    questionTypeStr: questionTypeStr ?? _questionTypeStr,
+    subtopicAnswerVo: subtopicAnswerVo ?? _subtopicAnswerVo,
   );
-  String? get id => _id;
-  String? get answer => _answer;
-  String? get correctAnswer => _correctAnswer;
-  num? get isRight => _isRight;
-  num? get sort => _sort;
+  num? get subjectId => _subjectId;
+  bool? get isSubjectivity => _isSubjectivity;
+  String? get questionTypeStr => _questionTypeStr;
+  List<SubtopicAnswerVo>? get subtopicAnswerVo => _subtopicAnswerVo;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
+    map['subjectId'] = _subjectId;
+    map['isSubjectivity'] = _isSubjectivity;
+    map['questionTypeStr'] = _questionTypeStr;
+    if (_subtopicAnswerVo != null) {
+      map['subtopicAnswerVo'] = _subtopicAnswerVo?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// subtopicId : 1
+/// optionId : 1
+/// userAnswer : "A"
+/// answer : "A"
+/// isCorrect : true
+
+class SubtopicAnswerVo {
+  SubtopicAnswerVo({
+    num? subtopicId,
+    num? optionId,
+    String? userAnswer,
+    String? answer,
+    bool? isCorrect,}){
+    _subtopicId = subtopicId;
+    _optionId = optionId;
+    _userAnswer = userAnswer;
+    _answer = answer;
+    _isCorrect = isCorrect;
+  }
+
+  SubtopicAnswerVo.fromJson(dynamic json) {
+    _subtopicId = json['subtopicId'];
+    _optionId = json['optionId'];
+    _userAnswer = json['userAnswer'];
+    _answer = json['answer'];
+    _isCorrect = json['isCorrect'];
+  }
+  num? _subtopicId;
+  num? _optionId;
+  String? _userAnswer;
+  String? _answer;
+  bool? _isCorrect;
+  SubtopicAnswerVo copyWith({  num? subtopicId,
+    num? optionId,
+    String? userAnswer,
+    String? answer,
+    bool? isCorrect,
+  }) => SubtopicAnswerVo(  subtopicId: subtopicId ?? _subtopicId,
+    optionId: optionId ?? _optionId,
+    userAnswer: userAnswer ?? _userAnswer,
+    answer: answer ?? _answer,
+    isCorrect: isCorrect ?? _isCorrect,
+  );
+  num? get subtopicId => _subtopicId;
+  num? get optionId => _optionId;
+  String? get userAnswer => _userAnswer;
+  String? get answer => _answer;
+  bool? get isCorrect => _isCorrect;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['subtopicId'] = _subtopicId;
+    map['optionId'] = _optionId;
+    map['userAnswer'] = _userAnswer;
     map['answer'] = _answer;
-    map['correctAnswer'] = _correctAnswer;
-    map['isRight'] = _isRight;
-    map['sort'] = _sort;
+    map['isCorrect'] = _isCorrect;
     return map;
   }
 

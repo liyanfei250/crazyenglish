@@ -68,6 +68,44 @@ class QuestionType {
   static const String writing_question = "writing_question";  /// 写作题
   static const String correction_question = "correction_question";  /// 短文改错题
 
+  static String getName(String questionType){
+    switch(questionType){
+      case QuestionType.single_choice:
+        return "单选题";
+      case QuestionType.multi_choice:
+        return "多选题";
+      case QuestionType.judge_choice:
+        return "判断题";
+      case QuestionType.normal_gap:
+        return "填空题";
+      case QuestionType.translate_filling:
+        return "翻译填空题";
+      case QuestionType.completion_filling:
+        return "补全填空题";
+      case QuestionType.complete_filling:
+        return "完型填空题";
+      case QuestionType.select_words_filling:
+        return "选词填空";
+      case QuestionType.select_filling:
+        return "选择填空";
+      case QuestionType.normal_reading:
+        return "常规阅读题";
+      case QuestionType.question_reading:
+        return "简答阅读题";
+      case QuestionType.translate_question:
+        return "中英文互译";
+      case QuestionType.writing_question:
+        return "写作题";
+      case QuestionType.correction_question:
+        return "短文改错题";
+      default:
+        return "题型未知";
+    }
+  }
+}
+
+class QuestionTypeName{
+
 }
 
 // 题型分类

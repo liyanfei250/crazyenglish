@@ -205,7 +205,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       textCancel: "取消",
                       content: Text("是否确定提交答案"),
                       onConfirm:(){
-                        CommitRequest commitRequest = CommitRequest(
+                        CommitAnswer commitRequest = CommitAnswer(
                         );
                         logic.uploadWeekTest(commitRequest);
                         Get.back();

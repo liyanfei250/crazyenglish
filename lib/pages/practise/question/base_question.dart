@@ -126,7 +126,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   Widget getQuestionDetail(SubjectVoList element){
     questionList.clear();
 
-
     // 判断是否父子题
     // 普通阅读 常规阅读题 是父子题
     int questionNum = element.subtopicVoList!.length;

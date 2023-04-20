@@ -31,9 +31,9 @@ class AnsweringLogic extends GetxController {
     update([GetBuilderIds.answerPageInitNum]);
   }
 
-  void uploadWeekTest(CommitRequest commitRequest) async{
-    CommitRequest commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
-    state.commitRequest = commitResponse;
+  void uploadWeekTest(CommitAnswer commitRequest) async{
+    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
+    state.commitAnswer = commitResponse;
     update([GetBuilderIds.commitAnswer]);
   }
 }

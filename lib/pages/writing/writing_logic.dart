@@ -8,9 +8,9 @@ import 'writing_state.dart';
 class WritingLogic extends GetxController {
   final WritingState state = WritingState();
   final WeekTestRepository weekTestRepository = WeekTestRepository();
-  void uploadWritingTest(CommitRequest commitRequest) async{
-    CommitRequest commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
-    state.commitRequest = commitResponse;
+  void uploadWritingTest(CommitAnswer commitRequest) async{
+    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
+    state.commitRequest = commitResponse!;
     update([GetBuilderIds.commitAnswerWriting]);
   }
 }

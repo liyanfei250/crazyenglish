@@ -2,7 +2,7 @@ import '../../../entity/commit_request.dart';
 
 class AnsweringState {
   String pageChangeStr = "";
-  CommitRequest commitRequest = CommitRequest();
+  CommitAnswer commitAnswer = CommitAnswer();
   AnsweringState() {
     ///Initialize variables
   }
