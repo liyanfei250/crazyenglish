@@ -14,13 +14,11 @@ class WeekTestCatalogLogic extends GetxController {
   final WeekTestRepository weekTestRepository = WeekTestRepository();
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
@@ -52,8 +50,8 @@ class WeekTestCatalogLogic extends GetxController {
 
   List<tree.Node> process(WeekDirectoryResponse weekDirectoryResponse){
     List<tree.Node> nodes = [];
-    if(weekDirectoryResponse.data!=null){
-      weekDirectoryResponse.data!.forEach((element) {
+    if(weekDirectoryResponse.obj!=null){
+      weekDirectoryResponse.obj!.forEach((element) {
         tree.Node parentNode = tree.Node.fromMap(element.toJson());
         nodes.add(parentNode);
       });

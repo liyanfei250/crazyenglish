@@ -1,153 +1,321 @@
-import 'base_resp.dart';
+/// code : 0
+/// message : "系统正常"
+/// obj : [{"id":1648136972349313025,"p":null,"name":"ceshi","affiliatedGrade":2,"schoolYear":2,"periodsNum":21,"coverImg":null,"status":false,"isDelete":false,"createTime":"2023-04-18T09:30:50","updateTime":null,"createUser":1,"updateUser":null}]
+/// p : {"records":[],"total":1,"size":50,"current":1,"orders":[],"optimizeCountSql":true,"hitCount":false,"countId":null,"maxLimit":null,"searchCount":true,"pages":1}
 
-/// code : 1
-/// data : {"count":1,"rows":[{"uuid":"97a4d850-b82f-11ed-a635-7735a2808abc","name":"英语周报新目标第二十三坎","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/c86f6370-b824-11ed-a987-e7929c6b8af4tiancaiTORID%E6%B5%81%E7%A8%8B%E5%9B%BE%20%281%29.png","weekTime":"2023-03-15T16:00:00.000Z","see":0}]}
-/// msg : ""
-
-class WeekListResponse extends BaseResp{
+class WeekListResponse {
   WeekListResponse({
       num? code, 
-      Data? data, 
-      String? msg,}):super(code,msg){
+      String? message, 
+      List<Obj>? obj, 
+      P? p,}){
     _code = code;
-    _data = data;
-    _msg = msg;
+    _message = message;
+    _obj = obj;
+    _p = p;
 }
 
-  WeekListResponse.fromJson(dynamic json):super.fromJson(json)  {
+  WeekListResponse.fromJson(dynamic json) {
     _code = json['code'];
-    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
-    _msg = json['msg'];
+    _message = json['message'];
+    if (json['obj'] != null) {
+      _obj = [];
+      json['obj'].forEach((v) {
+        _obj?.add(Obj.fromJson(v));
+      });
+    }
+    _p = json['p'] != null ? P.fromJson(json['p']) : null;
   }
-
-  @override
-  WeekListResponse fromJson(dynamic) {
-    return WeekListResponse.fromJson(dynamic);
-  }
-
   num? _code;
-  Data? _data;
-  String? _msg;
+  String? _message;
+  List<Obj>? _obj;
+  P? _p;
 WeekListResponse copyWith({  num? code,
-  Data? data,
-  String? msg,
+  String? message,
+  List<Obj>? obj,
+  P? p,
 }) => WeekListResponse(  code: code ?? _code,
-  data: data ?? _data,
-  msg: msg ?? _msg,
+  message: message ?? _message,
+  obj: obj ?? _obj,
+  p: p ?? _p,
 );
   num? get code => _code;
-  Data? get data => _data;
-  String? get msg => _msg;
+  String? get message => _message;
+  List<Obj>? get obj => _obj;
+  P? get p => _p;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['code'] = _code;
-    if (_data != null) {
-      map['obj'] = _data?.toJson();
+    map['message'] = _message;
+    if (_obj != null) {
+      map['obj'] = _obj?.map((v) => v.toJson()).toList();
     }
-    map['message'] = _msg;
+    if (_p != null) {
+      map['p'] = _p?.toJson();
+    }
     return map;
   }
 
 }
 
-/// count : 1
-/// rows : [{"uuid":"97a4d850-b82f-11ed-a635-7735a2808abc","name":"英语周报新目标第二十三坎","img":"https://test-1315843937.cos.ap-beijing.myqcloud.com/c86f6370-b824-11ed-a987-e7929c6b8af4tiancaiTORID%E6%B5%81%E7%A8%8B%E5%9B%BE%20%281%29.png","weekTime":"2023-03-15T16:00:00.000Z","see":0}]
+/// records : []
+/// total : 1
+/// size : 50
+/// current : 1
+/// orders : []
+/// optimizeCountSql : true
+/// hitCount : false
+/// countId : null
+/// maxLimit : null
+/// searchCount : true
+/// pages : 1
 
-class Data {
-  Data({
-      num? count, 
-      List<Rows>? rows,}){
-    _count = count;
-    _rows = rows;
+class P {
+  P({
+      List<dynamic>? records, 
+      num? total, 
+      num? size, 
+      num? current, 
+      List<dynamic>? orders, 
+      bool? optimizeCountSql, 
+      bool? hitCount, 
+      dynamic countId, 
+      dynamic maxLimit, 
+      bool? searchCount, 
+      num? pages,}){
+    _records = records;
+    _total = total;
+    _size = size;
+    _current = current;
+    _orders = orders;
+    _optimizeCountSql = optimizeCountSql;
+    _hitCount = hitCount;
+    _countId = countId;
+    _maxLimit = maxLimit;
+    _searchCount = searchCount;
+    _pages = pages;
 }
 
-  Data.fromJson(dynamic json) {
-    _count = json['count'];
-    if (json['rows'] != null) {
-      _rows = [];
-      json['rows'].forEach((v) {
-        _rows?.add(Rows.fromJson(v));
+  P.fromJson(dynamic json) {
+    if (json['records'] != null) {
+      _records = [];
+      json['records'].forEach((v) {
+        // _records?.add(Dynamic.fromJson(v));
       });
     }
+    _total = json['total'];
+    _size = json['size'];
+    _current = json['current'];
+    if (json['orders'] != null) {
+      _orders = [];
+      json['orders'].forEach((v) {
+        // _orders?.add(Dynamic.fromJson(v));
+      });
+    }
+    _optimizeCountSql = json['optimizeCountSql'];
+    _hitCount = json['hitCount'];
+    _countId = json['countId'];
+    _maxLimit = json['maxLimit'];
+    _searchCount = json['searchCount'];
+    _pages = json['pages'];
   }
-  num? _count;
-  List<Rows>? _rows;
-Data copyWith({  num? count,
-  List<Rows>? rows,
-}) => Data(  count: count ?? _count,
-  rows: rows ?? _rows,
+  List<dynamic>? _records;
+  num? _total;
+  num? _size;
+  num? _current;
+  List<dynamic>? _orders;
+  bool? _optimizeCountSql;
+  bool? _hitCount;
+  dynamic _countId;
+  dynamic _maxLimit;
+  bool? _searchCount;
+  num? _pages;
+P copyWith({  List<dynamic>? records,
+  num? total,
+  num? size,
+  num? current,
+  List<dynamic>? orders,
+  bool? optimizeCountSql,
+  bool? hitCount,
+  dynamic countId,
+  dynamic maxLimit,
+  bool? searchCount,
+  num? pages,
+}) => P(  records: records ?? _records,
+  total: total ?? _total,
+  size: size ?? _size,
+  current: current ?? _current,
+  orders: orders ?? _orders,
+  optimizeCountSql: optimizeCountSql ?? _optimizeCountSql,
+  hitCount: hitCount ?? _hitCount,
+  countId: countId ?? _countId,
+  maxLimit: maxLimit ?? _maxLimit,
+  searchCount: searchCount ?? _searchCount,
+  pages: pages ?? _pages,
 );
-  num? get count => _count;
-  List<Rows>? get rows => _rows;
+  List<dynamic>? get records => _records;
+  num? get total => _total;
+  num? get size => _size;
+  num? get current => _current;
+  List<dynamic>? get orders => _orders;
+  bool? get optimizeCountSql => _optimizeCountSql;
+  bool? get hitCount => _hitCount;
+  dynamic get countId => _countId;
+  dynamic get maxLimit => _maxLimit;
+  bool? get searchCount => _searchCount;
+  num? get pages => _pages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['count'] = _count;
-    if (_rows != null) {
-      map['rows'] = _rows?.map((v) => v.toJson()).toList();
+    if (_records != null) {
+      map['records'] = _records?.map((v) => v.toJson()).toList();
     }
+    map['total'] = _total;
+    map['size'] = _size;
+    map['current'] = _current;
+    if (_orders != null) {
+      map['orders'] = _orders?.map((v) => v.toJson()).toList();
+    }
+    map['optimizeCountSql'] = _optimizeCountSql;
+    map['hitCount'] = _hitCount;
+    map['countId'] = _countId;
+    map['maxLimit'] = _maxLimit;
+    map['searchCount'] = _searchCount;
+    map['pages'] = _pages;
     return map;
   }
 
 }
 
-/// uuid : "97a4d850-b82f-11ed-a635-7735a2808abc"
-/// name : "英语周报新目标第二十三坎"
-/// img : "https://test-1315843937.cos.ap-beijing.myqcloud.com/c86f6370-b824-11ed-a987-e7929c6b8af4tiancaiTORID%E6%B5%81%E7%A8%8B%E5%9B%BE%20%281%29.png"
-/// weekTime : "2023-03-15T16:00:00.000Z"
-/// see : 0
+/// id : 1648136972349313025
+/// p : null
+/// name : "ceshi"
+/// affiliatedGrade : 2
+/// schoolYear : 2
+/// periodsNum : 21
+/// coverImg : null
+/// status : false
+/// isDelete : false
+/// createTime : "2023-04-18T09:30:50"
+/// updateTime : null
+/// createUser : 1
+/// updateUser : null
 
-class Rows {
-  Rows({
-      String? uuid, 
+class Obj {
+  Obj({
+      num? id, 
+      dynamic p, 
       String? name, 
-      String? img, 
-      String? weekTime, 
-      num? see,}){
-    _uuid = uuid;
+      num? affiliatedGrade, 
+      num? schoolYear, 
+      num? periodsNum,
+    String? coverImg,
+      bool? status, 
+      bool? isDelete, 
+      String? createTime, 
+      dynamic updateTime, 
+      num? createUser, 
+      dynamic updateUser,}){
+    _id = id;
+    _p = p;
     _name = name;
-    _img = img;
-    _weekTime = weekTime;
-    _see = see;
+    _affiliatedGrade = affiliatedGrade;
+    _schoolYear = schoolYear;
+    _periodsNum = periodsNum;
+    _coverImg = coverImg;
+    _status = status;
+    _isDelete = isDelete;
+    _createTime = createTime;
+    _updateTime = updateTime;
+    _createUser = createUser;
+    _updateUser = updateUser;
 }
 
-  Rows.fromJson(dynamic json) {
-    _uuid = json['uuid'];
+  Obj.fromJson(dynamic json) {
+    _id = json['id'];
+    _p = json['p'];
     _name = json['name'];
-    _img = json['img'];
-    _weekTime = json['weekTime'];
-    _see = json['see'];
+    _affiliatedGrade = json['affiliatedGrade'];
+    _schoolYear = json['schoolYear'];
+    _periodsNum = json['periodsNum'];
+    _coverImg = json['coverImg'];
+    _status = json['status'];
+    _isDelete = json['isDelete'];
+    _createTime = json['createTime'];
+    _updateTime = json['updateTime'];
+    _createUser = json['createUser'];
+    _updateUser = json['updateUser'];
   }
-  String? _uuid;
+  num? _id;
+  dynamic _p;
   String? _name;
-  String? _img;
-  String? _weekTime;
-  num? _see;
-Rows copyWith({  String? uuid,
+  num? _affiliatedGrade;
+  num? _schoolYear;
+  num? _periodsNum;
+  String? _coverImg;
+  bool? _status;
+  bool? _isDelete;
+  String? _createTime;
+  dynamic _updateTime;
+  num? _createUser;
+  dynamic _updateUser;
+Obj copyWith({  num? id,
+  dynamic p,
   String? name,
-  String? img,
-  String? weekTime,
-  num? see,
-}) => Rows(  uuid: uuid ?? _uuid,
+  num? affiliatedGrade,
+  num? schoolYear,
+  num? periodsNum,
+  String? coverImg,
+  bool? status,
+  bool? isDelete,
+  String? createTime,
+  dynamic updateTime,
+  num? createUser,
+  dynamic updateUser,
+}) => Obj(  id: id ?? _id,
+  p: p ?? _p,
   name: name ?? _name,
-  img: img ?? _img,
-  weekTime: weekTime ?? _weekTime,
-  see: see ?? _see,
+  affiliatedGrade: affiliatedGrade ?? _affiliatedGrade,
+  schoolYear: schoolYear ?? _schoolYear,
+  periodsNum: periodsNum ?? _periodsNum,
+  coverImg: coverImg ?? _coverImg,
+  status: status ?? _status,
+  isDelete: isDelete ?? _isDelete,
+  createTime: createTime ?? _createTime,
+  updateTime: updateTime ?? _updateTime,
+  createUser: createUser ?? _createUser,
+  updateUser: updateUser ?? _updateUser,
 );
-  String? get uuid => _uuid;
+  num? get id => _id;
+  dynamic get p => _p;
   String? get name => _name;
-  String? get img => _img;
-  String? get weekTime => _weekTime;
-  num? get see => _see;
+  num? get affiliatedGrade => _affiliatedGrade;
+  num? get schoolYear => _schoolYear;
+  num? get periodsNum => _periodsNum;
+  String? get coverImg => _coverImg;
+  bool? get status => _status;
+  bool? get isDelete => _isDelete;
+  String? get createTime => _createTime;
+  dynamic get updateTime => _updateTime;
+  num? get createUser => _createUser;
+  dynamic get updateUser => _updateUser;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['uuid'] = _uuid;
+    map['id'] = _id;
+    map['p'] = _p;
     map['name'] = _name;
-    map['img'] = _img;
-    map['weekTime'] = _weekTime;
-    map['see'] = _see;
+    map['affiliatedGrade'] = _affiliatedGrade;
+    map['schoolYear'] = _schoolYear;
+    map['periodsNum'] = _periodsNum;
+    map['coverImg'] = _coverImg;
+    map['status'] = _status;
+    map['isDelete'] = _isDelete;
+    map['createTime'] = _createTime;
+    map['updateTime'] = _updateTime;
+    map['createUser'] = _createUser;
+    map['updateUser'] = _updateUser;
     return map;
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../entity/error_note_response.dart';
+import '../../entity/home/HomeKingDate.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
@@ -25,8 +25,8 @@ class _IndexPageState extends BasePageState<IndexPage>
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
   var jsons =
-      '{code: 1, data: {count: 2, rows: [{uuid: 1cdd1550-bcef-11ed-8e11-530450f105f5, name: 测试全部题型用, img: https://test-1315843937.cos.ap-beijing.myqcloud.com/1aba8370-bcef-11ed-8e11-530450f105f5tiancaia1.jpg, weekTime: 2023-03-05T16:00:00.000Z, see: 0}, {uuid: 6b01ee40-be16-11ed-abb8-4bd615e260c3, name: 七年级新目标, img: https://test-1315843937.cos.ap-beijing.myqcloud.com/53fe3500-be16-11ed-abb8-4bd615e260c3tiancai483f30cbf856f2868f89ce5bca0dc58.png, weekTime: 2023-02-28T16:00:00.000Z, see: 0}]}, msg: }';
-  final List<String> functionTxt = [
+      '{"code":0,"message":"系统正常","obj":[{"id":1646439861824098306,"name":"听力","value":1},{"id":1646439861824098307,"name":"阅读","value":2},{"id":1646439861824098308,"name":"写作","value":3},{"id":1646439861824098309,"name":"口语","value":4},{"id":1646439861824098310,"name":"词汇","value":5},{"id":1646439861824098311,"name":" 短语","value":6},{"id":1646439861824098312,"name":"语法","value":7},{"id":1646439861824098313,"name":"句子","value":8},{"id":1646439861824098314,"name":"其它","value":9}],"p":null}';
+  List<String> functionTxt = [
     "周报阅读",
     "周报题库",
     "综合听力",
@@ -35,6 +35,9 @@ class _IndexPageState extends BasePageState<IndexPage>
     "语言运用",
     "商城",
   ];
+
+  List<Obj> functionTxtNew = [];
+
   List listData = [
     {
       "title": "【完形填空】Module 1 Unit3",
@@ -50,24 +53,17 @@ class _IndexPageState extends BasePageState<IndexPage>
     super.initState();
 
     //获取金刚区列表
-
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.paperDetail != null) {
-        Util.toast(state.paperDetail.obj![0].name!);
-        /*paperDetail = state.paperDetail;
-        if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
 
-          }
+        if (state.paperDetail!.obj != null &&
+            state.paperDetail!.obj!.length > 0) {
           setState(() {
+            functionTxtNew = state.paperDetail!.obj!;
+            functionTxt =
+                state.paperDetail!.obj!.map((obj) => obj.name!).toList();
           });
-        }*/
+        }
 
       }
     });
@@ -146,9 +142,9 @@ class _IndexPageState extends BasePageState<IndexPage>
                       margin: EdgeInsets.symmetric(horizontal: 14.w),
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: functionTxt.length,
+                          itemCount: functionTxtNew.length,
                           itemBuilder: (_, int position) {
-                            String e = functionTxt[position];
+                            Obj e = functionTxtNew[position];
                             return _buildFuncAreaItem(e);
                           }),
                     ),
@@ -259,10 +255,13 @@ class _IndexPageState extends BasePageState<IndexPage>
     return items;
   }
 
-  Widget _buildFuncAreaItem(String e) => InkWell(
+  Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {
-          switch (e) {
-            case "周报题库":
+          switch (e.name) {
+            case "阅读":
+              RouterUtil.toNamed(AppRoutes.WeeklyTestList);
+              break;
+            /*case "周报题库":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
             case "写作训练":
@@ -283,7 +282,7 @@ class _IndexPageState extends BasePageState<IndexPage>
               break;
             case "商城":
               RouterUtil.toNamed(AppRoutes.ToShoppingPage);
-              break;
+              break;*/
           }
         },
         child: Container(
@@ -291,14 +290,17 @@ class _IndexPageState extends BasePageState<IndexPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                "images/student_index_${functionTxt.indexOf(e)}.png",
-                width: 50.w,
-                height: 50.w,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  R.imagesShopImageLogoTest,
+                  width: 50.w,
+                  height: 50.w,
+                ),
               ),
               Padding(padding: EdgeInsets.only(bottom: 10.w)),
               Text(
-                e,
+                e.name!,
                 style: TextStyle(
                     fontSize: 12.sp, color: AppColors.TEXT_BLACK_COLOR),
               )
@@ -581,12 +583,10 @@ class _IndexPageState extends BasePageState<IndexPage>
   }
 
   @override
-  void onCreate() {
-  }
+  void onCreate() {}
 
   @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 }
 
 LinearGradient yellowGreen(

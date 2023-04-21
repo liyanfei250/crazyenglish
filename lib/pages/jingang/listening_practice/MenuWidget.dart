@@ -95,17 +95,6 @@ class _MenuWidgetState extends State<MenuWidget>
                   ),
                 ),
                 Expanded(child: Text('')),
-                /*GestureDetector(
-                  onTap: () {
-                    Util.toast("lll");
-                  },
-                  child: Image.asset(
-                    R.imagesHomeSearch,
-                    width: 18.w,
-                    height: 18.w,
-                    color: Color(0xffd2d5dc),
-                  ),
-                ),*/
                 SizedBox(
                   width: 4.w,
                 )
@@ -134,6 +123,7 @@ class _MenuWidgetState extends State<MenuWidget>
                         _selectedIndex = -1;
                         _isOpen = false;
                       });
+                      _controller.forward();
                       widget.onSelected(-1);
                     },
                     child: Text(
@@ -159,6 +149,7 @@ class _MenuWidgetState extends State<MenuWidget>
                             _selectedIndex = index;
                             _isOpen = false;
                           });
+                          _controller.forward();
                           widget.onSelected(index);
                         },
                         child: Container(
