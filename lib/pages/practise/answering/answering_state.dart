@@ -13,7 +13,7 @@ class AnsweringState {
   Map<String,SubtopicAnswerVo> subtopicAnswerVoMap = {};
 
   // 提交完答案返回的数据
-  CommitResponse commitResponse = CommitResponse();
+  CommitAnswer commitResponse = CommitAnswer();
 
   AnsweringState() {
     ///Initialize variables

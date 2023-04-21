@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
@@ -99,20 +100,19 @@ class WeekTestDetailLogic extends GetxController {
         // TODO state.startExam 开始作答数据可在此处理
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-              arguments: {"detail": state.weekDetailResponse,
-                "uuid":state.uuid,
-                "parentIndex":parentIndex,
-                "childIndex":childIndex,
+              arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+              AnsweringPage.catlogIdKey:state.uuid,
+              AnsweringPage.parentIndexKey:parentIndex,
+              AnsweringPage.childIndexKey:childIndex,
               });
         }else{
           RouterUtil.toNamed(AppRoutes.AnsweringPage,
-              arguments: {"detail": state.weekDetailResponse,
-                "uuid":state.uuid,
-                "parentIndex":parentIndex,
-                "childIndex":childIndex,
+              arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+              AnsweringPage.catlogIdKey:state.uuid,
+              AnsweringPage.parentIndexKey:parentIndex,
+              AnsweringPage.childIndexKey:childIndex,
               });
         }
-
       }
     });
   }

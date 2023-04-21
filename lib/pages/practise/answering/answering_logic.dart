@@ -60,7 +60,7 @@ class AnsweringLogic extends GetxController {
         subjectAnswerVo:subjectAnswerVoList);
 
     CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);
-    state.commitAnswer = commitResponse;
+    state.commitResponse = commitResponse;
     update([GetBuilderIds.commitAnswer]);
   }
 }
