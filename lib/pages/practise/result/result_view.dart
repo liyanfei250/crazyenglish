@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,16 +15,12 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
-import '../question/others_question.dart';
-import '../question/listen_question.dart';
-import '../question/read_question.dart';
-import '../question_factory.dart';
 import '../question_result/base_question_result.dart';
 import '../question_result/listen_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question.dart';
 import '../question_result/select_words_filling_question.dart';
-import 'others_question_result.dart';
+import '../question_result/others_question_result.dart';
 import 'result_logic.dart';
 
 /// 核心逻辑：结果页
@@ -45,14 +42,19 @@ class ResultPage extends BasePage{
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      // commitResponse = Get.arguments["detail"];
-      testDetailResponse = Get.arguments["detail"];
-      uuid = Get.arguments["uuid"];
-      parentIndex = Get.arguments["parentIndex"];
-      childIndex = Get.arguments["childIndex"];
+      commitAnswer = Get.arguments[AnsweringPage.commitResponseAnswerKey];
+      testDetailResponse = Get.arguments[AnsweringPage.examDetailKey];
+      uuid = Get.arguments[AnsweringPage.catlogIdKey];
+      parentIndex = Get.arguments[AnsweringPage.parentIndexKey];
+      childIndex = Get.arguments[AnsweringPage.childIndexKey];
     }
   }
 
+  // static const examDetailKey = "examDetail";
+  // static const catlogIdKey = "catlogId";
+  // static const parentIndexKey = "parentIndex";
+  // static const childIndexKey = "childIndex";
+  // static const commitResponseAnswerKey = "commitResponseAnswer";
   @override
   BasePageState<BasePage> getState() {
     return _ResultPageState();
@@ -71,7 +73,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   List<BaseQuestionResult> pages = <BaseQuestionResult>[];
 
   // TODO 会替换成小题 选择题 或者 填空的数量
-  List<String> tabs = [];
+  List<SubtopicVoList> tabs = [];
 
   // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
   SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo();
@@ -84,10 +86,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         && widget.commitAnswer!.subjectAnswerVo!.length>0){
         subjectAnswerVo = widget.commitAnswer!.subjectAnswerVo![0];
         if(subjectAnswerVo.subtopicAnswerVo!=null && subjectAnswerVo.subtopicAnswerVo!.length>0){
-          subjectAnswerVo.subtopicAnswerVo!.map((e) {
+          subjectAnswerVo.subtopicAnswerVo!.forEach((element) {
             subtopicAnswerVoMap[
-              (e.subtopicId??subjectAnswerVo.subtopicAnswerVo!.indexOf(e))
-                  .toString()] = e;
+            (element.subtopicId??subjectAnswerVo.subtopicAnswerVo!.indexOf(element))
+                .toString()] = element;
           });
         }
       }
@@ -96,7 +98,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     if(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!=null && widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!.length>0) {
       int questionNum = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!.length;
       for(int i =0;i<questionNum;i++){
-        tabs.add((i+1).toString());
+        tabs.add(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList![i]);
       }
       _tabController = TabController(vsync: this, length: questionNum);
     }
@@ -251,10 +253,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     } else {
                       // 跳作答页
                       RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                      arguments: {"detail": widget.testDetailResponse,
-                        "uuid":"dd",
-                        "parentIndex":widget.parentIndex+1,
-                        "childIndex":0,
+                      arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                        AnsweringPage.catlogIdKey:"dd",
+                        AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                        AnsweringPage.childIndexKey:0,
                       });
                     }
                   } else {
@@ -294,7 +296,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   Widget _buildTabBar() => tabs.length>0? TabBar(
     onTap: (value){
-
+      pages[0].jumpToQuestion(value);
     },
     controller: _tabController,
     indicatorColor: AppColors.c_FF353E4D,
@@ -309,24 +311,33 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     tabs: tabs.map((e) => buildTab(e)).toList(),
   ):Container();
 
-  Widget buildTab(String e){
-    int state = tabs.indexOf(e);
-
+  Widget buildTab(SubtopicVoList e){
+    int index = tabs.indexOf(e);
+    int state = 1;
+    if(subtopicAnswerVoMap.containsKey((e.id??1).toString())){
+      if(subtopicAnswerVoMap[(e.id??1).toString()]!.isCorrect??false){
+        state =2;
+      }else{
+        state =0;
+      }
+    }else{
+      state = 1;
+    }
     BoxDecoration decoration;
     Color textColor = Colors.white;
-    if(state == 1){
+    if(state == 1){ // 未作答
       decoration = BoxDecoration(
         color: AppColors.c_FFF5F7FA,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
         border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
       );
       textColor = AppColors.c_FFD6D9DB;
-    }else if(state == 2){
+    }else if(state == 2){ // 正确
       decoration = BoxDecoration(
         color: AppColors.c_FF62C5A2,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
       );
-    }else{
+    }else{//错误
       decoration = BoxDecoration(
         color: AppColors.c_FFEC6560,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
@@ -339,7 +350,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       alignment: Alignment.center,
       margin: EdgeInsets.only(bottom: 9.w),
       decoration: decoration,
-      child: Text(e,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
+      child: Text((index+1).toString(),style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
     );
   }
 
@@ -373,21 +384,21 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       if(widget.parentIndex < length){
         detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(element.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestionResult(data: element));
+          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: element));
         }else if (element.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestionResult(data: element));
+          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: element));
         }else if(element.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestionResult(data: element));
+          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
         }else{
           switch (element.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestionResult(data: element));
+              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: element));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestionResult(data: element));
+              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
               break;
             default:
-              questionList.add(OthersQuestionResult(data: element));
+              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: element));
               Util.toast("题型分类${element.questionTypeName}还未解析");
           }
         }

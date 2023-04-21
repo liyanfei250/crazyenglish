@@ -23,7 +23,8 @@ import 'question/base_question.dart';
 
 class QuestionFactory{
 
-  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex,UserAnswerCallback? userAnswerCallback}){
+  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{
+    int? defaultChooseIndex,UserAnswerCallback? userAnswerCallback}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -51,7 +52,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList.answer,
                         e!.sequence!,
                         e!.content!,
@@ -68,7 +69,7 @@ class QuestionFactory{
   }
 
 
-  static Widget buildSingleOptionsTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,{int? defaultChooseIndex}){
+  static Widget buildSingleOptionsTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,bool isClickEnable,bool isResultPage,{int? defaultChooseIndex}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -88,7 +89,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         "",
                         e.sequence!,
                         e.content!,
@@ -106,7 +107,7 @@ class QuestionFactory{
 
 
 
-  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,{int? defaultChooseIndex, UserAnswerCallback? userAnswerCallback}){
+  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{int? defaultChooseIndex, UserAnswerCallback? userAnswerCallback}){
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
     return Container(
@@ -132,7 +133,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceImageItem(
-                      _getSelectedType(choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                      _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList!.answer,
                         e!.sequence!,
                         e.img,
@@ -654,16 +655,33 @@ class QuestionFactory{
     }
   }
 
-  static ChoiceRadioItemType _getSelectedType(int choseItemValue,int myLabel){
-    if(choseItemValue>=0){
-      if(choseItemValue == myLabel){
-        return ChoiceRadioItemType.SELECTED;
+  static ChoiceRadioItemType _getSelectedType(bool isResult,bool isClickable,bool isCorrect,int choseItemValue,int myLabel){
+    if(isResult){
+      if(choseItemValue>=0){
+        if(choseItemValue == myLabel) {
+          if (isCorrect) {
+            return ChoiceRadioItemType.RIGHT_SELECTED;
+          }else{
+            return ChoiceRadioItemType.WRONG_SELECTED;
+          }
+        }else{
+          return ChoiceRadioItemType.DEFAULT;
+        }
       }else{
         return ChoiceRadioItemType.DEFAULT;
       }
     }else{
-      return ChoiceRadioItemType.DEFAULT;
+      if(choseItemValue>=0){
+        if(choseItemValue == myLabel){
+          return ChoiceRadioItemType.SELECTED;
+        }else{
+          return ChoiceRadioItemType.DEFAULT;
+        }
+      }else{
+        return ChoiceRadioItemType.DEFAULT;
+      }
     }
+
   }
 
 

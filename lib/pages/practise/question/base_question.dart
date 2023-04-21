@@ -156,9 +156,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             ),));
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true,userAnswerCallback: userAnswerCallback));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true,false,userAnswerCallback: userAnswerCallback));
           }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question,true,userAnswerCallback: userAnswerCallback));
+            itemList.add(QuestionFactory.buildSingleImgChoice(question,true,false,userAnswerCallback: userAnswerCallback));
           }
         }else if(element.questionTypeStr == QuestionType.multi_choice){
 

@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 
+import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import 'base_question_result.dart';
 
@@ -15,7 +16,7 @@ class SelectWordsFillingQuestionResult extends BaseQuestionResult {
 
   SubjectVoList data;
 
-  SelectWordsFillingQuestionResult({required this.data,Key? key}) : super(key: key);
+  SelectWordsFillingQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
   BaseQuestionResultState<SelectWordsFillingQuestionResult> getState() => _SelectWordsFillingQuestionResultState();

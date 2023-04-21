@@ -41,12 +41,18 @@ class AnsweringPage extends BasePage {
   int parentIndex = 0;
   int childIndex = 0;
 
+  static const examDetailKey = "examDetail";
+  static const catlogIdKey = "catlogId";
+  static const parentIndexKey = "parentIndex";
+  static const childIndexKey = "childIndex";
+  static const commitResponseAnswerKey = "commitResponseAnswer";
+
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
-      testDetailResponse = Get.arguments["detail"];
-      uuid = Get.arguments["uuid"];
-      parentIndex = Get.arguments["parentIndex"];
-      childIndex = Get.arguments["childIndex"];
+      testDetailResponse = Get.arguments[examDetailKey];
+      uuid = Get.arguments[catlogIdKey];
+      parentIndex = Get.arguments[parentIndexKey];
+      childIndex = Get.arguments[childIndexKey];
     }
   }
 
@@ -88,11 +94,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     logic.addListenerId(GetBuilderIds.commitAnswer, () {
       RouterUtil.offAndToNamed(
           AppRoutes.ResultPage,arguments: {
-            "detail": widget.testDetailResponse,
-            "uuid":widget.uuid,
-            "parentIndex":widget.parentIndex,
-            "childIndex":widget.childIndex,
-            // "detail":state.commitRequest,
+            AnsweringPage.examDetailKey: widget.testDetailResponse,
+        AnsweringPage.catlogIdKey:widget.uuid,
+        AnsweringPage.parentIndexKey:widget.parentIndex,
+        AnsweringPage.childIndexKey:widget.childIndex,
+        AnsweringPage.commitResponseAnswerKey: state.commitResponse,
       });
     });
   }

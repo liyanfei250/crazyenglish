@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/commit_request.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
@@ -26,36 +27,36 @@ typedef PageControllerListener = TextEditingController Function(String key);
 
 
 abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
-  late BaseQuestionResultState baseQuestionState;
-
-  BaseQuestionResult({Key? key}) : super(key: key);
+  late BaseQuestionResultState baseQuestionResultState;
+  late Map<String,SubtopicAnswerVo> subtopicAnswerVoMap;
+  BaseQuestionResult(this.subtopicAnswerVoMap, {Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
   BaseQuestionResultState createState() {
-    baseQuestionState = getState();
-    return baseQuestionState;
+    baseQuestionResultState = getState();
+    return baseQuestionResultState;
   }
 
   BaseQuestionResultState getState();
 
   @override
   getAnswers() {
-    baseQuestionState.getAnswers();
+    baseQuestionResultState.getAnswers();
   }
   bool next(){
-    return baseQuestionState.next();
+    return baseQuestionResultState.next();
   }
   bool pre(){
-    return baseQuestionState.pre();
+    return baseQuestionResultState.pre();
   }
 
   void jumpToQuestion(int index) {
-    baseQuestionState.jumpToQuestion(index);
+    baseQuestionResultState.jumpToQuestion(index);
   }
 
   int getQuestionCount(){
-    return baseQuestionState.getQuestionCount();
+    return baseQuestionResultState.getQuestionCount();
   }
 }
 
@@ -149,11 +150,21 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
+          int defaultChooseIndex = -1;
+          if(widget.subtopicAnswerVoMap!.containsKey((question.id??1).toString())){
+            String userAnswer = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.userAnswer??"";
+            int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
+            for(int  i = 0;i <length ;i++){
+              if(userAnswer == question!.optionsList![i].sequence){
+                defaultChooseIndex = i;
+              }
+            }
+          }
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,false,true,defaultChooseIndex: defaultChooseIndex));
           }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question,true));
+            itemList.add(QuestionFactory.buildSingleImgChoice(question,false,true,defaultChooseIndex: defaultChooseIndex));
           }
         }else if(element.questionTypeStr == QuestionType.multi_choice){
 
