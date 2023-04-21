@@ -4,6 +4,7 @@ import 'package:crazyenglish/pages/practise/question_result/base_question_result
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../base/common.dart';
+import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/test_player_widget.dart';
@@ -18,7 +19,7 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
 class ListenQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  ListenQuestionResult({required this.data,Key? key}) : super(key: key);
+  ListenQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
 
   @override

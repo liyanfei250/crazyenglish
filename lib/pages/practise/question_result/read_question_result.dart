@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/commit_request.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,18 +22,18 @@ import 'base_question_result.dart';
 class ReadQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  ReadQuestionResult({required this.data,Key? key}) : super(key: key);
+  ReadQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
     // TODO: implement getState
-    return _ReadQuestionState();
+    return _ReadQuestionResultState();
   }
 
 }
 
-class _ReadQuestionState extends BaseQuestionResultState<ReadQuestionResult> {
+class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResult> {
 
   late SubjectVoList element;
 

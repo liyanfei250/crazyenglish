@@ -1,10 +1,11 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/commit_request.dart';
 import '../../../utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
-import '../question_result/base_question_result.dart';
+import 'base_question_result.dart';
 
 /**
  * Time: 2023/2/21 16:05
@@ -17,7 +18,7 @@ import '../question_result/base_question_result.dart';
 class OthersQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  OthersQuestionResult({required this.data,Key? key}) : super(key: key);
+  OthersQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {

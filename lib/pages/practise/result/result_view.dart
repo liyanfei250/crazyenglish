@@ -20,7 +20,7 @@ import '../question_result/listen_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question.dart';
 import '../question_result/select_words_filling_question.dart';
-import 'others_question_result.dart';
+import '../question_result/others_question_result.dart';
 import 'result_logic.dart';
 
 /// 核心逻辑：结果页
@@ -296,6 +296,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   Widget _buildTabBar() => tabs.length>0? TabBar(
     onTap: (value){
+      pages[0].jumpToQuestion(value);
     },
     controller: _tabController,
     indicatorColor: AppColors.c_FF353E4D,
@@ -383,21 +384,21 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       if(widget.parentIndex < length){
         detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(element.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestionResult(data: element));
+          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: element));
         }else if (element.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestionResult(data: element));
+          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: element));
         }else if(element.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestionResult(data: element));
+          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
         }else{
           switch (element.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestionResult(data: element));
+              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: element));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestionResult(data: element));
+              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
               break;
             default:
-              questionList.add(OthersQuestionResult(data: element));
+              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: element));
               Util.toast("题型分类${element.questionTypeName}还未解析");
           }
         }

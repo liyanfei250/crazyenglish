@@ -57,11 +57,11 @@ class ChoiceRadioItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(padding: EdgeInsets.only(left: 18.w)),
-              // Text(labelValue??"",
-              //   maxLines: 1,
-              //   overflow: TextOverflow.ellipsis,
-              //   style: TextStyle(fontSize: 16.sp,color: AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),),
-              // Padding(padding: EdgeInsets.only(left: 19.w)),
+              Text(labelValue??"",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16.sp,color: AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.bold),),
+              Padding(padding: EdgeInsets.only(left: 19.w)),
               Container(
                 width: 218.w,
                 child: Text(contentValue??"",
