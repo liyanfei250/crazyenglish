@@ -199,7 +199,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildHuGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  static Widget buildNarmalGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -356,13 +356,15 @@ class QuestionFactory{
     );
   }
 
-
-  static Widget buildGapQuestion(SubjectVoList subjectVoList,String htmlContent,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  /// 选词填空 题干部分
+  /// gapKey 默认空的索引号
+  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,{int gapKey = 0,int defaultIndex = 0}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
+    String htmlContent = subjectVoList.content??"";
     while(htmlContent.contains(gap)){
       gapKey++;
       gapIndex++;
@@ -470,20 +472,41 @@ class QuestionFactory{
     );
   }
 
-  /// 选择填空题
-  static Widget buildSelectGapQuestion(SubjectVoList subjectVoList,String htmlContent,int gapKey,GetFocusNodeControllerCallback getFocusNodeControllerCallback){
+  /// 选择填空题 题干部分
+  /// gapKey 默认空的索引号
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0,int defaultIndex = 0}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
+    String htmlContent = subjectVoList.content??"";
+
+    // 默认聚焦第几个空
+    SelectGapGetxController controller = Get.find<SelectGapGetxController>();
+    controller.hasFocusMap.value.clear();
+    controller.hasFocusMap.value["${gapKey+defaultIndex+1}"] = true;
+
     while(htmlContent.contains(gap)){
+      num subtopicId = -1;
+      String subtopicAnswer = "";
+      if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
+        subtopicId = subjectVoList.subtopicVoList![gapKey].subjectId!;
+        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+      }else{
+        print("试题空和答案不匹配");
+      }
+      if(subtopicId<0){
+        print("试题答案id获取失败");
+      }
       gapKey++;
       gapIndex++;
       print("gapKey: $gapKey gapIndex:$gapIndex");
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex"></gap>');
-
+      // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicId="$subtopicId" answer="$subtopicAnswer"></gap>');
     }
+
+
     return FocusScope(
       node: _scopeNode,
       child: Html(
@@ -527,6 +550,7 @@ class QuestionFactory{
               child: GetBuilder<SelectGapGetxController>(
                 id:key,
                 builder: (_){
+
                   if(_.nextFocus){
                     _.resetNextFocus();
                     _scopeNode.nextFocus();
@@ -578,41 +602,106 @@ class QuestionFactory{
 
   static Color _getInputColor(int type){
     switch(type){
-      case 0:
+      case 0: // 默认 未作答
         return AppColors.c_FF101010;
-      case -1:
+      case -1:  // 作答错误
         return AppColors.c_FFEC9D4E;
-      case 1:
+      case 1: // 作答正确
         return AppColors.c_FF58BC6D;
       default:
         return AppColors.c_FF101010;
     }
   }
 
-  static Widget buildSelectAnswerQuestion(List<String> answers){
+  /// 选择填空的选项
+  static Widget buildSelectOptionQuestion(List<OptionsList> answers){
+    return Wrap(
+      children: answers.map((e) => _colorAnswerOption(answers.indexOf(e),e)).toList(),
+    );
+  }
+
+  /// 选词填空的词
+  static Widget buildSelectAnswerQuestion(List<OptionsList> answers){
     return Wrap(
       children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
     );
   }
 
-  static Widget _colorAnswerItem(int key,String answer) {
+
+
+  /// answerIndex 选项的索引
+  /// answer 选项的内容
+  static Widget _colorAnswerOption(int answerIndex,OptionsList answer) {
     return GetBuilder<SelectGapGetxController>(
-      id: "answer:${key}",
+      id: "answer:${answerIndex}",
       builder: (_){
         return GestureDetector(
           onTap: () {
-            String gapIndex = "";
+            String gapKey = "";
             _.hasFocusMap.value.forEach((key, value) {
               if(value){
-                gapIndex = key;
+                gapKey = key;
               }
             });
-            if((_.answerIndexToGapIndexMap.value["answer:${key}"]??"").isEmpty){
-              _.updateIndex("answer:${key}", gapIndex);
-              _.updateContent(gapIndex, answer);
+            // 去掉之前的选项 选择状态
+            String findBeforeAnswerIndex = "";
+            _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
+              if(value == gapKey){
+                findBeforeAnswerIndex = answerIndex;
+              }
+            });
+            if(findBeforeAnswerIndex.isNotEmpty){
+              _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
+            }
+
+            // 修改当前选中状态 当前选项 answerIndex 映射到 空
+            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+            // 别的空对应的此选项内容 清空
+            // 别的空对应的 anserIndex 清空
+            _.contentMap.value.forEach((key, value) {
+              if(value == answer.sequence){
+                _.updateGapKeyContent(key, "");
+              }
+            });
+            _.updateGapKeyContent(gapKey, answer.sequence??"");
+
+          },
+          child: Container(
+                margin: EdgeInsets.only(top: 6.w,bottom: 6.w),
+                child: ChoiceRadioItem(
+                    (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? ChoiceRadioItemType.SELECTED : ChoiceRadioItemType.DEFAULT,
+                    "",
+                    answer!.sequence!,
+                    answer!.content!,
+                    double.infinity,
+                    52.w
+                ),
+              )
+          );
+      },
+    );
+  }
+
+  /// answerIndex 选项的索引
+  /// answer 选项的内容
+  static Widget _colorAnswerItem(int answerIndex,OptionsList answer) {
+    return GetBuilder<SelectGapGetxController>(
+      id: "answer:${answerIndex}",
+      builder: (_){
+        return GestureDetector(
+          onTap: () {
+            String gapKey = "";
+            _.hasFocusMap.value.forEach((key, value) {
+              if(value){
+                gapKey = key;
+              }
+            });
+            if((_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isEmpty){
+              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+              _.updateGapKeyContent(gapKey, answer.content??"");
             }else{
-              _.updateIndex("answer:${key}", "");
-              _.updateContent(gapIndex, "");
+              _.updateAnswerIndexToGapKey("answer:${answerIndex}", "");
+              _.updateGapKeyContent(gapKey, "");
             }
           },
           child: Container(
@@ -620,12 +709,12 @@ class QuestionFactory{
             padding: EdgeInsets.only(left: 13.w,right: 13.w),
             margin: EdgeInsets.only(right: 11.w,bottom: 10.w),
             decoration: BoxDecoration(
-              color: (_.answerIndexToGapIndexMap.value["answer:${key}"]??"").isNotEmpty ? AppColors.c_FFD2D5DC : AppColors.c_FFF5F7FB,
+              color: (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? AppColors.c_FFD2D5DC : AppColors.c_FFF5F7FB,
               border: Border.all(color: AppColors.c_FFD2D5DC,width: 1.w),
               borderRadius: BorderRadius.all(Radius.circular(4.w)),
             ),
             child: Text(
-              answer,
+              answer.content??"未获取到内容",
               style: TextStyle(
                   color: AppColors.c_FF353E4D,
                   fontSize: 14.sp,

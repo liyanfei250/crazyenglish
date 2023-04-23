@@ -15,9 +15,7 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class OthersQuestion extends BaseQuestion {
-  SubjectVoList data;
-
-  OthersQuestion({required this.data,Key? key}) : super(key: key);
+  OthersQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {

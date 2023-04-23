@@ -11,9 +11,9 @@ import '../../../entity/week_detail_response.dart';
  * Description: 完形填空题
  */
 class CompleteFillingQuestion extends BaseQuestion {
-  SubjectVoList data;
 
-  CompleteFillingQuestion({required this.data,Key? key}) : super(key: key);
+  CompleteFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+
   @override
   BaseQuestionState<CompleteFillingQuestion> createState() => _CompleteFillingQuestionState();
 

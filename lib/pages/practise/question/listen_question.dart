@@ -15,9 +15,9 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
  * Description: 听力题
  */
 class ListenQuestion extends BaseQuestion {
-  SubjectVoList data;
 
-  ListenQuestion({required this.data,Key? key}) : super(key: key);
+
+  ListenQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
 
 
   @override

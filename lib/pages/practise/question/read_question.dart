@@ -19,9 +19,8 @@ import '../../../entity/week_detail_response.dart';
  * Description:
  */
 class ReadQuestion extends BaseQuestion {
-  SubjectVoList data;
 
-  ReadQuestion({required this.data,Key? key}) : super(key: key);
+  ReadQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
 
 
   @override

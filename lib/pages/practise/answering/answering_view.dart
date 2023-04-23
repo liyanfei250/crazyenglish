@@ -52,6 +52,7 @@ class AnsweringPage extends BasePage {
       testDetailResponse = Get.arguments[examDetailKey];
       uuid = Get.arguments[catlogIdKey];
       parentIndex = Get.arguments[parentIndexKey];
+      parentIndex =2;
       childIndex = Get.arguments[childIndexKey];
     }
   }
@@ -249,21 +250,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(data: currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestion(currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(data: currentSubjectVoList!));
+          questionList.add(SelectFillingQuestion(currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(data: currentSubjectVoList!));
+          questionList.add(ReadQuestion(currentSubjectVoList!));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(data: currentSubjectVoList!));
+              questionList.add(ListenQuestion(currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(data: currentSubjectVoList!));
+              questionList.add(ReadQuestion(currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestion(data: currentSubjectVoList!));
+              questionList.add(OthersQuestion(currentSubjectVoList!));
               Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {
