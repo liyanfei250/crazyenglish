@@ -25,10 +25,10 @@ import '../week_test_detail/week_test_detail_logic.dart';
 import 'week_test_catalog_logic.dart';
 
 class WeekTestCatalogPage extends BasePage {
-  Rows? records;
+  Obj? records;
 
   WeekTestCatalogPage({Key? key}) : super(key: key) {
-    if (Get.arguments != null && Get.arguments is Rows) {
+    if (Get.arguments != null && Get.arguments is Obj) {
       records = Get.arguments;
     }
   }
@@ -363,13 +363,15 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   }
 
   void _onRefresh() async {
-    logic.getWeekTestCategory("${widget.records!.uuid}");
+    // logic.getWeekTestCategory("${widget.records!.id}");
+    logic.getWeekTestCategory('1647898280209838082');
   }
 
   void _onLoading() async {
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getWeekTestCategory("${widget.records!.uuid}");
+    // logic.getWeekTestCategory("${widget.records!.id}");
+    logic.getWeekTestCategory('1647898280209838082');
   }
 
   @override

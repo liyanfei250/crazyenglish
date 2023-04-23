@@ -1,115 +1,228 @@
-/// code : 1
-/// data : [{"uuid":"97a59ba0-b82f-11ed-a635-7735a2808abc","name":"第一部分听力（共两节， 满分 30 分 ）","sort":214,"parentId":"97a4d850-b82f-11ed-a635-7735a2808abc","childList":[{"uuid":"97a59ba1-b82f-11ed-a635-7735a2808abc","name":"第一节 （共5小题；每小题1.5分，满分7.5分）","sort":215,"parentId":"97a59ba0-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5c2b0-b82f-11ed-a635-7735a2808abc","name":"第二节 （共15小题；每小题1.5分，满分22.5分）","sort":216,"parentId":"97a59ba0-b82f-11ed-a635-7735a2808abc","childList":[]}]},{"uuid":"97a5c2b1-b82f-11ed-a635-7735a2808abc","name":"第二部分阅读理解（共两节，满分40分）","sort":217,"parentId":"97a4d850-b82f-11ed-a635-7735a2808abc","childList":[{"uuid":"97a5c2b2-b82f-11ed-a635-7735a2808abc","name":"第一节A篇 （共3小题；每小题2分，满分6分）","sort":218,"parentId":"97a5c2b1-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5c2b3-b82f-11ed-a635-7735a2808abc","name":"第一节B篇 （共4小题；每小题2分，满分8分）","sort":219,"parentId":"97a5c2b1-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5c2b4-b82f-11ed-a635-7735a2808abc","name":"第一节C篇 （共4小题；每小题2分，满分8分）","sort":220,"parentId":"97a5c2b1-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5c2b5-b82f-11ed-a635-7735a2808abc","name":"第一节D篇 （共4小题；每小题2分，满分8分）","sort":221,"parentId":"97a5c2b1-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5e9c0-b82f-11ed-a635-7735a2808abc","name":"第二节 （共5小题；每小题2分，满分10分）","sort":222,"parentId":"97a5c2b1-b82f-11ed-a635-7735a2808abc","childList":[]}]},{"uuid":"97a5e9c1-b82f-11ed-a635-7735a2808abc","name":"第三部分语言知识运用（共两节，满分45 分）","sort":223,"parentId":"97a4d850-b82f-11ed-a635-7735a2808abc","childList":[{"uuid":"97a5e9c2-b82f-11ed-a635-7735a2808abc","name":"第一节 （共20小题；每小题1.5分，满分30分）","sort":224,"parentId":"97a5e9c1-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5e9c3-b82f-11ed-a635-7735a2808abc","name":"第二节 （共10小题；每小题1.5分，满分15分）","sort":225,"parentId":"97a5e9c1-b82f-11ed-a635-7735a2808abc","childList":[]}]},{"uuid":"97a5e9c4-b82f-11ed-a635-7735a2808abc","name":"第四部分写作（共两节，满分35分）","sort":226,"parentId":"97a4d850-b82f-11ed-a635-7735a2808abc","childList":[{"uuid":"97a5e9c5-b82f-11ed-a635-7735a2808abc","name":"第一节 短文改错 （共10小题；每小题1分，满分10分）","sort":227,"parentId":"97a5e9c4-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a610d0-b82f-11ed-a635-7735a2808abc","name":"第二节 书面表达 （满分25分）","sort":228,"parentId":"97a5e9c4-b82f-11ed-a635-7735a2808abc","childList":[]}]}]
-/// msg : ""
+/// code : 0
+/// message : "系统正常"
+/// obj : [{"id":1648128208754835458,"pid":0,"name":"测试01-01","type":null,"isNode":true,"status":null,"children":[{"id":1648128423083769857,"pid":1648128208754835458,"name":"测试06","type":null,"isNode":false,"status":null,"children":[]},{"id":1648129878981246978,"pid":1648128208754835458,"name":"测试06","type":null,"isNode":false,"status":null,"children":[]},{"id":1648138028814798850,"pid":1648128208754835458,"name":"测试01-03","type":null,"isNode":false,"status":null,"children":[]}]},{"id":1648157808163745794,"pid":0,"name":"测试01-03","type":null,"isNode":false,"status":null,"children":[]},{"id":1648157810093125634,"pid":0,"name":"测试01-03","type":null,"isNode":true,"status":null,"children":[{"id":1648160805710041089,"pid":1648157810093125634,"name":"测试01-02-03","type":null,"isNode":false,"status":null,"children":[]},{"id":1648160805898784769,"pid":1648157810093125634,"name":"测试01-04","type":null,"isNode":false,"status":null,"children":[]}]},{"id":1648158333970034689,"pid":0,"name":"测试01-03","type":null,"isNode":false,"status":null,"children":[]},{"id":1648158335752613890,"pid":0,"name":"测试01-03","type":null,"isNode":true,"status":null,"children":[{"id":1648159425655091202,"pid":1648158335752613890,"name":"测试3","type":null,"isNode":false,"status":null,"children":[]},{"id":1648159430713421825,"pid":1648158335752613890,"name":"测试04","type":null,"isNode":false,"status":null,"children":[]}]}]
+/// p : null
 
 class WeekDirectoryResponse {
   WeekDirectoryResponse({
       num? code, 
-      List<Data>? data, 
-      String? msg,}){
+      String? message, 
+      List<Obj>? obj, 
+      dynamic p,}){
     _code = code;
-    _data = data;
-    _msg = msg;
+    _message = message;
+    _obj = obj;
+    _p = p;
 }
 
   WeekDirectoryResponse.fromJson(dynamic json) {
     _code = json['code'];
+    _message = json['message'];
     if (json['obj'] != null) {
-      _data = [];
+      _obj = [];
       json['obj'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _obj?.add(Obj.fromJson(v));
       });
     }
-    _msg = json['msg'];
+    _p = json['p'];
   }
   num? _code;
-  List<Data>? _data;
-  String? _msg;
+  String? _message;
+  List<Obj>? _obj;
+  dynamic _p;
 WeekDirectoryResponse copyWith({  num? code,
-  List<Data>? data,
-  String? msg,
+  String? message,
+  List<Obj>? obj,
+  dynamic p,
 }) => WeekDirectoryResponse(  code: code ?? _code,
-  data: data ?? _data,
-  msg: msg ?? _msg,
+  message: message ?? _message,
+  obj: obj ?? _obj,
+  p: p ?? _p,
 );
   num? get code => _code;
-  List<Data>? get data => _data;
-  String? get msg => _msg;
+  String? get message => _message;
+  List<Obj>? get obj => _obj;
+  dynamic get p => _p;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['code'] = _code;
-    if (_data != null) {
-      map['obj'] = _data?.map((v) => v.toJson()).toList();
+    map['message'] = _message;
+    if (_obj != null) {
+      map['obj'] = _obj?.map((v) => v.toJson()).toList();
     }
-    map['message'] = _msg;
+    map['p'] = _p;
     return map;
   }
 
 }
 
-/// uuid : "97a59ba0-b82f-11ed-a635-7735a2808abc"
-/// name : "第一部分听力（共两节， 满分 30 分 ）"
-/// sort : 214
-/// parentId : "97a4d850-b82f-11ed-a635-7735a2808abc"
-/// childList : [{"uuid":"97a59ba1-b82f-11ed-a635-7735a2808abc","name":"第一节 （共5小题；每小题1.5分，满分7.5分）","sort":215,"parentId":"97a59ba0-b82f-11ed-a635-7735a2808abc","childList":[]},{"uuid":"97a5c2b0-b82f-11ed-a635-7735a2808abc","name":"第二节 （共15小题；每小题1.5分，满分22.5分）","sort":216,"parentId":"97a59ba0-b82f-11ed-a635-7735a2808abc","childList":[]}]
+/// id : 1648128208754835458
+/// pid : 0
+/// name : "测试01-01"
+/// type : null
+/// isNode : true
+/// status : null
+/// children : [{"id":1648128423083769857,"pid":1648128208754835458,"name":"测试06","type":null,"isNode":false,"status":null,"children":[]},{"id":1648129878981246978,"pid":1648128208754835458,"name":"测试06","type":null,"isNode":false,"status":null,"children":[]},{"id":1648138028814798850,"pid":1648128208754835458,"name":"测试01-03","type":null,"isNode":false,"status":null,"children":[]}]
 
-class Data {
-  Data({
-      String? uuid, 
+class Obj {
+  Obj({
+      num? id, 
+      num? pid, 
       String? name, 
-      num? sort, 
-      String? parentId, 
-      List<Data>? childList,}){
-    _uuid = uuid;
+      dynamic type, 
+      bool? isNode, 
+      dynamic status, 
+      List<Children>? children,}){
+    _id = id;
+    _pid = pid;
     _name = name;
-    _sort = sort;
-    _parentId = parentId;
-    _childList = childList;
+    _type = type;
+    _isNode = isNode;
+    _status = status;
+    _children = children;
 }
 
-  Data.fromJson(dynamic json) {
-    _uuid = json['uuid'];
+  Obj.fromJson(dynamic json) {
+    _id = json['id'];
+    _pid = json['pid'];
     _name = json['name'];
-    _sort = json['sort'];
-    _parentId = json['parentId'];
-    if (json['childList'] != null) {
-      _childList = [];
-      json['childList'].forEach((v) {
-        _childList?.add(Data.fromJson(v));
+    _type = json['type'];
+    _isNode = json['isNode'];
+    _status = json['status'];
+    if (json['children'] != null) {
+      _children = [];
+      json['children'].forEach((v) {
+        _children?.add(Children.fromJson(v));
       });
     }
   }
-  String? _uuid;
+  num? _id;
+  num? _pid;
   String? _name;
-  num? _sort;
-  String? _parentId;
-  List<Data>? _childList;
-Data copyWith({  String? uuid,
+  dynamic _type;
+  bool? _isNode;
+  dynamic _status;
+  List<Children>? _children;
+Obj copyWith({  num? id,
+  num? pid,
   String? name,
-  num? sort,
-  String? parentId,
-  List<Data>? childList,
-}) => Data(  uuid: uuid ?? _uuid,
+  dynamic type,
+  bool? isNode,
+  dynamic status,
+  List<Children>? children,
+}) => Obj(  id: id ?? _id,
+  pid: pid ?? _pid,
   name: name ?? _name,
-  sort: sort ?? _sort,
-  parentId: parentId ?? _parentId,
-  childList: childList ?? _childList,
+  type: type ?? _type,
+  isNode: isNode ?? _isNode,
+  status: status ?? _status,
+  children: children ?? _children,
 );
-  String? get uuid => _uuid;
+  num? get id => _id;
+  num? get pid => _pid;
   String? get name => _name;
-  num? get sort => _sort;
-  String? get parentId => _parentId;
-  List<Data>? get childList => _childList;
+  dynamic get type => _type;
+  bool? get isNode => _isNode;
+  dynamic get status => _status;
+  List<Children>? get children => _children;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['uuid'] = _uuid;
+    map['id'] = _id;
+    map['pid'] = _pid;
     map['name'] = _name;
-    map['sort'] = _sort;
-    map['parentId'] = _parentId;
-    if (_childList != null) {
-      map['childList'] = _childList?.map((v) => v.toJson()).toList();
+    map['type'] = _type;
+    map['isNode'] = _isNode;
+    map['status'] = _status;
+    if (_children != null) {
+      map['children'] = _children?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// id : 1648128423083769857
+/// pid : 1648128208754835458
+/// name : "测试06"
+/// type : null
+/// isNode : false
+/// status : null
+/// children : []
+
+class Children {
+  Children({
+      num? id, 
+      num? pid, 
+      String? name, 
+      dynamic type, 
+      bool? isNode, 
+      dynamic status, 
+      List<dynamic>? children,}){
+    _id = id;
+    _pid = pid;
+    _name = name;
+    _type = type;
+    _isNode = isNode;
+    _status = status;
+    _children = children;
+}
+
+  Children.fromJson(dynamic json) {
+    _id = json['id'];
+    _pid = json['pid'];
+    _name = json['name'];
+    _type = json['type'];
+    _isNode = json['isNode'];
+    _status = json['status'];
+    if (json['children'] != null) {
+      _children = [];
+      json['children'].forEach((v) {
+        // _children?.add(Dynamic.fromJson(v));
+      });
+    }
+  }
+  num? _id;
+  num? _pid;
+  String? _name;
+  dynamic _type;
+  bool? _isNode;
+  dynamic _status;
+  List<dynamic>? _children;
+Children copyWith({  num? id,
+  num? pid,
+  String? name,
+  dynamic type,
+  bool? isNode,
+  dynamic status,
+  List<dynamic>? children,
+}) => Children(  id: id ?? _id,
+  pid: pid ?? _pid,
+  name: name ?? _name,
+  type: type ?? _type,
+  isNode: isNode ?? _isNode,
+  status: status ?? _status,
+  children: children ?? _children,
+);
+  num? get id => _id;
+  num? get pid => _pid;
+  String? get name => _name;
+  dynamic get type => _type;
+  bool? get isNode => _isNode;
+  dynamic get status => _status;
+  List<dynamic>? get children => _children;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['pid'] = _pid;
+    map['name'] = _name;
+    map['type'] = _type;
+    map['isNode'] = _isNode;
+    map['status'] = _status;
+    if (_children != null) {
+      map['children'] = _children?.map((v) => v.toJson()).toList();
     }
     return map;
   }

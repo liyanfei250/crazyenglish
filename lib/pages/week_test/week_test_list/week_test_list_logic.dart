@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/home/HomeKingDate.dart';
 import '../../../entity/review/HomeWeeklyChoiceDate.dart';
 import '../../../repository/week_test_repository.dart';
 import '../../../routes/getx_ids.dart';
@@ -23,22 +26,23 @@ class WeekTestListLogic extends GetxController {
     super.onClose();
   }
 
-  void getList(String weekTime,int page,int pageSize) async{
-    Map<String,String> req= {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
-
+  void getList(int affiliatedGrade,int page,int pageSize) async{
+    // Map<String,String> req= {};
+    // // req["weekTime"] = weekTime;
+    // req["current"] = "$page";
+    // req["size"] = "$pageSize";
+    String jsonStr = '{ "affiliatedGrade": $affiliatedGrade, "p": { "size":$pageSize, "current": $page } }';
+    Map<String, dynamic> req = jsonDecode(jsonStr);
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.WeekListRespose,labelId: weekTime.toString()).then((value){
+        JsonCacheManageUtils.WeekListRespose,labelId: affiliatedGrade.toString()).then((value){
       if(value!=null){
-        return Data.fromJson(value as Map<String,dynamic>?);
+        return WeekListResponse.fromJson(value as Map<String,dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==1 && cache is Data && cache.rows!=null) {
-      state.list = cache.rows!;
+    if(page==1 && cache is WeekListResponse && cache.obj!=null) {
+      state.list = cache.obj!;
       if(state.list.length < pageSize){
         state.hasMore = false;
       } else {
@@ -46,24 +50,24 @@ class WeekTestListLogic extends GetxController {
       }
       update([GetBuilderIds.weekTestList]);
     }
-    Data list = await weekTestListResponse.getWeekTestList(req);
+    WeekListResponse list = await weekTestListResponse.getWeekTestList(req);
     if(page ==1){
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.WeekTestListResponse,
-          labelId: weekTime.toString(),
+          labelId: affiliatedGrade.toString(),
           list.toJson());
     }
-    if(list.rows==null) {
+    if(list.obj==null) {
       if(page ==1){
         state.list.clear();
       }
     } else {
       if(page ==1){
-        state.list = list.rows!;
+        state.list = list.obj!;
       } else {
-        state.list.addAll(list.rows!);
+        state.list.addAll(list.obj!);
       }
-      if(list.rows!.length < pageSize){
+      if(list.obj!.length < pageSize){
         state.hasMore = false;
       } else {
         state.hasMore = true;
@@ -79,22 +83,23 @@ class WeekTestListLogic extends GetxController {
         labelId: id.toString())
         .then((value) {
       if (value != null) {
-        return HomeWeeklyChoiceDate.fromJson(value as Map<String, dynamic>?);
+        return HomeKingDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeWeeklyChoiceDate) {
-      state.paperDetail = cache!;
+    if (cache is HomeKingDate) {
+      state.paperDetailNew = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeWeeklyChoiceDate]);
     }
-    HomeWeeklyChoiceDate list = await weekTestListResponse.getHomeWeeklyChoiceDate(id);
+    HomeKingDate list = await weekTestListResponse.getHomeWeeklyChoiceDate(id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeWeeklyListChoiceDate, labelId: id, list.toJson());
-    state.paperDetail = list!;
+    state.paperDetailNew = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeWeeklyChoiceDate]);
     }
   }
+
 }

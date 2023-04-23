@@ -74,9 +74,9 @@ class Node<T> {
   /// value. Excepted values include: 1, yes, true and their
   /// associated string values.
   static Node<T> fromMap<T>(Map<String, dynamic> map) {
-    String? _key = map['uuid'].toString()+"";
+    String? _key = map['id'].toString()+"";
     String _label = map['name'];
-    var _data = map['childList'];
+    var _data = map['children'];
     List<Node> _children = [];
     if (_key == null) {
       _key = Utilities.generateRandom();
@@ -92,8 +92,8 @@ class Node<T> {
     // }
     // _icon = const IconData(_iconData);
     // }
-    if (map['childList'] != null) {
-      List<Map<String, dynamic>> _childrenMap = List.from(map['childList']);
+    if (map['children'] != null) {
+      List<Map<String, dynamic>> _childrenMap = List.from(map['children']);
       _children = _childrenMap
           .map((Map<String, dynamic> child) => Node.fromMap(child))
           .toList();
