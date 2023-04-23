@@ -30,8 +30,8 @@ typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 
 abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   late BaseQuestionState baseQuestionState;
-
-  BaseQuestion({Key? key}) : super(key: key);
+  late SubjectVoList data;
+  BaseQuestion({required this.data,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -96,10 +96,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   Widget buildQuestionType(String name){
     return Container(
-      width: 46.w,
       height: 22.w,
-      alignment: Alignment.center,
       margin: EdgeInsets.only(top:14.w,bottom: 10.w),
+      padding: EdgeInsets.only(left:2.w,right:2.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(2.w)),
         border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
@@ -167,17 +166,11 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(buildQuestionType("填空题"));
           itemList.add(buildReadQuestion(element.content ?? ""));
-          itemList.add(QuestionFactory.buildHuGapQuestion(
+          itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
         }else if(element.questionTypeStr == QuestionType.question_reading){
 
         }
-        // else if(element.questionTypeStr == QuestionType.select_words_filling){
-        //   itemList.add(buildQuestionType("选择填空题"));
-        //   itemList.add(QuestionFactory.buildSelectGapQuestion(element.optionsList,element!.content!,0,makeFocusNodeController));
-        //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
-        //   );
-        // }
         // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));
         //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
@@ -360,9 +353,9 @@ class SelectGapGetxController extends GetxController{
   // 答案 列表
   List<String> indexContentList = [];
 
-  // 填空的 焦点 key-bool
+  // 填空的 焦点 key-bool  : 用于焦点切换
   var hasFocusMap = {}.obs;
-  // 填空的内容
+  // 填空的内容  填空索引-内容：用于储存空中 用户作答洗洗
   var contentMap = {}.obs;
   // 答案索引-填空索引
   var answerIndexToGapIndexMap = {}.obs;
@@ -390,22 +383,24 @@ class SelectGapGetxController extends GetxController{
     }
   }
 
-  updateContent(String key,String contentTxt){
-    contentMap.value.addIf(true, key, contentTxt);
+  updateGapKeyContent(String gapKey,String contentTxt){
+    contentMap.value.addIf(true, gapKey, contentTxt);
     if(contentTxt.isNotEmpty){
       nextFocus = true;
     }else{
       nextFocus = false;
     }
-    update([key]);
+    print("updateGapKeyContent: $gapKey, $contentTxt");
+    update([gapKey]);
   }
 
   resetNextFocus(){
     nextFocus = false;
   }
 
-  updateIndex(String answerIndex,String gapIndex){
-    answerIndexToGapIndexMap.value.addIf(true, answerIndex, gapIndex);
+  updateAnswerIndexToGapKey(String answerIndex,String gapKey){
+    print("updateAnswerIndexToGapKey: $answerIndex, $gapKey");
+    answerIndexToGapIndexMap.value.addIf(true, answerIndex, gapKey);
     update([answerIndex]);
   }
 }

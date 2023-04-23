@@ -173,7 +173,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(buildQuestionType("填空题"));
           itemList.add(buildReadQuestion(element.content ?? ""));
-          itemList.add(QuestionFactory.buildHuGapQuestion(
+          itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
         }else if(element.questionTypeStr == QuestionType.question_reading){
 

@@ -12,9 +12,8 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class CompletionFillingQuestion extends BaseQuestion {
-  SubjectVoList data;
 
-  CompletionFillingQuestion({required this.data,Key? key}) : super(key: key);
+  CompletionFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
 
   @override
   BaseQuestionState<CompletionFillingQuestion> getState() => _CompletionFillingQuestionState();
