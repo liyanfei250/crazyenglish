@@ -122,8 +122,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         Util.toast("登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponseTwo.data);
+        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
         Util.getHeader();
-        logic.getUserinfo();
+        logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
         //直接去首页
         // RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {
@@ -136,8 +137,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putBool(BaseConstant.ISLOGING, true);
         SpUtil.putString(
             BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
+        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
         Util.getHeader();
-        // logic.getUserinfo();
+        logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
         RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {
         Util.toast("登录失败");
@@ -146,17 +148,22 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
 
     logic.addListenerId(GetBuilderIds.getUserInfo, () {
+      if (state.infoResponse.code == 0 && state.infoResponse.obj != null) {
+        Util.toast('获取信息成功');
+        SpUtil.putInt(BaseConstant.USER_ID, state.infoResponse.obj!.id!.toInt());
+        print("66666+="+state.infoResponse.obj!.id!.toString());
+      }
       //判断有没有选择身份
-      if (state.infoResponse.code == 1) {
-        if (state.infoResponse.data?.identity == 2 ||
-            state.infoResponse.data?.identity == 3) {
+      /*if (state.infoResponse.code == 1) {
+        if (state.infoResponse.obj?.identity == 2 ||
+            state.infoResponse.obj?.identity == 3) {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
         } else {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, false);
         }
 
-        if (state.infoResponse.data?.identity == 3 &&
-            state.infoResponse.data?.grade == 0) {
+        if (state.infoResponse.obj?.identity == 3 &&
+            state.infoResponse.obj?.grade == 0) {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
         } else {
           SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
@@ -177,7 +184,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             RouterUtil.offAndToNamed(AppRoutes.HOME);
           }
         }
-      }
+      }*/
     });
   }
 

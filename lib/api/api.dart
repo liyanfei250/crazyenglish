@@ -3,7 +3,7 @@ import '../config.dart';
 class Api {
   static String getUser = Config.ApiHost + "/user.site";
   static String getLogin = Config.ApiHost + "/oauth/token";
-  static String getPsdLoginNew =  "http://82.157.164.83:9000/oauth/token";
+  static String getPsdLoginNew = "http://82.157.164.83:9000/oauth/token";
   static String getLoginNew = "http://192.168.0.155/app/user/login/sms";
   static String getResetPsdNew = "http://192.168.0.155/app/user/reset/sms";
 
@@ -13,7 +13,7 @@ class Api {
   static String getChangeGrade = "http://192.168.0.155/app/user/put";
 
   //获取用户信息
-  static String getUserIofo = "http://192.168.0.155/app/user/info";
+  static String getUserIofo = "http://82.157.164.83:9000/member/user/";
   static String getSendCode = Config.ApiHost + "/crazy-basic-core/sms/";
 
   static String getWeekPaperList =
@@ -111,11 +111,16 @@ class Api {
   // 收藏列表接口
 
   // 金刚区接口 // 周报筛选字典接口
-  static String getHomeKingList = Config.ApiHost + "/question/dictionary/getByType/";
+  static String getHomeKingList =
+      Config.ApiHost + "/question/dictionary/getByType/";
+
   // 周报列表接口
-  static String getHomeWeeklyList = Config.ApiHost + "/question/exercise/getWeeklyReoprtsList";
+  static String getHomeWeeklyList =
+      Config.ApiHost + "/question/exercise/getWeeklyReoprtsList";
+
   // 周报目录列表
-  static String getHomeWeeklyDirectoryList = Config.ApiHost + "/question/exercise/getCatalogueByJournalId/";
+  static String getHomeWeeklyDirectoryList =
+      Config.ApiHost + "/question/exercise/getCatalogueByJournalId/";
 
   //获取复习首页的信息接口
   static String getReviewHomeDetail = Config.ApiHost + "/";
@@ -133,7 +138,7 @@ class Api {
   static String getSearchCollectListDate = Config.ApiHost + "/";
 
   // 收藏
-  static String toCollect = Config.ApiHost + "/";
+  static String toCollect = Config.ApiHost + "/question/collected/collectOrCancelQuestion/";
 
   // 收藏取消
   static String toCancellCollect = Config.ApiHost + "/";
@@ -163,7 +168,10 @@ class Api {
   static String getHClassInfoDate = Config.ApiHost + "/";
 
   // 提交反馈信息
-  static String postContentDate = Config.ApiHost + "/";
+  static String postContentDate = Config.ApiHost + "/question/collected/saveFeedback";
+
+  // 获取反馈信息
+  static String getContentDate = Config.ApiHost + "/";
 
   // 提交头像
   static String toPushHeaderImage = Config.ApiHost + "/";

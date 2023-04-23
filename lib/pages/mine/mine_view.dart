@@ -278,7 +278,7 @@ class _MinePageState extends BasePageState<MinePage> {
                 arguments: {"isAssignHomework": false});
             break;
           case '题目反馈':
-            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage);
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,arguments: {'isFeedback': true});
             break;
           default:
             return null;

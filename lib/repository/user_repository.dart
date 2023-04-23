@@ -24,31 +24,30 @@ import '../entity/user_info_response.dart';
  * Description:
  */
 class UserRepository {
-
-
   Future<LoginCodeResponse> mobileNewLogin(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!
         .request(Method.post, Api.getLoginNew, data: req);
-    if(map!=null){
+    if (map != null) {
       LoginCodeResponse loginResponse = LoginCodeResponse.fromJson(map);
       if (loginResponse.code != ResponseCode.status_success) {
         Util.toast(loginResponse.message ?? "");
         return Future.error("返回LoginCodeResponse为空");
-      }else{
+      } else {
         return loginResponse!;
       }
-    }else{
+    } else {
       return Future.error("返回LoginCodeResponse为空");
     }
   }
 
   Future<LoginNewResponse> passwordLogin(Map<String, String> req) async {
     req.addAll({
-      "grant_type":"password",
-      "client_id":"app",
-      "client_secret":"a119ed01622927d54cd67e10cbb9f7ad",
-      "clientType":"0",
-      "type":"0"});
+      "grant_type": "password",
+      "client_id": "app",
+      "client_secret": "a119ed01622927d54cd67e10cbb9f7ad",
+      "clientType": "0",
+      "type": "0"
+    });
     Map map = await NetManager.getInstance()!
         .request(Method.post, Api.getPsdLoginNew, data: req);
     LoginNewResponse loginResponse = LoginNewResponse.fromJson(map);
@@ -125,11 +124,9 @@ class UserRepository {
   }
 
   //获取用户信息
-  Future<UserInfoResponse> getUserInfo() async {
-    Map map =
-        await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
-    UserInfoResponse sendCodeResponse =
-    UserInfoResponse.fromJson(map);
+  Future<UserInfoResponse> getUserInfo(String user) async {
+    Map map = await NetManager.getInstance()!.request(Method.get, Api.getUserIofo + user);
+    UserInfoResponse sendCodeResponse = UserInfoResponse.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
     }

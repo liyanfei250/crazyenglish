@@ -36,6 +36,8 @@ class BaseConstant{
   static const String IS_CHOICE_ROLE_GRADE = "is_choice_role_grade";
   static const String loginTOKEN = "loginTOKEN";
   static const String IS_TEACHER_LOGIN = "is_TEacher_login";
+  static const String USER_NAME = "";
+  static const String USER_ID = "";
 
 }
 

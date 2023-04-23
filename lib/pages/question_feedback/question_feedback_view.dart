@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'dart:io';
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/pages/question_feedback/question_feedback_logic.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:dio/dio.dart' as newdio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../base/common.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
@@ -42,6 +45,9 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   int _bigImageIndex = 0; //选中的需要放大的图片的下标
   bool _bigImageVisibility = false; //是否显示预览大图
 
+   TextEditingController? contentContro ;
+   TextEditingController? getBoyController ;
+
   //获取当前展示的图的数量
   int getImageCount() {
     if (_imageFileList.length < maxFileCount) {
@@ -54,6 +60,8 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   @override
   void initState() {
     super.initState();
+    contentContro = TextEditingController();
+    getBoyController = TextEditingController();
     logic.addListenerId(GetBuilderIds.toPushContent, () {
       Util.toast('提交成功');
     });
@@ -81,7 +89,8 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
             onTap: () {
               // 点击事件处理逻辑
               _upLoadImage();
-              logic.postContent('');
+              //todo 图片地址获取
+              logic.postContent(SpUtil.getInt(BaseConstant.USER_ID),getBoyController!.text,['https://www.baidu.com/img/flexible/logo/pc/result.png','https://www.baidu.com/img/flexible/logo/pc/result.png']);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -155,6 +164,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
             Expanded(
                 child: TextField(
               cursorColor: Colors.black,
+              controller: contentContro,
               textAlign: TextAlign.start,
               style: TextStyle(fontSize: 15),
               //controller: getBoyController,
@@ -218,7 +228,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
                   cursorColor: Colors.black,
                   textAlign: TextAlign.start,
                   style: TextStyle(fontSize: 15),
-                  //controller: getBoyController,
+                  controller: getBoyController,
                   autofocus: false,
                   decoration: InputDecoration(
                       //提示信息

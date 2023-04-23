@@ -47,9 +47,9 @@ class Login_newLogic extends GetxController {
     update([GetBuilderIds.sendCode]);
   }
 
-  void getUserinfo() async {
+  void getUserinfo(String user) async {
     UserInfoResponse sendCodeResponse =
-        await userRepository.getUserInfo();
+        await userRepository.getUserInfo(user);
     state.infoResponse = sendCodeResponse;
     update([GetBuilderIds.getUserInfo]);
   }

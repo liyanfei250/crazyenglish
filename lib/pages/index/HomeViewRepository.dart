@@ -70,10 +70,10 @@ class HomeViewRepository {
   }
 
   //提交反馈信息
-  Future<CommentDate> toPushContent(Map<String, String> req) async {
+  Future<CommentDate> toPushContent(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.postContentDate,
-        data: req, options: Options(method: Method.post));
+        data: req, options: Options(method: Method.post,contentType: ContentType.json.toString()));
     CommentDate paperDetail = CommentDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
