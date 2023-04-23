@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
@@ -26,9 +27,11 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
 
   late SubjectVoList element;
 
+  int questionNum = 0;
   @override
   void onCreate() {
     element = widget.data;
+
   }
 
   @override
@@ -53,21 +56,57 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
   Widget getDetail(int defaultIndex){
     // 判断是否父子题
     // 普通阅读 常规阅读题 是父子题
-    int questionNum = element.subtopicVoList!.length;
+    questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.initPageStr("${defaultIndex+1}/${questionNum}");
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
+      jumpToQuestion(defaultIndex);
     }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,defaultIndex: defaultIndex),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
           QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
         ],
       ),
     );
+  }
+
+
+  @override
+  void next() {
+    // int currentKey = -1;
+    // bool canNext = false;
+    // selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    //   if(value){
+    //     if(questionNum == key){
+    //       canNext = false;
+    //     }
+    //
+    //   }
+    // });
+    // if(canNext){
+    //   selectGapGetxController.hasFocusMap.value.clear();
+    //   selectGapGetxController.hasFocusMap.value["${logci+1}"] = true;
+    // }else{
+    //
+    // }
+
+  }
+
+  @override
+  void pre() {
+
+  }
+
+  @override
+  void jumpToQuestion(int index) {
+// 默认聚焦第几个空
+    selectGapGetxController.hasFocusMap.value.clear();
+    selectGapGetxController.hasFocusMap.value["${index+1}"] = true;
   }
 
   @override
@@ -80,4 +119,6 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
   void onDestroy() {
     // TODO: implement onDestroy
   }
+
+
 }

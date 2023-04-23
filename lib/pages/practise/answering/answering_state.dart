@@ -3,7 +3,7 @@ import 'package:crazyenglish/entity/week_detail_response.dart';
 import '../../../entity/commit_request.dart';
 
 class AnsweringState {
-  String pageChangeStr = "";
+
   // 提交答案时的数据
   CommitAnswer commitAnswer = CommitAnswer();
 
@@ -14,6 +14,9 @@ class AnsweringState {
 
   // 提交完答案返回的数据
   CommitAnswer commitResponse = CommitAnswer();
+
+  int totalQuestionNum = 0;
+  int currentQuestionNum = -1;
 
   AnsweringState() {
     ///Initialize variables

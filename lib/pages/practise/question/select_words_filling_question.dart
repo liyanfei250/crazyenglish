@@ -25,7 +25,7 @@ class SelectWordsFillingQuestion extends BaseQuestion {
 class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFillingQuestion> {
 
   late SubjectVoList element;
-
+  int questionNum = 0;
   @override
   void onCreate() {
     element = widget.data;
@@ -52,11 +52,10 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
 
   Widget getDetail(int defaultIndex){
-    // 判断是否父子题
-    // 普通阅读 常规阅读题 是父子题
-    int questionNum = element.subtopicVoList!.length;
+    questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.initPageStr("${defaultIndex+1}/${questionNum}");
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
+      jumpToQuestion(defaultIndex);
     }
     return SingleChildScrollView(
       child: Column(
@@ -64,7 +63,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,defaultIndex: defaultIndex),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
           QuestionFactory.buildSelectAnswerQuestion(element.optionsList!)
         ],
       ),

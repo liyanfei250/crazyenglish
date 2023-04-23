@@ -44,11 +44,11 @@ abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
   getAnswers() {
     baseQuestionResultState.getAnswers();
   }
-  bool next(){
-    return baseQuestionResultState.next();
+  void next(){
+    baseQuestionResultState.next();
   }
-  bool pre(){
-    return baseQuestionResultState.pre();
+  void pre(){
+    baseQuestionResultState.pre();
   }
 
   void jumpToQuestion(int index) {
@@ -257,34 +257,34 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   }
 
   @override
-  bool next() {
-    if(currentPage< questionList.length-1 && currentPage>=0){
-      currentPage = currentPage+1;
-      pageController.jumpToPage(currentPage);
-      if(currentPage< questionList.length-1){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      return false;
-    }
+  void next() {
+    // if(currentPage< questionList.length-1 && currentPage>=0){
+    //   currentPage = currentPage+1;
+    //   pageController.jumpToPage(currentPage);
+    //   if(currentPage< questionList.length-1){
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
+    // }else{
+    //   return false;
+    // }
 
   }
 
   @override
-  bool pre() {
-    if(currentPage>0){
-      currentPage = currentPage-1;
-      pageController.jumpToPage(currentPage);
-      if(currentPage>0){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      return false;
-    }
+  void pre() {
+    // if(currentPage>0){
+    //   currentPage = currentPage-1;
+    //   pageController.jumpToPage(currentPage);
+    //   if(currentPage>0){
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
+    // }else{
+    //   return false;
+    // }
   }
 
 

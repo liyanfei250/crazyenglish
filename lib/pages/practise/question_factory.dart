@@ -474,18 +474,13 @@ class QuestionFactory{
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0,int defaultIndex = 0}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
     String htmlContent = subjectVoList.content??"";
-
-    // 默认聚焦第几个空
-    SelectGapGetxController controller = Get.find<SelectGapGetxController>();
-    controller.hasFocusMap.value.clear();
-    controller.hasFocusMap.value["${gapKey+defaultIndex+1}"] = true;
 
     while(htmlContent.contains(gap)){
       num subtopicId = -1;
@@ -629,6 +624,7 @@ class QuestionFactory{
 
 
 
+  /// 选择填空 选项显示部分
   /// answerIndex 选项的索引
   /// answer 选项的内容
   static Widget _colorAnswerOption(int answerIndex,OptionsList answer) {

@@ -46,11 +46,11 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   getAnswers() {
     baseQuestionState.getAnswers();
   }
-  bool next(){
-    return baseQuestionState.next();
+  void next(){
+    baseQuestionState.next();
   }
-  bool pre(){
-    return baseQuestionState.pre();
+  void pre(){
+    baseQuestionState.pre();
   }
 
   void jumpToQuestion(int index) {
@@ -74,7 +74,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   List<Widget> questionList = [];
-  int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
 
@@ -187,14 +186,14 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }
 
     if(logic!=null){
-      logic.initPageStr("1/${questionList.length}");
+      logic.updateCurrentPage(0,totalQuestion:questionList.length);
     }
     return PageView(
       controller: pageController,
       physics: _neverScroll,
       onPageChanged: (int value){
         if(logic!=null){
-          logic.updatePageStr("${(value+1)}/${questionList.length}");
+          logic.updateCurrentPage(value,totalQuestion:questionList.length);
         }
       },
       children: questionList,
@@ -245,41 +244,29 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   }
 
   @override
-  bool next() {
-    if(currentPage< questionList.length-1 && currentPage>=0){
+  void next() {
+    if(logic.state.currentQuestionNum< logic.state.totalQuestionNum){
+      int currentPage = logic.state.currentQuestionNum;
       currentPage = currentPage+1;
-      pageController.jumpToPage(currentPage);
-      if(currentPage< questionList.length-1){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      return false;
+      jumpToQuestion(currentPage);
     }
-
   }
 
   @override
-  bool pre() {
+  void pre() {
+    int currentPage = logic.state.currentQuestionNum;
     if(currentPage>0){
       currentPage = currentPage-1;
-      pageController.jumpToPage(currentPage);
-      if(currentPage>0){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      return false;
+      jumpToQuestion(currentPage);
     }
   }
 
 
   @override
   void jumpToQuestion(int index) {
-    currentPage = index;
+    int currentPage = index;
     pageController.jumpToPage(currentPage);
+    logic.updateCurrentPage(currentPage);
   }
 
   TextEditingController makeEditController(String key){

@@ -26,14 +26,15 @@ class AnsweringLogic extends GetxController {
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
 
-  void updatePageStr(String pageStr){
-    state.pageChangeStr = pageStr;
-    update([GetBuilderIds.answerPageNum]);
-  }
+  void updateCurrentPage(int currentQuestion,{int totalQuestion = 0}){
+    if(totalQuestion>0){
+      state.totalQuestionNum = totalQuestion;
+    }
+    if(currentQuestion>=0){
+      state.currentQuestionNum = currentQuestion;
+    }
 
-  void initPageStr(String initPage){
-    state.pageChangeStr = initPage;
-    update([GetBuilderIds.answerPageInitNum]);
+    update([GetBuilderIds.answerPageNum]);
   }
 
   void uploadWeekTest(SubjectVoList subjectVoList) async{

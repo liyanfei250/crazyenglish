@@ -83,14 +83,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   var canPre = false.obs;
   var canNext = true.obs;
-  String initPageNum = "";
   detail.SubjectVoList? currentSubjectVoList;
   @override
   void onCreate() {
     startTimer();
-    logic.addListenerId(GetBuilderIds.answerPageInitNum, () {
-      initPageNum = state.pageChangeStr;
-    });
 
     logic.addListenerId(GetBuilderIds.commitAnswer, () {
       RouterUtil.offAndToNamed(
@@ -176,26 +172,25 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             children: [
               InkWell(
                 onTap: () {
-                  bool beforeCan = canPre.value;
-                  canPre.value = pages[0].pre();
-                  if (beforeCan && !canPre.value) {
-                    canNext.value = true;
-                  }
+                  pages[0].pre();
                 },
-                child: Obx(() =>
-                    Image.asset(
-                      canPre.value
-                          ? R.imagesPractisePreQuestionEnable
-                          : R.imagesPractisePreQuestionUnable,
-                      width: 40.w,
-                      height: 40.w,
-                    )),
+                child: GetBuilder<AnsweringLogic>(
+                    id: GetBuilderIds.answerPageNum,
+                    builder: (logic) {
+                      return Image.asset(
+                        logic.state.currentQuestionNum>0
+                            ? R.imagesPractisePreQuestionEnable
+                            : R.imagesPractisePreQuestionUnable,
+                        width: 40.w,
+                        height: 40.w,
+                      );
+                    }),
               ),
               GetBuilder<AnsweringLogic>(
                   id: GetBuilderIds.answerPageNum,
                   builder: (logic) {
                     return Text(
-                      logic.state.pageChangeStr ?? " ",
+                      "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
                       style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
@@ -221,18 +216,20 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       }
                     );
                   }else{
-                    canNext.value = pages[0].next();
-                    canPre.value = true;
+                    pages[0].next();
                   }
                 },
-                child: Obx(() =>
-                    Image.asset(
-                      canNext.value
-                          ? R.imagesPractiseNextQuestionEnable
-                          : R.imagesPractiseNextQuestionUnable,
-                      width: 40.w,
-                      height: 40.w,
-                    )),
+                child: GetBuilder<AnsweringLogic>(
+                    id: GetBuilderIds.answerPageNum,
+                    builder: (logic) {
+                      return Image.asset(
+                        logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                            ? R.imagesPractiseNextQuestionEnable
+                            : R.imagesPractiseNextQuestionUnable,
+                        width: 40.w,
+                        height: 40.w,
+                      );
+                    }),
               )
             ],
           ),
