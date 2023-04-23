@@ -1,9 +1,11 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 
 import '../../../../base/widgetPage/base_page_widget.dart';
 import '../../../../entity/review/SearchCollectListDate.dart';
@@ -30,8 +32,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  refresh.RefreshController _refreshController =
+  refresh.RefreshController(initialRefresh: false);
   bool _showClearButton = false;
   final TextEditingController _searchController = TextEditingController();
   final int pageSize = 10;
@@ -143,7 +145,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     // showLoading("");
 
     //收藏
-    logic.addListenerId(GetBuilderIds.toCollectDate, () {});
+    logic.addListenerId(GetBuilderIds.toCollectDate, () {
+      Util.toast('成功或者取消');
+    });
   }
 
 // 清空输入框内容
@@ -157,20 +161,20 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SmartRefresher(
+      child: refresh.SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
-        header: WaterDropHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus? mode) {
+        header: refresh.WaterDropHeader(),
+        footer: refresh.CustomFooter(
+          builder: (BuildContext context, refresh.LoadStatus? mode) {
             Widget body;
-            if (mode == LoadStatus.idle) {
+            if (mode == refresh.LoadStatus.idle) {
               body = Text("");
             } else if (mode == LoadStatus.loading) {
               body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
+            } else if (mode == refresh.LoadStatus.failed) {
               body = Text("");
-            } else if (mode == LoadStatus.canLoading) {
+            } else if (mode == refresh.LoadStatus.canLoading) {
               body = Text("release to load more");
             } else {
               body = Text("");
@@ -358,7 +362,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Expanded(child: Text('')),
             GestureDetector(
               onTap: () {
-                logic.toCollect('id');
+                //todo  换成具体的id
+                logic.toCollect(SpUtil.getInt(BaseConstant.USER_ID),"1648489081851772929");
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),

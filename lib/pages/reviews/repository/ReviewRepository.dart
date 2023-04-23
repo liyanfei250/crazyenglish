@@ -16,11 +16,10 @@ class ReviewRepository {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getReviewHomeDetail,
         options: Options(method: Method.get));
-    ReviewHomeDetail paperDetail =
-    ReviewHomeDetail.fromJson(map);
+    ReviewHomeDetail paperDetail = ReviewHomeDetail.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
-    }else{
+    } else {
       return paperDetail!;
     }
   }
@@ -29,11 +28,10 @@ class ReviewRepository {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getPracticeRecordList,
         options: Options(method: Method.get));
-    PractiseHistoryDate paperDetail =
-    PractiseHistoryDate.fromJson(map);
+    PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
-    }else{
+    } else {
       return paperDetail!;
     }
   }
@@ -42,11 +40,10 @@ class ReviewRepository {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getErrorNoteTabDateList,
         options: Options(method: Method.get));
-    ErrorNoteTabDate paperDetail =
-    ErrorNoteTabDate.fromJson(map);
+    ErrorNoteTabDate paperDetail = ErrorNoteTabDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
-    }else{
+    } else {
       return paperDetail!;
     }
   }
@@ -67,26 +64,24 @@ class ReviewRepository {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getSearchCollectListDate,
         options: Options(method: Method.get));
-    SearchCollectListDate paperDetail =
-    SearchCollectListDate.fromJson(map);
+    SearchCollectListDate paperDetail = SearchCollectListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
-    }else{
+    } else {
       return paperDetail!;
     }
   }
 
   //收藏
-  Future<CollectDate> toCollect(Map<String, String> req) async {
+  Future<CollectDate> toCollect(int userid, String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.toCollect,
-        options: Options(method: Method.get));
+        Method.put, Api.toCollect + userid.toString() + "/" + id,
+        options: Options(method: Method.put));
     CollectDate paperDetail = CollectDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
-    }else{
+    } else {
       return paperDetail!;
     }
   }
-
 }

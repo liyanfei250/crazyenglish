@@ -92,8 +92,8 @@ class Collect_practicLogic extends GetxController {
     update([GetBuilderIds.getCollectListDate]);
   }
 
-  void toCollect(String id) async {
-    CollectDate collectResponse = await recordData.toCollect({"mobile": id});
+  void toCollect(int userid,String id) async {
+    CollectDate collectResponse = await recordData.toCollect(userid,id);
     state.collectDate = collectResponse;
     update([GetBuilderIds.toCollectDate]);
   }

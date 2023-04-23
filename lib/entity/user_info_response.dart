@@ -1,107 +1,167 @@
-import 'base_resp.dart';
+/// code : 0
+/// message : "系统正常"
+/// obj : {"id":1,"infoId":null,"sourceType":null,"username":"admin","actualname":"里里","sex":1,"sexName":"男","phone":"13803541111","nickname":"尤克里里","password":"e10adc3949ba59abbe56e057f20f883e","url":null}
+/// p : null
 
-/// code : 1
-/// data : {"uuid":"09aae430-b812-11ed-90c4-ef9a5923117d","username":null,"avatar":null,"nickname":null,"identity":3,"grade":12}
-/// msg : ""
-
-class UserInfoResponse extends BaseResp{
+class UserInfoResponse {
   UserInfoResponse({
-      num? code,
-      Data? data,
-      String? msg,}):super(code,msg){
-    _data = data;
+      num? code, 
+      String? message, 
+      Obj? obj, 
+      dynamic p,}){
+    _code = code;
+    _message = message;
+    _obj = obj;
+    _p = p;
 }
 
-  UserInfoResponse.fromJson(dynamic json):super.fromJson(json) {
-    _data = json['obj'] != null ? Data.fromJson(json['obj']) : null;
+  UserInfoResponse.fromJson(dynamic json) {
+    _code = json['code'];
+    _message = json['message'];
+    _obj = json['obj'] != null ? Obj.fromJson(json['obj']) : null;
+    _p = json['p'];
   }
-  Data? _data;
+  num? _code;
+  String? _message;
+  Obj? _obj;
+  dynamic _p;
 UserInfoResponse copyWith({  num? code,
-  Data? data,
-  String? msg,
-}) => UserInfoResponse(  code: code ?? code,
-  data: data ?? _data,
-  msg: msg ?? message,
+  String? message,
+  Obj? obj,
+  dynamic p,
+}) => UserInfoResponse(  code: code ?? _code,
+  message: message ?? _message,
+  obj: obj ?? _obj,
+  p: p ?? _p,
 );
-  Data? get data => _data;
+  num? get code => _code;
+  String? get message => _message;
+  Obj? get obj => _obj;
+  dynamic get p => _p;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = code;
-    if (_data != null) {
-      map['obj'] = _data?.toJson();
+    map['code'] = _code;
+    map['message'] = _message;
+    if (_obj != null) {
+      map['obj'] = _obj?.toJson();
     }
-    map['message'] = message;
+    map['p'] = _p;
     return map;
   }
 
 }
 
-/// uuid : "09aae430-b812-11ed-90c4-ef9a5923117d"
-/// username : null
-/// avatar : null
-/// nickname : null
-/// identity : 3
-/// grade : 12
+/// id : 1
+/// infoId : null
+/// sourceType : null
+/// username : "admin"
+/// actualname : "里里"
+/// sex : 1
+/// sexName : "男"
+/// phone : "13803541111"
+/// nickname : "尤克里里"
+/// password : "e10adc3949ba59abbe56e057f20f883e"
+/// url : null
 
-class Data {
-  Data({
-      String? uuid, 
-      dynamic username, 
-      dynamic avatar, 
-      dynamic nickname, 
-      num? identity, 
-      num? grade,}){
-    _uuid = uuid;
+class Obj {
+  Obj({
+      num? id, 
+      dynamic infoId, 
+      dynamic sourceType, 
+      String? username, 
+      String? actualname, 
+      num? sex, 
+      String? sexName, 
+      String? phone, 
+      String? nickname, 
+      String? password, 
+      dynamic url,}){
+    _id = id;
+    _infoId = infoId;
+    _sourceType = sourceType;
     _username = username;
-    _avatar = avatar;
+    _actualname = actualname;
+    _sex = sex;
+    _sexName = sexName;
+    _phone = phone;
     _nickname = nickname;
-    _identity = identity;
-    _grade = grade;
+    _password = password;
+    _url = url;
 }
 
-  Data.fromJson(dynamic json) {
-    _uuid = json['uuid'];
+  Obj.fromJson(dynamic json) {
+    _id = json['id'];
+    _infoId = json['infoId'];
+    _sourceType = json['sourceType'];
     _username = json['username'];
-    _avatar = json['avatar'];
+    _actualname = json['actualname'];
+    _sex = json['sex'];
+    _sexName = json['sexName'];
+    _phone = json['phone'];
     _nickname = json['nickname'];
-    _identity = json['identity'];
-    _grade = json['grade'];
+    _password = json['password'];
+    _url = json['url'];
   }
-  String? _uuid;
-  dynamic _username;
-  dynamic _avatar;
-  dynamic _nickname;
-  num? _identity;
-  num? _grade;
-Data copyWith({  String? uuid,
-  dynamic username,
-  dynamic avatar,
-  dynamic nickname,
-  num? identity,
-  num? grade,
-}) => Data(  uuid: uuid ?? _uuid,
+  num? _id;
+  dynamic _infoId;
+  dynamic _sourceType;
+  String? _username;
+  String? _actualname;
+  num? _sex;
+  String? _sexName;
+  String? _phone;
+  String? _nickname;
+  String? _password;
+  dynamic _url;
+Obj copyWith({  num? id,
+  dynamic infoId,
+  dynamic sourceType,
+  String? username,
+  String? actualname,
+  num? sex,
+  String? sexName,
+  String? phone,
+  String? nickname,
+  String? password,
+  dynamic url,
+}) => Obj(  id: id ?? _id,
+  infoId: infoId ?? _infoId,
+  sourceType: sourceType ?? _sourceType,
   username: username ?? _username,
-  avatar: avatar ?? _avatar,
+  actualname: actualname ?? _actualname,
+  sex: sex ?? _sex,
+  sexName: sexName ?? _sexName,
+  phone: phone ?? _phone,
   nickname: nickname ?? _nickname,
-  identity: identity ?? _identity,
-  grade: grade ?? _grade,
+  password: password ?? _password,
+  url: url ?? _url,
 );
-  String? get uuid => _uuid;
-  dynamic get username => _username;
-  dynamic get avatar => _avatar;
-  dynamic get nickname => _nickname;
-  num? get identity => _identity;
-  num? get grade => _grade;
+  num? get id => _id;
+  dynamic get infoId => _infoId;
+  dynamic get sourceType => _sourceType;
+  String? get username => _username;
+  String? get actualname => _actualname;
+  num? get sex => _sex;
+  String? get sexName => _sexName;
+  String? get phone => _phone;
+  String? get nickname => _nickname;
+  String? get password => _password;
+  dynamic get url => _url;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['uuid'] = _uuid;
+    map['id'] = _id;
+    map['infoId'] = _infoId;
+    map['sourceType'] = _sourceType;
     map['username'] = _username;
-    map['avatar'] = _avatar;
+    map['actualname'] = _actualname;
+    map['sex'] = _sex;
+    map['sexName'] = _sexName;
+    map['phone'] = _phone;
     map['nickname'] = _nickname;
-    map['identity'] = _identity;
-    map['grade'] = _grade;
+    map['password'] = _password;
+    map['url'] = _url;
     return map;
   }
 

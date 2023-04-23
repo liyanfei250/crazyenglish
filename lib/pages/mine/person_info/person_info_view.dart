@@ -322,6 +322,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                           //退出
                           SpUtil.putBool(BaseConstant.ISLOGING, false);
                           SpUtil.putString(BaseConstant.loginTOKEN, '');
+                          SpUtil.putString(BaseConstant.USER_NAME, '');
                           //直接去首页
                           RouterUtil.offAndToNamed(AppRoutes.HOME);
                         },
