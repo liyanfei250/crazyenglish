@@ -9,7 +9,7 @@ class WritingLogic extends GetxController {
   final WritingState state = WritingState();
   final WeekTestRepository weekTestRepository = WeekTestRepository();
   void uploadWritingTest(CommitAnswer commitRequest) async{
-    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
+    CommitResponse commitResponse = await weekTestRepository.uploadWeekTest(commitRequest);
     state.commitRequest = commitResponse!;
     update([GetBuilderIds.commitAnswerWriting]);
   }

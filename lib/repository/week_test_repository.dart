@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 import '../api/api.dart';
 import '../base/AppUtil.dart';
+import '../base/common.dart';
 import '../entity/base_resp.dart';
 import '../entity/check_update_resp.dart';
 import '../entity/commit_request.dart';
@@ -17,6 +18,7 @@ import '../entity/user_info_response.dart';
 import '../entity/week_detail_response.dart' as weekDetail;
 import '../entity/week_list_response.dart';
 import '../net/net_manager.dart';
+import '../utils/sp_util.dart';
 
 /**
  * Time: 2022/12/22 14:56
@@ -89,9 +91,8 @@ class WeekTestRepository {
     }
 
     Map map = await NetManager.getInstance()!.request(
-        data: {"uuid": id},
         Method.get,
-        Api.getWeekDetail,
+        Api.getWeekDetail+id,
         options: Options(method: Method.get));
 
     if (map != null) {
@@ -109,7 +110,7 @@ class WeekTestRepository {
 
   Future<StartExam> getStartExam(String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getStartExam,
+        Method.get, Api.getStartExam+"/${SpUtil.getInt(BaseConstant.USER_ID)}/${id}",
         options: Options(method: Method.get));
 
     StartExam startExam = StartExam.fromJson(map);
@@ -124,12 +125,7 @@ class WeekTestRepository {
     }
   }
 
-  Future<CommitAnswer> uploadWeekTest(CommitAnswer commitRequest) async {
-    if (Util.isTestMode()) {
-      CommitResponse commitResponse =
-          CommitResponse(code: 1, msg: "", data: CommitAnswer());
-      return commitResponse.data!;
-    }
+  Future<CommitResponse> uploadWeekTest(CommitAnswer commitRequest) async {
     Map map = await NetManager.getInstance()!.request(
         data: commitRequest.toJson(),
         Method.post,
@@ -140,7 +136,24 @@ class WeekTestRepository {
     if (commitResponse.code != ResponseCode.status_success) {
       return Future.error(commitResponse.message!);
     } else {
-      return commitResponse.data!;
+      return commitResponse;
+    }
+  }
+
+  Future<StartExam> getExamResult(String id) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getExamResult+"/${SpUtil.getInt(BaseConstant.USER_ID)}/${id}",
+        options: Options(method: Method.get));
+
+    StartExam startExam = StartExam.fromJson(map);
+
+    if (startExam.code != ResponseCode.status_success) {
+      return Future.error(startExam.message!);
+    }
+    if (startExam.code == 0) {
+      return startExam;
+    } else {
+      return Future.error("返回开始作答信息为空");
     }
   }
 

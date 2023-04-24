@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
+import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/question/others_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question/read_question.dart';
@@ -37,6 +38,7 @@ import 'answering_logic.dart';
 /// examResult: 历史作答数据 默认空
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
+  StartExam? startExam;
   var uuid;
   int parentIndex = 0;
   int childIndex = 0;
@@ -45,7 +47,8 @@ class AnsweringPage extends BasePage {
   static const catlogIdKey = "catlogId";
   static const parentIndexKey = "parentIndex";
   static const childIndexKey = "childIndex";
-  static const commitResponseAnswerKey = "commitResponseAnswer";
+  static const lastExamResult = "lastExamResult";
+  static const examResult = "examResult";
 
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
@@ -54,6 +57,7 @@ class AnsweringPage extends BasePage {
       parentIndex = Get.arguments[parentIndexKey];
       parentIndex =2;
       childIndex = Get.arguments[childIndexKey];
+      startExam = Get.arguments[lastExamResult];
     }
   }
 
@@ -82,18 +86,19 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final PageController pageController = PageController(keepPage: true);
 
   detail.SubjectVoList? currentSubjectVoList;
+
   @override
   void onCreate() {
     startTimer();
 
-    logic.addListenerId(GetBuilderIds.commitAnswer, () {
+    logic.addListenerId(GetBuilderIds.examResult, () {
       RouterUtil.offAndToNamed(
           AppRoutes.ResultPage,arguments: {
             AnsweringPage.examDetailKey: widget.testDetailResponse,
         AnsweringPage.catlogIdKey:widget.uuid,
         AnsweringPage.parentIndexKey:widget.parentIndex,
         AnsweringPage.childIndexKey:widget.childIndex,
-        AnsweringPage.commitResponseAnswerKey: state.commitResponse,
+        AnsweringPage.examResult: state.startExam.obj,
       });
     });
   }

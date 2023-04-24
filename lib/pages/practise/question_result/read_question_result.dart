@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ import 'base_question_result.dart';
 class ReadQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  ReadQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  ReadQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
 
   @override

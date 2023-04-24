@@ -62,11 +62,6 @@ class Api {
   static String getWeeklyDirectory =
       Config.ApiHost + "/app/weekly/directory/tree";
 
-  // 周报详情
-  static String getWeekDetail = Config.ApiHost + "/app/weekly/associate";
-
-  // 提交答案接口
-  static String postWeekCommit = Config.ApiHost + "/app/weekly/commit";
 
   //根据用户错题本
   static String getErrotList = Config.ApiHost + "/app/exercises/error/weekly";
@@ -83,32 +78,14 @@ class Api {
       Config.ApiHost + "/app/practicerecords/exercises";
 
   // 开始作答接口
-  static String getStartExam = Config.ApiHost + "/app/startExam";
+  static String getStartExam = Config.ApiHost + "/question/exercise/isFinishByCatalogueId/";
 
-// 练习接口
-  // 周报列表接口
-  // 周报筛选列表接口
-  // 周报目录列表接口
-  // 题目详情接口（各种题型的数据定义，统计板块的区分）
-  // 金刚区接口
-  // 金刚区列表接口
-  // 金刚区筛选接口
-  // 期刊成绩接口
-  // 开始作答接口？
-  // 是否有上次未完成接口？
-  // 提交答案接口（各种题型包括写作题的数据上传格式定义）
-  // 结果页列表接口
-  // 题目反馈增加接口
-  // 题目反馈查询接口
-  // 收藏/取消收藏题目接口
-// 复习接口
-  // 复习首页接口调试
-  // 练习记录接口数据
-  // 错题本tab接口
-  // 错题本已订正、未订正列表接口
-  // 收藏题目最近搜索历史接口
-  // 收藏题目搜索接口
-  // 收藏列表接口
+  // 提交答案接口
+  static String postWeekCommit = Config.ApiHost + "/question/exercise/submitAnswer";
+
+  // 结果页接口
+  static String getExamResult = Config.ApiHost + "/question/exercise/getExerciseResultDetails/";
+
 
   // 金刚区接口 // 周报筛选字典接口
   static String getHomeKingList =
@@ -121,6 +98,10 @@ class Api {
   // 周报目录列表
   static String getHomeWeeklyDirectoryList =
       Config.ApiHost + "/question/exercise/getCatalogueByJournalId/";
+
+  // 周报详情
+  static String getWeekDetail = Config.ApiHost + "/question/exercise/getSubDetailsByCatalogueId/";
+
 
   //获取复习首页的信息接口
   static String getReviewHomeDetail = Config.ApiHost + "/question/exercise/getReviewTotal/";

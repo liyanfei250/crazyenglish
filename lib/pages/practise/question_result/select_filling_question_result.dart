@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
@@ -18,7 +19,7 @@ import 'base_question_result.dart';
 class SelectFillingQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  SelectFillingQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  SelectFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
   BaseQuestionResultState<SelectFillingQuestionResult> getState() => _SelectFillingQuestionResultState();
@@ -60,8 +61,8 @@ class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFi
     // 普通阅读 常规阅读题 是父子题
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
-      jumpToQuestion(defaultIndex);
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
+      selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
     }
 
     return SingleChildScrollView(
