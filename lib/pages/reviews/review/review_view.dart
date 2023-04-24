@@ -69,17 +69,16 @@ class _ReviewPageState extends State<ReviewPage> {
                 collected = paperDetail!.obj!.collected!.toInt();
               });
             }
-            //todo 添加字段
-            /*if (paperDetail!.obj!.histoty != null) {
+            if (paperDetail!.obj!.historyJob != null) {
               setState(() {
-                histoty = paperDetail!.obj!.histoty!.toInt();
+                histoty = paperDetail!.obj!.historyJob!.toInt();
               });
             }
-            if (paperDetail!.obj!.practiceRecord != null) {
+            if (paperDetail!.obj!.exerciseRecord != null) {
               setState(() {
-                practiceRecord = paperDetail!.obj!.practiceRecord!.toInt();
+                practiceRecord = paperDetail!.obj!.exerciseRecord!.toInt();
               });
-            }*/
+            }
           }
         }
       }
