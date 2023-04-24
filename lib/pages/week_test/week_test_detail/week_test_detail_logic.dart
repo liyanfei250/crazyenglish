@@ -104,6 +104,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:parentIndex,
               AnsweringPage.childIndexKey:childIndex,
+              AnsweringPage.lastExamResult:state.startExam,
               });
         }else{
           RouterUtil.toNamed(AppRoutes.AnsweringPage,
@@ -111,6 +112,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:parentIndex,
               AnsweringPage.childIndexKey:childIndex,
+              AnsweringPage.lastExamResult:state.startExam,
               });
         }
       }

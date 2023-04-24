@@ -1,8 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../../../utils/colors.dart';
-import '../question/base_question.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
 import 'base_question_result.dart';
@@ -16,7 +15,7 @@ import 'base_question_result.dart';
 class GapQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  GapQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key,);
+  GapQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key,);
 
 
   @override

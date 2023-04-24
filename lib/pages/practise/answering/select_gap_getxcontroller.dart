@@ -26,19 +26,23 @@ class SelectGapGetxController extends GetxController{
     indexContentList.addAll(list);
   }
 
-  updateFocus(String key,bool hasFocus){
+  updateFocus(String key,bool hasFocus,{bool isInit = false}){
     if(hasFocus){
       hasFocusMap.value.keys.toList().forEach((element) {
         hasFocusMap.value.addIf(true, element, false);
       });
       hasFocusMap.value.addIf(true, key, hasFocus);
-      hasFocusMap.value.keys.toList().forEach((element) {
-        update([element]);
-      });
+      if(!isInit){
+        hasFocusMap.value.keys.toList().forEach((element) {
+          update([element]);
+        });
+      }
       // update([key]);
     } else {
       hasFocusMap.value.addIf(true, key, hasFocus);
-      update([key]);
+      if(!isInit){
+        update([key]);
+      }
     }
   }
 

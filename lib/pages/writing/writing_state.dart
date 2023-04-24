@@ -1,7 +1,7 @@
 import '../../entity/commit_request.dart';
 
 class WritingState {
-  CommitAnswer commitRequest = CommitAnswer();
+  CommitResponse commitRequest = CommitResponse();
   WritingState() {
     ///Initialize variables
   }

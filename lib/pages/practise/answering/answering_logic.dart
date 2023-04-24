@@ -2,6 +2,7 @@ import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../repository/week_test_repository.dart';
 import 'answering_state.dart';
@@ -26,7 +27,7 @@ class AnsweringLogic extends GetxController {
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
 
-  void updateCurrentPage(int currentQuestion,{int totalQuestion = 0}){
+  void updateCurrentPage(int currentQuestion,{int totalQuestion = 0,bool isInit = false}){
     if(totalQuestion>0){
       state.totalQuestionNum = totalQuestion;
     }
@@ -34,7 +35,10 @@ class AnsweringLogic extends GetxController {
       state.currentQuestionNum = currentQuestion;
     }
 
-    update([GetBuilderIds.answerPageNum]);
+    if(!isInit){
+      update([GetBuilderIds.answerPageNum]);
+    }
+
   }
 
   void uploadWeekTest(SubjectVoList subjectVoList) async{
@@ -60,8 +64,16 @@ class AnsweringLogic extends GetxController {
         examId: 0,
         subjectAnswerVo:subjectAnswerVoList);
 
-    CommitAnswer commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);
+    CommitResponse commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);
     state.commitResponse = commitResponse;
-    update([GetBuilderIds.commitAnswer]);
+    // update([GetBuilderIds.commitAnswer]);
+    getResult(subjectVoList);
+  }
+
+
+  void getResult(SubjectVoList subjectVoList) async{
+    StartExam startExam = await weekTestRepository.getExamResult("${subjectVoList.journalCatalogueId}");
+    state.startExam = startExam;
+    update([GetBuilderIds.examResult]);
   }
 }

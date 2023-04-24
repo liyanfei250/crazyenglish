@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ import 'result_logic.dart';
 /// examDetail: 试题数据
 /// examResult: 历史作答数据 默认空
 class ResultPage extends BasePage{
-  CommitAnswer? commitAnswer;
+  Exercise? examResult;
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
   int parentIndex = 0;
@@ -42,7 +43,7 @@ class ResultPage extends BasePage{
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      commitAnswer = Get.arguments[AnsweringPage.commitResponseAnswerKey];
+      examResult = Get.arguments[AnsweringPage.examResult];
       testDetailResponse = Get.arguments[AnsweringPage.examDetailKey];
       uuid = Get.arguments[AnsweringPage.catlogIdKey];
       parentIndex = Get.arguments[AnsweringPage.parentIndexKey];
@@ -76,19 +77,19 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   List<SubtopicVoList> tabs = [];
 
   // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
-  SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo();
+  ExerciseVos exerciseVo = ExerciseVos();
   // subtopicId SubtopicAnswerVo
-  Map<String,SubtopicAnswerVo> subtopicAnswerVoMap = {};
+  Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   @override
   void onCreate() {
-    if(widget.commitAnswer!=null){
-      if(widget.commitAnswer!.subjectAnswerVo!=null
-        && widget.commitAnswer!.subjectAnswerVo!.length>0){
-        subjectAnswerVo = widget.commitAnswer!.subjectAnswerVo![0];
-        if(subjectAnswerVo.subtopicAnswerVo!=null && subjectAnswerVo.subtopicAnswerVo!.length>0){
-          subjectAnswerVo.subtopicAnswerVo!.forEach((element) {
+    if(widget.examResult!=null){
+      if(widget.examResult!.exerciseVos!=null
+        && widget.examResult!.exerciseVos!.length>0){
+        exerciseVo = widget.examResult!.exerciseVos![0];
+        if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
+          exerciseVo.exerciseLists!.forEach((element) {
             subtopicAnswerVoMap[
-            (element.subtopicId??subjectAnswerVo.subtopicAnswerVo!.indexOf(element))
+            (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
                 .toString()] = element;
           });
         }
@@ -315,7 +316,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     int index = tabs.indexOf(e);
     int state = 1;
     if(subtopicAnswerVoMap.containsKey((e.id??1).toString())){
-      if(subtopicAnswerVoMap[(e.id??1).toString()]!.isCorrect??false){
+      if(subtopicAnswerVoMap[(e.id??1).toString()]!.isRight??false){
         state =2;
       }else{
         state =0;

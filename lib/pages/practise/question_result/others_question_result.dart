@@ -2,6 +2,7 @@ import 'package:crazyenglish/base/common.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../../../utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
@@ -18,7 +19,7 @@ import 'base_question_result.dart';
 class OthersQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  OthersQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  OthersQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {

@@ -6,17 +6,13 @@ import 'base_resp.dart';
 import 'week_detail_response.dart';
 
 class CommitResponse extends BaseResp{
-  CommitAnswer? _data;
 
   CommitResponse({
     int? code,
     String? msg,
-    CommitAnswer? data
     }):super(code,msg){
-    _data = data;
   }
 
-  CommitAnswer? get data => _data;
 
   @override
   String toString() {
@@ -24,13 +20,11 @@ class CommitResponse extends BaseResp{
     sb.write(",\"code\":$code");
     sb.write(",\"msg\":\"$message\"");
     sb.write(",\"data\":");
-    sb.write("\"${_data!.toJson()}\"");
     sb.write('}');
     return sb.toString();
   }
 
   CommitResponse.fromJson(dynamic json):super.fromJson(json) {
-    _data = json['obj'] != null ? CommitAnswer.fromJson(json['obj']) : null;
   }
 }
 
@@ -40,11 +34,13 @@ class CommitAnswer {
     num? journalCatalogueId,
     String? type,
     num? examId,
+    num? userId,
     List<SubjectAnswerVo>? subjectAnswerVo,}){
     _journalId = journalId;
     _journalCatalogueId = journalCatalogueId;
     _type = type;
     _examId = examId;
+    _userId = userId;
     _subjectAnswerVo = subjectAnswerVo;
   }
 
@@ -53,6 +49,7 @@ class CommitAnswer {
     _journalCatalogueId = json['journalCatalogueId'];
     _type = json['type'];
     _examId = json['examId'];
+    _userId = json['userId'];
     if (json['subjectAnswerVo'] != null) {
       _subjectAnswerVo = [];
       json['subjectAnswerVo'].forEach((v) {
@@ -64,22 +61,26 @@ class CommitAnswer {
   num? _journalCatalogueId;
   String? _type;
   num? _examId;
+  num? _userId;
   List<SubjectAnswerVo>? _subjectAnswerVo;
   CommitAnswer copyWith({  num? journalId,
     num? journalCatalogueId,
     String? type,
     num? examId,
+    num? userId,
     List<SubjectAnswerVo>? subjectAnswerVo,
   }) => CommitAnswer(  journalId: journalId ?? _journalId,
     journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
     type: type ?? _type,
     examId: examId ?? _examId,
+    userId: userId ?? _userId,
     subjectAnswerVo: subjectAnswerVo ?? _subjectAnswerVo,
   );
   num? get journalId => _journalId;
   num? get journalCatalogueId => _journalCatalogueId;
   String? get type => _type;
   num? get examId => _examId;
+  num? get userId => _userId;
   List<SubjectAnswerVo>? get subjectAnswerVo => _subjectAnswerVo;
 
   Map<String, dynamic> toJson() {
@@ -88,6 +89,7 @@ class CommitAnswer {
     map['journalCatalogueId'] = _journalCatalogueId;
     map['type'] = _type;
     map['examId'] = _examId;
+    map['userId'] = _userId;
     if (_subjectAnswerVo != null) {
       map['subjectAnswerVo'] = _subjectAnswerVo?.map((v) => v.toJson()).toList();
     }

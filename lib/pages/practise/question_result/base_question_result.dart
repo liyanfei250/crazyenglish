@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
+import '../../../entity/start_exam.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
@@ -30,7 +31,7 @@ typedef PageControllerListener = TextEditingController Function(String key);
 
 abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
   late BaseQuestionResultState baseQuestionResultState;
-  late Map<String,SubtopicAnswerVo> subtopicAnswerVoMap;
+  late Map<String,ExerciseLists> subtopicAnswerVoMap;
   BaseQuestionResult(this.subtopicAnswerVoMap, {Key? key}) : super(key: key);
 
   @override
@@ -154,7 +155,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             ),));
           int defaultChooseIndex = -1;
           if(widget.subtopicAnswerVoMap!.containsKey((question.id??1).toString())){
-            String userAnswer = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.userAnswer??"";
+            String userAnswer = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.answer??"";
             int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
             for(int  i = 0;i <length ;i++){
               if(userAnswer == question!.optionsList![i].sequence){
