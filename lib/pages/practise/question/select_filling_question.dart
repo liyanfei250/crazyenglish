@@ -68,7 +68,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback),
           QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
         ],
       ),
@@ -78,35 +78,49 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
 
   @override
   void next() {
-    // int currentKey = -1;
-    // bool canNext = false;
-    // selectGapGetxController.hasFocusMap.value.forEach((key, value) {
-    //   if(value){
-    //     if(questionNum == key){
-    //       canNext = false;
-    //     }
-    //
-    //   }
-    // });
-    // if(canNext){
-    //   selectGapGetxController.hasFocusMap.value.clear();
-    //   selectGapGetxController.hasFocusMap.value["${logci+1}"] = true;
-    // }else{
-    //
-    // }
-
+    bool canNext = false;
+    int nextIndex = -1;
+    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+      if(value){
+        if(questionNum == int.parse(key)){
+          canNext = false;
+        }else{
+          if(int.parse(key)+1 <= questionNum){
+            canNext = true;
+            nextIndex = int.parse(key);
+          }
+        }
+      }
+    });
+    if(canNext){
+      jumpToQuestion(nextIndex);
+    }
   }
 
   @override
   void pre() {
-
+    bool canPre = false;
+    int preIndex = -1;
+    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+      if(value){
+          if(int.parse(key)-1>0){
+            canPre = true;
+            preIndex = int.parse(key)-1-1;
+          }
+      }
+    });
+    if(canPre){
+      jumpToQuestion(preIndex);
+    }
   }
 
   @override
   void jumpToQuestion(int index) {
-// 默认聚焦第几个空
-    selectGapGetxController.hasFocusMap.value.clear();
-    selectGapGetxController.hasFocusMap.value["${index+1}"] = true;
+    // 更新空选中状态
+    selectGapGetxController.updateFocus("${index+1}",true);
+    // 更细底部页码
+    int currentPage = index;
+    logic.updateCurrentPage(currentPage);
   }
 
   @override

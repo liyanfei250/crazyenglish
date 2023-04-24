@@ -11,6 +11,7 @@ import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/week_detail_response.dart';
 import '../../utils/colors.dart';
 import '../../widgets/ChoiceRadioItem.dart';
+import 'answering/select_gap_getxcontroller.dart';
 import 'question/base_question.dart';
 
 /**
@@ -474,7 +475,7 @@ class QuestionFactory{
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,UserAnswerCallback userAnswerCallback,{int gapKey = 0}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -486,7 +487,7 @@ class QuestionFactory{
       num subtopicId = -1;
       String subtopicAnswer = "";
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
-        subtopicId = subjectVoList.subtopicVoList![gapKey].subjectId!;
+        subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
       }else{
         print("试题空和答案不匹配");
@@ -496,9 +497,9 @@ class QuestionFactory{
       }
       gapKey++;
       gapIndex++;
-      print("gapKey: $gapKey gapIndex:$gapIndex");
+      print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
       // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicId="$subtopicId" answer="$subtopicAnswer"></gap>');
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
     }
 
 
@@ -522,8 +523,12 @@ class QuestionFactory{
           tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
             String key = context.tree.element!.attributes["value"]??"unknown";
             String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+            String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
+            int subtopicId = int.parse(subtopicIdstr);
+            String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
             String content = "";
             int num = 0;
+            print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
             var correctType = 0.obs;
             try {
               num = int.parse(gapIndex);
@@ -550,6 +555,15 @@ class QuestionFactory{
                     _.resetNextFocus();
                     _scopeNode.nextFocus();
                   }
+
+                  // 更新作答答案
+                  SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                      optionId:0,
+                      userAnswer: _.contentMap.value[key]??"",
+                      answer: subtopicAnswer,
+                      isCorrect: false);
+                  userAnswerCallback.call(subtopicAnswerVo);
+
                   return Container(
                     width: 70.w,
                     height: 17.w,
@@ -615,13 +629,6 @@ class QuestionFactory{
     );
   }
 
-  /// 选词填空的词
-  static Widget buildSelectAnswerQuestion(List<OptionsList> answers){
-    return Wrap(
-      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
-    );
-  }
-
 
 
   /// 选择填空 选项显示部分
@@ -632,51 +639,60 @@ class QuestionFactory{
       id: "answer:${answerIndex}",
       builder: (_){
         return GestureDetector(
-          onTap: () {
-            String gapKey = "";
-            _.hasFocusMap.value.forEach((key, value) {
-              if(value){
-                gapKey = key;
+            onTap: () {
+              String gapKey = "";
+              _.hasFocusMap.value.forEach((key, value) {
+                if(value){
+                  gapKey = key;
+                }
+              });
+              // 去掉之前的选项 选择状态
+              String findBeforeAnswerIndex = "";
+              _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
+                if(value == gapKey){
+                  findBeforeAnswerIndex = answerIndex;
+                }
+              });
+              if(findBeforeAnswerIndex.isNotEmpty){
+                _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
               }
-            });
-            // 去掉之前的选项 选择状态
-            String findBeforeAnswerIndex = "";
-            _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
-              if(value == gapKey){
-                findBeforeAnswerIndex = answerIndex;
-              }
-            });
-            if(findBeforeAnswerIndex.isNotEmpty){
-              _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
-            }
 
-            // 修改当前选中状态 当前选项 answerIndex 映射到 空
-            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-            // 别的空对应的此选项内容 清空
-            // 别的空对应的 anserIndex 清空
-            _.contentMap.value.forEach((key, value) {
-              if(value == answer.sequence){
-                _.updateGapKeyContent(key, "");
-              }
-            });
-            _.updateGapKeyContent(gapKey, answer.sequence??"");
+              // 修改当前选中状态 当前选项 answerIndex 映射到 空
+              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+              // 别的空对应的此选项内容 清空
+              // 别的空对应的 anserIndex 清空
+              _.contentMap.value.forEach((key, value) {
+                if(value == answer.sequence){
+                  _.updateGapKeyContent(key, "");
+                }
+              });
+              _.updateGapKeyContent(gapKey, answer.sequence??"");
 
-          },
-          child: Container(
-                margin: EdgeInsets.only(top: 6.w,bottom: 6.w),
-                child: ChoiceRadioItem(
-                    (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? ChoiceRadioItemType.SELECTED : ChoiceRadioItemType.DEFAULT,
-                    "",
-                    answer!.sequence!,
-                    answer!.content!,
-                    double.infinity,
-                    52.w
-                ),
-              )
-          );
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 6.w,bottom: 6.w),
+              child: ChoiceRadioItem(
+                  (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? ChoiceRadioItemType.SELECTED : ChoiceRadioItemType.DEFAULT,
+                  "",
+                  answer!.sequence!,
+                  answer!.content!,
+                  double.infinity,
+                  52.w
+              ),
+            )
+        );
       },
     );
   }
+
+  /// 选词填空的词
+  static Widget buildSelectAnswerQuestion(List<OptionsList> answers){
+    return Wrap(
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
+    );
+  }
+
+
 
   /// answerIndex 选项的索引
   /// answer 选项的内容

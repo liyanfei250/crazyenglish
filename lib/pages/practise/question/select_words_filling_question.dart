@@ -63,7 +63,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
+          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController),
           QuestionFactory.buildSelectAnswerQuestion(element.optionsList!)
         ],
       ),
@@ -71,14 +71,63 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   }
 
 
+
   @override
-  getAnswers() {
-    // TODO: implement getAnswers
-    throw UnimplementedError();
+  void next() {
+    bool canNext = false;
+    int nextIndex = -1;
+    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+      if(value){
+        if(questionNum == int.parse(key)){
+          canNext = false;
+        }else{
+          if(int.parse(key)+1 <= questionNum){
+            canNext = true;
+            nextIndex = int.parse(key);
+          }
+        }
+      }
+    });
+    if(canNext){
+      jumpToQuestion(nextIndex);
+
+    }
+  }
+
+  @override
+  void pre() {
+    bool canPre = false;
+    int preIndex = -1;
+    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+      if(value){
+        if(int.parse(key)-1>0){
+          canPre = true;
+          preIndex = int.parse(key)-1-1;
+        }
+      }
+    });
+    if(canPre){
+      jumpToQuestion(preIndex);
+    }
+  }
+
+  @override
+  void jumpToQuestion(int index) {
+    // 更新空选中状态
+    selectGapGetxController.updateFocus("${index+1}",true);
+    // 更细底部页码
+    int currentPage = index;
+    logic.updateCurrentPage(currentPage);
   }
 
   @override
   void onDestroy() {
     // TODO: implement onDestroy
+  }
+
+  @override
+  getAnswers() {
+    // TODO: implement getAnswers
+    throw UnimplementedError();
   }
 }
