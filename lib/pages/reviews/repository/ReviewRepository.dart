@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
 import '../../../entity/base_resp.dart';
+import '../../../entity/home/PractiseDate.dart';
 import '../../../entity/review/CancellCollectDate.dart';
 import '../../../entity/review/CollectDate.dart';
 import '../../../entity/review/ErrorNoteTabDate.dart';
@@ -14,7 +15,7 @@ import '../../../net/net_manager.dart';
 class ReviewRepository {
   Future<ReviewHomeDetail> getReviewHomeDetail(String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getReviewHomeDetail,
+        Method.get, Api.getReviewHomeDetail + id,
         options: Options(method: Method.get));
     ReviewHomeDetail paperDetail = ReviewHomeDetail.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
@@ -24,9 +25,22 @@ class ReviewRepository {
     }
   }
 
-  Future<PractiseHistoryDate> getPracticeRecordList(String id) async {
+  Future<PractiseDate> getPracticeDateList(String id, String date) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getPracticeRecordList,
+        Method.get, Api.getPracticeDateList + id + "/" + "$date",
+        options: Options(method: Method.get));
+    PractiseDate paperDetail = PractiseDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<PractiseHistoryDate> getPracticeRecordList(
+      String id, String date) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getPracticeRecordList + id + "/" + "$date",
         options: Options(method: Method.get));
     PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {

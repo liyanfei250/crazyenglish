@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/utils/colors.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,29 +26,66 @@ class _ReviewPageState extends State<ReviewPage> {
   final logic = Get.put(ReviewLogic());
   final state = Get.find<ReviewLogic>().state;
   ReviewHomeDetail? paperDetail;
+  int cumulativeExercise = 0;
+  int todayExercise = 0;
+  int cumulativeError = 0;
+  int correct = 0;
+  int collected = 0;
+  int histoty = 0;
+  int practiceRecord = 0;
+
   @override
   void initState() {
     super.initState();
 
-    logic.addListenerId(GetBuilderIds.getReviewHomeDate,(){
-      if(state.paperDetail!=null){
+    logic.addListenerId(GetBuilderIds.getReviewHomeDate, () {
+      if (state.paperDetail != null) {
         paperDetail = state.paperDetail;
-        /*if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
+        if (mounted) {
+          if (paperDetail!.obj != null) {
+            if (paperDetail!.obj!.cumulativeExercise != null) {
+              setState(() {
+                cumulativeExercise =
+                    paperDetail!.obj!.cumulativeExercise!.toInt();
+              });
+            }
+            if (paperDetail!.obj!.todayExercise != null) {
+              setState(() {
+                todayExercise = paperDetail!.obj!.todayExercise!.toInt();
+              });
+            }
+            if (paperDetail!.obj!.cumulativeError != null) {
+              setState(() {
+                cumulativeError = paperDetail!.obj!.cumulativeError!.toInt();
+              });
+            }
+            if (paperDetail!.obj!.crrect != null) {
+              setState(() {
+                correct = paperDetail!.obj!.crrect!.toInt();
+              });
+            }
+            if (paperDetail!.obj!.collected != null) {
+              setState(() {
+                collected = paperDetail!.obj!.collected!.toInt();
+              });
+            }
+            //todo 添加字段
+            /*if (paperDetail!.obj!.histoty != null) {
+              setState(() {
+                histoty = paperDetail!.obj!.histoty!.toInt();
+              });
+            }
+            if (paperDetail!.obj!.practiceRecord != null) {
+              setState(() {
+                practiceRecord = paperDetail!.obj!.practiceRecord!.toInt();
+              });
+            }*/
           }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
-          setState(() {
-          });
-        }*/
-
+        }
       }
     });
+
+    logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
   }
 
   @override
@@ -83,13 +122,13 @@ class _ReviewPageState extends State<ReviewPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "195",
+                        "$cumulativeExercise",
                         style: TextStyle(
                             color: AppColors.c_FF353E4D,
                             fontSize: 26.sp,
                             fontWeight: FontWeight.w500),
                       ),
-                      Text("累计练习（10个）",
+                      Text("累计练习（$cumulativeExercise个）",
                           style: TextStyle(
                             color: AppColors.c_FF434863,
                             fontSize: 12.sp,
@@ -102,13 +141,13 @@ class _ReviewPageState extends State<ReviewPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "10",
+                        "$todayExercise",
                         style: TextStyle(
                             color: AppColors.c_FF353E4D,
                             fontSize: 26.sp,
                             fontWeight: FontWeight.w500),
                       ),
-                      Text("今日练习（10个）",
+                      Text("今日练习（$todayExercise个）",
                           style: TextStyle(
                             color: AppColors.c_FF434863,
                             fontSize: 12.sp,
@@ -144,14 +183,14 @@ class _ReviewPageState extends State<ReviewPage> {
                           ),
                           Padding(padding: EdgeInsets.only(left: 3.w)),
                           Text(
-                            "累计错误5次",
+                            "累计错误$cumulativeError次",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 14.sp),
                           ),
                         ],
                       ),
                       Text(
-                        "已消灭10个错题",
+                        "已消灭$correct个错题",
                         style: TextStyle(color: Colors.white, fontSize: 14.sp),
                       )
                     ],
@@ -232,8 +271,8 @@ class _ReviewPageState extends State<ReviewPage> {
                     RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
                         arguments: {'type', 0});
                   },
-                      title: "收藏题目19个",
-                      subTitle: "复习题目7个",
+                      title: "收藏题目个",
+                      subTitle: "收藏题目$collected个",
                       icon: R.imagesReviewFavorQuestionIcon),
                 ],
               ),
@@ -275,7 +314,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     );
                   },
                       title: "历史作业",
-                      subTitle: "历史作业17套",
+                      subTitle: "历史作业$histoty套",
                       icon: R.imagesReviewHistoryHomework),
                   Divider(
                     color: AppColors.c_FFD2D5DC,
@@ -288,7 +327,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     );
                   },
                       title: "练习记录",
-                      subTitle: "练习记录27条",
+                      subTitle: "练习记录$practiceRecord条",
                       icon: R.imagesReviewPractiseRecord),
                 ],
               ),
