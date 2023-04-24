@@ -1,29 +1,31 @@
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
+import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
+import 'base_question_result.dart';
 
 /**
  * Time: 2023/4/19 13:48
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description: 选择填空题
+ * Description: 选择填空题结果页
  */
-class SelectFillingQuestion extends BaseQuestion {
+class SelectFillingQuestionResult extends BaseQuestionResult {
+  SubjectVoList data;
 
-  SelectFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  SelectFillingQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
-  BaseQuestionState<SelectFillingQuestion> getState() => _SelectFillingQuestionState();
+  BaseQuestionResultState<SelectFillingQuestionResult> getState() => _SelectFillingQuestionResultState();
 
 }
 
-class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestion> {
+class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFillingQuestionResult> {
 
   late SubjectVoList element;
 
@@ -68,8 +70,8 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback),
-          QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
+          QuestionFactory.buildSelectOptionQuestion(element.optionsList!,isClickEnable:false)
         ],
       ),
     );
@@ -103,10 +105,10 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
     int preIndex = -1;
     selectGapGetxController.hasFocusMap.value.forEach((key, value) {
       if(value){
-          if(int.parse(key)-1>0){
-            canPre = true;
-            preIndex = int.parse(key)-1-1;
-          }
+        if(int.parse(key)-1>0){
+          canPre = true;
+          preIndex = int.parse(key)-1-1;
+        }
       }
     });
     if(canPre){
@@ -133,6 +135,4 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
   void onDestroy() {
     // TODO: implement onDestroy
   }
-
-
 }

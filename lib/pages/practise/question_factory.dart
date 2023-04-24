@@ -475,7 +475,7 @@ class QuestionFactory{
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,UserAnswerCallback userAnswerCallback,{int gapKey = 0}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0,UserAnswerCallback? userAnswerCallback}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -556,13 +556,15 @@ class QuestionFactory{
                     _scopeNode.nextFocus();
                   }
 
-                  // 更新作答答案
-                  SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
-                      optionId:0,
-                      userAnswer: _.contentMap.value[key]??"",
-                      answer: subtopicAnswer,
-                      isCorrect: false);
-                  userAnswerCallback.call(subtopicAnswerVo);
+                  if(userAnswerCallback!=null){
+                    // 更新作答答案
+                    SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                        optionId:0,
+                        userAnswer: _.contentMap.value[key]??"",
+                        answer: subtopicAnswer,
+                        isCorrect: false);
+                    userAnswerCallback.call(subtopicAnswerVo);
+                  }
 
                   return Container(
                     width: 70.w,
@@ -623,9 +625,9 @@ class QuestionFactory{
   }
 
   /// 选择填空的选项
-  static Widget buildSelectOptionQuestion(List<OptionsList> answers){
+  static Widget buildSelectOptionQuestion(List<OptionsList> answers,{isClickEnable = true}){
     return Wrap(
-      children: answers.map((e) => _colorAnswerOption(answers.indexOf(e),e)).toList(),
+      children: answers.map((e) => _colorAnswerOption(answers.indexOf(e),e,isClickEnable:isClickEnable)).toList(),
     );
   }
 
@@ -634,12 +636,12 @@ class QuestionFactory{
   /// 选择填空 选项显示部分
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerOption(int answerIndex,OptionsList answer) {
+  static Widget _colorAnswerOption(int answerIndex,OptionsList answer,{isClickEnable = true}) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
         return GestureDetector(
-            onTap: () {
+            onTap: isClickEnable? () {
               String gapKey = "";
               _.hasFocusMap.value.forEach((key, value) {
                 if(value){
@@ -668,7 +670,7 @@ class QuestionFactory{
               });
               _.updateGapKeyContent(gapKey, answer.sequence??"");
 
-            },
+            }:null,
             child: Container(
               margin: EdgeInsets.only(top: 6.w,bottom: 6.w),
               child: ChoiceRadioItem(
