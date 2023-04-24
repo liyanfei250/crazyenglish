@@ -2,33 +2,38 @@ import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
+import 'base_question_result.dart';
 
 /**
- * Time: 2023/4/19 13:44
+ * Time: 2023/4/19 13:48
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description: 选词填空题
+ * Description: 选择填空题结果页
  */
-class SelectWordsFillingQuestion extends BaseQuestion {
+class SelectFillingQuestionResult extends BaseQuestionResult {
+  SubjectVoList data;
 
-  SelectWordsFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  SelectFillingQuestionResult(Map<String,SubtopicAnswerVo> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
-  BaseQuestionState<SelectWordsFillingQuestion> getState() => _SelectWordsFillingQuestionState();
+  BaseQuestionResultState<SelectFillingQuestionResult> getState() => _SelectFillingQuestionResultState();
 
 }
 
-class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFillingQuestion> {
+class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFillingQuestionResult> {
 
   late SubjectVoList element;
+
   int questionNum = 0;
   @override
   void onCreate() {
     element = widget.data;
+
   }
 
   @override
@@ -44,32 +49,33 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child: getDetail(0),)
+          Expanded(child: getDetail(0))
         ],
       ),
     );
   }
 
-
   Widget getDetail(int defaultIndex){
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
       logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
       jumpToQuestion(defaultIndex);
     }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController),
-          QuestionFactory.buildSelectAnswerQuestion(element.optionsList!)
+          buildQuestionType("选择填空题"),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
+          QuestionFactory.buildSelectOptionQuestion(element.optionsList!,isClickEnable:false)
         ],
       ),
     );
   }
-
 
 
   @override
@@ -90,7 +96,6 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
     });
     if(canNext){
       jumpToQuestion(nextIndex);
-
     }
   }
 
@@ -121,13 +126,13 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   }
 
   @override
-  void onDestroy() {
-    // TODO: implement onDestroy
-  }
-
-  @override
   getAnswers() {
     // TODO: implement getAnswers
     throw UnimplementedError();
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }

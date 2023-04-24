@@ -81,8 +81,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   var _selectedIndex = 0.obs;
   final PageController pageController = PageController(keepPage: true);
 
-  var canPre = false.obs;
-  var canNext = true.obs;
   detail.SubjectVoList? currentSubjectVoList;
   @override
   void onCreate() {
@@ -199,7 +197,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   }),
               InkWell(
                 onTap: (){
-                  if(canNext.value == false){
+                  if(state.currentQuestionNum+1 >= state.totalQuestionNum){
                     Get.defaultDialog(
                       title: "",
                       textConfirm: "确定",

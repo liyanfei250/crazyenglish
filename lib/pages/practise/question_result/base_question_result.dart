@@ -10,6 +10,8 @@ import '../../../entity/commit_request.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
+import '../answering/answering_logic.dart';
+import '../answering/select_gap_getxcontroller.dart';
 import '../question_factory.dart';
 
 /**
@@ -73,8 +75,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   List<Widget> questionList = [];
   int currentPage = 0;
-  // final selectGapGetxController = Get.put(SelectGapGetxController());
-  // final logic = Get.find<AnsweringLogic>();
+  final selectGapGetxController = Get.put(SelectGapGetxController());
+  final logic = Get.find<AnsweringLogic>();
   @override
   void initState(){
     super.initState();

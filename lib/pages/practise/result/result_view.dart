@@ -18,7 +18,7 @@ import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../question_result/base_question_result.dart';
 import '../question_result/listen_question_result.dart';
 import '../question_result/read_question_result.dart';
-import '../question_result/select_filling_question.dart';
+import '../question_result/select_filling_question_result.dart';
 import '../question_result/select_words_filling_question.dart';
 import '../question_result/others_question_result.dart';
 import 'result_logic.dart';

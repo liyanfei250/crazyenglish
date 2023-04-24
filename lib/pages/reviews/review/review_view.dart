@@ -310,7 +310,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 children: [
                   _buildItem(() {
                     RouterUtil.toNamed(
-                      AppRoutes.PractiseHistoryPage,
+                      AppRoutes.HomeworkHistoryPage,
                     );
                   },
                       title: "历史作业",
