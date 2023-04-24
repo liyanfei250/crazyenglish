@@ -1,4 +1,6 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/MyDecoration.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../entity/home/PractiseDate.dart';
 import '../../../entity/review/PractiseHistoryDate.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
@@ -33,10 +36,15 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
+  List timeTestList = [
+    "2023-04-18T16:00:00.000+0000",
+    "2023-04-19T16:00:00.000+0000"
+  ];
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   PractiseHistoryDate? paperDetail;
+  PractiseDate? dateDetail;
   @override
   void initState() {
     super.initState();
@@ -44,7 +52,27 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
 
-    logic.getRecordInfo('0');
+    logic.addListenerId(GetBuilderIds.PracticeDate,(){
+      if(state.dateDetail!=null){
+        dateDetail = state.dateDetail;
+        //todo 日期数据处理
+        print('object+='+dateDetail!.obj![0]!.toString());
+        /*if(mounted && _refreshController!=null){
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.videoFile!=null
+              && paperDetail!.data!.videoFile!.isNotEmpty){
+          }
+          if(paperDetail!.data!=null
+              && paperDetail!.data!.audioFile!=null
+              && paperDetail!.data!.audioFile!.isNotEmpty){
+
+          }
+          setState(() {
+          });
+        }*/
+
+      }
+    });
     logic.addListenerId(GetBuilderIds.getPracticeRecordList,(){
       if(state.paperDetail!=null){
         paperDetail = state.paperDetail;
@@ -64,7 +92,12 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
       }
     });
-
+    var now = DateTime.now();
+    var formatter = DateFormat('yyyy-M-d');
+    var formattedDate = formatter.format(now);
+    logic.getPracticeDateInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"$formattedDate");
+    //todo 选择日期后带日期进去
+    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"'2023-4-19'");
     logicDetail.addJumpToDetailListen(0, 0);
   }
 
