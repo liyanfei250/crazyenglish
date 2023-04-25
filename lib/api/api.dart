@@ -87,7 +87,11 @@ class Api {
   static String getExamResult = Config.ApiHost + "/question/exercise/getExerciseResultDetails/";
 
 
-  // 金刚区接口 // 周报筛选字典接口
+  // 金刚区接口新增
+  static String getHomeKingListNew =
+      Config.ApiHost + "/question/dictionary/getByType/";
+
+  // 周报筛选字典接口
   static String getHomeKingList =
       Config.ApiHost + "/question/dictionary/getByType/";
 
@@ -112,13 +116,19 @@ class Api {
   static String getPracticeRecordList = Config.ApiHost + "/question/exercise/getExerciseRecordList/";
 
   // 错题本tab接口
-  static String getErrorNoteTabDateList = Config.ApiHost + "/";
+  static String getErrorNoteTabList = Config.ApiHost + "/";
+
+  // 错题本已订正/未订正列表
+  static String getErrorNoteTabDateList = Config.ApiHost + "/question/collected/getCorrectionList";
 
   // 收藏题目最近搜索历史接口
   static String getSearchRecordDateList = Config.ApiHost + "/";
 
   // 收藏列表接口
   static String getSearchCollectListDate = Config.ApiHost + "/";
+
+  // 收藏列表详情接口
+  static String getSearchCollectListDateDetail = Config.ApiHost + "/question/collected/getCollectedDetails";
 
   // 收藏
   static String toCollect = Config.ApiHost + "/question/collected/collectOrCancelQuestion/";

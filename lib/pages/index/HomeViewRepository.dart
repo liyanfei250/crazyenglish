@@ -9,6 +9,7 @@ import '../../entity/base_resp.dart';
 import '../../entity/home/ClassInfoDate.dart';
 import '../../entity/home/CommentDate.dart';
 import '../../entity/home/HomeKingDate.dart';
+import '../../entity/home/HomeKingNewDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
@@ -176,6 +177,21 @@ class HomeViewRepository {
       return sendCodeResponse!;
     } else {
       return Future.error("返回SendCodeResponse为空");
+    }
+  }
+  //金刚区列表新增
+  Future<HomeKingNewDate> getHomeKingListNew(String type) async {
+    Map map = await NetManager.getInstance()!
+        .request(Method.get,options: Options(contentType: ContentType.json.toString()), Api.getHomeKingListNew + type);
+    HomeKingNewDate sendCodeResponse = HomeKingNewDate.fromJson(map);
+    if (sendCodeResponse.code != ResponseCode.status_success) {
+      return Future.error(sendCodeResponse.message!);
+    }
+
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回HomeKingNewDateResponse为空");
     }
   }
 }

@@ -47,6 +47,7 @@ class JsonCacheManageUtils {
   static final int HomeTopScan = 0x013; //首页扫一扫班级
   static final int PersonInfo = 0x014; //个人中心个人信息
   static final int PracticeDate = 0x015; //练习记录日期
+  static final int SearchRecordDetail = 0x016; //练习记录日期
 
   // String contentJson;
 

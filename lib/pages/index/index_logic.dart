@@ -2,6 +2,7 @@ import 'package:crazyenglish/pages/index/HomeViewRepository.dart';
 import 'package:get/get.dart';
 
 import '../../entity/home/HomeKingDate.dart';
+import '../../entity/home/HomeKingNewDate.dart';
 import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/review/HomeListDate.dart';
@@ -25,7 +26,7 @@ class IndexLogic extends GetxController {
 
   void getHomeList(String type) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.HomeListDate)
+            JsonCacheManageUtils.HomeListDate)
         .then((value) {
       if (value != null) {
         return HomeKingDate.fromJson(value as Map<String, dynamic>?);
@@ -40,16 +41,23 @@ class IndexLogic extends GetxController {
     }
     HomeKingDate list = await homeViewRepository.getHomeKingList(type);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeListDate,list.toJson());
+        JsonCacheManageUtils.HomeListDate, list.toJson());
     state.paperDetail = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateList]);
     }
   }
 
+  //todo 新增的金刚去获取列表
+  void getHomeListNew(String type) async {
+    HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
+    state.paperDetailNew = list!;
+    update([GetBuilderIds.getHomeDateListNew]);
+  }
+
   void getMyJournalList() async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.HomeMyJournalDate)
+            JsonCacheManageUtils.HomeMyJournalDate)
         .then((value) {
       if (value != null) {
         return HomeMyJournalListDate.fromJson(value as Map<String, dynamic>?);
@@ -64,7 +72,7 @@ class IndexLogic extends GetxController {
     }
     HomeMyJournalListDate list = await homeViewRepository.getMyJournalList('');
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeMyJournalDate,list.toJson());
+        JsonCacheManageUtils.HomeMyJournalDate, list.toJson());
     state.myJournalDetail = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeMyJournalDate]);
@@ -73,7 +81,7 @@ class IndexLogic extends GetxController {
 
   void getMyTasks() async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.HomeMyTasks)
+            JsonCacheManageUtils.HomeMyTasks)
         .then((value) {
       if (value != null) {
         return HomeMyTasksDate.fromJson(value as Map<String, dynamic>?);
@@ -88,7 +96,7 @@ class IndexLogic extends GetxController {
     }
     HomeMyTasksDate list = await homeViewRepository.getMyTask('');
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeMyTasks,list.toJson());
+        JsonCacheManageUtils.HomeMyTasks, list.toJson());
     state.myTask = list!;
     if (!hasCache) {
       update([GetBuilderIds.getMyTasksDate]);

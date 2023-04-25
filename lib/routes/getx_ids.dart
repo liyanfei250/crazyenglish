@@ -48,11 +48,14 @@ class GetBuilderIds {
   //复习
   static const String getReviewHomeDate = "getReviewHomeDate";
   static const String getPracticeRecordList = "getPracticeRecordList";
+  static const String getErrorNoteTab = "getErrorNoteTab";
   static const String getErrorNoteTabDate = "getErrorNoteTabDate";
   static const String getSearchRecord = "getSearchRecord";
   static const String getCollectListDate = "getCollectListDate";
+  static const String getCollectListDetail = "getCollectListDetail";
   static const String toCollectDate = "toCollectDate";
   static const String getHomeDateList = "getHomeDateList";
+  static const String getHomeDateListNew = "getHomeDateListNew";
   static const String getHomeListChoiceDate = "getHomeListChoiceDate";
   static const String getHomeSecondListDate = "getHomeSecondListDate";
   static const String getHomeWeeklyChoiceDate = "getHomeWeeklyChoiceDate";
