@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
@@ -16,7 +17,7 @@ import '../question_factory.dart';
  */
 class SelectFillingQuestion extends BaseQuestion {
 
-  SelectFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  SelectFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
   BaseQuestionState<SelectFillingQuestion> getState() => _SelectFillingQuestionState();
@@ -58,8 +59,10 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
     // 普通阅读 常规阅读题 是父子题
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
-      jumpToQuestion(defaultIndex);
+      // 更新底部页码
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
+      // 更新空选中状态
+      selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
     }
 
     return SingleChildScrollView(
@@ -68,7 +71,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback,widget.subtopicAnswerVoMap),
           QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
@@ -15,7 +16,7 @@ import '../question_factory.dart';
  */
 class SelectWordsFillingQuestion extends BaseQuestion {
 
-  SelectWordsFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  SelectWordsFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
   BaseQuestionState<SelectWordsFillingQuestion> getState() => _SelectWordsFillingQuestionState();
@@ -54,8 +55,10 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   Widget getDetail(int defaultIndex){
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
-      jumpToQuestion(defaultIndex);
+      // 更新底部页码
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
+      // 更新空选中状态
+      selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
     }
     return SingleChildScrollView(
       child: Column(
@@ -63,8 +66,8 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController),
-          QuestionFactory.buildSelectAnswerQuestion(element.optionsList!)
+          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap),
+          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
         ],
       ),
     );

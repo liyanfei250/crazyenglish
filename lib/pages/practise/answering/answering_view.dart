@@ -55,7 +55,7 @@ class AnsweringPage extends BasePage {
       testDetailResponse = Get.arguments[examDetailKey];
       uuid = Get.arguments[catlogIdKey];
       parentIndex = Get.arguments[parentIndexKey];
-      parentIndex =2;
+      parentIndex =6;
       childIndex = Get.arguments[childIndexKey];
       startExam = Get.arguments[lastExamResult];
     }
@@ -86,11 +86,27 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final PageController pageController = PageController(keepPage: true);
 
   detail.SubjectVoList? currentSubjectVoList;
+  // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
+  ExerciseVos exerciseVo = ExerciseVos();
+  // subtopicId SubtopicAnswerVo
+  Map<String,ExerciseLists> subtopicAnswerVoMap = {};
 
   @override
   void onCreate() {
     startTimer();
-
+    if(widget.startExam!=null && widget.startExam!.obj!=null){
+      if(widget.startExam!.obj!.exerciseVos!=null
+          && widget.startExam!.obj!.exerciseVos!.length>0){
+        exerciseVo = widget.startExam!.obj!.exerciseVos![0];
+        if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
+          exerciseVo.exerciseLists!.forEach((element) {
+            subtopicAnswerVoMap[
+            (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
+                .toString()] = element;
+          });
+        }
+      }
+    }
     logic.addListenerId(GetBuilderIds.examResult, () {
       RouterUtil.offAndToNamed(
           AppRoutes.ResultPage,arguments: {
@@ -108,6 +124,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     pages = buildQuestionList(widget.testDetailResponse!);
 
     return Scaffold(
+      resizeToAvoidBottomInset:false,
       appBar: AppBar(
         title: Text(
           widget.testDetailResponse!.obj!.name??"未获取到标题",
@@ -250,21 +267,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(currentSubjectVoList!));
+          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(currentSubjectVoList!));
+          questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(currentSubjectVoList!));
+              questionList.add(ListenQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(currentSubjectVoList!));
+              questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestion(currentSubjectVoList!));
+              questionList.add(OthersQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
               Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {

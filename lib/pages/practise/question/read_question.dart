@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/start_exam.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +21,7 @@ import '../../../entity/week_detail_response.dart';
  */
 class ReadQuestion extends BaseQuestion {
 
-  ReadQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  ReadQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
 
   @override

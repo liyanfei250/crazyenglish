@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
@@ -32,7 +33,8 @@ typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   late BaseQuestionState baseQuestionState;
   late SubjectVoList data;
-  BaseQuestion({required this.data,Key? key}) : super(key: key);
+  late Map<String,ExerciseLists> subtopicAnswerVoMap;
+  BaseQuestion(this.subtopicAnswerVoMap,{required this.data,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -67,8 +69,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   String curPage = "";
   String tag = "BaseQuestionState_";
 
-  Map<String,TextEditingController> gapEditController = {};
-  Map<String,FocusNode> gapFocusNodeController = {};
+  final Map<String,TextEditingController> gapEditController = {};
+  final Map<String,FocusNode> gapFocusNodeController = {};
   Map<String,String> gapAnswerController = {};
   final PageController pageController = PageController(keepPage: true);
 
@@ -287,6 +289,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   FocusNode makeFocusNodeController(String key){
     if(gapFocusNodeController[key] == null){
       FocusNode focusNode = FocusNode();
+      focusNode.addListener(() {
+
+      });
       gapFocusNodeController[key] = focusNode;
       return focusNode;
     }else{

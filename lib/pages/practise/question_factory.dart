@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../base/widgetPage/dialog_manager.dart';
+import '../../entity/start_exam.dart';
 import '../../entity/week_detail_response.dart';
 import '../../utils/colors.dart';
 import '../../widgets/ChoiceRadioItem.dart';
@@ -359,123 +360,138 @@ class QuestionFactory{
 
   /// 选词填空 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,{int gapKey = 0,int defaultIndex = 0}){
+  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
     String htmlContent = subjectVoList.content??"";
+
     while(htmlContent.contains(gap)){
-      gapKey++;
-      gapIndex++;
-      print("gapKey: $gapKey gapIndex:$gapIndex");
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex"></gap>');
-
+      num subtopicId = -1;
+      String subtopicAnswer = "";
+      if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
+        subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
+        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+      }else{
+        print("试题空和答案不匹配");
+      }
+      if(subtopicId<0){
+        print("试题答案id获取失败");
+        break;
+      }else{
+        gapKey++;
+        gapIndex++;
+        print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
+        // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
+        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
+      }
     }
-    return FocusScope(
-      node: _scopeNode,
-      child: Html(
-        data: htmlContent??"",
-        onImageTap: (url,context,attributes,element,){
-          if(url!=null && url!.startsWith('http')){
-            DialogManager.showPreViewImageDialog(
-                BackButtonBehavior.close, url);
+    return Html(
+      data: htmlContent??"",
+      onImageTap: (url,context,attributes,element,){
+        if(url!=null && url!.startsWith('http')){
+          DialogManager.showPreViewImageDialog(
+              BackButtonBehavior.close, url);
+        }
+      },
+      style: {
+        // "p":Style(
+        //     fontSize:FontSize.large
+        // ),
+      },
+      tagsList: Html.tags..addAll(['gap']),
+      customRenders: {
+        tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+          String key = context.tree.element!.attributes["value"]??"unknown";
+          String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+          String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
+          int subtopicId = int.parse(subtopicIdstr);
+          String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+          String content = "";
+          int num = 0;
+          print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
+          var correctType = 0.obs;
+
+          if(isResult){
+
+          }else if(isErrorCome){
+
           }
-        },
-        style: {
-          // "p":Style(
-          //     fontSize:FontSize.large
-          // ),
-        },
-        tagsList: Html.tags..addAll(['gap']),
-        customRenders: {
-          tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
-            String key = context.tree.element!.attributes["value"]??"unknown";
-            String gapIndex = context.tree.element!.attributes["index"]??"unknown";
-            String content = "";
-            int num = 0;
-            var correctType = 0.obs;
-            try {
-              num = int.parse(gapIndex);
-              max = num;
+          return SizedBox(
+            width: 50.w,
+            child: GetBuilder<SelectGapGetxController>(
+              id: key,
+              builder: (_){
+                if(key =="1"){
+                  print("getBuilderddd:${key}");
+                  getFocusNodeControllerCallback(key)!.requestFocus();
+                }
 
-              // if(list!=null && num< list!.length){
-              //   content = list![num].content!;
-              // }else{
-                content = "";
-              // }
-              print("num: $num content: $content");
-            } catch (e) {
-              e.printError();
-            }
 
-            return SizedBox(
-              width: 50.w,
-              child: Obx(()=>TextField(
-                  keyboardType: TextInputType.name,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: _getInputColor(correctType.value)),
-                  decoration: InputDecoration(
-                    isDense:true,
-                    contentPadding: EdgeInsets.all(0.w),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1.w,
-                          color: _getInputColor(correctType.value),
-                          style: BorderStyle.solid
+                return TextField(
+                    keyboardType: TextInputType.name,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    // autofocus: key == "1",
+                    style: TextStyle(color: _getInputColor(0)),
+                    focusNode: getFocusNodeControllerCallback(key),
+                    decoration: InputDecoration(
+                      isDense:true,
+                      contentPadding: EdgeInsets.all(0.w),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1.w,
+                            color: _getInputColor(0),
+                            style: BorderStyle.solid
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1.w,
+                            color: _getInputColor(0),
+                            style: BorderStyle.solid
+                        ),
                       ),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1.w,
-                          color: _getInputColor(correctType.value),
-                          style: BorderStyle.solid
-                      ),
-                    ),
-                  ),
-                  onChanged: (text){
-                    print("intput:"+text+"  content:"+content);
-                    if(content.isNotEmpty){
-                      if(text.isNotEmpty){
-                        if(content.startsWith(text)){
-                          correctType.value = 1;
-                        }else{
-                          correctType.value = -1;
-                        }
-                      }else{
-                        correctType.value = 0;
-                      }
-                    }else{
-                      correctType.value = 0;
-                    }
+                    onChanged: (text){
+                      print("intput:"+text+"  content:"+content);
 
-                  },
-                  onSubmitted: (text){
 
-                  },
-                  onEditingComplete: (){
-                    if(num < max){
-                      _scopeNode.nextFocus();
-                    }else{
-                      _scopeNode.unfocus();
-                    }
+                    },
+                    onSubmitted: (text){
 
-                  },
-                  controller: getEditingControllerCallback(key))),
+                    },
+                    onEditingComplete: (){
+                      // if(num < max){
+                      //   _scopeNode.nextFocus();
+                      // }else{
+                      //   _scopeNode.unfocus();
+                      // }
 
-            );
-          })
-        },
+                    },
+                    controller: getEditingControllerCallback(key)
+                    // TextEditingController.fromValue(
+                    //   TextEditingValue(
+                    //       text: _.contentMap[key]??"",  //判断keyword是否为空
+                    //       selection: TextSelection.fromPosition(TextPosition(
+                    //           affinity: TextAffinity.downstream,
+                    //           offset: (_.contentMap[key]??"").length))),)
+                );
+              },
+            ),
 
-      ),
+          );
+        })
+      },
+
     );
   }
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,{int gapKey = 0,UserAnswerCallback? userAnswerCallback}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -648,6 +664,7 @@ class QuestionFactory{
                   gapKey = key;
                 }
               });
+
               // 去掉之前的选项 选择状态
               String findBeforeAnswerIndex = "";
               _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
@@ -688,7 +705,7 @@ class QuestionFactory{
   }
 
   /// 选词填空的词
-  static Widget buildSelectAnswerQuestion(List<OptionsList> answers){
+  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers){
     return Wrap(
       children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
     );
@@ -710,13 +727,21 @@ class QuestionFactory{
                 gapKey = key;
               }
             });
-            if((_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isEmpty){
-              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-              _.updateGapKeyContent(gapKey, answer.content??"");
-            }else{
-              _.updateAnswerIndexToGapKey("answer:${answerIndex}", "");
-              _.updateGapKeyContent(gapKey, "");
+
+            // 去掉之前的选项 选择状态
+            String findBeforeAnswerIndex = "";
+            _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
+              if(value == gapKey){
+                findBeforeAnswerIndex = answerIndex;
+              }
+            });
+            if(findBeforeAnswerIndex.isNotEmpty){
+              _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
             }
+
+            // 修改当前选中状态 当前选项 answerIndex 映射到 此空
+            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+
           },
           child: Container(
             height: 22.w,
