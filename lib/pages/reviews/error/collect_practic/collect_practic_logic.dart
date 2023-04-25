@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../../entity/home/SearchCollectListDetail.dart';
 import '../../../../entity/review/CancellCollectDate.dart';
 import '../../../../entity/review/CollectDate.dart';
 import '../../../../entity/review/SearchCollectListDate.dart';
@@ -90,6 +91,31 @@ class Collect_practicLogic extends GetxController {
     //   }
     // }
     update([GetBuilderIds.getCollectListDate]);
+  }
+
+  void getCollectListDetail(String id) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.SearchRecordDetail,
+        labelId: id.toString())
+        .then((value) {
+      if (value != null) {
+        return SearchCollectListDetail.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is SearchCollectListDetail) {
+      state.ListDetail = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getCollectListDetail]);
+    }
+    SearchCollectListDetail list = await recordData.getCollectListDetail(id);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.SearchRecordDetail, labelId: id, list.toJson());
+    state.ListDetail = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getCollectListDetail]);
+    }
   }
 
   void toCollect(int userid,String id) async {

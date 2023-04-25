@@ -67,7 +67,23 @@ class _IndexPageState extends BasePageState<IndexPage>
 
       }
     });
+    //获取金刚区列表新增的列表
+    logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
+      if (state.paperDetailNew != null) {
+
+       /* if (state.paperDetail!.obj != null &&
+            state.paperDetail!.obj!.length > 0) {
+          setState(() {
+            functionTxtNew = state.paperDetail!.obj!;
+            functionTxt =
+                state.paperDetail!.obj!.map((obj) => obj.name!).toList();
+          });
+        }*/
+
+      }
+    });
     logic.getHomeList('classify_type');
+    logic.getHomeListNew('classify_type');
     //获取我的期刊列表
     logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {

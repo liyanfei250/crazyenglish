@@ -33,7 +33,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   refresh.RefreshController _refreshController =
-  refresh.RefreshController(initialRefresh: false);
+      refresh.RefreshController(initialRefresh: false);
   bool _showClearButton = false;
   final TextEditingController _searchController = TextEditingController();
   final int pageSize = 10;
@@ -147,6 +147,13 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {
       Util.toast('成功或者取消');
+    });
+
+    //收藏列表点击详情的接口
+    logic.getCollectListDetail('');
+
+    logic.addListenerId(GetBuilderIds.getCollectListDetail, () {
+      Util.toast('收藏列表点击详情的接口成功');
     });
   }
 
@@ -363,7 +370,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             GestureDetector(
               onTap: () {
                 //todo  换成具体的id
-                logic.toCollect(SpUtil.getInt(BaseConstant.USER_ID),"1648489081851772929");
+                logic.toCollect(
+                    SpUtil.getInt(BaseConstant.USER_ID), "1648489081851772929");
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),

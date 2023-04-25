@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
 import '../../../entity/base_resp.dart';
+import '../../../entity/home/ErrorNoteTab.dart';
 import '../../../entity/home/PractiseDate.dart';
+import '../../../entity/home/SearchCollectListDetail.dart';
 import '../../../entity/review/CancellCollectDate.dart';
 import '../../../entity/review/CollectDate.dart';
 import '../../../entity/review/ErrorNoteTabDate.dart';
@@ -49,11 +53,23 @@ class ReviewRepository {
       return paperDetail!;
     }
   }
-
-  Future<ErrorNoteTabDate> getErrorNoteTabDate(String id) async {
+//获取tab
+  Future<ErrorNoteTab> getErrorNoteTab(String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getErrorNoteTabDateList,
+        Method.get, Api.getErrorNoteTabList,
         options: Options(method: Method.get));
+    ErrorNoteTab paperDetail = ErrorNoteTab.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+  //获取错题本数据列表
+  Future<ErrorNoteTabDate> getErrorNoteTabDate(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.getErrorNoteTabDateList,data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     ErrorNoteTabDate paperDetail = ErrorNoteTabDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
@@ -79,6 +95,19 @@ class ReviewRepository {
         Method.get, Api.getSearchCollectListDate,
         options: Options(method: Method.get));
     SearchCollectListDate paperDetail = SearchCollectListDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //收藏列表的详情接口
+  Future<SearchCollectListDetail> getCollectListDetail(String  req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getSearchCollectListDateDetail,
+        options: Options(method: Method.get));
+    SearchCollectListDetail paperDetail = SearchCollectListDetail.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

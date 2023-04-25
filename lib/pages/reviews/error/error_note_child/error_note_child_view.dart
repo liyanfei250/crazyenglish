@@ -39,7 +39,6 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
-    logic.getTabArrays(ErrorNoteChildPage.WAIT_CORRECT);
     logic.addListenerId(GetBuilderIds.getPracticeRecordList,(){
       if(state.paperDetail!=null){
         paperDetail = state.paperDetail;
@@ -59,6 +58,18 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
 
       }
     });
+    logic.addListenerId(GetBuilderIds.getErrorNoteTabDate,(){
+
+    });
+    logic.getTabArrays(1,1,2);
+
+
+    //获取tab
+    logic.addListenerId(GetBuilderIds.getErrorNoteTab,(){
+
+    });
+    //获取tab
+    logic.getErrorNoteTab(0);
   }
 
   @override

@@ -22,7 +22,7 @@ class Practise_historyLogic extends GetxController {
 
   void getPracticeDateInfo(String id,String date) async{
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.PracRecordInfoResponse,labelId: id.toString()).then((value){
+        JsonCacheManageUtils.PracticeDate,labelId: id.toString()).then((value){
       if(value!=null){
         return PractiseDate.fromJson(value as Map<String,dynamic>?);
       }
@@ -47,7 +47,7 @@ class Practise_historyLogic extends GetxController {
 
   void getRecordInfo(String id,String date) async{
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.PracticeDate,labelId: id.toString()).then((value){
+        JsonCacheManageUtils.PracRecordInfoResponse,labelId: id.toString()).then((value){
       if(value!=null){
         return PractiseHistoryDate.fromJson(value as Map<String,dynamic>?);
       }

@@ -21,6 +21,7 @@ import 'utils.dart';
 
 class Practise_historyPage extends BasePage {
   const Practise_historyPage({Key? key}) : super(key: key);
+
   @override
   BasePageState<BasePage> getState() => _Practise_historyPageState();
 }
@@ -45,6 +46,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   DateTime? _rangeEnd;
   PractiseHistoryDate? paperDetail;
   PractiseDate? dateDetail;
+  late List<Obj> listData = [];
+
   @override
   void initState() {
     super.initState();
@@ -52,11 +55,11 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
 
-    logic.addListenerId(GetBuilderIds.PracticeDate,(){
-      if(state.dateDetail!=null){
+    logic.addListenerId(GetBuilderIds.PracticeDate, () {
+      if (state.dateDetail != null) {
         dateDetail = state.dateDetail;
         //todo 日期数据处理
-        print('object+='+dateDetail!.obj![0]!.toString());
+        print('object+=' + dateDetail!.obj![0]!.toString());
         /*if(mounted && _refreshController!=null){
           if(paperDetail!.data!=null
               && paperDetail!.data!.videoFile!=null
@@ -73,9 +76,16 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
       }
     });
-    logic.addListenerId(GetBuilderIds.getPracticeRecordList,(){
-      if(state.paperDetail!=null){
+    logic.addListenerId(GetBuilderIds.getPracticeRecordList, () {
+      if (state.paperDetail != null) {
         paperDetail = state.paperDetail;
+        if (mounted &&
+            paperDetail!.obj != null &&
+            paperDetail!.obj!.length > 0) {
+          setState(() {
+            listData = paperDetail!.obj!;
+          });
+        }
         /*if(mounted && _refreshController!=null){
           if(paperDetail!.data!=null
               && paperDetail!.data!.videoFile!=null
@@ -95,9 +105,12 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     var now = DateTime.now();
     var formatter = DateFormat('yyyy-M-d');
     var formattedDate = formatter.format(now);
-    logic.getPracticeDateInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"$formattedDate");
+    // logic.getPracticeDateInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"$formattedDate");
+    logic.getPracticeDateInfo(
+        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'2023-4-19'");
     //todo 选择日期后带日期进去
-    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"'2023-4-19'");
+    logic.getRecordInfo(
+        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'2023-4-19'");
     logicDetail.addJumpToDetailListen(0, 0);
   }
 
@@ -157,10 +170,12 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(left: 38.w,right: 38.w),
+            padding: EdgeInsets.only(left: 38.w, right: 38.w),
             decoration: BoxDecoration(
               color: AppColors.c_FFFFFFFF,
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.w),bottomRight: Radius.circular(20.w)),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.w),
+                  bottomRight: Radius.circular(20.w)),
             ),
             child: TableCalendar<Event>(
               firstDay: kFirstDay,
@@ -177,41 +192,62 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
               rangeSelectionMode: _rangeSelectionMode,
               eventLoader: _getEventsForDay,
               startingDayOfWeek: StartingDayOfWeek.monday,
-              daysOfWeekStyle: DaysOfWeekStyle(
-                  dowTextFormatter:(date, locale){
-                    String week =  DateFormat.E("en_US").format(date);
-                    switch(week){
-                      case "Mon": return "一";
-                      case "Tue": return "二";
-                      case "Wed": return "三";
-                      case "Thu": return "四";
-                      case "Fri": return "五";
-                      case "Sat": return "六";
-                      case "Sun": return "日";
-                    }
-                    return week;
-                  }
-              ),
+              daysOfWeekStyle:
+                  DaysOfWeekStyle(dowTextFormatter: (date, locale) {
+                String week = DateFormat.E("en_US").format(date);
+                switch (week) {
+                  case "Mon":
+                    return "一";
+                  case "Tue":
+                    return "二";
+                  case "Wed":
+                    return "三";
+                  case "Thu":
+                    return "四";
+                  case "Fri":
+                    return "五";
+                  case "Sat":
+                    return "六";
+                  case "Sun":
+                    return "日";
+                }
+                return week;
+              }),
               headerStyle: HeaderStyle(
-                  formatButtonVisible:false,
-                  titleCentered:true,
-                  leftChevronMargin: EdgeInsets.only(left: 0),
-                  leftChevronPadding: EdgeInsets.only(left: 8.w),
-                  leftChevronIcon: Image.asset(R.imagesHistoryPreMonth,width: 12.w,height: 12.w,),
-                  rightChevronIcon: Image.asset(R.imagesHistoryNextMonth,width: 12.w,height: 12.w,),
-                  rightChevronMargin: EdgeInsets.only(right: 0),
-                  rightChevronPadding: EdgeInsets.only(right: 8.w),
+                formatButtonVisible: false,
+                titleCentered: true,
+                leftChevronMargin: EdgeInsets.only(left: 0),
+                leftChevronPadding: EdgeInsets.only(left: 8.w),
+                leftChevronIcon: Image.asset(
+                  R.imagesHistoryPreMonth,
+                  width: 12.w,
+                  height: 12.w,
+                ),
+                rightChevronIcon: Image.asset(
+                  R.imagesHistoryNextMonth,
+                  width: 12.w,
+                  height: 12.w,
+                ),
+                rightChevronMargin: EdgeInsets.only(right: 0),
+                rightChevronPadding: EdgeInsets.only(right: 8.w),
               ),
               calendarStyle: CalendarStyle(
-                markersMaxCount:1,
-                markerMargin:EdgeInsets.only(top: 6.w),
+                markersMaxCount: 1,
+                markerMargin: EdgeInsets.only(top: 6.w),
                 markerDecoration: const BoxDecoration(
                   color: const Color(0xFFED702D),
                   shape: BoxShape.circle,
                 ),
-                cellMargin: EdgeInsets.only(left: 6.w,right: 6.w,top: 11.w,bottom: 11.w),
-                todayTextStyle:  TextStyle(color: AppColors.c_FFED702D,fontSize: 14.sp,fontWeight: FontWeight.w500),
-                selectedTextStyle: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 14.sp,fontWeight: FontWeight.w500),
+                cellMargin: EdgeInsets.only(
+                    left: 6.w, right: 6.w, top: 11.w, bottom: 11.w),
+                todayTextStyle: TextStyle(
+                    color: AppColors.c_FFED702D,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
+                selectedTextStyle: TextStyle(
+                    color: AppColors.c_FFFFFFFF,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
                 selectedDecoration: const BoxDecoration(
                   color: const Color(0xFFED702D),
                   shape: BoxShape.circle,
@@ -220,17 +256,38 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                   color: const Color(0xFFFFFFFF),
                   shape: BoxShape.circle,
                 ),
-                outsideTextStyle: TextStyle(color: AppColors.c_FF898A93,fontSize: 14.sp,fontWeight: FontWeight.w500),
-                defaultTextStyle: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp,fontWeight: FontWeight.w500),
-                weekendTextStyle: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp,fontWeight: FontWeight.w500),
+                outsideTextStyle: TextStyle(
+                    color: AppColors.c_FF898A93,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
+                defaultTextStyle: TextStyle(
+                    color: AppColors.c_FF353E4D,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
+                weekendTextStyle: TextStyle(
+                    color: AppColors.c_FF353E4D,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
               ),
               calendarBuilders: CalendarBuilders<Event>(
-                headerTitleBuilder:(context, day){
+                headerTitleBuilder: (context, day) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${day.year}年",style: TextStyle(color: AppColors.c_80ED702D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
-                      Text(" ${day.month}月",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+                      Text(
+                        "${day.year}年",
+                        style: TextStyle(
+                            color: AppColors.c_80ED702D,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        " ${day.month}月",
+                        style: TextStyle(
+                            color: AppColors.c_FFED702D,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ],
                   );
                 },
@@ -252,28 +309,33 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
           const SizedBox(height: 8.0),
           ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
-              builder: (context,value,_){
-            return Visibility(
-                visible: value.length > 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 24.w,
-                      child: LeftLineWidget(
-                        showBottom: true,
-                        showTop: false,
-                        isLight: false,
-                      ),
-                    ),
-                    Text("${_selectedDay?.year}年${_selectedDay?.month}月${_selectedDay?.day}日",
-                      softWrap: true,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Color(0xff151619),fontSize: 14.w,fontWeight: FontWeight.w500),
-                    )
-                  ],));
-          }),
+              builder: (context, value, _) {
+                return Visibility(
+                    visible: value.length > 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 24.w,
+                          child: LeftLineWidget(
+                            showBottom: true,
+                            showTop: false,
+                            isLight: false,
+                          ),
+                        ),
+                        Text(
+                          "${_selectedDay?.year}年${_selectedDay?.month}月${_selectedDay?.day}日",
+                          softWrap: true,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Color(0xff151619),
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ));
+              }),
           Container(
             decoration: MyDecoration(),
             margin: EdgeInsets.only(left: 24),
@@ -283,72 +345,103 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
               builder: (context, value, _) {
                 return Container(
                   decoration: BoxDecoration(
-                      borderRadius:BorderRadius.all( Radius.circular(13.w)),
+                      borderRadius: BorderRadius.all(Radius.circular(13.w)),
                       color: Colors.white,
                       boxShadow: const [
                         BoxShadow(
                           color: Color(0xfffbf4f2),
-                          offset: Offset(0,0),
+                          offset: Offset(0, 0),
                           blurRadius: 20,
                           spreadRadius: 0,
-                        )]
-                  ),
+                        )
+                      ]),
                   child: ListView(
                     shrinkWrap: true,
-                    children: value.map((element) {
+                    children: listData.map((element) {
                       return Container(
-                        height: 83.w,
-                        padding: EdgeInsets.only(left: 28.2,right: 24.w),
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: (){
-                                logicDetail.getDetailAndStartExam("0");
-                                showLoading("");
-                              },
-                              child: Expanded(child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                          height: 83.w,
+                          padding: EdgeInsets.only(left: 28.2, right: 24.w),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  logicDetail.getDetailAndStartExam("0");
+                                  showLoading("");
+                                },
+                                child: Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Text("01. 情景反应",style: TextStyle(color: Color(0xff353e4d),fontSize: 14.sp),),
-                                      Padding(padding: EdgeInsets.only(top: 11.w)),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                      Column(
                                         mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: 48.w,
-                                            height: 17.w,
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsets.only(right: 13.w),
-                                            decoration: BoxDecoration(
-                                              color: Color(0xfffff7ed),
-                                              borderRadius: BorderRadius.all(Radius.circular(2.w)),
-                                            ),
-                                            child: Text("10:11",style: TextStyle(color: Color(0xffed702d),fontSize: 12.sp),),
+                                          Text(
+                                            element.questionTypeName ?? "",
+                                            style: TextStyle(
+                                                color: Color(0xff353e4d),
+                                                fontSize: 14.sp),
                                           ),
-                                          Text("60%正确率",style: TextStyle(color: Color(0xff898a93),fontSize: 12.sp),),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 11.w)),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                width: 48.w,
+                                                height: 17.w,
+                                                alignment: Alignment.center,
+                                                margin: EdgeInsets.only(
+                                                    right: 13.w),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xfffff7ed),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(2.w)),
+                                                ),
+                                                child: Text(
+                                                  element.time ?? "",
+                                                  style: TextStyle(
+                                                      color: Color(0xffed702d),
+                                                      fontSize: 12.sp),
+                                                ),
+                                              ),
+                                              Text(
+                                                element.accuracy ?? "" + "%正确率",
+                                                style: TextStyle(
+                                                    color: Color(0xff898a93),
+                                                    fontSize: 12.sp),
+                                              ),
+                                            ],
+                                          )
                                         ],
+                                      ),
+                                      Image.asset(
+                                        R.imagesHistoryJumpArrow,
+                                        width: 10.w,
+                                        height: 10.w,
                                       )
                                     ],
                                   ),
-                                  Image.asset(R.imagesHistoryJumpArrow,width: 10.w,height: 10.w,)
-                                ],
-                              ),),
-                            ),
-                            Visibility(
-                                visible: true,
-                                child: Divider(color: AppColors.c_FFD2D5DC,thickness: 0.2.w,))
-
-                          ],
-                        )
-                      );
+                                ),
+                              ),
+                              Visibility(
+                                  visible: true,
+                                  child: Divider(
+                                    color: AppColors.c_FFD2D5DC,
+                                    thickness: 0.2.w,
+                                  ))
+                            ],
+                          ));
                     }).toList(),
                   ),
                 );

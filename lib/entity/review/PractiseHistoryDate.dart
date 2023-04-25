@@ -1,6 +1,6 @@
 /// code : 0
 /// message : "系统正常"
-/// obj : [{"exerciseId":1648489081851772929,"questionTypeName":"完形填空","time":"09:14:11","exerciseCount":7,"correctCount":4,"accuracy":"57.14"}]
+/// obj : [{"exerciseId":1648489081851772929,"questionTypeName":"完形填空","time":"09:14:11","exerciseCount":16,"correctCount":11,"accuracy":"68.75"}]
 /// p : null
 
 class PractiseHistoryDate {
@@ -60,13 +60,13 @@ PractiseHistoryDate copyWith({  num? code,
 /// exerciseId : 1648489081851772929
 /// questionTypeName : "完形填空"
 /// time : "09:14:11"
-/// exerciseCount : 7
-/// correctCount : 4
-/// accuracy : "57.14"
+/// exerciseCount : 16
+/// correctCount : 11
+/// accuracy : "68.75"
 
 class Obj {
   Obj({
-      num? exerciseId, 
+      num? exerciseId,
       String? questionTypeName, 
       String? time, 
       num? exerciseCount, 
