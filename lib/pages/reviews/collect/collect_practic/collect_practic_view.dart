@@ -8,14 +8,12 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 
 import '../../../../base/widgetPage/base_page_widget.dart';
+import '../../../../entity/home/HomeKingDate.dart' as tabDate;
 import '../../../../entity/review/SearchCollectListDate.dart';
 import '../../../../entity/review/SearchRecordDate.dart';
 import '../../../../r.dart';
-import '../../../../routes/app_pages.dart';
 import '../../../../routes/getx_ids.dart';
-import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
-import '../../../../widgets/search_bar.dart';
 import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'collect_practic_logic.dart';
 
@@ -41,33 +39,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   final int pageStartIndex = 1;
   SearchRecordDate? paperDetail;
 
-  /*List listDataOne = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-  ];*/
-
-  List searchList = [
-    {
-      "title": "全部",
-      "type": 0,
-    },
-    {"title": "最近查看", "type": 1},
-    {"title": "听力题", "type": 2},
-    {"title": "阅读题", "type": 3},
-    {"title": "写作题", "type": 4},
-  ];
+  List<tabDate.Obj> searchList = [];
   List<Obj> weekPaperList = [];
 
   @override
@@ -80,7 +52,20 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       });
     });
 
-    logic.getSearchRecord('0');
+    //获取筛选列表
+    logic.addListenerId(GetBuilderIds.getHomeDateList, () {
+      if (state.tabList != null) {
+        if (state.tabList!.obj != null && state.tabList!.obj!.length > 0) {
+          // RouterUtil.toNamed(AppRoutes.ErrorNotePage,
+          //     arguments: state.tabList!.obj!);
+          setState(() {
+            searchList = state.tabList!.obj!;
+          });
+        }
+      }
+    });
+    //先获取tab接口，用来筛选
+    logic.getHomeList('classify_type');
 
     //收藏筛选列表
     logic.addListenerId(GetBuilderIds.getSearchRecord, () {
@@ -102,10 +87,10 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
       }
     });
+    logic.getSearchRecord('0');
 
     //收藏列表
     logic.addListenerId(GetBuilderIds.getCollectListDate, () {
-      Util.toast('获取收藏列表成功');
       hideLoading();
       if (state.paperList != null && state.paperList != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -141,7 +126,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     // showLoading("");
-
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {
       Util.toast('成功或者取消');
@@ -282,22 +266,17 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     );
   }
 
-  Widget test(value) {
-    var newlist = searchList.where((element) => element['type'] > 1);
-    return listitem(newlist);
-  }
-
-  Widget listitem(value) {
+  Widget listitem(tabDate.Obj value) {
     return ActionChip(
       // padding: EdgeInsets.only(top: 4.w,bottom: 4.w),
       // labelPadding:EdgeInsets.only(top: 0.w,bottom: 0.w) ,
       onPressed: () {
         //Util.toast(value['title']);
-        Util.toast(value['type'].toString());
-        _searchController.text = value['title'];
+        Util.toast(value.name.toString());
+        _searchController.text = value!.name!;
       },
       label: Text(
-        value['title'],
+        value!.name!,
         style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
       ),
       backgroundColor: Colors.white,

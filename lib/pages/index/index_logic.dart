@@ -26,9 +26,29 @@ class IndexLogic extends GetxController {
 
   //todo 新增的金刚区列表
   void getHomeListNew(String type) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+            JsonCacheManageUtils.HomeKingListNew)
+        .then((value) {
+      if (value != null) {
+        return HomeKingNewDate.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is HomeKingNewDate) {
+      state.paperDetailNew = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeDateListNew]);
+    }
+
     HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
+
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeKingListNew, list.toJson());
     state.paperDetailNew = list!;
-    update([GetBuilderIds.getHomeDateListNew]);
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeDateListNew]);
+    }
   }
 
   void getMyJournalList() async {

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../../entity/home/HomeKingDate.dart';
 import '../../../../entity/home/SearchCollectListDetail.dart';
 import '../../../../entity/review/CancellCollectDate.dart';
 import '../../../../entity/review/CollectDate.dart';
@@ -38,6 +39,32 @@ class Collect_practicLogic extends GetxController {
       update([GetBuilderIds.getSearchRecord]);
     }
   }
+
+  //搜索筛选
+  void getHomeList(String type) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.HomeListDate)
+        .then((value) {
+      if (value != null) {
+        return HomeKingDate.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is HomeKingDate) {
+      state.tabList = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeDateList]);
+    }
+    HomeKingDate list = await recordData.getHomeKingList(type);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeListDate, list.toJson());
+    state.tabList = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeDateList]);
+    }
+  }
+
 
   void getCollectList(int userId, bool isRecentView, dynamic classify, int size,
       int current) async {
