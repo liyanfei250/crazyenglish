@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/common.dart';
 import '../../../entity/week_detail_response.dart' as detail;
+import '../../../entity/week_detail_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
@@ -22,6 +23,7 @@ import '../../../utils/colors.dart';
 import '../question/base_question.dart';
 import '../question/select_words_filling_question.dart';
 import 'answering_logic.dart';
+import 'page_getxcontroller.dart';
 
 /// 核心逻辑：答题页
 /// 参数：
@@ -38,7 +40,7 @@ import 'answering_logic.dart';
 /// examResult: 历史作答数据 默认空
 class AnsweringPage extends BasePage {
   detail.WeekDetailResponse? testDetailResponse;
-  StartExam? startExam;
+  StartExam? lastFinishResult;
   var uuid;
   int parentIndex = 0;
   int childIndex = 0;
@@ -47,7 +49,7 @@ class AnsweringPage extends BasePage {
   static const catlogIdKey = "catlogId";
   static const parentIndexKey = "parentIndex";
   static const childIndexKey = "childIndex";
-  static const lastExamResult = "lastExamResult";
+  static const LastFinishResult = "LastFinishResult";
   static const examResult = "examResult";
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -55,9 +57,8 @@ class AnsweringPage extends BasePage {
       testDetailResponse = Get.arguments[examDetailKey];
       uuid = Get.arguments[catlogIdKey];
       parentIndex = Get.arguments[parentIndexKey];
-      parentIndex =1;
       childIndex = Get.arguments[childIndexKey];
-      startExam = Get.arguments[lastExamResult];
+      lastFinishResult = Get.arguments[LastFinishResult];
     }
   }
 
@@ -66,10 +67,45 @@ class AnsweringPage extends BasePage {
     // TODO: implement getState
     return _AnsweringPageState();
   }
+
+
+  static SubjectVoList? findJumpSubjectVoList(detail.WeekDetailResponse? testDetailResponse,int parentIndex){
+    if (testDetailResponse!=null && testDetailResponse!.obj != null) {
+      int length = testDetailResponse!.obj!.subjectVoList!.length;
+
+      if(parentIndex < length){
+        return testDetailResponse!.obj!.subjectVoList![parentIndex];
+      }
+    }
+    return null;
+  }
+
+  static Map<String,ExerciseLists> findExerciseResultToMap(Exercise examResult,num subjectId){
+    Map<String,ExerciseLists> subtopicAnswerVoMap = {};
+    if(examResult.exerciseVos!=null
+        && examResult.exerciseVos!.length>0) {
+      examResult.exerciseVos!.forEach((element) {
+        ExerciseVos exerciseVo = element;
+        if (element.subjectId == subjectId) {
+          if (exerciseVo.exerciseLists != null &&
+              exerciseVo.exerciseLists!.length > 0) {
+            exerciseVo.exerciseLists!.forEach((element) {
+              subtopicAnswerVoMap[
+              (element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
+                  .toString()] = element;
+            });
+          }
+        }
+      });
+    }
+    return subtopicAnswerVoMap;
+  }
+
 }
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final logic = Get.put(AnsweringLogic());
+  final pageLogic = Get.put(PageGetxController());
   final state = Get
       .find<AnsweringLogic>()
       .state;
@@ -86,40 +122,23 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final PageController pageController = PageController(keepPage: true);
 
   detail.SubjectVoList? currentSubjectVoList;
-  // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
-  ExerciseVos exerciseVo = ExerciseVos();
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
 
   @override
   void onCreate() {
     startTimer();
-    if (widget.testDetailResponse!.obj != null) {
-      int length = widget.testDetailResponse!.obj!.subjectVoList!.length;
-
-      if(widget.parentIndex < length){
-        currentSubjectVoList = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex];
+    currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
+    if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
+      if(widget.lastFinishResult!.obj!=null){
+        subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+      }else{
+        print("无作答数据异常");
       }
+    }else{
+      print("作答数据异常，请联系开发人员");
     }
-    if(currentSubjectVoList!=null && widget.startExam!=null && widget.startExam!.obj!=null){
 
-      if(widget.startExam!.obj!.exerciseVos!=null
-          && widget.startExam!.obj!.exerciseVos!.length>0){
-        widget.startExam!.obj!.exerciseVos!.forEach((element) {
-          exerciseVo = element;
-          if(element.subjectId == currentSubjectVoList!.id){
-            if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
-              exerciseVo.exerciseLists!.forEach((element) {
-                subtopicAnswerVoMap[
-                (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
-                    .toString()] = element;
-              });
-            }
-          }
-        });
-
-      }
-    }
     logic.addListenerId(GetBuilderIds.examResult, () {
       RouterUtil.offAndToNamed(
           AppRoutes.ResultPage,arguments: {
@@ -127,7 +146,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         AnsweringPage.catlogIdKey:widget.uuid,
         AnsweringPage.parentIndexKey:widget.parentIndex,
         AnsweringPage.childIndexKey:widget.childIndex,
-        AnsweringPage.examResult: state.startExam.obj,
+        AnsweringPage.examResult: state.examResult.obj,
+        AnsweringPage.LastFinishResult: widget.lastFinishResult,
       });
     });
   }
@@ -205,7 +225,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             children: [
               InkWell(
                 onTap: () {
-                  logic.prePage();
+                  pageLogic.prePage();
                 },
                 child: GetBuilder<AnsweringLogic>(
                     id: GetBuilderIds.answerPageNum,
@@ -249,7 +269,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       }
                     );
                   }else{
-                    logic.nextPage();
+                    pageLogic.nextPage();
                   }
                 },
                 child: GetBuilder<AnsweringLogic>(
@@ -341,5 +361,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     cancelTimer();
 
     Get.delete<AnsweringLogic>();
+    Get.delete<PageGetxController>();
   }
 }

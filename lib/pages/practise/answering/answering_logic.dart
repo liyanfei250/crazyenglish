@@ -43,14 +43,6 @@ class AnsweringLogic extends GetxController {
 
   }
 
-  void nextPage(){
-    update([GetBuilderIds.answerNextPage]);
-  }
-
-  void prePage(){
-    update([GetBuilderIds.answerPrePage]);
-  }
-
   void uploadWeekTest(SubjectVoList subjectVoList) async{
 
 
@@ -84,7 +76,7 @@ class AnsweringLogic extends GetxController {
 
   void getResult(SubjectVoList subjectVoList) async{
     StartExam startExam = await weekTestRepository.getExamResult("${subjectVoList.journalCatalogueId}");
-    state.startExam = startExam;
+    state.examResult = startExam;
     update([GetBuilderIds.examResult]);
   }
 }

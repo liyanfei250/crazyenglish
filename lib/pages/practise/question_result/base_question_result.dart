@@ -82,6 +82,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+
   @override
   void initState(){
     super.initState();

@@ -14,6 +14,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
+import '../answering/page_getxcontroller.dart';
 import '../answering/select_gap_getxcontroller.dart';
 
 /**
@@ -65,6 +66,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   List<Widget> questionList = [];
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+  final pagLogic = Get.find<PageGetxController>();
 
   @override
   void initState(){
@@ -73,10 +75,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
     tag = tag+curPage;
     print(tag + "initState\n");
-    logic.addListenerId(GetBuilderIds.answerPrePage,() {
+    pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
       pre();
     });
-    logic.addListenerId(GetBuilderIds.answerNextPage,() {
+    pagLogic.addListenerId(GetBuilderIds.answerNextPage,() {
       next();
     });
   }

@@ -16,13 +16,13 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
+import '../answering/answering_logic.dart';
 import '../question_result/base_question_result.dart';
 import '../question_result/listen_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question_result.dart';
 import '../question_result/select_words_filling_question.dart';
 import '../question_result/others_question_result.dart';
-import 'result_logic.dart';
 
 /// 核心逻辑：结果页
 /// 参数：
@@ -35,6 +35,7 @@ import 'result_logic.dart';
 /// examResult: 历史作答数据 默认空
 class ResultPage extends BasePage{
   Exercise? examResult;
+  StartExam? lastFinishResult;
   detail.WeekDetailResponse? testDetailResponse;
   var uuid;
   int parentIndex = 0;
@@ -48,6 +49,7 @@ class ResultPage extends BasePage{
       uuid = Get.arguments[AnsweringPage.catlogIdKey];
       parentIndex = Get.arguments[AnsweringPage.parentIndexKey];
       childIndex = Get.arguments[AnsweringPage.childIndexKey];
+      lastFinishResult = Get.arguments[AnsweringPage.LastFinishResult];
     }
   }
 
@@ -63,8 +65,8 @@ class ResultPage extends BasePage{
 }
 
 class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final logic = Get.put(ResultLogic());
-  final state = Get.find<ResultLogic>().state;
+  final logic = Get.put(AnsweringLogic());
+  final state = Get.find<AnsweringLogic>().state;
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
@@ -76,38 +78,21 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   // TODO 会替换成小题 选择题 或者 填空的数量
   List<SubtopicVoList> tabs = [];
   detail.SubjectVoList? currentSubjectVoList;
-  // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
-  ExerciseVos exerciseVo = ExerciseVos();
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   @override
   void onCreate() {
-    if (widget.testDetailResponse!.obj != null) {
-      int length = widget.testDetailResponse!.obj!.subjectVoList!.length;
-
-      if(widget.parentIndex < length){
-        currentSubjectVoList = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex];
-      }
-    }
+    currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.examResult!=null){
-
-      if(widget.examResult!.exerciseVos!=null
-          && widget.examResult!.exerciseVos!.length>0){
-        widget.examResult!.exerciseVos!.forEach((element) {
-          exerciseVo = element;
-          if(element.subjectId == currentSubjectVoList!.id){
-            if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
-              exerciseVo.exerciseLists!.forEach((element) {
-                subtopicAnswerVoMap[
-                (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
-                    .toString()] = element;
-              });
-            }
-          }
-        });
-
+      if(widget.examResult!=null){
+        subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.examResult!,currentSubjectVoList!.id??0);
+      }else{
+        print("无作答数据异常");
       }
+    }else{
+      print("作答数据异常，请联系开发人员");
     }
+
     // 计算小题数量 TODO 逻辑还需修改
     if(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!=null && widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!.length>0) {
       int questionNum = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList!.length;
@@ -249,26 +234,40 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   // 开始作答逻辑 跳转到下一题
                   if(widget.testDetailResponse!.obj!.subjectVoList!.length > widget.parentIndex+1){
                     // TODO 不用请求了 直接下一题，除非是下一节
-                    logicDetail.getStartExam("0",);
                     var nextHasResult = false;
+                    detail.SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1);
+                    if(nextSubjectVoList!=null && widget.lastFinishResult!=null){
+                      if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
+                        Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,nextSubjectVoList!.id??0);
+                        if(nextSubtopicAnswerVoMap.isEmpty){
+                          nextHasResult = false;
+                        }else{
+                          nextHasResult = true;
+                        }
+                      }else{
+                        nextHasResult = false;
+                      }
+                    }else{
+                      nextHasResult = false;
+                    }
+
                     if(nextHasResult){  // 跳结果页
-                      RouterUtil.offAndToNamed(AppRoutes.ResultPage,
-                          arguments: {"detail": widget.testDetailResponse,
-                            "uuid":"dd",
-                            "parentIndex":widget.parentIndex+1,
-                            "childIndex":0,
-                          });
+                      RouterUtil.offAndToNamed(
+                          AppRoutes.ResultPage,arguments: {
+                        AnsweringPage.examDetailKey: widget.testDetailResponse,
+                        AnsweringPage.catlogIdKey:widget.uuid,
+                        AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                        AnsweringPage.childIndexKey:widget.childIndex,
+                        AnsweringPage.examResult: widget.lastFinishResult!.obj!,
+                        AnsweringPage.LastFinishResult: widget.lastFinishResult,
+                      });
                     } else {
                       // 跳作答页
-                      RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                      arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
-                        AnsweringPage.catlogIdKey:"dd",
-                        AnsweringPage.parentIndexKey:widget.parentIndex+1,
-                        AnsweringPage.childIndexKey:0,
-                      });
+                      logicDetail.addJumpToDetailListen(widget.parentIndex+1,0);
+                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
                     }
                   } else {
-                    // 有下一节且有内容
+                    // TODO 有下一节且有内容
                     var hasNext = true;
                     if (hasNext) {
                       logicDetail.getDetailAndStartExam("0",enterResult: true,isOffCurrentPage:true);
@@ -420,7 +419,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   @override
   void onDestroy() {
-    Get.delete<ResultLogic>();
+    Get.delete<AnsweringLogic>();
     Get.delete<WeekTestDetailLogic>();
   }
 
