@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../entity/home/HomeKingDate.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
@@ -12,6 +11,7 @@ import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
 import 'index_logic.dart';
+import '../../entity/home/HomeKingNewDate.dart';
 
 class IndexPage extends BasePage {
   const IndexPage({Key? key}) : super(key: key);
@@ -52,38 +52,31 @@ class _IndexPageState extends BasePageState<IndexPage>
   void initState() {
     super.initState();
 
-    //获取金刚区列表
-    logic.addListenerId(GetBuilderIds.getHomeDateList, () {
-      if (state.paperDetail != null) {
 
-        if (state.paperDetail!.obj != null &&
-            state.paperDetail!.obj!.length > 0) {
-          setState(() {
-            functionTxtNew = state.paperDetail!.obj!;
-            functionTxt =
-                state.paperDetail!.obj!.map((obj) => obj.name!).toList();
-          });
-        }
-
-      }
-    });
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
       if (state.paperDetailNew != null) {
 
-       /* if (state.paperDetail!.obj != null &&
-            state.paperDetail!.obj!.length > 0) {
-          setState(() {
-            functionTxtNew = state.paperDetail!.obj!;
-            functionTxt =
-                state.paperDetail!.obj!.map((obj) => obj.name!).toList();
-          });
-        }*/
+        if (state.paperDetailNew != null) {
+
+          if (state.paperDetailNew!.obj != null &&
+              state.paperDetailNew!.obj!.length > 0) {
+            setState(() {
+              functionTxtNew = state.paperDetailNew!.obj!;
+              functionTxt =
+                  state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
+            });
+          }
+
+        }
 
       }
     });
-    logic.getHomeList('classify_type');
-    logic.getHomeListNew('classify_type');
+
+
+    //新增金刚区的列表，有图片
+    logic.getHomeListNew('');
+
     //获取我的期刊列表
     logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
@@ -274,7 +267,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {
           switch (e.name) {
-            case "阅读":
+            case "英语周报":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
             /*case "周报题库":

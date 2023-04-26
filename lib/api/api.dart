@@ -89,7 +89,7 @@ class Api {
 
   // 金刚区接口新增
   static String getHomeKingListNew =
-      Config.ApiHost + "/question/dictionary/getByType/";
+      Config.ApiHost + "/question/exercise/getConfigurationList";
 
   // 周报筛选字典接口
   static String getHomeKingList =
@@ -121,14 +121,14 @@ class Api {
   // 错题本已订正/未订正列表
   static String getErrorNoteTabDateList = Config.ApiHost + "/question/collected/getCorrectionList";
 
-  // 收藏题目最近搜索历史接口
+  // 收藏题目最近搜索历史接口。金刚区
   static String getSearchRecordDateList = Config.ApiHost + "/";
 
   // 收藏列表接口
-  static String getSearchCollectListDate = Config.ApiHost + "/";
+  static String getSearchCollectListDate = Config.ApiHost + "/question/collected/getCollectedList";
 
   // 收藏列表详情接口
-  static String getSearchCollectListDateDetail = Config.ApiHost + "/question/collected/getCollectedDetails";
+  static String getSearchCollectListDateDetail = Config.ApiHost + "/question/exercise/getSubjectDetails/";
 
   // 收藏
   static String toCollect = Config.ApiHost + "/question/collected/collectOrCancelQuestion/";

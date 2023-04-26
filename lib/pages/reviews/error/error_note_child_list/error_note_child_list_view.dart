@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:bot_toast/bot_toast.dart';
+import '../../../../base/AppUtil.dart';
 import '../../../../base/widgetPage/loading.dart';
-import '../../../../entity/error_note_response.dart' as errorDate;
+import '../../../../entity/review/ErrorNoteTabDate.dart'as errorDate;
 import '../../../../entity/error_note_response.dart';
+import '../../../../entity/review/ErrorNoteTabDate.dart';
 import '../../../../r.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../routes/getx_ids.dart';
@@ -45,7 +47,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   CancelFunc? _cancelLoading;
   final int pageSize = 10;
   int currentPageNo = 1;
-  List<errorDate.Rows> weekPaperList = [];
+  List<errorDate.Obj> weekPaperList = [];
   final int pageStartIndex = 1;
 
   @override
@@ -100,8 +102,14 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
 
     logicDetail.addJumpToDetailListen(0, 0);
 
+    logic.addListenerId(GetBuilderIds.getErrorNoteTabDate, () {
+      Util.toast('获取列表数据成功');
+    });
+
+
     _onRefresh();
     showLoading("");
+    hideLoading();
   }
 
   @override
@@ -186,7 +194,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
                 child: Text(
-                  weekPaperList![index].name ?? "",
+                  weekPaperList![index].journalName ?? "",
                   style: TextStyle(
                       fontSize: 12,
                       color: Color(0xff858aa0),
@@ -196,8 +204,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
               child: Text(
-                  weekPaperList![index].lastTime!.isNotEmpty
-                      ? TimeUtil.getFormatTime(weekPaperList![index].lastTime!)
+                  weekPaperList![index].createTime!.isNotEmpty
+                      ? weekPaperList![index].createTime!
                       : "",
                   style: TextStyle(
                       fontSize: 10,
@@ -209,9 +217,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: weekPaperList![index].directory!.length,
+          itemCount: weekPaperList![index].recordListVos!.length,
           itemBuilder: (BuildContext context, int indexSmall) {
-            return listitem(weekPaperList![index].directory!, indexSmall);
+            return listitem(weekPaperList![index].recordListVos!, indexSmall);
           },
         )
         /*ListView(
@@ -226,12 +234,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     );
   }
 
-  Widget listitem(List<Directory> value, index) {
+  Widget listitem(List<RecordListVos> value, index) {
     return InkWell(
         onTap: () {
-          if (value[index].correction == 0) {
-            logicDetail.getDetailAndStartExam(value[index].uuid!);
-            showLoading("");
+          if (value[index].journalId == 0) {
+            // logicDetail.getDetailAndStartExam(value[index].journalId!);
+            // showLoading("");
           }
         },
         child: Container(
@@ -244,7 +252,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: value[index].correction == 1 ? 10.w : 14.w)),
+                      top: true ? 10.w : 14.w)),
               Row(
                 children: [
                   Column(
@@ -254,7 +262,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                       Row(
                         children: [
                           Text(
-                            value[index].name ?? "",
+                            value[index].questionTypeName ?? "",
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -276,9 +284,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                         padding: EdgeInsets.only(top: 4.w),
                         child: Text(
                           '正确率' +
-                              value[index].exercisesSuccess.toString() +
+                              value[index].errorCount.toString() +
                               "/" +
-                              value[index].exercisesTotal.toString(),
+                              value[index].totalCount.toString(),
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
@@ -290,7 +298,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   Expanded(child: Text('')),
                   Padding(
                     padding: EdgeInsets.only(right: 10.w),
-                    child: value[index].correction == 0
+                    child: true
                         ? Image.asset(
                             R.imagesErrorToCorrect,
                             fit: BoxFit.cover,
@@ -308,7 +316,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: value[index].correction == 1 ? 10.w : 14.w)),
+                      top: true ? 10.w : 14.w)),
             ],
           ),
         ));
@@ -322,6 +330,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     logic.getList(widget.type, widget.typeTwo, currentPageNo, pageSize);
+
   }
 
   @override

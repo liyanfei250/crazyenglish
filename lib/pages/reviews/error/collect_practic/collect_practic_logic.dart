@@ -39,23 +39,28 @@ class Collect_practicLogic extends GetxController {
     }
   }
 
-  void getCollectList(String weekTime, int page, int pageSize) async {
-    Map<String, String> req = {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
+  void getCollectList(int userId, bool isRecentView, dynamic classify, int size,
+      int current) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> reqTwo = {};
+    req["userId"] = userId;
+    req["isRecentView"] = isRecentView;
+    req["classify"] = classify;
+    reqTwo["size"] = size;
+    reqTwo["current"] = current;
+    req["p"] = reqTwo;
 
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.SearchCollectListDate,
-            labelId: weekTime.toString())
+            labelId: userId.toString())
         .then((value) {
       if (value != null) {
         return SearchCollectListDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
-    state.pageNo = page;
-    if (page == 1 && cache is SearchCollectListDate && cache != null) {
+    state.pageNo = current;
+    if (current == 1 && cache is SearchCollectListDate && cache != null) {
       state.paperList = cache!;
       //todo 具体的参数获取
       // if(state.paperList.length < pageSize){
@@ -67,19 +72,19 @@ class Collect_practicLogic extends GetxController {
     }
 
     SearchCollectListDate list = await recordData.getCollectList(req);
-    if (page == 1) {
+    if (current == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.SearchCollectListDate,
-          labelId: weekTime.toString(),
+          labelId: userId.toString(),
           list.toJson());
     }
     //todo 具体的参数获取
     // if(list.rows==null) {
-    //   if(page ==1){
+    //   if(current ==1){
     //     state.paperList.clear();
     //   }
     // } else {
-    //   if(page ==1){
+    //   if(current ==1){
     //     state.paperList = list.rows!;
     //   } else {
     //     state.paperList.addAll(list.rows!);
@@ -93,10 +98,10 @@ class Collect_practicLogic extends GetxController {
     update([GetBuilderIds.getCollectListDate]);
   }
 
-  void getCollectListDetail(String id) async {
+  void getCollectListDetail(int userid, String id) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.SearchRecordDetail,
-        labelId: id.toString())
+            JsonCacheManageUtils.SearchRecordDetail,
+            labelId: id.toString())
         .then((value) {
       if (value != null) {
         return SearchCollectListDetail.fromJson(value as Map<String, dynamic>?);
@@ -109,7 +114,7 @@ class Collect_practicLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getCollectListDetail]);
     }
-    SearchCollectListDetail list = await recordData.getCollectListDetail(id);
+    SearchCollectListDetail list = await recordData.getCollectListDetail(userid,id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.SearchRecordDetail, labelId: id, list.toJson());
     state.ListDetail = list!;
@@ -118,8 +123,8 @@ class Collect_practicLogic extends GetxController {
     }
   }
 
-  void toCollect(int userid,String id) async {
-    CollectDate collectResponse = await recordData.toCollect(userid,id);
+  void toCollect(int userid, String id) async {
+    CollectDate collectResponse = await recordData.toCollect(userid, id);
     state.collectDate = collectResponse;
     update([GetBuilderIds.toCollectDate]);
   }

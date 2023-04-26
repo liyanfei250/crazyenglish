@@ -85,6 +85,16 @@ class _ReviewPageState extends State<ReviewPage> {
     });
 
     logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
+
+    //获取金刚区列表
+    logic.addListenerId(GetBuilderIds.getHomeDateList, () {
+      if (state.tabList != null) {
+        if (state.tabList!.obj != null && state.tabList!.obj!.length > 0) {
+          RouterUtil.toNamed(AppRoutes.ErrorNotePage,
+              arguments: state.tabList!.obj!);
+        }
+      }
+    });
   }
 
   @override
@@ -196,7 +206,8 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      RouterUtil.toNamed(AppRoutes.ErrorNotePage);
+                      //先获取tab接口，带着数据进去
+                      logic.getHomeList('classify_type');
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 18.w),

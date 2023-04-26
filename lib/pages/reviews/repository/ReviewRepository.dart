@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
+import '../../../base/AppUtil.dart';
 import '../../../entity/base_resp.dart';
 import '../../../entity/home/ErrorNoteTab.dart';
+import '../../../entity/home/HomeKingDate.dart';
 import '../../../entity/home/PractiseDate.dart';
 import '../../../entity/home/SearchCollectListDetail.dart';
 import '../../../entity/review/CancellCollectDate.dart';
@@ -67,6 +70,13 @@ class ReviewRepository {
   }
   //获取错题本数据列表
   Future<ErrorNoteTabDate> getErrorNoteTabDate(Map<String, dynamic> req) async {
+    String testData = '{"code": 0,"message": "系统正常","obj": [{"journalId": 1647898280209838082,"journalName": "ceshi","createTime": "2023-4-20 11:12:14","recordListVos": [{"journalId": 1647898280209838082,"subjectId": 1648489081579143169,"questionTypeName": "完形填空","totalCount": 5,"errorCount": 2}]},{"journalId": 1647898280209838082,"journalName": "ceshi","createTime": "2023-4-20 11:28:00","recordListVos": [{"journalId": 1647898280209838082,"subjectId": 1648489081579143169,"questionTypeName": "完形填空","totalCount": 5,"errorCount": 1}]},{"journalId": 1647898280209838082,"journalName": "ceshi","createTime": "2023-4-20 11:29:41","recordListVos": [{"journalId": 1647898280209838082,"subjectId": 1648489081579143169,"questionTypeName": "完形填空","totalCount": 5,"errorCount": 1}]}],"p": null}';
+
+    if(Util.isTestMode()){
+      ErrorNoteTabDate weekTestListResponse = ErrorNoteTabDate.fromJson(json.decode(testData));
+      return weekTestListResponse;
+    }
+
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.getErrorNoteTabDateList,data: req,
         options: Options(method: Method.post,contentType: ContentType.json.toString()));
@@ -90,10 +100,10 @@ class ReviewRepository {
     }
   }
 
-  Future<SearchCollectListDate> getCollectList(Map<String, String> req) async {
+  Future<SearchCollectListDate> getCollectList(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getSearchCollectListDate,
-        options: Options(method: Method.get));
+        Method.post, Api.getSearchCollectListDate,data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     SearchCollectListDate paperDetail = SearchCollectListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
@@ -103,9 +113,9 @@ class ReviewRepository {
   }
 
   //收藏列表的详情接口
-  Future<SearchCollectListDetail> getCollectListDetail(String  req) async {
+  Future<SearchCollectListDetail> getCollectListDetail(int userid, String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getSearchCollectListDateDetail,
+        Method.get, Api.getSearchCollectListDateDetail + userid.toString() + "/" + id,
         options: Options(method: Method.get));
     SearchCollectListDetail paperDetail = SearchCollectListDetail.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
@@ -127,4 +137,21 @@ class ReviewRepository {
       return paperDetail!;
     }
   }
+
+  //金刚区列表和周报筛选
+  Future<HomeKingDate> getHomeKingList(String type) async {
+    Map map = await NetManager.getInstance()!
+        .request(Method.get,options: Options(contentType: ContentType.json.toString()), Api.getHomeKingList + type);
+    HomeKingDate sendCodeResponse = HomeKingDate.fromJson(map);
+    if (sendCodeResponse.code != ResponseCode.status_success) {
+      return Future.error(sendCodeResponse.message!);
+    }
+
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回SendCodeResponse为空");
+    }
+  }
+
 }

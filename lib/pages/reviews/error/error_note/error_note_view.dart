@@ -5,14 +5,22 @@ import 'package:get/get.dart';
 
 import '../../../../base/AppUtil.dart';
 import '../../../../base/widgetPage/base_page_widget.dart';
+import '../../../../entity/home/HomeKingDate.dart';
 import '../../../../r.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
+
 import '../error_note_child/error_note_child_view.dart';
 import 'error_note_logic.dart';
 
 class ErrorNotePage extends BasePage {
-  const ErrorNotePage({Key? key}) : super(key: key);
+  List<Obj>? tabList;
+
+  ErrorNotePage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is List<Obj>) {
+      tabList = Get.arguments;
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToErrorNotePageState();
@@ -47,7 +55,9 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+    print('77777=' + widget.tabList![0].name.toString());
+  }
 
   @override
   void onDestroy() {}
@@ -61,8 +71,10 @@ class _ToErrorNotePageState extends BasePageState<ErrorNotePage>
         controller: pageController,
         physics: _neverScroll,
         children: [
-          ErrorNoteChildPage(ErrorNoteChildPage.WAIT_CORRECT),
-          ErrorNoteChildPage(ErrorNoteChildPage.HAS_CORRECTED),
+          ErrorNoteChildPage(ErrorNoteChildPage.WAIT_CORRECT,
+              tablist: widget!.tabList),
+          ErrorNoteChildPage(ErrorNoteChildPage.HAS_CORRECTED,
+              tablist: widget!.tabList),
         ],
       ),
     );

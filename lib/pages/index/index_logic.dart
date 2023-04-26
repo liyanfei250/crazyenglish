@@ -24,31 +24,7 @@ class IndexLogic extends GetxController {
     super.onClose();
   }
 
-  void getHomeList(String type) async {
-    var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeListDate)
-        .then((value) {
-      if (value != null) {
-        return HomeKingDate.fromJson(value as Map<String, dynamic>?);
-      }
-    });
-
-    bool hasCache = false;
-    if (cache is HomeKingDate) {
-      state.paperDetail = cache!;
-      hasCache = true;
-      update([GetBuilderIds.getHomeDateList]);
-    }
-    HomeKingDate list = await homeViewRepository.getHomeKingList(type);
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeListDate, list.toJson());
-    state.paperDetail = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getHomeDateList]);
-    }
-  }
-
-  //todo 新增的金刚去获取列表
+  //todo 新增的金刚区列表
   void getHomeListNew(String type) async {
     HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
     state.paperDetailNew = list!;

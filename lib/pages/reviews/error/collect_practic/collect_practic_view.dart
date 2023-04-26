@@ -40,7 +40,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   int currentPageNo = 1;
   final int pageStartIndex = 1;
   SearchRecordDate? paperDetail;
-  List listDataOne = [
+
+  /*List listDataOne = [
     {
       "title": "01.情景反应",
       "type": 0,
@@ -55,7 +56,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       "type": 0,
     },
     {"title": "02.对话理解", "type": 1},
-  ];
+  ];*/
 
   List searchList = [
     {
@@ -67,7 +68,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     {"title": "阅读题", "type": 3},
     {"title": "写作题", "type": 4},
   ];
-  List<SearchCollectListDate> weekPaperList = [];
+  List<Obj> weekPaperList = [];
 
   @override
   void initState() {
@@ -104,40 +105,37 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
     //收藏列表
     logic.addListenerId(GetBuilderIds.getCollectListDate, () {
+      Util.toast('获取收藏列表成功');
       hideLoading();
-      /*if(state.paperList!=null && state.paperList!=null){
-        if(state.pageNo == currentPageNo+1){
-          weekPaperList = state.paperList;
+      if (state.paperList != null && state.paperList != null) {
+        if (state.pageNo == currentPageNo + 1) {
+          weekPaperList = state.paperList!.obj!;
           currentPageNo++;
-          weekPaperList.addAll(state!.paperList!);
-          if(mounted && _refreshController!=null){
+          weekPaperList.addAll(state.paperList!.obj!);
+          if (mounted && _refreshController != null) {
             _refreshController.loadComplete();
-            if(!state!.hasMore){
+            if (!state!.hasMore) {
               _refreshController.loadNoData();
-            }else{
+            } else {
               _refreshController.resetNoData();
             }
-            setState(() {
-
-            });
+            setState(() {});
           }
-        }else if(state.pageNo == pageStartIndex){
+        } else if (state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
           weekPaperList.clear();
-          weekPaperList.addAll(state.paperList!);
-          if(mounted && _refreshController!=null){
+          weekPaperList.addAll(state.paperList!.obj!);
+          if (mounted && _refreshController != null) {
             _refreshController.refreshCompleted();
-            if(!state!.hasMore){
+            if (!state!.hasMore) {
               _refreshController.loadNoData();
-            }else{
+            } else {
               _refreshController.resetNoData();
             }
-            setState(() {
-            });
+            setState(() {});
           }
-
         }
-      }*/
+      }
     });
 
     logicDetail.addJumpToDetailListen(0, 0);
@@ -150,7 +148,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     });
 
     //收藏列表点击详情的接口
-    logic.getCollectListDetail('');
+    logic.getCollectListDetail(
+        SpUtil.getInt(BaseConstant.USER_ID), "1648490005294907394");
 
     logic.addListenerId(GetBuilderIds.getCollectListDetail, () {
       Util.toast('收藏列表点击详情的接口成功');
@@ -274,7 +273,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
-                childCount: listDataOne.length,
+                childCount: weekPaperList.length,
               ),
             ),
           ],
@@ -305,7 +304,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     );
   }
 
-  Widget listitemBigBg() {
+  Widget listitemBigBg(Obj weekPaperList) {
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
@@ -323,11 +322,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
           ],
           borderRadius: BorderRadius.all(Radius.circular(10.w)),
           color: AppColors.c_FFFFFFFF),
-      child: listitemBig(),
+      child: listitemBig(weekPaperList),
     );
   }
 
-  Widget listitemBig() {
+  Widget listitemBig(Obj weekPaperList) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -337,7 +336,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
                 child: Text(
-                  '七年级新课程第29期',
+                  weekPaperList.journalName ?? '',
                   style: TextStyle(
                       fontSize: 16,
                       color: Color(0xff353e4d),
@@ -346,7 +345,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Expanded(child: Text('')),
             Padding(
               padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
-              child: Text('2023.2.27 16:48',
+              child: Text(weekPaperList.collectedTime ?? '',
                   style: TextStyle(
                       fontSize: 10,
                       color: Color(0xff656d8f),
@@ -360,7 +359,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
                 child: Text(
-                  '01.情景反应',
+                  weekPaperList.questionTypeName ?? '',
                   style: TextStyle(
                       fontSize: 14,
                       color: Color(0xff353e4d),
@@ -387,7 +386,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         Padding(
             padding: EdgeInsets.only(top: 8.w, bottom: 18.w),
             child: Text(
-              'As winter approaches, warm-blooded animals have two ways to cope with the cold. The first is , building a layer of fat under the skin and shedding their svelte As winter approaches, warm-blooded animals...',
+              weekPaperList.content ?? '',
               style: TextStyle(
                   fontSize: 14,
                   color: Color(0xff353e4d),
@@ -403,7 +402,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       onTap: () {
         logicDetail.getDetailAndStartExam("0");
       },
-      child: listitemBigBg(),
+      child: listitemBigBg(weekPaperList[index]),
     );
   }
 
@@ -419,11 +418,16 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getCollectList("2022-12-22", pageStartIndex, pageSize);
+    //todo "isRecentView":true,//最近查看 false 否 true 是
+    // todo    "classify": null//题型id
+    //int userId, bool isRecentView, dynamic classify,int size,int current
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), false, null,
+        pageSize, pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getCollectList("2022-12-22", currentPageNo, pageSize);
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), false, null,
+        pageSize, pageStartIndex);
   }
 }
