@@ -27,6 +27,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   late SubjectVoList element;
   int questionNum = 0;
+  int currentNum = 0;
   @override
   void onCreate() {
     element = widget.data;
@@ -56,6 +57,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
       // 更新底部页码
+      currentNum = defaultIndex;
       logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
       // 更新空选中状态
       selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
@@ -66,7 +68,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap),
+          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
           QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
         ],
       ),
@@ -79,7 +81,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void next() {
     bool canNext = false;
     int nextIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
         if(questionNum == int.parse(key)){
           canNext = false;
@@ -91,6 +93,9 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         }
       }
     });
+    if(nextIndex == -1){
+      nextIndex = currentNum;
+    }
     if(canNext){
       jumpToQuestion(nextIndex);
 
@@ -101,7 +106,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void pre() {
     bool canPre = false;
     int preIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
         if(int.parse(key)-1>0){
           canPre = true;
@@ -109,6 +114,9 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         }
       }
     });
+    if(preIndex<=-1){
+      preIndex = currentNum;
+    }
     if(canPre){
       jumpToQuestion(preIndex);
     }
@@ -116,11 +124,18 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   @override
   void jumpToQuestion(int index) {
+    print("jumpToQuestion:${index}");
     // 更新空选中状态
     selectGapGetxController.updateFocus("${index+1}",true);
     // 更细底部页码
     int currentPage = index;
+    currentNum = currentPage;
     logic.updateCurrentPage(currentPage);
+  }
+
+  @override
+  void clearFocus(){
+    selectGapGetxController.clearFocus();
   }
 
   @override

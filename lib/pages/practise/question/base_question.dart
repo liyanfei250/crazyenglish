@@ -56,6 +56,10 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
     baseQuestionState.pre();
   }
 
+  void clearFocus(){
+
+  }
+
   void jumpToQuestion(int index) {
     baseQuestionState.jumpToQuestion(index);
   }
@@ -266,6 +270,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
 
   @override
+  void clearFocus(){
+
+  }
+
+
+  @override
   void jumpToQuestion(int index) {
     int currentPage = index;
     pageController.jumpToPage(currentPage);
@@ -289,8 +299,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   FocusNode makeFocusNodeController(String key){
     if(gapFocusNodeController[key] == null){
       FocusNode focusNode = FocusNode();
+      print("makeFocusNode:$key");
       focusNode.addListener(() {
-
+        if(focusNode.hasFocus){
+          print("makeFocusNode:$key has focus");
+        }else{
+          print("makeFocusNode:$key not has focus");
+        }
       });
       gapFocusNodeController[key] = focusNode;
       return focusNode;

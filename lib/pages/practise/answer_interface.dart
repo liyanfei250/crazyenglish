@@ -12,4 +12,5 @@ mixin AnswerMixin{
   void pre();
   void jumpToQuestion(int index);
   int getQuestionCount();
+  void clearFocus();
 }

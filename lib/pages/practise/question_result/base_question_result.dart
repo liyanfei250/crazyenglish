@@ -54,6 +54,10 @@ abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
     baseQuestionResultState.pre();
   }
 
+  void clearFocus(){
+
+  }
+
   void jumpToQuestion(int index) {
     baseQuestionResultState.jumpToQuestion(index);
   }
@@ -288,6 +292,11 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     // }else{
     //   return false;
     // }
+  }
+
+  @override
+  void clearFocus(){
+
   }
 
 

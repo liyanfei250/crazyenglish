@@ -1,12 +1,15 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
+import 'package:crazyenglish/pages/practise/answer_interface.dart';
 import 'package:crazyenglish/widgets/ChoiceImageItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
+import '../../base/AppUtil.dart';
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/start_exam.dart';
 import '../../entity/week_detail_response.dart';
@@ -360,7 +363,7 @@ class QuestionFactory{
 
   /// 选词填空 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false}){
+  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -419,75 +422,153 @@ class QuestionFactory{
           }else if(isErrorCome){
 
           }
-          return SizedBox(
-            width: 50.w,
-            child: GetBuilder<SelectGapGetxController>(
-              id: key,
-              builder: (_){
-                if(key =="1"){
-                  print("getBuilderddd:${key}");
-                  getFocusNodeControllerCallback(key)!.requestFocus();
-                }
+          return GetBuilder<SelectGapGetxController>(
+            id: key,
+            builder: (_){
+              // if(key =="1"){
+              //   print("getBuilderddd:${key}");
+              //   getFocusNodeControllerCallback(key)!.requestFocus();
+              // }
 
-
-                return TextField(
-                    keyboardType: TextInputType.name,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    // autofocus: key == "1",
-                    style: TextStyle(color: _getInputColor(0)),
-                    focusNode: getFocusNodeControllerCallback(key),
-                    decoration: InputDecoration(
-                      isDense:true,
-                      contentPadding: EdgeInsets.all(0.w),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            width: 1.w,
-                            color: _getInputColor(0),
-                            style: BorderStyle.solid
+              getFocusNodeControllerCallback(key);
+              getEditingControllerCallback(key).text = _.contentMap[key]??"";
+              getEditingControllerCallback(key).selection =
+                  TextSelection.fromPosition(TextPosition(
+                      affinity: TextAffinity.downstream,
+                      offset: '${_.contentMap[key]??""}'.length));
+              print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              return ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 48),
+                child: IntrinsicWidth(
+                  child: TextField(
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: _getInputColor(1)),
+                      autofocus: _.hasFocusMap[key]??false,
+                      // focusNode: getFocusNodeControllerCallback(key),
+                      onTap: () {
+                        print("textfield clicked ${int.parse(key)-1}");
+                        _.updateFocus(key, true);
+                        answerMin.jumpToQuestion(int.parse(key)-1);
+                      },
+                      decoration: InputDecoration(
+                        isDense:true,
+                        contentPadding: EdgeInsets.all(0.w),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.w,
+                              color: _getInputColor(1),
+                              style: BorderStyle.solid
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.w,
+                              color: _getInputColor(1),
+                              style: BorderStyle.solid
+                          ),
                         ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            width: 1.w,
-                            color: _getInputColor(0),
-                            style: BorderStyle.solid
-                        ),
-                      ),
-                    ),
-                    onChanged: (text){
-                      print("intput:"+text+"  content:"+content);
+                      onChanged: (text){
+                        print("intput:"+text+"  content:"+content);
+                        // 当前选项内容 映射到 空
 
+                      },
 
-                    },
-                    onSubmitted: (text){
-
-                    },
-                    onEditingComplete: (){
-                      // if(num < max){
-                      //   _scopeNode.nextFocus();
-                      // }else{
-                      //   _scopeNode.unfocus();
-                      // }
-
-                    },
-                    controller: getEditingControllerCallback(key)
-                    // TextEditingController.fromValue(
-                    //   TextEditingValue(
-                    //       text: _.contentMap[key]??"",  //判断keyword是否为空
-                    //       selection: TextSelection.fromPosition(TextPosition(
-                    //           affinity: TextAffinity.downstream,
-                    //           offset: (_.contentMap[key]??"").length))),)
-                );
-              },
-            ),
-
+                      onSubmitted: (text){
+                        print("======+++======");
+                        answerMin.clearFocus();
+                        _.updateGapKeyContent(key, text??"");
+                        getFocusNodeControllerCallback(key).unfocus();
+                        _.updateFocus(key, false,isInit:true);
+                      },
+                      onEditingComplete: (){
+                        // if(num < max){
+                        //   _scopeNode.nextFocus();
+                        // }else{
+                        //   _scopeNode.unfocus();
+                        // }
+                        print("=====+++=======");
+                        answerMin.clearFocus();
+                        getFocusNodeControllerCallback(key).unfocus();
+                        _.updateFocus(key, false,isInit:true);
+                      },
+                      controller: getEditingControllerCallback(key)
+                  ),
+                ),
+              );
+            },
           );
         })
       },
 
     );
   }
+
+  /// 选词填空的词
+  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers){
+    return Wrap(
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
+    );
+  }
+
+
+
+  /// answerIndex 选项的索引
+  /// answer 选项的内容
+  static Widget _colorAnswerItem(int answerIndex,OptionsList answer) {
+    return GetBuilder<SelectGapGetxController>(
+      id: "answer:${answerIndex}",
+      builder: (_){
+        return GestureDetector(
+          onTap: () {
+            String gapKey = "";
+            _.hasFocusMap.forEach((key, value) {
+              if(value){
+                gapKey = key;
+              }
+            });
+
+            // 去掉之前的选项 选择状态
+            String findBeforeAnswerIndex = "";
+            _.answerIndexToGapIndexMap.forEach((answerIndex, value) {
+              if(value == gapKey){
+                findBeforeAnswerIndex = answerIndex;
+              }
+            });
+            if(findBeforeAnswerIndex.isNotEmpty){
+              _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
+            }
+
+            // 修改当前选中状态 当前选项 answerIndex 映射到 此空
+            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+            // 当前选项内容 映射到 空
+            _.updateGapKeyContent(gapKey, answer.content??"");
+          },
+          child: Container(
+            height: 22.w,
+            padding: EdgeInsets.only(left: 13.w,right: 13.w),
+            margin: EdgeInsets.only(right: 11.w,bottom: 10.w),
+            decoration: BoxDecoration(
+              color: (_.answerIndexToGapIndexMap["answer:${answerIndex}"]??"").isNotEmpty ? AppColors.c_FFD2D5DC : AppColors.c_FFF5F7FB,
+              border: Border.all(color: AppColors.c_FFD2D5DC,width: 1.w),
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+            ),
+            child: Text(
+              answer.content??"未获取到内容",
+              style: TextStyle(
+                  color: AppColors.c_FF353E4D,
+                  fontSize: 14.sp,
+                  decoration: TextDecoration.none),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
@@ -576,7 +657,7 @@ class QuestionFactory{
                     // 更新作答答案
                     SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
                         optionId:0,
-                        userAnswer: _.contentMap.value[key]??"",
+                        userAnswer: _.contentMap[key]??"",
                         answer: subtopicAnswer,
                         isCorrect: false);
                     userAnswerCallback.call(subtopicAnswerVo);
@@ -589,7 +670,7 @@ class QuestionFactory{
                     color: Colors.white,
                     child: InkWell(
                       onTap: (){
-                        _.updateFocus(key, !(_.hasFocusMap.value[key]??false));
+                        _.updateFocus(key, !(_.hasFocusMap[key]??false));
                       },
                       focusNode: getFocusNodeControllerCallback(key),
                       onFocusChange:(focused){
@@ -600,11 +681,11 @@ class QuestionFactory{
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            color: (_.hasFocusMap.value[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
+                            color: (_.hasFocusMap[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
                             width: double.infinity,
                             height: 13.w,
                             child: Center(
-                              child: Text((_.contentMap.value[key]??"").isEmpty? "${key}":_.contentMap.value[key]??""),
+                              child: Text((_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
                             ),
                           ),
                           Container(
@@ -659,7 +740,7 @@ class QuestionFactory{
         return GestureDetector(
             onTap: isClickEnable? () {
               String gapKey = "";
-              _.hasFocusMap.value.forEach((key, value) {
+              _.hasFocusMap.forEach((key, value) {
                 if(value){
                   gapKey = key;
                 }
@@ -667,7 +748,7 @@ class QuestionFactory{
 
               // 去掉之前的选项 选择状态
               String findBeforeAnswerIndex = "";
-              _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
+              _.answerIndexToGapIndexMap.forEach((answerIndex, value) {
                 if(value == gapKey){
                   findBeforeAnswerIndex = answerIndex;
                 }
@@ -680,7 +761,7 @@ class QuestionFactory{
               _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
               // 别的空对应的此选项内容 清空
               // 别的空对应的 anserIndex 清空
-              _.contentMap.value.forEach((key, value) {
+              _.contentMap.forEach((key, value) {
                 if(value == answer.sequence){
                   _.updateGapKeyContent(key, "");
                 }
@@ -691,7 +772,7 @@ class QuestionFactory{
             child: Container(
               margin: EdgeInsets.only(top: 6.w,bottom: 6.w),
               child: ChoiceRadioItem(
-                  (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? ChoiceRadioItemType.SELECTED : ChoiceRadioItemType.DEFAULT,
+                  (_.answerIndexToGapIndexMap["answer:${answerIndex}"]??"").isNotEmpty ? ChoiceRadioItemType.SELECTED : ChoiceRadioItemType.DEFAULT,
                   "",
                   answer!.sequence!,
                   answer!.content!,
@@ -699,67 +780,6 @@ class QuestionFactory{
                   52.w
               ),
             )
-        );
-      },
-    );
-  }
-
-  /// 选词填空的词
-  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers){
-    return Wrap(
-      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
-    );
-  }
-
-
-
-  /// answerIndex 选项的索引
-  /// answer 选项的内容
-  static Widget _colorAnswerItem(int answerIndex,OptionsList answer) {
-    return GetBuilder<SelectGapGetxController>(
-      id: "answer:${answerIndex}",
-      builder: (_){
-        return GestureDetector(
-          onTap: () {
-            String gapKey = "";
-            _.hasFocusMap.value.forEach((key, value) {
-              if(value){
-                gapKey = key;
-              }
-            });
-
-            // 去掉之前的选项 选择状态
-            String findBeforeAnswerIndex = "";
-            _.answerIndexToGapIndexMap.value.forEach((answerIndex, value) {
-              if(value == gapKey){
-                findBeforeAnswerIndex = answerIndex;
-              }
-            });
-            if(findBeforeAnswerIndex.isNotEmpty){
-              _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
-            }
-
-            // 修改当前选中状态 当前选项 answerIndex 映射到 此空
-            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-
-          },
-          child: Container(
-            height: 22.w,
-            padding: EdgeInsets.only(left: 13.w,right: 13.w),
-            margin: EdgeInsets.only(right: 11.w,bottom: 10.w),
-            decoration: BoxDecoration(
-              color: (_.answerIndexToGapIndexMap.value["answer:${answerIndex}"]??"").isNotEmpty ? AppColors.c_FFD2D5DC : AppColors.c_FFF5F7FB,
-              border: Border.all(color: AppColors.c_FFD2D5DC,width: 1.w),
-              borderRadius: BorderRadius.all(Radius.circular(4.w)),
-            ),
-            child: Text(
-              answer.content??"未获取到内容",
-              style: TextStyle(
-                  color: AppColors.c_FF353E4D,
-                  fontSize: 14.sp,
-                  decoration: TextDecoration.none),
-            ),
-          ),
         );
       },
     );

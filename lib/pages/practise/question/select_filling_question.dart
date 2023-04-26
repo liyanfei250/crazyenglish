@@ -83,7 +83,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
   void next() {
     bool canNext = false;
     int nextIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
       if(value){
         if(questionNum == int.parse(key)){
           canNext = false;
@@ -104,7 +104,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
   void pre() {
     bool canPre = false;
     int preIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
       if(value){
           if(int.parse(key)-1>0){
             canPre = true;

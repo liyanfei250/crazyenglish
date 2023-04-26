@@ -16,13 +16,8 @@ class CompleteFillingQuestion extends BaseQuestion {
   CompleteFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
-  BaseQuestionState<CompleteFillingQuestion> createState() => _CompleteFillingQuestionState();
+  BaseQuestionState<CompleteFillingQuestion> getState() => _CompleteFillingQuestionState();
 
-  @override
-  BaseQuestionState<BaseQuestion> getState() {
-    // TODO: implement getState
-    throw UnimplementedError();
-  }
 }
 
 class _CompleteFillingQuestionState extends BaseQuestionState<CompleteFillingQuestion> {
