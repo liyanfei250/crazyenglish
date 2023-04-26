@@ -80,6 +80,9 @@ class Api {
   // 开始作答接口
   static String getStartExam = Config.ApiHost + "/question/exercise/isFinishByCatalogueId/";
 
+  // 练习记录作答数据
+  static String getExerciseDetail = Config.ApiHost + "/question/exercise/getExerciseDetail/";
+
   // 提交答案接口
   static String postWeekCommit = Config.ApiHost + "/question/exercise/submitAnswer";
 

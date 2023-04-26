@@ -48,6 +48,7 @@ class JsonCacheManageUtils {
   static final int PersonInfo = 0x014; //个人中心个人信息
   static final int PracticeDate = 0x015; //练习记录日期
   static final int SearchRecordDetail = 0x016; //练习记录日期
+  static final int WeekDetailResponseFromSUBJECTID = 0x017; //从subjectId获取的试题数据
 
   // String contentJson;
 

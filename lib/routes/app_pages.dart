@@ -20,7 +20,6 @@ import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/pages/user/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/user/set_psd/set_psd_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_catalog/week_test_catalog_view.dart';
-import 'package:crazyenglish/pages/week_test/week_test_detail/week_test_detail_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_list/week_test_list_view.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 

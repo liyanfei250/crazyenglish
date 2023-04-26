@@ -67,12 +67,14 @@ PractiseHistoryDate copyWith({  num? code,
 class Obj {
   Obj({
       num? exerciseId,
-      String? questionTypeName, 
+      num? subjectId,
+      String? questionTypeName,
       String? time, 
       num? exerciseCount, 
       num? correctCount, 
       String? accuracy,}){
     _exerciseId = exerciseId;
+    _subjectId = subjectId;
     _questionTypeName = questionTypeName;
     _time = time;
     _exerciseCount = exerciseCount;
@@ -82,6 +84,7 @@ class Obj {
 
   Obj.fromJson(dynamic json) {
     _exerciseId = json['exerciseId'];
+    _subjectId = json['subjectId'];
     _questionTypeName = json['questionTypeName'];
     _time = json['time'];
     _exerciseCount = json['exerciseCount'];
@@ -89,18 +92,23 @@ class Obj {
     _accuracy = json['accuracy'];
   }
   num? _exerciseId;
+  num? _subjectId;
   String? _questionTypeName;
   String? _time;
   num? _exerciseCount;
   num? _correctCount;
   String? _accuracy;
-Obj copyWith({  num? exerciseId,
+Obj copyWith({
+  num? exerciseId,
+  num? subjectId,
   String? questionTypeName,
   String? time,
   num? exerciseCount,
   num? correctCount,
   String? accuracy,
-}) => Obj(  exerciseId: exerciseId ?? _exerciseId,
+}) => Obj(
+  exerciseId: exerciseId ?? _exerciseId,
+  subjectId: subjectId ?? _subjectId,
   questionTypeName: questionTypeName ?? _questionTypeName,
   time: time ?? _time,
   exerciseCount: exerciseCount ?? _exerciseCount,
@@ -108,6 +116,7 @@ Obj copyWith({  num? exerciseId,
   accuracy: accuracy ?? _accuracy,
 );
   num? get exerciseId => _exerciseId;
+  num? get subjectId => _subjectId;
   String? get questionTypeName => _questionTypeName;
   String? get time => _time;
   num? get exerciseCount => _exerciseCount;
@@ -117,6 +126,7 @@ Obj copyWith({  num? exerciseId,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['exerciseId'] = _exerciseId;
+    map['subjectId'] = _subjectId;
     map['questionTypeName'] = _questionTypeName;
     map['time'] = _time;
     map['exerciseCount'] = _exerciseCount;

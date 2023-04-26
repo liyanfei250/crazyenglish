@@ -367,7 +367,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  logicDetail.getDetailAndStartExam("0");
+                                  logicDetail.addJumpToReviewDetailListen();
+                                  logicDetail.getDetailAndEnterResult("${element.subjectId}","${element.exerciseId}");
                                   showLoading("");
                                 },
                                 child: Expanded(

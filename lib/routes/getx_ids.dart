@@ -22,6 +22,7 @@ class GetBuilderIds {
   static const String weekTestDetailList = "weekTestDetailList";
   static const String startExam = "startExam";
   static const String examResult = "examResult";
+  static const String exerciseHistory = "exerciseHistory";
   static const String errorDetailList = "errorNoteDetailList";
   static const String datagroupDetailResponse = "datagroupDetailResponse";
   static const String APPVERSION = "APPVERSION";
