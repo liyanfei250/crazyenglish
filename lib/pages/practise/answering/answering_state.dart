@@ -19,7 +19,7 @@ class AnsweringState {
   int totalQuestionNum = 0;
   int currentQuestionNum = -1;
 
-  StartExam startExam = StartExam();
+  StartExam examResult = StartExam();
   AnsweringState() {
     ///Initialize variables
   }

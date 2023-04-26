@@ -2,6 +2,7 @@ import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
@@ -15,7 +16,7 @@ import '../question_factory.dart';
  */
 class SelectWordsFillingQuestion extends BaseQuestion {
 
-  SelectWordsFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  SelectWordsFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
   BaseQuestionState<SelectWordsFillingQuestion> getState() => _SelectWordsFillingQuestionState();
@@ -26,6 +27,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   late SubjectVoList element;
   int questionNum = 0;
+  int currentNum = 0;
   @override
   void onCreate() {
     element = widget.data;
@@ -54,8 +56,11 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   Widget getDetail(int defaultIndex){
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum);
-      jumpToQuestion(defaultIndex);
+      // 更新底部页码
+      currentNum = defaultIndex;
+      logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
+      // 更新空选中状态
+      selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
     }
     return SingleChildScrollView(
       child: Column(
@@ -63,8 +68,8 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController),
-          QuestionFactory.buildSelectAnswerQuestion(element.optionsList!)
+          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
+          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
         ],
       ),
     );
@@ -76,8 +81,10 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void next() {
     bool canNext = false;
     int nextIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    bool hasFound = false;
+    selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
+        hasFound = true;
         if(questionNum == int.parse(key)){
           canNext = false;
         }else{
@@ -88,6 +95,13 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         }
       }
     });
+    if(!hasFound){
+      nextIndex = currentNum;
+      if(currentNum+1 < questionNum){
+        canNext = true;
+        nextIndex = currentNum+1;
+      }
+    }
     if(canNext){
       jumpToQuestion(nextIndex);
 
@@ -98,14 +112,23 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void pre() {
     bool canPre = false;
     int preIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    bool hasFound = false;
+    selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
+        hasFound = true;
         if(int.parse(key)-1>0){
           canPre = true;
           preIndex = int.parse(key)-1-1;
         }
       }
     });
+    if(!hasFound){
+      if(currentNum-1>=0){
+        canPre = true;
+        preIndex = currentNum-1;
+
+      }
+    }
     if(canPre){
       jumpToQuestion(preIndex);
     }
@@ -113,11 +136,18 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   @override
   void jumpToQuestion(int index) {
+    print("jumpToQuestion:${index}");
     // 更新空选中状态
     selectGapGetxController.updateFocus("${index+1}",true);
     // 更细底部页码
     int currentPage = index;
+    currentNum = currentPage;
     logic.updateCurrentPage(currentPage);
+  }
+
+  @override
+  void clearFocus(){
+    selectGapGetxController.clearFocus();
   }
 
   @override

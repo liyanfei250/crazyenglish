@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/start_exam.dart';
 import '../../../utils/colors.dart';
 import 'base_question.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class OthersQuestion extends BaseQuestion {
-  OthersQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  OthersQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {

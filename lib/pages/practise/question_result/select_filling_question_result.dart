@@ -71,7 +71,7 @@ class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFi
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,widget.subtopicAnswerVoMap),
           QuestionFactory.buildSelectOptionQuestion(element.optionsList!,isClickEnable:false)
         ],
       ),
@@ -83,7 +83,7 @@ class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFi
   void next() {
     bool canNext = false;
     int nextIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
       if(value){
         if(questionNum == int.parse(key)){
           canNext = false;
@@ -104,7 +104,7 @@ class _SelectFillingQuestionResultState extends BaseQuestionResultState<SelectFi
   void pre() {
     bool canPre = false;
     int preIndex = -1;
-    selectGapGetxController.hasFocusMap.value.forEach((key, value) {
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
       if(value){
         if(int.parse(key)-1>0){
           canPre = true;

@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/practise/question/base_question.dart';
 import 'package:flutter/material.dart';
 
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 
 /**
@@ -12,16 +13,11 @@ import '../../../entity/week_detail_response.dart';
  */
 class CompleteFillingQuestion extends BaseQuestion {
 
-  CompleteFillingQuestion(SubjectVoList data,{Key? key}) : super(data:data,key: key);
+  CompleteFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
 
   @override
-  BaseQuestionState<CompleteFillingQuestion> createState() => _CompleteFillingQuestionState();
+  BaseQuestionState<CompleteFillingQuestion> getState() => _CompleteFillingQuestionState();
 
-  @override
-  BaseQuestionState<BaseQuestion> getState() {
-    // TODO: implement getState
-    throw UnimplementedError();
-  }
 }
 
 class _CompleteFillingQuestionState extends BaseQuestionState<CompleteFillingQuestion> {

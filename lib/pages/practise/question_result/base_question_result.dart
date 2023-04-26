@@ -54,6 +54,10 @@ abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
     baseQuestionResultState.pre();
   }
 
+  void clearFocus(){
+
+  }
+
   void jumpToQuestion(int index) {
     baseQuestionResultState.jumpToQuestion(index);
   }
@@ -78,6 +82,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+
   @override
   void initState(){
     super.initState();
@@ -147,16 +152,18 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             || element.questionTypeStr == QuestionType.complete_filling
             || element.questionTypeStr == QuestionType.normal_reading){
           // 选择题
-          itemList.add(buildQuestionType("选择题"));
+          itemList.add(buildQuestionType("选择题2"));
           itemList.add(Visibility(
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
           int defaultChooseIndex = -1;
+          bool? isCorrect;
           if(widget.subtopicAnswerVoMap!.containsKey((question.id??1).toString())){
             String userAnswer = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.answer??"";
             int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
+            isCorrect = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.isRight;
             for(int  i = 0;i <length ;i++){
               if(userAnswer == question!.optionsList![i].sequence){
                 defaultChooseIndex = i;
@@ -165,7 +172,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           }
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,false,true,defaultChooseIndex: defaultChooseIndex));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,false,true,defaultChooseIndex: defaultChooseIndex,isCorrect:isCorrect));
           }else{
             itemList.add(QuestionFactory.buildSingleImgChoice(question,false,true,defaultChooseIndex: defaultChooseIndex));
           }
@@ -288,6 +295,11 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     // }else{
     //   return false;
     // }
+  }
+
+  @override
+  void clearFocus(){
+
   }
 
 

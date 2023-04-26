@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
+import '../answering/page_getxcontroller.dart';
 import '../answering/select_gap_getxcontroller.dart';
 
 /**
@@ -29,10 +31,11 @@ typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
 typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 
-abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
+abstract class BaseQuestion extends StatefulWidget{
   late BaseQuestionState baseQuestionState;
   late SubjectVoList data;
-  BaseQuestion({required this.data,Key? key}) : super(key: key);
+  late Map<String,ExerciseLists> subtopicAnswerVoMap;
+  BaseQuestion(this.subtopicAnswerVoMap,{required this.data,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -47,28 +50,14 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   getAnswers() {
     baseQuestionState.getAnswers();
   }
-  void next(){
-    baseQuestionState.next();
-  }
-  void pre(){
-    baseQuestionState.pre();
-  }
-
-  void jumpToQuestion(int index) {
-    baseQuestionState.jumpToQuestion(index);
-  }
-
-  int getQuestionCount(){
-    return baseQuestionState.getQuestionCount();
-  }
 }
 
 abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with AnswerMixin{
   String curPage = "";
   String tag = "BaseQuestionState_";
 
-  Map<String,TextEditingController> gapEditController = {};
-  Map<String,FocusNode> gapFocusNodeController = {};
+  final Map<String,TextEditingController> gapEditController = {};
+  final Map<String,FocusNode> gapFocusNodeController = {};
   Map<String,String> gapAnswerController = {};
   final PageController pageController = PageController(keepPage: true);
 
@@ -77,6 +66,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   List<Widget> questionList = [];
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+  final pagLogic = Get.find<PageGetxController>();
 
   @override
   void initState(){
@@ -85,6 +75,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
     tag = tag+curPage;
     print(tag + "initState\n");
+    pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
+      pre();
+    });
+    pagLogic.addListenerId(GetBuilderIds.answerNextPage,() {
+      next();
+    });
   }
 
 
@@ -264,6 +260,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
 
   @override
+  void clearFocus(){
+
+  }
+
+
+  @override
   void jumpToQuestion(int index) {
     int currentPage = index;
     pageController.jumpToPage(currentPage);
@@ -287,6 +289,14 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   FocusNode makeFocusNodeController(String key){
     if(gapFocusNodeController[key] == null){
       FocusNode focusNode = FocusNode();
+      print("makeFocusNode:$key");
+      focusNode.addListener(() {
+        if(focusNode.hasFocus){
+          print("makeFocusNode:$key has focus");
+        }else{
+          print("makeFocusNode:$key not has focus");
+        }
+      });
       gapFocusNodeController[key] = focusNode;
       return focusNode;
     }else{
