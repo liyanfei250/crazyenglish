@@ -223,14 +223,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             children: [
               InkWell(
                 onTap: (){
-                  // 开始作答逻辑
-                  // RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-                  //     arguments: {"detail": widget.testDetailResponse,
-                  //       "uuid":"dd",
-                  //       "parentIndex":widget.parentIndex,
-                  //       "childIndex":0,
-                  //     });
-                  logicDetail.getDetailAndStartExam("0");
+                  logicDetail.addJumpToDetailListen(widget.parentIndex,0);
+                  logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
                   showLoading("");
                 },
                 child: Container(
