@@ -1,6 +1,8 @@
 import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
 
+import '../../../base/common.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
@@ -41,6 +43,14 @@ class AnsweringLogic extends GetxController {
 
   }
 
+  void nextPage(){
+    update([GetBuilderIds.answerNextPage]);
+  }
+
+  void prePage(){
+    update([GetBuilderIds.answerPrePage]);
+  }
+
   void uploadWeekTest(SubjectVoList subjectVoList) async{
 
 
@@ -62,6 +72,7 @@ class AnsweringLogic extends GetxController {
         journalCatalogueId: subjectVoList.journalCatalogueId,
         type: "1",
         examId: 0,
+        userId: SpUtil.getInt(BaseConstant.USER_ID),
         subjectAnswerVo:subjectAnswerVoList);
 
     CommitResponse commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);

@@ -30,7 +30,7 @@ typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
 typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 
-abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
+abstract class BaseQuestion extends StatefulWidget{
   late BaseQuestionState baseQuestionState;
   late SubjectVoList data;
   late Map<String,ExerciseLists> subtopicAnswerVoMap;
@@ -48,24 +48,6 @@ abstract class BaseQuestion extends StatefulWidget with AnswerMixin{
   @override
   getAnswers() {
     baseQuestionState.getAnswers();
-  }
-  void next(){
-    baseQuestionState.next();
-  }
-  void pre(){
-    baseQuestionState.pre();
-  }
-
-  void clearFocus(){
-
-  }
-
-  void jumpToQuestion(int index) {
-    baseQuestionState.jumpToQuestion(index);
-  }
-
-  int getQuestionCount(){
-    return baseQuestionState.getQuestionCount();
   }
 }
 
@@ -91,6 +73,12 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
     tag = tag+curPage;
     print(tag + "initState\n");
+    logic.addListenerId(GetBuilderIds.answerPrePage,() {
+      pre();
+    });
+    logic.addListenerId(GetBuilderIds.answerNextPage,() {
+      next();
+    });
   }
 
 

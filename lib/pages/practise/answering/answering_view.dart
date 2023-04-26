@@ -55,7 +55,7 @@ class AnsweringPage extends BasePage {
       testDetailResponse = Get.arguments[examDetailKey];
       uuid = Get.arguments[catlogIdKey];
       parentIndex = Get.arguments[parentIndexKey];
-      parentIndex =6;
+      parentIndex =1;
       childIndex = Get.arguments[childIndexKey];
       startExam = Get.arguments[lastExamResult];
     }
@@ -192,7 +192,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             children: [
               InkWell(
                 onTap: () {
-                  pages[0].pre();
+                  logic.prePage();
                 },
                 child: GetBuilder<AnsweringLogic>(
                     id: GetBuilderIds.answerPageNum,
@@ -236,7 +236,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       }
                     );
                   }else{
-                    pages[0].next();
+                    logic.nextPage();
                   }
                 },
                 child: GetBuilder<AnsweringLogic>(

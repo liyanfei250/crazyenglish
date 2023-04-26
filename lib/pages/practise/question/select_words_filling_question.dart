@@ -81,8 +81,10 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void next() {
     bool canNext = false;
     int nextIndex = -1;
+    bool hasFound = false;
     selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
+        hasFound = true;
         if(questionNum == int.parse(key)){
           canNext = false;
         }else{
@@ -93,8 +95,12 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         }
       }
     });
-    if(nextIndex == -1){
+    if(!hasFound){
       nextIndex = currentNum;
+      if(currentNum+1 < questionNum){
+        canNext = true;
+        nextIndex = currentNum+1;
+      }
     }
     if(canNext){
       jumpToQuestion(nextIndex);
@@ -106,16 +112,22 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   void pre() {
     bool canPre = false;
     int preIndex = -1;
+    bool hasFound = false;
     selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
+        hasFound = true;
         if(int.parse(key)-1>0){
           canPre = true;
           preIndex = int.parse(key)-1-1;
         }
       }
     });
-    if(preIndex<=-1){
-      preIndex = currentNum;
+    if(!hasFound){
+      if(currentNum-1>=0){
+        canPre = true;
+        preIndex = currentNum-1;
+
+      }
     }
     if(canPre){
       jumpToQuestion(preIndex);
