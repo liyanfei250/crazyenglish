@@ -45,7 +45,7 @@ import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
 import '../pages/jingang/listening_practice/listening_practice_view.dart';
 import '../pages/jingang/result_overview/result_overview_view.dart';
-import '../pages/reviews/error/error_note_collect/error_note_collect_view.dart';
+import '../pages/reviews/collect/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/practise/result/result_view.dart';
 import '../pages/reviews/homework_history/homework_history_view.dart';
