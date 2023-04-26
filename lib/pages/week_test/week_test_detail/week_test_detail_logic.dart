@@ -47,6 +47,16 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
+  // 已订正错题 收藏题目 跳转到浏览页
+  void getDetailAndEnterBrowsePage(String subjectId) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
+    // if(weekDetailResponse!=null){
+    //   geExamExerciseDetail(exerciseId);
+    // } else {
+    Util.toast("暂不能跳转");
+    // }
+  }
+
   // 获取试题详情页数据
   Future<WeekDetailResponse> getWeekTestDetailByCatalogId(String id) async{
     var cache = await JsonCacheManageUtils.getCacheData(

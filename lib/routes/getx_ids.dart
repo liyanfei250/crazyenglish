@@ -55,7 +55,6 @@ class GetBuilderIds {
   static const String getErrorNoteTabDate = "getErrorNoteTabDate";
   static const String getSearchRecord = "getSearchRecord";
   static const String getCollectListDate = "getCollectListDate";
-  static const String getCollectListDetail = "getCollectListDetail";
   static const String toCollectDate = "toCollectDate";
   static const String getHomeDateList = "getHomeDateList";
   static const String getHomeDateListNew = "getHomeDateListNew";
