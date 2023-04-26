@@ -121,7 +121,7 @@ class Api {
   // 错题本已订正/未订正列表
   static String getErrorNoteTabDateList = Config.ApiHost + "/question/collected/getCorrectionList";
 
-  // 收藏题目最近搜索历史接口。金刚区
+  // 收藏题目最近搜索历史接口改成金刚区
   static String getSearchRecordDateList = Config.ApiHost + "/";
 
   // 收藏列表接口

@@ -1,3 +1,4 @@
+import '../../../../entity/home/HomeKingDate.dart';
 import '../../../../entity/home/SearchCollectListDetail.dart';
 import '../../../../entity/review/CancellCollectDate.dart';
 import '../../../../entity/review/CollectDate.dart';
@@ -9,7 +10,7 @@ class Collect_practicState {
   SearchCollectListDetail ListDetail = SearchCollectListDetail();
   SearchCollectListDate paperList = SearchCollectListDate();
   CollectDate collectDate = CollectDate();
-  CancellCollectDate cancellCollectDate = CancellCollectDate();
+  HomeKingDate tabList = HomeKingDate();
   bool hasMore = true;
   int pageNo = 0;
   Collect_practicState() {
