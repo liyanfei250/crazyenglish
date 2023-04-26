@@ -94,17 +94,30 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   @override
   void onCreate() {
     startTimer();
-    if(widget.startExam!=null && widget.startExam!.obj!=null){
+    if (widget.testDetailResponse!.obj != null) {
+      int length = widget.testDetailResponse!.obj!.subjectVoList!.length;
+
+      if(widget.parentIndex < length){
+        currentSubjectVoList = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex];
+      }
+    }
+    if(currentSubjectVoList!=null && widget.startExam!=null && widget.startExam!.obj!=null){
+
       if(widget.startExam!.obj!.exerciseVos!=null
           && widget.startExam!.obj!.exerciseVos!.length>0){
-        exerciseVo = widget.startExam!.obj!.exerciseVos![0];
-        if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
-          exerciseVo.exerciseLists!.forEach((element) {
-            subtopicAnswerVoMap[
-            (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
-                .toString()] = element;
-          });
-        }
+        widget.startExam!.obj!.exerciseVos!.forEach((element) {
+          exerciseVo = element;
+          if(element.subjectId == currentSubjectVoList!.id){
+            if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
+              exerciseVo.exerciseLists!.forEach((element) {
+                subtopicAnswerVoMap[
+                (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
+                    .toString()] = element;
+              });
+            }
+          }
+        });
+
       }
     }
     logic.addListenerId(GetBuilderIds.examResult, () {

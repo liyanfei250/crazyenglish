@@ -75,24 +75,37 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   // TODO 会替换成小题 选择题 或者 填空的数量
   List<SubtopicVoList> tabs = [];
-
+  detail.SubjectVoList? currentSubjectVoList;
   // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
   ExerciseVos exerciseVo = ExerciseVos();
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   @override
   void onCreate() {
-    if(widget.examResult!=null){
+    if (widget.testDetailResponse!.obj != null) {
+      int length = widget.testDetailResponse!.obj!.subjectVoList!.length;
+
+      if(widget.parentIndex < length){
+        currentSubjectVoList = widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex];
+      }
+    }
+    if(currentSubjectVoList!=null && widget.examResult!=null){
+
       if(widget.examResult!.exerciseVos!=null
-        && widget.examResult!.exerciseVos!.length>0){
-        exerciseVo = widget.examResult!.exerciseVos![0];
-        if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
-          exerciseVo.exerciseLists!.forEach((element) {
-            subtopicAnswerVoMap[
-            (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
-                .toString()] = element;
-          });
-        }
+          && widget.examResult!.exerciseVos!.length>0){
+        widget.examResult!.exerciseVos!.forEach((element) {
+          exerciseVo = element;
+          if(element.subjectId == currentSubjectVoList!.id){
+            if(exerciseVo.exerciseLists!=null && exerciseVo.exerciseLists!.length>0){
+              exerciseVo.exerciseLists!.forEach((element) {
+                subtopicAnswerVoMap[
+                (element.subtopicId??exerciseVo.exerciseLists!.indexOf(element))
+                    .toString()] = element;
+              });
+            }
+          }
+        });
+
       }
     }
     // 计算小题数量 TODO 逻辑还需修改
@@ -383,24 +396,24 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       int length = weekTestDetailResponse.obj!.subjectVoList!.length;
 
       if(widget.parentIndex < length){
-        detail.SubjectVoList element = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
-        if(element.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: element));
-        }else if (element.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: element));
-        }else if(element.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
+        currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
+        if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
+          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+        }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
+          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
+          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else{
-          switch (element.classifyValue) {
+          switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: element));
+              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: element));
+              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: element));
-              Util.toast("题型分类${element.questionTypeName}还未解析");
+              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           }
         }
 

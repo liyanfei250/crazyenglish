@@ -29,7 +29,7 @@ import 'question/base_question.dart';
 class QuestionFactory{
 
   static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{
-    int? defaultChooseIndex,UserAnswerCallback? userAnswerCallback}){
+    int? defaultChooseIndex,bool? isCorrect,UserAnswerCallback? userAnswerCallback}){
 
     var choseItem = (-1).obs;
     choseItem.value = defaultChooseIndex??-1;
@@ -57,7 +57,7 @@ class QuestionFactory{
                   child: Container(
                     margin: EdgeInsets.only(bottom: 12.w),
                     child: ChoiceRadioItem(
-                        _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList.answer,
                         e!.sequence!,
                         e!.content!,
