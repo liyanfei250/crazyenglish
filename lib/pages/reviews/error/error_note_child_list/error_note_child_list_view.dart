@@ -1,20 +1,17 @@
-import 'package:crazyenglish/utils/time_util.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart'as refresh;
-import 'package:bot_toast/bot_toast.dart';
+
 import '../../../../base/AppUtil.dart';
 import '../../../../base/common.dart';
 import '../../../../base/widgetPage/loading.dart';
 import '../../../../entity/review/ErrorNoteTabDate.dart'as errorDate;
-import '../../../../entity/error_note_response.dart';
 import '../../../../entity/review/ErrorNoteTabDate.dart';
 import '../../../../r.dart';
-import '../../../../routes/app_pages.dart';
 import '../../../../routes/getx_ids.dart';
-import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/sp_util.dart';
 import '../../../practise/answering/answering_view.dart';
@@ -59,12 +56,6 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
         widget.type.toString() +
         'typeTwo==' +
         widget.typeTwo.toString());
-
-    /*noteLogic.addListenerId(GetBuilderIds.changeNoteList, () {
-      currentPageNo = 1;
-      logic.getList(
-          stateLogic.correction, widget.typeTwo, pageStartIndex, pageSize);
-    });*/
 
     //isCorrect是否订正 0 否 1 是
     //classify 题型value
@@ -154,12 +145,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             ),
           ],
         ),
-      ) /*ListView(
-        children: listDataOne.map((value) {
-          return listitemBigBg();
-        }).toList(),
-      )*/
-      ,
+      ),
     );
   }
 
@@ -222,15 +208,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
           itemBuilder: (BuildContext context, int indexSmall) {
             return listitem(weekPaperList![index].recordListVos!, indexSmall);
           },
-        )
-        /*ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          children: listData.map((value) {
-            return listitem(value);
-          }).toList(),
-        )*/
-        ,
+        ),
       ],
     );
   }
@@ -259,7 +237,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: true ? 10.w : 14.w)),
+                      top: widget.type==0 ? 10.w : 14.w)),
               Row(
                 children: [
                   Column(
@@ -305,7 +283,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   Expanded(child: Text('')),
                   Padding(
                     padding: EdgeInsets.only(right: 10.w),
-                    child: true
+                    child: widget.type==0
                         ? Image.asset(
                             R.imagesErrorToCorrect,
                             fit: BoxFit.cover,
@@ -323,7 +301,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: true ? 10.w : 14.w)),
+                      top: widget.type==0 ? 10.w : 14.w)),
             ],
           ),
         ));
