@@ -45,7 +45,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    logicDetail.addJumpToDetailListen(0, 0);
+    logicDetail.addJumpToStartExamListen(0, 0);
   }
 
   List<Event> _getEventsForDay(DateTime day) {

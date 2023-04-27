@@ -54,6 +54,11 @@ class AnsweringPage extends BasePage {
   static const result_type = "result_type";
   static const result_browse_type = 1;
   static const result_normal_type = 2;
+  static const answer_type = "answer_type";
+  static const answer_fix_type = 1;
+  static const answer_normal_type = 2;
+  static const answer_continue_type = 3;
+
 
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {

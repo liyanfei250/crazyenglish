@@ -212,7 +212,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             children: [
               InkWell(
                 onTap: (){
-                  logicDetail.addJumpToDetailListen(widget.parentIndex,0);
+                  logicDetail.addJumpToStartExamListen(widget.parentIndex,0);
                   logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
                   showLoading("");
                 },
@@ -267,7 +267,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                       });
                     } else {
                       // 跳作答页
-                      logicDetail.addJumpToDetailListen(widget.parentIndex+1,0);
+                      logicDetail.addJumpToStartExamListen(widget.parentIndex+1,0);
                       logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
                     }
                   } else {
