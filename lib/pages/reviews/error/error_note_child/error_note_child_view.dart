@@ -78,7 +78,7 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
       children: widget.tablist!.map((e) {
-        return ErrorNoteChildListPage(widget.type, e.value!.toInt());
+        return ErrorNoteChildListPage(widget.type, e.id!.toInt());
       }).toList());
 
   Widget buildBg() => Container(

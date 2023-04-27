@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart'as refresh;
 import 'package:bot_toast/bot_toast.dart';
 import '../../../../base/AppUtil.dart';
+import '../../../../base/common.dart';
 import '../../../../base/widgetPage/loading.dart';
 import '../../../../entity/review/ErrorNoteTabDate.dart'as errorDate;
 import '../../../../entity/error_note_response.dart';
@@ -15,6 +16,7 @@ import '../../../../routes/app_pages.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
+import '../../../../utils/sp_util.dart';
 import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../error_note/error_note_logic.dart';
 import 'error_note_child_list_logic.dart';
@@ -42,10 +44,10 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  refresh.RefreshController _refreshController =
+  refresh.RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
-  final int pageSize = 10;
+  final int pageSize = 1;
   int currentPageNo = 1;
   List<errorDate.Obj> weekPaperList = [];
   final int pageStartIndex = 1;
@@ -64,6 +66,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
           stateLogic.correction, widget.typeTwo, pageStartIndex, pageSize);
     });*/
 
+    //isCorrect是否订正 0 否 1 是
+    //classify 题型value
     logic.addListenerId(
         GetBuilderIds.errorNoteTestList +
             widget.type.toString() +
@@ -106,7 +110,6 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
       Util.toast('获取列表数据成功');
     });
 
-
     _onRefresh();
     showLoading("");
     hideLoading();
@@ -116,20 +119,20 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: SmartRefresher(
+      child: refresh.SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
-        header: WaterDropHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus? mode) {
+        header: refresh.WaterDropHeader(),
+        footer: refresh.CustomFooter(
+          builder: (BuildContext context, refresh.LoadStatus? mode) {
             Widget body;
-            if (mode == LoadStatus.idle) {
+            if (mode == refresh.LoadStatus.idle) {
               body = Text("");
-            } else if (mode == LoadStatus.loading) {
+            } else if (mode == refresh.LoadStatus.loading) {
               body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
+            } else if (mode == refresh.LoadStatus.failed) {
               body = Text("");
-            } else if (mode == LoadStatus.canLoading) {
+            } else if (mode == refresh.LoadStatus.canLoading) {
               body = Text("release to load more");
             } else {
               body = Text("");
@@ -324,12 +327,13 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getList(widget.type, widget.typeTwo, pageStartIndex, pageSize);
+    // int userId, int isCorrect, int classify, int current, int size
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(widget.type, widget.typeTwo, currentPageNo, pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, currentPageNo, pageSize);
 
   }
 

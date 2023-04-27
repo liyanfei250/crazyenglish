@@ -15,71 +15,88 @@ class Error_note_child_listLogic extends GetxController {
   final Error_note_child_listState state = Error_note_child_listState();
   final ErrorNoteRepository errorNoteResponse = ErrorNoteRepository();
 
-  void getList(int correction, int type, int page, int pageSize) async {
-    Map<String, String> req = {};
-    req["correction"] = "$correction";
-    req["type"] = "$type";
-    req["page"] = "$page";
-    req["pageSize"] = "$pageSize";
+  void getList(
+      int userId, int isCorrect, int classify, int current, int size) async {
+    //isCorrect是否订正 0 否 1 是
+    //classify 题型value
 
-    final jsonStr = '{"userId": 1, "isCorrect": 1, "classify": 1646439861824098307}';
-    final jsonMap = json.decode(jsonStr);
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> reqTwo = {};
+    req["userId"] = userId;
+    req["isCorrect"] = isCorrect;
+    req["classify"] = classify;
+    reqTwo["size"] = size;
+    reqTwo["current"] = current;
+    req["p"] = reqTwo;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.ErrorNoteResponse)
+            JsonCacheManageUtils.ErrorNoteResponse,labelId: isCorrect.toString()+classify.toString())
         .then((value) {
       if (value != null) {
         return ErrorNoteTabDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
-    state.pageNo = page;
-    if (page == 1 && cache is ErrorNoteTabDate && cache.obj!= null) {
+    state.pageNo = current;
+    if (current == 1 && cache is ErrorNoteTabDate && cache.obj != null) {
       state.list = cache.obj!;
-      if (state.list.length < pageSize) {
+      if (state.list.length < size) {
         state.hasMore = false;
       } else {
         state.hasMore = true;
       }
-      update([GetBuilderIds.errorNoteTestList + "$correction" + "$type"]);
+      update([
+        GetBuilderIds.errorNoteTestList +
+            isCorrect.toString() +
+            classify.toString()
+      ]);
     }
-    ErrorNoteTabDate list = await errorNoteResponse.getErrorNoteTabDate(jsonMap);
-    if (page == 1) {
+    ErrorNoteTabDate list =
+        await errorNoteResponse.getErrorNoteTabDate(req);
+    if (current == 1) {
       JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.ErrorNoteResponse, list.toJson());
+          JsonCacheManageUtils.ErrorNoteResponse, list.toJson(),labelId: isCorrect.toString()+classify.toString());
     }
     if (list.obj == null) {
-      if (page == 1) {
+      if (current == 1) {
         state.list.clear();
       }
     } else {
-      if (page == 1) {
+      if (current == 1) {
         state.list = list.obj!;
       } else {
         state.list.addAll(list.obj!);
       }
-      if (list.obj!.length < pageSize) {
+      if (list.obj!.length < size) {
         state.hasMore = false;
       } else {
         state.hasMore = true;
       }
     }
-    update([GetBuilderIds.errorNoteTestList + "$correction" + "$type"]);
+    update([
+      GetBuilderIds.errorNoteTestList +
+          isCorrect.toString() +
+          classify.toString()
+    ]);
   }
 
-  void getWeekTestDetail(String id) async{
+  void getWeekTestDetail(String id) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.ErrorNoteDetailResponse,labelId: id.toString()).then((value){
-      if(value!=null){
-        return weekDetail.WeekDetailResponse.fromJson(value as Map<String,dynamic>?);
+            JsonCacheManageUtils.ErrorNoteDetailResponse,
+            labelId: id.toString())
+        .then((value) {
+      if (value != null) {
+        return weekDetail.WeekDetailResponse.fromJson(
+            value as Map<String, dynamic>?);
       }
     });
 
-    if(cache is WeekDetailResponse) {
+    if (cache is WeekDetailResponse) {
       state.weekDetailResponse = cache!;
       update([GetBuilderIds.errorDetailList]);
     }
-    weekDetail.WeekDetailResponse list = await errorNoteResponse.getErrorNoteDetail(id);
+    weekDetail.WeekDetailResponse list =
+        await errorNoteResponse.getErrorNoteDetail(id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.ErrorNoteDetailResponse,
         labelId: id,
