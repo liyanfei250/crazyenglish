@@ -39,8 +39,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   int currentPageNo = 1;
   final int pageStartIndex = 1;
   SearchRecordDate? paperDetail;
-  bool isRecentView =false;
-  dynamic classify =null;
+  bool isRecentView = false;
+  dynamic classify = null;
 
   List<tabDate.Obj> searchList = [];
   List<Obj> weekPaperList = [];
@@ -74,7 +74,10 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     logic.getHomeList('classify_type');
 
 //收藏列表
-    logic.addListenerId(GetBuilderIds.getCollectListDate+isRecentView.toString()+classify.toString(), () {
+    logic.addListenerId(
+        GetBuilderIds.getCollectListDate +
+            isRecentView.toString() +
+            classify.toString(), () {
       hideLoading();
       if (state.paperList != null && state.paperList != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -88,9 +91,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             } else {
               _refreshController.resetNoData();
             }
-            setState(() {
-
-            });
+            setState(() {});
           }
         } else if (state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
@@ -103,9 +104,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             } else {
               _refreshController.resetNoData();
             }
-            setState(() {
-
-            });
+            setState(() {});
           }
         }
       }
@@ -252,11 +251,13 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         //Util.toast(value['title']);
         Util.toast(value.name.toString());
         isRecentView = value.value == 101 ? true : false;
-        classify = value.id ?? null;
-
+        classify = value.value == 100 || value.value == 101 ? null : value.id;
 
         //收藏列表
-        logic.addListenerId(GetBuilderIds.getCollectListDate+isRecentView.toString()+classify.toString(), () {
+        logic.addListenerId(
+            GetBuilderIds.getCollectListDate +
+                isRecentView.toString() +
+                classify.toString(), () {
           hideLoading();
           if (state.paperList != null && state.paperList != null) {
             if (state.pageNo == currentPageNo + 1) {
@@ -270,9 +271,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                 } else {
                   _refreshController.resetNoData();
                 }
-                setState(() {
-
-                });
+                setState(() {});
               }
             } else if (state.pageNo == pageStartIndex) {
               currentPageNo = pageStartIndex;
@@ -285,22 +284,14 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                 } else {
                   _refreshController.resetNoData();
                 }
-                setState(() {
-
-                });
+                setState(() {});
               }
             }
           }
         });
 
-
-
-        logic.getCollectList(
-            SpUtil.getInt(BaseConstant.USER_ID),
-            isRecentView,
-            classify,
-            pageSize,
-            pageStartIndex);
+        logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView,
+            classify, pageSize, pageStartIndex);
 
         _searchController.text = value!.name!;
       },
@@ -408,8 +399,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
-        logicDetail.getDetailAndEnterBrowsePage("${weekPaperList[index].subjectId}","${weekPaperList[index].subtopicId}");
+        logicDetail.addJumpToReviewDetailListen(
+            resultType: AnsweringPage.result_browse_type);
+        logicDetail.getDetailAndEnterBrowsePage(
+            "${weekPaperList[index].subjectId}",
+            "${weekPaperList[index].subtopicId}");
         showLoading("");
       },
       child: listitemBigBg(weekPaperList[index]),
@@ -429,13 +423,13 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     //int userId, bool isRecentView, dynamic classify,int size,int current
-    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView, classify,
-        pageSize, pageStartIndex);
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView,
+        classify, pageSize, pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView, classify,
-        pageSize, pageStartIndex);
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView,
+        classify, pageSize, pageStartIndex);
   }
 }

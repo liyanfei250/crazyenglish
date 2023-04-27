@@ -68,19 +68,6 @@ class ReviewRepository {
       return paperDetail!;
     }
   }
-  //获取错题本数据列表
-  Future<ErrorNoteTabDate> getErrorNoteTabDate(Map<String, dynamic> req) async {
-
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.getErrorNoteTabDateList,data: req,
-        options: Options(method: Method.post,contentType: ContentType.json.toString()));
-    ErrorNoteTabDate paperDetail = ErrorNoteTabDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
 
   Future<SearchRecordDate> getSearchRecordList(String id) async {
     Map map = await NetManager.getInstance()!.request(
