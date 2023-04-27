@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -299,13 +300,29 @@ class _IndexPageState extends BasePageState<IndexPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  R.imagesShopImageLogoTest,
-                  width: 50.w,
-                  height: 50.w,
-                ),
+              ExtendedImage.network(
+                e.icon ?? "",
+                cacheRawData: true,
+                width: 50.w,
+                height: 50.w,
+                fit: BoxFit.fill,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(10.0.w)),
+                enableLoadState: true,
+                loadStateChanged: (state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.completed:
+                      return ExtendedRawImage(
+                        image: state.extendedImageInfo?.image,
+                        fit: BoxFit.cover,
+                      );
+                    default:
+                      return Image.asset(
+                        R.imagesShopImageLogoTest,
+                        fit: BoxFit.fill,
+                      );
+                  }
+                },
               ),
               Padding(padding: EdgeInsets.only(bottom: 10.w)),
               Text(

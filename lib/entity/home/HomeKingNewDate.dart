@@ -107,7 +107,7 @@ class Obj {
   num? _id;
   dynamic _dictionaryId;
   String? _name;
-  dynamic _icon;
+  String? _icon;
   num? _sort;
   bool? _isDelete;
   String? _createTime;
@@ -117,7 +117,7 @@ class Obj {
 Obj copyWith({  num? id,
   dynamic dictionaryId,
   String? name,
-  dynamic icon,
+  String? icon,
   num? sort,
   bool? isDelete,
   String? createTime,
@@ -138,7 +138,7 @@ Obj copyWith({  num? id,
   num? get id => _id;
   dynamic get dictionaryId => _dictionaryId;
   String? get name => _name;
-  dynamic get icon => _icon;
+  String? get icon => _icon;
   num? get sort => _sort;
   bool? get isDelete => _isDelete;
   String? get createTime => _createTime;

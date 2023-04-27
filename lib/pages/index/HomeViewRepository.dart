@@ -168,13 +168,6 @@ class HomeViewRepository {
 
   //金刚区列表新增
   Future<HomeKingNewDate> getHomeKingListNew(String type) async {
-    String testData = '{"code": 0,"message": "系统正常","obj": [{"id": 1646434234670354400,"dictionaryId": null,"name": "英语周报","icon": null,"sort": 1,"isDelete": false,"createTime": "2023-04-25 17:33:10","updateTime": null,"createUser": 1,"updateUser": null},{"id": 1646434234670354400,"dictionaryId": null,"name": "英语周报","icon": null,"sort": 1,"isDelete": false,"createTime": "2023-04-25 17:33:10","updateTime": null,"createUser": 1,"updateUser": null},{"id": 1646434234670354400,"dictionaryId": null,"name": "英语周报","icon": null,"sort": 1,"isDelete": false,"createTime": "2023-04-25 17:33:10","updateTime": null,"createUser": 1,"updateUser": null},{"id": 1646434234670354400,"dictionaryId": null,"name": "英语周报","icon": null,"sort": 1,"isDelete": false,"createTime": "2023-04-25 17:33:10","updateTime": null,"createUser": 1,"updateUser": null}],"p": null}';
-    //todo 后面调试去掉数据
-    if(Util.isTestMode()){
-      HomeKingNewDate weekTestListResponse = HomeKingNewDate.fromJson(json.decode(testData));
-      return weekTestListResponse;
-    }
-
     Map map = await NetManager.getInstance()!
         .request(Method.get, Api.getHomeKingListNew);
     HomeKingNewDate sendCodeResponse = HomeKingNewDate.fromJson(map);

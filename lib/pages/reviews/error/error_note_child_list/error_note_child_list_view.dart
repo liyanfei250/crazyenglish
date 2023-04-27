@@ -104,8 +104,6 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
       }
     });
 
-    logicDetail.addJumpToDetailListen(0, 0);
-
     logic.addListenerId(GetBuilderIds.getErrorNoteTabDate, () {
       Util.toast('获取列表数据成功');
     });
@@ -241,8 +239,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     return InkWell(
         onTap: () {
           if (value[index].journalId == 0) {
-            // logicDetail.getDetailAndStartExam(value[index].journalId!);
-            // showLoading("");
+
+            
           }
         },
         child: Container(
