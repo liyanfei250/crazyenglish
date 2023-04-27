@@ -20,6 +20,7 @@ import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/time_util.dart';
 import '../question/base_question.dart';
 import '../question/select_words_filling_question.dart';
 import 'answering_logic.dart';
@@ -68,7 +69,7 @@ class AnsweringPage extends BasePage {
       parentIndex = Get.arguments[parentIndexKey];
       childIndex = Get.arguments[childIndexKey];
       lastFinishResult = Get.arguments[LastFinishResult];
-      answerType = Get.arguments[answer_type];
+      answerType = Get.arguments[answer_type]?? answer_normal_type;
     }
   }
 
@@ -111,6 +112,19 @@ class AnsweringPage extends BasePage {
     return subtopicAnswerVoMap;
   }
 
+  static num findInitTime(Exercise examResult,num subjectId){
+    if(examResult.exerciseVos!=null
+        && examResult.exerciseVos!.length>0) {
+      for(int i = 0;i< examResult.exerciseVos!.length;i++){
+        ExerciseVos exerciseVo = examResult.exerciseVos![i];
+        if (exerciseVo.subjectId == subjectId) {
+          return exerciseVo.time??0;
+        }
+      }
+    }
+    return 0;
+  }
+
 }
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
@@ -121,7 +135,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       .state;
   bool isCountTime = true;
   late Timer _timer;
-  var countTime = 0.obs;
   var title = "".obs;
 
   List<BaseQuestion> pages = <BaseQuestion>[];
@@ -137,12 +150,19 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   @override
   void onCreate() {
-    startTimer();
+    if(widget.answerType != AnsweringPage.answer_fix_type){
+      startTimer();
+    }
+
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
       if(widget.lastFinishResult!.obj!=null){
         subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
-      }else{
+        num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        if(time>0){
+          logic.updateTime(countTime: time.toInt());
+        }
+      } else {
         print("无作答数据异常");
       }
     }else{
@@ -189,12 +209,18 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                     height: 18.w,
                   ),
                   Padding(padding: EdgeInsets.only(left: 6.w)),
-                  Obx(() =>
-                      Text(
-                        "$countTime",
-                        style: TextStyle(
-                            fontSize: 14.w, color: AppColors.c_FF353E4D),
-                      ))
+                  Visibility(
+                      visible: widget.answerType != AnsweringPage.answer_fix_type,
+                      child: GetBuilder<AnsweringLogic>(
+                        id: GetBuilderIds.answerPeriodTime,
+                        builder: (_){
+                          return Text(
+                            TimeUtil.getMiaoFenOptional(_.state.countTime),
+                            style: TextStyle(
+                                fontSize: 14.w, color: AppColors.c_FF353E4D),
+                          );
+                        }),
+                      ),
                 ],
               ))
         ],
@@ -356,7 +382,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   startTimer() {
     const period = const Duration(seconds: 1);
     _timer = Timer.periodic(period, (timer) {
-      countTime++;
+      logic.updateTime();
     });
   }
 

@@ -25,6 +25,15 @@ class AnsweringLogic extends GetxController {
     super.onClose();
   }
 
+  void updateTime( {int countTime = 0} ){
+    if(countTime>0){
+      state.countTime = countTime;
+    }else{
+      state.countTime++;
+      update([GetBuilderIds.answerPeriodTime]);
+    }
+  }
+
   void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
@@ -53,6 +62,7 @@ class AnsweringLogic extends GetxController {
 
     SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
         subjectId: subjectVoList.id,
+        answerTime: state.countTime,
         isSubjectivity: subjectVoList.isSubjectivity,
         questionTypeStr: subjectVoList.questionTypeStr,
         subtopicAnswerVo: subtopicAnswerVoList);

@@ -7,6 +7,7 @@ class AnsweringState {
 
   // 提交答案时的数据
   CommitAnswer commitAnswer = CommitAnswer();
+  int countTime = 0;
 
   // 下面两条数据 转换成list后 最后拼装到 commitAnswer中
   SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo();

@@ -108,8 +108,10 @@ class SubjectAnswerVo {
     num? subjectId,
     bool? isSubjectivity,
     String? questionTypeStr,
+    num? answerTime,
     List<SubtopicAnswerVo>? subtopicAnswerVo,}){
     _subjectId = subjectId;
+    _answerTime = answerTime;
     _isSubjectivity = isSubjectivity;
     _questionTypeStr = questionTypeStr;
     _subtopicAnswerVo = subtopicAnswerVo;
@@ -117,6 +119,7 @@ class SubjectAnswerVo {
 
   SubjectAnswerVo.fromJson(dynamic json) {
     _subjectId = json['subjectId'];
+    _answerTime = json['answerTime'];
     _isSubjectivity = json['isSubjectivity'];
     _questionTypeStr = json['questionTypeStr'];
     if (json['subtopicAnswerVo'] != null) {
@@ -127,6 +130,7 @@ class SubjectAnswerVo {
     }
   }
   num? _subjectId;
+  num? _answerTime;
   bool? _isSubjectivity;
   String? _questionTypeStr;
   List<SubtopicAnswerVo>? _subtopicAnswerVo;
@@ -140,6 +144,7 @@ class SubjectAnswerVo {
     subtopicAnswerVo: subtopicAnswerVo ?? _subtopicAnswerVo,
   );
   num? get subjectId => _subjectId;
+  num? get answerTime => _answerTime;
   bool? get isSubjectivity => _isSubjectivity;
   String? get questionTypeStr => _questionTypeStr;
   List<SubtopicAnswerVo>? get subtopicAnswerVo => _subtopicAnswerVo;
@@ -147,6 +152,7 @@ class SubjectAnswerVo {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['subjectId'] = _subjectId;
+    map['answerTime'] = _answerTime;
     map['isSubjectivity'] = _isSubjectivity;
     map['questionTypeStr'] = _questionTypeStr;
     if (_subtopicAnswerVo != null) {

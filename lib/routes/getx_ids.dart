@@ -29,6 +29,7 @@ class GetBuilderIds {
   static const String APPVERSION = "APPVERSION";
   static const String shopList = "shopList";
   static const String answerPageNum = "answerPageNum";
+  static const String answerPeriodTime = "answerPeriodTime";
   static const String answerNextPage = "answerNextPage";
   static const String answerPrePage = "answerPrePage";
   static const String answerPageInitNum = "answerPageInitNum";

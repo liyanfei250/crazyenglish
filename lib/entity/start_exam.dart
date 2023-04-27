@@ -61,7 +61,7 @@ class Exercise {
       num? questionCount, 
       num? parentIndex, 
       num? sublevelIndex, 
-      dynamic time, 
+      num? time,
       List<ExerciseVos>? exerciseVos,}){
     _isFinish = isFinish;
     _correctCount = correctCount;
@@ -91,14 +91,14 @@ class Exercise {
   num? _questionCount;
   num? _parentIndex;
   num? _sublevelIndex;
-  dynamic _time;
+  num? _time;
   List<ExerciseVos>? _exerciseVos;
   Exercise copyWith({  bool? isFinish,
   num? correctCount,
   num? questionCount,
   num? parentIndex,
   num? sublevelIndex,
-  dynamic time,
+  num? time,
   List<ExerciseVos>? exerciseVos,
 }) => Exercise(  isFinish: isFinish ?? _isFinish,
   correctCount: correctCount ?? _correctCount,
@@ -113,7 +113,7 @@ class Exercise {
   num? get questionCount => _questionCount;
   num? get parentIndex => _parentIndex;
   num? get sublevelIndex => _sublevelIndex;
-  dynamic get time => _time;
+  num? get time => _time;
   List<ExerciseVos>? get exerciseVos => _exerciseVos;
 
   Map<String, dynamic> toJson() {
