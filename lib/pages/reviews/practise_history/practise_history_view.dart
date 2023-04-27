@@ -47,6 +47,9 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   PractiseHistoryDate? paperDetail;
   PractiseDate? dateDetail;
   late List<Obj> listData = [];
+  int pageSize = 10;
+  int current = 1;
+  var formatter = DateFormat('yyyy-M-d');
 
   @override
   void initState() {
@@ -76,7 +79,10 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
       }
     });
-    logic.addListenerId(GetBuilderIds.getPracticeRecordList, () {
+
+    logic.addListenerId(
+        GetBuilderIds.getPracticeRecordList + formatter.format(DateTime.now()),
+        () {
       if (state.paperDetail != null) {
         paperDetail = state.paperDetail;
         if (mounted &&
@@ -86,32 +92,18 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             listData = paperDetail!.obj!;
           });
         }
-        /*if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
-          setState(() {
-          });
-        }*/
-
       }
     });
     var now = DateTime.now();
-    var formatter = DateFormat('yyyy-M-d');
     var formattedDate = formatter.format(now);
-    // logic.getPracticeDateInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),"$formattedDate");
+    //todo 日期处理，哪天有数据提前处理
     logic.getPracticeDateInfo(
         SpUtil.getInt(BaseConstant.USER_ID).toString(), "'2023-4-19'");
-    //todo 选择日期后带日期进去
-    logic.getRecordInfo(
-        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'2023-4-19'");
     logicDetail.addJumpToDetailListen(0, 0);
+
+    //TODO 分页的处理
+    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        formattedDate, pageSize, current);
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -139,6 +131,25 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
+
+      logic.addListenerId(
+          GetBuilderIds.getPracticeRecordList +
+              formatter.format(selectedDay), () {
+        if (state.paperDetail != null) {
+          paperDetail = state.paperDetail;
+          if (mounted &&
+              paperDetail!.obj != null &&
+              paperDetail!.obj!.length > 0) {
+            setState(() {
+              listData = paperDetail!.obj!;
+            });
+          }
+        }
+      });
+
+      var formattedDate = formatter.format(selectedDay);
+      logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+          formattedDate, pageSize, current);
     }
   }
 
@@ -368,7 +379,9 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                               InkWell(
                                 onTap: () {
                                   logicDetail.addJumpToReviewDetailListen();
-                                  logicDetail.getDetailAndEnterResult("${element.subjectId}","${element.exerciseId}");
+                                  logicDetail.getDetailAndEnterResult(
+                                      "${element.subjectId}",
+                                      "${element.exerciseId}");
                                   showLoading("");
                                 },
                                 child: Expanded(
@@ -464,11 +477,9 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

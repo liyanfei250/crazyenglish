@@ -45,10 +45,10 @@ class ReviewRepository {
   }
 
   Future<PractiseHistoryDate> getPracticeRecordList(
-      String id, String date) async {
+      Map<String,dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getPracticeRecordList + id + "/" + "$date",
-        options: Options(method: Method.get));
+        Method.post, Api.getPracticeRecordList,data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

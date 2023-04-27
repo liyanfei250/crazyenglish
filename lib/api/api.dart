@@ -116,7 +116,7 @@ class Api {
   // 练习记录有数据的天数获取
   static String getPracticeDateList = Config.ApiHost + "/question/exercise/getExerciseMonthDate/";
   // 练习记录接口数据
-  static String getPracticeRecordList = Config.ApiHost + "/question/exercise/getExerciseRecordList/";
+  static String getPracticeRecordList = Config.ApiHost + "/question/exercise/getExerciseRecordList";
 
   // 错题本tab接口
   static String getErrorNoteTabList = Config.ApiHost + "/";
