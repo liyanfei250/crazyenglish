@@ -52,7 +52,7 @@ class Collect_practicLogic extends GetxController {
 
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.SearchCollectListDate,
-            labelId: classify.toString())
+            labelId: isRecentView.toString() + classify.toString())
         .then((value) {
       if (value != null) {
         return listdate.SearchCollectListDate.fromJson(value as Map<String, dynamic>?);
@@ -74,7 +74,7 @@ class Collect_practicLogic extends GetxController {
     if (current == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.SearchCollectListDate,
-          labelId: classify.toString(),
+          labelId: isRecentView.toString() + classify.toString(),
           list.toJson());
     }
     if(list.obj==null) {
