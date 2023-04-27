@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -370,8 +371,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        logicDetail.addJumpToReviewDetailListen();
-        logicDetail.getDetailAndEnterBrowsePage("${weekPaperList[index].subjectId}");
+        logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
+        logicDetail.getDetailAndEnterBrowsePage("${weekPaperList[index].subjectId}","${weekPaperList[index].subtopicId}");
         showLoading("");
       },
       child: listitemBigBg(weekPaperList[index]),

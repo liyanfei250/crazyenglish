@@ -40,6 +40,7 @@ class ResultPage extends BasePage{
   var uuid;
   int parentIndex = 0;
   int childIndex = 0;
+  int resultType = AnsweringPage.result_normal_type;
 
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
@@ -50,6 +51,7 @@ class ResultPage extends BasePage{
       parentIndex = Get.arguments[AnsweringPage.parentIndexKey];
       childIndex = Get.arguments[AnsweringPage.childIndexKey];
       lastFinishResult = Get.arguments[AnsweringPage.LastFinishResult];
+      resultType = Get.arguments[AnsweringPage.result_type];
     }
   }
 
@@ -203,7 +205,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
+          Visibility(
+              visible: widget.resultType == AnsweringPage.result_normal_type,
+              child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
@@ -294,7 +298,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                 ),
               ),
             ],
-          ),
+          )),
 
         ],
       ),
