@@ -16,7 +16,7 @@ import '../question_factory.dart';
  */
 class SelectWordsFillingQuestion extends BaseQuestion {
 
-  SelectWordsFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
+  SelectWordsFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,answerType,data:data,key: key);
 
   @override
   BaseQuestionState<SelectWordsFillingQuestion> getState() => _SelectWordsFillingQuestionState();

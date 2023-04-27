@@ -21,7 +21,7 @@ import '../../../entity/week_detail_response.dart';
  */
 class ReadQuestion extends BaseQuestion {
 
-  ReadQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
+  ReadQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,answerType,data:data,key: key);
 
 
   @override

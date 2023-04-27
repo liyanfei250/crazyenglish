@@ -44,6 +44,7 @@ class AnsweringPage extends BasePage {
   var uuid;
   int parentIndex = 0;
   int childIndex = 0;
+  int answerType = answer_normal_type;
 
   static const examDetailKey = "examDetail";
   static const catlogIdKey = "catlogId";
@@ -55,9 +56,9 @@ class AnsweringPage extends BasePage {
   static const result_browse_type = 1;
   static const result_normal_type = 2;
   static const answer_type = "answer_type";
+  static const answer_normal_type = 0;
+  static const answer_continue_type = 2;
   static const answer_fix_type = 1;
-  static const answer_normal_type = 2;
-  static const answer_continue_type = 3;
 
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -67,6 +68,7 @@ class AnsweringPage extends BasePage {
       parentIndex = Get.arguments[parentIndexKey];
       childIndex = Get.arguments[childIndexKey];
       lastFinishResult = Get.arguments[LastFinishResult];
+      answerType = Get.arguments[answer_type];
     }
   }
 
@@ -308,21 +310,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(ListenQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {

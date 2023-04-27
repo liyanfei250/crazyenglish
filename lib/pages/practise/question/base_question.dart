@@ -14,6 +14,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../answering/answering_logic.dart';
+import '../answering/answering_view.dart';
 import '../answering/page_getxcontroller.dart';
 import '../answering/select_gap_getxcontroller.dart';
 
@@ -35,7 +36,8 @@ abstract class BaseQuestion extends StatefulWidget{
   late BaseQuestionState baseQuestionState;
   late SubjectVoList data;
   late Map<String,ExerciseLists> subtopicAnswerVoMap;
-  BaseQuestion(this.subtopicAnswerVoMap,{required this.data,Key? key}) : super(key: key);
+  late int answerType;
+  BaseQuestion(this.subtopicAnswerVoMap,this.answerType,{required this.data,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -149,11 +151,36 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
+          bool isClickEnable = true;
+          int defaultChooseIndex = -1;
+          // 找到上次作答记录 或者 错题本正确题目答案
+          if(widget.subtopicAnswerVoMap!=null
+              && widget.subtopicAnswerVoMap.containsKey("${question.id}")){
+            ExerciseLists exerciseLists = widget.subtopicAnswerVoMap["${question.id}"]!;
+            if(question.optionsList!=null &&
+                exerciseLists.answer!=null &&
+                exerciseLists.answer!.isNotEmpty){
+              for(int i = 0; i< question.optionsList!.length;i++){
+                if(exerciseLists.answer == question.optionsList![i].sequence){
+                  defaultChooseIndex = i;
+                }
+              }
+            }
+          }
+          if(widget.answerType == AnsweringPage.answer_fix_type){
+            if(widget.subtopicAnswerVoMap!=null
+                && widget.subtopicAnswerVoMap.containsKey("${question.id}")){
+              isClickEnable = false;
+            }
+          } else if(widget.answerType == AnsweringPage.answer_normal_type){
+            defaultChooseIndex = -1;
+          }
+
           // TODO 判断是否是图片选择题的逻辑需要修改
           if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,true,false,userAnswerCallback: userAnswerCallback));
-          }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question,true,false,userAnswerCallback: userAnswerCallback));
+            itemList.add(QuestionFactory.buildSingleTxtChoice(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseIndex));
+          } else {
+            itemList.add(QuestionFactory.buildSingleImgChoice(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseIndex));
           }
         }else if(element.questionTypeStr == QuestionType.multi_choice){
 
