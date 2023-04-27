@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # crazyenglish
 
 # 题型分类
@@ -19,3 +20,6 @@ SelectWordsFillingQuestion
 mermaidgraph
  LRA[]
 ```
+=======
+#crazyenglish
+>>>>>>> master
