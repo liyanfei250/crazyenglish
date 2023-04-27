@@ -79,7 +79,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
 
     logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
       if (state.paperDetailNew != null) {
-        print("6666666==" + state.paperDetailNew.obj![0].name!);
         if (state.paperDetailNew!.obj != null &&
             state.paperDetailNew!.obj!.length > 0) {
           setState(() {
