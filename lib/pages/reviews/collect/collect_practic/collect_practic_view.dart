@@ -38,9 +38,13 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   int currentPageNo = 1;
   final int pageStartIndex = 1;
   SearchRecordDate? paperDetail;
+  bool isRecentView =false;
+  dynamic classify =null;
 
   List<tabDate.Obj> searchList = [];
   List<Obj> weekPaperList = [];
+  tabDate.Obj data1 = tabDate.Obj(id: 0, name: '全部', value: 100);
+  tabDate.Obj data2 = tabDate.Obj(id: 1, name: '最近查看', value: 101);
 
   @override
   void initState() {
@@ -60,6 +64,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
           //     arguments: state.tabList!.obj!);
           setState(() {
             searchList = state.tabList!.obj!;
+            searchList.insertAll(0, [data1, data2]);
           });
         }
       }
@@ -67,36 +72,14 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     //先获取tab接口，用来筛选
     logic.getHomeList('classify_type');
 
-    //收藏筛选列表
-    logic.addListenerId(GetBuilderIds.getSearchRecord, () {
-      if (state.paperDetail != null) {
-        paperDetail = state.paperDetail;
-        /*if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
-          setState(() {
-          });
-        }*/
-
-      }
-    });
-    logic.getSearchRecord('0');
-
     //收藏列表
-    logic.addListenerId(GetBuilderIds.getCollectListDate, () {
+    logic.addListenerId(GetBuilderIds.getCollectListDate+isRecentView.toString()+classify.toString(), () {
       hideLoading();
       if (state.paperList != null && state.paperList != null) {
         if (state.pageNo == currentPageNo + 1) {
-          weekPaperList = state.paperList!.obj!;
+          weekPaperList = state.paperList!;
           currentPageNo++;
-          weekPaperList.addAll(state.paperList!.obj!);
+          weekPaperList.addAll(state.paperList!);
           if (mounted && _refreshController != null) {
             _refreshController.loadComplete();
             if (!state!.hasMore) {
@@ -104,12 +87,14 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             } else {
               _refreshController.resetNoData();
             }
-            setState(() {});
+            setState(() {
+
+            });
           }
         } else if (state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
           weekPaperList.clear();
-          weekPaperList.addAll(state.paperList!.obj!);
+          weekPaperList.addAll(state.paperList!);
           if (mounted && _refreshController != null) {
             _refreshController.refreshCompleted();
             if (!state!.hasMore) {
@@ -117,7 +102,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             } else {
               _refreshController.resetNoData();
             }
-            setState(() {});
+            setState(() {
+
+            });
           }
         }
       }
@@ -273,6 +260,15 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       onPressed: () {
         //Util.toast(value['title']);
         Util.toast(value.name.toString());
+        isRecentView = value.value == 101 ? true : false;
+        classify = value.id ?? null;
+        logic.getCollectList(
+            SpUtil.getInt(BaseConstant.USER_ID),
+            isRecentView,
+            classify,
+            pageSize,
+            pageStartIndex);
+
         _searchController.text = value!.name!;
       },
       label: Text(
@@ -397,16 +393,14 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    //todo "isRecentView":true,//最近查看 false 否 true 是
-    // todo    "classify": null//题型id
     //int userId, bool isRecentView, dynamic classify,int size,int current
-    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), false, null,
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView, classify,
         pageSize, pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), false, null,
+    logic.getCollectList(SpUtil.getInt(BaseConstant.USER_ID), isRecentView, classify,
         pageSize, pageStartIndex);
   }
 }
