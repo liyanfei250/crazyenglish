@@ -17,13 +17,13 @@ import '../../../../routes/getx_ids.dart';
 import '../../../../routes/routes_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/sp_util.dart';
+import '../../../practise/answering/answering_view.dart';
 import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../error_note/error_note_logic.dart';
+import '../error_note_child/error_note_child_view.dart';
 import 'error_note_child_list_logic.dart';
 
 class ErrorNoteChildListPage extends StatefulWidget {
-  static int WAIT_CORRECT = 0;
-  static int HAS_CORRECTED = 1;
 
   int type;
   int typeTwo;
@@ -240,6 +240,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
         onTap: () {
           if (value[index].journalId == 0) {
 
+            if(widget.type == ErrorNoteChildPage.HAS_CORRECTED){
+              logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
+              logicDetail.getDetailAndEnterBrowsePage("${value[index].subjectId}","0");
+            }else{
+              logicDetail.getDetailAndEnterFixPage("${value[index].subjectId}",value[index].correctionNotebooks);
+            }
             
           }
         },

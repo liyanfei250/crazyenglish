@@ -4,6 +4,7 @@ import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../entity/review/ErrorNoteTabDate.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../routes/app_pages.dart';
@@ -54,6 +55,16 @@ class WeekTestDetailLogic extends GetxController {
       makeBrowseExamExerciseDetail(subjectId,subtopicId);
     } else {
     Util.toast("暂不能跳转");
+    }
+  }
+
+  // 待订正错题 跳转到答题页
+  void getDetailAndEnterFixPage(String subjectId,List<CorrectionNotebooks>? correctionNotebooks) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
+    if(weekDetailResponse!=null){
+      makeBrowseExamExerciseDetail(subjectId,"");
+    } else {
+      Util.toast("暂不能跳转");
     }
   }
 
