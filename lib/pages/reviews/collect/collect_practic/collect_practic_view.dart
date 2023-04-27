@@ -73,7 +73,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     //先获取tab接口，用来筛选
     logic.getHomeList('classify_type');
 
-    //收藏列表
+//收藏列表
     logic.addListenerId(GetBuilderIds.getCollectListDate+isRecentView.toString()+classify.toString(), () {
       hideLoading();
       if (state.paperList != null && state.paperList != null) {
@@ -110,7 +110,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         }
       }
     });
-
     _onRefresh();
     // showLoading("");
     //收藏
@@ -254,6 +253,48 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         Util.toast(value.name.toString());
         isRecentView = value.value == 101 ? true : false;
         classify = value.id ?? null;
+
+
+        //收藏列表
+        logic.addListenerId(GetBuilderIds.getCollectListDate+isRecentView.toString()+classify.toString(), () {
+          hideLoading();
+          if (state.paperList != null && state.paperList != null) {
+            if (state.pageNo == currentPageNo + 1) {
+              weekPaperList = state.paperList!;
+              currentPageNo++;
+              weekPaperList.addAll(state.paperList!);
+              if (mounted && _refreshController != null) {
+                _refreshController.loadComplete();
+                if (!state!.hasMore) {
+                  _refreshController.loadNoData();
+                } else {
+                  _refreshController.resetNoData();
+                }
+                setState(() {
+
+                });
+              }
+            } else if (state.pageNo == pageStartIndex) {
+              currentPageNo = pageStartIndex;
+              weekPaperList.clear();
+              weekPaperList.addAll(state.paperList!);
+              if (mounted && _refreshController != null) {
+                _refreshController.refreshCompleted();
+                if (!state!.hasMore) {
+                  _refreshController.loadNoData();
+                } else {
+                  _refreshController.resetNoData();
+                }
+                setState(() {
+
+                });
+              }
+            }
+          }
+        });
+
+
+
         logic.getCollectList(
             SpUtil.getInt(BaseConstant.USER_ID),
             isRecentView,
