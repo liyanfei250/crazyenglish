@@ -97,31 +97,6 @@ class Collect_practicLogic extends GetxController {
     update([GetBuilderIds.getCollectListDate  + isRecentView.toString() + classify.toString()]);
   }
 
-  void getCollectListDetail(int userid, String id) async {
-    var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.SearchRecordDetail,
-            labelId: id.toString())
-        .then((value) {
-      if (value != null) {
-        return SearchCollectListDetail.fromJson(value as Map<String, dynamic>?);
-      }
-    });
-
-    bool hasCache = false;
-    if (cache is SearchCollectListDetail) {
-      state.ListDetail = cache!;
-      hasCache = true;
-      update([GetBuilderIds.getCollectListDetail]);
-    }
-    SearchCollectListDetail list = await recordData.getCollectListDetail(userid,id);
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.SearchRecordDetail, labelId: id, list.toJson());
-    state.ListDetail = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getCollectListDetail]);
-    }
-  }
-
   void toCollect(int userid, String id) async {
     CollectDate collectResponse = await recordData.toCollect(userid, id);
     state.collectDate = collectResponse;

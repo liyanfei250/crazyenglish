@@ -29,7 +29,7 @@ class WeekTestDetailLogic extends GetxController {
   }
 
   void getDetailAndStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false}) async {
-    WeekDetailResponse weekDetailResponse = await getWeekTestDetail(id);
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(id);
     if(weekDetailResponse!=null){
       getStartExam(id,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage);
     } else {
@@ -37,8 +37,28 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
+  // 练习记录 已订正错题 收藏题目 跳转到结果页
+  void getDetailAndEnterResult(String subjectId,String exerciseId) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
+    if(weekDetailResponse!=null){
+      geExamExerciseDetail(exerciseId);
+    } else {
+      Util.toast("获取试题详情数据失败");
+    }
+  }
+
+  // 已订正错题 收藏题目 跳转到浏览页
+  void getDetailAndEnterBrowsePage(String subjectId) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
+    // if(weekDetailResponse!=null){
+    //   geExamExerciseDetail(exerciseId);
+    // } else {
+    Util.toast("暂不能跳转");
+    // }
+  }
+
   // 获取试题详情页数据
-  Future<WeekDetailResponse> getWeekTestDetail(String id) async{
+  Future<WeekDetailResponse> getWeekTestDetailByCatalogId(String id) async{
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.WeekDetailResponse,labelId: id.toString()).then((value){
       if(value!=null){
@@ -49,16 +69,46 @@ class WeekTestDetailLogic extends GetxController {
     if(cache is WeekDetailResponse) {
       state.weekDetailResponse = cache!;
       state.uuid = id;
-      getWeekTestDetailFromServer(id);
+      getWeekTestDetailByCatalogFromServer(id);
       return cache!;
     }
-    return getWeekTestDetailFromServer(id);
+    return getWeekTestDetailByCatalogFromServer(id);
   }
 
-  Future<WeekDetailResponse> getWeekTestDetailFromServer(String id) async{
-    WeekDetailResponse list = await weekTestRepository.getWeekTestDetail(id);
+  Future<WeekDetailResponse> getWeekTestDetailByCatalogFromServer(String id) async{
+    WeekDetailResponse list = await weekTestRepository.getWeekTestDetailFromCatalogId(id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.WeekDetailResponse,
+        labelId: id,
+        list.toJson());
+    state.weekDetailResponse = list!;
+    state.uuid = id;
+    return list;
+  }
+
+
+  // 获取试题详情页数据
+  Future<WeekDetailResponse> getWeekTestDetailBySubjectId(String id) async{
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.WeekDetailResponseFromSUBJECTID,labelId: id.toString()).then((value){
+      if(value!=null){
+        return WeekDetailResponse.fromJson(value as Map<String,dynamic>?);
+      }
+    });
+
+    if(cache is WeekDetailResponse) {
+      state.weekDetailResponse = cache!;
+      state.uuid = id;
+      getWeekTestDetailBySubjectIdFromServer(id);
+      return cache!;
+    }
+    return getWeekTestDetailBySubjectIdFromServer(id);
+  }
+
+  Future<WeekDetailResponse> getWeekTestDetailBySubjectIdFromServer(String id) async{
+    WeekDetailResponse list = await weekTestRepository.getWeekTestDetailFromSubjectId(id);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.WeekDetailResponseFromSUBJECTID,
         labelId: id,
         list.toJson());
     state.weekDetailResponse = list!;
@@ -73,6 +123,12 @@ class WeekTestDetailLogic extends GetxController {
     state.enterResult = enterResult??false;
     state.isOffCurrentPage = isOffCurrentPage??false;
     update([GetBuilderIds.startExam]);
+  }
+
+  void geExamExerciseDetail(String exerciseId) async{
+    StartExam startExam = await weekTestRepository.getExerciseDetail(exerciseId);
+    state.startExam = startExam;
+    update([GetBuilderIds.exerciseHistory]);
   }
 
 
@@ -115,6 +171,43 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.childIndexKey:childIndex,
               AnsweringPage.LastFinishResult:state.startExam,
               });
+        }
+      }
+    });
+  }
+
+  // 添加跳转题目详情监听
+  // 所有的跳转答题进结果页都走这里
+  // TODO 完善跳结果页流程
+  // TODO 引入的地方需要处理监听的添加与删除逻辑
+  void addJumpToReviewDetailListen({int parentIndex = 0}){
+    disposeId(GetBuilderIds.exerciseHistory);
+    addListenerId(GetBuilderIds.exerciseHistory, () {
+      // TODO 区分一下 写作 还是 其它题
+      if (state.weekDetailResponse != null &&
+          state.weekDetailResponse.obj != null &&
+          state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
+          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
+
+        if(state.isOffCurrentPage){
+          RouterUtil.offAndToNamed(AppRoutes.WritingPage,
+              arguments: {"detail": state.weekDetailResponse});
+        }else{
+          RouterUtil.toNamed(AppRoutes.WritingPage,
+              arguments: {"detail": state.weekDetailResponse});
+        }
+
+      } else {
+        if(state.startExam!.obj!=null){
+          RouterUtil.toNamed(AppRoutes.ResultPage,
+              arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:parentIndex,
+                AnsweringPage.childIndexKey:0,
+                AnsweringPage.examResult:state.startExam!.obj!,
+              });
+        }else{
+          Util.toast("已获取作答数据为空");
         }
       }
     });

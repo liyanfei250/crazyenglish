@@ -110,20 +110,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
       }
     });
 
-    logicDetail.addJumpToDetailListen(0, 0);
     _onRefresh();
     // showLoading("");
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {
       Util.toast('成功或者取消');
-    });
-
-    //收藏列表点击详情的接口
-    logic.getCollectListDetail(
-        SpUtil.getInt(BaseConstant.USER_ID), "1648490005294907394");
-
-    logic.addListenerId(GetBuilderIds.getCollectListDetail, () {
-      Util.toast('收藏列表点击详情的接口成功');
     });
   }
 
@@ -375,7 +366,9 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        logicDetail.getDetailAndStartExam("0");
+        logicDetail.addJumpToReviewDetailListen();
+        logicDetail.getDetailAndEnterBrowsePage("${weekPaperList[index].subjectId}");
+        showLoading("");
       },
       child: listitemBigBg(weekPaperList[index]),
     );
