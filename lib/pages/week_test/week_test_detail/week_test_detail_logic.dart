@@ -37,7 +37,7 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
-  // 练习记录 已订正错题 收藏题目 跳转到结果页
+  // 练习记录 跳转到结果页
   void getDetailAndEnterResult(String subjectId,String exerciseId) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
     if(weekDetailResponse!=null){
@@ -48,13 +48,13 @@ class WeekTestDetailLogic extends GetxController {
   }
 
   // 已订正错题 收藏题目 跳转到浏览页
-  void getDetailAndEnterBrowsePage(String subjectId) async {
+  void getDetailAndEnterBrowsePage(String subjectId,String subtopicId) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
-    // if(weekDetailResponse!=null){
-    //   geExamExerciseDetail(exerciseId);
-    // } else {
+    if(weekDetailResponse!=null){
+      makeBrowseExamExerciseDetail(subjectId,subtopicId);
+    } else {
     Util.toast("暂不能跳转");
-    // }
+    }
   }
 
   // 获取试题详情页数据
@@ -131,6 +131,50 @@ class WeekTestDetailLogic extends GetxController {
     update([GetBuilderIds.exerciseHistory]);
   }
 
+  void makeBrowseExamExerciseDetail(String subjectId,String subtopicId) async{
+    if(state.weekDetailResponse.obj!=null){
+      List<ExerciseVos> exerciseVosList = [];
+      state.weekDetailResponse.obj!.subjectVoList!.forEach((element) {
+        if("${element.id}" == subjectId){
+          List<ExerciseLists> exerciseListsList = [];
+          int subtopicVoListLength = element.subtopicVoList!.length;
+          if(subtopicVoListLength>0){
+            for(int i =0;i<subtopicVoListLength;i++){
+              SubtopicVoList subtopicVo = element.subtopicVoList![i];
+              if(subtopicId == "${subtopicVo.id}"){
+                state.childIndex = i;
+              }
+              ExerciseLists exerciseLists = ExerciseLists(
+                isRight: true,
+                subjectId:element.id,
+                subtopicId:subtopicVo.id,
+                answer: subtopicVo.answer,);
+              exerciseListsList.add(exerciseLists);
+            }
+          }
+          if(exerciseListsList.length >0){
+            ExerciseVos exerciseVos = ExerciseVos(
+                subjectId:element.id,
+                exerciseLists: exerciseListsList
+            );
+            exerciseVosList.add(exerciseVos);
+          }
+        }
+      });
+      if(exerciseVosList.length>0){
+        Exercise exercise = Exercise(exerciseVos: exerciseVosList);
+        StartExam startExam = StartExam(code:0,obj: exercise);
+        state.startExam = startExam;
+        update([GetBuilderIds.exerciseHistory]);
+      }else{
+        Util.toast("正确作答拼装发生错误");
+      }
+    }else{
+      Util.toast("正确作答拼装发生错误");
+    }
+
+  }
+
 
   // 添加跳转题目详情监听
   // 所有的跳转答题进结果页都走这里
@@ -180,7 +224,7 @@ class WeekTestDetailLogic extends GetxController {
   // 所有的跳转答题进结果页都走这里
   // TODO 完善跳结果页流程
   // TODO 引入的地方需要处理监听的添加与删除逻辑
-  void addJumpToReviewDetailListen({int parentIndex = 0}){
+  void addJumpToReviewDetailListen({int parentIndex = 0,int resultType = AnsweringPage.result_normal_type}){
     disposeId(GetBuilderIds.exerciseHistory);
     addListenerId(GetBuilderIds.exerciseHistory, () {
       // TODO 区分一下 写作 还是 其它题
@@ -190,10 +234,10 @@ class WeekTestDetailLogic extends GetxController {
           state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
 
         if(state.isOffCurrentPage){
-          RouterUtil.offAndToNamed(AppRoutes.WritingPage,
+          RouterUtil.offAndToNamed(AppRoutes.ResultPage,
               arguments: {"detail": state.weekDetailResponse});
-        }else{
-          RouterUtil.toNamed(AppRoutes.WritingPage,
+        } else {
+          RouterUtil.toNamed(AppRoutes.ResultPage,
               arguments: {"detail": state.weekDetailResponse});
         }
 
@@ -203,8 +247,9 @@ class WeekTestDetailLogic extends GetxController {
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
                 AnsweringPage.catlogIdKey:state.uuid,
                 AnsweringPage.parentIndexKey:parentIndex,
-                AnsweringPage.childIndexKey:0,
+                AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.examResult:state.startExam!.obj!,
+                AnsweringPage.result_type:resultType,
               });
         }else{
           Util.toast("已获取作答数据为空");

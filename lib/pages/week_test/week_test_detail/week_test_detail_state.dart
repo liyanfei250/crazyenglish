@@ -7,6 +7,8 @@ class WeekTestDetailState {
   String uuid = "";
   bool enterResult = false;
   bool isOffCurrentPage = false;
+  int parentIndex = 0;
+  int childIndex = 0;
   WeekTestDetailState() {
     ///Initialize variables
   }

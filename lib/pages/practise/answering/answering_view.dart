@@ -51,6 +51,9 @@ class AnsweringPage extends BasePage {
   static const childIndexKey = "childIndex";
   static const LastFinishResult = "LastFinishResult";
   static const examResult = "examResult";
+  static const result_type = "result_type";
+  static const result_browse_type = 1;
+  static const result_normal_type = 2;
 
   AnsweringPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
