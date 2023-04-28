@@ -16,7 +16,7 @@ import '../../../entity/week_detail_response.dart';
  */
 
 class OthersQuestion extends BaseQuestion {
-  OthersQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,data:data,key: key);
+  OthersQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,answerType,data:data,key: key);
 
   @override
   BaseQuestionState<BaseQuestion> getState() {

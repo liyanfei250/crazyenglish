@@ -20,6 +20,7 @@ import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/time_util.dart';
 import '../question/base_question.dart';
 import '../question/select_words_filling_question.dart';
 import 'answering_logic.dart';
@@ -44,6 +45,7 @@ class AnsweringPage extends BasePage {
   var uuid;
   int parentIndex = 0;
   int childIndex = 0;
+  int answerType = answer_normal_type;
 
   static const examDetailKey = "examDetail";
   static const catlogIdKey = "catlogId";
@@ -55,9 +57,9 @@ class AnsweringPage extends BasePage {
   static const result_browse_type = 1;
   static const result_normal_type = 2;
   static const answer_type = "answer_type";
+  static const answer_normal_type = 0;
+  static const answer_continue_type = 2;
   static const answer_fix_type = 1;
-  static const answer_normal_type = 2;
-  static const answer_continue_type = 3;
 
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -67,6 +69,7 @@ class AnsweringPage extends BasePage {
       parentIndex = Get.arguments[parentIndexKey];
       childIndex = Get.arguments[childIndexKey];
       lastFinishResult = Get.arguments[LastFinishResult];
+      answerType = Get.arguments[answer_type]?? answer_normal_type;
     }
   }
 
@@ -109,6 +112,19 @@ class AnsweringPage extends BasePage {
     return subtopicAnswerVoMap;
   }
 
+  static num findInitTime(Exercise examResult,num subjectId){
+    if(examResult.exerciseVos!=null
+        && examResult.exerciseVos!.length>0) {
+      for(int i = 0;i< examResult.exerciseVos!.length;i++){
+        ExerciseVos exerciseVo = examResult.exerciseVos![i];
+        if (exerciseVo.subjectId == subjectId) {
+          return exerciseVo.time??0;
+        }
+      }
+    }
+    return 0;
+  }
+
 }
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
@@ -119,7 +135,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       .state;
   bool isCountTime = true;
   late Timer _timer;
-  var countTime = 0.obs;
   var title = "".obs;
 
   List<BaseQuestion> pages = <BaseQuestion>[];
@@ -135,12 +150,19 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   @override
   void onCreate() {
-    startTimer();
+    if(widget.answerType != AnsweringPage.answer_fix_type){
+      startTimer();
+    }
+
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
       if(widget.lastFinishResult!.obj!=null){
         subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
-      }else{
+        num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        if(time>0){
+          logic.updateTime(countTime: time.toInt());
+        }
+      } else {
         print("无作答数据异常");
       }
     }else{
@@ -187,12 +209,18 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                     height: 18.w,
                   ),
                   Padding(padding: EdgeInsets.only(left: 6.w)),
-                  Obx(() =>
-                      Text(
-                        "$countTime",
-                        style: TextStyle(
-                            fontSize: 14.w, color: AppColors.c_FF353E4D),
-                      ))
+                  Visibility(
+                      visible: widget.answerType != AnsweringPage.answer_fix_type,
+                      child: GetBuilder<AnsweringLogic>(
+                        id: GetBuilderIds.answerPeriodTime,
+                        builder: (_){
+                          return Text(
+                            TimeUtil.getMiaoFenOptional(_.state.countTime),
+                            style: TextStyle(
+                                fontSize: 14.w, color: AppColors.c_FF353E4D),
+                          );
+                        }),
+                      ),
                 ],
               ))
         ],
@@ -308,21 +336,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(ListenQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               break;
             default:
-              questionList.add(OthersQuestion(subtopicAnswerVoMap,currentSubjectVoList!));
+              questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
               Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {
@@ -354,7 +382,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   startTimer() {
     const period = const Duration(seconds: 1);
     _timer = Timer.periodic(period, (timer) {
-      countTime++;
+      logic.updateTime();
     });
   }
 

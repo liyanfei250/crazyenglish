@@ -216,14 +216,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   Widget listitem(List<RecordListVos> value, index) {
     return InkWell(
         onTap: () {
-          if (value[index].journalId == 0) {
-            if(widget.type == ErrorNoteChildPage.HAS_CORRECTED){
-              logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
-              logicDetail.getDetailAndEnterBrowsePage("${value[index].subjectId}","0");
-            } else {
-              logicDetail.addJumpToFixErrorListen();
-              logicDetail.getDetailAndEnterFixPage("${value[index].subjectId}",value[index].correctionNotebooks);
-            }
+          if(widget.type == ErrorNoteChildPage.HAS_CORRECTED){
+            logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
+            logicDetail.getDetailAndEnterBrowsePage("${value[index].subjectId}","0");
+          } else {
+            logicDetail.addJumpToFixErrorListen();
+            logicDetail.getDetailAndEnterFixPage("${value[index].subjectId}",value[index].correctionNotebooks);
           }
         },
         child: Container(
