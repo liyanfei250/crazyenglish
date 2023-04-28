@@ -20,6 +20,8 @@ import '../utils/object_util.dart';
 import 'package:html/parser.dart' show parse;
 import 'dart:ui' as ui;
 
+import '../utils/time_util.dart';
+
 class Util {
   static num setWidth(double width) {
     return ScreenUtil().setWidth(width);
@@ -152,7 +154,7 @@ class Util {
     );
   }
 
-  static Widget buildTopIndicator() {
+  static Widget buildTopIndicator(num questionCount,num rightCount,num answerTime,String questionTypeStr) {
     final customWidth01 = CustomSliderWidths(
         trackWidth: 6, progressBarWidth: 20, shadowWidth: 20);
     final customColors01 = CustomSliderColors(
@@ -225,14 +227,14 @@ class Util {
                           color: AppColors.c_FF898A93),
                     ),
                     Text(
-                      "6",
+                      "${rightCount}",
                       style: TextStyle(
                           fontSize: 40.w,
                           fontWeight: FontWeight.w500,
                           color: AppColors.c_FF1B1D2C),
                     ),
                     Text(
-                      "/10题",
+                      "/${questionCount}题",
                       style: TextStyle(
                           fontSize: 12.w,
                           fontWeight: FontWeight.w500,
@@ -277,7 +279,7 @@ class Util {
                       ],
                     ),
                     Text(
-                      "08:41",
+                      "${TimeUtil.getMiaoFenOptional(answerTime.toInt())}",
                       style: TextStyle(
                           fontSize: 12.w,
                           color: AppColors.c_FFB3B7C6,
@@ -308,7 +310,7 @@ class Util {
                       ],
                     ),
                     Text(
-                      "Module1 Unit3 听力",
+                      "${questionTypeStr}",
                       style: TextStyle(
                           fontSize: 12.w,
                           color: AppColors.c_FFB3B7C6,

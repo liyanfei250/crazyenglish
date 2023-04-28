@@ -31,6 +31,7 @@ class JsonCacheManageUtils {
   static const int HomeworkHistoryResponse = 0x013;
   static const int QuestionListResponse = 0x014;
   static const int ResultListResponse = 0x015;
+  static const int JournalExerciseResult = 0x016;
 
   static const int ReviewHomeResponse = 0x101; //复习界面
   static const int PracRecordInfoResponse = 0x102; //练习记录

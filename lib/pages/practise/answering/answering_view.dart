@@ -91,26 +91,35 @@ class AnsweringPage extends BasePage {
     return null;
   }
 
-  static Map<String,ExerciseLists> findExerciseResultToMap(Exercise examResult,num subjectId){
+  static ExerciseVos? findExerciseResult(Exercise examResult,num subjectId){
     Map<String,ExerciseLists> subtopicAnswerVoMap = {};
+    ExerciseVos? exerciseVo;
     if(examResult.exerciseVos!=null
         && examResult.exerciseVos!.length>0) {
       examResult.exerciseVos!.forEach((element) {
-        ExerciseVos exerciseVo = element;
         if (element.subjectId == subjectId) {
-          if (exerciseVo.exerciseLists != null &&
-              exerciseVo.exerciseLists!.length > 0) {
-            exerciseVo.exerciseLists!.forEach((element) {
-              subtopicAnswerVoMap[
-              (element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
-                  .toString()] = element;
-            });
-          }
+          exerciseVo = element;
         }
+      });
+    }
+    return exerciseVo;
+  }
+
+
+  static Map<String,ExerciseLists> makeExerciseResultToMap(ExerciseVos? exerciseVo){
+    Map<String,ExerciseLists> subtopicAnswerVoMap = {};
+    if (exerciseVo!=null && exerciseVo.exerciseLists != null &&
+        exerciseVo.exerciseLists!.length > 0) {
+      exerciseVo.exerciseLists!.forEach((element) {
+        subtopicAnswerVoMap[
+        (element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
+            .toString()] = element;
       });
     }
     return subtopicAnswerVoMap;
   }
+
+
 
   static num findInitTime(Exercise examResult,num subjectId){
     if(examResult.exerciseVos!=null
@@ -145,6 +154,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final PageController pageController = PageController(keepPage: true);
 
   detail.SubjectVoList? currentSubjectVoList;
+  ExerciseVos? currentExerciseVos;
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
 
@@ -157,7 +167,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
       if(widget.lastFinishResult!.obj!=null){
-        subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+
+        subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
         num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
         if(time>0){
           logic.updateTime(countTime: time.toInt());

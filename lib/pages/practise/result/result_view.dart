@@ -80,6 +80,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   // TODO 会替换成小题 选择题 或者 填空的数量
   List<SubtopicVoList> tabs = [];
   detail.SubjectVoList? currentSubjectVoList;
+  ExerciseVos? currentExerciseVos;
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   @override
@@ -87,7 +88,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.examResult!=null){
       if(widget.examResult!=null){
-        subtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.examResult!,currentSubjectVoList!.id??0);
+        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+
+        subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
       }else{
         print("无作答数据异常");
       }
@@ -135,7 +138,11 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               Expanded(child: NestedScrollView(
                   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                     return [SliverToBoxAdapter(
-                      child: Util.buildTopIndicator(),
+                      child: Util.buildTopIndicator(
+                          currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
+                          currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
+                          currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
+                          currentSubjectVoList!.catalogueName??""),
                     )];
                   },
                   body: Container(
@@ -242,7 +249,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     detail.SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1);
                     if(nextSubjectVoList!=null && widget.lastFinishResult!=null){
                       if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
-                        Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.findExerciseResultToMap(widget.lastFinishResult!.obj!,nextSubjectVoList!.id??0);
+                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,nextSubjectVoList!.id??0);
+                        Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
                         if(nextSubtopicAnswerVoMap.isEmpty){
                           nextHasResult = false;
                         }else{

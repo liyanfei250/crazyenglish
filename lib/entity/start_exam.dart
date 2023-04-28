@@ -54,6 +54,53 @@ StartExam copyWith({  num? code,
 /// time : null
 /// exerciseVos : [{"id":1648489081851772929,"userId":1,"subjectId":1648489081579143169,"journalCatalogueId":1647898280209838082,"isFinish":false,"time":"09:14:07","exerciseLists":[{"id":1648489081851772929,"userId":1,"exerciseId":1648489081851772929,"subjectId":1648489081579143169,"subtopicId":1648489081851772929,"answer":"fafdas","isRight":true,"createTime":"2023-04-19 17:24:00"},{"id":1648489081851772930,"userId":1,"exerciseId":1648489081851772929,"subjectId":1648489081579143169,"subtopicId":1648489083034566658,"answer":"2312321","isRight":false,"createTime":"2023-04-19 17:24:00"},{"id":1648489081851772931,"userId":1,"exerciseId":1648489081851772929,"subjectId":1648489081579143169,"subtopicId":1648489083361722369,"answer":"DFAGD","isRight":true,"createTime":"2023-04-19 17:24:00"},{"id":1648489081851772932,"userId":1,"exerciseId":1648489081851772929,"subjectId":1648489081579143169,"subtopicId":1648489083621769217,"answer":"zvffa","isRight":false,"createTime":"2023-04-19 17:24:00"},{"id":1648489081851772933,"userId":1,"exerciseId":1648489081851772929,"subjectId":1648489081579143169,"subtopicId":1648489083818901505,"answer":"exercise","isRight":true,"createTime":"2023-04-19 17:24:00"}]}]
 
+
+class JouralResultResponse {
+  JouralResultResponse({
+    num? code,
+    String? msg,
+    List<Exercise>? data,}){
+    _code = code;
+    _msg = msg;
+    _data = data;
+  }
+
+  JouralResultResponse.fromJson(dynamic json) {
+    _code = json['code'];
+    _msg = json['msg'];
+    if (json['obj'] != null) {
+      _data = [];
+      json['obj'].forEach((v) {
+        _data?.add(Exercise.fromJson(v));
+      });
+    }
+  }
+  num? _code;
+  String? _msg;
+  List<Exercise>? _data;
+  JouralResultResponse copyWith({  num? code,
+    String? msg,
+    List<Exercise>? data,
+  }) => JouralResultResponse(  code: code ?? _code,
+    msg: msg ?? _msg,
+    data: data ?? _data,
+  );
+  num? get code => _code;
+  String? get msg => _msg;
+  List<Exercise>? get data => _data;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['code'] = _code;
+    map['message'] = _msg;
+    if (_data != null) {
+      map['obj'] = _data?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
 class Exercise {
   Exercise({
       bool? isFinish, 
@@ -145,13 +192,17 @@ class ExerciseVos {
       num? id, 
       num? userId, 
       num? subjectId, 
-      num? journalCatalogueId, 
+      num? correctCount,
+      num? questionCount,
+      num? journalCatalogueId,
       bool? isFinish, 
       num? time,
       List<ExerciseLists>? exerciseLists,}){
     _id = id;
     _userId = userId;
     _subjectId = subjectId;
+    _correctCount = correctCount;
+    _questionCount = questionCount;
     _journalCatalogueId = journalCatalogueId;
     _isFinish = isFinish;
     _time = time;
@@ -162,6 +213,8 @@ class ExerciseVos {
     _id = json['id'];
     _userId = json['userId'];
     _subjectId = json['subjectId'];
+    _correctCount = json['correctCount'];
+    _questionCount = json['questionCount'];
     _journalCatalogueId = json['journalCatalogueId'];
     _isFinish = json['isFinish'];
     _time = json['time'];
@@ -175,6 +228,8 @@ class ExerciseVos {
   num? _id;
   num? _userId;
   num? _subjectId;
+  num? _correctCount;
+  num? _questionCount;
   num? _journalCatalogueId;
   bool? _isFinish;
   num? _time;
@@ -182,6 +237,8 @@ class ExerciseVos {
 ExerciseVos copyWith({  num? id,
   num? userId,
   num? subjectId,
+  num? correctCount,
+  num? questionCount,
   num? journalCatalogueId,
   bool? isFinish,
   num? time,
@@ -189,6 +246,8 @@ ExerciseVos copyWith({  num? id,
 }) => ExerciseVos(  id: id ?? _id,
   userId: userId ?? _userId,
   subjectId: subjectId ?? _subjectId,
+  correctCount: correctCount ?? _correctCount,
+  questionCount: questionCount ?? _questionCount,
   journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
   isFinish: isFinish ?? _isFinish,
   time: time ?? _time,
@@ -197,6 +256,8 @@ ExerciseVos copyWith({  num? id,
   num? get id => _id;
   num? get userId => _userId;
   num? get subjectId => _subjectId;
+  num? get correctCount => _correctCount;
+  num? get questionCount => _questionCount;
   num? get journalCatalogueId => _journalCatalogueId;
   bool? get isFinish => _isFinish;
   num? get time => _time;
@@ -207,6 +268,8 @@ ExerciseVos copyWith({  num? id,
     map['id'] = _id;
     map['userId'] = _userId;
     map['subjectId'] = _subjectId;
+    map['correctCount'] = _correctCount;
+    map['questionCount'] = _questionCount;
     map['journalCatalogueId'] = _journalCatalogueId;
     map['isFinish'] = _isFinish;
     map['time'] = _time;
