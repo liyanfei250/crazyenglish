@@ -25,8 +25,6 @@ class _IndexPageState extends BasePageState<IndexPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
-  var jsons =
-      '{"code":0,"message":"系统正常","obj":[{"id":1646439861824098306,"name":"听力","value":1},{"id":1646439861824098307,"name":"阅读","value":2},{"id":1646439861824098308,"name":"写作","value":3},{"id":1646439861824098309,"name":"口语","value":4},{"id":1646439861824098310,"name":"词汇","value":5},{"id":1646439861824098311,"name":" 短语","value":6},{"id":1646439861824098312,"name":"语法","value":7},{"id":1646439861824098313,"name":"句子","value":8},{"id":1646439861824098314,"name":"其它","value":9}],"p":null}';
   List<String> functionTxt = [
     "周报阅读",
     "周报题库",

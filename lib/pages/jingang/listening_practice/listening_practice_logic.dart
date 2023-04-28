@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/reviews/error/error_note_child_list/ErrorNoteRepository.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/home/HomeKingDate.dart';
 import '../../../entity/practice_list_response.dart';
 import '../../../entity/review/HomeListChoiceDate.dart';
 import '../../../entity/review/HomeSecondListDate.dart' as data;
@@ -27,17 +28,17 @@ class Listening_practiceLogic extends GetxController {
             labelId: id.toString())
         .then((value) {
       if (value != null) {
-        return HomeListChoiceDate.fromJson(value as Map<String, dynamic>?);
+        return HomeKingDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeListChoiceDate) {
+    if (cache is HomeKingDate) {
       state.paperDetail = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeListChoiceDate]);
     }
-    HomeListChoiceDate list = await listData.getHomeListChoiceDate(id);
+    HomeKingDate list = await listData.getHomeListChoiceDate(id);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeListChoiceDate, labelId: id, list.toJson());
     state.paperDetail = list!;
@@ -46,12 +47,13 @@ class Listening_practiceLogic extends GetxController {
     }
   }
 
-  void getList(int userId, dynamic classifyTypeValue,
+  void getList(int userId, dynamic classifyTypeValue,dynamic affiliatedGrade,
       int size, int current) async {
     Map<String, dynamic> req = {};
     Map<String, dynamic> reqTwo = {};
     req["userId"] = userId;
     req["classifyTypeValue"] = classifyTypeValue;
+    req["affiliatedGrade"] = affiliatedGrade;
     reqTwo["size"] = size;
     reqTwo["current"] = current;
     req["p"] = reqTwo;
