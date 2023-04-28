@@ -65,7 +65,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
           child: Column(
             children: [
               buildTransparentAppBar("Module 1 Unit3"),
-              Util.buildTopIndicator(),
+              Util.buildTopIndicator(0,0,0,""),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
                 decoration: BoxDecoration(
