@@ -39,10 +39,32 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   List<Obj> weekPaperList = [];
   List<choiceDate.Obj> choiceList = [];
   final int pageStartIndex = 1;
+  dynamic affiliatedGrade = null;
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.weekTestList, () {
+    addlistner();
+    _onRefresh();
+    showLoading("");
+
+    logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
+      if (state.paperDetailNew != null) {
+        if (state.paperDetailNew!.obj != null &&
+            state.paperDetailNew!.obj!.length > 0) {
+          setState(() {
+            choiceList = state.paperDetailNew!.obj!;
+            // functionTxt =
+            //     state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
+          });
+        }
+      }
+    });
+    logic.getChoiceMap('grade_type');
+  }
+
+  void addlistner() {
+    logic.addListenerId(GetBuilderIds.weekTestList + affiliatedGrade.toString(),
+        () {
       hideLoading();
       if (state.list != null && state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -74,23 +96,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
         }
       }
     });
-    _onRefresh();
-    showLoading("");
-
-    logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
-      if (state.paperDetailNew != null) {
-        if (state.paperDetailNew!.obj != null &&
-            state.paperDetailNew!.obj!.length > 0) {
-          setState(() {
-            choiceList = state.paperDetailNew!.obj!;
-            // functionTxt =
-            //     state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
-          });
-        }
-
-      }
-    });
-    logic.getChoiceMap('grade_type');
   }
 
   @override
@@ -133,11 +138,17 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                   items: choiceList.map((obj) => obj.name!).toList(),
                   onSelected: (index) {
                     print('选中了第${index + 1}项');
-                    if ((index + 1)>0){
-                      logic.getList(choiceList[index]!.id!.toInt(), currentPageNo, pageSize);
-                    }else{
-                      logic.getList(0, currentPageNo, pageSize);//全部
-                    };
+                    if ((index + 1) > 0) {
+                      affiliatedGrade = choiceList[index]!.id!.toInt();
+                      addlistner();
+                      logic.getList(affiliatedGrade, currentPageNo, pageSize);
+                    } else {
+                      affiliatedGrade = null;
+                      addlistner();
+                      logic.getList(
+                          affiliatedGrade, currentPageNo, pageSize); //全部
+                    }
+                    ;
                   },
                 ),
               ),
@@ -284,12 +295,12 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getList(2, pageStartIndex, pageSize);
+    logic.getList(affiliatedGrade, pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(2, currentPageNo, pageSize);
+    logic.getList(affiliatedGrade, currentPageNo, pageSize);
   }
 
   @override
