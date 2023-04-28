@@ -11,6 +11,7 @@ import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../entity/review/HomeSecondListDate.dart';
 import '../../../entity/home/HomeKingNewDate.dart' as data;
+import '../../../entity/home/HomeKingDate.dart' as choiceDate;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -42,25 +43,8 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   final int pageSize = 10;
   int currentPageNo = 1;
   List<Obj> homeSecondListDate = [];
+  List<choiceDate.Obj> choiceList = [];
   final int pageStartIndex = 1;
-  List listDataOne = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
-  List listData = [
-    {
-      "title": "01.情景反应",
-      "type": 0,
-    },
-    {"title": "02.对话理解", "type": 1},
-    {"title": "03.语篇理解", "type": 2},
-    {"title": "04.听力填空", "type": 3},
-  ];
 
   late var textTitle;
 
@@ -72,30 +56,20 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
       duration: const Duration(milliseconds: 300),
     );
 
-    logic.getChoiceMap('');
-
     logic.addListenerId(GetBuilderIds.getHomeListChoiceDate, () {
       if (state.paperDetail != null) {
-        /*paperDetail = state.paperDetail;
-        if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
-          setState(() {
-          });
-        }*/
-
+        if (state.paperDetail!.obj != null &&
+            state.paperDetail!.obj!.length > 0) {
+          choiceList = state.paperDetail!.obj!;
+          setState(() {});
+        }
       }
     });
+    logic.getChoiceMap('grade_type');
 
     logic.addListenerId(
-        GetBuilderIds.getHomeSecondListDate + "2"/*widget.type!.id.toString()*/, () {
+        GetBuilderIds.getHomeSecondListDate +
+            widget.type!.dictionaryId.toString(), () {
       hideLoading();
       if (state.homeSecondListDate != null &&
           state.homeSecondListDate != null) {
@@ -182,9 +156,25 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
           ),
           MenuWidget(
             title: '全部分类',
-            items: ['选项1', '选项2', '选项3', '高中十一年级', '选项5', '选项6'],
+            items: choiceList.map((obj) => obj.name!).toList(),
             onSelected: (index) {
               print('选中了第${index + 1}项');
+              if ((index + 1) > 0) {
+                logic.getList(
+                    SpUtil.getInt(BaseConstant.USER_ID),
+                    widget.type!.dictionaryId,
+                    choiceList[index]!.id!.toInt(),
+                    pageSize,
+                    currentPageNo);
+              } else {
+                logic.getList(
+                    SpUtil.getInt(BaseConstant.USER_ID),
+                    widget.type!.dictionaryId,
+                    null,
+                    pageSize,
+                    currentPageNo); //全部
+              }
+              ;
             },
           ),
         ],
@@ -218,11 +208,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   }
 
   @override
-  void onCreate() {
-    // logic.getPracCords(1, 10);
-
-    // logic.addListenerId(key, () { })
-  }
+  void onCreate() {}
 
   @override
   void onDestroy() {
@@ -231,14 +217,22 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID), /*widget.type!.id*/ 2,
-        pageSize, pageStartIndex);
+    logic.getList(
+        SpUtil.getInt(BaseConstant.USER_ID),
+        widget.type!.dictionaryId,
+        1648226541879005185,
+        pageSize,
+        pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID), /*widget.type!.id*/ 2,
-        pageSize, currentPageNo);
+    logic.getList(
+        SpUtil.getInt(BaseConstant.USER_ID),
+        widget.type!.dictionaryId,
+        1648226541879005185,
+        pageSize,
+        currentPageNo);
   }
 
   @override
