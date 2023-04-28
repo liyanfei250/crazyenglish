@@ -34,7 +34,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
   pull.RefreshController _refreshController =
-  pull.RefreshController(initialRefresh: false);
+      pull.RefreshController(initialRefresh: false);
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -61,26 +61,15 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
 
-
     logic.addListenerId(GetBuilderIds.PracticeDate, () {
       if (state.dateDetail != null) {
         dateDetail = state.dateDetail;
         //todo 日期数据处理
         print('object+=' + dateDetail!.obj![0]!.toString());
-        /*if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
-          setState(() {
-          });
-        }*/
-
+        if (state.dateDetail!.obj != null &&
+            state.dateDetail!.obj!.length > 0) {
+          setState(() {});
+        }
       }
     });
 
@@ -102,7 +91,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     var formattedDate = formatter.format(now);
     //todo 日期处理，哪天有数据提前处理
     logic.getPracticeDateInfo(
-        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'2023-4-19'");
+        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'$formattedDate'");
     logicDetail.addJumpToStartExamListen(0, 0);
 
     //TODO 分页的处理
@@ -137,8 +126,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       _selectedEvents.value = _getEventsForDay(selectedDay);
 
       logic.addListenerId(
-          GetBuilderIds.getPracticeRecordList +
-              formatter.format(selectedDay), () {
+          GetBuilderIds.getPracticeRecordList + formatter.format(selectedDay),
+          () {
         if (state.paperDetail != null) {
           paperDetail = state.paperDetail;
           if (mounted &&
@@ -181,7 +170,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     return Scaffold(
       appBar: buildNormalAppBar("练习记录"),
       backgroundColor: const Color(0xfff8f9fb),
-      body:pull.SmartRefresher(
+      body: pull.SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
         header: pull.WaterDropHeader(),
@@ -226,7 +215,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       firstDay: kFirstDay,
                       lastDay: kLastDay,
                       focusedDay: _focusedDay,
-                      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                      selectedDayPredicate: (day) =>
+                          isSameDay(_selectedDay, day),
                       rangeStartDay: _rangeStart,
                       rangeEndDay: _rangeEnd,
                       calendarFormat: _calendarFormat,
@@ -238,7 +228,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       eventLoader: _getEventsForDay,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekStyle:
-                      DaysOfWeekStyle(dowTextFormatter: (date, locale) {
+                          DaysOfWeekStyle(dowTextFormatter: (date, locale) {
                         String week = DateFormat.E("en_US").format(date);
                         switch (week) {
                           case "Mon":
@@ -383,14 +373,15 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       }),
                   Container(
                     decoration: MyDecoration(),
-                    margin: EdgeInsets.only(left: 24,top: 12.w),
+                    margin: EdgeInsets.only(left: 24, top: 12.w),
                     padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
                     child: ValueListenableBuilder<List<Event>>(
                       valueListenable: _selectedEvents,
                       builder: (context, value, _) {
                         return Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(13.w)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(13.w)),
                               color: Colors.white,
                               boxShadow: const [
                                 BoxShadow(
@@ -405,14 +396,17 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                             physics: NeverScrollableScrollPhysics(),
                             children: listData.map((element) {
                               return Container(
-                                  padding: EdgeInsets.only(left: 28.2, right: 24.w,top: 20.w),
+                                  padding: EdgeInsets.only(
+                                      left: 28.2, right: 24.w, top: 20.w),
                                   alignment: Alignment.center,
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          logicDetail.addJumpToReviewDetailListen();
+                                          logicDetail
+                                              .addJumpToReviewDetailListen();
                                           logicDetail.getDetailAndEnterResult(
                                               "${element.subjectId}",
                                               "${element.exerciseId}");
@@ -421,51 +415,67 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                         child: Expanded(
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    element.questionTypeName ?? "",
+                                                    element.questionTypeName ??
+                                                        "",
                                                     style: TextStyle(
-                                                        color: Color(0xff353e4d),
+                                                        color:
+                                                            Color(0xff353e4d),
                                                         fontSize: 14.sp),
                                                   ),
                                                   Padding(
-                                                      padding:
-                                                      EdgeInsets.only(top: 11.w)),
+                                                      padding: EdgeInsets.only(
+                                                          top: 11.w)),
                                                   Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    mainAxisSize: MainAxisSize.max,
+                                                        MainAxisAlignment.start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
                                                     children: [
                                                       Container(
-                                                        alignment: Alignment.center,
-                                                        padding: EdgeInsets.only(left: 10.w,right: 10.w,top: 4.w,bottom: 4.w),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10.w,
+                                                                right: 10.w,
+                                                                top: 4.w,
+                                                                bottom: 4.w),
                                                         margin: EdgeInsets.only(
                                                             right: 13.w),
-                                                        decoration: BoxDecoration(
-                                                          color: Color(0xfffff7ed),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Color(0xfffff7ed),
                                                           borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(2.w)),
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          2.w)),
                                                         ),
                                                         child: Text(
                                                           element.time ?? "",
                                                           style: TextStyle(
-                                                              color: Color(0xffed702d),
+                                                              color: Color(
+                                                                  0xffed702d),
                                                               fontSize: 12.sp),
                                                         ),
                                                       ),
                                                       Text(
-                                                        element.accuracy! + "%正确率",
+                                                        element.accuracy! +
+                                                            "%正确率",
                                                         style: TextStyle(
-                                                            color: Color(0xff898a93),
+                                                            color: Color(
+                                                                0xff898a93),
                                                             fontSize: 12.sp),
                                                       ),
                                                     ],
@@ -500,7 +510,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             ),
           ],
         ),
-      ) ,
+      ),
     );
   }
 
@@ -523,12 +533,9 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     // logic.getList(2, currentPageNo, pageSize);
   }
 
+  @override
+  void onCreate() {}
 
   @override
-  void onCreate() {
-  }
-
-  @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 }

@@ -52,7 +52,7 @@ class Listening_practiceLogic extends GetxController {
     Map<String, dynamic> req = {};
     Map<String, dynamic> reqTwo = {};
     req["userId"] = userId;
-    req["classifyTypeValue"] = classifyTypeValue;
+    req["dictionaryId"] = classifyTypeValue;
     req["affiliatedGrade"] = affiliatedGrade;
     reqTwo["size"] = size;
     reqTwo["current"] = current;
