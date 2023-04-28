@@ -146,7 +146,7 @@ class Api {
   static String getHomeListChoiceDate = Config.ApiHost + "/";
 
   // 首页金刚区听力列表
-  static String getHomeSecondListDate = Config.ApiHost + "/";
+  static String getHomeSecondListDate = Config.ApiHost + "/question/exercise/getListeningExerciseCatalogue";
 
   // 首页金刚区周报筛选
   static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";

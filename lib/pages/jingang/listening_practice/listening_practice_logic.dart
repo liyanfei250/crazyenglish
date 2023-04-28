@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../entity/practice_list_response.dart';
 import '../../../entity/review/HomeListChoiceDate.dart';
-import '../../../entity/review/HomeSecondListDate.dart';
+import '../../../entity/review/HomeSecondListDate.dart' as data;
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import 'ListRepository.dart';
@@ -23,8 +23,8 @@ class Listening_practiceLogic extends GetxController {
 
   void getChoiceMap(String id) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.HomeListChoiceDate,
-        labelId: id.toString())
+            JsonCacheManageUtils.HomeListChoiceDate,
+            labelId: id.toString())
         .then((value) {
       if (value != null) {
         return HomeListChoiceDate.fromJson(value as Map<String, dynamic>?);
@@ -46,57 +46,61 @@ class Listening_practiceLogic extends GetxController {
     }
   }
 
-  void getList(String weekTime, int page, int pageSize) async {
-    Map<String, String> req = {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
+  void getList(int userId, dynamic classifyTypeValue,
+      int size, int current) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> reqTwo = {};
+    req["userId"] = userId;
+    req["classifyTypeValue"] = classifyTypeValue;
+    reqTwo["size"] = size;
+    reqTwo["current"] = current;
+    req["p"] = reqTwo;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.SecondListDate,
-        labelId: weekTime.toString())
+            JsonCacheManageUtils.SecondListDate,
+            labelId: classifyTypeValue.toString())
         .then((value) {
       if (value != null) {
-        return HomeSecondListDate.fromJson(value as Map<String, dynamic>?);
+        return data.HomeSecondListDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
-    state.pageNo = page;
-    if (page == 1 && cache is HomeSecondListDate && cache != null) {
-      state.homeSecondListDate = cache!;
-      //todo 具体的参数获取
-      // if(state.homeSecondListDate.length < pageSize){
-      //   state.hasMore = false;
-      // } else {
-      //   state.hasMore = true;
-      // }
-      update([GetBuilderIds.getHomeSecondListDate]);
+    state.pageNo = current;
+    if (current == 1 && cache?.obj != null && cache!.obj is data.Obj) {
+      state.homeSecondListDate = cache!.obj!;
+      if (state.homeSecondListDate.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+      update(
+          [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
     }
 
-    HomeSecondListDate list = await listData.getListnerList(req);
-    if (page == 1) {
+    data.HomeSecondListDate list = await listData.getListnerList(req);
+    if (current == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.SecondListDate,
-          labelId: weekTime.toString(),
+          labelId: classifyTypeValue.toString(),
           list.toJson());
     }
-    //todo 具体的参数获取
-    // if(list.rows==null) {
-    //   if(page ==1){
-    //     state.paperList.clear();
-    //   }
-    // } else {
-    //   if(page ==1){
-    //     state.paperList = list.rows!;
-    //   } else {
-    //     state.paperList.addAll(list.rows!);
-    //   }
-    //   if(list.rows!.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    // }
-    update([GetBuilderIds.getHomeSecondListDate]);
+    if (list.obj == null) {
+      if (current == 1) {
+        state.homeSecondListDate.clear();
+      }
+    } else {
+      if (current == 1) {
+        state.homeSecondListDate = list.obj!;
+      } else {
+        state.homeSecondListDate.addAll(list.obj!);
+      }
+      if (list.obj!.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update(
+        [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
   }
 }

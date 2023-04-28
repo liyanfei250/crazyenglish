@@ -1,12 +1,16 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../entity/review/HomeSecondListDate.dart';
+import '../../../entity/home/HomeKingNewDate.dart' as data;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -15,11 +19,11 @@ import 'MenuWidget.dart';
 import 'listening_practice_logic.dart';
 
 class ListeningPracticePage extends BasePage {
-  var type;
+  data.Obj? type;
 
   ListeningPracticePage({Key? key}) : super(key: key) {
-    if (Get.arguments != null && Get.arguments is Map) {
-      type = Get.arguments["type"];
+    if (Get.arguments != null && Get.arguments is data.Obj) {
+      type = Get.arguments;
     }
   }
 
@@ -32,13 +36,12 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   final logic = Get.put(Listening_practiceLogic());
   final state = Get.find<Listening_practiceLogic>().state;
   late AnimationController _controller;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  pull.RefreshController _refreshController =
+      pull.RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
-
-  // List<Rows> weekPaperList = [];
+  List<Obj> homeSecondListDate = [];
   final int pageStartIndex = 1;
   List listDataOne = [
     {
@@ -90,43 +93,68 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
 
       }
     });
+
+    logic.addListenerId(
+        GetBuilderIds.getHomeSecondListDate + "2"/*widget.type!.id.toString()*/, () {
+      hideLoading();
+      if (state.homeSecondListDate != null &&
+          state.homeSecondListDate != null) {
+        if (state.pageNo == currentPageNo + 1) {
+          homeSecondListDate = state.homeSecondListDate!;
+          currentPageNo++;
+          homeSecondListDate.addAll(state.homeSecondListDate!);
+          if (mounted && _refreshController != null) {
+            _refreshController.loadComplete();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        } else if (state.pageNo == pageStartIndex) {
+          currentPageNo = pageStartIndex;
+          homeSecondListDate.clear();
+          homeSecondListDate.addAll(state!.homeSecondListDate!);
+          if (mounted && _refreshController != null) {
+            _refreshController.refreshCompleted();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        }
+      }
+    });
+    _onRefresh();
+    showLoading("");
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.type == 1) {
-      textTitle = "听力·按顺序练习";
-    }
-    if (widget.type == 2) {
-      textTitle = "阅读·按顺序练习";
-    }
-    if (widget.type == 3) {
-      textTitle = "写作·按顺序练习";
-    }
-    if (widget.type == 4) {
-      textTitle = "词语运用·按顺序练习";
-    }
     return Scaffold(
-      appBar: buildNormalAppBar(textTitle),
+      appBar: buildNormalAppBar(widget.type!.name!),
       backgroundColor: AppColors.theme_bg,
       body: Stack(
         children: [
           Padding(
             padding: EdgeInsets.only(top: 70.w),
-            child: SmartRefresher(
+            child: pull.SmartRefresher(
               enablePullDown: true,
               enablePullUp: true,
-              header: WaterDropHeader(),
-              footer: CustomFooter(
-                builder: (BuildContext context, LoadStatus? mode) {
+              header: pull.WaterDropHeader(),
+              footer: pull.CustomFooter(
+                builder: (BuildContext context, pull.LoadStatus? mode) {
                   Widget body;
-                  if (mode == LoadStatus.idle) {
+                  if (mode == pull.LoadStatus.idle) {
                     body = Text("");
-                  } else if (mode == LoadStatus.loading) {
+                  } else if (mode == pull.LoadStatus.loading) {
                     body = CupertinoActivityIndicator();
-                  } else if (mode == LoadStatus.failed) {
+                  } else if (mode == pull.LoadStatus.failed) {
                     body = Text("");
-                  } else if (mode == LoadStatus.canLoading) {
+                  } else if (mode == pull.LoadStatus.canLoading) {
                     body = Text("release to load more");
                   } else {
                     body = Text("");
@@ -145,7 +173,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       buildItemTop,
-                      childCount: listDataOne.length,
+                      childCount: homeSecondListDate.length,
                     ),
                   ),
                 ],
@@ -167,7 +195,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   Widget buildItemTop(BuildContext context, int index) {
     return InkWell(
       onTap: () {},
-      child: listitemBigBg(),
+      child: listitemBigBg(homeSecondListDate[index]),
     );
   }
 
@@ -203,12 +231,14 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getList("2022-12-22",pageStartIndex,pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID), /*widget.type!.id*/ 2,
+        pageSize, pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList("2022-12-22",currentPageNo,pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID), /*widget.type!.id*/ 2,
+        pageSize, currentPageNo);
   }
 
   @override
@@ -218,7 +248,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
     super.dispose();
   }
 
-  Widget listitemBigBg() {
+  Widget listitemBigBg(Obj obj) {
     return Column(
       children: [
         Row(
@@ -228,7 +258,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                 padding: EdgeInsets.only(
                     left: 18.w, right: 18.w, top: 8.w, bottom: 11.w),
                 child: Text(
-                  '七年级 新课程 第29期｜共4篇',
+                  obj.journalName ?? '',
                   style: TextStyle(
                       fontSize: 12,
                       color: Color(0xff858aa0),
@@ -284,8 +314,10 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               borderRadius: BorderRadius.all(Radius.circular(10.w)),
               color: AppColors.c_FFFFFFFF),
           child: ListView.builder(
-            itemBuilder: itemBuilder,
-            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) {
+              return listitemBig(obj.catalogueMergeVo![index], index);
+            },
+            itemCount: obj.catalogueMergeVo!.length,
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
@@ -295,11 +327,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
     );
   }
 
-  Widget itemBuilder(BuildContext context, int index) {
-    return listitemBig(index);
-  }
-
-  Widget listitemBig(int index) {
+  Widget listitemBig(CatalogueMergeVo value, int index) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -320,7 +348,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               Padding(
                   padding: EdgeInsets.only(top: 8.w, bottom: 8.w, left: 17.w),
                   child: Text(
-                    'Module 1',
+                    value.catalogueMergeName ?? "",
                     style: TextStyle(
                         fontSize: 13,
                         color: Color(0xffed702d),
@@ -329,7 +357,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               Padding(
                   padding: EdgeInsets.only(top: 8.w, bottom: 8.w),
                   child: Text(
-                    ' > ',
+                    '',
                     style: TextStyle(
                         fontSize: 13,
                         color: Color(0xff858aa0),
@@ -338,7 +366,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               Padding(
                   padding: EdgeInsets.only(top: 8.w, bottom: 8.w),
                   child: Text(
-                    'Unit 3',
+                    '',
                     style: TextStyle(
                         fontSize: 13,
                         color: Color(0xffed702d),
@@ -355,19 +383,19 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
             padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              return listitem(listData[index]);
+              return listitem(value.catalogueRecordVoList![index], index);
             },
             separatorBuilder: (BuildContext context, int index) {
               return Divider(height: 1, color: Color(0xffd2d5dc));
             },
-            itemCount: listData.length,
+            itemCount: value.catalogueRecordVoList!.length,
           ),
         ),
       ],
     );
   }
 
-  Widget listitem(value) {
+  Widget listitem(CatalogueRecordVoList data, int value) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -376,7 +404,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
           Row(
             children: [
               Text(
-                value['title'],
+                data.catalogueName ?? "",
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -391,7 +419,10 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               ),
               Expanded(child: Text('')),
               Text(
-                '正确率 9/15',
+                '正确率' +
+                    data.correctCount.toString() +
+                    "/" +
+                    data.questionCount.toString(),
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

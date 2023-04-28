@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
@@ -19,10 +21,10 @@ class ListRepository {
     }
   }
 
-  Future<HomeSecondListDate> getListnerList(Map<String, String> req) async {
+  Future<HomeSecondListDate> getListnerList(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeSecondListDate,
-        options: Options(method: Method.get));
+        Method.post, Api.getHomeSecondListDate,data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     HomeSecondListDate paperDetail = HomeSecondListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
