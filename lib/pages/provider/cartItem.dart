@@ -16,7 +16,6 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

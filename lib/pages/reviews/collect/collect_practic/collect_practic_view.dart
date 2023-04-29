@@ -15,6 +15,7 @@ import '../../../../entity/review/SearchRecordDate.dart';
 import '../../../../r.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
+import '../../../../widgets/PlaceholderPage.dart';
 import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'collect_practic_logic.dart';
 
@@ -231,6 +232,14 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
                         return listitem(e);
                       }).toList())),
             ),
+            weekPaperList.length == 0
+                ? SliverToBoxAdapter(
+                child: PlaceholderPage(
+                    imageAsset: R.imagesCommenNoDate,
+                    title: '暂无数据',
+                    topMargin: 100.w,
+                    subtitle: ''))
+                :
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,

@@ -158,7 +158,6 @@ class Node<T> {
     if (data != null) {
       _map['obj'] = data as T;
     }
-    //TODO: figure out a means to check for getter or method on generic to include map from generic
     return _map;
   }
 

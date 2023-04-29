@@ -15,6 +15,7 @@ import '../../../entity/review/PractiseHistoryDate.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../widgets/LeftLineWidget.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'practise_history_logic.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -370,140 +371,160 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                               ],
                             ));
                       }),
-                  Container(
-                    decoration: MyDecoration(),
-                    margin: EdgeInsets.only(left: 24, top: 12.w),
-                    padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
-                    child: ValueListenableBuilder<List<Event>>(
-                      valueListenable: _selectedEvents,
-                      builder: (context, value, _) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(13.w)),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xfffbf4f2),
-                                  offset: Offset(0, 0),
-                                  blurRadius: 20,
-                                  spreadRadius: 0,
-                                )
-                              ]),
-                          child: ListView(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            children: listData.map((element) {
+                  listData.length == 0
+                      ? PlaceholderPage(
+                              imageAsset: R.imagesCommenNoDate,
+                              title: '暂无数据',
+                              topMargin: 20.w,
+                              subtitle: '')
+                      : Container(
+                          decoration: MyDecoration(),
+                          margin: EdgeInsets.only(left: 24, top: 12.w),
+                          padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
+                          child: ValueListenableBuilder<List<Event>>(
+                            valueListenable: _selectedEvents,
+                            builder: (context, value, _) {
                               return Container(
-                                  padding: EdgeInsets.only(
-                                      left: 28.2, right: 24.w, top: 20.w),
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          logicDetail
-                                              .addJumpToReviewDetailListen();
-                                          logicDetail.getDetailAndEnterResult(
-                                              "${element.subjectId}",
-                                              "${element.exerciseId}");
-                                          showLoading("");
-                                        },
-                                        child: Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    element.questionTypeName ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xff353e4d),
-                                                        fontSize: 14.sp),
-                                                  ),
-                                                  Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 11.w)),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10.w,
-                                                                right: 10.w,
-                                                                top: 4.w,
-                                                                bottom: 4.w),
-                                                        margin: EdgeInsets.only(
-                                                            right: 13.w),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xfffff7ed),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          2.w)),
-                                                        ),
-                                                        child: Text(
-                                                          element.time ?? "",
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(13.w)),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0xfffbf4f2),
+                                        offset: Offset(0, 0),
+                                        blurRadius: 20,
+                                        spreadRadius: 0,
+                                      )
+                                    ]),
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: listData.map((element) {
+                                    return Container(
+                                        padding: EdgeInsets.only(
+                                            left: 28.2, right: 24.w, top: 20.w),
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                logicDetail
+                                                    .addJumpToReviewDetailListen();
+                                                logicDetail
+                                                    .getDetailAndEnterResult(
+                                                        "${element.subjectId}",
+                                                        "${element.exerciseId}");
+                                                showLoading("");
+                                              },
+                                              child: Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          element.questionTypeName ??
+                                                              "",
                                                           style: TextStyle(
                                                               color: Color(
-                                                                  0xffed702d),
-                                                              fontSize: 12.sp),
+                                                                  0xff353e4d),
+                                                              fontSize: 14.sp),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        element.accuracy! +
-                                                            "%正确率",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff898a93),
-                                                            fontSize: 12.sp),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                        Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 11.w)),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          10.w,
+                                                                      right:
+                                                                          10.w,
+                                                                      top: 4.w,
+                                                                      bottom:
+                                                                          4.w),
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      right:
+                                                                          13.w),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0xfffff7ed),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            2.w)),
+                                                              ),
+                                                              child: Text(
+                                                                element.time ??
+                                                                    "",
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xffed702d),
+                                                                    fontSize:
+                                                                        12.sp),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              element.accuracy! +
+                                                                  "%正确率",
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff898a93),
+                                                                  fontSize:
+                                                                      12.sp),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Image.asset(
+                                                      R.imagesHistoryJumpArrow,
+                                                      width: 10.w,
+                                                      height: 10.w,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                              Image.asset(
-                                                R.imagesHistoryJumpArrow,
-                                                width: 10.w,
-                                                height: 10.w,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Visibility(
-                                          visible: true,
-                                          child: Divider(
-                                            color: AppColors.c_FFD2D5DC,
-                                            thickness: 0.2.w,
-                                          ))
-                                    ],
-                                  ));
-                            }).toList(),
+                                            ),
+                                            Visibility(
+                                                visible: true,
+                                                child: Divider(
+                                                  color: AppColors.c_FFD2D5DC,
+                                                  thickness: 0.2.w,
+                                                ))
+                                          ],
+                                        ));
+                                  }).toList(),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  )
+                        )
                 ],
               ),
             ),

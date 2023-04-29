@@ -26,7 +26,6 @@ class LoginNewPage extends BasePage {
 
   @override
   BasePageState<BasePage> getState() {
-    // TODO: implement getState
     return _LoginPageState();
   }
 }
@@ -640,12 +639,10 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 
   void appleLogin() async {

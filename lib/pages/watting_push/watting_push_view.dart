@@ -556,6 +556,6 @@ class _WattingPushPageState extends State<Watting_pushPage>
       return listitemThree(index);
     }
     return PlaceholderPage(
-        imageAsset: R.imagesCommenNoDate, title: '暂无数据', subtitle: '');
+        imageAsset: R.imagesCommenNoDate, title: '暂无数据', topMargin: 16.w,subtitle: '');
   }
 }

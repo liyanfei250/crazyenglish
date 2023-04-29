@@ -23,7 +23,6 @@ class ListenQuestion extends BaseQuestion {
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
-    // TODO: implement getState
    return _ListenQuestionState();
   }
 
@@ -36,7 +35,6 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
 
   @override
   getAnswers() {
-    // TODO: implement getAnswers
     throw UnimplementedError();
   }
 

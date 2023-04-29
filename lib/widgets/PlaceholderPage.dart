@@ -7,12 +7,14 @@ import '../r.dart';
 class PlaceholderPage extends StatelessWidget {
   final String imageAsset;
   final String title;
+  final double topMargin;
   final String subtitle;
 
   PlaceholderPage({
     Key? key,
     required this.imageAsset,
     required this.title,
+    required this.topMargin,
     required this.subtitle,
   }) : super(key: key);
 
@@ -20,7 +22,7 @@ class PlaceholderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.only(left: 16.0,top: topMargin,right: 16.0,bottom: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

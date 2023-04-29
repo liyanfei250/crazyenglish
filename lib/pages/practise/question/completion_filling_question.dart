@@ -28,17 +28,14 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
 
   @override
   getAnswers() {
-    // TODO: implement getAnswers
     throw UnimplementedError();
   }
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

@@ -24,7 +24,6 @@ class ListenQuestionResult extends BaseQuestionResult {
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
-    // TODO: implement getState
    return _ListenQuestionResultState();
   }
 
@@ -37,7 +36,6 @@ class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionR
 
   @override
   getAnswers() {
-    // TODO: implement getAnswers
     throw UnimplementedError();
   }
 

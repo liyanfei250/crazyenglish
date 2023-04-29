@@ -14,6 +14,7 @@ import '../../../../r.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/sp_util.dart';
+import '../../../../widgets/PlaceholderPage.dart';
 import '../../../practise/answering/answering_view.dart';
 import '../../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../error_note/error_note_logic.dart';
@@ -137,6 +138,14 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
         onLoading: _onLoading,
         child: CustomScrollView(
           slivers: [
+            weekPaperList.length == 0
+                ? SliverToBoxAdapter(
+                child: PlaceholderPage(
+                    imageAsset: R.imagesCommenNoDate,
+                    title: '暂无数据',
+                    topMargin: 100.w,
+                    subtitle: ''))
+                :
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 listitemBigBg,

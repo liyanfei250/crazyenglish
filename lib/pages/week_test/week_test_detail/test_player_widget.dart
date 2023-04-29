@@ -53,7 +53,6 @@ class TestPlayerWidget extends BasePage {
 
   @override
   BasePageState<BasePage> getState() {
-    // TODO: implement getState
     return _TestPlayerWidgetState();
   }
 }
@@ -381,11 +380,9 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

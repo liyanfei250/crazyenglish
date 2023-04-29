@@ -129,12 +129,10 @@ class _SelectWordsFillingQuestionResultState extends BaseQuestionResultState<Sel
 
   @override
   getAnswers() {
-    // TODO: implement getAnswers
     throw UnimplementedError();
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

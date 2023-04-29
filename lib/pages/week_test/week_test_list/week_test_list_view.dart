@@ -16,6 +16,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../base/AppUtil.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import '../../../widgets/search_bar.dart';
 import '../../jingang/listening_practice/MenuWidget.dart';
 import 'week_test_list_logic.dart';
@@ -39,10 +40,32 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   List<Obj> weekPaperList = [];
   List<choiceDate.Obj> choiceList = [];
   final int pageStartIndex = 1;
+  dynamic affiliatedGrade = null;
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.weekTestList, () {
+    addlistner();
+    _onRefresh();
+    showLoading("");
+
+    logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
+      if (state.paperDetailNew != null) {
+        if (state.paperDetailNew!.obj != null &&
+            state.paperDetailNew!.obj!.length > 0) {
+          setState(() {
+            choiceList = state.paperDetailNew!.obj!;
+            // functionTxt =
+            //     state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
+          });
+        }
+      }
+    });
+    logic.getChoiceMap('grade_type');
+  }
+
+  void addlistner() {
+    logic.addListenerId(GetBuilderIds.weekTestList + affiliatedGrade.toString(),
+        () {
       hideLoading();
       if (state.list != null && state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -74,23 +97,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
         }
       }
     });
-    _onRefresh();
-    showLoading("");
-
-    logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
-      if (state.paperDetailNew != null) {
-        if (state.paperDetailNew!.obj != null &&
-            state.paperDetailNew!.obj!.length > 0) {
-          setState(() {
-            choiceList = state.paperDetailNew!.obj!;
-            // functionTxt =
-            //     state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
-          });
-        }
-
-      }
-    });
-    logic.getChoiceMap('grade_type');
   }
 
   @override
@@ -133,11 +139,17 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                   items: choiceList.map((obj) => obj.name!).toList(),
                   onSelected: (index) {
                     print('选中了第${index + 1}项');
-                    if ((index + 1)>0){
-                      logic.getList(choiceList[index]!.id!.toInt(), currentPageNo, pageSize);
-                    }else{
-                      logic.getList(0, currentPageNo, pageSize);//全部
-                    };
+                    if ((index + 1) > 0) {
+                      affiliatedGrade = choiceList[index]!.id!.toInt();
+                      addlistner();
+                      logic.getList(affiliatedGrade, currentPageNo, pageSize);
+                    } else {
+                      affiliatedGrade = null;
+                      addlistner();
+                      logic.getList(
+                          affiliatedGrade, currentPageNo, pageSize); //全部
+                    }
+                    ;
                   },
                 ),
               ),
@@ -151,19 +163,27 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                   ),
                 ),
               ),
-              SliverPadding(
-                padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                sliver: SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    buildItem,
-                    childCount: weekPaperList.length,
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisExtent: 165.w,
-                  ),
-                ),
-              )
+              weekPaperList.length == 0
+                  ? SliverToBoxAdapter(
+                      child: PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 100.w,
+                          subtitle: ''),
+                    )
+                  : SliverPadding(
+                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          buildItem,
+                          childCount: weekPaperList.length,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisExtent: 165.w,
+                        ),
+                      ),
+                    )
             ],
           ),
         ));
@@ -172,7 +192,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        Util.toast(weekPaperList![index].id!.toString());
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
             arguments: weekPaperList![index]);
       },
@@ -284,12 +303,12 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getList(2, pageStartIndex, pageSize);
+    logic.getList(affiliatedGrade, pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(2, currentPageNo, pageSize);
+    logic.getList(affiliatedGrade, currentPageNo, pageSize);
   }
 
   @override
@@ -300,7 +319,5 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   }
 
   @override
-  void onDestroy() {
-    // TODO: implement onDestroy
-  }
+  void onDestroy() {}
 }
