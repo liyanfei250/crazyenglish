@@ -26,7 +26,6 @@ class ReadQuestion extends BaseQuestion {
 
   @override
   BaseQuestionState<BaseQuestion> getState() {
-    // TODO: implement getState
     return _ReadQuestionState();
   }
 

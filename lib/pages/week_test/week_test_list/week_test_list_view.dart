@@ -312,6 +312,5 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

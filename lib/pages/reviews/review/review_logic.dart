@@ -13,13 +13,11 @@ class ReviewLogic extends GetxController {
   ReviewRepository reviewRepository = ReviewRepository();
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 

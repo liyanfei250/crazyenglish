@@ -57,7 +57,6 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
     logic.addListenerId(GetBuilderIds.weekTestCatalogList, () {
       hideLoading();
       if (state.nodes != null && state.nodes.length > 0) {
@@ -382,6 +381,5 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

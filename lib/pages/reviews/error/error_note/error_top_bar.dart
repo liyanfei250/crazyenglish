@@ -21,6 +21,5 @@ class ErrorTopBar extends StatelessWidget implements PreferredSizeWidget{
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(40.w);
 }
