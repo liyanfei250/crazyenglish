@@ -11,6 +11,7 @@ import '../../../r.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/LeftLineWidget.dart';
 import '../../../widgets/MyDecoration.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../practise_history/utils.dart';
 import 'homework_history_logic.dart';
@@ -251,6 +252,14 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                                 )
                               ],));
                       }),
+                 /* value.length == 0
+                      ? SliverToBoxAdapter(
+                      child: PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 20.w,
+                          subtitle: ''))
+                      :*/
                   Container(
                     decoration: MyDecoration(),
                     margin: EdgeInsets.only(left: 24,top: 12.w),

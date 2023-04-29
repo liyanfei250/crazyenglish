@@ -16,6 +16,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../base/AppUtil.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import '../../../widgets/search_bar.dart';
 import '../../jingang/listening_practice/MenuWidget.dart';
 import 'week_test_list_logic.dart';
@@ -162,19 +163,27 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                   ),
                 ),
               ),
-              SliverPadding(
-                padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                sliver: SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    buildItem,
-                    childCount: weekPaperList.length,
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisExtent: 165.w,
-                  ),
-                ),
-              )
+              weekPaperList.length == 0
+                  ? SliverToBoxAdapter(
+                      child: PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 100.w,
+                          subtitle: ''),
+                    )
+                  : SliverPadding(
+                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          buildItem,
+                          childCount: weekPaperList.length,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisExtent: 165.w,
+                        ),
+                      ),
+                    )
             ],
           ),
         ));
@@ -183,7 +192,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        Util.toast(weekPaperList![index].id!.toString());
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
             arguments: weekPaperList![index]);
       },
@@ -311,6 +319,5 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   }
 
   @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 }

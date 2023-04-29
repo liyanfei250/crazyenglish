@@ -16,6 +16,7 @@ import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import 'MenuWidget.dart';
 import 'listening_practice_logic.dart';
 
@@ -144,12 +145,19 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               onLoading: _onLoading,
               child: CustomScrollView(
                 slivers: [
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      buildItemTop,
-                      childCount: homeSecondListDate.length,
-                    ),
-                  ),
+                  homeSecondListDate.length == 0
+                      ? SliverToBoxAdapter(
+                          child: PlaceholderPage(
+                              imageAsset: R.imagesCommenNoDate,
+                              title: '暂无数据',
+                              topMargin: 100.w,
+                              subtitle: ''))
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            buildItemTop,
+                            childCount: homeSecondListDate.length,
+                          ),
+                        ),
                 ],
               ),
             ),

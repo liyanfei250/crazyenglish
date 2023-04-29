@@ -131,6 +131,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
       return PlaceholderPage(
           imageAsset: R.imagesCommenNoDate,
           title: '没有找到与“高四”相关的结果',
+          topMargin: 16.w,
           subtitle: '');
     } else {
       if (index == 0) {
