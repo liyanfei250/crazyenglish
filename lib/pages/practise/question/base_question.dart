@@ -192,7 +192,13 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
         }else if(element.questionTypeStr == QuestionType.question_reading){
-
+          itemList.add(buildQuestionType("填空"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          itemList.add(QuestionFactory.buildShortAnswerQuestion("question",1,null));
         }
         // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));

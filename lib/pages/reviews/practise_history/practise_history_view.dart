@@ -92,7 +92,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     //todo 日期处理，哪天有数据提前处理
     logic.getPracticeDateInfo(
         SpUtil.getInt(BaseConstant.USER_ID).toString(), "'$formattedDate'");
-    logicDetail.addJumpToStartExamListen(0, 0);
 
     //TODO 分页的处理
     logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),

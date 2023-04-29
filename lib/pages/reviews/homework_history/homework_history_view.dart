@@ -45,7 +45,6 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    logicDetail.addJumpToStartExamListen(0, 0);
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -283,6 +282,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                                     children: [
                                       InkWell(
                                         onTap: (){
+                                          logicDetail.addJumpToStartExamListen();
                                           logicDetail.getDetailAndStartExam("0");
                                           showLoading("");
                                         },

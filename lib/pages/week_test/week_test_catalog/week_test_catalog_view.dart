@@ -67,7 +67,6 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         }
       }
     });
-    logicDetail.addJumpToStartExamListen(0, 0);
     _onRefresh();
     showLoading("");
   }
@@ -281,6 +280,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
         onTap: () {
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
           // RouterUtil.toNamed(AppRoutes.WeeklyTestDetail,arguments: {"id":node.key,"name":node.label});
+          logicDetail.addJumpToStartExamListen();
           logicDetail.getDetailAndStartExam(node.key);
           showLoading("");
         },

@@ -321,7 +321,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback? getEditingControllerCallback){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     return SizedBox(
