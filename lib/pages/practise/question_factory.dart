@@ -60,7 +60,7 @@ class QuestionFactory{
                         _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList.answer,
                         e!.sequence!,
-                        e!.content!,
+                        e!.content!,  
                         double.infinity,
                         52.w
                     ),
@@ -429,7 +429,6 @@ class QuestionFactory{
               //   print("getBuilderddd:${key}");
               //   getFocusNodeControllerCallback(key)!.requestFocus();
               // }
-
               getFocusNodeControllerCallback(key);
               getEditingControllerCallback(key).text = _.contentMap[key]??"";
               getEditingControllerCallback(key).selection =

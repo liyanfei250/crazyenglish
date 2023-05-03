@@ -333,6 +333,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       gapFocusNodeController[key] = focusNode;
       return focusNode;
     }else{
+      print("makeFocusNode:$key");
       return gapFocusNodeController[key]!;
     }
   }
