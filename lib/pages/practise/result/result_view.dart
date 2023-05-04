@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,6 +72,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   final state = Get.find<AnsweringLogic>().state;
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
+  final logicCollect = Get.put(Collect_practicLogic());
 
 
   late TabController _tabController;
@@ -454,6 +456,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   void onDestroy() {
     Get.delete<AnsweringLogic>();
     Get.delete<WeekTestDetailLogic>();
+    Get.delete<Collect_practicLogic>();
   }
 
   @override

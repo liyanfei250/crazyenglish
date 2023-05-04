@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,8 @@ import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
+import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
@@ -112,6 +115,27 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     );
   }
 
+  Widget buildFavorAndFeedback(bool isFavor,num? subjectId,{num? subtopicId = -1}){
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: (){
+
+          },
+          child: Image.asset(isFavor? R.imagesExercisesNoteHearing:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
+        ),
+        Padding(padding: EdgeInsets.only(left: 10.w)),
+        InkWell(
+          onTap: (){
+
+          },
+          child: Image.asset(R.imagesExerciseNoteFeedback,width: 48.w,height: 17.w),
+        )
+      ],
+    );
+  }
+
   Widget buildQuestionDesc(String name){
     return Container(
       width: 66.w,
@@ -152,7 +176,22 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             || element.questionTypeStr == QuestionType.complete_filling
             || element.questionTypeStr == QuestionType.normal_reading){
           // 选择题
-          itemList.add(buildQuestionType("选择题2"));
+          itemList.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildQuestionType("选择题"),
+              Visibility(
+                  visible: element.questionTypeStr == QuestionType.question_reading,
+                  child: GetBuilder<Collect_practicLogic>(
+                    id: "collect:${element.id}:${question.id}",
+                    builder: (_){
+                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id);
+                    },
+                  )
+              )
+            ],
+          ));
+
           itemList.add(Visibility(
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
@@ -181,7 +220,21 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
         }else if(element.questionTypeStr == QuestionType.judge_choice){
 
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
-          itemList.add(buildQuestionType("填空题"));
+          itemList.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildQuestionType("填空题"),
+              Visibility(
+                  visible: element.questionTypeStr == QuestionType.question_reading,
+                  child: GetBuilder<Collect_practicLogic>(
+                    id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
+                    builder: (_){
+                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id);
+                    },
+                  )
+              )
+            ],
+          ));
           itemList.add(buildReadQuestion(element.content ?? ""));
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));

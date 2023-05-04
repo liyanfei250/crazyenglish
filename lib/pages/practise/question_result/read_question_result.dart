@@ -1,11 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 
 import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
+import '../../reviews/collect/collect_practic/collect_practic_logic.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,6 +43,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
 
   late SubjectVoList element;
 
+  var isFavor = false.obs;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -61,7 +65,21 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildQuestionDesc("原文"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildQuestionDesc("原文"),
+              Visibility(
+                visible: element.questionTypeStr == QuestionType.question_reading,
+                child: GetBuilder<Collect_practicLogic>(
+                  id: "${GetBuilderIds.collectState}:${element.id}",
+                  builder: (_){
+                    return buildFavorAndFeedback(_.collectMap["${element.id}"]??false, element.id);
+                  },
+                )
+              )
+            ],
+          ),
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
