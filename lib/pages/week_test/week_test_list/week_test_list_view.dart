@@ -29,7 +29,8 @@ class WeekTestListPage extends BasePage {
   BasePageState<BasePage> getState() => _WeekTestListPageState();
 }
 
-class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
+class _WeekTestListPageState extends BasePageState<WeekTestListPage>
+    with SingleTickerProviderStateMixin {
   final logic = Get.put(WeekTestListLogic());
   final state = Get.find<WeekTestListLogic>().state;
   RefreshController _refreshController =
@@ -42,11 +43,20 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   final int pageStartIndex = 1;
   dynamic affiliatedGrade = null;
 
+  late AnimationController _controller;
+  bool _isOpen = false;
+  int _selectedIndex = -1;
+  late List<String> items = [];
+
   @override
   void onCreate() {
     addlistner();
     _onRefresh();
     showLoading("");
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
 
     logic.addListenerId(GetBuilderIds.getHomeWeeklyChoiceDate, () {
       if (state.paperDetailNew != null) {
@@ -57,6 +67,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
             // functionTxt =
             //     state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
           });
+          items = choiceList.map((obj) => obj.name!).toList();
         }
       }
     });
@@ -134,26 +145,195 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: MenuWidget(
-                  title: '全部分类',
-                  items: choiceList.map((obj) => obj.name!).toList(),
-                  onSelected: (index) {
-                    print('选中了第${index + 1}项');
-                    if ((index + 1) > 0) {
-                      affiliatedGrade = choiceList[index]!.id!.toInt();
-                      addlistner();
-                      logic.getList(affiliatedGrade, currentPageNo, pageSize);
-                    } else {
-                      affiliatedGrade = null;
-                      addlistner();
-                      logic.getList(
-                          affiliatedGrade, currentPageNo, pageSize); //全部
-                    }
-                    ;
-                  },
+                child: Stack(
+                  children: [
+                     Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                bottom: 5.w,
+                                top: 12.w,
+                                left: 33.w,
+                                right: 33.w),
+                            child: SearchBar(
+                              width: double.infinity,
+                              height: 28.w,
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height-100,
+                            child: weekPaperList.length == 0
+                                ? PlaceholderPage(
+                                imageAsset: R.imagesCommenNoDate,
+                                title: '暂无数据',
+                                topMargin: 0.w,
+                                subtitle: '')
+                                : GridView.builder(
+                              itemCount: weekPaperList.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisExtent: 165,
+                              ),
+                              itemBuilder: (context, index) {
+                                return buildItem(context, index);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    Visibility(
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      visible: _isOpen,
+                    ),
+                    Visibility(
+                        visible: _isOpen,
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 15.w, right: 15.w, top: 10.w, bottom: 20.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(10.w),
+                                bottomLeft: Radius.circular(10.w)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: Offset(0, 3),
+                                blurRadius: 3,
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /*
+                          MenuWidget(
+                          title: '全部分类',
+                          items: choiceList.map((obj) => obj.name!).toList(),
+                          onSelected: (index) {
+                            print('选中了第${index + 1}项');
+                            if ((index + 1) > 0) {
+                              affiliatedGrade = choiceList[index]!.id!.toInt();
+                              addlistner();
+                              logic.getList(affiliatedGrade, currentPageNo, pageSize);
+                            } else {
+                              affiliatedGrade = null;
+                              addlistner();
+                              logic.getList(
+                                  affiliatedGrade, currentPageNo, pageSize); //全部
+                            }
+                            ;
+                          },
+                        )
+                          * */
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 25.w,
+                                    width:
+                                        MediaQuery.of(context).size.width / 4,
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                        bottom: 12.w, top: 18.w),
+                                    padding:
+                                        EdgeInsets.only(left: 8.w, right: 8.w),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xfff5f6f9),
+                                      borderRadius: BorderRadius.circular(20.w),
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedIndex = -1;
+                                          _isOpen = false;
+                                        });
+                                        affiliatedGrade = null;
+                                        addlistner();
+                                        logic.getList(affiliatedGrade,
+                                            currentPageNo, pageSize); //全部
+                                      },
+                                      child: Text(
+                                        '全部分类',
+                                        style: TextStyle(
+                                          fontSize: 11.sp,
+                                          color: _selectedIndex == -1
+                                              ? Colors.black
+                                              : Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    child: Wrap(
+                                      spacing: 18.w,
+                                      runSpacing: 4.w,
+                                      children: List.generate(
+                                        items.length,
+                                        (index) => GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = index;
+                                              _isOpen = false;
+                                            });
+                                            affiliatedGrade =
+                                                choiceList[index]!.id!.toInt();
+                                            addlistner();
+                                            logic.getList(affiliatedGrade,
+                                                currentPageNo, pageSize);
+                                          },
+                                          child: Container(
+                                            height: 25.w,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                4,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xfff5f6f9),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.w),
+                                            ),
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 4.0,
+                                              vertical: 8.0,
+                                            ),
+                                            child: Text(
+                                              items[index],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 11.sp,
+                                                color: _selectedIndex == index
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                  ],
                 ),
               ),
-              SliverToBoxAdapter(
+              /*SliverToBoxAdapter(
                 child: Container(
                   margin: EdgeInsets.only(
                       bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
@@ -183,10 +363,56 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
                           mainAxisExtent: 165.w,
                         ),
                       ),
-                    )
+                    )*/
             ],
           ),
         ));
+  }
+
+  AppBar buildNormalAppBar(String text) {
+    return AppBar(
+      backgroundColor: AppColors.c_FFFFFFFF,
+      centerTitle: true,
+      title: Text(
+        text,
+        style: TextStyle(
+            color: AppColors.c_FF32374E,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold),
+      ),
+      leading: Util.buildBackWidget(context),
+      // bottom: ,
+      elevation: 10.w,
+      shadowColor: const Color(0x1F000000),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isOpen = !_isOpen;
+            });
+            _startAnimation(_isOpen);
+          },
+          child: Row(
+            children: [
+              Text(
+                '全部',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Color(0xff898a93),
+                ),
+              ),
+              RotationTransition(
+                turns: Tween(begin: 0.0, end: 0.5).animate(_controller),
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   Widget buildItem(BuildContext context, int index) {
@@ -301,6 +527,14 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
     );
   }
 
+  void _startAnimation(bool _isOpen) {
+    if (_isOpen) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
+
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     logic.getList(affiliatedGrade, pageStartIndex, pageSize);
@@ -315,6 +549,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage> {
   void dispose() {
     Get.delete<WeekTestListLogic>();
     _refreshController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
