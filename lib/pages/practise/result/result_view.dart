@@ -170,36 +170,45 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(padding: EdgeInsets.only(top: 24.w)),
-                        Container(
-                          padding: EdgeInsets.only(left: 18.w,right: 18.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Visibility(
+                          visible: hasTab,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
-                                  Padding(padding: EdgeInsets.only(left: 9.w)),
-                                  Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
-                                ],
+                              Container(
+                                padding: EdgeInsets.only(left: 18.w,right: 18.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
+                                        Padding(padding: EdgeInsets.only(left: 9.w)),
+                                        Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Util.buildAnswerState(1),
+                                        Util.buildAnswerState(2),
+                                        Util.buildAnswerState(3),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Util.buildAnswerState(1),
-                                  Util.buildAnswerState(2),
-                                  Util.buildAnswerState(3),
-                                ],
-                              )
+                              Padding(padding: EdgeInsets.only(top: 24.w)),
+                              _buildTabBar(),
+                              Container(
+                                height: 0.5.w,
+                                width: double.infinity,
+                                color: AppColors.c_FFD2D5DC,
+                              ),
                             ],
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 24.w)),
-                        _buildTabBar(),
-                        Container(
-                          height: 0.5.w,
-                          width: double.infinity,
-                          color: AppColors.c_FFD2D5DC,
                         ),
                         Expanded(child: pages[0],)
                       ],
