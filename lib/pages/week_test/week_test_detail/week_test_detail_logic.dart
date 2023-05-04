@@ -88,10 +88,11 @@ class WeekTestDetailLogic extends GetxController {
 
 
   // 正常作答 跳转到答题页
-  void getDetailAndStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false}) async {
+  void getDetailAndStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false,
+    int jumpParentIndex = -1,int jumpChildIndex = -1}) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(id);
     if(weekDetailResponse!=null){
-      jumpToStartExam(id,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage);
+      jumpToStartExam(id,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage,jumpParentIndex : jumpParentIndex,jumpChildIndex : jumpChildIndex);
     } else {
       Util.toast("获取试题详情数据失败");
     }
@@ -128,12 +129,29 @@ class WeekTestDetailLogic extends GetxController {
   }
 
 
-  void jumpToStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false}) async{
+  void jumpToStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{
     StartExam startExam = await weekTestRepository.getStartExam(id);
     state.startExam = startExam;
     state.uuid = id;
     state.enterResult = enterResult??false;
     state.isOffCurrentPage = isOffCurrentPage??false;
+
+    if(jumpParentIndex>=0){
+      // 直接跳到指定题目 开始作答
+      state.parentIndex = 0;
+      state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
+    }else{
+      // 找到上次作答位置索引
+      if(startExam!.obj!.isFinish?? true){
+        // 已经做完 从第一道题开始即可
+        state.parentIndex = 0;
+        state.childIndex = 0;
+      } else {
+        // 未做完 从后台返回的索引开始
+        state.parentIndex = (startExam!.obj!.parentIndex?? 0).toInt();
+        state.childIndex = (startExam!.obj!.sublevelIndex?? 0).toInt();
+      }
+    }
     update([GetBuilderIds.startExam]);
   }
 
@@ -255,14 +273,17 @@ class WeekTestDetailLogic extends GetxController {
 
 
   // 跳转答题页监听
-  void addJumpToStartExamListen(int parentIndex,int childIndex){
+  // TODO 到底是增加监听前 添加索引合适呢 还是 发起请求前添加索引合适呢
+  // 接着上次作答 显然不适合增加监听时添加
+  // 只能发起请求时指定了
+  void addJumpToStartExamListen(){
     disposeId(GetBuilderIds.startExam);
     addListenerId(GetBuilderIds.startExam, () {
       // TODO 区分一下 写作 还是 其它题
       if (state.weekDetailResponse != null &&
           state.weekDetailResponse.obj != null &&
           state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
+          state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
 
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.WritingPage,
@@ -278,8 +299,8 @@ class WeekTestDetailLogic extends GetxController {
           RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
-              AnsweringPage.parentIndexKey:parentIndex,
-              AnsweringPage.childIndexKey:childIndex,
+              AnsweringPage.parentIndexKey:state.parentIndex,
+              AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.LastFinishResult:state.startExam,
               AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
               });
@@ -287,8 +308,8 @@ class WeekTestDetailLogic extends GetxController {
           RouterUtil.toNamed(AppRoutes.AnsweringPage,
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
-              AnsweringPage.parentIndexKey:parentIndex,
-              AnsweringPage.childIndexKey:childIndex,
+              AnsweringPage.parentIndexKey:state.parentIndex,
+              AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.LastFinishResult:state.startExam,
               AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
               });

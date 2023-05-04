@@ -219,8 +219,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             children: [
               InkWell(
                 onTap: (){
-                  logicDetail.addJumpToStartExamListen(widget.parentIndex,0);
-                  logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
+                  logicDetail.addJumpToStartExamListen();
+                  logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
                   showLoading("");
                 },
                 child: Container(
@@ -275,13 +275,14 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                       });
                     } else {
                       // 跳作答页
-                      logicDetail.addJumpToStartExamListen(widget.parentIndex+1,0);
-                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true);
+                      logicDetail.addJumpToStartExamListen();
+                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
                     }
                   } else {
-                    // TODO 有下一节且有内容
+                    // TODO 有下一节且有内容 传参需要带上目录
                     var hasNext = true;
                     if (hasNext) {
+                      logicDetail.addJumpToStartExamListen();
                       logicDetail.getDetailAndStartExam("0",enterResult: true,isOffCurrentPage:true);
                     } else {
                       Util.toast("已经是最后一题");

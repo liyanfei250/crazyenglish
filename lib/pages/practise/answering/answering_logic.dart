@@ -54,8 +54,17 @@ class AnsweringLogic extends GetxController {
 
 
     List<SubtopicAnswerVo> subtopicAnswerVoList = [];
+
+    // 填充已做答的数据
     state.subtopicAnswerVoMap.forEach((key, value) {
       subtopicAnswerVoList.add(value);
+    });
+    //填充未作答的数据
+    subjectVoList.subtopicVoList!.forEach((element) {
+      if(!state.subtopicAnswerVoMap.containsKey("${element.id}")){
+        SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId: element.id,userAnswer: "",answer: element.answer,optionId: 0,isCorrect: false);
+        subtopicAnswerVoList.add(subtopicAnswerVo);
+      }
     });
 
     SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(

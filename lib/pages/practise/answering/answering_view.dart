@@ -290,6 +290,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               GetBuilder<AnsweringLogic>(
                   id: GetBuilderIds.answerPageNum,
                   builder: (logic) {
+                    print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
                     return Text(
                       "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
                       style: TextStyle(

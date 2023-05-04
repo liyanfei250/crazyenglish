@@ -28,6 +28,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   late SubjectVoList element;
   int questionNum = 0;
   int currentNum = 0;
+  Widget? sub;
   @override
   void onCreate() {
     element = widget.data;
@@ -35,6 +36,9 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   @override
   Widget build(BuildContext context) {
+    if(sub==null){
+      sub = QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -46,14 +50,14 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child: getDetail(0),)
+          Expanded(child: getDetail(0,sub!),)
         ],
       ),
     );
   }
 
 
-  Widget getDetail(int defaultIndex){
+  Widget getDetail(int defaultIndex,Widget sub){
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
       // 更新底部页码
@@ -68,7 +72,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
+          sub,
           QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
         ],
       ),
@@ -137,6 +141,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   @override
   void jumpToQuestion(int index) {
     print("jumpToQuestion:${index}");
+    // makeFocusNodeController("${index+1}").requestFocus();
     // 更新空选中状态
     selectGapGetxController.updateFocus("${index+1}",true);
     // 更细底部页码

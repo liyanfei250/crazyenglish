@@ -60,7 +60,7 @@ class QuestionFactory{
                         _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList.answer,
                         e!.sequence!,
-                        e!.content!,
+                        e!.content!,  
                         double.infinity,
                         52.w
                     ),
@@ -321,7 +321,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback? getEditingControllerCallback){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     return SizedBox(
@@ -363,7 +363,7 @@ class QuestionFactory{
 
   /// 选词填空 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false}){
+  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -429,24 +429,32 @@ class QuestionFactory{
               //   print("getBuilderddd:${key}");
               //   getFocusNodeControllerCallback(key)!.requestFocus();
               // }
-
               getFocusNodeControllerCallback(key);
               getEditingControllerCallback(key).text = _.contentMap[key]??"";
               getEditingControllerCallback(key).selection =
                   TextSelection.fromPosition(TextPosition(
                       affinity: TextAffinity.downstream,
                       offset: '${_.contentMap[key]??""}'.length));
-              print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              // print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              if(userAnswerCallback!=null){
+                SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                    optionId:_.optionIdMap[key]??0,
+                    userAnswer: _.contentMap[key]??"",
+                    answer: subtopicAnswer,
+                    isCorrect: getEditingControllerCallback(key).text == subtopicAnswer);
+                userAnswerCallback.call(subtopicAnswerVo);
+              }
               return ConstrainedBox(
                 constraints: BoxConstraints(minWidth: 48),
                 child: IntrinsicWidth(
                   child: TextField(
                       keyboardType: TextInputType.name,
                       maxLines: 1,
+                      readOnly: userAnswerCallback==null,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: _getInputColor(1)),
-                      autofocus: _.hasFocusMap[key]??false,
-                      // focusNode: getFocusNodeControllerCallback(key),
+                      // autofocus: _.hasFocusMap[key]??false,
+                      focusNode: getFocusNodeControllerCallback(key),
                       onTap: () {
                         print("textfield clicked ${int.parse(key)-1}");
                         _.updateFocus(key, true);
@@ -473,15 +481,23 @@ class QuestionFactory{
                       onChanged: (text){
                         print("intput:"+text+"  content:"+content);
                         // 当前选项内容 映射到 空
-
+                        _.contentMap[key]=text;
+                        if(userAnswerCallback!=null){
+                          SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                              optionId:_.optionIdMap[key]??0,
+                              userAnswer: text,
+                              answer: subtopicAnswer,
+                              isCorrect: text == subtopicAnswer);
+                          userAnswerCallback.call(subtopicAnswerVo);
+                        }
                       },
 
                       onSubmitted: (text){
-                        print("======+++======");
+                        print("======+++==onSubmitted====");
                         answerMin.clearFocus();
                         _.updateGapKeyContent(key, text??"");
                         getFocusNodeControllerCallback(key).unfocus();
-                        _.updateFocus(key, false,isInit:true);
+                        _.updateFocus(key, false,isInit:false);
                       },
                       onEditingComplete: (){
                         // if(num < max){
@@ -489,10 +505,10 @@ class QuestionFactory{
                         // }else{
                         //   _scopeNode.unfocus();
                         // }
-                        print("=====+++=======");
+                        print("=====+++===onEditingComplete====");
                         answerMin.clearFocus();
                         getFocusNodeControllerCallback(key).unfocus();
-                        _.updateFocus(key, false,isInit:true);
+                        _.updateFocus(key, false,isInit:false);
                       },
                       controller: getEditingControllerCallback(key)
                   ),
@@ -544,7 +560,7 @@ class QuestionFactory{
             // 修改当前选中状态 当前选项 answerIndex 映射到 此空
             _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
             // 当前选项内容 映射到 空
-            _.updateGapKeyContent(gapKey, answer.content??"");
+            _.updateGapKeyContent(gapKey, answer.content??"",optionId: answer.id??0);
           },
           child: Container(
             height: 22.w,
