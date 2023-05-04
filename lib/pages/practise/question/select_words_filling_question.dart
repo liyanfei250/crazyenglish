@@ -37,7 +37,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
   @override
   Widget build(BuildContext context) {
     if(sub==null){
-      sub = QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this);
+      sub = QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
     }
     return Container(
       width: MediaQuery.of(context).size.width,

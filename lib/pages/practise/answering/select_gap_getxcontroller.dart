@@ -16,6 +16,8 @@ class SelectGapGetxController extends GetxController{
   Map<String,bool> hasFocusMap = {};
   // 填空的内容  填空索引-内容：用于储存空中 用户作答洗洗
   Map<String,String> contentMap = {};
+  Map<String,num> optionIdMap = {};
+
   // 答案索引-填空索引
   Map<String,String> answerIndexToGapIndexMap = {};
 
@@ -61,8 +63,11 @@ class SelectGapGetxController extends GetxController{
   }
 
 
-  updateGapKeyContent(String gapKey,String contentTxt){
+  updateGapKeyContent(String gapKey,String contentTxt,{num optionId=0}){
     contentMap.addIf(true, gapKey, contentTxt);
+    if(optionId>0){
+      optionIdMap.addIf(true,gapKey,optionId);
+    }
     if(contentTxt.isNotEmpty){
       nextFocus = true;
     }else{
