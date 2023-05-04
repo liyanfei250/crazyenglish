@@ -35,6 +35,7 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
 
   late SubjectVoList element;
 
+  Widget? detailWidget ;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -49,6 +50,9 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    if(detailWidget == null){
+      detailWidget = getQuestionDetail(element);
+    }
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -65,7 +69,7 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
             //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
             buildReadQuestion(element!.content),
             buildQuestionDesc("Question"),
-            Expanded(child: getQuestionDetail(element),)
+            Expanded(child: detailWidget!,)
           ],
         ),
     );

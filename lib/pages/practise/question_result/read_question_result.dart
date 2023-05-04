@@ -1,10 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 
+import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
+import '../../reviews/collect/collect_practic/collect_practic_logic.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
+import '../question_factory.dart';
 import 'base_question_result.dart';
 /**
  * Time: 2023/2/21 14:02
@@ -38,6 +43,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
 
   late SubjectVoList element;
 
+  var isFavor = false.obs;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -52,27 +58,78 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildQuestionDesc("原文"),
-            Visibility(
-                visible: element.stem!=null && element.stem!.isNotEmpty,
-                child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-            // Visibility(
-            //     visible: element.name!=null && element.name!.isNotEmpty,
-            //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-            buildReadQuestion(element!.content),
-            buildQuestionDesc("Question"),
-            Expanded(child: getQuestionDetail(element),)
-          ],
-        ),
-    );
+    return Expanded(child: Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildQuestionDesc("原文"),
+              Visibility(
+                visible: element.questionTypeStr == QuestionType.question_reading,
+                child: GetBuilder<Collect_practicLogic>(
+                  id: "${GetBuilderIds.collectState}:${element.id}",
+                  builder: (_){
+                    return buildFavorAndFeedback(_.collectMap["${element.id}"]??false, element.id);
+                  },
+                )
+              )
+            ],
+          ),
+          Visibility(
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          // Visibility(
+          //     visible: element.name!=null && element.name!.isNotEmpty,
+          //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          buildReadQuestion(element!.content),
+          Expanded(child: judgeAndGetQuestionDetail(element),)
+        ],
+      ),
+    ));
   }
+
+  Widget judgeAndGetQuestionDetail(SubjectVoList element){
+    questionList.clear();
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
+      if(element.questionTypeStr == QuestionType.question_reading){
+        for(int i = 0 ;i< questionNum;i++){
+          SubtopicVoList question = element.subtopicVoList![i];
+
+          questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+          questionList.add(buildQuestionDesc("Question ${i+1}"));
+          questionList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          questionList.add(QuestionFactory.buildShortAnswerQuestion(question,1,widget.subtopicAnswerVoMap,null));
+        }
+      }else{
+        return getQuestionDetail(element);
+      }
+
+    }
+
+    // if(logic!=null){
+    //   logic.initPageStr("1/${questionList.length}");
+    // }
+    return SingleChildScrollView(child:
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: questionList,
+    ),);
+  }
+
 
   Widget buildReadQuestion(String? htmlContent){
     return Container(

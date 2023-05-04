@@ -91,10 +91,10 @@ class AnsweringPage extends BasePage {
     return null;
   }
 
-  static ExerciseVos? findExerciseResult(Exercise examResult,num subjectId){
+  static ExerciseVos? findExerciseResult(Exercise? examResult,num subjectId){
     Map<String,ExerciseLists> subtopicAnswerVoMap = {};
     ExerciseVos? exerciseVo;
-    if(examResult.exerciseVos!=null
+    if(examResult!=null && examResult.exerciseVos!=null
         && examResult.exerciseVos!.length>0) {
       examResult.exerciseVos!.forEach((element) {
         if (element.subjectId == subjectId) {
@@ -121,8 +121,8 @@ class AnsweringPage extends BasePage {
 
 
 
-  static num findInitTime(Exercise examResult,num subjectId){
-    if(examResult.exerciseVos!=null
+  static num findInitTime(Exercise? examResult,num subjectId){
+    if(examResult!=null && examResult.exerciseVos!=null
         && examResult.exerciseVos!.length>0) {
       for(int i = 0;i< examResult.exerciseVos!.length;i++){
         ExerciseVos exerciseVo = examResult.exerciseVos![i];
@@ -167,10 +167,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
       if(widget.lastFinishResult!.obj!=null){
-        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
 
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
-        num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
         if(time>0){
           logic.updateTime(countTime: time.toInt());
         }
@@ -227,7 +227,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                         id: GetBuilderIds.answerPeriodTime,
                         builder: (_){
                           return Text(
-                            TimeUtil.getMiaoFenOptional(_.state.countTime),
+                            TimeUtil.getPractiseTime(_.state.countTime),
                             style: TextStyle(
                                 fontSize: 14.w, color: AppColors.c_FF353E4D),
                           );

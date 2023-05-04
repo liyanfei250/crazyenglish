@@ -321,36 +321,51 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(String value,int gapKey,GetEditingControllerCallback? getEditingControllerCallback){
+  static Widget buildShortAnswerQuestion(SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,{UserAnswerCallback? userAnswerCallback}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
+    ExerciseLists? exerciseLists = subtopicAnswerVoMap["${subtopicVoList.id}"];
+
+    String userAnswer = "";
+    if(exerciseLists!=null){
+      userAnswer = exerciseLists.answer??"";
+      if(userAnswerCallback==null){
+        correctType.value = (exerciseLists!.isRight??false)? 2:1;
+      }
+    }
+    controller.text = userAnswer;
+
     return SizedBox(
-      width: 50.w,
+      width: double.infinity,
       child: Obx(()=>TextField(
           keyboardType: TextInputType.name,
+          readOnly: userAnswerCallback==null,
           maxLines: 1,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: _getInputColor(correctType.value)),
+          textAlign: TextAlign.left,
+          style: const TextStyle(color: AppColors.c_FF353E4D),
           decoration: InputDecoration(
+            filled: true,
+            fillColor: _getShotInputBgColor(correctType.value),
             isDense:true,
-            contentPadding: EdgeInsets.all(0.w),
-            enabledBorder: UnderlineInputBorder(
+            contentPadding: EdgeInsets.all(10.w),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7.w)),
               borderSide: BorderSide(
                   width: 1.w,
-                  color: _getInputColor(correctType.value),
-                  style: BorderStyle.solid
-              ),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                  width: 1.w,
-                  color: _getInputColor(correctType.value),
+                  color: _getShotInputBorderColor(correctType.value),
                   style: BorderStyle.solid
               ),
             ),
           ),
           onChanged: (text){
-
+            if(userAnswerCallback!=null){
+              SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicVoList.id,
+                  optionId:0,
+                  userAnswer: text,
+                  answer: subtopicVoList.answer,
+                  isCorrect: text == subtopicVoList.answer);
+              userAnswerCallback.call(subtopicAnswerVo);
+            }
           },
           onSubmitted: (text){
 
@@ -734,6 +749,45 @@ class QuestionFactory{
         return AppColors.c_FF58BC6D;
       default:
         return AppColors.c_FF101010;
+    }
+  }
+
+  static Color _getShotInputTxtColor(int type){
+    switch(type){
+      case 0: // 默认 未作答
+        return AppColors.c_FF353E4D;
+      case 1:  // 作答错误
+        return AppColors.c_FFEB5447;
+      case 2: // 作答正确
+        return AppColors.c_FF353E4D;
+      default:
+        return AppColors.c_FF353E4D;
+    }
+  }
+
+  static Color _getShotInputBorderColor(int type){
+    switch(type){
+      case 0: // 默认 未作答
+        return AppColors.c_FFD2D5DC;
+      case 1:  // 作答错误
+        return AppColors.c_FFEB5447;
+      case 2: // 作答正确
+        return AppColors.c_FF58BC6D;
+      default:
+        return AppColors.c_FFD2D5DC;
+    }
+  }
+
+  static Color _getShotInputBgColor(int type){
+    switch(type){
+      case 0: // 默认 未作答
+        return AppColors.c_FFF5F7FB;
+      case 1:  // 作答错误
+        return AppColors.c_FFFBF5F5;
+      case 2: // 作答正确
+        return AppColors.c_FF58BC6D;
+      default:
+        return AppColors.c_FFF5F7FB;
     }
   }
 

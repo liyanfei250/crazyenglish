@@ -12,6 +12,7 @@ import 'collect_practic_state.dart';
 class Collect_practicLogic extends GetxController {
   final Collect_practicState state = Collect_practicState();
   ReviewRepository recordData = ReviewRepository();
+  Map<String,bool> collectMap = {};
 
   //搜索筛选
   void getHomeList(String type) async {
@@ -101,5 +102,16 @@ class Collect_practicLogic extends GetxController {
     CollectDate collectResponse = await recordData.toCollect(userid, id);
     state.collectDate = collectResponse;
     update([GetBuilderIds.toCollectDate]);
+
   }
+
+  void queryCollectState(String userId,num subjectId,{num? subtopicId=-1}) async{
+    if(subjectId>0){
+      update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
+    }else{
+      update(["${GetBuilderIds.collectState}:${subjectId}"]);
+    }
+
+  }
+
 }

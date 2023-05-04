@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,6 +72,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   final state = Get.find<AnsweringLogic>().state;
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
+  final logicCollect = Get.put(Collect_practicLogic());
 
 
   late TabController _tabController;
@@ -83,16 +85,24 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   ExerciseVos? currentExerciseVos;
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
+  bool hasTab = true;
   @override
   void onCreate() {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.examResult!=null){
       if(widget.examResult!=null){
-        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        currentExerciseVos = AnsweringPage.findExerciseResult(widget.examResult,currentSubjectVoList!.id??0);
 
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
       }else{
-        print("无作答数据异常");
+        // TODO 逻辑严谨否
+        if(widget.lastFinishResult!=null){
+          currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
+
+          subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
+        }else{
+          print("无作答数据及历史数据");
+        }
       }
     }else{
       print("作答数据异常，请联系开发人员");
@@ -162,36 +172,45 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(padding: EdgeInsets.only(top: 24.w)),
-                        Container(
-                          padding: EdgeInsets.only(left: 18.w,right: 18.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Visibility(
+                          visible: hasTab,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
-                                  Padding(padding: EdgeInsets.only(left: 9.w)),
-                                  Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
-                                ],
+                              Container(
+                                padding: EdgeInsets.only(left: 18.w,right: 18.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
+                                        Padding(padding: EdgeInsets.only(left: 9.w)),
+                                        Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Util.buildAnswerState(1),
+                                        Util.buildAnswerState(2),
+                                        Util.buildAnswerState(3),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Util.buildAnswerState(1),
-                                  Util.buildAnswerState(2),
-                                  Util.buildAnswerState(3),
-                                ],
-                              )
+                              Padding(padding: EdgeInsets.only(top: 24.w)),
+                              _buildTabBar(),
+                              Container(
+                                height: 0.5.w,
+                                width: double.infinity,
+                                color: AppColors.c_FFD2D5DC,
+                              ),
                             ],
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 24.w)),
-                        _buildTabBar(),
-                        Container(
-                          height: 0.5.w,
-                          width: double.infinity,
-                          color: AppColors.c_FFD2D5DC,
                         ),
                         Expanded(child: pages[0],)
                       ],
@@ -249,7 +268,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     detail.SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1);
                     if(nextSubjectVoList!=null && widget.lastFinishResult!=null){
                       if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
-                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,nextSubjectVoList!.id??0);
+                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,nextSubjectVoList!.id??0);
                         Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
                         if(nextSubtopicAnswerVoMap.isEmpty){
                           nextHasResult = false;
@@ -270,7 +289,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         AnsweringPage.catlogIdKey:widget.uuid,
                         AnsweringPage.parentIndexKey:widget.parentIndex+1,
                         AnsweringPage.childIndexKey:widget.childIndex,
-                        AnsweringPage.examResult: widget.lastFinishResult!.obj!,
+                        AnsweringPage.examResult: widget.lastFinishResult!.obj,
                         AnsweringPage.LastFinishResult: widget.lastFinishResult,
                       });
                     } else {
@@ -416,6 +435,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+                hasTab = false;
+              }
               break;
             default:
               questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
@@ -434,6 +456,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   void onDestroy() {
     Get.delete<AnsweringLogic>();
     Get.delete<WeekTestDetailLogic>();
+    Get.delete<Collect_practicLogic>();
   }
 
   @override
