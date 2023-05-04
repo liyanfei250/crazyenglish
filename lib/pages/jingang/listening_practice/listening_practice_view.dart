@@ -47,6 +47,11 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   List<choiceDate.Obj> choiceList = [];
   final int pageStartIndex = 1;
 
+  dynamic affiliatedGrade = null;
+  bool _isOpen = false;
+  int _selectedIndex = -1;
+  late List<String> items = [];
+
   late var textTitle;
 
   @override
@@ -62,6 +67,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         if (state.paperDetail!.obj != null &&
             state.paperDetail!.obj!.length > 0) {
           choiceList = state.paperDetail!.obj!;
+          items = choiceList.map((obj) => obj.name!).toList();
           setState(() {});
         }
       }
@@ -114,9 +120,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
       backgroundColor: AppColors.theme_bg,
       body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 70.w),
-            child: pull.SmartRefresher(
+          pull.SmartRefresher(
               enablePullDown: true,
               enablePullUp: true,
               header: pull.WaterDropHeader(),
@@ -145,46 +149,177 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
               onLoading: _onLoading,
               child: CustomScrollView(
                 slivers: [
-                  homeSecondListDate.length == 0
-                      ? SliverToBoxAdapter(
-                          child: PlaceholderPage(
-                              imageAsset: R.imagesCommenNoDate,
-                              title: '暂无数据',
-                              topMargin: 100.w,
-                              subtitle: ''))
-                      : SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            buildItemTop,
-                            childCount: homeSecondListDate.length,
-                          ),
+                  SliverToBoxAdapter(
+                    child: Stack(
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height - 100,
+                              child: homeSecondListDate.length == 0
+                                  ? PlaceholderPage(
+                                      imageAsset: R.imagesCommenNoDate,
+                                      title: '暂无数据',
+                                      topMargin: 0.w,
+                                      subtitle: '')
+                                  : ListView.builder(
+                                      itemCount: homeSecondListDate.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: buildItemTop,
+                                      padding: EdgeInsets.only(top: 20.w),
+                                    ),
+                            ),
+                          ],
                         ),
+                        Visibility(
+                          child: Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          visible: _isOpen,
+                        ),
+                        Visibility(
+                            visible: _isOpen,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 15.w,
+                                  right: 15.w,
+                                  top: 10.w,
+                                  bottom: 20.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(10.w),
+                                    bottomLeft: Radius.circular(10.w)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    offset: Offset(0, 3),
+                                    blurRadius: 3,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 25.w,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4,
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.only(
+                                            bottom: 12.w, top: 18.w),
+                                        padding: EdgeInsets.only(
+                                            left: 8.w, right: 8.w),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xfff5f6f9),
+                                          borderRadius:
+                                              BorderRadius.circular(20.w),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = -1;
+                                              _isOpen = false;
+                                            });
+                                            affiliatedGrade = null;
+                                            logic.getList(
+                                                SpUtil.getInt(BaseConstant.USER_ID),
+                                                widget.type!.dictionaryId,
+                                                affiliatedGrade,
+                                                pageSize,
+                                                pageStartIndex);//全部
+                                          },
+                                          child: Text(
+                                            '全部分类',
+                                            style: TextStyle(
+                                              fontSize: 11.sp,
+                                              color: _selectedIndex == -1
+                                                  ? Colors.black
+                                                  : Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: Wrap(
+                                          spacing: 18.w,
+                                          runSpacing: 4.w,
+                                          children: List.generate(
+                                            items.length,
+                                            (index) => GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedIndex = index;
+                                                  _isOpen = false;
+                                                });
+                                                affiliatedGrade =
+                                                    choiceList[index]!
+                                                        .id!
+                                                        .toInt();
+                                                logic.getList(
+                                                    SpUtil.getInt(BaseConstant.USER_ID),
+                                                    widget.type!.dictionaryId,
+                                                    affiliatedGrade,
+                                                    pageSize,
+                                                    pageStartIndex);
+                                              },
+                                              child: Container(
+                                                height: 25.w,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    4,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xfff5f6f9),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.w),
+                                                ),
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 4.0,
+                                                  vertical: 8.0,
+                                                ),
+                                                child: Text(
+                                                  items[index],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 11.sp,
+                                                    color:
+                                                        _selectedIndex == index
+                                                            ? Colors.black
+                                                            : Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-          MenuWidget(
-            title: '全部分类',
-            items: choiceList.map((obj) => obj.name!).toList(),
-            onSelected: (index) {
-              print('选中了第${index + 1}项');
-              if ((index + 1) > 0) {
-                logic.getList(
-                    SpUtil.getInt(BaseConstant.USER_ID),
-                    widget.type!.dictionaryId,
-                    choiceList[index]!.id!.toInt(),
-                    pageSize,
-                    currentPageNo);
-              } else {
-                logic.getList(
-                    SpUtil.getInt(BaseConstant.USER_ID),
-                    widget.type!.dictionaryId,
-                    null,
-                    pageSize,
-                    currentPageNo); //全部
-              }
-              ;
-            },
-          ),
         ],
       ),
     );
@@ -194,24 +329,6 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
     return InkWell(
       onTap: () {},
       child: listitemBigBg(homeSecondListDate[index]),
-    );
-  }
-
-  AppBar buildNormalAppBar(String text) {
-    return AppBar(
-      backgroundColor: AppColors.c_FFFFFFFF,
-      centerTitle: true,
-      title: Text(
-        text,
-        style: TextStyle(
-            color: AppColors.c_FF32374E,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold),
-      ),
-      leading: Util.buildBackWidget(context),
-      // bottom: ,
-      elevation: 10.w,
-      shadowColor: const Color(0x1F000000),
     );
   }
 
@@ -228,7 +345,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
     logic.getList(
         SpUtil.getInt(BaseConstant.USER_ID),
         widget.type!.dictionaryId,
-        1648226541879005185,
+        affiliatedGrade,
         pageSize,
         pageStartIndex);
   }
@@ -238,7 +355,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
     logic.getList(
         SpUtil.getInt(BaseConstant.USER_ID),
         widget.type!.dictionaryId,
-        1648226541879005185,
+        affiliatedGrade,
         pageSize,
         currentPageNo);
   }
@@ -247,6 +364,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   void dispose() {
     Get.delete<Listening_practiceLogic>();
     _refreshController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -436,5 +554,59 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         ],
       ),
     );
+  }
+
+  AppBar buildNormalAppBar(String text) {
+    return AppBar(
+      backgroundColor: AppColors.c_FFFFFFFF,
+      centerTitle: true,
+      title: Text(
+        text,
+        style: TextStyle(
+            color: AppColors.c_FF32374E,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold),
+      ),
+      leading: Util.buildBackWidget(context),
+      // bottom: ,
+      elevation: 10.w,
+      shadowColor: const Color(0x1F000000),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isOpen = !_isOpen;
+            });
+            _startAnimation(_isOpen);
+          },
+          child: Row(
+            children: [
+              Text(
+                '全部',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Color(0xff898a93),
+                ),
+              ),
+              RotationTransition(
+                turns: Tween(begin: 0.0, end: 0.5).animate(_controller),
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  void _startAnimation(bool _isOpen) {
+    if (_isOpen) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
   }
 }
