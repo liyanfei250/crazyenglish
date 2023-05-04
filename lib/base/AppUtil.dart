@@ -279,7 +279,7 @@ class Util {
                       ],
                     ),
                     Text(
-                      "${TimeUtil.getMiaoFenOptional(answerTime.toInt())}",
+                      "${TimeUtil.getPractiseTime(answerTime.toInt())}",
                       style: TextStyle(
                           fontSize: 12.w,
                           color: AppColors.c_FFB3B7C6,

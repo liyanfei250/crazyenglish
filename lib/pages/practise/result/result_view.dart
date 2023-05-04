@@ -83,16 +83,24 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   ExerciseVos? currentExerciseVos;
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
+  bool hasTab = true;
   @override
   void onCreate() {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.examResult!=null){
       if(widget.examResult!=null){
-        currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,currentSubjectVoList!.id??0);
+        currentExerciseVos = AnsweringPage.findExerciseResult(widget.examResult,currentSubjectVoList!.id??0);
 
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
       }else{
-        print("无作答数据异常");
+        // TODO 逻辑严谨否
+        if(widget.lastFinishResult!=null){
+          currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
+
+          subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
+        }else{
+          print("无作答数据及历史数据");
+        }
       }
     }else{
       print("作答数据异常，请联系开发人员");
@@ -249,7 +257,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     detail.SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1);
                     if(nextSubjectVoList!=null && widget.lastFinishResult!=null){
                       if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
-                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj!,nextSubjectVoList!.id??0);
+                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,nextSubjectVoList!.id??0);
                         Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
                         if(nextSubtopicAnswerVoMap.isEmpty){
                           nextHasResult = false;
@@ -270,7 +278,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         AnsweringPage.catlogIdKey:widget.uuid,
                         AnsweringPage.parentIndexKey:widget.parentIndex+1,
                         AnsweringPage.childIndexKey:widget.childIndex,
-                        AnsweringPage.examResult: widget.lastFinishResult!.obj!,
+                        AnsweringPage.examResult: widget.lastFinishResult!.obj,
                         AnsweringPage.LastFinishResult: widget.lastFinishResult,
                       });
                     } else {
@@ -416,6 +424,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+                hasTab = false;
+              }
               break;
             default:
               questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));

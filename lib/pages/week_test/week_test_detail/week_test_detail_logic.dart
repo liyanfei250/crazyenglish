@@ -142,7 +142,7 @@ class WeekTestDetailLogic extends GetxController {
       state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
     }else{
       // 找到上次作答位置索引
-      if(startExam!.obj!.isFinish?? true){
+      if(startExam!.obj==null || (startExam!.obj!.isFinish?? true)){
         // 已经做完 从第一道题开始即可
         state.parentIndex = 0;
         state.childIndex = 0;

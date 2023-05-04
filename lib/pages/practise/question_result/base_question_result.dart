@@ -185,19 +185,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           itemList.add(buildReadQuestion(element.content ?? ""));
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
-        }else if(element.questionTypeStr == QuestionType.question_reading){
-
         }
-        // else if(element.questionTypeStr == QuestionType.select_words_filling){
-        //   itemList.add(buildQuestionType("选择填空题"));
-        //   itemList.add(QuestionFactory.buildSelectGapQuestion(element.optionsList,element!.content!,0,makeFocusNodeController));
-        //   itemList.add(QuestionFactory.buildSelectAnswerQuestion(["abc","leix","axxxbc","lddddeix","ddeeeddd","leix","dddddd","lsssseix",])
-        //   );
-        // }
-        // else if(element.questionTypeStr == QuestionType.correction_question){
-        //   itemList.add(buildQuestionType("纠错题"));
-        //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
-        // }
 
         questionList.add(SingleChildScrollView(
           child: Column(
