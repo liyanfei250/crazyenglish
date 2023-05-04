@@ -450,6 +450,7 @@ class QuestionFactory{
                   child: TextField(
                       keyboardType: TextInputType.name,
                       maxLines: 1,
+                      readOnly: userAnswerCallback==null,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: _getInputColor(1)),
                       // autofocus: _.hasFocusMap[key]??false,
