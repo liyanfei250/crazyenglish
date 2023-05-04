@@ -3,7 +3,7 @@ import '../../../entity/HomeworkStudentResponse.dart';
 class SchoolReportListState {
   List<Students> list = [];
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
   SchoolReportListState() {
     ///Initialize variables
   }

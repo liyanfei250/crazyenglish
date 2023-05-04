@@ -12,7 +12,7 @@ class Collect_practicState {
   CollectDate collectDate = CollectDate();
   HomeKingDate tabList = HomeKingDate();
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
   Collect_practicState() {
     ///Initialize variables
   }

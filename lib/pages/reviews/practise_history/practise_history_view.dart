@@ -45,6 +45,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     "2023-04-18T16:00:00.000+0000",
     "2023-04-19T16:00:00.000+0000"
   ];
+  int currentPageNo = 1;
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
@@ -54,6 +55,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   int pageSize = 10;
   int current = 1;
   var formatter = DateFormat('yyyy-M-d');
+  late var formattedDate;
 
   @override
   void initState() {
@@ -66,7 +68,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       if (state.dateDetail != null) {
         dateDetail = state.dateDetail;
         //todo 日期数据处理
-        print('object+=' + dateDetail!.obj![0]!.toString());
         if (state.dateDetail!.obj != null &&
             state.dateDetail!.obj!.length > 0) {
           setState(() {});
@@ -74,29 +75,47 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       }
     });
 
-    logic.addListenerId(
-        GetBuilderIds.getPracticeRecordList + formatter.format(DateTime.now()),
+    logic.addListenerId(GetBuilderIds.getPracticeRecordList + formatter.format(DateTime.now()),
         () {
-      if (state.paperDetail != null) {
-        paperDetail = state.paperDetail;
-        if (mounted &&
-            paperDetail!.obj != null &&
-            paperDetail!.obj!.length > 0) {
-          setState(() {
-            listData = paperDetail!.obj!;
-          });
-        }
-      }
+          hideLoading();
+          if (state.list != null ) {
+            if (state.pageNo == currentPageNo + 1) {
+              currentPageNo++;
+              listData.addAll(state.list!);
+              if (mounted && _refreshController != null) {
+                _refreshController.loadComplete();
+                if (!state!.hasMore) {
+                  _refreshController.loadNoData();
+                } else {
+                  _refreshController.resetNoData();
+                }
+                setState(() {});
+              }
+            } else if (state.pageNo == current) {
+              currentPageNo = current;
+              listData.clear();
+              listData.addAll(state.list!);
+              if (mounted && _refreshController != null) {
+                _refreshController.refreshCompleted();
+                if (!state!.hasMore) {
+                  _refreshController.loadNoData();
+                } else {
+                  _refreshController.resetNoData();
+                }
+                setState(() {});
+              }
+            }
+          }
+
     });
     var now = DateTime.now();
-    var formattedDate = formatter.format(now);
+    formattedDate = formatter.format(now);
     //todo 日期处理，哪天有数据提前处理
     logic.getPracticeDateInfo(
         SpUtil.getInt(BaseConstant.USER_ID).toString(), "'$formattedDate'");
 
-    //TODO 分页的处理
-    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
-        formattedDate, pageSize, current);
+    _onRefresh();
+
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -125,24 +144,44 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
 
-      logic.addListenerId(
-          GetBuilderIds.getPracticeRecordList + formatter.format(selectedDay),
-          () {
-        if (state.paperDetail != null) {
-          paperDetail = state.paperDetail;
-          if (mounted &&
-              paperDetail!.obj != null &&
-              paperDetail!.obj!.length > 0) {
-            setState(() {
-              listData = paperDetail!.obj!;
-            });
-          }
-        }
-      });
+      logic.addListenerId(GetBuilderIds.getPracticeRecordList + formatter.format(selectedDay),
+              () {
+            hideLoading();
+            if (state.list != null ) {
+              if (state.pageNo == currentPageNo + 1) {
+                listData = state.list!;
+                currentPageNo++;
+                listData.addAll(state.list!);
+                if (mounted && _refreshController != null) {
+                  _refreshController.loadComplete();
+                  if (!state!.hasMore) {
+                    _refreshController.loadNoData();
+                  } else {
+                    _refreshController.resetNoData();
+                  }
+                  setState(() {});
+                }
+              } else if (state.pageNo == current) {
+                currentPageNo = current;
+                listData.clear();
+                listData.addAll(state.list!);
+                if (mounted && _refreshController != null) {
+                  _refreshController.refreshCompleted();
+                  if (!state!.hasMore) {
+                    _refreshController.loadNoData();
+                  } else {
+                    _refreshController.resetNoData();
+                  }
+                  setState(() {});
+                }
+              }
+            }
 
-      var formattedDate = formatter.format(selectedDay);
-      logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
-          formattedDate, pageSize, current);
+          });
+
+      formattedDate = formatter.format(selectedDay);
+      _onRefresh();
+
     }
   }
 
@@ -373,10 +412,10 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       }),
                   listData.length == 0
                       ? PlaceholderPage(
-                              imageAsset: R.imagesCommenNoDate,
-                              title: '暂无数据',
-                              topMargin: 20.w,
-                              subtitle: '')
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 20.w,
+                          subtitle: '')
                       : Container(
                           decoration: MyDecoration(),
                           margin: EdgeInsets.only(left: 24, top: 12.w),
@@ -544,13 +583,15 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   }
 
   void _onRefresh() async {
-    // currentPageNo = pageStartIndex;
-    // logic.getList(2, pageStartIndex, pageSize);
+    currentPageNo = current;
+    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        formattedDate, pageSize, current);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList(2, currentPageNo, pageSize);
+    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        formattedDate, pageSize, currentPageNo+1);
   }
 
   @override

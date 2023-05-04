@@ -4,7 +4,7 @@ class ExamQuestionState {
 
   List<Questions> list = [];
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
 
   ExamQuestionState() {
     ///Initialize variables

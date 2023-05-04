@@ -4,7 +4,7 @@ class ResultOverviewState {
 
   List<Questions> list = [];
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
 
   ResultOverviewState() {
     ///Initialize variables

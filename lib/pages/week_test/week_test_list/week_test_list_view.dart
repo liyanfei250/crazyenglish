@@ -36,7 +36,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  final int pageSize = 10;
+  final int pageSize = 12;
   int currentPageNo = 1;
   List<Obj> weekPaperList = [];
   List<choiceDate.Obj> choiceList = [];
@@ -78,9 +78,8 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
     logic.addListenerId(GetBuilderIds.weekTestList + affiliatedGrade.toString(),
         () {
       hideLoading();
-      if (state.list != null && state.list != null) {
+      if (state.list != null ) {
         if (state.pageNo == currentPageNo + 1) {
-          weekPaperList = state.list;
           currentPageNo++;
           weekPaperList.addAll(state!.list!);
           if (mounted && _refreshController != null) {
@@ -163,7 +162,6 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                           ),
                           Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height-100,
                             child: weekPaperList.length == 0
                                 ? PlaceholderPage(
                                 imageAsset: R.imagesCommenNoDate,
@@ -542,7 +540,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(affiliatedGrade, currentPageNo, pageSize);
+    logic.getList(affiliatedGrade, currentPageNo+1, pageSize);
   }
 
   @override

@@ -17,6 +17,7 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/PlaceholderPage.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'MenuWidget.dart';
 import 'listening_practice_logic.dart';
 
@@ -53,7 +54,8 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   late List<String> items = [];
 
   late var textTitle;
-
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
   @override
   void initState() {
     super.initState();
@@ -78,10 +80,8 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         GetBuilderIds.getHomeSecondListDate +
             widget.type!.dictionaryId.toString(), () {
       hideLoading();
-      if (state.homeSecondListDate != null &&
-          state.homeSecondListDate != null) {
+      if (state.homeSecondListDate != null ) {
         if (state.pageNo == currentPageNo + 1) {
-          homeSecondListDate = state.homeSecondListDate!;
           currentPageNo++;
           homeSecondListDate.addAll(state.homeSecondListDate!);
           if (mounted && _refreshController != null) {
@@ -357,7 +357,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         widget.type!.dictionaryId,
         affiliatedGrade,
         pageSize,
-        currentPageNo);
+        currentPageNo+1);
   }
 
   @override
@@ -516,42 +516,50 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   }
 
   Widget listitem(CatalogueRecordVoList data, int value) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 20.w)),
-          Row(
-            children: [
-              Text(
-                data.catalogueName ?? "",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Image.asset(
-                R.imagesListenigLastIcon,
-                fit: BoxFit.cover,
-                width: 26.w,
-                height: 18.w,
-              ),
-              Expanded(child: Text('')),
-              Text(
-                '正确率' +
-                    data.correctCount.toString() +
-                    "/" +
-                    data.questionCount.toString(),
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff858aa0)),
-              )
-            ],
-          ),
-          Padding(padding: EdgeInsets.only(top: 20.w)),
-        ],
+    return GestureDetector(
+      onTap: (){
+        //todo 跳转列表页
+        logicDetail.addJumpToStartExamListen();
+        logicDetail.getDetailAndStartExam(data.catalogueId.toString());
+        showLoading("");
+      },
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 20.w)),
+            Row(
+              children: [
+                Text(
+                  data.catalogueName ?? "",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d)),
+                ),
+                Padding(padding: EdgeInsets.only(left: 11.w)),
+                Image.asset(
+                  R.imagesListenigLastIcon,
+                  fit: BoxFit.cover,
+                  width: 26.w,
+                  height: 18.w,
+                ),
+                Expanded(child: Text('')),
+                Text(
+                  '正确率' +
+                      data.correctCount.toString() +
+                      "/" +
+                      data.questionCount.toString(),
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff858aa0)),
+                )
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 20.w)),
+          ],
+        ),
       ),
     );
   }

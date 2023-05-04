@@ -131,7 +131,7 @@ class WeekTestRepository {
 
   Future<StartExam> getStartExam(String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getStartExam+"/${SpUtil.getInt(BaseConstant.USER_ID)}/${id}",
+        Method.get, Api.getStartExam+"${SpUtil.getInt(BaseConstant.USER_ID)}/${id}",
         options: Options(method: Method.get));
 
     StartExam startExam = StartExam.fromJson(map);
