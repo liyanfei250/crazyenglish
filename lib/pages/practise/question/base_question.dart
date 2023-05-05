@@ -320,6 +320,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     logic.updateUserAnswer((subtopicAnswerVo.subtopicId??1).toString(), subtopicAnswerVo);
   }
 
+  void userAnswerWritCallback(SubjectAnswerVo subjectAnswerVo){
+    logic.updateUserWritAnswer((subjectAnswerVo.subjectId??1).toString(), subjectAnswerVo);
+  }
+
   FocusNode makeFocusNodeController(String key){
     if(gapFocusNodeController[key] == null){
       FocusNode focusNode = FocusNode();

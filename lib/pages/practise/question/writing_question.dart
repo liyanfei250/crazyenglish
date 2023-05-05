@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../r.dart';
 import '../../../utils/text_util.dart';
@@ -45,7 +46,6 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
 
   @override
   getAnswers() {
-    // TODO: implement getAnswers
     throw UnimplementedError();
   }
 
@@ -232,6 +232,13 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
               maxLines: 100,
               minLines: 10,
               controller: writController,
+              onChanged: (String str) {
+                if(userAnswerWritCallback!=null){
+                  SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
+                      isSubjectivity:true,questionTypeStr:'',answer:str,answerTime:6);
+                  userAnswerWritCallback.call(subjectAnswerVo);
+                }
+              },
               style: TextStyle(color: Color(0xff353e4d), fontSize: 12.sp),
               decoration: InputDecoration(
                   //提示信息

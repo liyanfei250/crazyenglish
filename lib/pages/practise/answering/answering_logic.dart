@@ -36,6 +36,9 @@ class AnsweringLogic extends GetxController {
   void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
+  void updateUserWritAnswer(String subtopicId,SubjectAnswerVo subtopicAnswerVo){
+    state.subjectAnswerVo = subtopicAnswerVo;
+  }
 
   void updateCurrentPage(int currentQuestion,{int totalQuestion = 0,bool isInit = false}){
     if(totalQuestion>0){
