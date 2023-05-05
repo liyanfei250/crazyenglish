@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
@@ -50,9 +51,8 @@ class AnsweringLogic extends GetxController {
 
   }
 
-  void uploadWeekTest(SubjectVoList subjectVoList) async{
-
-
+  // "type": "1: 学生练习 2: 练习保存草稿 3：错题本提交 4：老师作业 5: 模拟考试"
+  void uploadWeekTest(SubjectVoList subjectVoList,int examType) async{
     List<SubtopicAnswerVo> subtopicAnswerVoList = [];
 
     // 填充已做答的数据
@@ -79,15 +79,20 @@ class AnsweringLogic extends GetxController {
 
     CommitAnswer commitAnswer = CommitAnswer(journalId: subjectVoList.journalId,
         journalCatalogueId: subjectVoList.journalCatalogueId,
-        type: "1",
+        type: "${examType}",
         examId: 0,
         userId: SpUtil.getInt(BaseConstant.USER_ID),
         subjectAnswerVo:subjectAnswerVoList);
 
     CommitResponse commitResponse = await weekTestRepository.uploadWeekTest(commitAnswer);
     state.commitResponse = commitResponse;
+    if(examType == AnsweringPage.answer_fix_type){
+      update([GetBuilderIds.examResult]);
+    }else{
+      getResult(subjectVoList);
+    }
     // update([GetBuilderIds.commitAnswer]);
-    getResult(subjectVoList);
+
   }
 
 

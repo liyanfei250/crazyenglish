@@ -212,6 +212,7 @@ class WeekTestDetailLogic extends GetxController {
   void jumpToFixErrorDetail(String subjectId,List<CorrectionNotebooks>? correctionNotebooks) async{
     num? firstSubtopicId = 0;
     Set<num> correctNoteSubtopicIdSet = {};
+    // 找到第一道错题索引
     if(correctionNotebooks!=null && correctionNotebooks!.length>0){
       firstSubtopicId = correctionNotebooks![0].subtopicId;
       correctionNotebooks.forEach((element) {
@@ -224,7 +225,9 @@ class WeekTestDetailLogic extends GetxController {
     }
     if(state.weekDetailResponse.obj!=null){
       List<ExerciseVos> exerciseVosList = [];
-      state.weekDetailResponse.obj!.subjectVoList!.forEach((element) {
+      int totalSubject = state.weekDetailResponse.obj!.subjectVoList!.length;
+      for(int subjectIndex = 0;subjectIndex < totalSubject; subjectIndex++){
+        SubjectVoList element = state.weekDetailResponse.obj!.subjectVoList![subjectIndex];
         if("${element.id}" == subjectId){
           List<ExerciseLists> exerciseListsList = [];
           int subtopicVoListLength = element.subtopicVoList!.length;
@@ -254,8 +257,10 @@ class WeekTestDetailLogic extends GetxController {
             );
             exerciseVosList.add(exerciseVos);
           }
+          state.parentIndex = subjectIndex;
+          break;
         }
-      });
+      }
       if(exerciseVosList.length>0){
         Exercise exercise = Exercise(exerciseVos: exerciseVosList);
         StartExam startExam = StartExam(code:0,obj: exercise);
@@ -354,14 +359,14 @@ class WeekTestDetailLogic extends GetxController {
   }
 
   // 跳转答题页去纠正错题监听
-  void addJumpToFixErrorListen({int parentIndex =0}){
+  void addJumpToFixErrorListen(){
     disposeId(GetBuilderIds.examToFix);
     addListenerId(GetBuilderIds.examToFix, () {
       // TODO 区分一下 写作 还是 其它题
       if (state.weekDetailResponse != null &&
           state.weekDetailResponse.obj != null &&
           state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
+          state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
 
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.WritingPage,
@@ -375,7 +380,7 @@ class WeekTestDetailLogic extends GetxController {
         RouterUtil.toNamed(AppRoutes.AnsweringPage,
             arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
-              AnsweringPage.parentIndexKey:parentIndex,
+              AnsweringPage.parentIndexKey:state.parentIndex,
               AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.LastFinishResult:state.startExam,
               AnsweringPage.answer_type:AnsweringPage.answer_fix_type,

@@ -57,9 +57,9 @@ class AnsweringPage extends BasePage {
   static const result_browse_type = 1;
   static const result_normal_type = 2;
   static const answer_type = "answer_type";
-  static const answer_normal_type = 0;
+  static const answer_normal_type = 1;
   static const answer_continue_type = 2;
-  static const answer_fix_type = 1;
+  static const answer_fix_type = 3;
 
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -182,15 +182,20 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     }
 
     logic.addListenerId(GetBuilderIds.examResult, () {
-      RouterUtil.offAndToNamed(
-          AppRoutes.ResultPage,arguments: {
-            AnsweringPage.examDetailKey: widget.testDetailResponse,
-        AnsweringPage.catlogIdKey:widget.uuid,
-        AnsweringPage.parentIndexKey:widget.parentIndex,
-        AnsweringPage.childIndexKey:widget.childIndex,
-        AnsweringPage.examResult: state.examResult.obj,
-        AnsweringPage.LastFinishResult: widget.lastFinishResult,
-      });
+      if(widget.answerType == AnsweringPage.answer_fix_type){
+        Get.back();
+      }else{
+        RouterUtil.offAndToNamed(
+            AppRoutes.ResultPage,arguments: {
+          AnsweringPage.examDetailKey: widget.testDetailResponse,
+          AnsweringPage.catlogIdKey:widget.uuid,
+          AnsweringPage.parentIndexKey:widget.parentIndex,
+          AnsweringPage.childIndexKey:widget.childIndex,
+          AnsweringPage.examResult: state.examResult.obj,
+          AnsweringPage.LastFinishResult: widget.lastFinishResult,
+        });
+      }
+
     });
   }
 
@@ -306,10 +311,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       title: "",
                       textConfirm: "确定",
                       textCancel: "取消",
-                      content: Text("是否确定提交答案"),
+                      content: Text(
+                          widget.answerType == AnsweringPage.answer_fix_type ?
+                          "确认纠正错题" : "是否确定提交答案"),
                       onConfirm:(){
                         if(currentSubjectVoList!=null){
-                          logic.uploadWeekTest(currentSubjectVoList!);
+                          logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
                         }else{
                           Util.toast("未获取到试题信息");
                         }
@@ -349,21 +356,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
-          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
-          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+          questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+              questionList.add(ListenQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+              questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
               break;
             default:
-              questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!));
+              questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
               Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
           // case QuestionTypeClassify.: // 语言综合训练
           //   if (element.typeChildren == 1) {

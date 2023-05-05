@@ -267,7 +267,7 @@ class _IndexPageState extends BasePageState<IndexPage>
         onTap: () {
           switch (e.type) {
             case "weekly_type":
-              RouterUtil.toNamed(AppRoutes.WeeklyTestList);
+              RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
               break;
             case "lable_type":
               RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
