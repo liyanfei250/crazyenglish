@@ -8,8 +8,8 @@ import 'package:table_calendar/table_calendar.dart';
 /// Example event class.
 class Event {
   final String title;
-
-  const Event(this.title);
+  final bool isMarked;
+  const Event(this.title, {this.isMarked = false});
 
   @override
   String toString() => title;
@@ -30,7 +30,6 @@ final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
   ..addAll({
     kToday: [
       Event('Today\'s Event 1'),
-      Event('Today\'s Event 2'),
     ],
   });
 
@@ -48,5 +47,6 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final kToday = DateTime.now();
+final kTodayT = DateTime.parse('2023-05-02');
 final kFirstDay = DateTime(kToday.year, kToday.month - 12, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 12, kToday.day);
