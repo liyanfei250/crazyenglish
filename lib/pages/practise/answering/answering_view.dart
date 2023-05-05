@@ -186,7 +186,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         Get.back();
       }else{
         RouterUtil.offAndToNamed(
-            AppRoutes.ResultPage,arguments: {
+            AppRoutes.ResultPage,
+            isNeedCheckLogin:true,
+            arguments: {
           AnsweringPage.examDetailKey: widget.testDetailResponse,
           AnsweringPage.catlogIdKey:widget.uuid,
           AnsweringPage.parentIndexKey:widget.parentIndex,

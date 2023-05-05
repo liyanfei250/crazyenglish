@@ -110,7 +110,9 @@ class _MinePageState extends BasePageState<MinePage> {
               margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: GestureDetector(
                 onTap: () {
-                  RouterUtil.toNamed(AppRoutes.PersonInfoPage, arguments: {
+                  RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                      isNeedCheckLogin: true,
+                      arguments: {
                     'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
                         ? false
                         : true
@@ -133,7 +135,13 @@ class _MinePageState extends BasePageState<MinePage> {
                             children: [
                               InkWell(
                                   onTap: () =>
-                                      RouterUtil.toNamed(AppRoutes.LoginNew),
+                                      RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                          isNeedCheckLogin: true,
+                                          arguments: {
+                                            'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                                ? false
+                                                : true
+                                          }),
                                   child: Text(
                                     "吴尊",
                                     style: TextStyle(
@@ -150,7 +158,13 @@ class _MinePageState extends BasePageState<MinePage> {
                           )
                         : GestureDetector(
                             onTap: () {
-                              RouterUtil.toNamed(AppRoutes.LoginNew);
+                              RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                  isNeedCheckLogin: true,
+                                  arguments: {
+                                    'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                        ? false
+                                        : true
+                                  });
                             },
                             child: Container(
                               child: Text("未登录",
@@ -268,17 +282,18 @@ class _MinePageState extends BasePageState<MinePage> {
         switch (menu) {
           case '我的班级':
             RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+                isNeedCheckLogin: true,
                 arguments: {'isShowAdd': 0});
             break;
           case '我的订单':
-            RouterUtil.toNamed(AppRoutes.MyOrderPage);
+            RouterUtil.toNamed(AppRoutes.MyOrderPage,isNeedCheckLogin: true,);
             break;
           case '历史作业':
-            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,isNeedCheckLogin: true,
                 arguments: {"isAssignHomework": false});
             break;
           case '题目反馈':
-            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,arguments: {'isFeedback': true});
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,isNeedCheckLogin: true,arguments: {'isFeedback': true});
             break;
           default:
             return null;
