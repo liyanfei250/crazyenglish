@@ -88,13 +88,12 @@ class _ToWritingTestPageState extends BasePageState<WritingTestPage> {
             Container(
               margin: EdgeInsets.only(top: 8.w),
               width: MediaQuery.of(context).size.width,
-              color: Colors.white,
               padding: EdgeInsets.only(top: 18.w, left: 18.w, right: 18.w),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _rowList(),
-                  _exampleLayout(),
+                  // _exampleLayout(),
                 ],
               ),
             )
@@ -174,13 +173,13 @@ class _ToWritingTestPageState extends BasePageState<WritingTestPage> {
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Color(0xffffb800), width: 2),
+              border: Border.all(color: Colors.yellow, width: 2),
             ),
             child: Row(
               children: [
                 Icon(
                   isFavorite ? Icons.star : Icons.star_border,
-                  color: Color(0xffffb800),
+                  color: Colors.yellow,
                   size: 24,
                 ),
                 SizedBox(width: 8),
