@@ -285,20 +285,20 @@ class WeekTestDetailLogic extends GetxController {
     disposeId(GetBuilderIds.startExam);
     addListenerId(GetBuilderIds.startExam, () {
       // TODO 区分一下 写作 还是 其它题
-      if (state.weekDetailResponse != null &&
-          state.weekDetailResponse.obj != null &&
-          state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
-
-        if(state.isOffCurrentPage){
-          RouterUtil.offAndToNamed(AppRoutes.WritingPage,
-              arguments: {"detail": state.weekDetailResponse});
-        }else{
-          RouterUtil.toNamed(AppRoutes.WritingPage,
-              arguments: {"detail": state.weekDetailResponse});
-        }
-
-      } else {
+      // if (state.weekDetailResponse != null &&
+      //     state.weekDetailResponse.obj != null &&
+      //     state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
+      //     state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
+      //
+      //   if(state.isOffCurrentPage){
+      //     RouterUtil.offAndToNamed(AppRoutes.WritingPage,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   }else{
+      //     RouterUtil.toNamed(AppRoutes.WritingPage,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   }
+      //
+      // } else {
         // TODO state.startExam 开始作答数据可在此处理
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
@@ -321,7 +321,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
               });
         }
-      }
+      // }
     });
   }
 
@@ -330,22 +330,22 @@ class WeekTestDetailLogic extends GetxController {
     disposeId(GetBuilderIds.exerciseHistory);
     addListenerId(GetBuilderIds.exerciseHistory, () {
       // TODO 区分一下 写作 还是 其它题
-      if (state.weekDetailResponse != null &&
-          state.weekDetailResponse.obj != null &&
-          state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
-
-        if(state.isOffCurrentPage){
-          RouterUtil.offAndToNamed(AppRoutes.ResultPage,
-              isNeedCheckLogin:true,
-              arguments: {"detail": state.weekDetailResponse});
-        } else {
-          RouterUtil.toNamed(AppRoutes.ResultPage,
-              isNeedCheckLogin:true,
-              arguments: {"detail": state.weekDetailResponse});
-        }
-
-      } else {
+      // if (state.weekDetailResponse != null &&
+      //     state.weekDetailResponse.obj != null &&
+      //     state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
+      //     state.weekDetailResponse.obj!.subjectVoList![parentIndex].classifyValue == QuestionTypeClassify.writing) {
+      //
+      //   if(state.isOffCurrentPage){
+      //     RouterUtil.offAndToNamed(AppRoutes.ResultPage,
+      //         isNeedCheckLogin:true,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   } else {
+      //     RouterUtil.toNamed(AppRoutes.ResultPage,
+      //         isNeedCheckLogin:true,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   }
+      //
+      // } else {
         if(state.startExam!.obj!=null){
           RouterUtil.toNamed(AppRoutes.ResultPage,
               isNeedCheckLogin:true,
@@ -359,7 +359,7 @@ class WeekTestDetailLogic extends GetxController {
         }else{
           Util.toast("已获取作答数据为空");
         }
-      }
+      // }
     });
   }
 
@@ -368,20 +368,20 @@ class WeekTestDetailLogic extends GetxController {
     disposeId(GetBuilderIds.examToFix);
     addListenerId(GetBuilderIds.examToFix, () {
       // TODO 区分一下 写作 还是 其它题
-      if (state.weekDetailResponse != null &&
-          state.weekDetailResponse.obj != null &&
-          state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
-          state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
-
-        if(state.isOffCurrentPage){
-          RouterUtil.offAndToNamed(AppRoutes.WritingPage,
-              arguments: {"detail": state.weekDetailResponse});
-        }else{
-          RouterUtil.toNamed(AppRoutes.WritingPage,
-              arguments: {"detail": state.weekDetailResponse});
-        }
-
-      } else {
+      // if (state.weekDetailResponse != null &&
+      //     state.weekDetailResponse.obj != null &&
+      //     state.weekDetailResponse.obj!.subjectVoList!.length > 0 &&
+      //     state.weekDetailResponse.obj!.subjectVoList![state.parentIndex].classifyValue == QuestionTypeClassify.writing) {
+      //
+      //   if(state.isOffCurrentPage){
+      //     RouterUtil.offAndToNamed(AppRoutes.WritingPage,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   }else{
+      //     RouterUtil.toNamed(AppRoutes.WritingPage,
+      //         arguments: {"detail": state.weekDetailResponse});
+      //   }
+      //
+      // } else {
         RouterUtil.toNamed(AppRoutes.AnsweringPage,
             isNeedCheckLogin:true,
             arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
@@ -391,7 +391,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.LastFinishResult:state.startExam,
               AnsweringPage.answer_type:AnsweringPage.answer_fix_type,
             });
-      }
+      // }
     });
   }
 }
