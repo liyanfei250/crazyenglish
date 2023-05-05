@@ -98,20 +98,41 @@ class Collect_practicLogic extends GetxController {
     update([GetBuilderIds.getCollectListDate  + isRecentView.toString() + classify.toString()]);
   }
 
-  void toCollect(int userid, String id) async {
-    CollectDate collectResponse = await recordData.toCollect(userid, id);
+  void toCollect(num subjectId,{num? subtopicId=-1}) async {
+    CollectDate collectResponse = await recordData.toCollect(subjectId.toString());
     state.collectDate = collectResponse;
+    if(subjectId>0){
+      if(subtopicId!=null && subtopicId>0){
+        CollectDate collectResponse = await recordData.toCollect(subjectId.toString(),subtopicId: subtopicId);
+        collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
+        update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
+      } else {
+        CollectDate collectResponse = await recordData.toCollect(subjectId.toString());
+        collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
+        update(["${GetBuilderIds.collectState}:${subjectId}"]);
+      }
+    } else {
+      print("subjectId 有误");
+    }
     update([GetBuilderIds.toCollectDate]);
 
   }
 
-  void queryCollectState(String userId,num subjectId,{num? subtopicId=-1}) async{
+  // subtopicId为可选项
+  void queryCollectState(num subjectId,{num? subtopicId=-1}) async{
     if(subjectId>0){
-      update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
+      if(subtopicId!=null && subtopicId>0){
+        CollectDate collectResponse = await recordData.queryCollect(subjectId.toString(),subtopicId: subtopicId);
+        collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
+        update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
+      }else{
+        CollectDate collectResponse = await recordData.queryCollect(subjectId.toString());
+        collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
+        update(["${GetBuilderIds.collectState}:${subjectId}"]);
+      }
     }else{
-      update(["${GetBuilderIds.collectState}:${subjectId}"]);
+      print("subjectId 有误");
     }
-
   }
 
 }

@@ -135,6 +135,8 @@ class Api {
 
   // 收藏
   static String toCollect = Config.ApiHost + "/question/collected/collectOrCancelQuestion/";
+  // 题目收藏状态查询
+  static String queryQuestionCollect = Config.ApiHost + "/question/collected/isCollect";
 
   // 首页金刚区列表
   static String getHomeList = Config.ApiHost + "/";

@@ -113,6 +113,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
             ),));
           questionList.add(QuestionFactory.buildShortAnswerQuestion(question,1,widget.subtopicAnswerVoMap,null));
         }
+        collectLogic.queryCollectState(element.id??0);
       }else{
         return getQuestionDetail(element);
       }

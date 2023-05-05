@@ -61,30 +61,5 @@ class ResultOverviewLogic extends GetxController {
       state.hasMore = true;
     }
     update([tagId]);
-
-    // WeekPaper list = await weekRepository.getWeekPaperList(req);
-    // if(page ==1){
-    //   JsonCacheManageUtils.saveCacheData(
-    //       JsonCacheManageUtils.WeekPaperResponse,
-    //       labelId: weekTime.toString(),
-    //       list.toJson());
-    // }
-    // if(list.records==null) {
-    //   if(page ==1){
-    //     state.list.clear();
-    //   }
-    // } else {
-    //   if(page ==1){
-    //     state.list = list.records!;
-    //   } else {
-    //     state.list.addAll(list.records!);
-    //   }
-    //   if(list.records!.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    // }
-    update([tagId]);
   }
 }

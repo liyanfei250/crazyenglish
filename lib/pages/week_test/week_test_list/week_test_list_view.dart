@@ -184,7 +184,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                 gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  mainAxisExtent: 165,
+                                  mainAxisExtent: 165.w,
                                 ),
                                 itemBuilder: (context, index) {
                                   return buildItem(context, index);
@@ -384,7 +384,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 18.w),
+            margin: EdgeInsets.only(top: 14.w),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(

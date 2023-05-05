@@ -377,8 +377,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             GestureDetector(
               onTap: () {
                 //todo  换成具体的id
-                logic.toCollect(
-                    SpUtil.getInt(BaseConstant.USER_ID), "1648489081851772929");
+                logic.toCollect(1648489081851772929);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
