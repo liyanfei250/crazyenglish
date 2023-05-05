@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import '../../../entity/home/HomeKingNewDate.dart' as data;
 import '../../../entity/home/HomeKingDate.dart' as choiceDate;
 import '../../../entity/week_list_response.dart';
 import '../../../r.dart';
@@ -23,7 +23,13 @@ import 'week_test_list_logic.dart';
 
 // 周报列表页
 class WeekTestListPage extends BasePage {
-  const WeekTestListPage({Key? key}) : super(key: key);
+  data.Obj? type;
+
+  WeekTestListPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is data.Obj) {
+      type = Get.arguments;
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _WeekTestListPageState();
@@ -112,7 +118,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildNormalAppBar("每周习题"),
+        appBar: buildNormalAppBar(widget.type!.name!),
         backgroundColor: AppColors.theme_bg,
         body:Stack(
           children: [
