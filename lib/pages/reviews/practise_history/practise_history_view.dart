@@ -365,6 +365,27 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                             ],
                           );
                         },
+                        // markerBuilder: (context, date, events) {
+                        //   final children = <Widget>[];
+                        //
+                        //   if (events.isNotEmpty) {
+                        //     final event = events[0];
+                        //     if (event.isMarked) {
+                        //       children.add(Center(
+                        //         child: Container(
+                        //           width: 6.0,
+                        //           height: 6.0,
+                        //           decoration: BoxDecoration(
+                        //             color: Colors.red,
+                        //             shape: BoxShape.circle,
+                        //           ),
+                        //         ),
+                        //       ));
+                        //     }
+                        //   }
+                        //
+                        //   return children.isEmpty ? null : children;
+                        // },
                       ),
                       onDaySelected: _onDaySelected,
                       onRangeSelected: _onRangeSelected,

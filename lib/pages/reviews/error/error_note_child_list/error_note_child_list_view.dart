@@ -45,7 +45,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   refresh.RefreshController _refreshController =
   refresh.RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
-  final int pageSize = 1;
+  final int pageSize = 10;
   int currentPageNo = 1;
   List<errorDate.Obj> weekPaperList = [];
   final int pageStartIndex = 1;
