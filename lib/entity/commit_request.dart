@@ -108,10 +108,12 @@ class SubjectAnswerVo {
     num? subjectId,
     bool? isSubjectivity,
     String? questionTypeStr,
+    String? answer,
     num? answerTime,
     List<SubtopicAnswerVo>? subtopicAnswerVo,}){
     _subjectId = subjectId;
     _answerTime = answerTime;
+    _answer = answer;
     _isSubjectivity = isSubjectivity;
     _questionTypeStr = questionTypeStr;
     _subtopicAnswerVo = subtopicAnswerVo;
@@ -132,6 +134,7 @@ class SubjectAnswerVo {
   num? _subjectId;
   num? _answerTime;
   bool? _isSubjectivity;
+  String? _answer;
   String? _questionTypeStr;
   List<SubtopicAnswerVo>? _subtopicAnswerVo;
   SubjectAnswerVo copyWith({  num? subjectId,
