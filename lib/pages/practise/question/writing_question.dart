@@ -22,6 +22,7 @@ import '../../../entity/week_detail_response.dart';
  * Description:写作
  */
 class WritingQuestion extends BaseQuestion {
+
   WritingQuestion(Map<String, ExerciseLists> subtopicAnswerVoMap,
       int answerType, SubjectVoList data, int childIndex, {Key? key})
       : super(subtopicAnswerVoMap, answerType, childIndex,
@@ -55,10 +56,10 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   @override
   Widget build(BuildContext context) {
     if (detailWidget == null) {
-      detailWidget = getQuestionDetail(element);
+      detailWidget = _buildClassArea();
     }
     return SingleChildScrollView(
-      child: _buildClassArea(),
+      child: detailWidget,
     );
   }
 

@@ -158,7 +158,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   ExerciseVos? currentExerciseVos;
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
-
+  bool hasBottomPageTab = true;
   @override
   void onCreate() {
     if(widget.answerType != AnsweringPage.answer_fix_type){
@@ -273,7 +273,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             child: pages[0],
           ),
         ),
-        Container(
+        Visibility(
+          visible: hasBottomPageTab,
+          child: Container(
           margin:
           EdgeInsets.only(left: 66.w, right: 66.w, top: 10.w, bottom: 10.w),
           child: Row(
@@ -311,21 +313,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                 onTap: (){
                   if(state.currentQuestionNum+1 >= state.totalQuestionNum){
                     Get.defaultDialog(
-                      title: "",
-                      textConfirm: "确定",
-                      textCancel: "取消",
-                      content: Text(
-                          widget.answerType == AnsweringPage.answer_fix_type ?
-                          "确认纠正错题" : "是否确定提交答案"),
-                      onConfirm:(){
-                        if(currentSubjectVoList!=null){
-                          logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
-                        }else{
-                          Util.toast("未获取到试题信息");
-                        }
+                        title: "",
+                        textConfirm: "确定",
+                        textCancel: "取消",
+                        content: Text(
+                            widget.answerType == AnsweringPage.answer_fix_type ?
+                            "确认纠正错题" : "是否确定提交答案"),
+                        onConfirm:(){
+                          if(currentSubjectVoList!=null){
+                            logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
+                          }else{
+                            Util.toast("未获取到试题信息");
+                          }
 
-                        Get.back();
-                      }
+                          Get.back();
+                        }
                     );
                   }else{
                     pageLogic.nextPage();
@@ -345,7 +347,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               )
             ],
           ),
-        )
+        ))
       ],
     );
   }
@@ -365,6 +367,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
+          hasBottomPageTab = false;
           questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
@@ -373,9 +376,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
-              break;
-            case QuestionTypeClassify.writing: // 阅读题
-              questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
               break;
             default:
               questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
