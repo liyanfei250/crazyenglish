@@ -44,6 +44,8 @@ import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
 import '../pages/jingang/listening_practice/listening_practice_view.dart';
 import '../pages/jingang/result_overview/result_overview_view.dart';
+import '../pages/practise/question_result/WritingTestPage.dart';
+import '../pages/practise/question_result/writing_question_result.dart';
 import '../pages/reviews/collect/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/practise/result/result_view.dart';
@@ -91,6 +93,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.RolePage, page:()=>RolePage(),),
     GetPage(name: AppRoutes.RoleTwoPage, page:()=>RoleTwoPage(),),
     GetPage(name: AppRoutes.ListeningPracticePage, page:()=>ListeningPracticePage(),),
+    GetPage(name: AppRoutes.WritingResultPage, page:()=>WritingTestPage(),),
     GetPage(name: AppRoutes.DraggableDemo, page:()=>DraggableDemo(),),
     GetPage(name: AppRoutes.ErrorNotePage, page:()=>ErrorNotePage(),),
     GetPage(name: AppRoutes.ErrorNoteCollectPage, page:()=>ErrorNoteCollectPage(),),
