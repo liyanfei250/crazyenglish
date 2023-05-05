@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../entity/base_resp.dart';
 import '../../../entity/home/ErrorNoteTab.dart';
 import '../../../entity/home/HomeKingDate.dart';
@@ -18,6 +19,7 @@ import '../../../entity/review/ReviewHomeDetail.dart';
 import '../../../entity/review/SearchCollectListDate.dart';
 import '../../../entity/review/SearchRecordDate.dart';
 import '../../../net/net_manager.dart';
+import '../../../utils/sp_util.dart';
 
 class ReviewRepository {
   Future<ReviewHomeDetail> getReviewHomeDetail(String id) async {
@@ -107,10 +109,30 @@ class ReviewRepository {
   }
 
   //收藏
-  Future<CollectDate> toCollect(int userid, String id) async {
+  Future<CollectDate> toCollect(String id,{num subtopicId=-1}) async {
+    int userid = SpUtil.getInt(BaseConstant.USER_ID);
     Map map = await NetManager.getInstance()!.request(
-        Method.put, Api.toCollect + userid.toString() + "/" + id,
+        Method.put, Api.toCollect + userid.toString() + "/" + (subtopicId>0? subtopicId.toString():id),
         options: Options(method: Method.put));
+    CollectDate paperDetail = CollectDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //收藏
+  Future<CollectDate> queryCollect(String id,{num subtopicId=-1}) async {
+    int userid = SpUtil.getInt(BaseConstant.USER_ID);
+
+    Map map = await NetManager.getInstance()!.request(
+        data: "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}",
+        Method.post,
+        Api.queryQuestionCollect,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+
     CollectDate paperDetail = CollectDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

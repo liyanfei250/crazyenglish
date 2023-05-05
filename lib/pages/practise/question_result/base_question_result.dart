@@ -10,7 +10,9 @@ import '../../../base/widgetPage/dialog_manager.dart';
 import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
@@ -85,6 +87,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   int currentPage = 0;
   final selectGapGetxController = Get.put(SelectGapGetxController());
   final logic = Get.find<AnsweringLogic>();
+  final collectLogic = Get.find<Collect_practicLogic>();
 
   @override
   void initState(){
@@ -115,20 +118,21 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     );
   }
 
-  Widget buildFavorAndFeedback(bool isFavor,num? subjectId,{num? subtopicId = -1}){
+  Widget buildFavorAndFeedback(bool isFavor,num? subjectId,{num subtopicId = -1}){
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         InkWell(
           onTap: (){
-
+            collectLogic.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
           },
           child: Image.asset(isFavor? R.imagesExercisesNoteHearing:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
         Padding(padding: EdgeInsets.only(left: 10.w)),
         InkWell(
           onTap: (){
-
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
+                arguments: {'isFeedback': false});
           },
           child: Image.asset(R.imagesExerciseNoteFeedback,width: 48.w,height: 17.w),
         )
@@ -183,9 +187,9 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
               Visibility(
                   visible: element.questionTypeStr == QuestionType.question_reading,
                   child: GetBuilder<Collect_practicLogic>(
-                    id: "collect:${element.id}:${question.id}",
+                    id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
                     builder: (_){
-                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id);
+                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
                     },
                   )
               )
@@ -229,7 +233,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
                   child: GetBuilder<Collect_practicLogic>(
                     id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
                     builder: (_){
-                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id);
+                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
                     },
                   )
               )
@@ -239,6 +243,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
         }
+
+        collectLogic.queryCollectState(element.id??0,subtopicId:question.id);
 
         questionList.add(SingleChildScrollView(
           child: Column(
