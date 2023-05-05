@@ -7,6 +7,7 @@ import 'package:crazyenglish/pages/practise/question/others_question.dart';
 import 'package:crazyenglish/pages/practise/question/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question/read_question.dart';
 import 'package:crazyenglish/pages/practise/question/select_filling_question.dart';
+import 'package:crazyenglish/pages/practise/question/writing_question.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -363,6 +364,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
+          questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
@@ -370,6 +373,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+              break;
+            case QuestionTypeClassify.writing: // 阅读题
+              questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
               break;
             default:
               questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));

@@ -55,6 +55,8 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
   int _selectedIndex = -1;
   late List<String> items = [];
   var formatter = DateFormat('yyyy-MM-dd');
+  var choiceText = "全部".obs;
+
   @override
   void onCreate() {
     addlistner();
@@ -162,10 +164,10 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                   top: 12.w,
                                   left: 33.w,
                                   right: 33.w),
-                              child: SearchBar(
+                              /*child: SearchBar(
                                 width: double.infinity,
                                 height: 28.w,
-                              ),
+                              ),*/
                             ),
                             Container(
                               width: double.infinity,
@@ -248,6 +250,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                 setState(() {
                                   _selectedIndex = -1;
                                   _isOpen = false;
+                                  choiceText.value = '全部';
                                 });
                                 affiliatedGrade = null;
                                 addlistner();
@@ -277,6 +280,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                     setState(() {
                                       _selectedIndex = index;
                                       _isOpen = false;
+                                      choiceText.value = choiceList[index]!.name!;
                                     });
                                     affiliatedGrade =
                                         choiceList[index]!.id!.toInt();
@@ -349,13 +353,13 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
           },
           child: Row(
             children: [
-              Text(
-                '全部',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Color(0xff898a93),
-                ),
-              ),
+             Obx(() => Text(
+               choiceText.value,
+               style: TextStyle(
+                 fontSize: 12.sp,
+                 color: Color(0xff898a93),
+               ),
+             )) ,
               RotationTransition(
                 turns: Tween(begin: 0.0, end: 0.5).animate(_controller),
                 child: Icon(

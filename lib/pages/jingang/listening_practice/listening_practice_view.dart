@@ -56,6 +56,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   late var textTitle;
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
+  var choiceText = "全部".obs;
 
   @override
   void initState() {
@@ -226,6 +227,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                               setState(() {
                                 _selectedIndex = -1;
                                 _isOpen = false;
+                                choiceText.value ="全部";
                               });
                               affiliatedGrade = null;
                               logic.getList(
@@ -258,6 +260,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                                   setState(() {
                                     _selectedIndex = index;
                                     _isOpen = false;
+                                    choiceText.value = choiceList[index]!.name!;
                                   });
                                   affiliatedGrade =
                                       choiceList[index]!.id!.toInt();
@@ -565,13 +568,13 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
           },
           child: Row(
             children: [
-              Text(
-                '全部',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Color(0xff898a93),
-                ),
-              ),
+              Obx(() => Text(
+                    choiceText.value,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Color(0xff898a93),
+                    ),
+                  )),
               RotationTransition(
                 turns: Tween(begin: 0.0, end: 0.5).animate(_controller),
                 child: Icon(
