@@ -265,6 +265,23 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {
+          // switch (e.name) {
+          //   case "英语周报":
+          //     RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
+          //     break;
+          //   case "综合听力":
+          //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+          //         arguments: e);
+          //     break;
+          //   case "阅读理解":
+          //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+          //         arguments: e);
+          //     break;
+          //   case "写作训练":
+          //     RouterUtil.toNamed(AppRoutes.WritingResultPage);
+          //     break;
+
+
           switch (e.type) {
             case "weekly_type":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
