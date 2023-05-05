@@ -20,46 +20,4 @@ class ResultOverviewLogic extends GetxController {
     super.onClose();
   }
 
-  void getQuestionList(String tagId,int page,int pageSize) async{
-    Map<String,String> req= {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
-
-    var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.ResultListResponse,labelId: tagId.toString()).then((value){
-      if(value!=null){
-        return QuestionListResponse.fromJson(value as Map<String,dynamic>?);
-      }
-    });
-
-    state.pageNo = page;
-    if(page==1 && cache is QuestionListResponse && cache.data!=null && cache.data!.questions!=null) {
-      state.list = cache.data!.questions!;
-      if(state.list.length < pageSize){
-        state.hasMore = false;
-      }else{
-        state.hasMore = true;
-      }
-      update([tagId]);
-    }
-
-    QuestionListResponse questionListResponse = QuestionListResponse();
-    List<Questions> questions = [];
-    for(int i = 0;i<2;i++){
-        Questions question = Questions(id: i*100,name: "sd",groupId: i,groupName: "${i+1}.情景反应");
-        questions.add(question);
-    }
-    Data data = Data();
-    data = data.copyWith(questions: questions);
-    questionListResponse = questionListResponse.copyWith(code: 1,msg: "",data: data);
-
-    state.list = questions!;
-    if(state.list.length < pageSize){
-      state.hasMore = false;
-    }else{
-      state.hasMore = true;
-    }
-    update([tagId]);
-  }
 }

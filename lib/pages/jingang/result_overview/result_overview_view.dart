@@ -8,6 +8,8 @@ import 'package:grouped_list/sliver_grouped_list.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../entity/QuestionListResponse.dart';
+import '../../../entity/review/HomeSecondListDate.dart';
+import '../../../entity/start_exam.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
 import 'result_overview_logic.dart';
@@ -16,7 +18,19 @@ import 'result_overview_logic.dart';
  * 结果统计页
  */
 class ResultOverviewPage extends BasePage {
-  const ResultOverviewPage({Key? key}) : super(key: key);
+
+  static const exerciseOverView = "exerciseOverview";
+  static const listCatalogueMergeVo = "listCatalogueMergeVo";
+
+  List<CatalogueMergeVo> catalogueMergeVoList = [];
+  JouralResultResponse jouralResultResponse = JouralResultResponse();
+
+  ResultOverviewPage({Key? key}) : super(key: key){
+    if (Get.arguments != null && Get.arguments is Map) {
+      jouralResultResponse = Get.arguments[exerciseOverView];
+      catalogueMergeVoList = Get.arguments[listCatalogueMergeVo];
+    }
+  }
 
   @override
   BasePageState<ResultOverviewPage> getState() => _ResultOverviewPageState();
@@ -40,7 +54,6 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    logic.getQuestionList("1", 1, 15);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,//状态栏颜色

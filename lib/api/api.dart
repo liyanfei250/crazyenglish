@@ -118,6 +118,9 @@ class Api {
   // 练习记录接口数据
   static String getPracticeRecordList = Config.ApiHost + "/question/exercise/getExerciseRecordList";
 
+  // 期刊成绩接口数据
+  static String getJournalExerciseResult = Config.ApiHost + "/question/exercise/getJournalExerciseResult";
+
   // 错题本tab接口
   static String getErrorNoteTabList = Config.ApiHost + "/";
 
