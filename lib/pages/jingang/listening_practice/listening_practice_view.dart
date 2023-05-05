@@ -500,7 +500,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
       onTap: () {
         //todo 跳转列表页
         logicDetail.addJumpToStartExamListen();
-        logicDetail.getDetailAndStartExam(data.catalogueId.toString());
+        logicDetail.getDetailAndStartExam(data.catalogueId.toString(),enterResult: true);
         showLoading("");
       },
       child: Container(

@@ -90,7 +90,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   @override
   void onCreate() {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
-    if(currentSubjectVoList!=null && widget.examResult!=null){
+    if(currentSubjectVoList!=null){
       if(widget.examResult!=null){
         currentExerciseVos = AnsweringPage.findExerciseResult(widget.examResult,currentSubjectVoList!.id??0);
 

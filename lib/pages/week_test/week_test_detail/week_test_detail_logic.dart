@@ -135,14 +135,16 @@ class WeekTestDetailLogic extends GetxController {
     StartExam startExam = await weekTestRepository.getStartExam(id);
     state.startExam = startExam;
     state.uuid = id;
-    state.enterResult = enterResult??false;
     state.isOffCurrentPage = isOffCurrentPage??false;
-
+    int maxLength = 0;
+    if(state.weekDetailResponse.obj!.subjectVoList!=null){
+      maxLength = state.weekDetailResponse.obj!.subjectVoList!.length;
+    }
     if(jumpParentIndex>=0){
       // 直接跳到指定题目 开始作答
       state.parentIndex = 0;
       state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
-    }else{
+    } else {
       // 找到上次作答位置索引
       if(startExam!.obj==null || (startExam!.obj!.isFinish?? true)){
         // 已经做完 从第一道题开始即可
@@ -152,8 +154,42 @@ class WeekTestDetailLogic extends GetxController {
         // 未做完 从后台返回的索引开始
         state.parentIndex = (startExam!.obj!.parentIndex?? 0).toInt();
         state.childIndex = (startExam!.obj!.sublevelIndex?? 0).toInt();
+        // 索引异常
+        if(state.parentIndex > maxLength){
+          state.parentIndex = 0;
+          state.childIndex = 0;
+        }
       }
     }
+    if(enterResult??false){
+      state.enterResult = enterResult??false;
+      // 有结果才正真跳结果页 否则还是不行 进入作答页
+      var nextHasResult = false;
+      SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(state.weekDetailResponse,state.parentIndex);
+      if(nextSubjectVoList!=null){
+        if(startExam!=null && startExam.obj!=null){
+          ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(startExam.obj,nextSubjectVoList!.id??0);
+          Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
+          if(nextSubtopicAnswerVoMap.isEmpty){
+            nextHasResult = false;
+          }else{
+            nextHasResult = true;
+          }
+        }else{
+          nextHasResult = false;
+        }
+      }else{
+        nextHasResult = false;
+      }
+      if(nextHasResult){
+        state.enterResult = true;
+      }else{
+        state.enterResult = false;
+      }
+    }else{
+      state.enterResult = false;
+    }
+
     update([GetBuilderIds.startExam]);
   }
 
@@ -295,25 +331,52 @@ class WeekTestDetailLogic extends GetxController {
     addListenerId(GetBuilderIds.startExam, () {
       // TODO state.startExam 开始作答数据可在此处理
       if(state.isOffCurrentPage){
-        RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
-            isNeedCheckLogin:true,
-            arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
-              AnsweringPage.catlogIdKey:state.uuid,
-              AnsweringPage.parentIndexKey:state.parentIndex,
-              AnsweringPage.childIndexKey:state.childIndex,
-              AnsweringPage.LastFinishResult:state.startExam,
-              AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
-            });
+        if(state.enterResult){
+          RouterUtil.offAndToNamed(
+              AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
+              arguments: {
+                AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult: state.startExam,
+              });
+        }else{
+          RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+              isNeedCheckLogin:true,
+              arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult:state.startExam,
+                AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
+              });
+        }
+
       }else{
-        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            isNeedCheckLogin:true,
-            arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
-              AnsweringPage.catlogIdKey:state.uuid,
-              AnsweringPage.parentIndexKey:state.parentIndex,
-              AnsweringPage.childIndexKey:state.childIndex,
-              AnsweringPage.LastFinishResult:state.startExam,
-              AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
-            });
+        if(state.enterResult){
+          RouterUtil.toNamed(
+              AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
+              arguments: {
+                AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult: state.startExam,
+              });
+        }else{
+          RouterUtil.toNamed(AppRoutes.AnsweringPage,
+              isNeedCheckLogin:true,
+              arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult:state.startExam,
+                AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
+              });
+        }
       }
     });
   }
