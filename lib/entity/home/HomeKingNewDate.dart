@@ -71,8 +71,8 @@ HomeKingNewDate copyWith({  num? code,
 
 class Obj {
   Obj({
-      num? id, 
-      dynamic dictionaryId, 
+      num? id,
+      num? dictionaryId,
       String? name, 
       String? icon, 
       num? sort, 
@@ -109,7 +109,7 @@ class Obj {
     _updateUser = json['updateUser'];
   }
   num? _id;
-  dynamic _dictionaryId;
+  num? _dictionaryId;
   String? _name;
   String? _icon;
   num? _sort;
@@ -143,7 +143,7 @@ Obj copyWith({  num? id,
   updateUser: updateUser ?? _updateUser,
 );
   num? get id => _id;
-  dynamic get dictionaryId => _dictionaryId;
+  num? get dictionaryId => _dictionaryId;
   String? get name => _name;
   String? get icon => _icon;
   num? get sort => _sort;

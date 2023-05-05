@@ -2,12 +2,15 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/pages/practise/question_result/base_question_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/common.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../../reviews/collect/collect_practic/collect_practic_logic.dart';
 import '../../week_test/week_test_detail/test_player_widget.dart';
 
 class WritingQuestionResult extends BaseQuestionResult {
@@ -26,7 +29,6 @@ class WritingQuestionResult extends BaseQuestionResult {
 class _WritingQuestionResultState
     extends BaseQuestionResultState<WritingQuestionResult> {
   late SubjectVoList element;
-  bool isFavorite = false;
   @override
   getAnswers() {
     throw UnimplementedError();
@@ -115,7 +117,19 @@ class _WritingQuestionResultState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _rowList(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildQuestionDesc("原文"),
+                  GetBuilder<Collect_practicLogic>(
+                    id: "${GetBuilderIds.collectState}:${element.id}",
+                    builder: (_){
+                      return buildFavorAndFeedback(_.collectMap["${element.id}"]??false, element.id);
+                    },
+                  )
+                ],
+              ),
+              buildReadQuestion(""),
               // _exampleLayout(),
             ],
           ),
@@ -161,61 +175,4 @@ class _WritingQuestionResultState
   @override
   void onDestroy() {}
 
-  Widget _rowList() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          children: [
-            Image.asset(
-              R.imagesWritingTitleBg,
-              width: 66.w,
-              height: 9.w,
-            ),
-            Text(
-              "范文",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.sp,
-                  color: AppColors.c_FF101010),
-            ),
-          ],
-        ),
-        Expanded(child: Text('')),
-        InkWell(
-          onTap: () {
-            setState(() {
-              isFavorite = !isFavorite;
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Color(0xffffb800), width: 2),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  isFavorite ? Icons.star : Icons.star_border,
-                  color: Color(0xffffb800),
-                  size: 24,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  isFavorite ? '已收藏' : '收藏',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
 }

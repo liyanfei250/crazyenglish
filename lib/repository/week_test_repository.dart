@@ -163,6 +163,24 @@ class WeekTestRepository {
     }
   }
 
+  Future<JouralResultResponse> getResultOverviewExercise(String id,String classifyType) async {
+    int userId = SpUtil.getInt(BaseConstant.USER_ID);
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getJournalExerciseResult+"/${userId}/${id}",
+        options: Options(method: Method.get));
+
+    JouralResultResponse jouralResultResponse = JouralResultResponse.fromJson(map);
+
+    if (jouralResultResponse.code != ResponseCode.status_success) {
+      return Future.error(jouralResultResponse.msg??"");
+    }
+    if (jouralResultResponse.code == 0) {
+      return jouralResultResponse;
+    } else {
+      return Future.error("返回作答信息为空");
+    }
+  }
+
   Future<CommitResponse> uploadWeekTest(CommitAnswer commitRequest) async {
     Map map = await NetManager.getInstance()!.request(
         data: commitRequest.toJson(),

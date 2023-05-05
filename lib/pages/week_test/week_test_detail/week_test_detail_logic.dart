@@ -1,10 +1,12 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/jingang/result_overview/result_overview_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../entity/review/ErrorNoteTabDate.dart';
+import '../../../entity/review/HomeSecondListDate.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../routes/app_pages.dart';
@@ -276,6 +278,13 @@ class WeekTestDetailLogic extends GetxController {
   }
 
 
+  // 跳转期刊成绩页
+  void jumpToResutOverView(String exerciseId,String classifyType,List<CatalogueMergeVo> list) async{
+    JouralResultResponse jouralResultResponse = await weekTestRepository.getResultOverviewExercise(exerciseId,classifyType);
+    state.jouralResultResponse = jouralResultResponse;
+    state.listCatalogueMergeVo = list;
+    update([GetBuilderIds.resoultOverView]);
+  }
 
   // 跳转答题页监听
   // TODO 到底是增加监听前 添加索引合适呢 还是 发起请求前添加索引合适呢
@@ -344,4 +353,19 @@ class WeekTestDetailLogic extends GetxController {
           });
     });
   }
+
+
+  // 跳转期刊成绩页
+  void addJumpToResutOverViewListen(){
+    disposeId(GetBuilderIds.resoultOverView);
+    addListenerId(GetBuilderIds.resoultOverView, () {
+      RouterUtil.toNamed(AppRoutes.ResultOverviewPage,
+          isNeedCheckLogin:true,
+          arguments: {
+            ResultOverviewPage.exerciseOverView: state.jouralResultResponse,
+            ResultOverviewPage.listCatalogueMergeVo: state.listCatalogueMergeVo,
+          });
+    });
+  }
+
 }

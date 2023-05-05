@@ -67,7 +67,7 @@ class JouralResultResponse {
 
   JouralResultResponse.fromJson(dynamic json) {
     _code = json['code'];
-    _msg = json['msg'];
+    _msg = json['message'];
     if (json['obj'] != null) {
       _data = [];
       json['obj'].forEach((v) {
