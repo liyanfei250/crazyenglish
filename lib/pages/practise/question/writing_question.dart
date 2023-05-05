@@ -14,6 +14,7 @@ import '../answer_interface.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/colors.dart';
+import '../answering/answering_view.dart';
 import 'base_question.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
@@ -202,9 +203,23 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           children: [
             InkWell(
               onTap: () {
-                Util.toast("写作提交");
-                // logic.uploadWritingTest(commitRequest);
-                Get.back();
+                Get.defaultDialog(
+                    title: "",
+                    textConfirm: "确定",
+                    textCancel: "取消",
+                    content: Text(
+                        widget.answerType == AnsweringPage.answer_fix_type ?
+                        "确认纠正错题" : "是否确定提交答案"),
+                    onConfirm:(){
+                      if(element!=null){
+                        logic.uploadWeekTest(element!,widget.answerType);
+                      }else{
+                        Util.toast("未获取到试题信息");
+                      }
+
+                      Get.back();
+                    }
+                );
               },
               child: Image.asset(
                 R.imagesWritingCommitButton,

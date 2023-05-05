@@ -60,12 +60,15 @@ class AnsweringLogic extends GetxController {
       subtopicAnswerVoList.add(value);
     });
     //填充未作答的数据
-    subjectVoList.subtopicVoList!.forEach((element) {
-      if(!state.subtopicAnswerVoMap.containsKey("${element.id}")){
-        SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId: element.id,userAnswer: "",answer: element.answer,optionId: 0,isCorrect: false);
-        subtopicAnswerVoList.add(subtopicAnswerVo);
-      }
-    });
+    if(subjectVoList.subtopicVoList!=null){
+      subjectVoList.subtopicVoList!.forEach((element) {
+        if(!state.subtopicAnswerVoMap.containsKey("${element.id}")){
+          SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId: element.id,userAnswer: "",answer: element.answer,optionId: 0,isCorrect: false);
+          subtopicAnswerVoList.add(subtopicAnswerVo);
+        }
+      });
+    }
+
 
     SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
         subjectId: subjectVoList.id,
