@@ -14,7 +14,7 @@ import '../../../entity/week_detail_response.dart';
 
 class CompletionFillingQuestion extends BaseQuestion {
 
-  CompletionFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,{Key? key}) : super(subtopicAnswerVoMap,answerType,data:data,key: key);
+  CompletionFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,int childIndex,{Key? key}) : super(subtopicAnswerVoMap,answerType,childIndex,data:data,key: key);
 
   @override
   BaseQuestionState<CompletionFillingQuestion> getState() => _CompletionFillingQuestionState();

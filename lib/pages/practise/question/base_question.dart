@@ -37,7 +37,8 @@ abstract class BaseQuestion extends StatefulWidget{
   late SubjectVoList data;
   late Map<String,ExerciseLists> subtopicAnswerVoMap;
   late int answerType;
-  BaseQuestion(this.subtopicAnswerVoMap,this.answerType,{required this.data,Key? key}) : super(key: key);
+  late int childIndex;
+  BaseQuestion(this.subtopicAnswerVoMap,this.answerType,this.childIndex,{required this.data,Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -61,7 +62,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   final Map<String,TextEditingController> gapEditController = {};
   final Map<String,FocusNode> gapFocusNodeController = {};
   Map<String,String> gapAnswerController = {};
-  final PageController pageController = PageController(keepPage: true);
+  late PageController pageController;
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
@@ -74,7 +75,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void initState(){
     super.initState();
     onCreate();
-
+    pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     tag = tag+curPage;
     print(tag + "initState\n");
     pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
@@ -216,7 +217,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }
 
     if(logic!=null){
-      logic.updateCurrentPage(0,totalQuestion:questionList.length,isInit: true);
+      logic.updateCurrentPage(widget.childIndex,totalQuestion:questionList.length,isInit: true);
     }
     return PageView(
       controller: pageController,
