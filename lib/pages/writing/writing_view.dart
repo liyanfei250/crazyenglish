@@ -56,7 +56,9 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
 
     logic.addListenerId(GetBuilderIds.commitAnswerWriting, () {
       RouterUtil.offAndToNamed(
-          AppRoutes.ResultPage,arguments: {"detail":state.commitRequest});
+          AppRoutes.ResultPage,
+          isNeedCheckLogin:true,
+          arguments: {"detail":state.commitRequest});
     });
   }
 

@@ -284,7 +284,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
                     if(nextHasResult){  // 跳结果页
                       RouterUtil.offAndToNamed(
-                          AppRoutes.ResultPage,arguments: {
+                          AppRoutes.ResultPage,
+                          isNeedCheckLogin:true,
+                          arguments: {
                         AnsweringPage.examDetailKey: widget.testDetailResponse,
                         AnsweringPage.catlogIdKey:widget.uuid,
                         AnsweringPage.parentIndexKey:widget.parentIndex+1,

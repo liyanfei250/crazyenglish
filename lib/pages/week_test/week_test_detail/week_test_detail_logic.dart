@@ -302,6 +302,7 @@ class WeekTestDetailLogic extends GetxController {
         // TODO state.startExam 开始作答数据可在此处理
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+              isNeedCheckLogin:true,
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:state.parentIndex,
@@ -311,6 +312,7 @@ class WeekTestDetailLogic extends GetxController {
               });
         }else{
           RouterUtil.toNamed(AppRoutes.AnsweringPage,
+              isNeedCheckLogin:true,
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:state.parentIndex,
@@ -335,15 +337,18 @@ class WeekTestDetailLogic extends GetxController {
 
         if(state.isOffCurrentPage){
           RouterUtil.offAndToNamed(AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
               arguments: {"detail": state.weekDetailResponse});
         } else {
           RouterUtil.toNamed(AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
               arguments: {"detail": state.weekDetailResponse});
         }
 
       } else {
         if(state.startExam!.obj!=null){
           RouterUtil.toNamed(AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
               arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
                 AnsweringPage.catlogIdKey:state.uuid,
                 AnsweringPage.parentIndexKey:parentIndex,
@@ -378,6 +383,7 @@ class WeekTestDetailLogic extends GetxController {
 
       } else {
         RouterUtil.toNamed(AppRoutes.AnsweringPage,
+            isNeedCheckLogin:true,
             arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:state.parentIndex,
