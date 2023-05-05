@@ -524,7 +524,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Expanded(
                 child: TextField(
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               controller: _psdControl,
               obscureText: isShowPsd,
               style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
@@ -574,7 +574,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             width: 300.w,
             alignment: Alignment.centerLeft,
             child: TextField(
-              keyboardType: TextInputType.phone,
+              keyboardType: isPhoneLog? TextInputType.phone:TextInputType.text,
               controller: _phoneController,
               style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
               //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
