@@ -43,7 +43,7 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNormalAppBar("Module 1 Unit3写作"),
+      appBar: buildNormalAppBar( widget.testDetailResponse?.obj!.subjectVoList![0].catalogueName ?? ""),
       backgroundColor: AppColors.theme_bg,
       body: SingleChildScrollView(
         child: _buildClassArea(),
@@ -120,11 +120,11 @@ class _ToOrderDetailPageState extends BasePageState<WritingPage> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 8.w)),
+            Padding(padding: EdgeInsets.only(top: 0.w)),
             SelectionArea(
               child: Html(
                 data: TextUtil.weekDetail.replaceFirst("###content###",
-                    widget.testDetailResponse?.obj!.subjectVoList![0].content ?? ""),
+                    widget.testDetailResponse?.obj!.subjectVoList![0].stem ?? ""),
                 onImageTap: (url,
                     context,
                     attributes,
