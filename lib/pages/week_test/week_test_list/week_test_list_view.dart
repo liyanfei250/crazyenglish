@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../entity/home/HomeKingDate.dart' as choiceDate;
@@ -47,7 +48,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
   bool _isOpen = false;
   int _selectedIndex = -1;
   late List<String> items = [];
-
+  var formatter = DateFormat('yyyy-MM-dd');
   @override
   void onCreate() {
     addlistner();
@@ -166,7 +167,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                   ? PlaceholderPage(
                                   imageAsset: R.imagesCommenNoDate,
                                   title: '暂无数据',
-                                  topMargin: 0.w,
+                                  topMargin: 100.w,
                                   subtitle: '')
                                   : GridView.builder(
                                 itemCount: weekPaperList.length,
@@ -449,7 +450,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                     ),
                     child: Text(
                       textAlign: TextAlign.center,
-                      weekPaperList[index].createTime ?? "",
+                        formatter.format(DateTime.parse(weekPaperList[index].createTime!))  ?? "",
                       style: TextStyle(
                           color: AppColors.c_FFFFFFFF, fontSize: 10.sp),
                     ),

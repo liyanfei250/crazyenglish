@@ -56,7 +56,14 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   int current = 1;
   var formatter = DateFormat('yyyy-M-d');
   late var formattedDate;
-
+  Map<DateTime, List<Event>> _events = {
+    DateTime(2023, 5, 1): [
+      Event('Event A'),
+    ],
+    DateTime(2023, 5, 3): [
+      Event('Event C'),
+    ],
+  };
   @override
   void initState() {
     super.initState();
@@ -149,7 +156,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             hideLoading();
             if (state.list != null ) {
               if (state.pageNo == currentPageNo + 1) {
-                listData = state.list!;
                 currentPageNo++;
                 listData.addAll(state.list!);
                 if (mounted && _refreshController != null) {
@@ -365,27 +371,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                             ],
                           );
                         },
-                        // markerBuilder: (context, date, events) {
-                        //   final children = <Widget>[];
-                        //
-                        //   if (events.isNotEmpty) {
-                        //     final event = events[0];
-                        //     if (event.isMarked) {
-                        //       children.add(Center(
-                        //         child: Container(
-                        //           width: 6.0,
-                        //           height: 6.0,
-                        //           decoration: BoxDecoration(
-                        //             color: Colors.red,
-                        //             shape: BoxShape.circle,
-                        //           ),
-                        //         ),
-                        //       ));
-                        //     }
-                        //   }
-                        //
-                        //   return children.isEmpty ? null : children;
-                        // },
                       ),
                       onDaySelected: _onDaySelected,
                       onRangeSelected: _onRangeSelected,
