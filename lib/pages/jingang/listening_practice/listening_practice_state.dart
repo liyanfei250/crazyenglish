@@ -7,7 +7,7 @@ class Listening_practiceState {
   HomeKingDate paperDetail = HomeKingDate();
   List<listDate.Obj> homeSecondListDate =[];
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
   Listening_practiceState() {
     ///Initialize variables
   }

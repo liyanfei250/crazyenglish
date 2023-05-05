@@ -46,6 +46,41 @@ class Practise_historyLogic extends GetxController {
     }
   }
 
+  // void getRecordInfo(String userId, String date, int size, int current) async {
+  //   Map<String, dynamic> req = {};
+  //   Map<String, dynamic> reqTwo = {};
+  //   req["userId"] = userId;
+  //   req["date"] = date;
+  //   reqTwo["size"] = size;
+  //   reqTwo["current"] = current;
+  //   req["p"] = reqTwo;
+  //   var cache = await JsonCacheManageUtils.getCacheData(
+  //           JsonCacheManageUtils.PracRecordInfoResponse,
+  //           labelId: date.toString())
+  //       .then((value) {
+  //     if (value != null) {
+  //       return PractiseHistoryDate.fromJson(value as Map<String, dynamic>?);
+  //     }
+  //   });
+  //
+  //   bool hasCache = false;
+  //   if (cache is PractiseHistoryDate) {
+  //     state.paperDetail = cache!;
+  //     hasCache = true;
+  //     update([GetBuilderIds.getPracticeRecordList + date.toString()]);
+  //   }
+  //   PractiseHistoryDate list = await recordData.getPracticeRecordList(req);
+  //   JsonCacheManageUtils.saveCacheData(
+  //       JsonCacheManageUtils.PracRecordInfoResponse,
+  //       labelId: date.toString(),
+  //       list.toJson());
+  //   state.paperDetail = list!;
+  //   if (!hasCache) {
+  //     update([GetBuilderIds.getPracticeRecordList + date.toString()]);
+  //   }
+  // }
+
+
   void getRecordInfo(String userId, String date, int size, int current) async {
     Map<String, dynamic> req = {};
     Map<String, dynamic> reqTwo = {};
@@ -54,29 +89,49 @@ class Practise_historyLogic extends GetxController {
     reqTwo["size"] = size;
     reqTwo["current"] = current;
     req["p"] = reqTwo;
+
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.PracRecordInfoResponse,
-            labelId: date.toString())
+        JsonCacheManageUtils.PracRecordInfoResponse,
+        labelId: date.toString())
         .then((value) {
       if (value != null) {
         return PractiseHistoryDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
-    bool hasCache = false;
-    if (cache is PractiseHistoryDate) {
-      state.paperDetail = cache!;
-      hasCache = true;
+    state.pageNo = current;
+    if (current == 1 && cache is PractiseHistoryDate && cache.obj != null) {
+      state.list = cache.obj!;
+      if (state.list.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
       update([GetBuilderIds.getPracticeRecordList + date.toString()]);
     }
     PractiseHistoryDate list = await recordData.getPracticeRecordList(req);
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.PracRecordInfoResponse,
-        labelId: date.toString(),
-        list.toJson());
-    state.paperDetail = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getPracticeRecordList + date.toString()]);
+    if (current == 1) {
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.PracRecordInfoResponse,
+          labelId: date.toString(),
+          list.toJson());
     }
+    if (list.obj == null) {
+      if (current == 1) {
+        state.list.clear();
+      }
+    } else {
+      if (current == 1) {
+        state.list = list.obj!;
+      } else {
+        state.list.addAll(list.obj!);
+      }
+      if (list.obj!.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update([GetBuilderIds.getPracticeRecordList + date.toString()]);
   }
 }

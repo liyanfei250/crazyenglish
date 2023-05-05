@@ -6,7 +6,7 @@ class WeekTestListState {
 
   List<Date.Obj> list = [];
   bool hasMore = true;
-  int pageNo = 0;
+  int pageNo = 1;
   HomeWeeklyChoiceDate paperDetail = HomeWeeklyChoiceDate();
   HomeKingDate paperDetailNew = HomeKingDate();
   WeekTestListState() {

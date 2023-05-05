@@ -65,9 +65,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             widget.type.toString() +
             widget.typeTwo.toString(), () {
       hideLoading();
-      if (state.list != null && state.list != null) {
+      if (state.list != null ) {
         if (state.pageNo == currentPageNo + 1) {
-          weekPaperList = state.list;
           currentPageNo++;
           weekPaperList.addAll(state!.list!);
           if (mounted && _refreshController != null) {
@@ -321,7 +320,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, currentPageNo, pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, currentPageNo+1, pageSize);
 
   }
 

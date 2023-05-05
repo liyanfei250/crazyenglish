@@ -16,6 +16,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../base/AppUtil.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/PlaceholderPage.dart';
 import '../../../widgets/treeview/expander_theme_data.dart';
 import '../../../widgets/treeview/tree_view.dart';
 import '../../../widgets/treeview/models/node.dart' as tree;
@@ -163,7 +164,11 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
               ),
             );
           }
-          return Container();
+          return PlaceholderPage(
+              imageAsset: R.imagesCommenNoDate,
+              title: '暂无数据',
+              topMargin: 0.w,
+              subtitle: '');
         },
       ),
     );
@@ -362,15 +367,13 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   }
 
   void _onRefresh() async {
-    // logic.getWeekTestCategory("${widget.records!.id}");
-    logic.getWeekTestCategory('1647898280209838082');
+    logic.getWeekTestCategory("${widget.records!.id}");
   }
 
   void _onLoading() async {
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getWeekTestCategory("${widget.records!.id}");
-    logic.getWeekTestCategory('1647898280209838082');
+    logic.getWeekTestCategory("${widget.records!.id}");
   }
 
   @override

@@ -36,7 +36,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  final int pageSize = 10;
+  final int pageSize = 12;
   int currentPageNo = 1;
   List<Obj> weekPaperList = [];
   List<choiceDate.Obj> choiceList = [];
@@ -78,9 +78,8 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
     logic.addListenerId(GetBuilderIds.weekTestList + affiliatedGrade.toString(),
         () {
       hideLoading();
-      if (state.list != null && state.list != null) {
+      if (state.list != null ) {
         if (state.pageNo == currentPageNo + 1) {
-          weekPaperList = state.list;
           currentPageNo++;
           weekPaperList.addAll(state!.list!);
           if (mounted && _refreshController != null) {
@@ -115,258 +114,207 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
     return Scaffold(
         appBar: buildNormalAppBar("每周习题"),
         backgroundColor: AppColors.theme_bg,
-        body: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          header: WaterDropHeader(),
-          footer: CustomFooter(
-            builder: (BuildContext context, LoadStatus? mode) {
-              Widget body;
-              if (mode == LoadStatus.idle) {
-                body = Text("");
-              } else if (mode == LoadStatus.loading) {
-                body = CupertinoActivityIndicator();
-              } else if (mode == LoadStatus.failed) {
-                body = Text("");
-              } else if (mode == LoadStatus.canLoading) {
-                body = Text("release to load more");
-              } else {
-                body = Text("");
-              }
-              return Container(
-                height: 55.0,
-                child: Center(child: body),
-              );
-            },
-          ),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Stack(
-                  children: [
-                     Column(
-                        mainAxisSize: MainAxisSize.min,
+        body:Stack(
+          children: [
+            SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              header: WaterDropHeader(),
+              footer: CustomFooter(
+                builder: (BuildContext context, LoadStatus? mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
+                    body = Text("");
+                  } else if (mode == LoadStatus.loading) {
+                    body = CupertinoActivityIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text("");
+                  } else if (mode == LoadStatus.canLoading) {
+                    body = Text("release to load more");
+                  } else {
+                    body = Text("");
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child: body),
+                  );
+                },
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 5.w,
+                                  top: 12.w,
+                                  left: 33.w,
+                                  right: 33.w),
+                              child: SearchBar(
+                                width: double.infinity,
+                                height: 28.w,
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: weekPaperList.length == 0
+                                  ? PlaceholderPage(
+                                  imageAsset: R.imagesCommenNoDate,
+                                  title: '暂无数据',
+                                  topMargin: 0.w,
+                                  subtitle: '')
+                                  : GridView.builder(
+                                itemCount: weekPaperList.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  mainAxisExtent: 165,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return buildItem(context, index);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.5),
+              ),
+              visible: _isOpen,
+            ),
+            Visibility(
+                visible: _isOpen,
+                child: Container(
+                  padding: EdgeInsets.only(
+                      left: 15.w, right: 15.w, top: 10.w, bottom: 20.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(10.w),
+                        bottomLeft: Radius.circular(10.w)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        offset: Offset(0, 3),
+                        blurRadius: 3,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                            height: 25.w,
+                            width:
+                            MediaQuery.of(context).size.width / 4,
+                            alignment: Alignment.center,
                             margin: EdgeInsets.only(
-                                bottom: 5.w,
-                                top: 12.w,
-                                left: 33.w,
-                                right: 33.w),
-                            child: SearchBar(
-                              width: double.infinity,
-                              height: 28.w,
+                                bottom: 12.w, top: 18.w),
+                            padding:
+                            EdgeInsets.only(left: 8.w, right: 8.w),
+                            decoration: BoxDecoration(
+                              color: Color(0xfff5f6f9),
+                              borderRadius: BorderRadius.circular(20.w),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = -1;
+                                  _isOpen = false;
+                                });
+                                affiliatedGrade = null;
+                                addlistner();
+                                logic.getList(affiliatedGrade,
+                                    pageStartIndex, pageSize); //全部
+                              },
+                              child: Text(
+                                '全部分类',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: _selectedIndex == -1
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                              ),
                             ),
                           ),
                           Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height-100,
-                            child: weekPaperList.length == 0
-                                ? PlaceholderPage(
-                                imageAsset: R.imagesCommenNoDate,
-                                title: '暂无数据',
-                                topMargin: 0.w,
-                                subtitle: '')
-                                : GridView.builder(
-                              itemCount: weekPaperList.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisExtent: 165,
+                            child: Wrap(
+                              spacing: 18.w,
+                              runSpacing: 4.w,
+                              children: List.generate(
+                                items.length,
+                                    (index) => GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedIndex = index;
+                                      _isOpen = false;
+                                    });
+                                    affiliatedGrade =
+                                        choiceList[index]!.id!.toInt();
+                                    addlistner();
+                                    logic.getList(affiliatedGrade,
+                                        pageStartIndex, pageSize);
+                                  },
+                                  child: Container(
+                                    height: 25.w,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width /
+                                        4,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xfff5f6f9),
+                                      borderRadius:
+                                      BorderRadius.circular(20.w),
+                                    ),
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 4.0,
+                                      vertical: 8.0,
+                                    ),
+                                    child: Text(
+                                      items[index],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: _selectedIndex == index
+                                            ? Colors.black
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              itemBuilder: (context, index) {
-                                return buildItem(context, index);
-                              },
                             ),
                           ),
                         ],
                       ),
-                    Visibility(
-                      child: Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      visible: _isOpen,
-                    ),
-                    Visibility(
-                        visible: _isOpen,
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              left: 15.w, right: 15.w, top: 10.w, bottom: 20.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(10.w),
-                                bottomLeft: Radius.circular(10.w)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                offset: Offset(0, 3),
-                                blurRadius: 3,
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              /*
-                          MenuWidget(
-                          title: '全部分类',
-                          items: choiceList.map((obj) => obj.name!).toList(),
-                          onSelected: (index) {
-                            print('选中了第${index + 1}项');
-                            if ((index + 1) > 0) {
-                              affiliatedGrade = choiceList[index]!.id!.toInt();
-                              addlistner();
-                              logic.getList(affiliatedGrade, currentPageNo, pageSize);
-                            } else {
-                              affiliatedGrade = null;
-                              addlistner();
-                              logic.getList(
-                                  affiliatedGrade, currentPageNo, pageSize); //全部
-                            }
-                            ;
-                          },
-                        )
-                          * */
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 25.w,
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(
-                                        bottom: 12.w, top: 18.w),
-                                    padding:
-                                        EdgeInsets.only(left: 8.w, right: 8.w),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xfff5f6f9),
-                                      borderRadius: BorderRadius.circular(20.w),
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedIndex = -1;
-                                          _isOpen = false;
-                                        });
-                                        affiliatedGrade = null;
-                                        addlistner();
-                                        logic.getList(affiliatedGrade,
-                                            currentPageNo, pageSize); //全部
-                                      },
-                                      child: Text(
-                                        '全部分类',
-                                        style: TextStyle(
-                                          fontSize: 11.sp,
-                                          color: _selectedIndex == -1
-                                              ? Colors.black
-                                              : Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    child: Wrap(
-                                      spacing: 18.w,
-                                      runSpacing: 4.w,
-                                      children: List.generate(
-                                        items.length,
-                                        (index) => GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _selectedIndex = index;
-                                              _isOpen = false;
-                                            });
-                                            affiliatedGrade =
-                                                choiceList[index]!.id!.toInt();
-                                            addlistner();
-                                            logic.getList(affiliatedGrade,
-                                                currentPageNo, pageSize);
-                                          },
-                                          child: Container(
-                                            height: 25.w,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                4,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xfff5f6f9),
-                                              borderRadius:
-                                                  BorderRadius.circular(20.w),
-                                            ),
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: 4.0,
-                                              vertical: 8.0,
-                                            ),
-                                            child: Text(
-                                              items[index],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 11.sp,
-                                                color: _selectedIndex == index
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )),
-                  ],
-                ),
-              ),
-              /*SliverToBoxAdapter(
-                child: Container(
-                  margin: EdgeInsets.only(
-                      bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
-                  child: SearchBar(
-                    width: double.infinity,
-                    height: 28.w,
+                    ],
                   ),
-                ),
-              ),
-              weekPaperList.length == 0
-                  ? SliverToBoxAdapter(
-                      child: PlaceholderPage(
-                          imageAsset: R.imagesCommenNoDate,
-                          title: '暂无数据',
-                          topMargin: 100.w,
-                          subtitle: ''),
-                    )
-                  : SliverPadding(
-                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                      sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          buildItem,
-                          childCount: weekPaperList.length,
-                        ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisExtent: 165.w,
-                        ),
-                      ),
-                    )*/
-            ],
-          ),
-        ));
+                )),
+          ],
+        ) );
   }
 
   AppBar buildNormalAppBar(String text) {
@@ -542,7 +490,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(affiliatedGrade, currentPageNo, pageSize);
+    logic.getList(affiliatedGrade, currentPageNo+1, pageSize);
   }
 
   @override
