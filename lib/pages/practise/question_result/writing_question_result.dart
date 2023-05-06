@@ -75,12 +75,7 @@ class _WritingQuestionResultState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   buildQuestionDesc("原文"),
-                  GetBuilder<Collect_practicLogic>(
-                    id: "${GetBuilderIds.collectState}:${element.id}",
-                    builder: (_){
-                      return buildFavorAndFeedback(_.state.collectMap["${element.id}"]??false, element.id);
-                    },
-                  )
+                  Text('')
                 ],
               ),
               buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!.answer??"无数据"),
