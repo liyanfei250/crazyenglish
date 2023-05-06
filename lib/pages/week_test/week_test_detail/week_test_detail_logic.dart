@@ -1,3 +1,5 @@
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/jingang/result_overview/result_overview_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
@@ -91,12 +93,24 @@ class WeekTestDetailLogic extends GetxController {
 
   // 正常作答 跳转到答题页
   void getDetailAndStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false,
-    int jumpParentIndex = -1,int jumpChildIndex = -1}) async {
+    int jumpParentIndex = -1,int jumpChildIndex = -1,CancelFunc? hideLoading}) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(id);
     if(weekDetailResponse!=null){
+      if(weekDetailResponse.obj!=null){
+        if(weekDetailResponse.obj!.subjectVoList==null || weekDetailResponse.obj!.subjectVoList!.length==0){
+          Util.toast("目录下没有试题");
+          if(hideLoading!=null){
+            hideLoading.call();
+          }
+          return;
+        }
+      }
       jumpToStartExam(id,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage,jumpParentIndex : jumpParentIndex,jumpChildIndex : jumpChildIndex);
     } else {
       Util.toast("获取试题详情数据失败");
+      if(hideLoading!=null){
+        hideLoading.call();
+      }
     }
   }
 
