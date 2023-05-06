@@ -64,7 +64,7 @@ class _WritingQuestionResultState
                   GetBuilder<Collect_practicLogic>(
                     id: "${GetBuilderIds.collectState}:${element.id}",
                     builder: (_){
-                      return buildFavorAndFeedback(_.collectMap["${element.id}"]??false, element.id);
+                      return buildFavorAndFeedback(_.state.collectMap["${element.id}"]??false, element.id);
                     },
                   )
                 ],
