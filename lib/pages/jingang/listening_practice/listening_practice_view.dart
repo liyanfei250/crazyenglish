@@ -496,7 +496,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   }
 
   Widget listitem(CatalogueRecordVoList data, int value) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         //todo 跳转列表页
         logicDetail.addJumpToStartExamListen();
@@ -504,40 +504,34 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         showLoading("");
       },
       child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        padding: EdgeInsets.only(top: 20.w,bottom: 20.w),
+        child: Row(
           children: [
-            Padding(padding: EdgeInsets.only(top: 20.w)),
-            Row(
-              children: [
-                Text(
-                  data.catalogueName ?? "",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff353e4d)),
-                ),
-                Padding(padding: EdgeInsets.only(left: 11.w)),
-                Image.asset(
-                  R.imagesListenigLastIcon,
-                  fit: BoxFit.cover,
-                  width: 26.w,
-                  height: 18.w,
-                ),
-                Expanded(child: Text('')),
-                Text(
-                  '正确率' +
-                      data.correctCount.toString() +
-                      "/" +
-                      data.questionCount.toString(),
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff858aa0)),
-                )
-              ],
+            Text(
+              data.catalogueName ?? "",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff353e4d)),
             ),
-            Padding(padding: EdgeInsets.only(top: 20.w)),
+            Padding(padding: EdgeInsets.only(left: 11.w)),
+            Image.asset(
+              R.imagesListenigLastIcon,
+              fit: BoxFit.cover,
+              width: 26.w,
+              height: 18.w,
+            ),
+            Expanded(child: Text('')),
+            Text(
+              '正确率' +
+                  data.correctCount.toString() +
+                  "/" +
+                  data.questionCount.toString(),
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff858aa0)),
+            )
           ],
         ),
       ),
