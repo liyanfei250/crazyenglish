@@ -103,9 +103,11 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
         }else{
           print("无作答数据及历史数据");
+          Util.toast("无作答数据及历史数据");
         }
       }
     }else{
+      Util.toast("作答数据异常，请联系开发人员");
       print("作答数据异常，请联系开发人员");
     }
 
@@ -358,8 +360,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   Widget buildTab(SubtopicVoList e){
     int index = tabs.indexOf(e);
     int state = 1;
-    if(subtopicAnswerVoMap.containsKey((e.id??1).toString())){
-      if(subtopicAnswerVoMap[(e.id??1).toString()]!.isRight??false){
+    num subjectId = currentSubjectVoList!.id??0;
+    num subtopicId = e.id??0;
+    if(subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+      if(subtopicAnswerVoMap["$subjectId:$subtopicId"]!.isRight??false){
         state =2;
       }else{
         state =0;

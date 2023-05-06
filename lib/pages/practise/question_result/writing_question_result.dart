@@ -41,6 +41,7 @@ class _WritingQuestionResultState
 
   @override
   Widget build(BuildContext context) {
+    collectLogic.queryCollectState(element.id??0);
     return Scaffold(
         body: _buildClassCard(0));
   }
@@ -82,7 +83,7 @@ class _WritingQuestionResultState
                   )
                 ],
               ),
-              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ "null"]!.answer??"无数据"),
+              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!.answer??"无数据"),
               // _exampleLayout(),
             ],
           ),
