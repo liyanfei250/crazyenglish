@@ -54,6 +54,7 @@ class IndexLogic extends GetxController {
   }
 
   void getMyJournalList() async {
+
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeMyJournalDate)
         .then((value) {

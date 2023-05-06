@@ -53,13 +53,10 @@ class _IndexPageState extends BasePageState<IndexPage>
   void initState() {
     super.initState();
 
-
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
       if (state.paperDetailNew != null) {
-
         if (state.paperDetailNew != null) {
-
           if (state.paperDetailNew!.obj != null &&
               state.paperDetailNew!.obj!.length > 0) {
             setState(() {
@@ -68,12 +65,9 @@ class _IndexPageState extends BasePageState<IndexPage>
                   state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
             });
           }
-
         }
-
       }
     });
-
 
     //新增金刚区的列表，有图片
     logic.getHomeListNew('');
@@ -82,12 +76,10 @@ class _IndexPageState extends BasePageState<IndexPage>
     logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
       if (state.myJournalDetail != null) {
-        if(mounted && state.myJournalDetail!.obj!=null){
+        if (mounted && state.myJournalDetail!.obj != null) {
           myListDate = state.myJournalDetail!.obj!;
-          setState(() {
-          });
+          setState(() {});
         }
-
       }
     });
     //获取我的任务
@@ -274,17 +266,15 @@ class _IndexPageState extends BasePageState<IndexPage>
           //     RouterUtil.toNamed(AppRoutes.WritingResultPage);
           //     break;
 
-
           switch (e.type) {
             case "weekly_type":
-              RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
+              RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
               break;
             case "lable_type":
-              RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
-                  arguments: e);
+              RouterUtil.toNamed(AppRoutes.ListeningPracticePage, arguments: e);
               break;
 
-          /*case "周报题库":
+            /*case "周报题库":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
             case "shopping_type":
@@ -470,21 +460,11 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   //构建FutureBuilder控件：
   Widget _createListView() {
-    return FutureBuilder(
-        future: _future,
-        builder: (context, snapshot) {
-          var widget;
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              widget = _loadingErrorWidget();
-            } else {
-              widget = _dataWidget(snapshot.data);
-            }
-          } else {
-            widget = _loadingWidget();
-          }
-          return widget;
-        });
+    if (myListDate.length > 0) {
+      return _dataWidget();
+    } else {
+      return _loadingErrorWidget();
+    }
   }
 
   //构建loading控件：
@@ -498,7 +478,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   }
 
   //数据加载成功，构建数据展示控件：
-  _dataWidget(data) {
+  _dataWidget() {
     return Container(
         height: 100.w,
         margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 18.w),
@@ -552,7 +532,7 @@ class _IndexPageState extends BasePageState<IndexPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                myListDate[index].name?? '',
+                                myListDate[index].name ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
