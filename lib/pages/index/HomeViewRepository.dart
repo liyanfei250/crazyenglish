@@ -21,6 +21,14 @@ import '../../net/net_manager.dart';
 class HomeViewRepository {
   //获取首页我的期刊，学生端
   Future<HomeMyJournalListDate> getMyJournalList(String id) async {
+    // String testData =
+    //     '{"code":0,"message":"系统正常","obj":[],"p":{"records":[],"total":1,"size":50,"current":1,"orders":[],"optimizeCountSql":true,"hitCount":false,"countId":null,"maxLimit":null,"searchCount":true,"pages":1}}';
+    //
+    // if(Util.isTestMode()){
+    //   HomeMyJournalListDate weekTestListResponse = HomeMyJournalListDate.fromJson(json.decode(testData));
+    //   return weekTestListResponse;
+    // }
+
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getHomeMyJournalListDate + id,
         options: Options(method: Method.get));
