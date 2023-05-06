@@ -36,8 +36,9 @@ class AnsweringLogic extends GetxController {
   void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
-  void updateUserWritAnswer(String subtopicId,SubjectAnswerVo subtopicAnswerVo){
-    state.subjectAnswerVo = subtopicAnswerVo;
+
+  void updateUserWritAnswer(String subjectId,SubjectAnswerVo subjectAnswerVo){
+    state.subjectAnswerVo = subjectAnswerVo;
   }
 
   void updateCurrentPage(int currentQuestion,{int totalQuestion = 0,bool isInit = false}){
@@ -76,6 +77,7 @@ class AnsweringLogic extends GetxController {
     SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
         subjectId: subjectVoList.id,
         answerTime: state.countTime,
+        answer: state.subjectAnswerVo.answer??"",
         isSubjectivity: subjectVoList.isSubjectivity,
         questionTypeStr: subjectVoList.questionTypeStr,
         subtopicAnswerVo: subtopicAnswerVoList);

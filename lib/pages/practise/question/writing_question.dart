@@ -233,11 +233,9 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
               minLines: 10,
               controller: writController,
               onChanged: (String str) {
-                if(userAnswerWritCallback!=null){
                   SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
-                      isSubjectivity:true,questionTypeStr:'',answer:str,answerTime:6);
+                      isSubjectivity:true,questionTypeStr:'',answer:str);
                   userAnswerWritCallback.call(subjectAnswerVo);
-                }
               },
               style: TextStyle(color: Color(0xff353e4d), fontSize: 12.sp),
               decoration: InputDecoration(
