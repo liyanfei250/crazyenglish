@@ -156,7 +156,7 @@ class WeekTestDetailLogic extends GetxController {
     }
     if(jumpParentIndex>=0){
       // 直接跳到指定题目 开始作答
-      state.parentIndex = 0;
+      state.parentIndex = jumpParentIndex;
       state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
     } else {
       // 找到上次作答位置索引

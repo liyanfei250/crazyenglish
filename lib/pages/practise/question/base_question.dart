@@ -150,7 +150,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           itemList.add(Visibility(
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
-              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
           bool isClickEnable = true;
           int defaultChooseIndex = -1;

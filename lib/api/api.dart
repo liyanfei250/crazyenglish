@@ -92,7 +92,7 @@ class Api {
 
   // 金刚区接口新增
   static String getHomeKingListNew =
-      Config.ApiHost + "/question/exercise/getConfigurationList";
+      Config.ApiHost + "/question/exercise/getConfigurationList/";
 
   // 周报筛选字典接口
   static String getHomeKingList =
