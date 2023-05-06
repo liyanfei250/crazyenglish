@@ -82,7 +82,7 @@ class _WritingQuestionResultState
                   )
                 ],
               ),
-              buildReadQuestion("无数据"),
+              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ "null"]!.answer??"无数据"),
               // _exampleLayout(),
             ],
           ),
@@ -91,39 +91,6 @@ class _WritingQuestionResultState
     ),
   );
 
-  Widget _myHorizontalLayout(String iconData, String title, String subtitle) =>
-      Row(
-        children: [
-          Image.asset(
-            iconData,
-            width: 12.w,
-            height: 12.w,
-          ),
-          SizedBox(width: 8.w),
-          Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.sp,
-                    color: Color(0xffb3b7c6)),
-              )),
-          SizedBox(
-            width: 10.w,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
-            child: Expanded(
-                child: Text(
-                  subtitle,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xffb3b7c6)),
-                )),
-          )
-        ],
-      );
 
   @override
   void onDestroy() {}

@@ -321,10 +321,10 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,{UserAnswerCallback? userAnswerCallback}){
+  static Widget buildShortAnswerQuestion(int subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,{UserAnswerCallback? userAnswerCallback}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
-    ExerciseLists? exerciseLists = subtopicAnswerVoMap["${subtopicVoList.id}"];
+    ExerciseLists? exerciseLists = subtopicAnswerVoMap["$subjecId${subtopicVoList.id}"];
 
     String userAnswer = "";
     if(exerciseLists!=null){

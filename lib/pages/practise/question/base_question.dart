@@ -199,7 +199,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
-          itemList.add(QuestionFactory.buildShortAnswerQuestion(question,1,widget.subtopicAnswerVoMap,null,userAnswerCallback: userAnswerCallback));
+          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,userAnswerCallback: userAnswerCallback));
         }
         // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));

@@ -113,7 +113,7 @@ class AnsweringPage extends BasePage {
         exerciseVo.exerciseLists!.length > 0) {
       exerciseVo.exerciseLists!.forEach((element) {
         subtopicAnswerVoMap[
-        (element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
+        element.subjectId.toString()+(element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
             .toString()] = element;
       });
     }
