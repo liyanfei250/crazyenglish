@@ -154,7 +154,9 @@ class Util {
     );
   }
 
-  static Widget buildTopIndicator(num questionCount,num rightCount,num answerTime,String questionTypeStr) {
+  static Widget buildTopIndicator(
+      num questionCount, num rightCount, num answerTime, String questionTypeStr,
+      {bool isWritinPage = false}) {
     final customWidth01 = CustomSliderWidths(
         trackWidth: 6, progressBarWidth: 20, shadowWidth: 20);
     final customColors01 = CustomSliderColors(
@@ -172,8 +174,8 @@ class Util {
             color: Colors.white, fontSize: 60, fontWeight: FontWeight.w100));
     return Container(
       width: double.infinity,
-      height: 224.w,
       margin: EdgeInsets.only(left: 18.w, right: 18.w),
+      padding: EdgeInsets.only(bottom:isWritinPage? 14.w:0.w),
       decoration: BoxDecoration(
         color: AppColors.c_FFFFFFFF,
         boxShadow: [
@@ -189,72 +191,78 @@ class Util {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Container(
-            width: 193.w,
-            height: 193.w,
-            margin: EdgeInsets.only(top: 30.w),
-            child: SleekCircularSlider(
-              min: 0,
-              max: 100,
-              initialValue: 60,
-              appearance: CircularSliderAppearance(
-                  customWidths: customWidth01,
-                  customColors: customColors01,
-                  infoProperties: info,
-                  startAngle: 180,
-                  angleRange: 180,
-                  size: 350.0.w),
-              onChange: (double value) {
-                // callback providing a value while its being changed (with a pan gesture)
-              },
-              onChangeStart: (double startValue) {
-                // callback providing a starting value (when a pan gesture starts)
-              },
-              onChangeEnd: (double endValue) {
-                // callback providing an ending value (when a pan gesture ends)
-              },
-              innerWidget: (double value) {
-                //This the widget that will show current value
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(padding: EdgeInsets.only(top: 31.w)),
-                    Text(
-                      "正确率",
-                      style: TextStyle(
-                          fontSize: 14.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.c_FF898A93),
-                    ),
-                    Text(
-                      "${rightCount}",
-                      style: TextStyle(
-                          fontSize: 40.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.c_FF1B1D2C),
-                    ),
-                    Text(
-                      "/${questionCount}题",
-                      style: TextStyle(
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.c_FF898A93),
-                    ),
-                  ],
-                );
-              },
+          Visibility(
+            child: Container(
+              width: 193.w,
+              height: 193.w,
+              margin: EdgeInsets.only(top: 30.w),
+              child: SleekCircularSlider(
+                min: 0,
+                max: 100,
+                initialValue: 60,
+                appearance: CircularSliderAppearance(
+                    customWidths: customWidth01,
+                    customColors: customColors01,
+                    infoProperties: info,
+                    startAngle: 180,
+                    angleRange: 180,
+                    size: 350.0.w),
+                onChange: (double value) {
+                  // callback providing a value while its being changed (with a pan gesture)
+                },
+                onChangeStart: (double startValue) {
+                  // callback providing a starting value (when a pan gesture starts)
+                },
+                onChangeEnd: (double endValue) {
+                  // callback providing an ending value (when a pan gesture ends)
+                },
+                innerWidget: (double value) {
+                  //This the widget that will show current value
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(padding: EdgeInsets.only(top: 31.w)),
+                      Text(
+                        "正确率",
+                        style: TextStyle(
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.c_FF898A93),
+                      ),
+                      Text(
+                        "${rightCount}",
+                        style: TextStyle(
+                            fontSize: 40.w,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.c_FF1B1D2C),
+                      ),
+                      Text(
+                        "/${questionCount}题",
+                        style: TextStyle(
+                            fontSize: 12.w,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.c_FF898A93),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
+            visible: !isWritinPage,
           ),
           Container(
             padding: EdgeInsets.only(left: 13.w, right: 13.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  height: 0.2.w,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: 150.w),
-                  color: AppColors.c_FFD2D5DC,
+                Visibility(
+                  child: Container(
+                    height: 0.2.w,
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: 150.w),
+                    color: AppColors.c_FFD2D5DC,
+                  ),
+                  visible: !isWritinPage,
                 ),
                 Padding(padding: EdgeInsets.only(top: 14.w)),
                 Row(
@@ -569,7 +577,8 @@ class Util {
       "Imei": "223232323",
     };
     if (SpUtil.getString(BaseConstant.loginTOKEN).isNotEmpty) {
-      params["Authorization"] = "Bearer "+SpUtil.getString(BaseConstant.loginTOKEN);
+      params["Authorization"] =
+          "Bearer " + SpUtil.getString(BaseConstant.loginTOKEN);
     }
     return params;
   }

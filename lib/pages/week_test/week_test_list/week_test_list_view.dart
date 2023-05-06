@@ -439,8 +439,9 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                         width: 13.w,
                         height: 13.w,
                       ),
+                      SizedBox(width: 4.w,),
                       Text(
-                        "265",
+                        weekPaperList[index].journalView.toString() ?? '0',
                         style: TextStyle(
                             fontSize: 8.sp, color: AppColors.c_FFFFFFFF),
                       )
