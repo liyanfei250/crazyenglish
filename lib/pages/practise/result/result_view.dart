@@ -306,13 +306,15 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     }
                   } else {
                     // TODO 有下一节且有内容 传参需要带上目录
-                    var hasNext = true;
-                    if (hasNext) {
-                      logicDetail.addJumpToStartExamListen();
-                      logicDetail.getDetailAndStartExam("0",enterResult: true,isOffCurrentPage:true);
-                    } else {
-                      Util.toast("已经是最后一题");
-                    }
+                    Util.toast("已经是最后一题");
+                    Get.back();
+                    // var hasNext = true;
+                    // if (hasNext) {
+                    //   logicDetail.addJumpToStartExamListen();
+                    //   logicDetail.getDetailAndStartExam("0",enterResult: true,isOffCurrentPage:true);
+                    // } else {
+                    //   Util.toast("已经是最后一题");
+                    // }
                   }
                 },
                 child: Container(

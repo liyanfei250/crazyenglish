@@ -166,8 +166,11 @@ class WeekTestRepository {
   Future<JouralResultResponse> getResultOverviewExercise(String id,String classifyType) async {
     int userId = SpUtil.getInt(BaseConstant.USER_ID);
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getJournalExerciseResult+"/${userId}/${id}",
-        options: Options(method: Method.get));
+        data: "{\"userId\":$userId,\"journalId\":$id,\"classifyType\":$classifyType}",
+        Method.post,
+        Api.getJournalExerciseResult,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
 
     JouralResultResponse jouralResultResponse = JouralResultResponse.fromJson(map);
 

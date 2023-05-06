@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
 import '../../base/AppUtil.dart';
+import '../../base/common.dart';
 import '../../entity/SendCodeResponseNew.dart';
 import '../../entity/base_resp.dart';
 import '../../entity/home/ClassInfoDate.dart';
@@ -17,6 +18,7 @@ import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
 import '../../entity/review/HomeListDate.dart';
 import '../../net/net_manager.dart';
+import '../../utils/sp_util.dart';
 
 class HomeViewRepository {
   //获取首页我的期刊，学生端
@@ -177,8 +179,14 @@ class HomeViewRepository {
 
   //金刚区列表新增
   Future<HomeKingNewDate> getHomeKingListNew(String type) async {
+    int role = 0;
+    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+      role = 1;
+    }else{
+      role = 0;
+    }
     Map map = await NetManager.getInstance()!
-        .request(Method.get, Api.getHomeKingListNew);
+        .request(Method.get, "${Api.getHomeKingListNew}$role");
     HomeKingNewDate sendCodeResponse = HomeKingNewDate.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
