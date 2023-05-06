@@ -9,10 +9,10 @@ class Collect_practicState {
   SearchRecordDate paperDetail = SearchRecordDate();
   SearchCollectListDetail ListDetail = SearchCollectListDetail();
   List<date.Obj> paperList = [];
-  CollectDate collectDate = CollectDate();
   HomeKingDate tabList = HomeKingDate();
   bool hasMore = true;
   int pageNo = 1;
+  Map<String,bool> collectMap = {};
   Collect_practicState() {
     ///Initialize variables
   }

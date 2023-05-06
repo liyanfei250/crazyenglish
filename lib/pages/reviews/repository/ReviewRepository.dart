@@ -111,9 +111,18 @@ class ReviewRepository {
   //收藏
   Future<CollectDate> toCollect(String id,{num subtopicId=-1}) async {
     int userid = SpUtil.getInt(BaseConstant.USER_ID);
+    String uploadData = "";
+    if(subtopicId>0){
+      uploadData = "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
+    }else{
+      uploadData = "{\"userId\":${userid},\"subjectId\":${id}}";
+    }
     Map map = await NetManager.getInstance()!.request(
-        Method.put, Api.toCollect + userid.toString() + "/" + (subtopicId>0? subtopicId.toString():id),
-        options: Options(method: Method.put));
+        data:uploadData,
+        Method.post,
+        Api.toCollect,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
     CollectDate paperDetail = CollectDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

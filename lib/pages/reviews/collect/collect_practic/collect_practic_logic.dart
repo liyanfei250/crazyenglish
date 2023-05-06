@@ -12,7 +12,7 @@ import 'collect_practic_state.dart';
 class Collect_practicLogic extends GetxController {
   final Collect_practicState state = Collect_practicState();
   ReviewRepository recordData = ReviewRepository();
-  Map<String,bool> collectMap = {};
+
 
   //搜索筛选
   void getHomeList(String type) async {
@@ -99,16 +99,14 @@ class Collect_practicLogic extends GetxController {
   }
 
   void toCollect(num subjectId,{num? subtopicId=-1}) async {
-    CollectDate collectResponse = await recordData.toCollect(subjectId.toString());
-    state.collectDate = collectResponse;
     if(subjectId>0){
       if(subtopicId!=null && subtopicId>0){
         CollectDate collectResponse = await recordData.toCollect(subjectId.toString(),subtopicId: subtopicId);
-        collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
+        state.collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
         update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
       } else {
         CollectDate collectResponse = await recordData.toCollect(subjectId.toString());
-        collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
+        state.collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
         update(["${GetBuilderIds.collectState}:${subjectId}"]);
       }
     } else {
@@ -123,11 +121,11 @@ class Collect_practicLogic extends GetxController {
     if(subjectId>0){
       if(subtopicId!=null && subtopicId>0){
         CollectDate collectResponse = await recordData.queryCollect(subjectId.toString(),subtopicId: subtopicId);
-        collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
+        state.collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
         update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
       }else{
         CollectDate collectResponse = await recordData.queryCollect(subjectId.toString());
-        collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
+        state.collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
         update(["${GetBuilderIds.collectState}:${subjectId}"]);
       }
     }else{

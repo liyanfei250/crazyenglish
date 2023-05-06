@@ -119,6 +119,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   }
 
   Widget buildFavorAndFeedback(bool isFavor,num? subjectId,{num subtopicId = -1}){
+    print("更新");
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -126,7 +127,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           onTap: (){
             collectLogic.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
           },
-          child: Image.asset(isFavor? R.imagesExercisesNoteHearing:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
+          child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
         Padding(padding: EdgeInsets.only(left: 10.w)),
         InkWell(
@@ -189,7 +190,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
                   child: GetBuilder<Collect_practicLogic>(
                     id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
                     builder: (_){
-                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+                      return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
                     },
                   )
               )
@@ -233,7 +234,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
                   child: GetBuilder<Collect_practicLogic>(
                     id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
                     builder: (_){
-                      return buildFavorAndFeedback(_.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+                      return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
                     },
                   )
               )
