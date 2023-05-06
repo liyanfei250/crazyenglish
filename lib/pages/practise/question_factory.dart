@@ -59,8 +59,8 @@ class QuestionFactory{
                     child: ChoiceRadioItem(
                         _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList.answer,
-                        e!.sequence!,
-                        e!.content!,  
+                        e!.sequence??"",
+                        e!.content??"",
                         double.infinity,
                         52.w
                     ),
@@ -96,8 +96,8 @@ class QuestionFactory{
                     child: ChoiceRadioItem(
                         _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         "",
-                        e.sequence!,
-                        e.content!,
+                        e.sequence??"",
+                        e.content??"",
                         double.infinity,
                         52.w
                     ),
@@ -140,7 +140,7 @@ class QuestionFactory{
                     child: ChoiceImageItem(
                       _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
                         subtopicVoList!.answer,
-                        e!.sequence!,
+                        e!.sequence??"",
                         e.img,
                         140.w,
                         140.w,

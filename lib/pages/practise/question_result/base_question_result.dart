@@ -199,7 +199,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           itemList.add(Visibility(
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
-              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
           int defaultChooseIndex = -1;
           bool? isCorrect;
