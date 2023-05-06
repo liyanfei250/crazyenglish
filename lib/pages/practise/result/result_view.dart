@@ -153,7 +153,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                           currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
                           currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
                           currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
-                          currentSubjectVoList!.catalogueName??""),
+                          currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.questionTypeStr == QuestionType.writing_question),
                     )];
                   },
                   body: Container(
@@ -172,7 +172,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(padding: EdgeInsets.only(top: 24.w)),
+                      Visibility(
+                      visible: hasTab,
+                      child: Padding(padding: EdgeInsets.only(top: 24.w))),
                         Visibility(
                           visible: hasTab,
                           child: Column(
@@ -433,6 +435,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          hasTab = false;
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
@@ -446,6 +449,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               break;
             case QuestionTypeClassify.writing:
               questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
+                hasTab = false;
+              }
               break;
             default:
               questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
