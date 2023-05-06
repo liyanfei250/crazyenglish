@@ -19,11 +19,10 @@ import '../../entity/review/HomeListDate.dart';
 import '../../net/net_manager.dart';
 
 class HomeViewRepository {
-
   //获取首页我的期刊，学生端
   Future<HomeMyJournalListDate> getMyJournalList(String id) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeMyJournalListDate,
+        Method.get, Api.getHomeMyJournalListDate + id,
         options: Options(method: Method.get));
     HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
@@ -76,7 +75,9 @@ class HomeViewRepository {
   Future<CommentDate> toPushContent(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.postContentDate,
-        data: req, options: Options(method: Method.post,contentType: ContentType.json.toString()));
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
     CommentDate paperDetail = CommentDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

@@ -154,7 +154,7 @@ class Api {
   static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";
 
   // 首页我的期刊列表
-  static String getHomeMyJournalListDate = Config.ApiHost + "/";
+  static String getHomeMyJournalListDate = Config.ApiHost + "/question/exercise/getPurchaseJournal/";
 
   // 首页我的任务
   static String getHomeMyTasksDate = Config.ApiHost + "/";

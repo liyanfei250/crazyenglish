@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../entity/home/HomeMyJournalListDate.dart' as myList;
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
@@ -35,6 +36,7 @@ class _IndexPageState extends BasePageState<IndexPage>
     "商城",
   ];
 
+  List<myList.Obj> myListDate = [];
   List<Obj> functionTxtNew = [];
 
   List listData = [
@@ -80,20 +82,11 @@ class _IndexPageState extends BasePageState<IndexPage>
     logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
       if (state.myJournalDetail != null) {
-        /*myJournalDetail = state.myJournalDetail;
-        if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
+        if(mounted && state.myJournalDetail!.obj!=null){
+          myListDate = state.myJournalDetail!.obj!;
           setState(() {
           });
-        }*/
+        }
 
       }
     });
@@ -511,7 +504,7 @@ class _IndexPageState extends BasePageState<IndexPage>
         margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 18.w),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 4,
+          itemCount: myListDate.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () {
@@ -559,7 +552,7 @@ class _IndexPageState extends BasePageState<IndexPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "高一综合阅读",
+                                myListDate[index].name?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
