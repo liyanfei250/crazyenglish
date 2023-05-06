@@ -159,7 +159,7 @@ class Children {
       dynamic type, 
       bool? isNode, 
       dynamic status, 
-      List<dynamic>? children,}){
+      List<Children>? children,}){
     _id = id;
     _pid = pid;
     _name = name;
@@ -179,7 +179,7 @@ class Children {
     if (json['children'] != null) {
       _children = [];
       json['children'].forEach((v) {
-        // _children?.add(Dynamic.fromJson(v));
+        _children?.add(Children.fromJson(v));
       });
     }
   }
@@ -189,14 +189,14 @@ class Children {
   dynamic _type;
   bool? _isNode;
   dynamic _status;
-  List<dynamic>? _children;
+  List<Children>? _children;
 Children copyWith({  num? id,
   num? pid,
   String? name,
   dynamic type,
   bool? isNode,
   dynamic status,
-  List<dynamic>? children,
+  List<Children>? children,
 }) => Children(  id: id ?? _id,
   pid: pid ?? _pid,
   name: name ?? _name,
@@ -211,7 +211,7 @@ Children copyWith({  num? id,
   dynamic get type => _type;
   bool? get isNode => _isNode;
   dynamic get status => _status;
-  List<dynamic>? get children => _children;
+  List<Children>? get children => _children;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
