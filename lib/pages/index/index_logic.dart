@@ -1,4 +1,6 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/index/HomeViewRepository.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
 
 import '../../entity/home/HomeKingDate.dart';
@@ -66,7 +68,7 @@ class IndexLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getHomeMyJournalDate]);
     }
-    HomeMyJournalListDate list = await homeViewRepository.getMyJournalList('');
+    HomeMyJournalListDate list = await homeViewRepository.getMyJournalList(SpUtil.getInt(BaseConstant.USER_ID).toString());
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyJournalDate, list.toJson());
     state.myJournalDetail = list!;
