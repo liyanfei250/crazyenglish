@@ -93,7 +93,6 @@ class AnsweringPage extends BasePage {
   }
 
   static ExerciseVos? findExerciseResult(Exercise? examResult,num subjectId){
-    Map<String,ExerciseLists> subtopicAnswerVoMap = {};
     ExerciseVos? exerciseVo;
     if(examResult!=null && examResult.exerciseVos!=null
         && examResult.exerciseVos!.length>0) {
@@ -112,9 +111,9 @@ class AnsweringPage extends BasePage {
     if (exerciseVo!=null && exerciseVo.exerciseLists != null &&
         exerciseVo.exerciseLists!.length > 0) {
       exerciseVo.exerciseLists!.forEach((element) {
-        subtopicAnswerVoMap[
-        element.subjectId.toString()+(element.subtopicId ?? exerciseVo.exerciseLists!.indexOf(element))
-            .toString()] = element;
+        num subjectId = element.subjectId??0;
+        num subtopicId = element.subtopicId??exerciseVo.exerciseLists!.indexOf(element);
+        subtopicAnswerVoMap["${subjectId.toString()}:${subtopicId.toString()}"] = element;
       });
     }
     return subtopicAnswerVoMap;
@@ -156,7 +155,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   detail.SubjectVoList? currentSubjectVoList;
   ExerciseVos? currentExerciseVos;
-  // subtopicId SubtopicAnswerVo
+  // subjectId:subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   bool hasBottomPageTab = true;
   @override

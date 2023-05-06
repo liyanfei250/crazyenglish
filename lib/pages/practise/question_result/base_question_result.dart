@@ -204,10 +204,13 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             ),));
           int defaultChooseIndex = -1;
           bool? isCorrect;
-          if(widget.subtopicAnswerVoMap!.containsKey((question.id??1).toString())){
-            String userAnswer = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.answer??"";
+          num subjectId = element.id??0;
+          num subtopicId = question.id??0;
+
+          if(widget.subtopicAnswerVoMap!.containsKey("$subjectId:$subtopicId")){
+            String userAnswer = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.answer??"";
             int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
-            isCorrect = widget.subtopicAnswerVoMap![(question.id??1).toString()]!.isRight;
+            isCorrect = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.isRight;
             for(int  i = 0;i <length ;i++){
               if(userAnswer == question!.optionsList![i].sequence){
                 defaultChooseIndex = i;

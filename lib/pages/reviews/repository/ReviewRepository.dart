@@ -134,9 +134,14 @@ class ReviewRepository {
   //收藏
   Future<CollectDate> queryCollect(String id,{num subtopicId=-1}) async {
     int userid = SpUtil.getInt(BaseConstant.USER_ID);
-
+    String uploadData = "";
+    if(subtopicId>0){
+      uploadData = "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
+    }else{
+      uploadData = "{\"userId\":${userid},\"subjectId\":${id}}";
+    }
     Map map = await NetManager.getInstance()!.request(
-        data: "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}",
+        data: uploadData,
         Method.post,
         Api.queryQuestionCollect,
         options: Options(

@@ -155,9 +155,11 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           bool isClickEnable = true;
           int defaultChooseIndex = -1;
           // 找到上次作答记录 或者 错题本正确题目答案
+          num subjectId = element.id??0;
+          num subtopicId = question.id??0;
           if(widget.subtopicAnswerVoMap!=null
-              && widget.subtopicAnswerVoMap.containsKey("${question.id}")){
-            ExerciseLists exerciseLists = widget.subtopicAnswerVoMap["${question.id}"]!;
+              && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+            ExerciseLists exerciseLists = widget.subtopicAnswerVoMap["$subjectId:$subtopicId"]!;
             if(question.optionsList!=null &&
                 exerciseLists.answer!=null &&
                 exerciseLists.answer!.isNotEmpty){
@@ -170,7 +172,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           }
           if(widget.answerType == AnsweringPage.answer_fix_type){
             if(widget.subtopicAnswerVoMap!=null
-                && widget.subtopicAnswerVoMap.containsKey("${question.id}")){
+                && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
               isClickEnable = false;
             }
           } else if(widget.answerType == AnsweringPage.answer_normal_type){
