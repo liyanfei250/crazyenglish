@@ -1,9 +1,11 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../entity/home/HomeMyJournalListDate.dart' as myList;
 import '../../r.dart';
@@ -35,7 +37,8 @@ class _IndexPageState extends BasePageState<IndexPage>
     "语言运用",
     "商城",
   ];
-
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   List<myList.Obj> myListDate = [];
   List<Obj> functionTxtNew = [];
 
@@ -55,6 +58,10 @@ class _IndexPageState extends BasePageState<IndexPage>
 
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
+      hideLoading();
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
       if (state.paperDetailNew != null) {
         if (state.paperDetailNew != null) {
           if (state.paperDetailNew!.obj != null &&
@@ -69,12 +76,11 @@ class _IndexPageState extends BasePageState<IndexPage>
       }
     });
 
-    //新增金刚区的列表，有图片
-    logic.getHomeListNew('');
-
-    //获取我的期刊列表
-    logic.getMyJournalList();
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
+      hideLoading();
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
       if (state.myJournalDetail != null) {
         if (mounted && state.myJournalDetail!.obj != null) {
           myListDate = state.myJournalDetail!.obj!;
@@ -82,9 +88,13 @@ class _IndexPageState extends BasePageState<IndexPage>
         }
       }
     });
-    //获取我的任务
-    logic.getMyTasks();
+
     logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
+      hideLoading();
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+
       if (state.myTask != null) {
         /*myTask = state.myTask;
         if(mounted && _refreshController!=null){
@@ -103,6 +113,8 @@ class _IndexPageState extends BasePageState<IndexPage>
 
       }
     });
+    _onRefresh();
+    showLoading("");
   }
 
   @override
@@ -114,48 +126,81 @@ class _IndexPageState extends BasePageState<IndexPage>
           image: DecorationImage(
               image: AssetImage(R.imagesReviewTopBg), fit: BoxFit.cover),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AppBar(
-                automaticallyImplyLeading: false,
-                title: _buildSearchBar(),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
-              Container(
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
+          header: WaterDropHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus? mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("");
+              } else if (mode == LoadStatus.loading) {
+                body = CupertinoActivityIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("release to load more");
+              } else {
+                body = Text("");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(padding: EdgeInsets.only(top: 9.w)),
-                    adsBanner,
-                    Padding(padding: EdgeInsets.only(top: 13.w)),
+                    AppBar(
+                      automaticallyImplyLeading: false,
+                      title: _buildSearchBar(),
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                    ),
                     Container(
-                      height: 80.w,
-                      margin: EdgeInsets.symmetric(horizontal: 14.w),
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: functionTxtNew.length,
-                          itemBuilder: (_, int position) {
-                            Obj e = functionTxtNew[position];
-                            return _buildFuncAreaItem(e);
-                          }),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 12.w)),
-                    //我的期刊
-                    //todo 我的期刊跳转到期刊的列表，之前的页面复用
-                    buildImageWithClickableIcon(
-                      R.imagesHomeMyJournals,
-                      () {
-                        Util.toast('我的期刊');
-                      },
-                    ),
-                    _createListView(),
-                    Padding(padding: EdgeInsets.only(top: 14.w)),
-                    _buildClassArea(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: EdgeInsets.only(top: 9.w)),
+                          adsBanner,
+                          Padding(padding: EdgeInsets.only(top: 13.w)),
+                          Container(
+                            height: 80.w,
+                            margin: EdgeInsets.symmetric(horizontal: 14.w),
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: functionTxtNew.length,
+                                itemBuilder: (_, int position) {
+                                  Obj e = functionTxtNew[position];
+                                  return _buildFuncAreaItem(e);
+                                }),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 12.w)),
+                          //我的期刊
+                          //todo 我的期刊跳转到期刊的列表，之前的页面复用
+                          buildImageWithClickableIcon(
+                            R.imagesHomeMyJournals,
+                            () {
+                              Util.toast('我的期刊');
+                            },
+                          ),
+                          _createListView(),
+                          Padding(padding: EdgeInsets.only(top: 14.w)),
+                          _buildClassArea(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -580,9 +625,24 @@ class _IndexPageState extends BasePageState<IndexPage>
   @override
   bool get wantKeepAlive => true;
 
+  void _onRefresh() async {
+    //新增金刚区的列表，有图片
+    logic.getHomeListNew('');
+    //获取我的期刊列表
+    logic.getMyJournalList();
+    //获取我的任务
+    logic.getMyTasks();
+  }
+
+  void _onLoading() async {
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    // logic.getList(affiliatedGrade, currentPageNo+1, pageSize);
+  }
+
   @override
   void dispose() {
     Get.delete<IndexLogic>();
+    _refreshController.dispose();
     super.dispose();
   }
 
