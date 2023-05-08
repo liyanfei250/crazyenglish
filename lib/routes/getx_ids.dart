@@ -80,6 +80,7 @@ class GetBuilderIds {
   static const String getHomeDateListTeacher = "getHomeDateListTeacher";
   static const String getHomeMyJournalDateTeacher = "getHomeMyJournalDateTeacher";
   static const String getHomeMyRecommendation = "getHomeMyRecommendation";
+  static const String getMyClassList = "getMyClassList";
 
 }
 
