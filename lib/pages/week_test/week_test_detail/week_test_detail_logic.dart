@@ -124,6 +124,23 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
+  // 练习记录 跳转到结果页
+  void getDetailAndEnterResultByCatalogueJournalId(num catalogId,List<ExerciseVos>? exerciseVos,int parentIndex,int childIndex,{bool isOffCurrentPage = false}) async {
+    if(catalogId>0){
+      WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(catalogId.toString());
+      if(weekDetailResponse!=null){
+        state.isOffCurrentPage = isOffCurrentPage;
+        state.uuid = catalogId.toString();
+        jumpToAnswerResultDetailByCatalogJournalId(exerciseVos,parentIndex,childIndex);
+      } else {
+        Util.toast("获取试题详情数据失败");
+      }
+    }else{
+      Util.toast("获取目录Id失败");
+    }
+
+  }
+
   // 已订正错题 收藏题目 跳转到浏览页
   void getDetailAndEnterBrowsePage(String subjectId,String subtopicId) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
@@ -212,6 +229,16 @@ class WeekTestDetailLogic extends GetxController {
     StartExam startExam = await weekTestRepository.getExerciseDetail(exerciseId);
     state.startExam = startExam;
     update([GetBuilderIds.exerciseHistory]);
+  }
+
+  // 跳转结果页 展示当次作答记录
+  void jumpToAnswerResultDetailByCatalogJournalId(List<ExerciseVos>? exerciseVos,int parentIndex,int childIndex) async{
+    Exercise exercise = Exercise(exerciseVos:exerciseVos);
+    StartExam startExam = StartExam(obj: exercise);
+    state.startExam = startExam;
+    state.parentIndex = parentIndex;
+    state.childIndex = childIndex;
+    update([GetBuilderIds.examResult]);
   }
 
   // 跳转结果页 直接展示正确答案
@@ -444,6 +471,39 @@ class WeekTestDetailLogic extends GetxController {
           });
     });
   }
+
+  // 跳转结果页监听
+  void addJumpToResultExamListen(){
+    disposeId(GetBuilderIds.examResult);
+    addListenerId(GetBuilderIds.examResult, () {
+      // TODO state.startExam 开始作答数据可在此处理
+      if(state.isOffCurrentPage){
+          RouterUtil.offAndToNamed(
+              AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
+              arguments: {
+                AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult: state.startExam,
+              });
+
+      }else{
+          RouterUtil.toNamed(
+              AppRoutes.ResultPage,
+              isNeedCheckLogin:true,
+              arguments: {
+                AnsweringPage.examDetailKey: state.weekDetailResponse,
+                AnsweringPage.catlogIdKey:state.uuid,
+                AnsweringPage.parentIndexKey:state.parentIndex,
+                AnsweringPage.childIndexKey:state.childIndex,
+                AnsweringPage.LastFinishResult: state.startExam,
+              });
+      }
+    });
+  }
+
 
   List<CatalogueRecordVoList> _processCatalogueRecordVoList(List<CatalogueMergeVo> list){
     List<CatalogueRecordVoList> catalogueRecordVoList =  [];
