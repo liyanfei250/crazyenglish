@@ -55,6 +55,8 @@ class R {
   static final String imagesWeeklyItemBg0 = 'images/weekly_item_bg0.png';
   /// ![](http://127.0.0.1:11/images/xunfei.jpeg)
   static final String imagesXunfei = 'images/xunfei.jpeg';
+  /// ![](http://127.0.0.1:11/images/judge_right_selected.png)
+  static final String imagesJudgeRightSelected = 'images/judge_right_selected.png';
   /// ![](http://127.0.0.1:11/images/player_practise_play.png)
   static final String imagesPlayerPractisePlay = 'images/player_practise_play.png';
   /// ![](http://127.0.0.1:11/images/torid_second.png)
@@ -127,6 +129,8 @@ class R {
   static final String imagesClassReportThird = 'images/class_report_third.png';
   /// ![](http://127.0.0.1:11/images/index_search.png)
   static final String imagesIndexSearch = 'images/index_search.png';
+  /// ![](http://127.0.0.1:11/images/judge_wrong_correct.png)
+  static final String imagesJudgeWrongCorrect = 'images/judge_wrong_correct.png';
   /// ![](http://127.0.0.1:11/images/index_scan.png)
   static final String imagesIndexScan = 'images/index_scan.png';
   /// ![](http://127.0.0.1:11/images/result_time_tips.png)
@@ -173,6 +177,8 @@ class R {
   static final String imagesPracticeGoldTop = 'images/practice_gold_top.png';
   /// ![](http://127.0.0.1:11/images/index_icon_8.png)
   static final String imagesIndexIcon8 = 'images/index_icon_8.png';
+  /// ![](http://127.0.0.1:11/images/judge_wrong_uncorrect.png)
+  static final String imagesJudgeWrongUncorrect = 'images/judge_wrong_uncorrect.png';
   /// ![](http://127.0.0.1:11/images/review_wrong_question_item.png)
   static final String imagesReviewWrongQuestionItem = 'images/review_wrong_question_item.png';
   /// ![](http://127.0.0.1:11/images/article_collect_press.png)
@@ -273,6 +279,8 @@ class R {
   static final String imagesHistoryJumpArrow = 'images/history_jump_arrow.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_normal.png)
   static final String imagesIconTab1Normal = 'images/icon_tab1_normal.png';
+  /// ![](http://127.0.0.1:11/images/judge_wrong_unknow.png)
+  static final String imagesJudgeWrongUnknow = 'images/judge_wrong_unknow.png';
   /// ![](http://127.0.0.1:11/images/mine_phone.png)
   static final String imagesMinePhone = 'images/mine_phone.png';
   /// ![](http://127.0.0.1:11/images/review_favor_question_icon.png)
@@ -353,6 +361,8 @@ class R {
   static final String imagesArticleWomanPlay = 'images/article_woman_play.png';
   /// ![](http://127.0.0.1:11/images/class_info_teacher_name.png)
   static final String imagesClassInfoTeacherName = 'images/class_info_teacher_name.png';
+  /// ![](http://127.0.0.1:11/images/judge_right_correct.png)
+  static final String imagesJudgeRightCorrect = 'images/judge_right_correct.png';
   /// ![](http://127.0.0.1:11/images/login_role_teacher.png)
   static final String imagesLoginRoleTeacher = 'images/login_role_teacher.png';
   /// ![](http://127.0.0.1:11/images/my_icon_coupon.png)
@@ -373,6 +383,8 @@ class R {
   static final String imagesStudentNotifyParent = 'images/student_notify_parent.png';
   /// ![](http://127.0.0.1:11/images/mine_setting.png)
   static final String imagesMineSetting = 'images/mine_setting.png';
+  /// ![](http://127.0.0.1:11/images/judge_wrong_selected.png)
+  static final String imagesJudgeWrongSelected = 'images/judge_wrong_selected.png';
   /// ![](http://127.0.0.1:11/images/splash.png)
   static final String imagesSplash = 'images/splash.png';
   /// ![](http://127.0.0.1:11/images/student_notify_ic.png)
@@ -449,6 +461,8 @@ class R {
   static final String imagesToridOneHide = 'images/torid_one_hide.png';
   /// ![](http://127.0.0.1:11/images/practise_next_question_enable.png)
   static final String imagesPractiseNextQuestionEnable = 'images/practise_next_question_enable.png';
+  /// ![](http://127.0.0.1:11/images/judge_right_unknow.png)
+  static final String imagesJudgeRightUnknow = 'images/judge_right_unknow.png';
   /// ![](http://127.0.0.1:11/images/index_icon_6.png)
   static final String imagesIndexIcon6 = 'images/index_icon_6.png';
   /// ![](http://127.0.0.1:11/images/result_unfavor.png)
@@ -495,6 +509,8 @@ class R {
   static final String imagesHomeNextIcBlack = 'images/home_next_ic_black.png';
   /// ![](http://127.0.0.1:11/images/icon_tab1_pressed.png)
   static final String imagesIconTab1Pressed = 'images/icon_tab1_pressed.png';
+  /// ![](http://127.0.0.1:11/images/judge_right_uncorrect.png)
+  static final String imagesJudgeRightUncorrect = 'images/judge_right_uncorrect.png';
   /// ![](http://127.0.0.1:11/images/exercise_note_feedback.png)
   static final String imagesExerciseNoteFeedback = 'images/exercise_note_feedback.png';
   /// ![](http://127.0.0.1:11/images/icon_player_pause.png)

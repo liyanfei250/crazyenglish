@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/base/common.dart';
-import 'package:crazyenglish/pages/practise/question/base_question.dart';
+import 'package:crazyenglish/pages/practise/question_answering/base_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../entity/start_exam.dart';

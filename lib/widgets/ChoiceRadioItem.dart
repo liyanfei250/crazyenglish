@@ -20,6 +20,7 @@ class ChoiceRadioItem extends StatelessWidget {
   String? contentValue;
   double? width;
   double? height;
+  bool isJudge;
 
   ChoiceRadioItemType type = ChoiceRadioItemType.DEFAULT;
 
@@ -33,11 +34,21 @@ class ChoiceRadioItem extends StatelessWidget {
       this.contentValue,
       this.width,
       this.height,
+      this.isJudge,
       {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return isJudge? Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Image.asset(getStr("A" == labelValue? "right":"wrong",type),width: 34.w,height: 34.w,),
+        Padding(padding: EdgeInsets.only(left: 9.w)),
+        Text("A" == labelValue? "正确":"错误",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF353E4D),)
+      ],
+    ):Container(
       width: this.width??100,
       height: this.height,
       decoration: BoxDecoration(
@@ -84,6 +95,19 @@ class ChoiceRadioItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getStr(String prex,ChoiceRadioItemType type){
+    switch(type){
+      case ChoiceRadioItemType.SELECTED:
+        return "images/judge_${prex}_selected.png";
+      case ChoiceRadioItemType.WRONG_SELECTED:
+        return "images/judge_${prex}_uncorrect.png";
+      case ChoiceRadioItemType.RIGHT_SELECTED:
+        return "images/judge_${prex}_correct.png";
+      default:
+        return "images/judge_${prex}_unknow.png";
+    }
   }
 
   Color getBgColor(ChoiceRadioItemType type){

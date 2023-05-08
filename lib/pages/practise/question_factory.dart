@@ -17,7 +17,7 @@ import '../../entity/week_detail_response.dart';
 import '../../utils/colors.dart';
 import '../../widgets/ChoiceRadioItem.dart';
 import 'answering/select_gap_getxcontroller.dart';
-import 'question/base_question.dart';
+import 'question_answering/base_question.dart';
 
 /**
  * Time: 2023/2/20 13:31
@@ -28,178 +28,6 @@ import 'question/base_question.dart';
  */
 
 class QuestionFactory{
-
-  static Widget buildSingleTxtChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{
-    int? defaultChooseIndex,bool? isCorrect,UserAnswerCallback? userAnswerCallback}){
-
-    var choseItem = (-1).obs;
-    choseItem.value = defaultChooseIndex??-1;
-
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 12.w)),
-          Obx(() => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: subtopicVoList!.optionsList!.map(
-                    (e) => InkWell(
-                  onTap: isClickEnable? (){
-                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                    if(userAnswerCallback!=null){
-                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
-                          optionId:e.id,
-                          userAnswer: e.sequence,
-                          answer: subtopicVoList.answer,
-                          isCorrect: subtopicVoList.answer== e.sequence);
-                      userAnswerCallback.call(subtopicAnswerVo);
-                    }
-                  }:null,
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 12.w),
-                    child: ChoiceRadioItem(
-                        _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        subtopicVoList.answer,
-                        e!.sequence??"",
-                        e!.content??"",
-                        double.infinity,
-                        52.w
-                    ),
-                  ),
-                )
-            ).toList(),
-          ))
-        ],
-      ),
-    );
-  }
-
-  static Widget buildJudgeChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{
-    int? defaultChooseIndex,bool? isCorrect,UserAnswerCallback? userAnswerCallback}){
-
-    var choseItem = (-1).obs;
-    choseItem.value = defaultChooseIndex??-1;
-
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 12.w)),
-          Obx(() => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: subtopicVoList!.optionsList!.map(
-                    (e) => InkWell(
-                  onTap: isClickEnable? (){
-                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                    if(userAnswerCallback!=null){
-                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
-                          optionId:e.id,
-                          userAnswer: e.sequence,
-                          answer: subtopicVoList.answer,
-                          isCorrect: subtopicVoList.answer== e.sequence);
-                      userAnswerCallback.call(subtopicAnswerVo);
-                    }
-                  }:null,
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 12.w),
-                    child: ChoiceRadioItem(
-                        _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        subtopicVoList.answer,
-                        e!.sequence??"",
-                        e!.content??"",
-                        double.infinity,
-                        52.w
-                    ),
-                  ),
-                )
-            ).toList(),
-          ))
-        ],
-      ),
-    );
-  }
-
-
-  static Widget buildSingleOptionsTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,bool isClickEnable,bool isResultPage,{int? defaultChooseIndex}){
-
-    var choseItem = (-1).obs;
-    choseItem.value = defaultChooseIndex??-1;
-
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 12.w)),
-          Obx(() => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: subtopicVoList!.optionsList!.map(
-                    (e) => InkWell(
-                  onTap: (){
-                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 12.w),
-                    child: ChoiceRadioItem(
-                        _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        "",
-                        e.sequence??"",
-                        e.content??"",
-                        double.infinity,
-                        52.w
-                    ),
-                  ),
-                )
-            ).toList(),
-          ))
-        ],
-      ),
-    );
-  }
-
-
-
-  static Widget buildSingleImgChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{int? defaultChooseIndex, UserAnswerCallback? userAnswerCallback}){
-    var choseItem = (-1).obs;
-    choseItem.value = defaultChooseIndex??-1;
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 12.w)),
-          Obx(() => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: subtopicVoList!.optionsList!.map(
-                    (e) => InkWell(
-                  onTap: isClickEnable?(){
-                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
-                    if(userAnswerCallback!=null){
-                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
-                          optionId:e.id,
-                          userAnswer: e.sequence,
-                          answer: subtopicVoList.answer,
-                          isCorrect: subtopicVoList.answer== e.sequence);
-                      userAnswerCallback.call(subtopicAnswerVo);
-                    }
-                  }:null,
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 12.w),
-                    child: ChoiceImageItem(
-                      _getSelectedType(isResultPage,isClickEnable,subtopicVoList!.optionsList!.indexOf(e) == choseItem.value,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
-                        subtopicVoList!.answer,
-                        e!.sequence??"",
-                        e.img,
-                        140.w,
-                        140.w,
-                    ),
-                  ),
-                )
-            ).toList(),
-          ))
-        ],
-      ),
-    );
-  }
-
 
   /// 纠错题 空部分
   static Widget buildFixProblemQuestion(SubjectVoList subjectVoList,String htmlContent){
@@ -897,7 +725,8 @@ class QuestionFactory{
                   answer!.sequence!,
                   answer!.content!,
                   double.infinity,
-                  52.w
+                  52.w,
+                false
               ),
             )
         );
@@ -923,10 +752,10 @@ class QuestionFactory{
     }
   }
 
-  static ChoiceRadioItemType _getSelectedType(bool isResult,bool isClickable,bool isCorrect,int choseItemValue,int myLabel){
+  static ChoiceRadioItemType _getSelectedType(bool isResult,bool isClickable,bool isCorrect,String choseItemValue,String myLabel){
     if(isResult){
-      if(choseItemValue>=0){
-        if(choseItemValue == myLabel) {
+      if(choseItemValue.isEmpty){
+        if(choseItemValue.contains(myLabel)) {
           if (isCorrect) {
             return ChoiceRadioItemType.RIGHT_SELECTED;
           }else{
@@ -939,8 +768,8 @@ class QuestionFactory{
         return ChoiceRadioItemType.DEFAULT;
       }
     }else{
-      if(choseItemValue>=0){
-        if(choseItemValue == myLabel){
+      if(choseItemValue.isEmpty){
+        if(choseItemValue.contains(myLabel)){
           return ChoiceRadioItemType.SELECTED;
         }else{
           return ChoiceRadioItemType.DEFAULT;

@@ -206,6 +206,7 @@ flutter:
     - images/login_agree_default.png
     - images/weekly_item_bg0.png
     - images/xunfei.jpeg
+    - images/judge_right_selected.png
     - images/player_practise_play.png
     - images/torid_second.png
     - images/icon_close.png
@@ -242,6 +243,7 @@ flutter:
     - images/home_recommend_journals.png
     - images/class_report_third.png
     - images/index_search.png
+    - images/judge_wrong_correct.png
     - images/index_scan.png
     - images/result_time_tips.png
     - images/torid_top.png
@@ -265,6 +267,7 @@ flutter:
     - images/writing_look_botton.png
     - images/practice_gold_top.png
     - images/index_icon_8.png
+    - images/judge_wrong_uncorrect.png
     - images/review_wrong_question_item.png
     - images/article_collect_press.png
     - images/report_three.png
@@ -315,6 +318,7 @@ flutter:
     - images/splash_welcome_1.png
     - images/history_jump_arrow.png
     - images/icon_tab1_normal.png
+    - images/judge_wrong_unknow.png
     - images/mine_phone.png
     - images/review_favor_question_icon.png
     - images/login_eye_close.png
@@ -355,6 +359,7 @@ flutter:
     - images/icon_tab4_pressed.png
     - images/article_woman_play.png
     - images/class_info_teacher_name.png
+    - images/judge_right_correct.png
     - images/login_role_teacher.png
     - images/my_icon_coupon.png
     - images/icon_player_play_clicked.png
@@ -365,6 +370,7 @@ flutter:
     - images/icon_intensive_listening_show_word_no.png
     - images/student_notify_parent.png
     - images/mine_setting.png
+    - images/judge_wrong_selected.png
     - images/splash.png
     - images/student_notify_ic.png
     - images/class_info_teacher_sex.png
@@ -403,6 +409,7 @@ flutter:
     - images/result_favor.png
     - images/torid_one_hide.png
     - images/practise_next_question_enable.png
+    - images/judge_right_unknow.png
     - images/index_icon_6.png
     - images/result_unfavor.png
     - images/history_pre_month.png
@@ -426,6 +433,7 @@ flutter:
     - images/icon_player_after_play_clicked.png
     - images/home_next_ic_black.png
     - images/icon_tab1_pressed.png
+    - images/judge_right_uncorrect.png
     - images/exercise_note_feedback.png
     - images/icon_player_pause.png
     - images/num_index6.png

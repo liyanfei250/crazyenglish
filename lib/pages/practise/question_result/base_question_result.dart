@@ -18,6 +18,7 @@ import '../answer_interface.dart';
 import '../../../entity/week_detail_response.dart';
 import '../answering/answering_logic.dart';
 import '../answering/select_gap_getxcontroller.dart';
+import '../question/choice_question/choice_question_view.dart';
 import '../question_factory.dart';
 
 /**
@@ -179,6 +180,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
 
         if(element.questionTypeStr == QuestionType.single_choice
             || element.questionTypeStr == QuestionType.complete_filling
+            || element.questionTypeStr == QuestionType.multi_choice
+            || element.questionTypeStr == QuestionType.judge_choice
             || element.questionTypeStr == QuestionType.normal_reading){
           // 选择题
           itemList.add(Row(
@@ -202,30 +205,30 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
             child: Text(
               "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
-          int defaultChooseIndex = -1;
           bool? isCorrect;
           num subjectId = element.id??0;
           num subtopicId = question.id??0;
-
+          String defaultChooseAnswers = "";
           if(widget.subtopicAnswerVoMap!.containsKey("$subjectId:$subtopicId")){
             String userAnswer = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.answer??"";
             int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
             isCorrect = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.isRight;
             for(int  i = 0;i <length ;i++){
-              if(userAnswer == question!.optionsList![i].sequence){
-                defaultChooseIndex = i;
+              if(userAnswer.contains("${question.optionsList![i].sequence}")){
+                defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
               }
             }
           }
-          // TODO 判断是否是图片选择题的逻辑需要修改
-          if(question.optionsList![0].content!.isNotEmpty){
-            itemList.add(QuestionFactory.buildSingleTxtChoice(question,false,true,defaultChooseIndex: defaultChooseIndex,isCorrect:isCorrect));
+          if(element.questionTypeStr == QuestionType.judge_choice){
+            itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
           }else{
-            itemList.add(QuestionFactory.buildSingleImgChoice(question,false,true,defaultChooseIndex: defaultChooseIndex));
+            // TODO 判断是否是图片选择题的逻辑需要修改
+            if(question.optionsList![0].content!.isNotEmpty){
+              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
+            }else{
+              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
+            }
           }
-        }else if(element.questionTypeStr == QuestionType.multi_choice){
-
-        }else if(element.questionTypeStr == QuestionType.judge_choice){
 
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(Row(
