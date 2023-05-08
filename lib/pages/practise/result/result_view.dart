@@ -365,10 +365,14 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     num subjectId = currentSubjectVoList!.id??0;
     num subtopicId = e.id??0;
     if(subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
-      if(subtopicAnswerVoMap["$subjectId:$subtopicId"]!.isRight??false){
-        state =2;
+      if((subtopicAnswerVoMap["$subjectId:$subtopicId"]!.answer??"").isEmpty){
+        state = 1;
       }else{
-        state =0;
+        if(subtopicAnswerVoMap["$subjectId:$subtopicId"]!.isRight??false){
+          state =2;
+        }else{
+          state =0;
+        }
       }
     }else{
       state = 1;

@@ -20,15 +20,15 @@ import 'result_overview_logic.dart';
 class ResultOverviewPage extends BasePage {
 
   static const exerciseOverView = "exerciseOverview";
-  static const listCatalogueMergeVo = "listCatalogueMergeVo";
+  static const listCatalogueMergeVo = "catalogueRecordVoList";
 
-  List<CatalogueMergeVo> catalogueMergeVoList = [];
+  List<CatalogueRecordVoList> catalogueRecordVoList = [];
   JouralResultResponse jouralResultResponse = JouralResultResponse();
 
   ResultOverviewPage({Key? key}) : super(key: key){
     if (Get.arguments != null && Get.arguments is Map) {
       jouralResultResponse = Get.arguments[exerciseOverView];
-      catalogueMergeVoList = Get.arguments[listCatalogueMergeVo];
+      catalogueRecordVoList = Get.arguments[catalogueRecordVoList];
     }
   }
 
@@ -42,7 +42,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
 
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Questions> questionList = [];
+  List<CatalogueRecordVoList> questionList = [];
   final int pageStartIndex = 1;
 
 
@@ -121,18 +121,12 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 24.w)),
-                    GetBuilder<ResultOverviewLogic>(
-                        id: "1",
-                        builder: (logic){
-                          questionList = state.list;
-                          return Expanded(child: GroupedListView<Questions,num>(
-                            groupBy: (element) => element.groupId??0,
-                            groupSeparatorBuilder: buildSeparatorBuilder,
-                            elements: questionList,
-                            itemBuilder: buildItem,
-                          ),);
-                        }
-                    )
+                    Expanded(child: GroupedListView<CatalogueRecordVoList,num>(
+                      groupBy: (element) => element.catalogueId??0,
+                      groupSeparatorBuilder: buildSeparatorBuilder,
+                      elements: questionList,
+                      itemBuilder: buildItem,
+                    ),)
                   ],
                 ),
               ))
@@ -143,7 +137,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   }
 
 
-  Widget buildGroupHeader(Questions question){
+  Widget buildGroupHeader(CatalogueRecordVoList question){
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -160,7 +154,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
           ),
           Container(
             height: 20.w,
-            child: Text("${question.groupName}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+            child: Text("${question.catalogueMergeName} > ${question.catalogueName}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
           ),
         ],
       ),
@@ -226,7 +220,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
     );
   }
 
-  Widget buildItem(BuildContext context, Questions question) {
+  Widget buildItem(BuildContext context, CatalogueRecordVoList question) {
     return Container(
       padding: EdgeInsets.only(left: 18.w,right: 18.w),
       child: Column(
@@ -262,6 +256,15 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget getCatalogDetail(CatalogueRecordVoList question){
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+
+      ],
     );
   }
 

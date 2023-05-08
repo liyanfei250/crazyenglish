@@ -158,12 +158,14 @@ class CatalogueRecordVoList {
   CatalogueRecordVoList({
       num? catalogueId, 
       num? pid, 
-      String? catalogueName, 
-      num? questionCount, 
+      String? catalogueName,
+      String? catalogueMergeName,
+      num? questionCount,
       num? correctCount,}){
     _catalogueId = catalogueId;
     _pid = pid;
     _catalogueName = catalogueName;
+    catalogueMergeName = catalogueMergeName;
     _questionCount = questionCount;
     _correctCount = correctCount;
 }
@@ -172,22 +174,26 @@ class CatalogueRecordVoList {
     _catalogueId = json['catalogueId'];
     _pid = json['pid'];
     _catalogueName = json['catalogueName'];
+    catalogueMergeName = json['catalogueMergeName'];
     _questionCount = json['questionCount'];
     _correctCount = json['correctCount'];
   }
   num? _catalogueId;
   num? _pid;
   String? _catalogueName;
+  String? catalogueMergeName;
   num? _questionCount;
   num? _correctCount;
 CatalogueRecordVoList copyWith({  num? catalogueId,
   num? pid,
   String? catalogueName,
+  String? catalogueMergeName,
   num? questionCount,
   num? correctCount,
 }) => CatalogueRecordVoList(  catalogueId: catalogueId ?? _catalogueId,
   pid: pid ?? _pid,
   catalogueName: catalogueName ?? _catalogueName,
+  catalogueMergeName: catalogueMergeName ?? catalogueMergeName,
   questionCount: questionCount ?? _questionCount,
   correctCount: correctCount ?? _correctCount,
 );
@@ -202,6 +208,7 @@ CatalogueRecordVoList copyWith({  num? catalogueId,
     map['catalogueId'] = _catalogueId;
     map['pid'] = _pid;
     map['catalogueName'] = _catalogueName;
+    map['catalogueMergeName'] = catalogueMergeName;
     map['questionCount'] = _questionCount;
     map['correctCount'] = _correctCount;
     return map;

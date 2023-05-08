@@ -192,6 +192,7 @@ class Util {
         alignment: Alignment.topCenter,
         children: [
           Visibility(
+            visible: !isWritinPage,
             child: Container(
               width: 193.w,
               height: 193.w,
@@ -199,7 +200,7 @@ class Util {
               child: SleekCircularSlider(
                 min: 0,
                 max: 100,
-                initialValue: 60,
+                initialValue: (rightCount/questionCount)*100,
                 appearance: CircularSliderAppearance(
                     customWidths: customWidth01,
                     customColors: customColors01,
@@ -248,7 +249,7 @@ class Util {
                 },
               ),
             ),
-            visible: !isWritinPage,
+
           ),
           Container(
             padding: EdgeInsets.only(left: 13.w, right: 13.w),

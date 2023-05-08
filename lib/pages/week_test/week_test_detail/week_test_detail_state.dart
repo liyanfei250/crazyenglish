@@ -13,7 +13,7 @@ class WeekTestDetailState {
   int childIndex = 0;
 
   JouralResultResponse jouralResultResponse = JouralResultResponse();
-  List<CatalogueMergeVo> listCatalogueMergeVo = [];
+  List<CatalogueRecordVoList> catalogueRecordVoList = [];
 
   WeekTestDetailState() {
     ///Initialize variables

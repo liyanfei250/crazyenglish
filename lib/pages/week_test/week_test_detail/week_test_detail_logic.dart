@@ -332,7 +332,7 @@ class WeekTestDetailLogic extends GetxController {
   void jumpToResutOverView(String exerciseId,String classifyType,List<CatalogueMergeVo> list) async{
     JouralResultResponse jouralResultResponse = await weekTestRepository.getResultOverviewExercise(exerciseId,classifyType);
     state.jouralResultResponse = jouralResultResponse;
-    state.listCatalogueMergeVo = list;
+    state.catalogueRecordVoList = _processCatalogueRecordVoList(list);
     update([GetBuilderIds.resoultOverView]);
   }
 
@@ -440,9 +440,25 @@ class WeekTestDetailLogic extends GetxController {
           isNeedCheckLogin:true,
           arguments: {
             ResultOverviewPage.exerciseOverView: state.jouralResultResponse,
-            ResultOverviewPage.listCatalogueMergeVo: state.listCatalogueMergeVo,
+            ResultOverviewPage.listCatalogueMergeVo: state.catalogueRecordVoList,
           });
     });
   }
 
+  List<CatalogueRecordVoList> _processCatalogueRecordVoList(List<CatalogueMergeVo> list){
+    List<CatalogueRecordVoList> catalogueRecordVoList =  [];
+    if(list!=null){
+      list.forEach((element) {
+        if(element.catalogueRecordVoList!=null && element.catalogueRecordVoList!.length>0){
+          int total = element.catalogueRecordVoList!.length;
+          for(int i = 0;i<total;i++){
+            CatalogueRecordVoList catalogueRecord = element.catalogueRecordVoList![i];
+            catalogueRecord.catalogueMergeName = element.catalogueMergeName;
+            catalogueRecordVoList.add(catalogueRecord);
+          }
+        }
+      });
+    }
+    return catalogueRecordVoList;
+  }
 }
