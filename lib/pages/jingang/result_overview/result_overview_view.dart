@@ -7,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../entity/QuestionListResponse.dart';
 import '../../../entity/review/HomeSecondListDate.dart';
 import '../../../entity/start_exam.dart';
@@ -28,7 +29,7 @@ class ResultOverviewPage extends BasePage {
   ResultOverviewPage({Key? key}) : super(key: key){
     if (Get.arguments != null && Get.arguments is Map) {
       jouralResultResponse = Get.arguments[exerciseOverView];
-      catalogueRecordVoList = Get.arguments[catalogueRecordVoList];
+      catalogueRecordVoList = Get.arguments[listCatalogueMergeVo];
     }
   }
 
@@ -45,10 +46,31 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   List<CatalogueRecordVoList> questionList = [];
   final int pageStartIndex = 1;
 
-
+  Map<num,List<ExerciseVos>?> mapExerciseVos ={};
+  num totalCount= 0;
+  num totalRightCount = 0;
+  num totalTime = 0;
   @override
   void onCreate() {
 
+    int length = widget.jouralResultResponse.data!.length;
+    for(int i = 0;i < length;i++){
+      Exercise exercise = widget.jouralResultResponse.data![i];
+      totalRightCount = exercise.correctCount??0+totalRightCount;
+      totalCount = exercise.questionCount??0+totalCount;
+      totalTime = exercise.time??0+totalTime;
+      mapExerciseVos[exercise.journalCatalogueId??0] = exercise.exerciseVos;
+    }
+    if(widget.catalogueRecordVoList!=null){
+      int total = widget.catalogueRecordVoList!.length;
+      for(int i = 0;i<total;i++){
+        CatalogueRecordVoList catalogueRecord = widget.catalogueRecordVoList![i];
+        catalogueRecord.catalogueMergeName = catalogueRecord.catalogueMergeName;
+        if(mapExerciseVos.containsKey(catalogueRecord.catalogueId)){
+          questionList.add(catalogueRecord);
+        }
+      }
+    }
   }
 
 
@@ -78,7 +100,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
           child: Column(
             children: [
               buildTransparentAppBar("Module 1 Unit3"),
-              Util.buildTopIndicator(0,0,0,""),
+              Util.buildTopIndicator(totalCount,totalRightCount,totalTime,""),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
                 decoration: BoxDecoration(
@@ -121,12 +143,9 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 24.w)),
-                    Expanded(child: GroupedListView<CatalogueRecordVoList,num>(
-                      groupBy: (element) => element.catalogueId??0,
-                      groupSeparatorBuilder: buildSeparatorBuilder,
-                      elements: questionList,
-                      itemBuilder: buildItem,
-                    ),)
+                    Expanded(child: ListView.builder(
+                      itemCount: questionList.length,
+                        itemBuilder: buildItem)),
                   ],
                 ),
               ))
@@ -161,7 +180,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
     );
   }
 
-  Widget buildSeparatorBuilder(num question){
+  Widget buildSeparatorBuilder(CatalogueRecordVoList question){
     return Container(
       padding: EdgeInsets.only(left: 18.w,right: 18.w),
       child: Column(
@@ -220,7 +239,8 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
     );
   }
 
-  Widget buildItem(BuildContext context, CatalogueRecordVoList question) {
+  Widget buildItem(BuildContext context, int index) {
+    CatalogueRecordVoList question = questionList[index];
     return Container(
       padding: EdgeInsets.only(left: 18.w,right: 18.w),
       child: Column(
@@ -228,40 +248,63 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildGroupHeader(question),
-          Text("听力训练",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
-          Padding(padding: EdgeInsets.only(top: 14.w)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildTab("1", 1),
-              buildTab("2", 2),
-              buildTab("3", 3),
-              buildTab("4", 4),
-              buildTab("5", 1),
-              buildTab("6", 1),
-            ],
-          ),
-          Text("词语运用",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
-          Padding(padding: EdgeInsets.only(top: 14.w)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildTab("1", 1),
-              buildTab("2", 2),
-              buildTab("3", 3),
-              buildTab("4", 4),
-              buildTab("5", 1),
-              buildTab("6", 1),
-            ],
-          ),
+          getCatalogDetail(question),
+          buildSeparatorBuilder(question)
         ],
       ),
     );
   }
 
   Widget getCatalogDetail(CatalogueRecordVoList question){
+    List<ExerciseVos>? exerciseVos = mapExerciseVos[question.catalogueId??0];
+
+    if(exerciseVos!=null && exerciseVos.length>0){
+      List<Widget> questionList = [];
+      exerciseVos.forEach((element) {
+        String questionTypeStr = element.questionTypeStr??"";
+        questionList.add(
+          Text(QuestionType.getName(questionTypeStr),style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
+        );
+        questionList.add(
+            Padding(padding: EdgeInsets.only(top: 14.w))
+        );
+        if(element.exerciseLists!=null){
+          int childLenth = element.exerciseLists!.length;
+          questionList.add(
+          GridView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              itemCount: childLenth,
+              gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6),
+              itemBuilder: (_, int position) {
+                return InkWell(
+                  onTap: (){
+                    
+                  },
+                  child: buildTab((position+1).toString(), element.exerciseLists![position]),
+                );
+              })
+          );
+        }else{
+          print("未解析的题型");
+        }
+
+      });
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: questionList,
+      );
+    }else{
+      return Container();
+    }
+  }
+
+  Widget getQuestion(){
+    List<Widget> questionList = [];
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
 
       ],
@@ -269,26 +312,35 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   }
 
 
-  Widget buildTab(String e,int state){
-
+  Widget buildTab(String e,ExerciseLists exerciseLists){
+    int state = AnswerType.no_answer;
+    if((exerciseLists!.answer??"").isEmpty){
+      state = AnswerType.no_answer;
+    }else{
+      if(exerciseLists!.isRight??false){
+        state =AnswerType.right;
+      }else{
+        state =AnswerType.wrong;
+      }
+    }
     BoxDecoration decoration;
     Color textColor = Colors.white;
-    if(state == 1){
+    if(state == AnswerType.no_answer){
       decoration = BoxDecoration(
           color: AppColors.c_FFF5F7FA,
-          borderRadius: BorderRadius.all(Radius.circular(22.w)),
+          shape: BoxShape.circle,
           border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
       );
       textColor = AppColors.c_FFD6D9DB;
-    }else if(state == 2){
+    }else if(state == AnswerType.right){
       decoration = BoxDecoration(
         color: AppColors.c_FF62C5A2,
-        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+        shape: BoxShape.circle,
       );
     }else{
       decoration = BoxDecoration(
         color: AppColors.c_FFEC6560,
-        borderRadius: BorderRadius.all(Radius.circular(22.w)),
+        shape: BoxShape.circle,
       );
     }
 

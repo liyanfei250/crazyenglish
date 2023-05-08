@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../base/AppUtil.dart';
+import '../../base/common.dart';
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../entity/start_exam.dart';
 import '../../entity/week_detail_response.dart';
@@ -816,11 +817,11 @@ class QuestionFactory{
 
   static Color _getShotInputBorderColor(int type){
     switch(type){
-      case 0: // 默认 未作答
+      case AnswerType.no_answer: // 默认 未作答
         return AppColors.c_FFD2D5DC;
-      case 1:  // 作答错误
+      case AnswerType.wrong:  // 作答错误
         return AppColors.c_FFEB5447;
-      case 2: // 作答正确
+      case AnswerType.right: // 作答正确
         return AppColors.c_FF58BC6D;
       default:
         return AppColors.c_FFD2D5DC;
@@ -829,11 +830,11 @@ class QuestionFactory{
 
   static Color _getShotInputBgColor(int type){
     switch(type){
-      case 0: // 默认 未作答
+      case AnswerType.no_answer: // 默认 未作答
         return AppColors.c_FFF5F7FB;
-      case 1:  // 作答错误
+      case AnswerType.wrong:  // 作答错误
         return AppColors.c_FFFBF5F5;
-      case 2: // 作答正确
+      case AnswerType.right: // 作答正确
         return AppColors.c_FF58BC6D;
       default:
         return AppColors.c_FFF5F7FB;

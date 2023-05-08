@@ -107,7 +107,8 @@ class Exercise {
       num? correctCount, 
       num? questionCount, 
       num? parentIndex, 
-      num? sublevelIndex, 
+      num? sublevelIndex,
+      num? journalCatalogueId,
       num? time,
       List<ExerciseVos>? exerciseVos,}){
     _isFinish = isFinish;
@@ -115,6 +116,7 @@ class Exercise {
     _questionCount = questionCount;
     _parentIndex = parentIndex;
     _sublevelIndex = sublevelIndex;
+    _journalCatalogueId = journalCatalogueId;
     _time = time;
     _exerciseVos = exerciseVos;
 }
@@ -125,6 +127,7 @@ class Exercise {
     _questionCount = json['questionCount'];
     _parentIndex = json['parentIndex'];
     _sublevelIndex = json['sublevelIndex'];
+    _journalCatalogueId = json['journalCatalogueId'];
     _time = json['time'];
     if (json['exerciseVos'] != null) {
       _exerciseVos = [];
@@ -138,6 +141,7 @@ class Exercise {
   num? _questionCount;
   num? _parentIndex;
   num? _sublevelIndex;
+  num? _journalCatalogueId;
   num? _time;
   List<ExerciseVos>? _exerciseVos;
   Exercise copyWith({  bool? isFinish,
@@ -145,6 +149,7 @@ class Exercise {
   num? questionCount,
   num? parentIndex,
   num? sublevelIndex,
+  num? journalCatalogueId,
   num? time,
   List<ExerciseVos>? exerciseVos,
 }) => Exercise(  isFinish: isFinish ?? _isFinish,
@@ -152,6 +157,7 @@ class Exercise {
   questionCount: questionCount ?? _questionCount,
   parentIndex: parentIndex ?? _parentIndex,
   sublevelIndex: sublevelIndex ?? _sublevelIndex,
+  journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
   time: time ?? _time,
   exerciseVos: exerciseVos ?? _exerciseVos,
 );
@@ -160,6 +166,7 @@ class Exercise {
   num? get questionCount => _questionCount;
   num? get parentIndex => _parentIndex;
   num? get sublevelIndex => _sublevelIndex;
+  num? get journalCatalogueId => _journalCatalogueId;
   num? get time => _time;
   List<ExerciseVos>? get exerciseVos => _exerciseVos;
 
@@ -170,6 +177,7 @@ class Exercise {
     map['questionCount'] = _questionCount;
     map['parentIndex'] = _parentIndex;
     map['sublevelIndex'] = _sublevelIndex;
+    map['journalCatalogueId'] = _journalCatalogueId;
     map['time'] = _time;
     if (_exerciseVos != null) {
       map['exerciseVos'] = _exerciseVos?.map((v) => v.toJson()).toList();
@@ -195,7 +203,8 @@ class ExerciseVos {
       num? correctCount,
       num? questionCount,
       num? journalCatalogueId,
-      bool? isFinish, 
+      String? questionTypeStr,
+      bool? isFinish,
       num? time,
       List<ExerciseLists>? exerciseLists,}){
     _id = id;
@@ -204,6 +213,7 @@ class ExerciseVos {
     _correctCount = correctCount;
     _questionCount = questionCount;
     _journalCatalogueId = journalCatalogueId;
+    _questionTypeStr = questionTypeStr;
     _isFinish = isFinish;
     _time = time;
     _exerciseLists = exerciseLists;
@@ -216,6 +226,7 @@ class ExerciseVos {
     _correctCount = json['correctCount'];
     _questionCount = json['questionCount'];
     _journalCatalogueId = json['journalCatalogueId'];
+    _questionTypeStr = json['questionTypeStr'];
     _isFinish = json['isFinish'];
     _time = json['time'];
     if (json['exerciseLists'] != null) {
@@ -231,6 +242,7 @@ class ExerciseVos {
   num? _correctCount;
   num? _questionCount;
   num? _journalCatalogueId;
+  String? _questionTypeStr;
   bool? _isFinish;
   num? _time;
   List<ExerciseLists>? _exerciseLists;
@@ -240,6 +252,7 @@ ExerciseVos copyWith({  num? id,
   num? correctCount,
   num? questionCount,
   num? journalCatalogueId,
+  String? questionTypeStr,
   bool? isFinish,
   num? time,
   List<ExerciseLists>? exerciseLists,
@@ -249,6 +262,7 @@ ExerciseVos copyWith({  num? id,
   correctCount: correctCount ?? _correctCount,
   questionCount: questionCount ?? _questionCount,
   journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
+  questionTypeStr: questionTypeStr ?? _questionTypeStr,
   isFinish: isFinish ?? _isFinish,
   time: time ?? _time,
   exerciseLists: exerciseLists ?? _exerciseLists,
@@ -259,6 +273,7 @@ ExerciseVos copyWith({  num? id,
   num? get correctCount => _correctCount;
   num? get questionCount => _questionCount;
   num? get journalCatalogueId => _journalCatalogueId;
+  String? get questionTypeStr => _questionTypeStr;
   bool? get isFinish => _isFinish;
   num? get time => _time;
   List<ExerciseLists>? get exerciseLists => _exerciseLists;
@@ -271,6 +286,7 @@ ExerciseVos copyWith({  num? id,
     map['correctCount'] = _correctCount;
     map['questionCount'] = _questionCount;
     map['journalCatalogueId'] = _journalCatalogueId;
+    map['questionTypeStr'] = _questionTypeStr;
     map['isFinish'] = _isFinish;
     map['time'] = _time;
     if (_exerciseLists != null) {

@@ -448,7 +448,9 @@ class WeekTestDetailLogic extends GetxController {
   List<CatalogueRecordVoList> _processCatalogueRecordVoList(List<CatalogueMergeVo> list){
     List<CatalogueRecordVoList> catalogueRecordVoList =  [];
     if(list!=null){
-      list.forEach((element) {
+      int listLenth = list.length;
+      for(int j = 0;j<listLenth;j++){
+        CatalogueMergeVo element = list[j];
         if(element.catalogueRecordVoList!=null && element.catalogueRecordVoList!.length>0){
           int total = element.catalogueRecordVoList!.length;
           for(int i = 0;i<total;i++){
@@ -457,7 +459,7 @@ class WeekTestDetailLogic extends GetxController {
             catalogueRecordVoList.add(catalogueRecord);
           }
         }
-      });
+      }
     }
     return catalogueRecordVoList;
   }

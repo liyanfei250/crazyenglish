@@ -110,6 +110,12 @@ class QuestionTypeName{
 
 }
 
+class AnswerType{
+  static const int no_answer = 0;
+  static const int wrong = 1;
+  static const int right = 2;
+}
+
 // 题型分类
 class QuestionTypeClassify {
 

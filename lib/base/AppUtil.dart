@@ -200,7 +200,7 @@ class Util {
               child: SleekCircularSlider(
                 min: 0,
                 max: 100,
-                initialValue: (rightCount/questionCount)*100,
+                initialValue: questionCount>0? (rightCount/questionCount)*100:0,
                 appearance: CircularSliderAppearance(
                     customWidths: customWidth01,
                     customColors: customColors01,

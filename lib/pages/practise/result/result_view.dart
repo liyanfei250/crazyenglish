@@ -361,32 +361,32 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
   Widget buildTab(SubtopicVoList e){
     int index = tabs.indexOf(e);
-    int state = 1;
+    int state = AnswerType.no_answer;
     num subjectId = currentSubjectVoList!.id??0;
     num subtopicId = e.id??0;
     if(subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
       if((subtopicAnswerVoMap["$subjectId:$subtopicId"]!.answer??"").isEmpty){
-        state = 1;
+        state = AnswerType.no_answer;
       }else{
         if(subtopicAnswerVoMap["$subjectId:$subtopicId"]!.isRight??false){
-          state =2;
+          state =AnswerType.right;
         }else{
-          state =0;
+          state =AnswerType.wrong;
         }
       }
     }else{
-      state = 1;
+      state = AnswerType.no_answer;
     }
     BoxDecoration decoration;
     Color textColor = Colors.white;
-    if(state == 1){ // 未作答
+    if(state == AnswerType.no_answer){ // 未作答
       decoration = BoxDecoration(
         color: AppColors.c_FFF5F7FA,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
         border: Border.all(color: AppColors.c_FFD6D9DB,width: 1.w)
       );
       textColor = AppColors.c_FFD6D9DB;
-    }else if(state == 2){ // 正确
+    }else if(state == AnswerType.right){ // 正确
       decoration = BoxDecoration(
         color: AppColors.c_FF62C5A2,
         borderRadius: BorderRadius.all(Radius.circular(22.w)),
