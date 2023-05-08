@@ -198,4 +198,32 @@ class HomeViewRepository {
       return Future.error("返回HomeKingNewDateResponse为空");
     }
   }
+
+//教师
+  //获取首页我的期刊，学生端
+  Future<HomeMyJournalListDate> getMyJournalListTeacher(String id) async {
+
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.TeacherHomeMyJournals + id,
+        options: Options(method: Method.get));
+    HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //获取首页我的任务
+  Future<HomeMyJournalListDate> getMyRecommendationTeacher(String id) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.TeacherHomeRecommendationJournals,
+        options: Options(method: Method.get));
+    HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 }

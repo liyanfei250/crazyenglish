@@ -52,6 +52,11 @@ class JsonCacheManageUtils {
   static const int WeekDetailResponseFromSUBJECTID = 0x117; //从subjectId获取的试题数据
   static const int HomeKingListNew = 0x118; //金刚区
 
+  //教师端
+  static const int HomeKingListNewTeacher = 0x218; //金刚区
+  static const int HomeMyJournalDateTeacher = 0x210; //首页我的期刊列表
+  static const int HomeMyRecommendation = 0x211; //首页推荐期刊
+
   // String contentJson;
 
   // 加载缓存

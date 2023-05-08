@@ -635,8 +635,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   }
 
   void _onLoading() async {
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList(affiliatedGrade, currentPageNo+1, pageSize);
+
   }
 
   @override

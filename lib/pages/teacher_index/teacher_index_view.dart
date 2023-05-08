@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../entity/home/HomeKingNewDate.dart';
 import '../../base/AppUtil.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
@@ -20,8 +23,10 @@ class TeacherIndexPage extends StatefulWidget {
 class _TeacherIndexPageState extends State<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
-
-  final List<String> functionTxt = [
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+  List<Obj> functionTxtNew = [];
+ List<String> functionTxt = [
     "英语周报",
     "每周题库",
     "历史作业",
@@ -31,6 +36,40 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    //获取金刚区列表新增的列表
+    logic.addListenerId(GetBuilderIds.getHomeDateListTeacher, () {
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+      if (state.paperDetailNew != null) {
+        if (state.paperDetailNew != null) {
+          if (state.paperDetailNew!.obj != null &&
+              state.paperDetailNew!.obj!.length > 0) {
+            functionTxtNew = state.paperDetailNew!.obj!;
+            functionTxt =
+                state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
+            setState(() {
+            });
+          }
+        }
+      }
+    });
+    //获取金刚区我的期刊
+    logic.addListenerId(GetBuilderIds.getHomeMyJournalDateTeacher, () {
+
+    });
+    //获取底部推荐期刊
+    logic.addListenerId(GetBuilderIds.getHomeMyRecommendation, () {
+
+    });
+
+    _onRefresh();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
@@ -38,42 +77,75 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           image: DecorationImage(
               image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AppBar(
-                automaticallyImplyLeading: false,
-                title: _buildSearchBar(),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 14.w, right: 14.w),
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
+          header: WaterDropHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus? mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("");
+              } else if (mode == LoadStatus.loading) {
+                body = CupertinoActivityIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("release to load more");
+              } else {
+                body = Text("");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(padding: EdgeInsets.only(top: 16.w)),
-                    adsBanner,
-                    Padding(padding: EdgeInsets.only(top: 22.w)),
-                    GridView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: functionTxt.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5),
-                        itemBuilder: (_, int position) {
-                          String e = functionTxt[position];
-                          return _buildFuncAreaItem(e);
-                        }),
-                    Padding(padding: EdgeInsets.only(top: 20.w)),
-                    _buildClassArea(),
+                    AppBar(
+                      automaticallyImplyLeading: false,
+                      title: _buildSearchBar(),
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 14.w, right: 14.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: EdgeInsets.only(top: 16.w)),
+                          adsBanner,
+                          Padding(padding: EdgeInsets.only(top: 22.w)),
+                          GridView.builder(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemCount: functionTxt.length,
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5),
+                              itemBuilder: (_, int position) {
+                                String e = functionTxt[position];
+                                return _buildFuncAreaItem(e);
+                              }),
+                          Padding(padding: EdgeInsets.only(top: 20.w)),
+                          _buildClassArea(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        ));
+        )
+    );
   }
 
   Widget _buildSearchBar() => Container(
@@ -689,6 +761,20 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   @override
   void dispose() {
     Get.delete<TeacherIndexLogic>();
+    _refreshController.dispose();
     super.dispose();
+  }
+
+  void _onRefresh() async {
+    //新增金刚区的列表，有图片
+    logic.getHomeListNew('');
+    //获取我的期刊列表
+    logic.getMyJournalList();
+    //获取我的推荐期刊任务
+    logic.getMyRecommendation();
+  }
+
+  void _onLoading() async {
+
   }
 }

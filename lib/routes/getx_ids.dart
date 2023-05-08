@@ -76,6 +76,10 @@ class GetBuilderIds {
   static const String toChangePassword = "toChangePassword";
   static const String toChangePhoneNumber = "toChangePhoneNumber";
   static const String PracticeDate = "PracticeDate";
+  //教师端
+  static const String getHomeDateListTeacher = "getHomeDateListTeacher";
+  static const String getHomeMyJournalDateTeacher = "getHomeMyJournalDateTeacher";
+  static const String getHomeMyRecommendation = "getHomeMyRecommendation";
 
 }
 
