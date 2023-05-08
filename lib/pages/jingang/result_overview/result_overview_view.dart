@@ -13,6 +13,7 @@ import '../../../entity/review/HomeSecondListDate.dart';
 import '../../../entity/start_exam.dart';
 import '../../../r.dart';
 import '../../../utils/colors.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'result_overview_logic.dart';
 
 /**
@@ -40,6 +41,8 @@ class ResultOverviewPage extends BasePage {
 class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   final logic = Get.put(ResultOverviewLogic());
   final state = Get.find<ResultOverviewLogic>().state;
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -191,6 +194,13 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
             children: [
               InkWell(
                 onTap: (){
+                  List<ExerciseVos>? exerciseVos = mapExerciseVos[question.catalogueId??0];
+
+                  if(exerciseVos!=null && exerciseVos.length>0){
+                    logicDetail.addJumpToResultExamListen();
+                    logicDetail.getDetailAndEnterResultByCatalogueJournalId(
+                        question.catalogueId??0,exerciseVos,0,0);
+                  }
 
                 },
                 child: Container(
@@ -212,7 +222,12 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
               ),
               InkWell(
                 onTap: (){
-
+                  List<ExerciseVos>? exerciseVos = mapExerciseVos[question.catalogueId??0];
+                  if(exerciseVos!=null && exerciseVos.length>0){
+                    logicDetail.addJumpToStartExamListen();
+                    logicDetail.getDetailAndStartExam(
+                        (question.catalogueId??0).toString(),enterResult:false,jumpParentIndex:0,jumpChildIndex:0);
+                  }
                 },
                 child: Container(
                   width: 134.w,
@@ -260,7 +275,9 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
 
     if(exerciseVos!=null && exerciseVos.length>0){
       List<Widget> questionList = [];
-      exerciseVos.forEach((element) {
+      int exerciseVosLength = exerciseVos.length;
+      for(int k = 0;k<exerciseVosLength;k++){
+        ExerciseVos element = exerciseVos[k];
         String questionTypeStr = element.questionTypeStr??"";
         questionList.add(
           Text(QuestionType.getName(questionTypeStr),style: TextStyle(fontSize: 12.sp,color: AppColors.c_FFB3B7C6,fontWeight: FontWeight.w500),),
@@ -271,27 +288,28 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
         if(element.exerciseLists!=null){
           int childLenth = element.exerciseLists!.length;
           questionList.add(
-          GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              itemCount: childLenth,
-              gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6),
-              itemBuilder: (_, int position) {
-                return InkWell(
-                  onTap: (){
-                    
-                  },
-                  child: buildTab((position+1).toString(), element.exerciseLists![position]),
-                );
-              })
+              GridView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: childLenth,
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 6),
+                  itemBuilder: (_, int position) {
+                    return InkWell(
+                      onTap: (){
+                        logicDetail.addJumpToResultExamListen();
+                        logicDetail.getDetailAndEnterResultByCatalogueJournalId(
+                            question.catalogueId??0,exerciseVos,k,position);
+                      },
+                      child: buildTab((position+1).toString(), element.exerciseLists![position]),
+                    );
+                  })
           );
         }else{
           print("未解析的题型");
         }
-
-      });
+      }
       return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,15 +318,6 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
     }else{
       return Container();
     }
-  }
-
-  Widget getQuestion(){
-    List<Widget> questionList = [];
-    return Column(
-      children: [
-
-      ],
-    );
   }
 
 
@@ -357,6 +366,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
   @override
   void dispose() {
     Get.delete<ResultOverviewLogic>();
+    Get.delete<WeekTestDetailLogic>();
     super.dispose();
   }
 
