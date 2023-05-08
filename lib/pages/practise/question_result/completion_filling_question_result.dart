@@ -2,42 +2,43 @@ import 'package:crazyenglish/pages/practise/question_answering/base_question.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
 import '../question_factory.dart';
+import 'base_question_result.dart';
 
 /**
- * Time: 2023/4/19 14:40
+ * Time: 2023/4/19 13:48
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description:
+ * Description: 补全填空、翻译填空题结果页
  */
+class CompletionFillingQuestionResult extends BaseQuestionResult {
+  SubjectVoList data;
 
-class CompletionFillingQuestion extends BaseQuestion {
-
-  CompletionFillingQuestion(Map<String,ExerciseLists> subtopicAnswerVoMap,int answerType,SubjectVoList data,int childIndex,{Key? key}) : super(subtopicAnswerVoMap,answerType,childIndex,data:data,key: key);
+  CompletionFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
   @override
-  BaseQuestionState<CompletionFillingQuestion> getState() => _CompletionFillingQuestionState();
+  BaseQuestionResultState<CompletionFillingQuestionResult> getState() => _CompletionFillingQuestionResultState();
+
 }
 
-class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillingQuestion> {
+class _CompletionFillingQuestionResultState extends BaseQuestionResultState<CompletionFillingQuestionResult> {
 
   late SubjectVoList element;
+
   int questionNum = 0;
-  int currentNum = 0;
-  Widget? sub;
   @override
   void onCreate() {
     element = widget.data;
+
   }
 
   @override
   Widget build(BuildContext context) {
-    sub ??= QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
-
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -49,43 +50,39 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child: getDetail(0,sub!),)
+          Expanded(child: getDetail(0))
         ],
       ),
     );
   }
 
-
-  Widget getDetail(int defaultIndex,Widget sub){
+  Widget getDetail(int defaultIndex){
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
     questionNum = element.subtopicVoList!.length;
     if(logic!=null){
-      // 更新底部页码
-      currentNum = defaultIndex;
       logic.updateCurrentPage(defaultIndex,totalQuestion: questionNum,isInit: true);
-      // 更新空选中状态
       selectGapGetxController.updateFocus("${defaultIndex+1}",true,isInit: true);
     }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          sub,
+          QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
         ],
       ),
     );
   }
-
 
 
   @override
   void next() {
     bool canNext = false;
     int nextIndex = -1;
-    bool hasFound = false;
     selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
-        hasFound = true;
         if(questionNum == int.parse(key)){
           canNext = false;
         }else{
@@ -96,16 +93,8 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
         }
       }
     });
-    if(!hasFound){
-      nextIndex = currentNum;
-      if(currentNum+1 < questionNum){
-        canNext = true;
-        nextIndex = currentNum+1;
-      }
-    }
     if(canNext){
       jumpToQuestion(nextIndex);
-
     }
   }
 
@@ -113,23 +102,14 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
   void pre() {
     bool canPre = false;
     int preIndex = -1;
-    bool hasFound = false;
     selectGapGetxController.gapKeyIndexMap.forEach((key, value) {
       if(value){
-        hasFound = true;
         if(int.parse(key)-1>0){
           canPre = true;
           preIndex = int.parse(key)-1-1;
         }
       }
     });
-    if(!hasFound){
-      if(currentNum-1>=0){
-        canPre = true;
-        preIndex = currentNum-1;
-
-      }
-    }
     if(canPre){
       jumpToQuestion(preIndex);
     }
@@ -137,27 +117,19 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
 
   @override
   void jumpToQuestion(int index) {
-    print("jumpToQuestion:${index}");
-    // makeFocusNodeController("${index+1}").requestFocus();
     // 更新空选中状态
     selectGapGetxController.updateFocus("${index+1}",true);
     // 更细底部页码
     int currentPage = index;
-    currentNum = currentPage;
     logic.updateCurrentPage(currentPage);
-  }
-
-  @override
-  void clearFocus(){
-    selectGapGetxController.clearFocus();
-  }
-
-  @override
-  void onDestroy() {
   }
 
   @override
   getAnswers() {
     throw UnimplementedError();
+  }
+
+  @override
+  void onDestroy() {
   }
 }

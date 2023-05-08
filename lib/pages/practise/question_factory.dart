@@ -254,6 +254,168 @@ class QuestionFactory{
     );
   }
 
+  /// 常规填空、补全填空、翻译填空 题干部分
+  /// gapKey 默认空的索引号
+  static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
+    FocusScopeNode _scopeNode = FocusScopeNode();
+    int max = 0;
+    String gap = "____";
+
+    int gapIndex = -1;
+    String htmlContent = subjectVoList.content??"";
+
+    while(htmlContent.contains(gap)){
+      num subtopicId = -1;
+      String subtopicAnswer = "";
+      if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
+        subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
+        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+      }else{
+        print("试题空和答案不匹配");
+      }
+      if(subtopicId<0){
+        print("试题答案id获取失败");
+        break;
+      }else{
+        gapKey++;
+        gapIndex++;
+        print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
+        // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
+        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
+      }
+    }
+    return Html(
+      data: htmlContent??"",
+      onImageTap: (url,context,attributes,element,){
+        if(url!=null && url!.startsWith('http')){
+          DialogManager.showPreViewImageDialog(
+              BackButtonBehavior.close, url);
+        }
+      },
+      style: {
+        // "p":Style(
+        //     fontSize:FontSize.large
+        // ),
+      },
+      tagsList: Html.tags..addAll(['gap']),
+      customRenders: {
+        tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+          String key = context.tree.element!.attributes["value"]??"unknown";
+          String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+          String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
+          int subtopicId = int.parse(subtopicIdstr);
+          String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+          String content = "";
+          int num = 0;
+          print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
+          var correctType = 0.obs;
+
+          if(isResult){
+
+          }else if(isErrorCome){
+
+          }
+          return GetBuilder<SelectGapGetxController>(
+            id: key,
+            builder: (_){
+              // if(key =="1"){
+              //   print("getBuilderddd:${key}");
+              //   getFocusNodeControllerCallback(key)!.requestFocus();
+              // }
+              getFocusNodeControllerCallback(key);
+              getEditingControllerCallback(key).text = _.contentMap[key]??"";
+              getEditingControllerCallback(key).selection =
+                  TextSelection.fromPosition(TextPosition(
+                      affinity: TextAffinity.downstream,
+                      offset: '${_.contentMap[key]??""}'.length));
+              // print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              if(userAnswerCallback!=null){
+                SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                    optionId:_.optionIdMap[key]??0,
+                    userAnswer: _.contentMap[key]??"",
+                    answer: subtopicAnswer,
+                    isCorrect: getEditingControllerCallback(key).text == subtopicAnswer);
+                userAnswerCallback.call(subtopicAnswerVo);
+              }
+              return ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 48),
+                child: IntrinsicWidth(
+                  child: TextField(
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      readOnly: userAnswerCallback==null,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: _getInputColor(1)),
+                      // autofocus: _.hasFocusMap[key]??false,
+                      focusNode: getFocusNodeControllerCallback(key),
+                      onTap: () {
+                        print("textfield clicked ${int.parse(key)-1}");
+                        _.updateFocus(key, true);
+                        answerMin.jumpToQuestion(int.parse(key)-1);
+                      },
+                      decoration: InputDecoration(
+                        isDense:true,
+                        contentPadding: EdgeInsets.all(0.w),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.w,
+                              color: _getInputColor(1),
+                              style: BorderStyle.solid
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.w,
+                              color: _getInputColor(1),
+                              style: BorderStyle.solid
+                          ),
+                        ),
+                      ),
+                      onChanged: (text){
+                        print("intput:"+text+"  content:"+content);
+                        // 当前选项内容 映射到 空
+                        _.contentMap[key]=text;
+                        if(userAnswerCallback!=null){
+                          SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                              optionId:_.optionIdMap[key]??0,
+                              userAnswer: text,
+                              answer: subtopicAnswer,
+                              isCorrect: text == subtopicAnswer);
+                          userAnswerCallback.call(subtopicAnswerVo);
+                        }
+                      },
+
+                      onSubmitted: (text){
+                        print("======+++==onSubmitted====");
+                        answerMin.clearFocus();
+                        _.updateGapKeyContent(key, text??"");
+                        getFocusNodeControllerCallback(key).unfocus();
+                        _.updateFocus(key, false,isInit:false);
+                      },
+                      onEditingComplete: (){
+                        // if(num < max){
+                        //   _scopeNode.nextFocus();
+                        // }else{
+                        //   _scopeNode.unfocus();
+                        // }
+                        print("=====+++===onEditingComplete====");
+                        answerMin.clearFocus();
+                        getFocusNodeControllerCallback(key).unfocus();
+                        _.updateFocus(key, false,isInit:false);
+                      },
+                      controller: getEditingControllerCallback(key)
+                  ),
+                ),
+              );
+            },
+          );
+        })
+      },
+
+    );
+  }
+
+
   /// 选词填空 题干部分
   /// gapKey 默认空的索引号
   static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){

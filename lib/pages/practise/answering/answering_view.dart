@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
+import 'package:crazyenglish/pages/practise/question_answering/completion_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/others_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/read_question.dart';
@@ -361,6 +362,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
           questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
+            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling){
+          questionList.add(CompletionFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
           questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){

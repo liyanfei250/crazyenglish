@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/practise/question_result/completion_filling_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/writing_question_result.dart';
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
@@ -443,6 +444,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
           questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+        } else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
+            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling){
+          questionList.add(CompletionFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
           hasTab = false;
