@@ -26,7 +26,6 @@ class IndexLogic extends GetxController {
     super.onClose();
   }
 
-  //todo 新增的金刚区列表
   void getHomeListNew(String type) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeKingListNew)

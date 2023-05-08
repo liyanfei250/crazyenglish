@@ -62,7 +62,6 @@ class Api {
   static String getWeeklyDirectory =
       Config.ApiHost + "/app/weekly/directory/tree";
 
-
   //根据用户错题本
   static String getErrotList = Config.ApiHost + "/app/exercises/error/weekly";
 
@@ -78,17 +77,20 @@ class Api {
       Config.ApiHost + "/app/practicerecords/exercises";
 
   // 开始作答接口
-  static String getStartExam = Config.ApiHost + "/question/exercise/isFinishByCatalogueId/";
+  static String getStartExam =
+      Config.ApiHost + "/question/exercise/isFinishByCatalogueId/";
 
   // 练习记录作答数据
-  static String getExerciseDetail = Config.ApiHost + "/question/exercise/getExerciseDetail/";
+  static String getExerciseDetail =
+      Config.ApiHost + "/question/exercise/getExerciseDetail/";
 
   // 提交答案接口
-  static String postWeekCommit = Config.ApiHost + "/question/exercise/submitAnswer";
+  static String postWeekCommit =
+      Config.ApiHost + "/question/exercise/submitAnswer";
 
   // 结果页接口
-  static String getExamResult = Config.ApiHost + "/question/exercise/getExerciseResultDetails/";
-
+  static String getExamResult =
+      Config.ApiHost + "/question/exercise/getExerciseResultDetails/";
 
   // 金刚区接口新增
   static String getHomeKingListNew =
@@ -107,39 +109,50 @@ class Api {
       Config.ApiHost + "/question/exercise/getCatalogueByJournalId/";
 
   // 周报详情
-  static String getWeekDetail = Config.ApiHost + "/question/exercise/getSubDetailsByCatalogueId/";
-
+  static String getWeekDetail =
+      Config.ApiHost + "/question/exercise/getSubDetailsByCatalogueId/";
 
   //获取复习首页的信息接口
-  static String getReviewHomeDetail = Config.ApiHost + "/question/exercise/getReviewTotal/";
+  static String getReviewHomeDetail =
+      Config.ApiHost + "/question/exercise/getReviewTotal/";
 
   // 练习记录有数据的天数获取
-  static String getPracticeDateList = Config.ApiHost + "/question/exercise/getExerciseMonthDate/";
+  static String getPracticeDateList =
+      Config.ApiHost + "/question/exercise/getExerciseMonthDate/";
+
   // 练习记录接口数据
-  static String getPracticeRecordList = Config.ApiHost + "/question/exercise/getExerciseRecordList";
+  static String getPracticeRecordList =
+      Config.ApiHost + "/question/exercise/getExerciseRecordList";
 
   // 期刊成绩接口数据
-  static String getJournalExerciseResult = Config.ApiHost + "/question/exercise/getJournalExerciseResult";
+  static String getJournalExerciseResult =
+      Config.ApiHost + "/question/exercise/getJournalExerciseResult";
 
   // 错题本tab接口
   static String getErrorNoteTabList = Config.ApiHost + "/";
 
   // 错题本已订正/未订正列表
-  static String getErrorNoteTabDateList = Config.ApiHost + "/question/collected/getCorrectionList";
+  static String getErrorNoteTabDateList =
+      Config.ApiHost + "/question/collected/getCorrectionList";
 
   // 收藏题目最近搜索历史接口改成金刚区
   static String getSearchRecordDateList = Config.ApiHost + "/";
 
   // 收藏列表接口
-  static String getSearchCollectListDate = Config.ApiHost + "/question/collected/getCollectedList";
+  static String getSearchCollectListDate =
+      Config.ApiHost + "/question/collected/getCollectedList";
 
   // 收藏列表详情接口
-  static String getSearchCollectListDateDetail = Config.ApiHost + "/question/exercise/getSubjectDetails/";
+  static String getSearchCollectListDateDetail =
+      Config.ApiHost + "/question/exercise/getSubjectDetails/";
 
   // 收藏
-  static String toCollect = Config.ApiHost + "/question/collected/collectOrCancelQuestion/";
+  static String toCollect =
+      Config.ApiHost + "/question/collected/collectOrCancelQuestion/";
+
   // 题目收藏状态查询
-  static String queryQuestionCollect = Config.ApiHost + "/question/collected/isCollect";
+  static String queryQuestionCollect =
+      Config.ApiHost + "/question/collected/isCollect";
 
   // 首页金刚区列表
   static String getHomeList = Config.ApiHost + "/";
@@ -148,13 +161,15 @@ class Api {
   static String getHomeListChoiceDate = Config.ApiHost + "/";
 
   // 首页金刚区听力列表
-  static String getHomeSecondListDate = Config.ApiHost + "/question/exercise/getListeningExerciseCatalogue";
+  static String getHomeSecondListDate =
+      Config.ApiHost + "/question/exercise/getListeningExerciseCatalogue";
 
   // 首页金刚区周报筛选
   static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";
 
   // 首页我的期刊列表
-  static String getHomeMyJournalListDate = Config.ApiHost + "/question/exercise/getPurchaseJournal/";
+  static String getHomeMyJournalListDate =
+      Config.ApiHost + "/question/exercise/getPurchaseJournal/";
 
   // 首页我的任务
   static String getHomeMyTasksDate = Config.ApiHost + "/";
@@ -166,7 +181,8 @@ class Api {
   static String getHClassInfoDate = Config.ApiHost + "/";
 
   // 提交反馈信息
-  static String postContentDate = Config.ApiHost + "/question/collected/saveFeedback";
+  static String postContentDate =
+      Config.ApiHost + "/question/collected/saveFeedback";
 
   // 获取反馈信息
   static String getContentDate = Config.ApiHost + "/";
@@ -185,4 +201,17 @@ class Api {
 
   // 修改手机号
   static String toChangePhoneNum = Config.ApiHost + "/";
+
+  //教师端
+  //首页
+  //我的期刊
+  static String TeacherHomeMyJournals = Config.ApiHost + "/";
+
+  //待办工作
+  static String TeacherHomeMyTodoList = Config.ApiHost + "/";
+
+  //推荐期刊
+  static String TeacherHomeRecommendationJournals = Config.ApiHost + "/";
+
+
 }
