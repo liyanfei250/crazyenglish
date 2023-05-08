@@ -189,6 +189,45 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
         }else if(element.questionTypeStr == QuestionType.judge_choice){
 
+          // todo 判断题
+          itemList.add(buildQuestionType("判断题"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          bool isClickEnable = true;
+          int defaultChooseIndex = -1;
+          // 找到上次作答记录 或者 错题本正确题目答案
+          num subjectId = element.id??0;
+          num subtopicId = question.id??0;
+          if(widget.subtopicAnswerVoMap!=null
+              && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+            ExerciseLists exerciseLists = widget.subtopicAnswerVoMap["$subjectId:$subtopicId"]!;
+            if(question.optionsList!=null &&
+                exerciseLists.answer!=null &&
+                exerciseLists.answer!.isNotEmpty){
+              for(int i = 0; i< question.optionsList!.length;i++){
+                if(exerciseLists.answer == question.optionsList![i].sequence){
+                  defaultChooseIndex = i;
+                }
+              }
+            }
+          }
+          if(widget.answerType == AnsweringPage.answer_fix_type){
+            if(widget.subtopicAnswerVoMap!=null
+                && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+              isClickEnable = false;
+            }
+          } else if(widget.answerType == AnsweringPage.answer_normal_type){
+            defaultChooseIndex = -1;
+          }
+
+          // TODO 判断是否是图片选择题的逻辑需要修改
+          if(question.optionsList![0].content!.isNotEmpty){
+            itemList.add(QuestionFactory.buildJudgeChoice(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseIndex));
+          }
+
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(buildQuestionType("填空题"));
           itemList.add(buildReadQuestion(element.content ?? ""));

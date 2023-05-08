@@ -73,6 +73,51 @@ class QuestionFactory{
     );
   }
 
+  static Widget buildJudgeChoice(SubtopicVoList subtopicVoList,bool isClickEnable,bool isResultPage,{
+    int? defaultChooseIndex,bool? isCorrect,UserAnswerCallback? userAnswerCallback}){
+
+    var choseItem = (-1).obs;
+    choseItem.value = defaultChooseIndex??-1;
+
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 12.w)),
+          Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: subtopicVoList!.optionsList!.map(
+                    (e) => InkWell(
+                  onTap: isClickEnable? (){
+                    choseItem.value = subtopicVoList!.optionsList!.indexOf(e);
+                    if(userAnswerCallback!=null){
+                      SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:e.subtopicId,
+                          optionId:e.id,
+                          userAnswer: e.sequence,
+                          answer: subtopicVoList.answer,
+                          isCorrect: subtopicVoList.answer== e.sequence);
+                      userAnswerCallback.call(subtopicAnswerVo);
+                    }
+                  }:null,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 12.w),
+                    child: ChoiceRadioItem(
+                        _getSelectedType(isResultPage,isClickEnable,isCorrect??false,choseItem.value,subtopicVoList!.optionsList!.indexOf(e)),
+                        subtopicVoList.answer,
+                        e!.sequence??"",
+                        e!.content??"",
+                        double.infinity,
+                        52.w
+                    ),
+                  ),
+                )
+            ).toList(),
+          ))
+        ],
+      ),
+    );
+  }
+
 
   static Widget buildSingleOptionsTxtChoice(SubtopicVoList subtopicVoList,int answerIndex,bool isClickEnable,bool isResultPage,{int? defaultChooseIndex}){
 
