@@ -122,7 +122,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
       TabBarView(
           controller: _tabController,
           children: tabs.map((e) {
-            return ClassCard(isShowRank: true,className: e.name!,classImage: e.image!,studentSize: e.studentSize!,teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE),);
+            return ClassCard(isShowRank: true,className: e.name!,classImage: e.image!,studentSize: e.studentSize!.toString(),teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE),);
           }).toList());
 
   @override

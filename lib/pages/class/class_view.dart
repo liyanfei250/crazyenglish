@@ -95,6 +95,7 @@ class _ClassPageState extends State<ClassPage>
         ],
       ),
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
             extend = !extend;

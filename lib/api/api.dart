@@ -219,4 +219,13 @@ class Api {
   //班级详情查询
   static String TeacherClassDetail =
       Config.ApiHost + "/member/schoolClass/detail/";
+  //班级添加
+  static String TeacherClassAdd =
+      Config.ApiHost + "/member/schoolClass/save";
+  //班级delete
+  static String TeacherClassDelete =
+      Config.ApiHost + "/member/schoolClass/delete/";
+  //班级update
+  static String TeacherClassChange =
+      Config.ApiHost + "/member/schoolClass/update";
 }

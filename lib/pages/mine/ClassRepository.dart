@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:crazyenglish/entity/base_resp.dart';
 import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
 import '../../entity/class_detail_response.dart';
 import '../../entity/class_list_response.dart';
+import '../../entity/common_response.dart';
 import '../../net/net_manager.dart';
 
 class ClassRepository{
@@ -27,6 +29,19 @@ class ClassRepository{
         Method.get, Api.TeacherClassDetail+id,
         options: Options(method: Method.get));
     ClassDetailResponse paperDetail = ClassDetailResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<CommonResponse> myClassAdd(
+      Map<String,dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.TeacherClassAdd,data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
+    CommonResponse paperDetail = CommonResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

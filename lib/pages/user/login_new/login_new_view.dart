@@ -156,6 +156,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       //todo 如果是老师就保存老师的信息
      var isTeacher = true;
       if(isTeacher){
+        SpUtil.putString(BaseConstant.TEACHER_USER_ID,'1651539603655626753');
         SpUtil.putString(BaseConstant.TEACHER_NAME,'');
         SpUtil.putString(BaseConstant.TEACHER_SEX,'');
         SpUtil.putString(BaseConstant.TEACHER_AGE,'');

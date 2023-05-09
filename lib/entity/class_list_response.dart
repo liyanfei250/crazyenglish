@@ -1,6 +1,6 @@
 /// code : 0
 /// message : "系统正常"
-/// obj : [{"id":1655395694170124290,"name":"精英班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":"2","teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:14:24","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:14:24","studentIds":null},{"id":1655395919731404801,"name":"尖子班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":"0","teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:15:18","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:15:18","studentIds":null},{"id":1655395952644108289,"name":"锤子班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":"0","teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:15:26","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:15:26","studentIds":null},{"id":1655396107573309442,"name":"一流班","image":"https://flutter.cn/assets/images/cn/flutter-cn-logo.png","studentSize":"0","teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:16:02","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:16:02","studentIds":null}]
+/// obj : [{"id":1655395694170124290,"name":"精英班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":2,"teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:14:24","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:14:24","studentIds":null},{"id":1655395919731404801,"name":"尖子班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":0,"teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:15:18","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:15:18","studentIds":null},{"id":1655395952644108289,"name":"锤子班","image":"https://www.baidu.com/img/flexible/logo/pc/result.png","studentSize":0,"teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:15:26","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:15:26","studentIds":null},{"id":1655396107573309442,"name":"一流班","image":"https://flutter.cn/assets/images/cn/flutter-cn-logo.png","studentSize":0,"teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-08T10:16:02","updateUser":1651539603655626753,"updateTime":"2023-05-08T10:16:02","studentIds":null},{"id":1655756629867016194,"name":"学渣班","image":"https://p0.ssl.img.360kuai.com/t01736c309615e3dc19.jpg","studentSize":0,"teacherUserId":1651539603655626753,"status":1,"isDelete":false,"createUser":1651539603655626753,"createTime":"2023-05-09T10:08:38","updateUser":1651539603655626753,"updateTime":"2023-05-09T10:08:38","studentIds":null}]
 /// p : null
 /// success : true
 
@@ -69,7 +69,7 @@ ClassListResponse copyWith({  num? code,
 /// id : 1655395694170124290
 /// name : "精英班"
 /// image : "https://www.baidu.com/img/flexible/logo/pc/result.png"
-/// studentSize : "2"
+/// studentSize : 2
 /// teacherUserId : 1651539603655626753
 /// status : 1
 /// isDelete : false
@@ -84,7 +84,7 @@ class Obj {
       num? id, 
       String? name, 
       String? image, 
-      String? studentSize, 
+      String? studentSize,
       num? teacherUserId, 
       num? status, 
       bool? isDelete, 
@@ -111,7 +111,7 @@ class Obj {
     _id = json['id'];
     _name = json['name'];
     _image = json['image'];
-    _studentSize = json['studentSize'];
+    _studentSize = json['studentSize'].toString();
     _teacherUserId = json['teacherUserId'];
     _status = json['status'];
     _isDelete = json['isDelete'];
