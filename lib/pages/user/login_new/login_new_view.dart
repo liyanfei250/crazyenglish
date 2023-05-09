@@ -153,6 +153,14 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         print("66666+="+state.infoResponse.obj!.id!.toString());
       }
       //判断有没有选择身份
+      //todo 如果是老师就保存老师的信息
+     var isTeacher = true;
+      if(isTeacher){
+        SpUtil.putString(BaseConstant.TEACHER_NAME,'');
+        SpUtil.putString(BaseConstant.TEACHER_SEX,'');
+        SpUtil.putString(BaseConstant.TEACHER_AGE,'');
+        SpUtil.putString(BaseConstant.TEACHER_PHONE,'');
+      }
       /*if (state.infoResponse.code == 1) {
         if (state.infoResponse.obj?.identity == 2 ||
             state.infoResponse.obj?.identity == 3) {

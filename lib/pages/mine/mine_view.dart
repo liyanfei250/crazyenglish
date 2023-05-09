@@ -281,9 +281,11 @@ class _MinePageState extends BasePageState<MinePage> {
 
         switch (menu) {
           case '我的班级':
-            RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-                isNeedCheckLogin: true,
-                arguments: {'isShowAdd': 0});
+            RouterUtil.toNamed(AppRoutes.MyClassListPage,
+                isNeedCheckLogin: true);
+            // RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+            //     isNeedCheckLogin: true,
+            //     arguments: {'isShowAdd': 0});
             break;
           case '我的订单':
             RouterUtil.toNamed(AppRoutes.MyOrderPage,isNeedCheckLogin: true,);

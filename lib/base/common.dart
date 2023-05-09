@@ -38,6 +38,10 @@ class BaseConstant{
   static const String IS_TEACHER_LOGIN = "is_TEacher_login";
   static const String USER_NAME = "USER_NAME";
   static const String USER_ID = "USER_ID";
+  static const String TEACHER_NAME = "TEACHER_NAME";
+  static const String TEACHER_SEX = "TEACHER_SEX";
+  static const String TEACHER_AGE = "TEACHER_AGE";
+  static const String TEACHER_PHONE = "TEACHER_PHONE";
 
 }
 

@@ -43,6 +43,7 @@ import '../pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import '../pages/homework/school_report_list/school_report_list_view.dart';
 import '../pages/jingang/listening_practice/listening_practice_view.dart';
 import '../pages/jingang/result_overview/result_overview_view.dart';
+import '../pages/mine/my_class_list/my_class_list_view.dart';
 import '../pages/reviews/collect/error_note_collect/error_note_collect_view.dart';
 import '../pages/home_page.dart';
 import '../pages/practise/result/result_view.dart';
@@ -96,6 +97,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.QRViewPage, page:()=>QRViewExample(),),
     GetPage(name: AppRoutes.QRViewPageNextClass, page:()=>Class_messagePage(),),
     GetPage(name: AppRoutes.QRViewPageNextAudio, page:()=>Scan_audio_messagePage(),),
+    GetPage(name: AppRoutes.MyClassListPage, page:()=>MyClassListPage(),),
     GetPage(name: AppRoutes.StudentRankingPage, page:()=>Student_rankingPage(),),
     GetPage(name: AppRoutes.LearningReportPage, page:()=>LearningReportPage(),),
     GetPage(name: AppRoutes.StudentListPage, page:()=>StudentListPage(),),

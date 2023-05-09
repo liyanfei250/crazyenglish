@@ -53,9 +53,11 @@ class JsonCacheManageUtils {
   static const int HomeKingListNew = 0x118; //金刚区
 
   //教师端
-  static const int HomeKingListNewTeacher = 0x218; //金刚区
-  static const int HomeMyJournalDateTeacher = 0x210; //首页我的期刊列表
-  static const int HomeMyRecommendation = 0x211; //首页推荐期刊
+  static const int HomeKingListNewTeacher = 0x201; //金刚区
+  static const int HomeMyJournalDateTeacher = 0x202; //首页我的期刊列表
+  static const int HomeMyRecommendation = 0x203; //首页推荐期刊
+  static const int HomeMyClassList = 0x204; //我的班级列表
+  static const int HomeMyClassDetail = 0x205; //我的班级详情
 
   // String contentJson;
 
