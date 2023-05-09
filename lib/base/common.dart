@@ -133,6 +133,32 @@ class QuestionTypeClassify {
   static const int grammer = 7;  /// 语法
   static const int sentence = 8;  /// 句子
   static const int others = 9;  /// 其它
+
+  static String getName(int questionType){
+    switch(questionType){
+      case QuestionTypeClassify.listening:
+        return "听力";
+      case QuestionTypeClassify.reading:
+        return "阅读";
+      case QuestionTypeClassify.writing:
+        return "写作";
+      case QuestionTypeClassify.spoken:
+        return "口语";
+      case QuestionTypeClassify.vocabulary:
+        return "词汇";
+      case QuestionTypeClassify.phrase:
+        return "短语";
+      case QuestionTypeClassify.grammer:
+        return "语法";
+      case QuestionTypeClassify.sentence:
+        return "句子";
+      case QuestionTypeClassify.others:
+        return "其它";
+      default:
+        return "题型分类未知";
+    }
+  }
+
 }
 
 
