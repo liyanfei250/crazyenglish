@@ -7,7 +7,6 @@ import '../../../api/api.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/common.dart';
 import '../../../entity/base_resp.dart';
-import '../../../entity/home/ErrorNoteTab.dart';
 import '../../../entity/home/HomeKingDate.dart';
 import '../../../entity/home/PractiseDate.dart';
 import '../../../entity/home/SearchCollectListDetail.dart';
@@ -49,21 +48,10 @@ class ReviewRepository {
   Future<PractiseHistoryDate> getPracticeRecordList(
       Map<String,dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.getPracticeRecordList,data: req,
-        options: Options(method: Method.post,contentType: ContentType.json.toString()));
+        Method.post, Api.getPracticeRecordList, data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
     PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
-//获取tab
-  Future<ErrorNoteTab> getErrorNoteTab(String id) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getErrorNoteTabList,
-        options: Options(method: Method.get));
-    ErrorNoteTab paperDetail = ErrorNoteTab.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

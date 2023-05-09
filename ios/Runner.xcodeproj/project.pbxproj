@@ -383,7 +383,7 @@
 					"DISABLE_PUSH_NOTIFICATIONS=1",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "英语周报";
+				INFOPLIST_KEY_CFBundleDisplayName = "数组英语";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/bin/swift\n/usr/lib/swift",
@@ -521,7 +521,7 @@
 					"DISABLE_PUSH_NOTIFICATIONS=1",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "英语周报";
+				INFOPLIST_KEY_CFBundleDisplayName = "数组英语";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/bin/swift\n/usr/lib/swift",
@@ -554,7 +554,7 @@
 					"DISABLE_PUSH_NOTIFICATIONS=1",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "英语周报";
+				INFOPLIST_KEY_CFBundleDisplayName = "数组英语";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/bin/swift\n/usr/lib/swift",

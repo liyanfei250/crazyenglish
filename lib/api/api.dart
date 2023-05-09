@@ -3,17 +3,17 @@ import '../config.dart';
 class Api {
   static String getUser = Config.ApiHost + "/user.site";
   static String getLogin = Config.ApiHost + "/oauth/token";
-  static String getPsdLoginNew = "http://82.157.164.83:9000/oauth/token";
-  static String getLoginNew = "http://192.168.0.155/app/user/login/sms";
-  static String getResetPsdNew = "http://192.168.0.155/app/user/reset/sms";
+  static String getPsdLoginNew = Config.ApiHost+"/oauth/token";
+  static String getLoginNew = Config.ApiHost+"/user/login/sms";
+  static String getResetPsdNew = Config.ApiHost+"/user/reset/sms";
 
-  static String getSendAuthCodeNew = "http://192.168.0.155/config/sms/put";
+  static String getSendAuthCodeNew = Config.ApiHost+"/config/sms/put";
 
   //修改年级信息
-  static String getChangeGrade = "http://192.168.0.155/app/user/put";
+  static String getChangeGrade = Config.ApiHost+"/app/user/put";
 
   //获取用户信息
-  static String getUserIofo = "http://82.157.164.83:9000/member/user/";
+  static String getUserIofo = Config.ApiHost+"/member/user/";
   static String getSendCode = Config.ApiHost + "/crazy-basic-core/sms/";
 
   static String getWeekPaperList =
@@ -51,16 +51,6 @@ class Api {
 
   static String getWeiXinPay = Config.ApiHost + "/weixinpay.site";
   static String getPush = Config.ApiHost + "/push_record.site";
-  static String getMobile =
-      "https://api.verification.jpush.cn/v1/web/loginTokenVerify";
-
-  // 胡一旭接口
-  // 周报列表
-  static String getWeeklyList = Config.ApiHost + "/app/weekly/list";
-
-  // 周报目录
-  static String getWeeklyDirectory =
-      Config.ApiHost + "/app/weekly/directory/tree";
 
   //根据用户错题本
   static String getErrotList = Config.ApiHost + "/app/exercises/error/weekly";
@@ -128,15 +118,12 @@ class Api {
   static String getJournalExerciseResult =
       Config.ApiHost + "/question/exercise/getJournalExerciseResult";
 
-  // 错题本tab接口
-  static String getErrorNoteTabList = Config.ApiHost + "/";
-
   // 错题本已订正/未订正列表
   static String getErrorNoteTabDateList =
       Config.ApiHost + "/question/collected/getCorrectionList";
 
   // 收藏题目最近搜索历史接口改成金刚区
-  static String getSearchRecordDateList = Config.ApiHost + "/";
+  static String getSearchRecordDateList = Config.ApiHost + "/getSearchRecordDateList";
 
   // 收藏列表接口
   static String getSearchCollectListDate =
@@ -155,63 +142,63 @@ class Api {
       Config.ApiHost + "/question/collected/isCollect";
 
   // 首页金刚区列表
-  static String getHomeList = Config.ApiHost + "/";
+  static String getHomeList = Config.ApiHost + "/getHomeList";
 
   // 首页金刚区列表听力筛选条件
-  static String getHomeListChoiceDate = Config.ApiHost + "/";
+  static String getHomeListChoiceDate = Config.ApiHost + "/getHomeListChoiceDate";
 
   // 首页金刚区听力列表
   static String getHomeSecondListDate =
       Config.ApiHost + "/question/exercise/getListeningExerciseCatalogue";
 
   // 首页金刚区周报筛选
-  static String getHomeWeeklyChoiceDate = Config.ApiHost + "/";
+  static String getHomeWeeklyChoiceDate = Config.ApiHost + "/getHomeWeeklyChoiceDate";
 
   // 首页我的期刊列表
   static String getHomeMyJournalListDate =
       Config.ApiHost + "/question/exercise/getPurchaseJournal/";
 
   // 首页我的任务
-  static String getHomeMyTasksDate = Config.ApiHost + "/";
+  static String getHomeMyTasksDate = Config.ApiHost + "/getHomeMyTasksDate";
 
   // 首页顶部搜索
-  static String getHomeSearchListDate = Config.ApiHost + "/";
+  static String getHomeSearchListDate = Config.ApiHost + "/getHomeSearchListDate";
 
   // 首页扫描班级信息
-  static String getHClassInfoDate = Config.ApiHost + "/";
+  static String getHClassInfoDate = Config.ApiHost + "/getHClassInfoDate";
 
   // 提交反馈信息
   static String postContentDate =
       Config.ApiHost + "/question/collected/saveFeedback";
 
   // 获取反馈信息
-  static String getContentDate = Config.ApiHost + "/";
+  static String getContentDate = Config.ApiHost + "/getContentDate";
 
   // 提交头像
-  static String toPushHeaderImage = Config.ApiHost + "/";
+  static String toPushHeaderImage = Config.ApiHost + "/toPushHeaderImage";
 
   // 获取个人信息
-  static String getPersonInfo = Config.ApiHost + "/";
+  static String getPersonInfo = Config.ApiHost + "/getPersonInfo";
 
   // 修改昵称
-  static String toChangeNickName = Config.ApiHost + "/";
+  static String toChangeNickName = Config.ApiHost + "/toChangeNickName";
 
   // 修改密码
-  static String toChangePassword = Config.ApiHost + "/";
+  static String toChangePassword = Config.ApiHost + "/toChangePassword";
 
   // 修改手机号
-  static String toChangePhoneNum = Config.ApiHost + "/";
+  static String toChangePhoneNum = Config.ApiHost + "/toChangePhoneNum";
 
   //教师端
   //首页
   //我的期刊
-  static String TeacherHomeMyJournals = Config.ApiHost + "/";
+  static String TeacherHomeMyJournals = Config.ApiHost + "/TeacherHomeMyJournals";
 
   //待办工作
-  static String TeacherHomeMyTodoList = Config.ApiHost + "/";
+  static String TeacherHomeMyTodoList = Config.ApiHost + "/TeacherHomeMyTodoList";
 
   //推荐期刊
-  static String TeacherHomeRecommendationJournals = Config.ApiHost + "/";
+  static String TeacherHomeRecommendationJournals = Config.ApiHost + "/TeacherHomeRecommendationJournals";
 
   //班级列表查询
   static String TeacherClassList =

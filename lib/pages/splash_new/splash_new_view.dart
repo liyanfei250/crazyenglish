@@ -30,7 +30,7 @@ class SplashNewPageState extends State<SplashPageNew> {
   final logic = Get.put(Splash_newLogic());
   final state = Get.find<Splash_newLogic>().state;
   String privacyAgreementContent =
-      "亲爱的用户，欢迎你使用英语周报！我们将依据隐私政策和服务条款来帮助你了解我们在收集、使用、存储和共享你的个人信息的情况以及你享有的相关权利。<br><br>为保障服务所必须，<b>我们会收集你的设备信息和日志信息。</b><br><br>你可以通过阅读完整的<a href=\"${C.REGISTER_LAW}\" contenteditable=\"false\" target=\"_blank\">《用户协议》</a>和<a href=\"${C.REGISTER_PRIVACY_POLICY_LAW}\" contenteditable=\"false\" target=\"_blank\">《隐私政策》</a>";
+      "亲爱的用户，欢迎你使用数组英语！我们将依据隐私政策和服务条款来帮助你了解我们在收集、使用、存储和共享你的个人信息的情况以及你享有的相关权利。<br><br>为保障服务所必须，<b>我们会收集你的设备信息和日志信息。</b><br><br>你可以通过阅读完整的<a href=\"${C.REGISTER_LAW}\" contenteditable=\"false\" target=\"_blank\">《用户协议》</a>和<a href=\"${C.REGISTER_PRIVACY_POLICY_LAW}\" contenteditable=\"false\" target=\"_blank\">《隐私政策》</a>";
 
   var privacyAgreementTitle = "温馨提示";
   bool firstInstall = false;
