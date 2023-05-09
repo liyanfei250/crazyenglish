@@ -372,6 +372,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           hasBottomPageTab = false;
           questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
+        || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
@@ -382,26 +385,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               break;
             default:
               questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
-              Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
-          // case QuestionTypeClassify.: // 语言综合训练
-          //   if (element.typeChildren == 1) {
-          //     // 单项选择题
-          //     questionList
-          //         .add(ChoiseQuestion(datas: weekTestDetailResponse.data!));
-          //     return questionList;
-          //   } else if (element.typeChildren == 2) {
-          //     // 补全对话
-          //     questionList.add(ReadQuestion(data: element));
-          //   } else if (element.typeChildren == 3){
-          //     // 完型填空
-          //     questionList.add(ReadQuestion(data: element));
-          //   }
-          //   break;
-          // case 4: // 写作题
-          //   if (element.typeChildren == 7) {
-          //     // 写作题
-          //   }
-          //   break;
+              Util.toast("题型分类："
+                  "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
+                  "题型：${currentSubjectVoList!.questionTypeName}"
+                  "\n不支持解析");
           }
         }
 

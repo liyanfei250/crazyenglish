@@ -450,7 +450,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
           hasTab = false;
-        }else{
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
+            || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+            hasTab = false;
+          }
+        } else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
               questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
@@ -469,7 +475,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               break;
             default:
               questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-              Util.toast("题型分类${currentSubjectVoList!.questionTypeName}还未解析");
+              Util.toast("题型分类："
+                  "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
+                  "题型：${currentSubjectVoList!.questionTypeName}"
+                  "\n不支持解析");
           }
         }
 
