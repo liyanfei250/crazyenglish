@@ -216,4 +216,7 @@ class Api {
   //班级列表查询
   static String TeacherClassList =
       Config.ApiHost + "/member/schoolClass/selectList";
+  //班级详情查询
+  static String TeacherClassDetail =
+      Config.ApiHost + "/member/schoolClass/detail/";
 }

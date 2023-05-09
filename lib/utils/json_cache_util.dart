@@ -57,6 +57,7 @@ class JsonCacheManageUtils {
   static const int HomeMyJournalDateTeacher = 0x202; //首页我的期刊列表
   static const int HomeMyRecommendation = 0x203; //首页推荐期刊
   static const int HomeMyClassList = 0x204; //我的班级列表
+  static const int HomeMyClassDetail = 0x205; //我的班级详情
 
   // String contentJson;
 

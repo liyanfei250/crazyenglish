@@ -1,3 +1,4 @@
+import '../../../entity/class_detail_response.dart';
 import '../../../entity/class_list_response.dart';
 
 class My_class_listState {
