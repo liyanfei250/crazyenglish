@@ -29,13 +29,6 @@ class _IndexPageState extends BasePageState<IndexPage>
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
   List<String> functionTxt = [
-    "周报阅读",
-    "周报题库",
-    "综合听力",
-    "阅读理解",
-    "写作训练",
-    "语言运用",
-    "商城",
   ];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -461,59 +454,59 @@ class _IndexPageState extends BasePageState<IndexPage>
         itemCount: listData.length,
       ));
 
-  Widget _buildSearchBar() => Container(
-        margin: EdgeInsets.only(top: 7.w),
-        width: double.infinity,
-        height: 28.w,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                          arguments: {'isteacher': true});
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 28.w,
-                      margin: EdgeInsets.only(right: 26.w),
-                      padding: EdgeInsets.only(left: 11.w),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(14.w)),
-                          color: AppColors.c_FFFFFFFF),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            R.imagesIndexSearch,
-                            fit: BoxFit.cover,
-                            width: 16.w,
-                            height: 16.w,
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 9.w)),
-                          Text(
-                            "搜词/翻译",
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                color: AppColors.TEXT_GRAY_COLOR),
-                          )
-                        ],
+  Widget _buildSearchBar() => Util.isIOSMode() ? Container():Container(
+    margin: EdgeInsets.only(top: 7.w),
+    width: double.infinity,
+    height: 28.w,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+            child: GestureDetector(
+                onTap: () {
+                  RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                      arguments: {'isteacher': true});
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 28.w,
+                  margin: EdgeInsets.only(right: 26.w),
+                  padding: EdgeInsets.only(left: 11.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(14.w)),
+                      color: AppColors.c_FFFFFFFF),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        R.imagesIndexSearch,
+                        fit: BoxFit.cover,
+                        width: 16.w,
+                        height: 16.w,
                       ),
-                    ))),
-            GestureDetector(
-              onTap: () {
-                RouterUtil.toNamed(AppRoutes.QRViewPage);
-              },
-              child: Image.asset(
-                R.imagesIndexScan,
-                width: 18.w,
-                height: 18.w,
-              ),
-            ),
-          ],
+                      Padding(padding: EdgeInsets.only(left: 9.w)),
+                      Text(
+                        "搜词/翻译",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            color: AppColors.TEXT_GRAY_COLOR),
+                      )
+                    ],
+                  ),
+                ))),
+        GestureDetector(
+          onTap: () {
+            RouterUtil.toNamed(AppRoutes.QRViewPage);
+          },
+          child: Image.asset(
+            R.imagesIndexScan,
+            width: 18.w,
+            height: 18.w,
+          ),
         ),
-      );
+      ],
+    ),
+  );
   var _future = Future.delayed(Duration(seconds: 2), () {
     return '老王，一个有态度的程序员'; //模拟json字符串
   });

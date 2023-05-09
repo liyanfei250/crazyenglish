@@ -238,14 +238,16 @@ class _MinePageState extends BasePageState<MinePage> {
               ),
               child: Column(
                 children: [
-                  buildItem(
+                  Visibility(
+                      visible:!Util.isIOSMode(),
+                      child: buildItem(
                       "给我们评价",
                       Image(
                         image: AssetImage(R.imagesMineAppraise),
                         width: 20.w,
                         height: 20.w,
                       ),
-                      0),
+                      0)),
                   buildItem(
                       "意见反馈",
                       Image(
