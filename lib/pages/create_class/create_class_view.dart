@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,11 +10,14 @@ import 'package:image_picker/image_picker.dart';
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/FullScreenImage.dart';
 import '../../utils/colors.dart';
 import '../../utils/permissions/permissions_util.dart';
 import 'create_class_logic.dart';
 import 'dart:io' as FileNew;
+import 'package:path/path.dart' as path;
+import 'package:tencent_cos/tencent_cos.dart';
 
 class Create_classPage extends BasePage {
   const Create_classPage({Key? key}) : super(key: key);
@@ -42,6 +49,11 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
   void initState() {
     super.initState();
     _controller.addListener(_onTextChanged);
+
+    logic.addListenerId(GetBuilderIds.getMyClassAdd, () {
+      Util.toast("添加成功");
+      Get.back();
+    });
   }
 
   @override
@@ -183,23 +195,23 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
-                _myHorizontalLayout(
-                    R.imagesClassInfoTeacherName, "讲师名称:", "七年级一班"),
+                _myHorizontalLayout(R.imagesClassInfoTeacherName, "讲师名称:",
+                    SpUtil.getString(BaseConstant.TEACHER_NAME)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
-                _myHorizontalLayout(
-                    R.imagesClassInfoTeacherSex, "讲师性别:", "七年级一班"),
+                _myHorizontalLayout(R.imagesClassInfoTeacherSex, "讲师性别:",
+                    SpUtil.getString(BaseConstant.TEACHER_SEX)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
-                _myHorizontalLayout(
-                    R.imagesClassInfoTeacherAge, "讲师教龄:", "七年级一班"),
+                _myHorizontalLayout(R.imagesClassInfoTeacherAge, "讲师教龄:",
+                    SpUtil.getString(BaseConstant.TEACHER_AGE)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
-                _myHorizontalLayout(
-                    R.imagesClassInfoTeacherPhoneNum, "联系方式:", "七年级一班"),
+                _myHorizontalLayout(R.imagesClassInfoTeacherPhoneNum, "联系方式:",
+                    SpUtil.getString(BaseConstant.TEACHER_PHONE)),
                 SizedBox(
                   height: 36.w,
                 ),
@@ -220,6 +232,15 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                   child: GestureDetector(
                     onTap: () {
                       Util.toast('message');
+                      if (_controller.text.isEmpty) {
+                        Util.toast('班级名称不能为空！');
+                        return;
+                      }
+                      //todo 图片处理
+                      logic.toAddClass(
+                          'https://p0.ssl.img.360kuai.com/t01736c309615e3dc19.jpg',
+                          _controller.text,
+                          SpUtil.getString(BaseConstant.TEACHER_USER_ID));
                     },
                     child: Text(
                       '创建班级',
@@ -422,6 +443,33 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
     );
   }
 
+  /*Future<String> uploadImageToTencentCos(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) {
+      return null;
+    }
+    final file = FileNew.File(pickedFile.path);
+    final fileName = path.basename(file.path);
+    final objectName = 'images/$fileName'; // 腾讯云对象存储的路径
+    final cos = TencentCloudCos(
+      secretId: '你的SecretId',
+      secretKey: '你的SecretKey',
+      region: '你的region',
+      bucket: '你的bucket名称',
+    );
+    try {
+      await cos.uploadFile(objectName, file);
+      final url = cos.getObjectUrl(objectName);
+      return url;
+    } catch (e) {
+      print('上传图片失败: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('上传图片失败'),
+      ));
+      return null;
+    }
+  }*/
   @override
   void onCreate() {}
 
