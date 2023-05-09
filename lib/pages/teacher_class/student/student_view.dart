@@ -9,9 +9,11 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import 'student_logic.dart';
+import '../../../entity/student_detail_response.dart';
 
 class StudentPage extends BasePage {
   const StudentPage({Key? key}) : super(key: key);
@@ -27,6 +29,7 @@ class _StudentPageState extends BasePageState<StudentPage>
   final logic = Get.put(StudentLogic());
   final state = Get.find<StudentLogic>().state;
   late TabController _tabController;
+  late Obj data;
   String stateText = '';
   var selectData = {
     DateMode.YMDHMS: '',
@@ -364,7 +367,17 @@ class _StudentPageState extends BasePageState<StudentPage>
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+    logic.addListenerId(GetBuilderIds.getStudentDetail + '1651531759961624578',
+        () {
+      if (state.myStudentDetail != null && state.myStudentDetail!.obj != null) {
+        data = state.myStudentDetail!.obj!;
+
+        setState(() {});
+      }
+    });
+    logic.getStudentDetail('1651531759961624578');
+  }
 
   @override
   void onDestroy() {}

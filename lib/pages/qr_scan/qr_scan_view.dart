@@ -123,7 +123,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         result = scanData;
         if (scanData != null) {
           Util.toast('${describeEnum(result!.format)} Data: ${result!.code}');
-          RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextClass, arguments: {'isShowAdd': 1});
+          RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextClass, arguments: {'isShowAdd': 1,'classId':result!.code});
           // RouterUtil.offAndToNamed(AppRoutes.QRViewPageNextAudio);
         }
       });

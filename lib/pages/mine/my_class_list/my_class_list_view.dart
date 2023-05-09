@@ -24,19 +24,17 @@ class MyClassListPage extends BasePage {
 class _ToMyOrderPageState extends BasePageState<MyClassListPage>
     with TickerProviderStateMixin {
   final logic = Get.put(My_class_listLogic());
-  final state = Get
-      .find<My_class_listLogic>()
-      .state;
+  final state = Get.find<My_class_listLogic>().state;
   late TabController _tabController;
   List<Obj> tabs = [];
-@override
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xfff8f9fb),
       body: Stack(
@@ -74,8 +72,8 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
     logic.addListenerId(GetBuilderIds.getMyClassList, () {
-      if (state.myClassList != null && state.myClassList!.obj!=null) {
-        print("班级数据==="+state.myClassList!.obj![0]!.name!);
+      if (state.myClassList != null && state.myClassList!.obj != null) {
+        print("班级数据===" + state.myClassList!.obj![0]!.name!);
 
         tabs = state.myClassList!.obj!;
         setState(() {
@@ -100,8 +98,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
         ));
   }
 
-  Widget _buildTabBar() =>
-      TabBar(
+  Widget _buildTabBar() => TabBar(
         onTap: (tab) => print(tab),
         controller: _tabController,
         indicator: BoxDecoration(
@@ -118,12 +115,20 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
         tabs: tabs.map((e) => Tab(text: e.name)).toList(),
       );
 
-  Widget _buildTableBarView() =>
-      TabBarView(
-          controller: _tabController,
-          children: tabs.map((e) {
-            return ClassCard(isShowRank: true,className: e.name!,classImage: e.image!,studentSize: e.studentSize!.toString(),teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE),);
-          }).toList());
+  Widget _buildTableBarView() => TabBarView(
+      controller: _tabController,
+      children: tabs.map((e) {
+        return ClassCard(
+          isShowRank: true,
+          className: e.name!,
+          classImage: e.image!,
+          studentSize: e.studentSize!.toString(),
+          teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
+          teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),
+          teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),
+          teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE),
+        );
+      }).toList());
 
   @override
   bool get wantKeepAlive => true;

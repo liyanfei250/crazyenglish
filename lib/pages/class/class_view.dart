@@ -1,11 +1,14 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../entity/class_list_response.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/colors.dart';
 import '../class_home/class_home_view.dart';
 import 'class_logic.dart';
@@ -18,27 +21,41 @@ class ClassPage extends StatefulWidget {
   _ClassPageState createState() => _ClassPageState();
 }
 
-class _ClassPageState extends State<ClassPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
   final logic = Get.put(ClassLogic());
   final state = Get.find<ClassLogic>().state;
   late TabController _tabController;
   Offset _offset = Offset(310.w, 70.w);
   bool _showAddClass = false;
   var extend = false;
-  final List<String> tabs = const [
-    "初一1班",
-    "初一2班",
-    "初一3班",
-    "初一4班",
-    "初一5班",
-    "初一6班",
-  ];
+  List<Obj> tabs = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
+
+    logic.addListenerId(GetBuilderIds.getHomeClassTab, () {
+      if (state.myClassList != null && state.myClassList!.obj != null) {
+        print("班级数据===" + state.myClassList!.obj![0]!.name!);
+        tabs = state.myClassList!.obj!;
+        setState(() {
+          _tabController.dispose();
+          _tabController = TabController(vsync: this, length: tabs.length);
+        });
+      }
+    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // 判断当前页面是否可见
+    //   if (ModalRoute.of(context)!.isCurrent) {
+    //     // 当前页面可见
+    //     //todo 真实数据
+    //     logic.getMyClassList('1651539603655626753');
+    //   }
+    // });
+
+    //todo 真实数据
+    logic.getMyClassList('1651539603655626753');
   }
 
   @override
@@ -48,17 +65,37 @@ class _ClassPageState extends State<ClassPage>
       body: Stack(
         children: [
           Image.asset(R.imagesTeacherClassTop, width: double.infinity),
-          Column(
-            children: [
-              AppBar(
-                automaticallyImplyLeading: false,
-                title: _buildTabBar(),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
-              Expanded(child: _buildTableBarView()),
-            ],
-          ),
+          tabs.length <= 0
+              ? Container(
+            margin: EdgeInsets.only(top: 116.w,left: 20.w,right: 20.w),
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+                    offset: Offset(10, 20), // 阴影与容器的距离
+                    blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+                    spreadRadius: 10.0,
+                  )
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                color: AppColors.c_FFFFFFFF),
+            child: PlaceholderPage(
+                imageAsset: R.imagesCommenNoDate,
+                title: '暂无数据',
+                topMargin: 0.w,
+                subtitle: '快去创建班级吧'),
+          )
+              : Column(
+                  children: [
+                    AppBar(
+                      automaticallyImplyLeading: false,
+                      title: _buildTabBar(),
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    Expanded(child: _buildTableBarView()),
+                  ],
+                ),
           Positioned(
             left: _offset.dx,
             top: _offset.dy,
@@ -153,13 +190,13 @@ class _ClassPageState extends State<ClassPage>
         unselectedLabelStyle:
             TextStyle(fontSize: 14.sp, color: AppColors.TEXT_BLACK_COLOR),
         labelColor: Colors.white,
-        tabs: tabs.map((e) => Tab(text: e)).toList(),
+        tabs: tabs.map((e) => Tab(text: e.name)).toList(),
       );
 
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
       children: tabs.map((e) {
-        return ClassHomePage();
+        return ClassHomePage(e.id!.toInt());
       }).toList());
 
   @override
@@ -168,6 +205,7 @@ class _ClassPageState extends State<ClassPage>
   @override
   void dispose() {
     Get.delete<ClassLogic>();
+    _tabController.dispose();
     super.dispose();
   }
 }
