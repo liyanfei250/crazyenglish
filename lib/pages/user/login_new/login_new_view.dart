@@ -515,6 +515,24 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
               );
             }),
           ),
+          Visibility(
+              visible: Util.isIOSMode(),
+              child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              hideKeyBoard();
+              logic.passwordLogin("admin", "123456");
+            },
+            child: Container(
+              height: 47.w,
+              child: const Center(
+                child: Text(
+                  "游客登录",
+                  style: TextStyle(color: Color(0xff898a93), fontSize: 15),
+                ),
+              ),
+            )),
+          )
         ],
       ),
     );
