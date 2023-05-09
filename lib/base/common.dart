@@ -171,7 +171,7 @@ class PayType{
 }
 
 class C{
-  static const String APPNAME = "英语周报";
+  static const String APPNAME = "数字英语";
   static const String COMPANY = "太原东方盛慧科技有限公司";
   static const String APP_DESC = "太原东方盛慧科技有限公司";
   static const String APP_DOWNLOAD_URL = "https://ps-1252082677.cos.ap-beijing.myqcloud.com/apk/money_make.apk";
@@ -202,7 +202,7 @@ class C{
 
   static const String BAIDU = "baidu";
   static const String BAIDU_APP_KEY = "xnA14dMjxEFsuSdRXlKdz1vH";
-  static const String BAIDU_URL = "http://www.crazyenglish.com";
+  static const String BAIDU_URL = "https://www.crazyenglishweekly.com";
 
   static const int SID_INVALID = 9708;
   //领取资料的文案（2.0弃用）
@@ -217,8 +217,8 @@ class C{
   static const String levelJudge = "levelJudge";
 
   //用户协议
-  static const String REGISTER_LAW = "https://geeklei.cn:8443/user/agreement/"; // 注册条款
-  static const String REGISTER_PRIVACY_POLICY_LAW = "https://geeklei.cn:8443/user/policy"; // 隐私与政策
+  static const String REGISTER_LAW = "https://t-m.crazyenglishweekly.com/fkyy/regist/"; // 注册条款
+  static const String REGISTER_PRIVACY_POLICY_LAW = "https://t-m.crazyenglishweekly.com/fkyy/privacy"; // 隐私与政策
 
 
 }

@@ -36,8 +36,8 @@ class Util {
     return null;
   }
 
-  static bool isTestMode() {
-    if (Config.env == Env.TEST) {
+  static bool isIOSMode() {
+    if (Config.env == Env.IOS) {
       return true;
     } else {
       return false;

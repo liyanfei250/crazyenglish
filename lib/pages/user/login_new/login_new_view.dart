@@ -317,7 +317,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                             recognizer: recognizerRegister,
                                           ),
                                           TextSpan(
-                                            text: ".",
+                                            text: "和",
                                             style: TextStyle(
                                                 color: Color(0xff727a89),
                                                 fontSize: 11.sp,
@@ -333,22 +333,22 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                     TextDecoration.none),
                                             recognizer: recognizerPrivacyLaw,
                                           ),
-                                          TextSpan(
-                                            text: "和",
-                                            style: TextStyle(
-                                                color: Color(0xff727a89),
-                                                fontSize: 11.sp,
-                                                decoration:
-                                                    TextDecoration.none),
-                                          ),
-                                          TextSpan(
-                                            text: "《儿童隐私保护政策》",
-                                            style: TextStyle(
-                                                color: AppColors.THEME_COLOR,
-                                                fontSize: 11.sp,
-                                                decoration:
-                                                    TextDecoration.none),
-                                          ),
+                                          // TextSpan(
+                                          //   text: "和",
+                                          //   style: TextStyle(
+                                          //       color: Color(0xff727a89),
+                                          //       fontSize: 11.sp,
+                                          //       decoration:
+                                          //           TextDecoration.none),
+                                          // ),
+                                          // TextSpan(
+                                          //   text: "《儿童隐私保护政策》",
+                                          //   style: TextStyle(
+                                          //       color: AppColors.THEME_COLOR,
+                                          //       fontSize: 11.sp,
+                                          //       decoration:
+                                          //           TextDecoration.none),
+                                          // ),
                                         ]),
                                   ),
                                 ),
@@ -515,6 +515,24 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
               );
             }),
           ),
+          Visibility(
+              visible: Util.isIOSMode(),
+              child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              hideKeyBoard();
+              logic.passwordLogin("admin", "123456");
+            },
+            child: Container(
+              height: 47.w,
+              child: const Center(
+                child: Text(
+                  "游客登录",
+                  style: TextStyle(color: Color(0xff898a93), fontSize: 15),
+                ),
+              ),
+            )),
+          )
         ],
       ),
     );

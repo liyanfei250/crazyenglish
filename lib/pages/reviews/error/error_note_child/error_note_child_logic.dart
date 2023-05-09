@@ -2,11 +2,6 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-import '../../../../entity/home/ErrorNoteTab.dart';
-import '../../../../entity/home/HomeKingDate.dart';
-import '../../../../entity/review/ErrorNoteTabDate.dart';
-import '../../../../routes/getx_ids.dart';
-import '../../../../utils/json_cache_util.dart';
 import '../../repository/ReviewRepository.dart';
 import 'error_note_child_state.dart';
 

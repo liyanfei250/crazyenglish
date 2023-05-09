@@ -6,7 +6,7 @@ import 'base/global.dart';
 import 'main.dart';
 
 void main() {
-  Config.env = Env.TEST;
+  Config.env = Env.IOS;
   Global.init(() {
     runApp(BlocWrapper(child: MyApp()));
   });
