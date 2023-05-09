@@ -67,9 +67,22 @@ class _IndexPageState extends BasePageState<IndexPage>
           if (state.paperDetailNew!.obj != null &&
               state.paperDetailNew!.obj!.length > 0) {
             setState(() {
-              functionTxtNew = state.paperDetailNew!.obj!;
+              if(Util.isIOSMode()){
+                int length = state.paperDetailNew!.obj!.length;
+                functionTxtNew = [];
+                for(int i = 0;i< length;i++){
+                  if("shopping_type" == state.paperDetailNew!.obj![i].type){
+                    continue;
+                  }else{
+                    functionTxtNew.add(state.paperDetailNew!.obj![i]);
+                  }
+                }
+              }else{
+                functionTxtNew = state.paperDetailNew!.obj!;
+              }
+
               functionTxt =
-                  state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
+                  functionTxtNew.map((obj) => obj.name!).toList();
             });
           }
         }
@@ -194,7 +207,9 @@ class _IndexPageState extends BasePageState<IndexPage>
                           ),
                           _createListView(),
                           Padding(padding: EdgeInsets.only(top: 14.w)),
-                          _buildClassArea(),
+                          Visibility(
+                              visible: !Util.isIOSMode(),
+                              child: _buildClassArea()),
                         ],
                       ),
                     )

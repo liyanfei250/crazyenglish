@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../entity/review/ReviewHomeDetail.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -318,19 +319,23 @@ class _ReviewPageState extends State<ReviewPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildItem(() {
+                  Visibility(
+                      visible: !Util.isIOSMode(),
+                      child: _buildItem(() {
                     RouterUtil.toNamed(
                       AppRoutes.HomeworkHistoryPage,
                     );
                   },
                       title: "历史作业",
                       subTitle: "历史作业$histoty套",
-                      icon: R.imagesReviewHistoryHomework),
-                  Divider(
+                      icon: R.imagesReviewHistoryHomework)),
+                  Visibility(
+                    visible: !Util.isIOSMode(),
+                    child: Divider(
                     color: AppColors.c_FFD2D5DC,
                     indent: 15.w,
                     endIndent: 15.w,
-                  ),
+                  ),),
                   _buildItem(() {
                     RouterUtil.toNamed(
                       AppRoutes.PractiseHistoryPage,

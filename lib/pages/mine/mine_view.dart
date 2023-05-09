@@ -190,33 +190,36 @@ class _MinePageState extends BasePageState<MinePage> {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
-            margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(13),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(0, 3),
+          Visibility(
+            visible: !Util.isIOSMode(),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+                margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                buildItemType('我的班级', R.imagesMineClass),
-                buildItemType('我的订单', R.imagesMineOrder),
-                SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                    ? buildItemType('历史作业', R.imagesMineHistoryWork)
-                    : buildItemType('题目反馈', R.imagesMineHistoryWork),
-              ],
-            ),
-          ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildItemType('我的班级', R.imagesMineClass),
+                    buildItemType('我的订单', R.imagesMineOrder),
+                    SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                        ? buildItemType('历史作业', R.imagesMineHistoryWork)
+                        : buildItemType('题目反馈', R.imagesMineHistoryWork),
+                  ],
+                ),
+              ),),
+
           Container(
               width: double.infinity,
               padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
@@ -259,14 +262,17 @@ class _MinePageState extends BasePageState<MinePage> {
                         height: 20.w,
                       ),
                       2),
-                  buildItem(
+                  Visibility(
+                    visible: !Util.isIOSMode(),
+                    child: buildItem(
                       "切换用户",
                       Image(
                         image: AssetImage("images/my_icon_setting.png"),
                         width: 20.w,
                         height: 20.w,
                       ),
-                      5),
+                      5),)
+
                 ],
               )),
         ],

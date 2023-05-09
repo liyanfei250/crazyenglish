@@ -12,7 +12,7 @@ import 'base/global.dart';
 import 'routes/app_pages.dart';
 
 void main() {
-  Config.env = Env.PRODUCT;
+  Config.env = Env.NEIBU;
   Global.init(() {
     runApp(BlocWrapper(child: MyApp()));
   });
