@@ -1,6 +1,6 @@
 /// code : 0
 /// message : "系统正常"
-/// obj : [{"id":1646434234670354434,"dictionaryId":null,"name":"数组英语","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/weekly.png","sort":1,"type":"weekly_type","isDelete":false,"createTime":"2023-04-25 17:33:10","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354436,"dictionaryId":1646439861824098306,"name":"综合听力","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/hearing.png","sort":2,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:17","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354437,"dictionaryId":1646439861824098307,"name":"阅读理解","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/reading.png","sort":3,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:21","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354438,"dictionaryId":1646439861824098308,"name":"写作训练","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/writing.png","sort":4,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:27","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354435,"dictionaryId":null,"name":"商城","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/shopping.png","sort":6,"type":"shopping_type","isDelete":false,"createTime":"2023-04-25 17:33:24","updateTime":null,"createUser":1,"updateUser":null}]
+/// obj : [{"id":1646434234670354434,"dictionaryId":null,"name":"数字英语","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/weekly.png","sort":1,"type":"weekly_type","isDelete":false,"createTime":"2023-04-25 17:33:10","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354436,"dictionaryId":1646439861824098306,"name":"综合听力","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/hearing.png","sort":2,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:17","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354437,"dictionaryId":1646439861824098307,"name":"阅读理解","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/reading.png","sort":3,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:21","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354438,"dictionaryId":1646439861824098308,"name":"写作训练","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/writing.png","sort":4,"type":"lable_type","isDelete":false,"createTime":"2023-04-25 17:34:27","updateTime":null,"createUser":1,"updateUser":null},{"id":1646434234670354435,"dictionaryId":null,"name":"商城","icon":"http://cdn-files-test.crazyenglishweekly.com/diamond/shopping.png","sort":6,"type":"shopping_type","isDelete":false,"createTime":"2023-04-25 17:33:24","updateTime":null,"createUser":1,"updateUser":null}]
 /// p : null
 
 class HomeKingNewDate {
@@ -59,7 +59,7 @@ HomeKingNewDate copyWith({  num? code,
 
 /// id : 1646434234670354434
 /// dictionaryId : null
-/// name : "数组英语"
+/// name : "数字英语"
 /// icon : "http://cdn-files-test.crazyenglishweekly.com/diamond/weekly.png"
 /// sort : 1
 /// type : "weekly_type"

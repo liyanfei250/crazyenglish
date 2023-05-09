@@ -27,7 +27,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   RefreshController(initialRefresh: false);
   List<Obj> functionTxtNew = [];
  List<String> functionTxt = [
-    "数组英语",
+    "数字英语",
     "每周题库",
     "历史作业",
     "试卷库",
@@ -183,7 +183,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                     ),
                     Padding(padding: EdgeInsets.only(left: 9.w)),
                     Text(
-                      "数组英语教师端",
+                      "数字英语教师端",
                       style:
                           TextStyle(fontSize: 12.sp, color: Color(0xff898a93)),
                     )
@@ -249,7 +249,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   Widget _buildFuncAreaItem(String e) => InkWell(
         onTap: () {
           switch (e) {
-            case "数组英语":
+            case "数字英语":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
               break;

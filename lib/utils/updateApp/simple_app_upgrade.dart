@@ -124,7 +124,7 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
                   Container(
                     margin: EdgeInsets.only(left: 21.5, top: 86),
                     child: Text(
-                      '数组英语',
+                      '数字英语',
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
