@@ -148,7 +148,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           ),
           child: Column(
             children: [
-              buildTransparentAppBar("widget.commitResponse!.directory"),
+              buildTransparentAppBar("${currentSubjectVoList!.catalogueName}"),
               Expanded(child: NestedScrollView(
                   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                     return [SliverToBoxAdapter(

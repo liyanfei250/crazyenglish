@@ -58,7 +58,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: Container(
+    return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
       child: Column(
@@ -70,13 +70,13 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
             children: [
               buildQuestionDesc("原文"),
               Visibility(
-                visible: element.questionTypeStr == QuestionType.question_reading,
-                child: GetBuilder<Collect_practicLogic>(
-                  id: "${GetBuilderIds.collectState}:${element.id}",
-                  builder: (_){
-                    return buildFavorAndFeedback(_.state.collectMap["${element.id}"]??false, element.id);
-                  },
-                )
+                  visible: element.questionTypeStr == QuestionType.question_reading,
+                  child: GetBuilder<Collect_practicLogic>(
+                    id: "${GetBuilderIds.collectState}:${element.id}",
+                    builder: (_){
+                      return buildFavorAndFeedback(_.state.collectMap["${element.id}"]??false, element.id);
+                    },
+                  )
               )
             ],
           ),
@@ -90,7 +90,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
           Expanded(child: judgeAndGetQuestionDetail(element),)
         ],
       ),
-    ));
+    );
   }
 
   Widget judgeAndGetQuestionDetail(SubjectVoList element){

@@ -57,7 +57,6 @@ import '../pages/teacher_class/student_ranking/student_ranking_view.dart';
 import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
-import '../pages/writing/writing_view.dart';
 import '../xfyy/text_to_voice.dart';
 
 part './app_routes.dart';
@@ -82,7 +81,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.OrderDetailPage, page:()=>OrderDetailPage(),),
     GetPage(name: AppRoutes.MyOrderPage, page:()=>MyOrderPage(),),
     GetPage(name: AppRoutes.SettingPage, page:()=>SettingPage(),),
-    GetPage(name: AppRoutes.WritingPage, page:()=>WritingPage(),),
     GetPage(name: AppRoutes.AnsweringPage, page:()=>AnsweringPage(),),
     GetPage(name: AppRoutes.ResultPage, page:()=>ResultPage(),),
     GetPage(name: AppRoutes.ResultOverviewPage, page:()=>ResultOverviewPage(),),
