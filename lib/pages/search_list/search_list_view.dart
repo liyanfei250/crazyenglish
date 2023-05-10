@@ -149,7 +149,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   Widget buildItem() {
     return InkWell(
       onTap: () {
-        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT);
+        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT,arguments: {'studentId': 0});
       },
       child: Container(
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),

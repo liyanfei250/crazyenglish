@@ -82,8 +82,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
         });
       }
     });
-    //todo 真实数据
-    logic.getMyClassList('1651539603655626753');
+    logic.getMyClassList(SpUtil.getString(BaseConstant.TEACHER_USER_ID));
   }
 
   @override
@@ -123,6 +122,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
           className: e.name!,
           classImage: e.image!,
           studentSize: e.studentSize!.toString(),
+          classId: e.id!,
           teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
           teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),
           teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),

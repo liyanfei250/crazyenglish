@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:crazyenglish/entity/student_ranking_response.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,7 +23,15 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 class Student_rankingPage extends BasePage {
-  const Student_rankingPage({Key? key}) : super(key: key);
+  bool isStudent = false;
+  num? classId ;
+
+   Student_rankingPage({Key? key}) : super(key: key){
+     if (Get.arguments != null && Get.arguments is Map) {
+       isStudent = Get.arguments['isStudent'];
+       classId = Get.arguments['classId'];
+     }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToStudentRankingPageState();
@@ -210,7 +219,15 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                           margin: EdgeInsets.only(top: 4.w,bottom: 12.w),
                         ),
                       ),
-                      SliverList(
+                      dataList.isEmpty
+                          ? SliverToBoxAdapter(
+                        child: PlaceholderPage(
+                            imageAsset: R.imagesCommenNoDate,
+                            title: '暂无数据',
+                            topMargin: 50.w,
+                            subtitle: ''),
+                      )
+                          : SliverList(
                         delegate: SliverChildBuilderDelegate(
                           buildItem,
                           childCount: dataList.length,
@@ -220,6 +237,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                   ),
                 ),
               )),
+          widget.isStudent?
           Positioned(
               bottom: 0.w,
               left: 0.w,
@@ -284,7 +302,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                     ),
                   ],
                 ),
-              ))
+              )):SizedBox.shrink()
         ],
       ),
     ));
@@ -332,12 +350,24 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
               width: 22.w,
             ),
             ClipOval(
-              child: Image.asset(
-                R.imagesStudentHead,
+              child: Image.network(
+                dataList[index]!.avatar ??
+                    "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
                 width: 35.w,
                 height: 35.w,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return ClipOval(
+                      child: Image.asset(
+                        R.imagesStudentHead,
+                        width: 35.w,
+                        height: 35.w,
+                      ));
+                },
               ),
-            ),
+            )
+            ,
             SizedBox(
               width: 10.w,
             ),
@@ -364,8 +394,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    //todo 写活
-    logic.getStudentRanking("1655395694170124290");
+    logic.getStudentRanking(widget.classId.toString());
 
   }
 
@@ -378,7 +407,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
   void onCreate() {
 
     logic.addListenerId(
-        GetBuilderIds.getStudentRanking + /*widget.classId.toString()*/"1655395694170124290", () {
+        GetBuilderIds.getStudentRanking + widget.classId.toString(), () {
       if (mounted && _refreshController != null) {
         _refreshController.refreshCompleted();
         if (state.myRanking != null && state.myRanking!.obj != null) {

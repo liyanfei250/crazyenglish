@@ -105,4 +105,18 @@ class ClassRepository {
       return paperDetail!;
     }
   }
+
+  Future<ClassBottomInfo> getStudentReport(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.studentReport,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    ClassBottomInfo paperDetail = ClassBottomInfo.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 }

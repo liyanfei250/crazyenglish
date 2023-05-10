@@ -23,7 +23,12 @@ import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
 
 class Practise_historyPage extends BasePage {
-  const Practise_historyPage({Key? key}) : super(key: key);
+  num? studentId;
+   Practise_historyPage({Key? key}) : super(key: key){
+    if (Get.arguments != null && Get.arguments is Map) {
+      studentId = Get.arguments['studentId'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _Practise_historyPageState();
@@ -119,7 +124,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     formattedDate = formatter.format(now);
     //todo 日期处理，哪天有数据提前处理
     logic.getPracticeDateInfo(
-        SpUtil.getInt(BaseConstant.USER_ID).toString(), "'$formattedDate'");
+        widget.studentId.toString(), "'$formattedDate'");
 
     _onRefresh();
 
@@ -590,13 +595,13 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
   void _onRefresh() async {
     currentPageNo = current;
-    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+    logic.getRecordInfo(widget.studentId.toString(),
         formattedDate, pageSize, current);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getRecordInfo(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+    logic.getRecordInfo(widget.studentId.toString(),
         formattedDate, pageSize, currentPageNo+1);
   }
 
