@@ -111,7 +111,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
-          questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null));
+          questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,this));
         }
         collectLogic.queryCollectState(element.id??0);
       }else{

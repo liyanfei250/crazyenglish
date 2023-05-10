@@ -85,9 +85,6 @@ class QuestionFactory{
 
     int gapIndex = -1;
     String htmlContent = "";
-    // for(Options option in list!){
-    //   htmlContent = htmlContent+(option.name??"")+gap;
-    // }
     while(htmlContent.contains(gap)){
       gapKey++;
       gapIndex++;
@@ -195,7 +192,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,{UserAnswerCallback? userAnswerCallback}){
+  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     num subtopicId = subtopicVoList.id??0;
@@ -245,10 +242,14 @@ class QuestionFactory{
               userAnswerCallback.call(subtopicAnswerVo);
             }
           },
-          onSubmitted: (text){
 
+          onSubmitted: (text){
+            print("======+++==onSubmitted====");
+            answerMin.clearFocus();
           },
           onEditingComplete: (){
+            print("=====+++===onEditingComplete====");
+            answerMin.clearFocus();
           },
           controller: controller)),
     );

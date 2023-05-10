@@ -54,24 +54,20 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
       detailWidget = getQuestionDetail(element);
     }
     return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildQuestionDesc("原文"),
-            Visibility(
-                visible: element.stem!=null && element.stem!.isNotEmpty,
-                child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-            // Visibility(
-            //     visible: element.name!=null && element.name!.isNotEmpty,
-            //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-            buildReadQuestion(element!.content),
-            buildQuestionDesc("Question"),
-            Expanded(child: detailWidget!,)
-          ],
-        ),
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildQuestionDesc("原文"),
+          Visibility(
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          buildReadQuestion(element!.content),
+          buildQuestionDesc("Question"),
+          Expanded(child: detailWidget!)
+        ],
+      ),
     );
   }
 
@@ -84,6 +80,7 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
           border: Border.all(color: AppColors.c_FFD2D5DC,width: 0.4.w)
       ),
       child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         child:  Html(
           data: htmlContent??"",
           onImageTap: (url,context,attributes,element,){

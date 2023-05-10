@@ -81,7 +81,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
     if(_cancelLoading!=null){
       _cancelLoading!();
     }
-    _cancelLoading = BotToast.showCustomLoading(toastBuilder: (_) => LoadingWidget());
+    _cancelLoading = BotToast.showCustomLoading(toastBuilder: (_) => LoadingWidget(),clickClose: true);
   }
 
   void hideLoading(){
@@ -176,5 +176,16 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   void didChangeDependencies() {
     print(tag + "didChangeDependencies\n");
     super.didChangeDependencies();
+  }
+
+  // 收回键盘
+  void closeKeyBoard() {
+    // 触摸收起键盘（方式一）
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus &&currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+    // 触摸收起键盘（方式二）
+    // FocusScope.of(context).requestFocus(FocusNode());
   }
 }

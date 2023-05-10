@@ -201,7 +201,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
         }else if(element.questionTypeStr == QuestionType.normal_gap) {
           itemList.add(buildQuestionType("填空题"));
-          itemList.add(buildReadQuestion(element.content ?? ""));
+          // itemList.add(buildReadQuestion(element.content ?? ""));
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
               question, 0, makeEditController));
         }else if(element.questionTypeStr == QuestionType.question_reading){
@@ -211,7 +211,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
-          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,userAnswerCallback: userAnswerCallback));
+          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback));
         }
         // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));
@@ -234,6 +234,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     return PageView(
       controller: pageController,
       physics: _neverScroll,
+      pageSnapping: false,
       onPageChanged: (int value){
         if(logic!=null){
           logic.updateCurrentPage(value,totalQuestion:questionList.length);
@@ -307,7 +308,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   @override
   void clearFocus(){
-
+    closeKeyBoard();
   }
 
 
@@ -395,6 +396,16 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     super.didChangeDependencies();
   }
 
+  // 收回键盘
+  void closeKeyBoard() {
+    // 触摸收起键盘（方式一）
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus &&currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+    // 触摸收起键盘（方式二）
+    // FocusScope.of(context).requestFocus(FocusNode());
+  }
 
 }
 

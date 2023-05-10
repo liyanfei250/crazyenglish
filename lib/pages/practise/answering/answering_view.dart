@@ -207,7 +207,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     pages = buildQuestionList(widget.testDetailResponse!);
 
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      // resizeToAvoidBottomInset:false,
       appBar: AppBar(
         title: Text(
           widget.testDetailResponse!.obj!.name??"未获取到标题",
