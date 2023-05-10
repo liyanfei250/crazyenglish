@@ -26,14 +26,6 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
   List<Obj> functionTxtNew = [];
- List<String> functionTxt = [
-    "数字英语",
-    "每周题库",
-    "历史作业",
-    "试卷库",
-    "作业",
-    "商城",
-  ];
 
   @override
   void initState() {
@@ -49,8 +41,6 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           if (state.paperDetailNew!.obj != null &&
               state.paperDetailNew!.obj!.length > 0) {
             functionTxtNew = state.paperDetailNew!.obj!;
-            functionTxt =
-                state.paperDetailNew!.obj!.map((obj) => obj.name!).toList();
             setState(() {
             });
           }
@@ -126,12 +116,12 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                           GridView.builder(
                               shrinkWrap: true,
                               padding: EdgeInsets.zero,
-                              itemCount: functionTxt.length,
+                              itemCount: functionTxtNew.length,
                               gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 5),
                               itemBuilder: (_, int position) {
-                                String e = functionTxt[position];
+                                Obj e = functionTxtNew[position];
                                 return _buildFuncAreaItem(e);
                               }),
                           Padding(padding: EdgeInsets.only(top: 20.w)),
@@ -246,11 +236,11 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     return items;
   }
 
-  Widget _buildFuncAreaItem(String e) => InkWell(
+  Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {
-          switch (e) {
-            case "数字英语":
-              RouterUtil.toNamed(AppRoutes.WeeklyTestList);
+          switch (e.name) {
+            case "英语周报":
+              RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
               break;
               break;
             case "历史作业":
@@ -261,7 +251,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
                   arguments: {"isAssignHomework": false});
               break;
-            case "作业":
+            case "布置作业":
               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
               break;
             case "商城":
@@ -274,14 +264,14 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           children: [
             ClipOval(
               child: Image.asset(
-                "images/num_index${functionTxt.indexOf(e)}.png",
+                "images/num_index${functionTxtNew.indexOf(e)}.png",
                 width: 42.w,
                 height: 42.w,
               ),
             ),
             Padding(padding: EdgeInsets.only(bottom: 8.w)),
             Text(
-              e,
+              e.name?? '',
               style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,

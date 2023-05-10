@@ -338,7 +338,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),),
                   _buildItem(() {
                     RouterUtil.toNamed(
-                      AppRoutes.PractiseHistoryPage,
+                      AppRoutes.PractiseHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)}
                     );
                   },
                       title: "练习记录",

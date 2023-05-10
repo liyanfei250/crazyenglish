@@ -225,9 +225,13 @@ class Api {
   //学生加入班级
   static String studentAddClass =
       Config.ApiHost + "/member/classStudent/joinClass";
+  //学生详情
   static String studentDetail =
       Config.ApiHost + "/question/statistics/studentDetail/";
-  //学生加入班级
+  //学生排行
   static String studentRanking =
       Config.ApiHost + "/question/statistics/studentLeaderboards/";
+  //学生报告生成
+  static String studentReport =
+      Config.ApiHost + "/question/operation/student/detailList";
 }

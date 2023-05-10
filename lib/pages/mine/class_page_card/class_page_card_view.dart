@@ -8,12 +8,14 @@ import 'package:get/get.dart';
 
 import '../../../api/api.dart';
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../entity/common_response.dart';
 import '../../../net/net_manager.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/sp_util.dart';
 import 'class_page_card_logic.dart';
 
 class ClassCard extends StatefulWidget {
@@ -21,6 +23,8 @@ class ClassCard extends StatefulWidget {
   final bool isShowRank;
   final int index;
   final String className;
+  final num classId;
+  final num studentUserId;
   final String classImage;
   final String studentSize;
   final String teacherName;
@@ -33,6 +37,8 @@ class ClassCard extends StatefulWidget {
       this.isShowAdd = false,
       this.isShowRank = false,
       this.className = "",
+      this.classId = 0,
+      this.studentUserId = 0,
       this.classImage = "",
       this.studentSize = "",
       this.teacherName = "",
@@ -160,10 +166,9 @@ class _ClassCardState extends State<ClassCard> {
                             ),
                             TextButton(
                               onPressed: () {
-                                // TODO: 写活
                                 toAdd({
-                                  "classId": '1655395694170124290',
-                                  "studentUserId": '1'
+                                  "classId":widget.classId.toString(),
+                                  "studentUserId": widget.studentUserId.toString()
                                 }, context);
                               },
                               child: Text(
@@ -345,7 +350,10 @@ class _ClassCardState extends State<ClassCard> {
           Expanded(child: Text('')),
           GestureDetector(
             onTap: () {
-              RouterUtil.toNamed(AppRoutes.StudentRankingPage);
+              RouterUtil.toNamed(AppRoutes.StudentRankingPage, arguments: {'classId':widget.classId,
+                'isStudent':
+                    SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) ? false : true
+              });
             },
             child: Text(
               '学员排名',

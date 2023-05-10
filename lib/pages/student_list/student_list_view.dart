@@ -227,7 +227,7 @@ class _ToStudentListPageState extends BasePageState<StudentListPage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT);
+        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT,arguments: {'studentId': paperList[index]!.userId});
       },
       child: Container(
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),

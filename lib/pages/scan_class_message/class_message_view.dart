@@ -97,6 +97,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                     isShowRank: true,
                     className: detailBean.name!,
                     classImage: detailBean.image!,
+                    classId: detailBean.id!,
                     studentSize: detailBean.studentSize!.toString(),
                     teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
                     teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),

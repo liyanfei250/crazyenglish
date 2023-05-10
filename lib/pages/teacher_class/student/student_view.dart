@@ -16,7 +16,12 @@ import 'student_logic.dart';
 import '../../../entity/student_detail_response.dart';
 
 class StudentPage extends BasePage {
-  const StudentPage({Key? key}) : super(key: key);
+  num? studentId;
+   StudentPage({Key? key}) : super(key: key){
+    if (Get.arguments != null && Get.arguments is Map) {
+      studentId = Get.arguments['studentId'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() {
@@ -29,7 +34,7 @@ class _StudentPageState extends BasePageState<StudentPage>
   final logic = Get.put(StudentLogic());
   final state = Get.find<StudentLogic>().state;
   late TabController _tabController;
-  late Obj data;
+  late Obj data = Obj();
   String stateText = '';
   var selectData = {
     DateMode.YMDHMS: '',
@@ -77,7 +82,7 @@ class _StudentPageState extends BasePageState<StudentPage>
           InkWell(
             onTap: () {
               // 点击事件处理逻辑
-              RouterUtil.toNamed(AppRoutes.PractiseHistoryPage);
+              RouterUtil.toNamed(AppRoutes.PractiseHistoryPage,arguments: {'studentId':widget.studentId});
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -189,15 +194,28 @@ class _StudentPageState extends BasePageState<StudentPage>
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ClipOval(
-              child: Image.asset(
-            R.imagesShopImageLogoTest,
-            width: 80.w,
-            height: 80.w,
-          )),
+            child: Image.network(
+              data.avatar ??
+                  "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
+              width: 80.w,
+              height: 80.w,
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return ClipOval(
+                    child: Image.asset(
+                      R.imagesShopImageLogoTest,
+                      width: 80.w,
+                      height: 80.w,
+                    ));
+              },
+            ),
+          )
+          ,
           SizedBox(
             height: 16.w,
           ),
-          Text('张慧敏',
+          Text(data.actualname?? '',
               style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
@@ -205,7 +223,7 @@ class _StudentPageState extends BasePageState<StudentPage>
           SizedBox(
             height: 4.w,
           ),
-          Text('一班（初一）',
+          Text(data.className?? '',
               style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
@@ -225,7 +243,7 @@ class _StudentPageState extends BasePageState<StudentPage>
                     padding: EdgeInsets.only(left: 12.w, right: 12.w),
                     child: DashedLine()),
               ),
-              Text('343天20小时58分钟',
+              Text(data.className??'',
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -247,7 +265,7 @@ class _StudentPageState extends BasePageState<StudentPage>
                     padding: EdgeInsets.only(left: 12.w, right: 12.w),
                     child: DashedLine()),
               ),
-              Text('85%',
+              Text((data.accuracy?? 0).toString()+'%',
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -269,7 +287,7 @@ class _StudentPageState extends BasePageState<StudentPage>
                     padding: EdgeInsets.only(left: 12.w, right: 12.w),
                     child: DashedLine()),
               ),
-              Text('77分',
+              Text((data.score?? 0).toString()+'分',
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -291,7 +309,7 @@ class _StudentPageState extends BasePageState<StudentPage>
                     padding: EdgeInsets.only(left: 12.w, right: 12.w),
                     child: DashedLine()),
               ),
-              Text('77分',
+              Text((data.effort?? 0).toString()+'分',
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -368,7 +386,7 @@ class _StudentPageState extends BasePageState<StudentPage>
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentDetail + '1651531759961624578',
+    logic.addListenerId(GetBuilderIds.getStudentDetail + widget.studentId.toString(),
         () {
       if (state.myStudentDetail != null && state.myStudentDetail!.obj != null) {
         data = state.myStudentDetail!.obj!;
@@ -376,7 +394,7 @@ class _StudentPageState extends BasePageState<StudentPage>
         setState(() {});
       }
     });
-    logic.getStudentDetail('1651531759961624578');
+    logic.getStudentDetail(widget.studentId.toString());
   }
 
   @override

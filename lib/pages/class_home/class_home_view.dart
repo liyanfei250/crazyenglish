@@ -37,9 +37,6 @@ class _ClassHomePageState extends State<ClassHomePage> {
   @override
   void initState() {
     super.initState();
-    //todo 刷新
-    //todo 获取顶部
-    //todo 获取底部
     logic.addListenerId(
         GetBuilderIds.getMyClassHomeTop + widget.classId.toString(), () {
       if (mounted && _refreshController != null) {
@@ -118,17 +115,32 @@ class _ClassHomePageState extends State<ClassHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             buildItemClass(
-                                '班级状态：', top.status == 1 ? "正常" : ''),
+                                '班级状态：', top?.status == 1 ? "正常" : ''),
                             buildItemClass(
-                                '答题正确率：', top.accuracy.toString() + "%"),
+                                '答题正确率：',
+                                top == null
+                                    ? "0%"
+                                    : top.accuracy.toString() + "%"),
                             buildItemClass(
-                                '班级平均分：', top.score.toString() + "分"),
+                                '班级平均分：',
+                                top == null
+                                    ? "0分"
+                                    : top.score.toString() + "分"),
                             buildItemClass(
-                                '班级努力值：', top.effort.toString() + "分"),
+                                '班级努力值：',
+                                top == null
+                                    ? "0分"
+                                    : top.effort.toString() + "分"),
                             buildItemClass(
-                                '班级已做卷子：', top.operationSize.toString() + '份'),
+                                '班级已做卷子：',
+                                top == null
+                                    ? "0份"
+                                    : top.operationSize.toString() + '份'),
                             buildItemClass(
-                                '班级人数：', top.studentSize.toString() + '人'),
+                                '班级人数：',
+                                top == null
+                                    ? "0人"
+                                    : top.studentSize.toString() + '人'),
                           ],
                         ),
                       ),
@@ -156,7 +168,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
                                     AppRoutes.QRViewPageNextClass,
                                     arguments: {
                                       'isShowAdd': 0,
-                                      'classId': top.id.toString()
+                                      'classId': top?.id.toString()
                                     });
                               },
                               child: Row(
@@ -187,8 +199,8 @@ class _ClassHomePageState extends State<ClassHomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-
-                    RouterUtil.toNamed(AppRoutes.StudentListPage,arguments: {'classId': widget.classId.toString()});
+                    RouterUtil.toNamed(AppRoutes.StudentListPage,
+                        arguments: {'classId': widget.classId.toString()});
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 30.w, left: 22.w, right: 22.w),
@@ -214,7 +226,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
                 SizedBox(
                   height: 16.w,
                 ),
-                bottom.records!.length > 0
+                bottom.records != null && bottom.records!.length > 0
                     ? ListView.builder(
                         itemBuilder: buildItem,
                         itemCount: bottom.records!.length,
@@ -244,7 +256,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           QrImage(
-            data: top.id.toString() ?? "",
+            data: top?.id.toString() ?? "",
             version: QrVersions.auto,
             size: 87.w,
           ),
@@ -294,8 +306,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
       ),
       child: GestureDetector(
         onTap: () {
-          //todo  提醒的接口
-          Util.toast('message');
+          // Util.toast('message');
           // switch (first) {
           //   case '提醒学生':
           //     return _emptyView;
@@ -354,7 +365,8 @@ class _ClassHomePageState extends State<ClassHomePage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT);
+        RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT,
+            arguments: {'studentId': bottom?.records![index]!.userId});
       },
       child: Container(
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
@@ -377,7 +389,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(1.0),
               child: Image.network(
-                bottom.records![index]!.avatar ??
+                bottom?.records![index]!.avatar ??
                     "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
                 width: 88.w,
                 height: 88.w,
@@ -403,13 +415,26 @@ class _ClassHomePageState extends State<ClassHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   buildItemClassStudent(
-                      '姓名：', bottom.records![index]!.actualname ?? ''),
+                      '姓名：',
+                      bottom == null
+                          ? ""
+                          : bottom.records![index]!.actualname ?? ''),
                   buildItemClassStudent(
-                      '努力值：', bottom.records![index]!.effort.toString() + '分'),
-                  buildItemClassStudent('学习时长：',
-                      bottom.records![index]!.studyTime.toString() + '小时'),
-                  buildItemClassStudent('答题总数：',
-                      bottom.records![index]!.totalSize.toString() + '道'),
+                      '努力值：',
+                      bottom == null
+                          ? "0分"
+                          : bottom.records![index]!.effort.toString() + '分'),
+                  buildItemClassStudent(
+                      '学习时长：',
+                      bottom == null
+                          ? "0小时"
+                          : bottom.records![index]!.studyTime.toString() +
+                              '小时'),
+                  buildItemClassStudent(
+                      '答题总数：',
+                      bottom == null
+                          ? "0道"
+                          : bottom.records![index]!.totalSize.toString() + '道'),
                 ],
               ),
             ),
