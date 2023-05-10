@@ -234,4 +234,7 @@ class Api {
   //学生报告生成
   static String studentReport =
       Config.ApiHost + "/question/statistics/timeInfo";
+  //学生作业列表
+  static String studentWorkList =
+      Config.ApiHost + "/question/operation/student/detailList";
 }

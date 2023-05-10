@@ -137,10 +137,9 @@ class _StudentPageState extends BasePageState<StudentPage>
           child: TabBarView(
             controller: this._tabController,
             children: <Widget>[
-              Watting_pushPage(1, 1),
-              Watting_pushPage(2, 1),
-              Watting_pushPage(3, 1),
-              Watting_pushPage(0, 1),
+              Watting_pushPage(1, widget.studentId),
+              Watting_pushPage(2, widget.studentId),
+              Watting_pushPage(3, widget.studentId),
             ],
           ),
         ),

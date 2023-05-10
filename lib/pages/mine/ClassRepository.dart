@@ -12,6 +12,7 @@ import '../../entity/common_response.dart';
 import '../../entity/student_detail_response.dart';
 import '../../entity/student_ranking_response.dart';
 import '../../entity/student_time_statistics.dart';
+import '../../entity/student_work_list_response.dart';
 import '../../net/net_manager.dart';
 
 class ClassRepository {
@@ -114,6 +115,20 @@ class ClassRepository {
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
     StudentTimeStatistics paperDetail = StudentTimeStatistics.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<StudentWorkListResponse> getStudentWorkList(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.studentWorkList,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    StudentWorkListResponse paperDetail = StudentWorkListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
