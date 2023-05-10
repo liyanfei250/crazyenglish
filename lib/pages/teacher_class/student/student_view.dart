@@ -339,7 +339,9 @@ class _StudentPageState extends BasePageState<StudentPage>
       ),
       child: GestureDetector(
         onTap: () {
-          RouterUtil.toNamed(AppRoutes.LearningReportPage);
+          RouterUtil.toNamed(AppRoutes.LearningReportPage,arguments: data);
+          //TODO 详情底部
+          //TODO 学生扫码信息
         },
         child: Padding(
           padding:

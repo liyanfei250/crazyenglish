@@ -15,7 +15,7 @@ class Config {
   // 外网环境
   static final String PRODUCT_APP_ID = "1001";
   static final String PRODUCT_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static final String PRODUCT_API_DOMAIN = "http://82.157.164.83:9000";
+  static final String PRODUCT_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
 
   static final String TEST_APP_ID = "1001";
   static final String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";

@@ -88,6 +88,7 @@ class GetBuilderIds {
   static const String getHomeClassTab= "getHomeClassTab";
   static const String getStudentRanking= "getStudentRanking";
   static const String getStudentDetail= "getStudentDetail";
+  static const String getStudentDetailReport= "getStudentDetailReport";
 
 }
 

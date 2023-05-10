@@ -233,5 +233,5 @@ class Api {
       Config.ApiHost + "/question/statistics/studentLeaderboards/";
   //学生报告生成
   static String studentReport =
-      Config.ApiHost + "/question/operation/student/detailList";
+      Config.ApiHost + "/question/statistics/timeInfo";
 }
