@@ -1,17 +1,26 @@
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../base/AppUtil.dart';
+import '../../entity/class_bottom_info.dart' as bottomData;
+import '../../entity/class_top_info.dart' as topData;
 import '../../r.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/colors.dart';
 import 'class_home_logic.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ClassHomePage extends StatefulWidget {
-  const ClassHomePage({Key? key}) : super(key: key);
+  var classId = 0;
+
+  ClassHomePage(int id, {Key? key}) : super(key: key) {
+    this.classId = id;
+  }
 
   @override
   _ClassHomePageState createState() => _ClassHomePageState();
@@ -20,124 +29,203 @@ class ClassHomePage extends StatefulWidget {
 class _ClassHomePageState extends State<ClassHomePage> {
   final logic = Get.put(ClassHomeLogic());
   final state = Get.find<ClassHomeLogic>().state;
+  late topData.Obj top = topData.Obj();
+  late bottomData.Obj bottom = bottomData.Obj();
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    super.initState();
+    //todo 刷新
+    //todo 获取顶部
+    //todo 获取底部
+    logic.addListenerId(
+        GetBuilderIds.getMyClassHomeTop + widget.classId.toString(), () {
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+        if (state.myClassTop != null && state.myClassTop!.obj != null) {
+          top = state.myClassTop!.obj!;
+          setState(() {});
+        }
+      }
+    });
+    logic.addListenerId(
+        GetBuilderIds.getMyClassHomeBottom + widget.classId.toString(), () {
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+        if (state.myClassBottom != null && state.myClassBottom!.obj != null) {
+          bottom = state.myClassBottom!.obj!;
+          setState(() {});
+        }
+      }
+    });
+
+    _onRefresh();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 337.w,
-            height: 273.w,
-            padding: EdgeInsets.only(
-                right: 32.w, top: 24.w, left: 32.w, bottom: 24.w),
-            alignment: Alignment.topRight,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20.w))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: false,
+      header: WaterDropHeader(),
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus? mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text("");
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text("");
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text("release to load more");
+          } else {
+            body = Text("");
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 140.w,
-                  child: Column(
+                  width: 337.w,
+                  height: 273.w,
+                  padding: EdgeInsets.only(
+                      right: 32.w, top: 24.w, left: 32.w, bottom: 24.w),
+                  alignment: Alignment.topRight,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20.w))),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildItemClass('班级状态：', '正常'),
-                      buildItemClass('答题正确率：', '78%'),
-                      buildItemClass('班级已做卷子：', '53份'),
-                      buildItemClass('阅读总数：', '正常'),
-                      buildItemClass('班级努力值：', '正常'),
-                      buildItemClass('班级人数：', '正常'),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    buildContainerQr(R.imagesClassMyClassBefore),
-                    SizedBox(
-                      height: 15.w,
-                    ),
-                    Container(
-                      height: 22.w,
-                      padding: EdgeInsets.only(left: 8.w, right: 8.w),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20.w),
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFF19B57), Color(0xFFEC622D)],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-                              arguments: {'isShowAdd': 0});
-                        },
-                        child: Row(
+                      Container(
+                        width: 140.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset(
-                              R.imagesClassMyClassBefore,
-                              width: 10.w,
-                              height: 10.w,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 6.w),
-                              child: Text(
-                                "我的班级",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontSize: 10.sp),
-                              ),
-                            ),
+                            buildItemClass(
+                                '班级状态：', top.status == 1 ? "正常" : ''),
+                            buildItemClass(
+                                '答题正确率：', top.accuracy.toString() + "%"),
+                            buildItemClass(
+                                '班级平均分：', top.score.toString() + "分"),
+                            buildItemClass(
+                                '班级努力值：', top.effort.toString() + "分"),
+                            buildItemClass(
+                                '班级已做卷子：', top.operationSize.toString() + '份'),
+                            buildItemClass(
+                                '班级人数：', top.studentSize.toString() + '人'),
                           ],
                         ),
                       ),
-                    )
-                  ],
-                )
+                      Column(
+                        children: [
+                          buildContainerQr(R.imagesClassMyClassBefore),
+                          SizedBox(
+                            height: 15.w,
+                          ),
+                          Container(
+                            height: 22.w,
+                            padding: EdgeInsets.only(left: 8.w, right: 8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(20.w),
+                              gradient: LinearGradient(
+                                colors: [Color(0xFFF19B57), Color(0xFFEC622D)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                RouterUtil.toNamed(
+                                    AppRoutes.QRViewPageNextClass,
+                                    arguments: {
+                                      'isShowAdd': 0,
+                                      'classId': top.id.toString()
+                                    });
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    R.imagesClassMyClassBefore,
+                                    width: 10.w,
+                                    height: 10.w,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 6.w),
+                                    child: Text(
+                                      "我的班级",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 10.sp),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+
+                    RouterUtil.toNamed(AppRoutes.StudentListPage,arguments: {'classId': widget.classId.toString()});
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30.w, left: 22.w, right: 22.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text(
+                          "学生列表",
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              color: AppColors.TEXT_BLACK_COLOR),
+                        )),
+                        Image.asset(
+                          R.imagesHomeNextIcBlack,
+                          width: 9.w,
+                          height: 9.w,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16.w,
+                ),
+                bottom.records!.length > 0
+                    ? ListView.builder(
+                        itemBuilder: buildItem,
+                        itemCount: bottom.records!.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                      )
+                    : buildContainerNodate()
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              RouterUtil.toNamed(AppRoutes.StudentListPage);
-            },
-            child: Container(
-              margin: EdgeInsets.only(top: 30.w, left: 22.w, right: 22.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Text(
-                    "学生列表",
-                    style: TextStyle(
-                        fontSize: 18.sp, color: AppColors.TEXT_BLACK_COLOR),
-                  )),
-                  Image.asset(
-                    R.imagesHomeNextIcBlack,
-                    width: 9.w,
-                    height: 9.w,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 16.w,
-          ),
-          ListView.builder(
-            itemBuilder: buildItem,
-            itemCount: 6,
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: NeverScrollableScrollPhysics(),
-          ),
-          buildContainerNodate()
         ],
       ),
     );
@@ -156,7 +244,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           QrImage(
-            data: "Hello, World!",
+            data: top.id.toString() ?? "",
             version: QrVersions.auto,
             size: 87.w,
           ),
@@ -269,9 +357,8 @@ class _ClassHomePageState extends State<ClassHomePage> {
         RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT);
       },
       child: Container(
-        height: 171.w,
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
-        padding: EdgeInsets.only(left: 16.w),
+        padding: EdgeInsets.only(left: 16.w, top: 17.w, bottom: 17.w),
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -287,33 +374,42 @@ class _ClassHomePageState extends State<ClassHomePage> {
             color: AppColors.c_FFFFFFFF),
         child: Row(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  R.imagesStudentHead,
-                  width: 80.w,
-                  height: 80.w,
-                ),
-                Padding(padding: EdgeInsets.only(top: 8.w)),
-                buildContainer('提醒学生'),
-                Padding(padding: EdgeInsets.only(top: 8.w)),
-                buildContainer('提醒家长'),
-              ],
+            ClipRRect(
+              borderRadius: BorderRadius.circular(1.0),
+              child: Image.network(
+                bottom.records![index]!.avatar ??
+                    "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
+                width: 88.w,
+                height: 88.w,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return ClipRRect(
+                      borderRadius: BorderRadius.circular(1.0),
+                      child: Image(
+                        image: AssetImage(R.imagesStudentHead),
+                        width: 88.w,
+                        height: 88.w,
+                        fit: BoxFit.cover,
+                      ));
+                },
+              ),
             ),
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Container(
-              width: 220.w,
-              height: 142.w,
+              height: 88.w,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildItemClassStudent('姓名：', '张慧敏'),
-                  buildItemClassStudent('努力值：', '80分'),
-                  buildItemClassStudent('学习时长：', '20小时'),
-                  buildItemClassStudent('听力时长：', '100分钟'),
-                  buildItemClassStudent('阅读时长：', '10分钟'),
-                  buildItemClassStudent('答题总数：', '听(20) 说(12) 读(21)'),
+                  buildItemClassStudent(
+                      '姓名：', bottom.records![index]!.actualname ?? ''),
+                  buildItemClassStudent(
+                      '努力值：', bottom.records![index]!.effort.toString() + '分'),
+                  buildItemClassStudent('学习时长：',
+                      bottom.records![index]!.studyTime.toString() + '小时'),
+                  buildItemClassStudent('答题总数：',
+                      bottom.records![index]!.totalSize.toString() + '道'),
                 ],
               ),
             ),
@@ -347,9 +443,17 @@ class _ClassHomePageState extends State<ClassHomePage> {
     );
   }
 
+  void _onRefresh() async {
+    logic.getMyClassTop(widget.classId.toString());
+    logic.getMyClassBottom(widget.classId.toString(), 10, 1);
+  }
+
+  void _onLoading() async {}
+
   @override
   void dispose() {
     Get.delete<ClassHomeLogic>();
+    _refreshController.dispose();
     super.dispose();
   }
 }

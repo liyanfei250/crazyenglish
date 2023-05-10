@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../api/api.dart';
+import '../../../base/AppUtil.dart';
+import '../../../entity/common_response.dart';
+import '../../../net/net_manager.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
@@ -153,7 +160,11 @@ class _ClassCardState extends State<ClassCard> {
                             ),
                             TextButton(
                               onPressed: () {
-                                // TODO: 处理确认按钮点击事件
+                                // TODO: 写活
+                                toAdd({
+                                  "classId": '1655395694170124290',
+                                  "studentUserId": '1'
+                                }, context);
                               },
                               child: Text(
                                 '是',
@@ -356,4 +367,24 @@ class _ClassCardState extends State<ClassCard> {
           ),
         ],
       );
+
+  toAdd(Map<String, String> req, BuildContext context) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.studentAddClass,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    if (map != null) {
+      CommonResponse loginResponse = CommonResponse.fromJson(map);
+      if (loginResponse.code != ResponseCode.status_success) {
+        Future.error("返回加入班级CommonResponse为空");
+      } else {
+        loginResponse!;
+        Util.toast('加入成功');
+        Navigator.pop(context);
+      }
+    } else {
+      Future.error("返回加入班级CommonResponse为空");
+    }
+  }
 }

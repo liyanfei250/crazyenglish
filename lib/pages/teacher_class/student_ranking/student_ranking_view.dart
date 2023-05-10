@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:crazyenglish/entity/student_ranking_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,6 +12,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/ShareScreen.dart';
 import '../../../utils/permissions/permissions_util.dart';
@@ -35,6 +37,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
 
   final int pageSize = 10;
   int currentPageNo = 1;
+  late List<Obj> dataList = [];
   List<String> weekPaperList = [];
   final int pageStartIndex = 1;
 
@@ -210,7 +213,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           buildItem,
-                          childCount: 4,
+                          childCount: dataList.length,
                         ),
                       ),
                     ],
@@ -338,7 +341,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
             SizedBox(
               width: 10.w,
             ),
-            Text('张慧敏',
+            Text(dataList[index]!.actualname?? '',
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
@@ -346,7 +349,7 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
             Expanded(
               child: Container(
                 alignment: Alignment.center,
-                child: Text('99.1',
+                child: Text(dataList[index]!.effort.toString(),
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
@@ -361,7 +364,9 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    //logic.getList("2022-12-22",pageStartIndex,pageSize);
+    //todo 写活
+    logic.getStudentRanking("1655395694170124290");
+
   }
 
   void _onLoading() async {
@@ -370,7 +375,21 @@ class _ToStudentRankingPageState extends BasePageState<Student_rankingPage> {
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+
+    logic.addListenerId(
+        GetBuilderIds.getStudentRanking + /*widget.classId.toString()*/"1655395694170124290", () {
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+        if (state.myRanking != null && state.myRanking!.obj != null) {
+          dataList = state.myRanking!.obj!;
+          setState(() {});
+        }
+      }
+    });
+
+    _onRefresh();
+  }
 
   @override
   void onDestroy() {

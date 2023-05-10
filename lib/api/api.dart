@@ -215,4 +215,19 @@ class Api {
   //班级update
   static String TeacherClassChange =
       Config.ApiHost + "/member/schoolClass/update";
+
+  //班级顶部
+  static String TeacherClassTop =
+      Config.ApiHost + "/question/statistics/detail/";
+  //班级底部
+  static String TeacherClassBottom =
+      Config.ApiHost + "/question/statistics/studentPage";
+  //学生加入班级
+  static String studentAddClass =
+      Config.ApiHost + "/member/classStudent/joinClass";
+  static String studentDetail =
+      Config.ApiHost + "/question/statistics/studentDetail/";
+  //学生加入班级
+  static String studentRanking =
+      Config.ApiHost + "/question/statistics/studentLeaderboards/";
 }

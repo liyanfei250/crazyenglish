@@ -1,3 +1,5 @@
+import 'package:crazyenglish/entity/class_bottom_info.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,13 +10,20 @@ import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/search_bar.dart';
 import 'student_list_logic.dart';
 
 class StudentListPage extends BasePage {
-  const StudentListPage({Key? key}) : super(key: key);
+  String? classId;
+
+  StudentListPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      classId = Get.arguments['classId'];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToStudentListPageState();
@@ -23,23 +32,15 @@ class StudentListPage extends BasePage {
 class _ToStudentListPageState extends BasePageState<StudentListPage> {
   final logic = Get.put(Student_listLogic());
   final state = Get.find<Student_listLogic>().state;
-  List listData = [
-    {
-      "title": "【完形填空】Module 1 Unit3",
-      "type": 0,
-    },
-    {"title": "【单词速记】Module 1 Unit3", "type": 1},
-    {"title": "【单词速记】Module 2 Unit3", "type": 2},
-    {"title": "【单词速记】Module 3 Unit3", "type": 3},
-  ];
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
 
-  // List<Rows> weekPaperList = [];
+  List<Records> paperList = [];
   final int pageStartIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,37 +73,45 @@ class _ToStudentListPageState extends BasePageState<StudentListPage> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(
-                    bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
-                child: SearchBar(
-                  width: double.infinity,
-                  height: 28.w,
-                ),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                buildItem,
-                childCount: 4,
-              ),
-            ),
-          ],
-        ),
+        child: paperList.length > 0
+            ? CustomScrollView(
+                slivers: [
+                  /*SliverToBoxAdapter(
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
+                      child: SearchBar(
+                        width: double.infinity,
+                        height: 28.w,
+                      ),
+                    ),
+                  ),*/
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      buildItem,
+                      childCount: paperList.length,
+                    ),
+                  ),
+                ],
+              )
+            : PlaceholderPage(
+                imageAsset: R.imagesCommenNoDate,
+                title: '暂无数据',
+                topMargin: 0,
+                subtitle: '快去邀请学生加入吧'),
       ),
     );
   }
+
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getList("2022-12-22",pageStartIndex,pageSize);
+    logic.getMyClassBottom(widget.classId.toString(), pageSize, pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList("2022-12-22",currentPageNo,pageSize);
+    logic.getMyClassBottom(
+        widget.classId.toString(), pageSize, currentPageNo + 1);
   }
 
   @override
@@ -114,13 +123,46 @@ class _ToStudentListPageState extends BasePageState<StudentListPage> {
 
   @override
   void onCreate() {
+    logic.addListenerId(
+        GetBuilderIds.getMyClassHomeBottom + widget.classId.toString(), () {
+      hideLoading();
+      if (state.list != null) {
+        if (state.pageNo == currentPageNo + 1) {
+          currentPageNo++;
+          paperList.addAll(state!.list!);
+          if (mounted && _refreshController != null) {
+            _refreshController.loadComplete();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        } else if (state.pageNo == pageStartIndex) {
+          currentPageNo = pageStartIndex;
+          paperList.clear();
+          paperList.addAll(state.list!);
+          if (mounted && _refreshController != null) {
+            _refreshController.refreshCompleted();
+            if (!state!.hasMore) {
+              _refreshController.loadNoData();
+            } else {
+              _refreshController.resetNoData();
+            }
+            setState(() {});
+          }
+        }
+      }
+    });
 
+    _onRefresh();
+    showLoading('');
   }
 
   @override
-  void onDestroy() {
+  void onDestroy() {}
 
-  }
   Widget buildContainer(String first) {
     return Container(
       height: 22.w,
@@ -181,15 +223,15 @@ class _ToStudentListPageState extends BasePageState<StudentListPage> {
       ],
     );
   }
+
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.TEACHER_STUDENT);
       },
       child: Container(
-        height: 171.w,
         margin: EdgeInsets.only(top: 10.w, left: 22.w, right: 22.w),
-        padding: EdgeInsets.only(left: 16.w),
+        padding: EdgeInsets.only(left: 16.w, top: 17.w, bottom: 17.w),
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -205,33 +247,42 @@ class _ToStudentListPageState extends BasePageState<StudentListPage> {
             color: AppColors.c_FFFFFFFF),
         child: Row(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  R.imagesStudentHead,
-                  width: 80.w,
-                  height: 80.w,
-                ),
-                Padding(padding: EdgeInsets.only(top: 8.w)),
-                buildContainer('提醒学生'),
-                Padding(padding: EdgeInsets.only(top: 8.w)),
-                buildContainer('提醒家长'),
-              ],
+            ClipRRect(
+              borderRadius: BorderRadius.circular(1.0),
+              child: Image.network(
+                paperList[index]!.avatar ??
+                    "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
+                width: 88.w,
+                height: 88.w,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return ClipRRect(
+                      borderRadius: BorderRadius.circular(1.0),
+                      child: Image(
+                        image: AssetImage(R.imagesStudentHead),
+                        width: 88.w,
+                        height: 88.w,
+                        fit: BoxFit.cover,
+                      ));
+                },
+              ),
             ),
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Container(
-              width: 220.w,
-              height: 142.w,
+              height: 88.w,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildItemClassStudent('姓名：', '张慧敏'),
-                  buildItemClassStudent('努力值：', '80分'),
-                  buildItemClassStudent('学习时长：', '20小时'),
-                  buildItemClassStudent('听力时长：', '100分钟'),
-                  buildItemClassStudent('阅读时长：', '10分钟'),
-                  buildItemClassStudent('答题总数：', '听(20) 说(12) 读(21)'),
+                  buildItemClassStudent(
+                      '姓名：', paperList![index]!.actualname ?? ''),
+                  buildItemClassStudent(
+                      '努力值：', paperList![index]!.effort.toString() + '分'),
+                  buildItemClassStudent(
+                      '学习时长：', paperList[index]!.studyTime.toString() + '小时'),
+                  buildItemClassStudent(
+                      '答题总数：', paperList[index]!.totalSize.toString() + '道'),
                 ],
               ),
             ),

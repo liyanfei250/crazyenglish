@@ -14,16 +14,25 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../utils/sp_util.dart';
+import '../../widgets/PlaceholderPage.dart';
 import '../mine/class_page_card/class_page_card_view.dart';
 import 'class_message_logic.dart';
 import '../../entity/class_detail_response.dart';
 
 class Class_messagePage extends BasePage {
   int? isShowAdd;
+  String? classId;
+
+  // bool? isStudent;
+  // bool? isAdd;
 
   Class_messagePage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       isShowAdd = Get.arguments['isShowAdd'];
+      classId = Get.arguments['classId'];
+      //todo 学生进去的逻辑处理  1.查看自己是否已经加入，加入不显示“加入班级”按钮，2.显示讲师的数据；3.加入班级的按钮接口处理；
+      // isStudent = Get.arguments['isStudent'];
+      // isAdd = Get.arguments['isAdd'];
     }
   }
 
@@ -34,43 +43,24 @@ class Class_messagePage extends BasePage {
 class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
   final logic = Get.put(Class_messageLogic());
   final state = Get.find<Class_messageLogic>().state;
-  late Obj detailBean;
+  late Obj detailBean = Obj();
+
   @override
   void initState() {
     super.initState();
-    logic.getClassInfo();
-    logic.addListenerId(GetBuilderIds.getHomeScanDate, () {
-      if (state.paperDetail != null) {
-        /*paperDetail = state.paperDetail;
-        if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
 
-          }
-          setState(() {
-          });
-        }*/
-
-      }
-    });
-
-    logic.addListenerId(GetBuilderIds.getMyClassListDetail, () {
-      if (state.myClassListDetail != null && state.myClassListDetail!.obj!=null) {
-        print("班级数据==="+state.myClassListDetail!.obj!.name!);
+    logic.addListenerId(
+        GetBuilderIds.getMyClassListDetail + widget.classId.toString(), () {
+      if (state.myClassListDetail != null &&
+          state.myClassListDetail!.obj != null) {
+        print("班级数据===" + state.myClassListDetail!.obj!.name!);
 
         detailBean = state.myClassListDetail!.obj!;
-        setState(() {
-
-        });
+        setState(() {});
       }
     });
 
-    logic.getMyClassDetail('1655395694170124290');
+    logic.getMyClassDetail(widget.classId.toString());
   }
 
   @override
@@ -94,11 +84,29 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
                 color: Color(0xff353e4d)),
           ),
         )),
-        Positioned(top: 116.w, child: ClassCard(isShowRank: true,className: detailBean.name!,classImage: detailBean.image!,studentSize: detailBean.studentSize!.toString(),teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE)
-        ))
+        Positioned(
+            top: 116.w,
+            child: detailBean == null||detailBean.name==null
+                ? PlaceholderPage(
+                imageAsset: R.imagesCommenNoDate,
+                title: '识别错误',
+                topMargin: 0.w,
+                subtitle: '')
+                : ClassCard(
+                    isShowAdd: widget.isShowAdd == 1,
+                    isShowRank: true,
+                    className: detailBean.name!,
+                    classImage: detailBean.image!,
+                    studentSize: detailBean.studentSize!.toString(),
+                    teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
+                    teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),
+                    teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),
+                    teacherConnect:
+                        SpUtil.getString(BaseConstant.TEACHER_PHONE)))
       ],
     ));
   }
+
   Widget _buildBgView(BuildContext context) {
     return Container(
         width: double.infinity,

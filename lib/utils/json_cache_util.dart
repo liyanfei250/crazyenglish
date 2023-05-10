@@ -59,6 +59,11 @@ class JsonCacheManageUtils {
   static const int HomeMyClassList = 0x204; //我的班级列表
   static const int HomeMyClassDetail = 0x205; //我的班级详情
   static const int HomeAddClass = 0x206; //添加班级
+  static const int HomeClassTop = 0x207; //班级顶部
+  static const int HomeClassBottom = 0x208; //班级底部学生
+  static const int HomeClassTab = 0x209; //班级顶部tab
+  static const int StudentRanking = 0x210; //班级学生排名
+  static const int StudentDetail = 0x211; //班级学生详情
 
   // String contentJson;
 
