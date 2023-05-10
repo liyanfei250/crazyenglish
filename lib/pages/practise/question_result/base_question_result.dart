@@ -266,15 +266,27 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     // if(logic!=null){
     //   logic.initPageStr("1/${questionList.length}");
     // }
-    return PageView(
-      controller: pageController,
-      physics: _neverScroll,
-      onPageChanged: (int value){
-        // if(logic!=null){
-        //   logic.updatePageStr("${(value+1)}/${questionList.length}");
-        // }
-      },
-      children: questionList,
+    return SliverFillViewport(
+      viewportFraction: 1.0,
+      delegate: SliverChildBuilderDelegate((context, index) => Builder(builder:
+          (BuildContext context){
+        return PageView.builder(
+            itemCount: questionList.length,
+            itemBuilder: (BuildContext context,int index){
+              return questionList[index];
+            });
+        //   PageView(
+        //   controller: pageController,
+        //   physics: _neverScroll,
+        //   onPageChanged: (int value){
+        //     // if(logic!=null){
+        //     //   logic.updatePageStr("${(value+1)}/${questionList.length}");
+        //     // }
+        //   },
+        //   children: questionList,
+        // );
+      }
+      )),
     );
   }
 

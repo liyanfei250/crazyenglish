@@ -149,80 +149,83 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           child: Column(
             children: [
               buildTransparentAppBar("${currentSubjectVoList!.catalogueName}"),
-              Expanded(child: NestedScrollView(
-                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    return [SliverToBoxAdapter(
-                      child: Util.buildTopIndicator(
-                          currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
-                          currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
-                          currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
-                          currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.questionTypeStr == QuestionType.writing_question),
-                    )];
-                  },
-                  body: Container(
-                    margin: EdgeInsets.only(top: 8.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow:[
-                        BoxShadow(
-                          color: AppColors.c_26D0C5B4,		// 阴影的颜色
-                          offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                          blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
-                          spreadRadius: 1.w,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Visibility(
-                      visible: hasTab,
-                      child: Padding(padding: EdgeInsets.only(top: 24.w))),
-                        Visibility(
-                          visible: hasTab,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 18.w,right: 18.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
-                                        Padding(padding: EdgeInsets.only(left: 9.w)),
-                                        Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Util.buildAnswerState(1),
-                                        Util.buildAnswerState(2),
-                                        Util.buildAnswerState(3),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.only(top: 24.w)),
-                              _buildTabBar(),
-                              Container(
-                                height: 0.5.w,
-                                width: double.infinity,
-                                color: AppColors.c_FFD2D5DC,
-                              ),
-                            ],
+              Expanded(child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Util.buildTopIndicator(
+                        currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
+                        currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
+                        currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
+                        currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.questionTypeStr == QuestionType.writing_question),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow:[
+                          BoxShadow(
+                            color: AppColors.c_26D0C5B4,		// 阴影的颜色
+                            offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+                            blurRadius: 3.w,							// 高斯的标准偏差与盒子的形状卷积。
+                            spreadRadius: 1.w,
                           ),
-                        ),
-                        Expanded(child: pages[0],)
-                      ],
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Visibility(
+                              visible: hasTab,
+                              child: Padding(padding: EdgeInsets.only(top: 24.w))),
+                          Visibility(
+                            visible: hasTab,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 18.w,right: 18.w),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
+                                          Padding(padding: EdgeInsets.only(left: 9.w)),
+                                          Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Util.buildAnswerState(1),
+                                          Util.buildAnswerState(2),
+                                          Util.buildAnswerState(3),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 24.w)),
+                                _buildTabBar(),
+                                Container(
+                                  height: 0.5.w,
+                                  width: double.infinity,
+                                  color: AppColors.c_FFD2D5DC,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ))),
-
+                  ),
+                  SliverToBoxAdapter(
+                    child: pages[0],
+                  )
+                ],)),
               buildSeparatorBuilder(1),
             ],
           ),

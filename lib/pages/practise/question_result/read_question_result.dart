@@ -87,7 +87,8 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           buildReadQuestion(element!.content),
-          Expanded(child: judgeAndGetQuestionDetail(element),)
+          // Expanded(child: judgeAndGetQuestionDetail(element),),
+          judgeAndGetQuestionDetail(element)
         ],
       ),
     );
