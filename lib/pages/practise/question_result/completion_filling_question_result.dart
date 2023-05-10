@@ -70,7 +70,7 @@ class _CompletionFillingQuestionResultState extends BaseQuestionResultState<Comp
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
+          QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,isResult: true),
         ],
       ),
     );

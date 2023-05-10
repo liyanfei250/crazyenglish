@@ -12,8 +12,6 @@ import '../../r.dart';
 import '../../utils/text_util.dart';
 
 class WritDialog extends Dialog {
-  final String title;
-  final String content;
   final String htmlContent;
 
   _showTimer(context) {
@@ -25,7 +23,7 @@ class WritDialog extends Dialog {
     });
   }
 
-  WritDialog(this.title, this.content, this.htmlContent);
+  WritDialog(this.htmlContent);
 
   @override
   Widget build(BuildContext context) {

@@ -70,7 +70,7 @@ class _WritingQuestionResultState
                   )
                 ],
               ),
-              buildReadQuestion(widget.data.content??"无数据"),
+              buildReadQuestion(widget.data.modelEssay??"无范文"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -78,7 +78,7 @@ class _WritingQuestionResultState
                   Text('')
                 ],
               ),
-              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!.answer??"无数据"),
+              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!=null ? widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!.answer??"无数据":"无数据"),
               // _exampleLayout(),
             ],
           ),

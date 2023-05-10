@@ -363,7 +363,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
           questionList.add(SelectWordsFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
-            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling){
+            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling
+            || currentSubjectVoList!.questionTypeStr == QuestionType.normal_gap
+
+        ){
           questionList.add(CompletionFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
           questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));

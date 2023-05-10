@@ -192,13 +192,14 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback}){
+  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback,bool isResult=false}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     num subtopicId = subtopicVoList.id??0;
     if(subtopicId <=0){
       print("buildShortAnswerQuestion: ${subjecId}");
     }
+
     ExerciseLists? exerciseLists = subtopicAnswerVoMap["$subjecId:$subtopicId"];
 
     String userAnswer = "";
@@ -268,9 +269,13 @@ class QuestionFactory{
     while(htmlContent.contains(gap)){
       num subtopicId = -1;
       String subtopicAnswer = "";
+      String userAnswer = "";
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+          userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
+        }
       }else{
         print("试题空和答案不匹配");
       }
@@ -282,7 +287,7 @@ class QuestionFactory{
         gapIndex++;
         print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
         // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
+        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" userAnswer="$userAnswer"></gap>');
       }
     }
     return Html(
@@ -306,16 +311,12 @@ class QuestionFactory{
           String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
           int subtopicId = int.parse(subtopicIdstr);
           String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+          String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
           String content = "";
           int num = 0;
           print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
           var correctType = 0.obs;
 
-          if(isResult){
-
-          }else if(isErrorCome){
-
-          }
           return GetBuilder<SelectGapGetxController>(
             id: key,
             builder: (_){
@@ -330,6 +331,21 @@ class QuestionFactory{
                       affinity: TextAffinity.downstream,
                       offset: '${_.contentMap[key]??""}'.length));
               // print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              if(isResult){
+                getFocusNodeControllerCallback(key);
+                getEditingControllerCallback(key).text = userAnswer??"";
+                getEditingControllerCallback(key).selection =
+                    TextSelection.fromPosition(TextPosition(
+                        affinity: TextAffinity.downstream,
+                        offset: '${userAnswer??""}'.length));
+              }else{
+                getFocusNodeControllerCallback(key);
+                getEditingControllerCallback(key).text = _.contentMap[key]??"";
+                getEditingControllerCallback(key).selection =
+                    TextSelection.fromPosition(TextPosition(
+                        affinity: TextAffinity.downstream,
+                        offset: '${_.contentMap[key]??""}'.length));
+              }
               if(userAnswerCallback!=null){
                 SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
                     optionId:_.optionIdMap[key]??0,
@@ -430,9 +446,13 @@ class QuestionFactory{
     while(htmlContent.contains(gap)){
       num subtopicId = -1;
       String subtopicAnswer = "";
+      String userAnswer = "";
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+          userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
+        }
       }else{
         print("试题空和答案不匹配");
       }
@@ -444,7 +464,7 @@ class QuestionFactory{
         gapIndex++;
         print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
         // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
+        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" useranswer="$userAnswer"></gap>');
       }
     }
     return Html(
@@ -468,6 +488,7 @@ class QuestionFactory{
           String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
           int subtopicId = int.parse(subtopicIdstr);
           String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+          String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
           String content = "";
           int num = 0;
           print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
@@ -481,17 +502,22 @@ class QuestionFactory{
           return GetBuilder<SelectGapGetxController>(
             id: key,
             builder: (_){
-              // if(key =="1"){
-              //   print("getBuilderddd:${key}");
-              //   getFocusNodeControllerCallback(key)!.requestFocus();
-              // }
-              getFocusNodeControllerCallback(key);
-              getEditingControllerCallback(key).text = _.contentMap[key]??"";
-              getEditingControllerCallback(key).selection =
-                  TextSelection.fromPosition(TextPosition(
-                      affinity: TextAffinity.downstream,
-                      offset: '${_.contentMap[key]??""}'.length));
-              // print("hasFocusMap+++${key}++++${_.hasFocusMap[key]??false}");
+              if(isResult){
+                getFocusNodeControllerCallback(key);
+                getEditingControllerCallback(key).text = userAnswer??"";
+                getEditingControllerCallback(key).selection =
+                    TextSelection.fromPosition(TextPosition(
+                        affinity: TextAffinity.downstream,
+                        offset: '${userAnswer??""}'.length));
+              }else{
+                getFocusNodeControllerCallback(key);
+                getEditingControllerCallback(key).text = _.contentMap[key]??"";
+                getEditingControllerCallback(key).selection =
+                    TextSelection.fromPosition(TextPosition(
+                        affinity: TextAffinity.downstream,
+                        offset: '${_.contentMap[key]??""}'.length));
+              }
+
               if(userAnswerCallback!=null){
                 SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
                     optionId:_.optionIdMap[key]??0,
@@ -644,7 +670,7 @@ class QuestionFactory{
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback,bool isResult = false}){
     FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
@@ -655,9 +681,13 @@ class QuestionFactory{
     while(htmlContent.contains(gap)){
       num subtopicId = -1;
       String subtopicAnswer = "";
+      String userAnswer = "";
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+          userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
+        }
       }else{
         print("试题空和答案不匹配");
       }
@@ -668,7 +698,7 @@ class QuestionFactory{
       gapIndex++;
       print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
       // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer"></gap>');
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" useranswer="$userAnswer"></gap>');
     }
 
 
@@ -695,23 +725,10 @@ class QuestionFactory{
             String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
             int subtopicId = int.parse(subtopicIdstr);
             String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+            String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
             String content = "";
             int num = 0;
             print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
-            var correctType = 0.obs;
-            try {
-              num = int.parse(gapIndex);
-              max = num;
-
-              // if(list!=null && num< list!.length){
-              //   content = list![num].content!;
-              // }else{
-                content = "";
-              // }
-              print("num: $num content: $content");
-            } catch (e) {
-              e.printError();
-            }
 
             return SizedBox(
               width: 80.w,
@@ -757,7 +774,7 @@ class QuestionFactory{
                             width: double.infinity,
                             height: 13.w,
                             child: Center(
-                              child: Text((_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
+                              child: Text(isResult? userAnswer??"" : (_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
                             ),
                           ),
                           Container(

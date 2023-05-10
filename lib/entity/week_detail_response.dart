@@ -225,6 +225,7 @@ class SubjectVoList {
       String? stem, 
       String? content, 
       String? audio,
+      String? modelEssay,
       dynamic cueWord,
       num? difficultyDegree, 
       num? classify, 
@@ -235,7 +236,7 @@ class SubjectVoList {
       String? questionTypeStr, 
       String? questionTypeName, 
       bool? isDelete, 
-      String? createTime, 
+      String? createTime,
       dynamic updateTime, 
       num? createUser, 
       dynamic updateUser, 
@@ -249,6 +250,7 @@ class SubjectVoList {
     _stem = stem;
     _content = content;
     _audio = audio;
+    _modelEssay = modelEssay;
     _cueWord = cueWord;
     _difficultyDegree = difficultyDegree;
     _classify = classify;
@@ -276,6 +278,7 @@ class SubjectVoList {
     _stem = json['stem'];
     _content = json['content'];
     _audio = json['audio'];
+    _modelEssay = json['modelEssay'];
     _cueWord = json['cueWord'];
     _difficultyDegree = json['difficultyDegree'];
     _classify = json['classify'];
@@ -311,6 +314,7 @@ class SubjectVoList {
   String? _stem;
   String? _content;
   String? _audio;
+  String? _modelEssay;
   dynamic _cueWord;
   num? _difficultyDegree;
   num? _classify;
@@ -335,6 +339,7 @@ SubjectVoList copyWith({  num? id,
   String? stem,
   String? content,
   String? audio,
+  String? modelEssay,
   dynamic cueWord,
   num? difficultyDegree,
   num? classify,
@@ -359,6 +364,7 @@ SubjectVoList copyWith({  num? id,
   stem: stem ?? _stem,
   content: content ?? _content,
   audio: audio ?? _audio,
+  modelEssay: modelEssay ?? _modelEssay,
   cueWord: cueWord ?? _cueWord,
   difficultyDegree: difficultyDegree ?? _difficultyDegree,
   classify: classify ?? _classify,
@@ -384,6 +390,7 @@ SubjectVoList copyWith({  num? id,
   String? get stem => _stem;
   String? get content => _content;
   String? get audio => _audio;
+  String? get modelEssay => _modelEssay;
   dynamic get cueWord => _cueWord;
   num? get difficultyDegree => _difficultyDegree;
   num? get classify => _classify;
@@ -411,6 +418,7 @@ SubjectVoList copyWith({  num? id,
     map['stem'] = _stem;
     map['content'] = _content;
     map['audio'] = _audio;
+    map['modelEssay'] = _modelEssay;
     map['cueWord'] = _cueWord;
     map['difficultyDegree'] = _difficultyDegree;
     map['classify'] = _classify;

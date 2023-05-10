@@ -445,7 +445,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
           questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         } else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
-            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling){
+            || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling
+            || currentSubjectVoList!.questionTypeStr == QuestionType.normal_gap
+        ){
           questionList.add(CompletionFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));

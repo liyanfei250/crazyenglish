@@ -38,9 +38,6 @@ class WritingQuestion extends BaseQuestion {
 
 class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   late SubjectVoList element;
-  var exTile = "Everyone Favorite Fruit";
-  var exList =
-      "Everyone has favorite fruit. My favorite fruit is filled with the purple grape. It is sour. Because I like to eat sour fruit.She is a vine. The purple coat package in the body. A very beautiful. Like a purple pearls. In the sunshine. The glow of beauty. People have seen.Dear friends are you favorite fruit is what? Introduce to me ok?";
   final TextEditingController writController = TextEditingController();
   Widget? detailWidget;
 
@@ -292,16 +289,17 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            InkWell(
+            Visibility(
+              visible: (element.modelEssay ??
+                  "").isNotEmpty,
+              child: InkWell(
               onTap: () {
                 //RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 Util.toast("查看范文");
                 showDialog(
                   context: context,
                   builder: (context) => WritDialog(
-                      exTile,
-                      exList,
-                      element.content ??
+                      element.modelEssay ??
                           ""),
                 );
               },
@@ -310,7 +308,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
                 width: 77.w,
                 height: 18.w,
               ),
-            ),
+            )),
             Expanded(child: Text("")),
             Text(
               "注意：词数100左右",
