@@ -51,7 +51,7 @@ class _SelectWordsFillingQuestionResultState extends BaseQuestionResultState<Sel
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child: getDetail(0))
+          getDetail(0)
         ],
       ),
     );

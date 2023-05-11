@@ -16,12 +16,15 @@ import '../../../entity/commit_request.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import '../answering/answering_logic.dart';
+import '../question/choice_question/choice_question_view.dart';
 import '../question_result/base_question_result.dart';
 import '../question_result/listen_question_result.dart';
+import '../question_result/question_reading_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question_result.dart';
 import '../question_result/select_words_filling_question.dart';
@@ -75,7 +78,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
   final logicCollect = Get.put(Collect_practicLogic());
-
+  // final PageController pageController = PageController(keepPage: true);
 
   late TabController _tabController;
 
@@ -88,6 +91,9 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   // subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   bool hasTab = true;
+  bool hasPageView = false;
+  List<Widget> childQuestionList = [];
+  Widget? childQustionPageView;
   @override
   void onCreate() {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
@@ -224,6 +230,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   ),
                   SliverToBoxAdapter(
                     child: pages[0],
+                  ),
+                  SliverVisibility(
+                    visible: hasPageView,
+                    sliver: childQustionPageView??SliverToBoxAdapter(child: Container(),),
                   )
                 ],)),
               buildSeparatorBuilder(1),
@@ -349,6 +359,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   Widget _buildTabBar() => tabs.length>0? TabBar(
     onTap: (value){
       pages[0].jumpToQuestion(value);
+      // pageController.jumpToPage(value);
     },
     controller: _tabController,
     indicatorColor: AppColors.c_FF353E4D,
@@ -442,35 +453,39 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       if(widget.parentIndex < length){
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
+          // 选词填空
           questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
+          // 选择填空
           questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-        } else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
             || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling
             || currentSubjectVoList!.questionTypeStr == QuestionType.normal_gap
         ){
+          // 补全填空 翻译填空 普通填空
           questionList.add(CompletionFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
+          // 写作题
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
           hasTab = false;
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
-            || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+            || currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling
+          ){
+          // 常规阅读题 完型填空
           questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-          if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
-            hasTab = false;
-          }
-        } else{
+          childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
+          // 简答阅读题
+          questionList.add(QuestionReadingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          hasTab = false;
+        } else {
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
               questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-              if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
-                hasTab = false;
-              }
+              childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
               break;
             case QuestionTypeClassify.writing:
               questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
@@ -490,6 +505,132 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       }
     }
     return questionList;
+  }
+
+  // 本来放在base_question_result中，无奈 要包裹SliverFillViewport 所以提到这一层
+  Widget getChildQuestionDetail(SubjectVoList element){
+    childQuestionList.clear();
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
+      for(int i = 0 ;i< questionNum;i++){
+        SubtopicVoList question = element.subtopicVoList![i];
+
+        List<Widget> itemList = [];
+        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+
+        if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.complete_filling
+            || element.questionTypeStr == QuestionType.multi_choice
+            || element.questionTypeStr == QuestionType.judge_choice
+            || element.questionTypeStr == QuestionType.normal_reading){
+          // 选择题
+          itemList.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildQuestionType("选择题"),
+              Visibility(
+                  visible: element.questionTypeStr == QuestionType.question_reading,
+                  child: GetBuilder<Collect_practicLogic>(
+                    id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
+                    builder: (_){
+                      return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+                    },
+                  )
+              )
+            ],
+          ));
+
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          bool? isCorrect;
+          num subjectId = element.id??0;
+          num subtopicId = question.id??0;
+          String defaultChooseAnswers = "";
+          if(subtopicAnswerVoMap!.containsKey("$subjectId:$subtopicId")){
+            String userAnswer = subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.answer??"";
+            int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
+            isCorrect = subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.isRight;
+            for(int  i = 0;i <length ;i++){
+              if(userAnswer.contains("${question.optionsList![i].sequence}")){
+                defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
+              }
+            }
+          }
+          if(element.questionTypeStr == QuestionType.judge_choice){
+            itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
+          }else{
+            // TODO 判断是否是图片选择题的逻辑需要修改
+            if(question.optionsList![0].content!.isNotEmpty){
+              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
+            }else{
+              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
+            }
+          }
+
+        }
+
+        logicCollect.queryCollectState(element.id??0,subtopicId:question.id);
+
+        childQuestionList.add(SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: itemList,
+          ),
+        ));
+      }
+    }
+
+    // if(logic!=null){
+    //   logic.initPageStr("1/${questionList.length}");
+    // }
+    Util.toast("ddd${childQuestionList.length}");
+    print("测试小题页面数量${childQuestionList.length}");
+    hasPageView = true;
+    return SliverFillViewport(
+      viewportFraction: 1.0,
+      delegate: SliverChildListDelegate(
+        [Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: childQuestionList,
+              ),
+            )
+          ],
+        )]
+      ),
+    );
+  }
+
+  Widget buildFavorAndFeedback(bool isFavor,num? subjectId,{num subtopicId = -1}){
+    print("更新");
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: (){
+            logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
+          },
+          child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
+        ),
+        Padding(padding: EdgeInsets.only(left: 10.w)),
+        InkWell(
+          onTap: (){
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
+                arguments: {'isFeedback': false});
+          },
+          child: Image.asset(R.imagesExerciseNoteFeedback,width: 48.w,height: 17.w),
+        )
+      ],
+    );
   }
 
 

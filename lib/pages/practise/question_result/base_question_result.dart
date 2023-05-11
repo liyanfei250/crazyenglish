@@ -80,7 +80,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   Map<String,TextEditingController> gapEditController = {};
   Map<String,FocusNode> gapFocusNodeController = {};
   Map<String,String> gapAnswerController = {};
-  final PageController pageController = PageController(keepPage: true);
+  // final PageController pageController = PageController(keepPage: true);
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
@@ -165,130 +165,131 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
     );
   }
 
-  Widget getQuestionDetail(SubjectVoList element){
-    questionList.clear();
-
-    // 判断是否父子题
-    // 普通阅读 常规阅读题 是父子题
-    int questionNum = element.subtopicVoList!.length;
-    if(questionNum>0){
-      for(int i = 0 ;i< questionNum;i++){
-        SubtopicVoList question = element.subtopicVoList![i];
-
-        List<Widget> itemList = [];
-        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
-
-        if(element.questionTypeStr == QuestionType.single_choice
-            || element.questionTypeStr == QuestionType.complete_filling
-            || element.questionTypeStr == QuestionType.multi_choice
-            || element.questionTypeStr == QuestionType.judge_choice
-            || element.questionTypeStr == QuestionType.normal_reading){
-          // 选择题
-          itemList.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildQuestionType("选择题"),
-              Visibility(
-                  visible: element.questionTypeStr == QuestionType.question_reading,
-                  child: GetBuilder<Collect_practicLogic>(
-                    id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
-                    builder: (_){
-                      return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
-                    },
-                  )
-              )
-            ],
-          ));
-
-          itemList.add(Visibility(
-            visible: question!.problem != null && question!.problem!.isNotEmpty,
-            child: Text(
-              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          bool? isCorrect;
-          num subjectId = element.id??0;
-          num subtopicId = question.id??0;
-          String defaultChooseAnswers = "";
-          if(widget.subtopicAnswerVoMap!.containsKey("$subjectId:$subtopicId")){
-            String userAnswer = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.answer??"";
-            int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
-            isCorrect = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.isRight;
-            for(int  i = 0;i <length ;i++){
-              if(userAnswer.contains("${question.optionsList![i].sequence}")){
-                defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
-              }
-            }
-          }
-          if(element.questionTypeStr == QuestionType.judge_choice){
-            itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
-          }else{
-            // TODO 判断是否是图片选择题的逻辑需要修改
-            if(question.optionsList![0].content!.isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
-            }else{
-              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
-            }
-          }
-
-        }else if(element.questionTypeStr == QuestionType.normal_gap) {
-          itemList.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildQuestionType("填空题"),
-              Visibility(
-                  visible: element.questionTypeStr == QuestionType.question_reading,
-                  child: GetBuilder<Collect_practicLogic>(
-                    id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
-                    builder: (_){
-                      return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
-                    },
-                  )
-              )
-            ],
-          ));
-          itemList.add(buildReadQuestion(element.content ?? ""));
-          itemList.add(QuestionFactory.buildNarmalGapQuestion(
-              question, 0, makeEditController));
-        }
-
-        collectLogic.queryCollectState(element.id??0,subtopicId:question.id);
-
-        questionList.add(SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: itemList,
-          ),
-        ));
-      }
-    }
-
-    // if(logic!=null){
-    //   logic.initPageStr("1/${questionList.length}");
-    // }
-    return SliverFillViewport(
-      viewportFraction: 1.0,
-      delegate: SliverChildBuilderDelegate((context, index) => Builder(builder:
-          (BuildContext context){
-        return PageView.builder(
-            itemCount: questionList.length,
-            itemBuilder: (BuildContext context,int index){
-              return questionList[index];
-            });
-        //   PageView(
-        //   controller: pageController,
-        //   physics: _neverScroll,
-        //   onPageChanged: (int value){
-        //     // if(logic!=null){
-        //     //   logic.updatePageStr("${(value+1)}/${questionList.length}");
-        //     // }
-        //   },
-        //   children: questionList,
-        // );
-      }
-      )),
-    );
-  }
+  // Widget getQuestionDetail(SubjectVoList element){
+  //   questionList.clear();
+  //
+  //   // 判断是否父子题
+  //   // 普通阅读 常规阅读题 是父子题
+  //   int questionNum = element.subtopicVoList!.length;
+  //   if(questionNum>0){
+  //     for(int i = 0 ;i< questionNum;i++){
+  //       SubtopicVoList question = element.subtopicVoList![i];
+  //
+  //       List<Widget> itemList = [];
+  //       itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+  //
+  //       if(element.questionTypeStr == QuestionType.single_choice
+  //           || element.questionTypeStr == QuestionType.complete_filling
+  //           || element.questionTypeStr == QuestionType.multi_choice
+  //           || element.questionTypeStr == QuestionType.judge_choice
+  //           || element.questionTypeStr == QuestionType.normal_reading){
+  //         // 选择题
+  //         itemList.add(Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             buildQuestionType("选择题"),
+  //             Visibility(
+  //                 visible: element.questionTypeStr == QuestionType.question_reading,
+  //                 child: GetBuilder<Collect_practicLogic>(
+  //                   id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
+  //                   builder: (_){
+  //                     return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+  //                   },
+  //                 )
+  //             )
+  //           ],
+  //         ));
+  //
+  //         itemList.add(Visibility(
+  //           visible: question!.problem != null && question!.problem!.isNotEmpty,
+  //           child: Text(
+  //             "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+  //           ),));
+  //         bool? isCorrect;
+  //         num subjectId = element.id??0;
+  //         num subtopicId = question.id??0;
+  //         String defaultChooseAnswers = "";
+  //         if(widget.subtopicAnswerVoMap!.containsKey("$subjectId:$subtopicId")){
+  //           String userAnswer = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.answer??"";
+  //           int length =  question!.optionsList!=null ? question!.optionsList!.length:0;
+  //           isCorrect = widget.subtopicAnswerVoMap!["$subjectId:$subtopicId"]!.isRight;
+  //           for(int  i = 0;i <length ;i++){
+  //             if(userAnswer.contains("${question.optionsList![i].sequence}")){
+  //               defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
+  //             }
+  //           }
+  //         }
+  //         if(element.questionTypeStr == QuestionType.judge_choice){
+  //           itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
+  //         }else{
+  //           // TODO 判断是否是图片选择题的逻辑需要修改
+  //           if(question.optionsList![0].content!.isNotEmpty){
+  //             itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
+  //           }else{
+  //             itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
+  //           }
+  //         }
+  //
+  //       }else if(element.questionTypeStr == QuestionType.normal_gap) {
+  //         itemList.add(Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             buildQuestionType("填空题"),
+  //             Visibility(
+  //                 visible: element.questionTypeStr == QuestionType.question_reading,
+  //                 child: GetBuilder<Collect_practicLogic>(
+  //                   id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
+  //                   builder: (_){
+  //                     return buildFavorAndFeedback(_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+  //                   },
+  //                 )
+  //             )
+  //           ],
+  //         ));
+  //         itemList.add(buildReadQuestion(element.content ?? ""));
+  //         itemList.add(QuestionFactory.buildNarmalGapQuestion(
+  //             question, 0, makeEditController));
+  //       }
+  //
+  //       collectLogic.queryCollectState(element.id??0,subtopicId:question.id);
+  //
+  //       questionList.add(SingleChildScrollView(
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: itemList,
+  //         ),
+  //       ));
+  //     }
+  //   }
+  //
+  //   // if(logic!=null){
+  //   //   logic.initPageStr("1/${questionList.length}");
+  //   // }
+  //   return SliverFillViewport(
+  //     viewportFraction: 1.0,
+  //     delegate: SliverChildBuilderDelegate((context, index) => Builder(builder:
+  //         (BuildContext context){
+  //       return PageView.builder(
+  //           controller: pageController,
+  //           itemCount: questionList.length,
+  //           itemBuilder: (BuildContext context,int index){
+  //             return questionList[index];
+  //           });
+  //       //   PageView(
+  //       //   controller: pageController,
+  //       //   physics: _neverScroll,
+  //       //   onPageChanged: (int value){
+  //       //     // if(logic!=null){
+  //       //     //   logic.updatePageStr("${(value+1)}/${questionList.length}");
+  //       //     // }
+  //       //   },
+  //       //   children: questionList,
+  //       // );
+  //     }
+  //     )),
+  //   );
+  // }
 
   @override
   int getQuestionCount() {
@@ -372,7 +373,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   @override
   void jumpToQuestion(int index) {
     currentPage = index;
-    pageController.jumpToPage(currentPage);
+    // pageController.jumpToPage(currentPage);
   }
 
   TextEditingController makeEditController(String key){

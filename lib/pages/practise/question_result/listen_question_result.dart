@@ -64,7 +64,7 @@ class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionR
           Visibility(
               visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
-          Expanded(child: getQuestionDetail(element)),
+          // Expanded(child: getQuestionDetail(element)),
         ],
       ),
     );

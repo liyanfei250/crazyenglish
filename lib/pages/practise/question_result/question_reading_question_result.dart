@@ -25,21 +25,21 @@ import 'base_question_result.dart';
  *
  * Description:
  */
-class ReadQuestionResult extends BaseQuestionResult {
+class QuestionReadingQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  ReadQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  QuestionReadingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
     // TODO: implement getState
-    return _ReadQuestionResultState();
+    return _QuestionReadingQuestionResultState();
   }
 
 }
 
-class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResult> {
+class _QuestionReadingQuestionResultState extends BaseQuestionResultState<QuestionReadingQuestionResult> {
 
   late SubjectVoList element;
 
@@ -88,11 +88,41 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           buildReadQuestion(element!.content),
           // Expanded(child: judgeAndGetQuestionDetail(element),),
-          // getQuestionDetail(element)
+          judgeAndGetQuestionDetail(element)
         ],
       ),
     );
   }
+
+  Widget judgeAndGetQuestionDetail(SubjectVoList element){
+    questionList.clear();
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
+      for(int i = 0 ;i< questionNum;i++){
+        SubtopicVoList question = element.subtopicVoList![i];
+
+        questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+        questionList.add(buildQuestionDesc("Question ${i+1}"));
+        questionList.add(Visibility(
+          visible: question!.problem != null && question!.problem!.isNotEmpty,
+          child: Text(
+            question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+          ),));
+        questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,this));
+      }
+      collectLogic.queryCollectState(element.id??0);
+    }
+    return SingleChildScrollView(child:
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: questionList,
+    ),);
+  }
+
 
   Widget buildReadQuestion(String? htmlContent){
     return Container(

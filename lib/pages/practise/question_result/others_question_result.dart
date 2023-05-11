@@ -57,7 +57,7 @@ class _OthersQuestionResultState extends BaseQuestionResultState<OthersQuestionR
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child:getQuestionDetail(element)),
+          // Expanded(child:getQuestionDetail(element)),
         ],
       ),
     );
