@@ -42,8 +42,7 @@ class _WritingQuestionResultState
   @override
   Widget build(BuildContext context) {
     collectLogic.queryCollectState(element.id??0);
-    return Scaffold(
-        body: _buildClassCard(0));
+    return _buildClassCard(0);
   }
 
   Widget _buildClassCard(int index) => SingleChildScrollView(

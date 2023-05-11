@@ -478,10 +478,14 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           // 简答阅读题
           questionList.add(QuestionReadingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
           hasTab = false;
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.translate_question){
+          questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
         } else {
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
               questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
@@ -572,6 +576,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
             }
           }
+
+        }else if(element.questionTypeStr == QuestionType.translate_question){
 
         }
 
