@@ -18,12 +18,21 @@ import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import 'dart:ui' as ui;
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/permissions/permissions_util.dart';
 import '../../../widgets/my_text.dart';
 import 'learning_report_logic.dart';
+import '../../../entity/student_time_statistics.dart';
+import '../../../entity/student_detail_response.dart' as detail;
 
 class LearningReportPage extends BasePage {
-  const LearningReportPage({Key? key}) : super(key: key);
+  detail.Obj? student;
+
+  LearningReportPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is detail.Obj) {
+      student = Get.arguments;
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToLearningReportPageState();
@@ -33,6 +42,12 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
   final logic = Get.put(Learning_reportLogic());
   final state = Get.find<Learning_reportLogic>().state;
   final GlobalKey _globalKey = GlobalKey();
+  late List<Obj> data = [];
+
+  late num startTime;
+
+  late num endTime;
+
   var selectData = {
     DateMode.YMDHMS: '',
     DateMode.YMDHM: '',
@@ -57,6 +72,30 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
     DateMode.MD: '',
     DateMode.S: '',
   };
+
+  @override
+  void onCreate() {
+    logic.addListenerId(
+        GetBuilderIds.getStudentDetailReport +
+            widget.student!.userId.toString(), () {
+      if (mounted && state.studentReport.obj != null) {
+        data = state.studentReport.obj!;
+        setState(() {});
+      }
+    });
+
+    DateTime now = DateTime.now();
+    DateTime thirtyDaysAgo = now.subtract(Duration(days: 30));
+    DateTime thirtyDaysAgoMidnight =
+        DateTime(thirtyDaysAgo.year, thirtyDaysAgo.month, thirtyDaysAgo.day);
+    startTime = thirtyDaysAgoMidnight.millisecondsSinceEpoch;
+
+    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    endTime = endOfDay.millisecondsSinceEpoch;
+
+    logic.getStudentReport(
+        widget.student!.userId.toString(), startTime, endTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,15 +192,27 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ClipOval(
-                            child: Image.asset(
-                          R.imagesShopImageLogoTest,
-                          width: 54.w,
-                          height: 54.w,
-                        )),
+                          child: Image.network(
+                            widget.student!.avatar ??
+                                "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
+                            width: 54.w,
+                            height: 54.w,
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return ClipOval(
+                                  child: Image.asset(
+                                R.imagesShopImageLogoTest,
+                                width: 54.w,
+                                height: 54.w,
+                              ));
+                            },
+                          ),
+                        ),
                         SizedBox(
                           height: 16.w,
                         ),
-                        Text('张慧敏',
+                        Text(widget.student!.actualname ?? '',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w500,
@@ -169,7 +220,7 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                         SizedBox(
                           height: 4.w,
                         ),
-                        Text('一班（初一）',
+                        Text(widget.student!.className ?? '',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -184,7 +235,9 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('85%',
+                                Text(
+                                    (widget.student!.accuracy ?? 0).toString() +
+                                        '%',
                                     style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w500,
@@ -202,7 +255,9 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('85%',
+                                Text(
+                                    (widget.student!.score ?? 0).toString() +
+                                        '分',
                                     style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w500,
@@ -220,7 +275,9 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('85%',
+                                Text(
+                                    (widget.student!.effort ?? 0).toString() +
+                                        '分',
                                     style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w500,
@@ -319,16 +376,13 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
                                     mainAxisSpacing: 16.0,
                                     childAspectRatio: 100 / 120 //宽高比为1时，子widget
                                     ),
-                            children: <Widget>[
-                              _buildFuncAreaItem(
-                                  R.imagesReportOne, '累计听力', '88d12h3m'),
-                              _buildFuncAreaItem(
-                                  R.imagesReportTwo, '累计阅读', '88d12h3m'),
-                              _buildFuncAreaItem(
-                                  R.imagesReportThree, '累计口语', '88d12h3m'),
-                              _buildFuncAreaItem(
-                                  R.imagesReportFour, '累计写作', '88d12h3m'),
-                            ]),
+                            children: data
+                                .map((e) => _buildFuncAreaItem(
+                                    e.icon,
+                                    R.imagesReportOne,
+                                    e.classifyName ?? '',
+                                    e.time.toString() + "m"))
+                                .toList()),
                       ],
                     ),
                   ),
@@ -371,7 +425,7 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
       },
       child: MyText(
         PicketUtil.strEmpty(selectData[model])
-            ? "${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)).subtract(Duration(days: 30)))}"
+            ? "${DateFormat("yyyy年M月d日").format(DateTime.now().toUtc().add(Duration(hours: 8)).subtract(Duration(days: 30)))}"
             : selectData[model],
         color: Colors.black,
         size: 14,
@@ -389,7 +443,7 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
       },
       child: MyText(
         PicketUtil.strEmpty(selectDataTwo[model])
-            ? "${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)))}"
+            ? "${DateFormat("yyyy年M月d日").format(DateTime.now().toUtc().add(Duration(hours: 8)))}"
             : selectDataTwo[model],
         color: Colors.black,
         size: 14,
@@ -410,8 +464,13 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
           switch (model) {
             case DateMode.YMD:
               selectData[model] = '${p.year}年${p.month}月${p.day}日';
+              DateTime date = DateTime(p.year!, p.month!, p.day!);
+              DateTime startOfDay = DateTime(date.year, date.month, date.day);
+              startTime = startOfDay.millisecondsSinceEpoch;
               break;
           }
+          logic.getStudentReport(
+              widget.student!.userId.toString(), startTime, endTime);
         });
       },
       // onChanged: (p) => print(p),
@@ -431,8 +490,14 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
           switch (model) {
             case DateMode.YMD:
               selectDataTwo[model] = '${p.year}年${p.month}月${p.day}日';
+              DateTime date = DateTime(p.year!, p.month!, p.day!);
+              DateTime startOfDay =
+                  DateTime(date.year, date.month, date.day, 23, 59, 59);
+              endTime = startOfDay.millisecondsSinceEpoch;
               break;
           }
+          logic.getStudentReport(
+              widget.student!.userId.toString(), startTime, endTime);
         });
       },
       // onChanged: (p) => print(p),
@@ -440,12 +505,10 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
   }
 
   @override
-  void onCreate() {}
-
-  @override
   void onDestroy() {}
 
-  Widget _buildFuncAreaItem(String image, String title, String content) {
+  Widget _buildFuncAreaItem(
+      String? imageHttp, String image, String title, String content) {
     return Container(
       padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 15.w, bottom: 20.w),
       alignment: Alignment.center,
@@ -465,11 +528,17 @@ class _ToLearningReportPageState extends BasePageState<LearningReportPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            image,
-            width: 42.w,
-            height: 44.w,
-          ),
+          imageHttp == null
+              ? Image.asset(
+                  image,
+                  width: 42.w,
+                  height: 44.w,
+                )
+              : Image.network(
+                  imageHttp,
+                  width: 42.w,
+                  height: 44.w,
+                ),
           SizedBox(
             height: 1.w,
           ),

@@ -64,6 +64,8 @@ class JsonCacheManageUtils {
   static const int HomeClassTab = 0x209; //班级顶部tab
   static const int StudentRanking = 0x210; //班级学生排名
   static const int StudentDetail = 0x211; //班级学生详情
+  static const int StudentDetailReport = 0x212; //班级学生报告
+  static const int StudentWorkList = 0x213; //班级学生报告
 
   // String contentJson;
 

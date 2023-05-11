@@ -10,10 +10,12 @@ import 'package:flutter_pickers/utils/check.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../entity/student_work_list_response.dart';
 
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../base/widgetPage/loading.dart';
 import '../../r.dart';
+import '../../routes/getx_ids.dart';
 import '../../utils/colors.dart';
 import '../../widgets/my_text.dart';
 import 'watting_push_logic.dart';
@@ -23,7 +25,7 @@ class Watting_pushPage extends StatefulWidget {
   static int HAS_CORRECTED = 1;
 
   int type; //1待提交2.已完成3.待批改
-  int typeTwo;
+  num? typeTwo;//student
 
   Watting_pushPage(this.type, this.typeTwo, {Key? key}) : super(key: key);
 
@@ -65,7 +67,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
   final int pageSize = 10;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
-
+  List<Obj> weekPaperList = [];
   @override
   void initState() {
     super.initState();
@@ -74,14 +76,13 @@ class _WattingPushPageState extends State<Watting_pushPage>
         'typeTwo==' +
         widget.typeTwo.toString());
 
-    /*logic.addListenerId(
-        GetBuilderIds.errorNoteTestList +
+    logic.addListenerId(
+        GetBuilderIds.getStudentWorkList +
             widget.type.toString() +
             widget.typeTwo.toString(), () {
       hideLoading();
-      if (state.list != null && state.list != null) {
+      if (state.list != null ) {
         if (state.pageNo == currentPageNo + 1) {
-          weekPaperList = state.list;
           currentPageNo++;
           weekPaperList.addAll(state!.list!);
           if (mounted && _refreshController != null) {
@@ -108,7 +109,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
           }
         }
       }
-    });*/
+    });
 
     /*logic.addListenerId(GetBuilderIds.errorDetailList, () {
       if (state.weekTestDetailResponse != null &&
@@ -125,6 +126,9 @@ class _WattingPushPageState extends State<Watting_pushPage>
     });
     _onRefresh();
     showLoading("");*/
+    _onRefresh();
+    showLoading("");
+
   }
 
   @override
@@ -511,12 +515,13 @@ class _WattingPushPageState extends State<Watting_pushPage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getList(widget.type, widget.typeTwo, pageStartIndex, pageSize);
+    logic.getStudentWorkList(widget.type, widget.typeTwo!.toString(), pageStartIndex, pageSize);
+
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getList(widget.type, widget.typeTwo, currentPageNo, pageSize);
+    logic.getStudentWorkList(widget.type, widget.typeTwo!.toString(), currentPageNo+1, pageSize);
   }
 
   @override
