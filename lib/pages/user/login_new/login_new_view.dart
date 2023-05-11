@@ -521,7 +521,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
-              logic.passwordLogin("admin", "123456");
+              logic.passwordLogin("guest", "123456");
             },
             child: Container(
               height: 47.w,
