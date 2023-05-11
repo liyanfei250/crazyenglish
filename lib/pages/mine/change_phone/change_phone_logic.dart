@@ -1,3 +1,4 @@
+import 'package:crazyenglish/repository/user_repository.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/SendCodeResponseNew.dart';
@@ -8,7 +9,7 @@ import 'change_phone_state.dart';
 
 class Change_phoneLogic extends GetxController {
   final Change_phoneState state = Change_phoneState();
-  HomeViewRepository recordData = HomeViewRepository();
+  UserRepository recordData = UserRepository();
 
   void toChangePhoneNum(String id) async {
     CommentDate collectResponse =
@@ -17,9 +18,11 @@ class Change_phoneLogic extends GetxController {
     update([GetBuilderIds.toChangePhoneNumber]);
   }
 
-  void sendCode(String phone) async {
+
+
+  void sendCode(String phone,int type) async {
     SendCodeResponseNew sendCodeResponse =
-        await recordData.sendCodeNew({"mobile": phone});
+        await recordData.sendCodeNew(phone,"$type");
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
   }

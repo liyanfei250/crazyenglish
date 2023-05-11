@@ -36,7 +36,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   final logic = Get.put(Question_feedbackLogic());
   final state = Get.find<Question_feedbackLogic>().state;
 
-//图片上传相关
+  //图片上传相关
   String _title = "图片上传";
   List<XFile> _imageFileList = List.empty(growable: true); //存放选择的图片
   final ImagePicker _picker = ImagePicker();
@@ -70,6 +70,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:false,
       appBar: AppBar(
         backgroundColor: AppColors.c_FFFFFFFF,
         centerTitle: true,

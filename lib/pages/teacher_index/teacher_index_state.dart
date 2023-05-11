@@ -1,10 +1,11 @@
 import '../../entity/home/HomeKingNewDate.dart';
-import '../../entity/home/HomeMyJournalListDate.dart';
+import '../../entity/home/HomeMyTasksDate.dart';
+import '../../entity/week_list_response.dart';
 
 class TeacherIndexState {
   HomeKingNewDate paperDetailNew = HomeKingNewDate();
-  HomeMyJournalListDate myJournalDetail = HomeMyJournalListDate();
-  HomeMyJournalListDate myTask = HomeMyJournalListDate();
+  WeekListResponse myJournalDetail = WeekListResponse();
+  WeekListResponse recommendJournal = WeekListResponse();
   TeacherIndexState() {
     ///Initialize variables
   }

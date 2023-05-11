@@ -11,6 +11,7 @@ class GetBuilderIds {
   static const String mobileLogin = "mobileLogin";
   static const String passwordLogin = "passwordLogin";
   static const String sendCode = "sendCode";
+  static const String mobileExists = "mobileExists";
   static const String resetPassword = "resetPassword";
   static const String choiceRole = "ChoiceRole";
   static const String getUserInfo = "getUserInfo";

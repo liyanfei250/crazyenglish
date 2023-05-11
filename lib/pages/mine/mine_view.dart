@@ -35,6 +35,9 @@ class _MinePageState extends BasePageState<MinePage> {
       case 2: //关于我们
         RouterUtil.toNamed(AppRoutes.AboutUsPage);
         break;
+      case 3:
+        RouterUtil.toNamed(AppRoutes.SettingPage);
+        break;
       case 6:
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
             arguments: {'isFeedback': true});
@@ -110,13 +113,15 @@ class _MinePageState extends BasePageState<MinePage> {
               margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: GestureDetector(
                 onTap: () {
-                  RouterUtil.toNamed(AppRoutes.PersonInfoPage,
-                      isNeedCheckLogin: true,
-                      arguments: {
-                    'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                        ? false
-                        : true
-                  });
+                  if(!Util.isIOSMode()){
+                    RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                        isNeedCheckLogin: true,
+                        arguments: {
+                          'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                              ? false
+                              : true
+                        });
+                  }
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,16 +139,20 @@ class _MinePageState extends BasePageState<MinePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InkWell(
-                                  onTap: () =>
+                                  onTap: () {
+                                    if(!Util.isIOSMode()){
                                       RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                                           isNeedCheckLogin: true,
                                           arguments: {
                                             'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
                                                 ? false
                                                 : true
-                                          }),
+                                          });
+                                    }
+
+                                  },
                                   child: Text(
-                                    "吴尊",
+                                    SpUtil.getString(BaseConstant.USER_NAME),
                                     style: TextStyle(
                                         color: Color(0xff353e4d),
                                         fontSize: 20.w),
@@ -169,7 +178,7 @@ class _MinePageState extends BasePageState<MinePage> {
                             child: Container(
                               child: Text("未登录",
                                   style: TextStyle(
-                                      color: AppColors.c_FFFFEBEB,
+                                      color: Color(0xff353e4d),
                                       fontSize: 16.sp)),
                             )),
                     Expanded(
@@ -273,7 +282,15 @@ class _MinePageState extends BasePageState<MinePage> {
                         width: 20.w,
                         height: 20.w,
                       ),
-                      5),)
+                      5),),
+                  buildItem(
+                      "我的设置",
+                      Image(
+                        image: AssetImage(R.imagesMineSetting),
+                        width: 20.w,
+                        height: 20.w,
+                      ),
+                      3),
 
                 ],
               )),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/user/auth_code/CodeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../net/net_manager.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
@@ -14,13 +16,24 @@ import '../../../utils/colors.dart';
 import 'auth_code_logic.dart';
 
 class AuthCodePage extends BasePage {
+
+  static const String PHONE = "phone";
+  static const String SMS_CODE = "code";
+  static const String USER_PWD = "password";
+  static const String SMS_TYPE = "smsType";
+
+
   String? phone;
   String? code;
+  String? newPwd;
+  int ? codeType;
 
   AuthCodePage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
-      phone = Get.arguments['phone'];
-      code = Get.arguments['code'];
+      phone = Get.arguments[PHONE];
+      newPwd = Get.arguments[USER_PWD];
+      code = Get.arguments[SMS_CODE];
+      codeType = Get.arguments[SMS_TYPE]?? SmsCodeType.phoneLogin;
     }
   }
 
@@ -54,18 +67,21 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
 
     _phoneController.addListener(() {
       if (_phoneController.text.length >= 6) {
-        logic.sendResetPsd(widget.phone.toString(), _phoneController.text,
-            widget.code.toString());
+        if(widget.codeType == SmsCodeType.resetPwd){
+          logic.sendResetPsd(widget.phone.toString(), _phoneController.text,
+              widget.newPwd.toString());
+        }
+
       }
     });
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
       // Util.toast(state.sendCodeResponse.data??"");
-      if (state.sendCodeResponse.code == 1) {
+      if (state.sendCodeResponse.code == ResponseCode.status_success) {
         Util.toast('发送成功');
         _startTimer(60);
       } else {
-        Util.toast('验证码错误');
+        Util.toast('验证码发送错误');
       }
 
       hideLoading();
@@ -100,7 +116,7 @@ class _ToCodeAuthPageState extends BasePageState<AuthCodePage> {
                     hideKeyBoard();
                     if (countDown.value == -1) {
                       //先掉发送验证码的接口
-                      logic.sendCode(widget.phone.toString());
+                      logic.sendCode(widget.phone.toString(),widget.codeType!);
                     }
                   },
                   child: Obx(() => Text(

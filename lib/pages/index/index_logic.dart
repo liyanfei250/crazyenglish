@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 
 import '../../entity/home/HomeKingDate.dart';
 import '../../entity/home/HomeKingNewDate.dart';
-import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/review/HomeListDate.dart';
+import '../../entity/week_list_response.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/json_cache_util.dart';
 import 'index_state.dart';
@@ -58,17 +58,17 @@ class IndexLogic extends GetxController {
             JsonCacheManageUtils.HomeMyJournalDate)
         .then((value) {
       if (value != null) {
-        return HomeMyJournalListDate.fromJson(value as Map<String, dynamic>?);
+        return WeekListResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeMyJournalListDate) {
+    if (cache is WeekListResponse) {
       state.myJournalDetail = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeMyJournalDate]);
     }
-    HomeMyJournalListDate list = await homeViewRepository.getMyJournalList(SpUtil.getInt(BaseConstant.USER_ID).toString());
+    WeekListResponse list = await homeViewRepository.getMyJournalList(SpUtil.getInt(BaseConstant.USER_ID).toString());
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyJournalDate, list.toJson());
     state.myJournalDetail = list!;

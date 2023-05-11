@@ -1,9 +1,11 @@
+import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -43,8 +45,9 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
       // Util.toast(state.sendCodeResponse.data??"");
       if (state.sendCodeResponse.code == 1) {
         var date = {
-          'phone': _phoneController!.text,
-          'code': phoneCodeStr.value
+          AuthCodePage.PHONE: _phoneController!.text,
+          AuthCodePage.SMS_CODE: phoneCodeStr.value,
+          AuthCodePage.SMS_TYPE: SmsCodeType.changeMobile
         };
         RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
       } else {
@@ -125,7 +128,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
                 return;
               }
               //todo 发送验证码，去验证码界面
-              logic.sendCode(_phoneController!.text);
+              logic.sendCode(_phoneController!.text,SmsCodeType.changeMobile);
             },
             child: Container(
               height: 47.w,

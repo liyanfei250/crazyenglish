@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../entity/home/HomeMyJournalListDate.dart' as myList;
+import '../../entity/week_list_response.dart' as weekListResponse;
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
@@ -32,7 +32,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   ];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  List<myList.Obj> myListDate = [];
+  List<weekListResponse.Obj> myListDate = [];
   List<Obj> functionTxtNew = [];
 
   List listData = [
@@ -542,7 +542,8 @@ class _IndexPageState extends BasePageState<IndexPage>
             return GestureDetector(
               onTap: () {
                 //todo 去具体的某一个期刊的列表界面，带上id
-                Util.toast('具体的某一期刊界面');
+                RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
+                    arguments: myListDate![index]);
               },
               child: Container(
                 margin: EdgeInsets.only(

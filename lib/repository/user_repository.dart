@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:crazyenglish/entity/check_update_resp.dart';
-import 'package:crazyenglish/entity/login/LoginCodeResponse.dart';
 import 'package:crazyenglish/entity/login/LoginNewResponse.dart';
 import 'package:crazyenglish/entity/login_response.dart';
 import 'package:crazyenglish/entity/push_msg.dart';
@@ -14,6 +15,7 @@ import '../../entity/base_resp.dart';
 import '../../net/net_manager.dart';
 import '../base/AppUtil.dart';
 import '../entity/SendCodeResponseNew.dart';
+import '../entity/home/CommentDate.dart';
 import '../entity/user_info_response.dart';
 
 /**
@@ -24,29 +26,13 @@ import '../entity/user_info_response.dart';
  * Description:
  */
 class UserRepository {
-  Future<LoginCodeResponse> mobileNewLogin(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.getLoginNew, data: req);
-    if (map != null) {
-      LoginCodeResponse loginResponse = LoginCodeResponse.fromJson(map);
-      if (loginResponse.code != ResponseCode.status_success) {
-        Util.toast(loginResponse.message ?? "");
-        return Future.error("返回LoginCodeResponse为空");
-      } else {
-        return loginResponse!;
-      }
-    } else {
-      return Future.error("返回LoginCodeResponse为空");
-    }
-  }
 
   Future<LoginNewResponse> passwordLogin(Map<String, String> req) async {
     req.addAll({
       "grant_type": "password",
       "client_id": "app",
       "client_secret": "a119ed01622927d54cd67e10cbb9f7ad",
-      "clientType": "0",
-      "type": "0"
+      "clientType": "2",
     });
     Map map = await NetManager.getInstance()!
         .request(Method.post, Api.getPsdLoginNew, data: req);
@@ -61,24 +47,24 @@ class UserRepository {
     }
   }
 
-  Future<SendCodeResponse> sendCode(String phone) async {
+  Future<BaseResp> mobileExists(String mobile) async {
     Map map = await NetManager.getInstance()!
-        .request(Method.get, Api.getSendCode + phone);
-    SendCodeResponse sendCodeResponse = SendCodeResponse.fromJson(map);
-    if (sendCodeResponse.code != ResponseCode.status_success) {
-      return Future.error(sendCodeResponse.message!);
+        .request(Method.get, Api.getMobileExists+"$mobile");
+    BaseResp baseResp = BaseResp.fromJson(map);
+    if (baseResp.code != ResponseCode.status_success) {
+      Util.toast(baseResp.message ?? "");
     }
-
-    if (sendCodeResponse != null) {
-      return sendCodeResponse!;
+    if (baseResp != null) {
+      return baseResp!;
     } else {
-      return Future.error("返回SendCodeResponse为空");
+      return Future.error("返回LoginResponse为空");
     }
   }
 
-  Future<SendCodeResponseNew> sendCodeNew(Map<String, String> req) async {
+
+  Future<SendCodeResponseNew> sendCodeNew(String phone,String type) async {
     Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.getSendAuthCodeNew, data: req);
+        .request(Method.get, "${Api.getSendAuthCodeNew}$phone/$type");
     SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
@@ -90,11 +76,24 @@ class UserRepository {
       return Future.error("返回SendCodeResponse为空");
     }
   }
-
+  //修改手机号
+  Future<CommentDate> toChangePhoneNum(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toChangePhoneNum,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
   //重置密码和上面共用一个实体类接收
   Future<SendCodeResponseNew> sendResetPsd(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.getResetPsdNew, data: req);
+        .request(Method.put, Api.getResetPsdNew, data: req,
+        options: Options(method: Method.put,contentType: ContentType.json.toString())
+    );
     SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
@@ -110,7 +109,8 @@ class UserRepository {
   //选择年级和用户类型和上面共用一个实体类接收
   Future<SendCodeResponseNew> sendChangeGrade(Map<String, int> req) async {
     Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.getChangeGrade, data: req);
+        .request(Method.post, Api.getChangeGrade, data: req,
+    );
     SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);

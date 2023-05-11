@@ -11,14 +11,14 @@ class Auth_codeLogic extends GetxController {
 
   void sendResetPsd(String phone, String code, String password) async {
     SendCodeResponseNew sendCodeResponse = await userRepository
-        .sendResetPsd({"mobile": phone, "code": code, "password": password});
+        .sendResetPsd({"phone": phone, "code": code, "password": password});
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.resetPassword]);
   }
 
-  void sendCode(String phone) async {
+  void sendCode(String phone,int smsType) async {
     SendCodeResponseNew sendCodeResponse =
-    await userRepository.sendCodeNew({"mobile": phone});
+    await userRepository.sendCodeNew(phone,"$smsType");
     state.sendCodeResponse = sendCodeResponse;
     update([GetBuilderIds.sendCode]);
   }

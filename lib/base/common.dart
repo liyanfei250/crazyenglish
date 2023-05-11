@@ -37,6 +37,7 @@ class BaseConstant{
   static const String loginTOKEN = "loginTOKEN";
   static const String IS_TEACHER_LOGIN = "is_TEacher_login";
   static const String USER_NAME = "USER_NAME";
+  static const String NICK_NAME = "NICK_NAME";
   static const String USER_ID = "USER_ID";
   static const String TEACHER_USER_ID = "TEACHER_USER_ID";
   static const String TEACHER_NAME = "TEACHER_NAME";
@@ -111,8 +112,10 @@ class QuestionType {
   }
 }
 
-class QuestionTypeName{
-
+class SmsCodeType{
+  static const int phoneLogin = 1;
+  static const int resetPwd = 2;
+  static const int changeMobile = 3;
 }
 
 class AnswerType{

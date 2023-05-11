@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 import '../../base/common.dart';
 import '../../entity/home/HomeKingNewDate.dart';
-import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
+import '../../entity/week_list_response.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/json_cache_util.dart';
 import '../../utils/sp_util.dart';
@@ -56,17 +56,17 @@ class TeacherIndexLogic extends GetxController {
         JsonCacheManageUtils.HomeMyJournalDateTeacher)
         .then((value) {
       if (value != null) {
-        return HomeMyJournalListDate.fromJson(value as Map<String, dynamic>?);
+        return WeekListResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeMyJournalListDate) {
+    if (cache is WeekListResponse) {
       state.myJournalDetail = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeMyJournalDateTeacher]);
     }
-    HomeMyJournalListDate list = await homeViewRepository.getMyJournalListTeacher(SpUtil.getInt(BaseConstant.USER_ID).toString());
+    WeekListResponse list = await homeViewRepository.getMyJournalListTeacher(SpUtil.getInt(BaseConstant.USER_ID).toString());
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyJournalDateTeacher, list.toJson());
     state.myJournalDetail = list!;
@@ -80,20 +80,20 @@ class TeacherIndexLogic extends GetxController {
         JsonCacheManageUtils.HomeMyRecommendation)
         .then((value) {
       if (value != null) {
-        return HomeMyJournalListDate.fromJson(value as Map<String, dynamic>?);
+        return WeekListResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeMyJournalListDate) {
-      state.myTask = cache!;
+    if (cache is WeekListResponse) {
+      state.recommendJournal = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeMyRecommendation]);
     }
-    HomeMyJournalListDate list = await homeViewRepository.getMyRecommendationTeacher('');
+    WeekListResponse list = await homeViewRepository.getMyRecommendationTeacher('');
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyRecommendation, list.toJson());
-    state.myTask = list!;
+    state.recommendJournal = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeMyRecommendation]);
     }

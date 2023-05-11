@@ -117,15 +117,13 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
-      if ((state.loginResponseTwo.data ?? "").isNotEmpty) {
+      if (state.loginResponse.data !=null) {
         Util.toast("登录成功");
         SpUtil.putBool(BaseConstant.ISLOGING, true);
-        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponseTwo.data);
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
         SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
         Util.getHeader();
         logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
-        //直接去首页
-        // RouterUtil.offAndToNamed(AppRoutes.HOME);
       } else {
         Util.toast("登录失败");
       }
@@ -150,6 +148,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       if (state.infoResponse.code == 0 && state.infoResponse.obj != null) {
         Util.toast('获取信息成功');
         SpUtil.putInt(BaseConstant.USER_ID, state.infoResponse.obj!.id!.toInt());
+        SpUtil.putString(BaseConstant.USER_NAME, state.infoResponse.obj!.username);
+        SpUtil.putString(BaseConstant.NICK_NAME, state.infoResponse.obj!.nickname);
         print("66666+="+state.infoResponse.obj!.id!.toString());
       }
       //判断有没有选择身份
@@ -428,7 +428,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                             onTap: () {
                               if (_isHavePhoneNum.value) {
                                 if (countDown.value <= 0) {
-                                  logic.sendCode(_phoneController!.text);
+                                  logic.sendCode(_phoneController!.text,SmsCodeType.phoneLogin);
                                 } else {
                                   hideKeyBoard();
                                   Util.toast("请等待${countDown.value} s后重新发送");

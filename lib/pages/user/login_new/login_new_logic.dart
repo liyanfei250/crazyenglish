@@ -1,11 +1,11 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:get/get.dart';
 
+import '../../../base/AppUtil.dart';
 import '../../../entity/SendCodeResponseNew.dart';
-import '../../../entity/login/LoginCodeResponse.dart';
 import '../../../entity/login/LoginNewResponse.dart';
-import '../../../entity/login_response.dart';
-import '../../../entity/send_code_response.dart';
 import '../../../entity/user_info_response.dart';
+import '../../../net/net_manager.dart';
 import '../../../repository/user_repository.dart';
 import '../../../routes/getx_ids.dart';
 import 'login_new_state.dart';
@@ -25,30 +25,48 @@ class Login_newLogic extends GetxController {
   }
 
   void  mobileLogin(String phone, String phoneCode) async {
-    LoginCodeResponse loginResponse = await userRepository
-        .mobileNewLogin({"mobile": phone, "code": phoneCode});
-    state.loginResponseTwo = loginResponse;
-    update([GetBuilderIds.mobileLogin]);
+    LoginNewResponse loginResponse = await userRepository
+        .passwordLogin({"username": phone, "code": phoneCode,"type": "1"});
+
+    if(state.loginResponse.code
+        == ResponseCode.status_success){
+      state.loginResponse = loginResponse;
+      update([GetBuilderIds.mobileLogin]);
+    } else {
+      Util.toast("${state.loginResponse.message}");
+    }
+
   }
 
   void passwordLogin(String phone, String phoneCode) async {
     LoginNewResponse loginResponse = await userRepository
-        .passwordLogin({"username": phone, "password": phoneCode});
+        .passwordLogin({"username": phone, "password": phoneCode,"type": "0"});
     state.loginResponse = loginResponse;
     update([GetBuilderIds.passwordLogin]);
   }
 
-  void sendCode(String phone) async {
+  void sendCode(String phone,int smsType) async {
     SendCodeResponseNew sendCodeResponse =
-        await userRepository.sendCodeNew({"mobile": phone});
-    state.sendCodeResponse = sendCodeResponse;
-    update([GetBuilderIds.sendCode]);
+        await userRepository.sendCodeNew(phone,"$smsType");
+    if(sendCodeResponse.code
+        == ResponseCode.status_success){
+      state.sendCodeResponse = sendCodeResponse;
+      update([GetBuilderIds.sendCode]);
+    } else {
+      Util.toast("${sendCodeResponse.message}");
+    }
+
   }
 
   void getUserinfo(String user) async {
     UserInfoResponse sendCodeResponse =
         await userRepository.getUserInfo(user);
-    state.infoResponse = sendCodeResponse;
-    update([GetBuilderIds.getUserInfo]);
+    if(state.loginResponse.code
+        == ResponseCode.status_success){
+      state.infoResponse = sendCodeResponse;
+      update([GetBuilderIds.getUserInfo]);
+    } else {
+      Util.toast("${state.loginResponse.message}");
+    }
   }
 }

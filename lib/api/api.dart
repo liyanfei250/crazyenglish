@@ -2,12 +2,12 @@ import '../config.dart';
 
 class Api {
   static String getUser = Config.ApiHost + "/user.site";
-  static String getLogin = Config.ApiHost + "/oauth/token";
   static String getPsdLoginNew = Config.ApiHost+"/oauth/token";
   static String getLoginNew = Config.ApiHost+"/user/login/sms";
-  static String getResetPsdNew = Config.ApiHost+"/user/reset/sms";
+  static String getResetPsdNew = Config.ApiHost+"/member/user/login/resettingPasswd";
+  static String getMobileExists = Config.ApiHost+"/member/user/login/check/";
 
-  static String getSendAuthCodeNew = Config.ApiHost+"/config/sms/put";
+  static String getSendAuthCodeNew = Config.ApiHost+"/member/user/login/getCode/";
 
   //修改年级信息
   static String getChangeGrade = Config.ApiHost+"/app/user/put";

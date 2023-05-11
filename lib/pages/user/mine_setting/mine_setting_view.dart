@@ -22,6 +22,11 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
   final state = Get.find<Mine_settingLogic>().state;
 
   @override
+  void onCreate() {
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: buildNormalAppBar("设置"),
@@ -29,11 +34,38 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            //退出
-            SpUtil.putBool(BaseConstant.ISLOGING, false);
-            SpUtil.putString(BaseConstant.loginTOKEN, '');
-            //直接去首页
-            RouterUtil.offAndToNamed(AppRoutes.HOME);
+            if(isLogin){
+              showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("提示"),
+                    content: Text("您确定要退出吗？"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text("取消"),
+                        onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+                      ),
+                      TextButton(
+                        child: Text("确定"),
+                        onPressed: () {
+                          Navigator.of(context).pop(true); //关闭对话框
+                          // ... 执行
+                          //退出
+                          SpUtil.putBool(BaseConstant.ISLOGING, false);
+                          SpUtil.putString(BaseConstant.loginTOKEN, '');
+                          SpUtil.putString(BaseConstant.USER_NAME, '');
+                          //直接去首页
+                          RouterUtil.offAndToNamed(AppRoutes.HOME);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }else{
+              RouterUtil.toNamed(AppRoutes.LoginNew);
+            }
           },
           child: Container(
             height: 47.w,
@@ -41,9 +73,9 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
             decoration: BoxDecoration(
                 color: AppColors.THEME_COLOR,
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
-            child: const Center(
+            child: Center(
               child: Text(
-                "退出登录",
+                isLogin? "退出登录":"登录",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
@@ -51,8 +83,6 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
         ));
   }
 
-  @override
-  void onCreate() {}
 
   @override
   void onDestroy() {}

@@ -1,4 +1,5 @@
 import 'package:crazyenglish/pages/user/auth_code/CodeWidget.dart';
+import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
+import '../../../net/net_manager.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -40,10 +43,11 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
     logic.addListenerId(GetBuilderIds.sendCode, () {
       // Util.toast(state.sendCodeResponse.data??"");
       hideLoading();
-      if (state.sendCodeResponse.code == 1) {
+      if (state.sendCodeResponse.code == ResponseCode.status_success) {
         var date = {
-          'phone': _phoneController!.text,
-          'code': phoneCodeStr.value
+          AuthCodePage.PHONE: _phoneController!.text,
+          AuthCodePage.USER_PWD: phoneCodeStr.value,
+          AuthCodePage.SMS_TYPE: SmsCodeType.resetPwd
         };
         RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
       } else {
@@ -130,7 +134,7 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
                 Util.toast("新密码需8-20位字符，必须包含字母/数字/字符中两种以上组合");
                 return;
               }
-              logic.sendCode(_phoneController!.text);
+              logic.mobileExists(_phoneController!.text,SmsCodeType.resetPwd);
             },
             child: Obx(() {
               return Container(

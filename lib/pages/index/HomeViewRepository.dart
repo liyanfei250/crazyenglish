@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crazyenglish/entity/home/PersonInfo.dart';
+import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
@@ -13,7 +14,6 @@ import '../../entity/home/ClassInfoDate.dart';
 import '../../entity/home/CommentDate.dart';
 import '../../entity/home/HomeKingDate.dart';
 import '../../entity/home/HomeKingNewDate.dart';
-import '../../entity/home/HomeMyJournalListDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
 import '../../entity/review/HomeListDate.dart';
@@ -22,7 +22,7 @@ import '../../utils/sp_util.dart';
 
 class HomeViewRepository {
   //获取首页我的期刊，学生端
-  Future<HomeMyJournalListDate> getMyJournalList(String id) async {
+  Future<WeekListResponse> getMyJournalList(String id) async {
     // String testData =
     //     '{"code":0,"message":"系统正常","obj":[],"p":{"records":[],"total":1,"size":50,"current":1,"orders":[],"optimizeCountSql":true,"hitCount":false,"countId":null,"maxLimit":null,"searchCount":true,"pages":1}}';
     //
@@ -34,7 +34,7 @@ class HomeViewRepository {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getHomeMyJournalListDate + id,
         options: Options(method: Method.get));
-    HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
+    WeekListResponse paperDetail = WeekListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
@@ -148,35 +148,6 @@ class HomeViewRepository {
     }
   }
 
-  //修改手机号
-  Future<CommentDate> toChangePhoneNum(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.toChangePhoneNum,
-        data: req, options: Options(method: Method.post));
-    CommentDate paperDetail = CommentDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
-
-  //发验证
-  Future<SendCodeResponseNew> sendCodeNew(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.getSendAuthCodeNew, data: req);
-    SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
-    if (sendCodeResponse.code != ResponseCode.status_success) {
-      return Future.error(sendCodeResponse.message!);
-    }
-
-    if (sendCodeResponse != null) {
-      return sendCodeResponse!;
-    } else {
-      return Future.error("返回SendCodeResponse为空");
-    }
-  }
-
   //金刚区列表新增
   Future<HomeKingNewDate> getHomeKingListNew(String type) async {
     int role = 0;
@@ -201,12 +172,12 @@ class HomeViewRepository {
 
 //教师
   //获取首页我的期刊，学生端
-  Future<HomeMyJournalListDate> getMyJournalListTeacher(String id) async {
+  Future<WeekListResponse> getMyJournalListTeacher(String id) async {
 
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.TeacherHomeMyJournals + id,
         options: Options(method: Method.get));
-    HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
+    WeekListResponse paperDetail = WeekListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
@@ -215,11 +186,11 @@ class HomeViewRepository {
   }
 
   //获取首页我的任务
-  Future<HomeMyJournalListDate> getMyRecommendationTeacher(String id) async {
+  Future<WeekListResponse> getMyRecommendationTeacher(String id) async {
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.TeacherHomeRecommendationJournals,
         options: Options(method: Method.get));
-    HomeMyJournalListDate paperDetail = HomeMyJournalListDate.fromJson(map);
+    WeekListResponse paperDetail = WeekListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
