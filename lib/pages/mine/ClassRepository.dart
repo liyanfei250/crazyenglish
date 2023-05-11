@@ -31,8 +31,9 @@ class ClassRepository {
     }
   }
 
-  Future<ClassDetailResponse> getMyClassDetail(String id) async {
+  Future<ClassDetailResponse> getMyClassDetail(String id,{isTeacher=false,isJoin =false}) async {
     Map map = await NetManager.getInstance()!.request(
+        data: {"isTeacher": isTeacher,"isJoin":isJoin},
         Method.get, Api.TeacherClassDetail + id,
         options: Options(method: Method.get));
     ClassDetailResponse paperDetail = ClassDetailResponse.fromJson(map);
