@@ -11,17 +11,19 @@ class Watting_pushLogic extends GetxController {
   ClassRepository netTool = ClassRepository();
 
   void getStudentWorkList(
-      int workType, String studentId, int curent, int size) async {
+      int workType, String studentId, int curent, int size,num start, num end ) async {
     Map<String, dynamic> req = {};
     Map<String, dynamic> p = {};
     req['workType'] = workType;
     req['studentId'] = studentId;
+    req['start'] = start;
+    req['end'] = end;
     p['curent'] = curent;
     p['size'] = size;
     req['p'] = p;
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.StudentWorkList,
-            labelId: studentId + workType.toString())
+            labelId: workType.toString() + studentId)
         .then((value) {
       if (value != null) {
         return StudentWorkListResponse.fromJson(value as Map<String, dynamic>?);
@@ -29,8 +31,11 @@ class Watting_pushLogic extends GetxController {
     });
 
     state.pageNo = curent;
-    if (curent == 1 && cache is StudentWorkListResponse && cache.obj != null) {
-      state.list = cache.obj!;
+    if (curent == 1 &&
+        cache is StudentWorkListResponse &&
+        cache.obj != null &&
+        cache.obj!.records != null) {
+      state.list = cache.obj!.records!;
       if (state.list.length < size) {
         state.hasMore = false;
       } else {
@@ -43,20 +48,20 @@ class Watting_pushLogic extends GetxController {
     if (curent == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.StudentWorkList,
-          labelId: studentId + workType.toString(),
+          labelId: workType.toString() + studentId,
           list.toJson());
     }
-    if (list.obj == null) {
+    if (list.obj!.records == null) {
       if (curent == 1) {
         state.list.clear();
       }
     } else {
       if (curent == 1) {
-        state.list = list.obj!;
+        state.list = list.obj!.records!;
       } else {
-        state.list.addAll(list.obj!);
+        state.list.addAll(list.obj!.records!);
       }
-      if (list.obj!.length < size) {
+      if (list.obj!.records!.length < size) {
         state.hasMore = false;
       } else {
         state.hasMore = true;

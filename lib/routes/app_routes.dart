@@ -67,5 +67,6 @@ abstract class AppRoutes{
   static const HomeworkCompleteOverviewPage = '/HomeworkCompleteOverviewPage';
   static const SchoolReportListPage = '/SchoolReportListPage';
   static const ClassPractiseReportPage = '/ClassPractiseReportPage';
+  static const TeacherToBeCorrectedPage = '/TeacherToBeCorrectedPage';
 
 }

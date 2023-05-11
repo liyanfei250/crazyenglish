@@ -237,4 +237,7 @@ class Api {
   //学生作业列表
   static String studentWorkList =
       Config.ApiHost + "/question/operation/student/detailList";
+  //待批改主观题列表
+  static String getHomeListToCorrect =
+      Config.ApiHost + "/";
 }

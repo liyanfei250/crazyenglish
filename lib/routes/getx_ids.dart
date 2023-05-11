@@ -90,6 +90,7 @@ class GetBuilderIds {
   static const String getStudentDetail= "getStudentDetail";
   static const String getStudentDetailReport= "getStudentDetailReport";
   static const String getStudentWorkList= "getStudentWorkList";
+  static const String getTeacherToCorrected= "getTeacherToCorrected";
 
 }
 

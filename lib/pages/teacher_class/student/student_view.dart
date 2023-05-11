@@ -52,7 +52,7 @@ class _StudentPageState extends BasePageState<StudentPage>
     {"title": "待提交", "type": 1},
     {"title": "已完成", "type": 2},
     {"title": "待批改", "type": 3},
-    {"title": "无数据", "type": 0},
+    // {"title": "无数据", "type": 0},
   ];
 
   @override

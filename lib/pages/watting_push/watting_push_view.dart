@@ -15,7 +15,9 @@ import '../../entity/student_work_list_response.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../base/widgetPage/loading.dart';
 import '../../r.dart';
+import '../../routes/app_pages.dart';
 import '../../routes/getx_ids.dart';
+import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/my_text.dart';
 import 'watting_push_logic.dart';
@@ -25,7 +27,7 @@ class Watting_pushPage extends StatefulWidget {
   static int HAS_CORRECTED = 1;
 
   int type; //1待提交2.已完成3.待批改
-  num? typeTwo;//student
+  num? typeTwo; //student
 
   Watting_pushPage(this.type, this.typeTwo, {Key? key}) : super(key: key);
 
@@ -67,24 +69,23 @@ class _WattingPushPageState extends State<Watting_pushPage>
   final int pageSize = 10;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
-  List<Obj> weekPaperList = [];
+  List<Records> workList = [];
+  late num startTime;
+  late num endTime;
+
   @override
   void initState() {
     super.initState();
-    print('type==' +
-        widget.type.toString() +
-        'typeTwo==' +
-        widget.typeTwo.toString());
 
     logic.addListenerId(
         GetBuilderIds.getStudentWorkList +
             widget.type.toString() +
             widget.typeTwo.toString(), () {
       hideLoading();
-      if (state.list != null ) {
+      if (state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
           currentPageNo++;
-          weekPaperList.addAll(state!.list!);
+          workList.addAll(state!.list!);
           if (mounted && _refreshController != null) {
             _refreshController.loadComplete();
             if (!state!.hasMore) {
@@ -96,8 +97,8 @@ class _WattingPushPageState extends State<Watting_pushPage>
           }
         } else if (state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
-          weekPaperList.clear();
-          weekPaperList.addAll(state.list!);
+          workList.clear();
+          workList.addAll(state.list!);
           if (mounted && _refreshController != null) {
             _refreshController.refreshCompleted();
             if (!state!.hasMore) {
@@ -111,24 +112,17 @@ class _WattingPushPageState extends State<Watting_pushPage>
       }
     });
 
-    /*logic.addListenerId(GetBuilderIds.errorDetailList, () {
-      if (state.weekTestDetailResponse != null &&
-          state.weekTestDetailResponse.data != null &&
-          state.weekTestDetailResponse.data!.length > 0 &&
-          state.weekTestDetailResponse.data![0].type == 4 &&
-          state.weekTestDetailResponse.data![0].typeChildren == 1) {
-        RouterUtil.toNamed(AppRoutes.WritingPage,
-            arguments: {"detail": state.weekTestDetailResponse});
-      } else {
-        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-            arguments: {"detail": state.weekTestDetailResponse});
-      }
-    });
-    _onRefresh();
-    showLoading("");*/
+    DateTime now = DateTime.now();
+    DateTime thirtyDaysAgo = now.subtract(Duration(days: 30));
+    DateTime thirtyDaysAgoMidnight =
+    DateTime(thirtyDaysAgo.year, thirtyDaysAgo.month, thirtyDaysAgo.day);
+    startTime = thirtyDaysAgoMidnight.millisecondsSinceEpoch;
+
+    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    endTime = endOfDay.millisecondsSinceEpoch;
+
     _onRefresh();
     showLoading("");
-
   }
 
   @override
@@ -167,7 +161,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.only(
-                    left: 25.w, right: 25.w, top: 22.w, bottom: 14.w),
+                    left: 25.w, right: 25.w, top: 22.w, bottom: 20.w),
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () async {},
@@ -200,12 +194,20 @@ class _WattingPushPageState extends State<Watting_pushPage>
                 ),
               ),
             ),
+            workList.length > 0
+                ?
             SliverList(
-              delegate: SliverChildBuilderDelegate(
-                listitemBigBg,
-                childCount: 2,
-              ),
-            ),
+              delegate: SliverChildBuilderDelegate(listitemBigBg,
+                  childCount:  workList.length,
+                  ),
+            )
+            : SliverToBoxAdapter(
+                    child: PlaceholderPage(
+                        imageAsset: R.imagesCommenNoDate,
+                        title: '暂无数据',
+                        topMargin: 0.w,
+                        subtitle: ''),
+                  ),
           ],
         ),
       ),
@@ -220,7 +222,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
       },
       child: MyText(
         PicketUtil.strEmpty(selectData[model])
-            ? "${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)).subtract(Duration(days: 30)))}"
+            ? "${DateFormat("yyyy年M月d日").format(DateTime.now().toUtc().add(Duration(hours: 8)).subtract(Duration(days: 30)))}"
             : selectData[model],
         color: Colors.black,
         size: 14,
@@ -238,7 +240,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
       },
       child: MyText(
         PicketUtil.strEmpty(selectDataTwo[model])
-            ? "${DateFormat("yyyy年MM月dd日").format(DateTime.now().toUtc().add(Duration(hours: 8)))}"
+            ? "${DateFormat("yyyy年M月d日").format(DateTime.now().toUtc().add(Duration(hours: 8)))}"
             : selectDataTwo[model],
         color: Colors.black,
         size: 14,
@@ -259,8 +261,12 @@ class _WattingPushPageState extends State<Watting_pushPage>
           switch (model) {
             case DateMode.YMD:
               selectData[model] = '${p.year}年${p.month}月${p.day}日';
+              DateTime date = DateTime(p.year!, p.month!, p.day!);
+              DateTime startOfDay = DateTime(date.year, date.month, date.day);
+              startTime = startOfDay.millisecondsSinceEpoch;
               break;
           }
+          _onRefresh();
         });
       },
       // onChanged: (p) => print(p),
@@ -280,8 +286,13 @@ class _WattingPushPageState extends State<Watting_pushPage>
           switch (model) {
             case DateMode.YMD:
               selectDataTwo[model] = '${p.year}年${p.month}月${p.day}日';
+              DateTime date = DateTime(p.year!, p.month!, p.day!);
+              DateTime startOfDay =
+              DateTime(date.year, date.month, date.day, 23, 59, 59);
+              endTime = startOfDay.millisecondsSinceEpoch;
               break;
           }
+          _onRefresh();
         });
       },
       // onChanged: (p) => print(p),
@@ -292,10 +303,18 @@ class _WattingPushPageState extends State<Watting_pushPage>
     return Container(
       margin: EdgeInsets.only(top: 0.w, left: 10.w, right: 10.w, bottom: 10.w),
       padding:
-          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 0.w, bottom: 10.w),
       width: double.infinity,
       alignment: Alignment.topRight,
-      child: returnLayout(index),
+      child: Column(
+        children: [
+          returnLayout(index),
+          SizedBox(
+            height: 14.w,
+          ),
+          Divider(),
+        ],
+      )
     );
   }
 
@@ -303,32 +322,51 @@ class _WattingPushPageState extends State<Watting_pushPage>
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        buildItemClassStudent('作业名称：', '清明节假期作业1'),
+        buildItemClassStudent('作业名称：', workList[index].name ?? ''),
         SizedBox(
           height: 14.w,
         ),
-        buildItemClassStudentOne('作业状态：', '进行中（50%）', '未开始', '已完成（有待批改项）'),
+        buildItemClassStudentOne('作业状态：', getStatus(workList[index]!)),
       ],
     );
+  }
+
+  getStatus(Records records) {
+    //1 未开始 2 进行中 3 已完成（有待批改项）4 已完成）
+    if (records.operationStatus == 1) {
+      return '未开始';
+    }
+    if (records.operationStatus == 2) {
+      num percentage = (records.completeSize! / records.totalSize!) * 100;
+      return '进行中（${percentage.toStringAsFixed(0)}%）';
+    }
+    if (records.operationStatus == 3) {
+      return '已完成（有待批改项）';
+    }
+    if (records.operationStatus == 4) {
+      return '已完成';
+    }
+  }
+
+  getStatusTwo(Records records) {
+    num percentage =
+        (records.objectiveProperSize! / records.objectiveSize!) * 100;
+    return '${percentage.toStringAsFixed(0)}%';
   }
 
   Widget listitemTwo(index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        buildItemClassStudent('作业名称：', '清明节假期作业1'),
+        buildItemClassStudent('作业名称：', workList[index].name ?? ''),
         SizedBox(
           height: 14.w,
         ),
-        buildItemClassStudent('作业状态：', '已完成'),
+        buildItemClassStudent('作业状态：', getStatus(workList[index]!)),
         SizedBox(
           height: 14.w,
         ),
-        buildItemClassStudent('客观题正确率：', '95%'),
-        SizedBox(
-          height: 14.w,
-        ),
-        buildItemClassStudent('主观题得分：', '77分'),
+        buildItemClassStudent('客观题正确率：', getStatusTwo(workList[index]!)),
       ],
     );
   }
@@ -337,11 +375,11 @@ class _WattingPushPageState extends State<Watting_pushPage>
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        buildItemClassStudent('作业名称：', '清明节假期作业1'),
+        buildItemClassStudent('作业名称：', workList[index].name ?? ''),
         SizedBox(
           height: 14.w,
         ),
-        buildItemClassStudent('作业状态：', '已完成'),
+        buildItemClassStudent('作业状态：',  getStatus(workList[index]!)),
         SizedBox(
           height: 14.w,
         ),
@@ -361,21 +399,23 @@ class _WattingPushPageState extends State<Watting_pushPage>
               fontWeight: FontWeight.w600,
               color: Color(0xff353e4d)),
         ),
-        Text(
-          second,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff353e4d)),
+        InkWell(
+          onTap: () {},
+          child: Text(
+            second,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff353e4d)),
+          ),
         ),
       ],
     );
   }
 
-  Widget buildItemClassStudentOne(
-      String first, String second, String third, String fourth) {
+  Widget buildItemClassStudentOne(String first, String second) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -387,43 +427,17 @@ class _WattingPushPageState extends State<Watting_pushPage>
               fontWeight: FontWeight.w600,
               color: Color(0xff353e4d)),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              second,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff353e4d)),
-            ),
-            SizedBox(
-              height: 14.w,
-            ),
-            Text(
-              third,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff353e4d)),
-            ),
-            SizedBox(
-              height: 14.w,
-            ),
-            Text(
-              fourth,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff353e4d)),
-            ),
-          ],
+        Text(
+          second,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: Color(0xff353e4d)),
+        ),
+        SizedBox(
+          height: 14.w,
         ),
       ],
     );
@@ -445,44 +459,28 @@ class _WattingPushPageState extends State<Watting_pushPage>
                   color: Color(0xff353e4d)),
             ),
             Expanded(child: Text('')),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(
-                  top: 2.w, bottom: 2.w, right: 10.w, left: 10.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(11.w)),
-                  color: Color(0xfffff7ed)),
-              child: Text("查看详情",
-                  style: TextStyle(
-                      color: Color(0xfff2a842),
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600)),
+            InkWell(
+              onTap: () {
+                RouterUtil.toNamed(AppRoutes.TeacherToBeCorrectedPage);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(
+                    top: 2.w, bottom: 2.w, right: 10.w, left: 10.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(11.w)),
+                    color: Color(0xfffff7ed)),
+                child: Text("查看详情",
+                    style: TextStyle(
+                        color: Color(0xfff2a842),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600)),
+              ),
             )
           ],
         ),
         SizedBox(
           height: 14.w,
-        ),
-        Text(
-          '题干：假设你是育才中学学生会会长李华,你 ...',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff353e4d)),
-        ),
-        SizedBox(
-          height: 14.w,
-        ),
-        Text(
-          '回答：the most meaningful activity i took ...',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff353e4d)),
         ),
       ],
     );
@@ -515,13 +513,14 @@ class _WattingPushPageState extends State<Watting_pushPage>
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getStudentWorkList(widget.type, widget.typeTwo!.toString(), pageStartIndex, pageSize);
-
+    logic.getStudentWorkList(
+        widget.type, widget.typeTwo!.toString(), pageStartIndex, pageSize,startTime, endTime);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getStudentWorkList(widget.type, widget.typeTwo!.toString(), currentPageNo+1, pageSize);
+    logic.getStudentWorkList(
+        widget.type, widget.typeTwo!.toString(), currentPageNo + 1, pageSize,startTime, endTime);
   }
 
   @override
@@ -561,6 +560,9 @@ class _WattingPushPageState extends State<Watting_pushPage>
       return listitemThree(index);
     }
     return PlaceholderPage(
-        imageAsset: R.imagesCommenNoDate, title: '暂无数据', topMargin: 16.w,subtitle: '');
+        imageAsset: R.imagesCommenNoDate,
+        title: '暂无数据',
+        topMargin: 16.w,
+        subtitle: '');
   }
 }
