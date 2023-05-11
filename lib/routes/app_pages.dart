@@ -54,6 +54,7 @@ import '../pages/scan_class_message/class_message_view.dart';
 import '../pages/teacher_class/learning_report/learning_report_view.dart';
 import '../pages/teacher_class/student/student_view.dart';
 import '../pages/teacher_class/student_ranking/student_ranking_view.dart';
+import '../pages/teacher_class/teacher_corrected/teacher_corrected_view.dart';
 import '../pages/user/mine_setting/mine_setting_view.dart';
 import '../pages/user/role/role_view.dart';
 import '../pages/user/role_two/role_two_view.dart';
@@ -129,6 +130,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.HomeworkCompleteOverviewPage , page:()=> HomeworkCompleteOverviewPage(),),
     GetPage(name: AppRoutes.SchoolReportListPage , page:()=> SchoolReportListPage(),),
     GetPage(name: AppRoutes.ClassPractiseReportPage , page:()=> ClassPractiseReportPage(),),
+    GetPage(name: AppRoutes.TeacherToBeCorrectedPage , page:()=> TeacherCorrectedPage(),),
 
   ];
 }
