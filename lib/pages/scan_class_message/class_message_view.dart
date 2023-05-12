@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:crazyenglish/utils/MyImageLoader.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -44,23 +45,34 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
   final logic = Get.put(Class_messageLogic());
   final state = Get.find<Class_messageLogic>().state;
   late Obj detailBean = Obj();
+  late TeacherInfo teacherInfo = TeacherInfo();
 
   @override
   void initState() {
     super.initState();
 
     logic.addListenerId(
-        GetBuilderIds.getMyClassListDetail + widget.classId.toString(), () {
-      if (state.myClassListDetail != null &&
+        GetBuilderIds.getMyClassListDetail +
+            widget.classId.toString() +
+            (widget.isShowAdd == 1 ? true : false).toString(), () {
+      if (mounted &&
+          state.myClassListDetail != null &&
           state.myClassListDetail!.obj != null) {
         print("班级数据===" + state.myClassListDetail!.obj!.name!);
 
         detailBean = state.myClassListDetail!.obj!;
+        if (state.myClassListDetail!.obj!.teacherInfo != null) {
+          teacherInfo = state.myClassListDetail!.obj!.teacherInfo!;
+        }
         setState(() {});
       }
     });
-
-    logic.getMyClassDetail(widget.classId.toString());
+    if (widget.isShowAdd == 1) {
+      logic.getMyClassDetail(widget.classId.toString(),
+          isTeacher: true, isJoin: true);
+    } else {
+      logic.getMyClassDetail(widget.classId.toString());
+    }
   }
 
   @override
@@ -86,24 +98,26 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
         )),
         Positioned(
             top: 116.w,
-            child: detailBean == null||detailBean.name==null
+            child: detailBean == null || detailBean.name == null
                 ? PlaceholderPage(
-                imageAsset: R.imagesCommenNoDate,
-                title: '识别错误',
-                topMargin: 0.w,
-                subtitle: '')
+                    imageAsset: R.imagesCommenNoDate,
+                    title: '识别错误',
+                    topMargin: 0.w,
+                    subtitle: '')
                 : ClassCard(
-                    isShowAdd: widget.isShowAdd == 1,
+                    isShowAdd:
+                        detailBean.isJoin != null ? !detailBean.isJoin! : false,
                     isShowRank: true,
                     className: detailBean.name!,
                     classImage: detailBean.image!,
+                    studentUserId: SpUtil.getInt(BaseConstant.USER_ID),
                     classId: detailBean.id!,
                     studentSize: detailBean.studentSize!.toString(),
-                    teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
-                    teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),
-                    teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),
-                    teacherConnect:
-                        SpUtil.getString(BaseConstant.TEACHER_PHONE)))
+                    teacherName: teacherInfo.actualname ?? '',
+                    teacherSex: TimeUtil.getSex(teacherInfo.sex),
+                    teacherAge: TimeUtil.getTimeDay(
+                        teacherInfo.teachingExperience ?? ''),
+                    teacherConnect: teacherInfo.phone ?? ''))
       ],
     ));
   }
@@ -119,6 +133,12 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
 
   @override
   void onCreate() {}
+
+  @override
+  void dispose() {
+    Get.delete<Class_messageLogic>();
+    super.dispose();
+  }
 
   @override
   void onDestroy() {}

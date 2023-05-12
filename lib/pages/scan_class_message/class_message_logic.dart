@@ -38,10 +38,10 @@ class Class_messageLogic extends GetxController {
   }
 
   //班级详情
-  void getMyClassDetail(String id) async {
+  void getMyClassDetail(String id, {isTeacher = false, isJoin = false}) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeMyClassDetail,
-            labelId: id)
+            labelId: id + isTeacher.toString())
         .then((value) {
       if (value != null) {
         return ClassDetailResponse.fromJson(value as Map<String, dynamic>?);
@@ -52,15 +52,16 @@ class Class_messageLogic extends GetxController {
     if (cache is ClassDetailResponse) {
       state.myClassListDetail = cache!;
       hasCache = true;
-      update([GetBuilderIds.getMyClassListDetail + id]);
+      update([GetBuilderIds.getMyClassListDetail + id + isTeacher.toString()]);
     }
-    ClassDetailResponse list = await netTool.getMyClassDetail(id);
+    ClassDetailResponse list = await netTool.getMyClassDetail(id,
+        isTeacher: isTeacher, isJoin: isJoin);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyClassDetail, list.toJson(),
-        labelId: id);
+        labelId: id + isTeacher.toString());
     state.myClassListDetail = list!;
     if (!hasCache) {
-      update([GetBuilderIds.getMyClassListDetail + id]);
+      update([GetBuilderIds.getMyClassListDetail + id + isTeacher.toString()]);
     }
   }
 }

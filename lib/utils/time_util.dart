@@ -112,6 +112,28 @@ class TimeUtil {
       return "";
     }
   }
+
+  static String getSex(num? sex) {
+    if(sex ==1){
+      return '男';
+    }
+    if(sex ==2){
+      return '女';
+    }
+    return '';
+  }
+
+  static String getTimeDay(String startDateStr) {
+    if(startDateStr.isEmpty||startDateStr==''){
+      return '';
+    }
+    DateTime startDate = DateTime.parse(startDateStr);
+    DateTime endDate = DateTime.now();
+    int years = endDate.year - startDate.year;
+    int days = endDate.difference(startDate).inDays % 365;
+    return" ${years} 年 ${days} 天";
+  }
+
   static String getFormatTime(String startDateStr) {
     if (startDateStr.isNotEmpty && startDateStr.length > 17) {
       try {
