@@ -61,7 +61,7 @@ class ClassRepository {
   //顶部班级
   Future<ClassTopInfo> getMyClassTop(String classId) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.TeacherClassTop + classId,
+        Method.get, Api.classStatisticsDetail + classId,
         options: Options(method: Method.get));
     ClassTopInfo paperDetail = ClassTopInfo.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {

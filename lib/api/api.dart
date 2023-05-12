@@ -193,6 +193,10 @@ class Api {
   //首页
   //我的期刊
   static String TeacherHomeMyJournals = Config.ApiHost + "/TeacherHomeMyJournals";
+  // 推荐期刊
+  static String recommendJournals = Config.ApiHost + "/question/journal/recommendPage";
+  // 已购期刊
+  static String purchaseJournals = Config.ApiHost + "/question/journal/purchasePage";
 
   //待办工作
   static String TeacherHomeMyTodoList = Config.ApiHost + "/TeacherHomeMyTodoList";
@@ -216,8 +220,8 @@ class Api {
   static String TeacherClassChange =
       Config.ApiHost + "/member/schoolClass/update";
 
-  //班级顶部
-  static String TeacherClassTop =
+  //班级统计详情
+  static String classStatisticsDetail =
       Config.ApiHost + "/question/statistics/detail/";
   //班级底部
   static String TeacherClassBottom =
@@ -243,4 +247,32 @@ class Api {
   //提交作业
   static String toReleaseWorkUrl =
       Config.ApiHost + "/question/operation/submitOperation";
+
+
+  // 教师端首页 待批改、待提醒状态值
+  static String indexTeacerOperationStatus = Config.ApiHost + "question/operation/actionStatus/:teacherId";
+  //教师端首页 待批改、待提醒列表
+  static String indexTeacerOperationDetailList = Config.ApiHost + "question/operation/actionPage";
+
+  // 待批改学生列表
+  static String correctionList = Config.ApiHost + "question/operation/student/correctionList/:operationClassId";
+  // 待提醒学生列表
+  static String remindList = Config.ApiHost + "question/operation/student/remindList/operationClassId";
+
+  // 历史作业
+  static String historyPage = Config.ApiHost + "/question/operation/historyPage";
+
+  // 作业预览接口
+  static String previewOperation = Config.ApiHost + "question/operation/previewOperation";
+
+  // 关键接口：批改作业接口
+  static String correctionOperation = Config.ApiHost + "question/operation/correctionOperation";
+
+  // 我的试卷列表
+  static String myPaperPageList = Config.ApiHost + "question/operation/paper/page";
+
+
+  // 选择学生班级列表接口
+  static String memberClassStudentList = Config.ApiHost + "member/classStudent/list";
+
 }
