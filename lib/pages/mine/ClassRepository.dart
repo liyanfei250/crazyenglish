@@ -151,4 +151,18 @@ class ClassRepository {
       return paperDetail!;
     }
   }
+
+  Future<CommonResponse> toReleaseWork(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toReleaseWorkUrl,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    CommonResponse paperDetail = CommonResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 }

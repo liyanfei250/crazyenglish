@@ -174,7 +174,9 @@ abstract class BaseChoosePageState<T extends BasePage,N> extends BasePageState<T
               Obx(()=>Text("已选${hasSelectedNum.value}",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 12.sp,fontWeight: FontWeight.w500),)),
             ],
           ),
-          Util.buildHomeworkNormalBtn(() { }, "完成")
+          Util.buildHomeworkNormalBtn(() {
+            Get.back(result: {'date':'123456','chooesNum':1});
+          }, "完成")
         ],
       ),
     );
