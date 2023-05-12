@@ -205,7 +205,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                                         children: [
                                           Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
                                           Padding(padding: EdgeInsets.only(left: 9.w)),
-                                          Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                                          Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF1B1D2C),),
                                         ],
                                       ),
                                       Row(
@@ -534,7 +534,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               )
             ],
           ));
-
+          itemList.add(Padding(padding:EdgeInsets.only(top: 8.w)));
           itemList.add(Visibility(
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
@@ -573,7 +573,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
 
         childQuestionList.add(SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 18.w),
+            color: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -591,7 +592,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     print("测试小题页面数量${childQuestionList.length}");
     hasPageView = true;
     return SliverFillViewport(
-      viewportFraction: 1.0,
       delegate: SliverChildListDelegate(
         [Column(
           children: [
@@ -633,17 +633,16 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   Widget buildQuestionType(String name,bool isFavor,num? subjectId,{num subtopicId = -1}){
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: 22.w,
-          alignment: Alignment.center,
+          height: 17.w,
           padding: EdgeInsets.only(left: 7.w,right: 7.w,bottom: 2.w),
-          margin: EdgeInsets.only(top:14.w,bottom: 10.w),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(2.w)),
               border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
           ),
-          child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+          child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 10.sp),),
         ),
         Padding(padding: EdgeInsets.only(left: 11.w)),
         InkWell(

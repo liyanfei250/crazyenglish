@@ -59,6 +59,7 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
       child: Column(
@@ -110,7 +111,7 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
         questionList.add(Padding(padding: EdgeInsets.only(top: 18.w)));
         questionList.add(buildQuestionDesc("Question ${i+1}"));
         questionList.add(Padding(
-          padding: EdgeInsets.only(top: 14.w),
+          padding: EdgeInsets.only(top: 6.w),
         ));
         questionList.add(Visibility(
           visible: question!.problem != null && question!.problem!.isNotEmpty,

@@ -96,14 +96,14 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   Widget buildQuestionType(String name){
     return Container(
-      height: 22.w,
+      height: 17.w,
       margin: EdgeInsets.only(top:14.w,bottom: 10.w),
       padding: EdgeInsets.only(left:2.w,right:2.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(2.w)),
         border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
       ),
-      child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+      child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 10.sp),),
     );
   }
 
@@ -140,7 +140,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
         SubtopicVoList question = element.subtopicVoList![i];
 
         List<Widget> itemList = [];
-        itemList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
 
         if(element.questionTypeStr == QuestionType.single_choice
             || element.questionTypeStr == QuestionType.complete_filling

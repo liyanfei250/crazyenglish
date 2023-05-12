@@ -131,7 +131,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
                             children: [
                               Image.asset(R.imagesResultAnswerCardTips,width: 18.w,height: 18.w,),
                               Padding(padding: EdgeInsets.only(left: 9.w)),
-                              Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF1B1D2C),),
+                              Text("答题卡",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF1B1D2C),),
                             ],
                           ),
                           Row(

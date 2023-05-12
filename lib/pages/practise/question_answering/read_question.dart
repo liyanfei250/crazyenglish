@@ -60,6 +60,7 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildQuestionDesc("原文"),
+          Padding(padding: EdgeInsets.only(top: 8.w),),
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),

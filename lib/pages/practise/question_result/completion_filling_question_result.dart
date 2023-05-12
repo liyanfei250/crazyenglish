@@ -40,6 +40,7 @@ class _CompletionFillingQuestionResultState extends BaseQuestionResultState<Comp
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
       child: Column(

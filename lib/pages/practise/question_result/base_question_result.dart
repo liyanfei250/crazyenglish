@@ -127,7 +127,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           onTap: (){
             collectLogic.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
           },
-          child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
+          child: Image.asset(
+            isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
         Padding(padding: EdgeInsets.only(left: 10.w)),
         InkWell(
@@ -144,6 +145,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   Widget buildQuestionDesc(String name){
     return Container(
       height: 22.w,
+      margin: EdgeInsets.only(bottom: 8.w),
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
@@ -157,7 +159,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
               ]),
             ),
           ),
-          Text(name,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),)
+          Text(name,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.bold,color: AppColors.c_FF353E4D),)
         ],
       ),
     );

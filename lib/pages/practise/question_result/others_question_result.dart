@@ -49,6 +49,7 @@ class _OthersQuestionResultState extends BaseQuestionResultState<OthersQuestionR
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      color: Colors.white,
       padding: EdgeInsets.only(left: 18.w,right: 18.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

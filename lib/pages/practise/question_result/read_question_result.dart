@@ -60,6 +60,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      color: Colors.white,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +81,6 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
               )
             ],
           ),
-
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
