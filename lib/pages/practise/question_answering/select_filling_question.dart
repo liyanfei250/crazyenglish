@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
-import '../question_factory.dart';
+import '../question/question_factory.dart';
 
 /**
  * Time: 2023/4/19 13:48

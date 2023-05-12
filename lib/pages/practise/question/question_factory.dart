@@ -9,15 +9,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
-import '../../base/AppUtil.dart';
-import '../../base/common.dart';
-import '../../base/widgetPage/dialog_manager.dart';
-import '../../entity/start_exam.dart';
-import '../../entity/week_detail_response.dart';
-import '../../utils/colors.dart';
-import '../../widgets/ChoiceRadioItem.dart';
-import 'answering/select_gap_getxcontroller.dart';
-import 'question_answering/base_question.dart';
+import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
+import '../../../base/widgetPage/dialog_manager.dart';
+import '../../../entity/start_exam.dart';
+import '../../../entity/week_detail_response.dart';
+import '../../../utils/colors.dart';
+import '../../../widgets/ChoiceRadioItem.dart';
+import '../answering/select_gap_getxcontroller.dart';
+import '../question_answering/base_question.dart';
 
 /**
  * Time: 2023/2/20 13:31

@@ -596,7 +596,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     // if(logic!=null){
     //   logic.initPageStr("1/${questionList.length}");
     // }
-    Util.toast("ddd${childQuestionList.length}");
+    // Util.toast("ddd${childQuestionList.length}");
     print("测试小题页面数量${childQuestionList.length}");
     hasPageView = true;
     return SliverFillViewport(

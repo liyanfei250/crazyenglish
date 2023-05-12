@@ -155,24 +155,29 @@ class NetManager {
     } catch (e) {
 
       if (e is DioError) {
-          if (e.response!=null && e.response!.data is Map) {
-            if(e.response!.data.containsKey("code")
-                && (e.response!.data["code"] == 40401 || e.response!.data["code"] == ResponseCode.status_token_invalid)){
-              RouterUtil.toNamed(AppRoutes.LoginNew);
-              Util.toast("${e.response!.data["message"]}");
-              return e.response!.data;
+          if (e.response!=null) {
+            if(e.response!.data is Map){
+              if(e.response!.data.containsKey("code")
+                  && (e.response!.data["code"] == 40401 || e.response!.data["code"] == ResponseCode.status_token_invalid)){
+                RouterUtil.toNamed(AppRoutes.LoginNew);
+                Util.toast("${e.response!.data["message"]}");
+                return e.response!.data;
+              }
+            }else{
+              Map<String, dynamic> _dataMap = _decodeData(e.response!)!;
+              if(_dataMap.containsKey("code")
+                  && (_dataMap["code"] == 40401 || _dataMap["code"] == ResponseCode.status_token_invalid)){
+                RouterUtil.toNamed(AppRoutes.LoginNew);
+                Util.toast("${_dataMap["message"]}");
+              }
+              return _dataMap;
             }
+
           } else {
-            Map<String, dynamic> _dataMap = _decodeData(e.response!)!;
-            if(_dataMap.containsKey("code")
-            && (_dataMap["code"] == 40401 || _dataMap["code"] == ResponseCode.status_token_invalid)){
-              RouterUtil.toNamed(AppRoutes.LoginNew);
-              Util.toast("${_dataMap["message"]}");
-            }
-            return _dataMap;
+            Util.toast("网络异常 dioerror：${e.message}");
           }
       } else {
-        Util.toastLong("网络异常");
+        Util.toastLong("网络异常：${e.toString()}");
       }
       return new Future.error(e);
     }

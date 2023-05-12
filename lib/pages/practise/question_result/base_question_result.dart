@@ -19,7 +19,7 @@ import '../../../entity/week_detail_response.dart';
 import '../answering/answering_logic.dart';
 import '../answering/select_gap_getxcontroller.dart';
 import '../question/choice_question/choice_question_view.dart';
-import '../question_factory.dart';
+import '../question/question_factory.dart';
 
 /**
  * Time: 2023/4/12 15:11

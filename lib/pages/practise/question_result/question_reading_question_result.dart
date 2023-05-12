@@ -16,7 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
-import '../question_factory.dart';
+import '../question/question_factory.dart';
 import 'base_question_result.dart';
 /**
  * Time: 2023/2/21 14:02

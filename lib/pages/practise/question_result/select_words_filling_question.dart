@@ -6,7 +6,7 @@ import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
-import '../question_factory.dart';
+import '../question/question_factory.dart';
 import 'base_question_result.dart';
 
 /**

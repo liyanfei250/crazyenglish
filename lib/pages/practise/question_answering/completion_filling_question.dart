@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../entity/start_exam.dart';
 import '../../../entity/week_detail_response.dart';
 import '../../../utils/colors.dart';
-import '../question_factory.dart';
+import '../question/question_factory.dart';
 
 /**
  * Time: 2023/4/19 14:40
