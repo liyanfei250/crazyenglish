@@ -158,11 +158,16 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               Expanded(child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.w),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
                     child: Util.buildTopIndicator(
                         currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
-                        currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.questionTypeStr == QuestionType.writing_question),
+                        currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.isSubjectivity??false),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
@@ -246,7 +251,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   Widget buildSeparatorBuilder(num question){
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.only(left: 18.w,right: 18.w,bottom: 18.w),
+      padding: EdgeInsets.only(top:18.w,left: 18.w,right: 18.w,bottom: 18.w),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -350,7 +355,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               ),
             ],
           )),
-
         ],
       ),
     );
@@ -420,27 +424,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       margin: EdgeInsets.only(bottom: 9.w),
       decoration: decoration,
       child: Text((index+1).toString(),style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
-    );
-  }
-
-  Widget buildQuestionType(String name){
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: 17.w,
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(left: 7.w,right: 7.w,bottom: 2.w),
-          margin: EdgeInsets.only(top:14.w,bottom: 10.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2.w)),
-              border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
-          ),
-          child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
-        ),
-        Padding(padding: EdgeInsets.only(left: 11.w)),
-        Image.asset(R.imagesResultFavor,width: 48.w,height: 17.w,),
-      ],
     );
   }
 
@@ -534,7 +517,12 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           itemList.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildQuestionType("选择题"),
+              GetBuilder<Collect_practicLogic>(
+                id: "${GetBuilderIds.collectState}:${element.id}:${question.id}",
+                builder: (_){
+                  return buildQuestionType("选择题",_.state.collectMap["${element.id}:${question.id}"]??false, element.id,subtopicId: question.id??-1);
+                },
+              ),
               Visibility(
                   visible: element.questionTypeStr == QuestionType.question_reading,
                   child: GetBuilder<Collect_practicLogic>(
@@ -584,10 +572,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         logicCollect.queryCollectState(element.id??0,subtopicId:question.id);
 
         childQuestionList.add(SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: itemList,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 18.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: itemList,
+            ),
           ),
         ));
       }
@@ -638,6 +629,33 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       ],
     );
   }
+
+  Widget buildQuestionType(String name,bool isFavor,num? subjectId,{num subtopicId = -1}){
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height: 22.w,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 7.w,right: 7.w,bottom: 2.w),
+          margin: EdgeInsets.only(top:14.w,bottom: 10.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2.w)),
+              border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
+          ),
+          child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 12.sp),),
+        ),
+        Padding(padding: EdgeInsets.only(left: 11.w)),
+        InkWell(
+          onTap: (){
+            logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
+          },
+          child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
+        ),
+      ],
+    );
+  }
+
 
 
 

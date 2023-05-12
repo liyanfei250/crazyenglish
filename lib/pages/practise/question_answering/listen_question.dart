@@ -30,7 +30,7 @@ class ListenQuestion extends BaseQuestion {
 
 class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
 
-  AudioPlayer audioPlayer  = AudioPlayer();
+  AudioPlayer audioPlayer  = AudioPlayer()..setReleaseMode(ReleaseMode.stop);
   late SubjectVoList element;
 
   @override
@@ -60,6 +60,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+
           Visibility(
               visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
@@ -75,6 +76,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
     if(listtenUrl.isNotEmpty){
       audioPlayer.setSourceUrl(listtenUrl);
       return Container(
+        margin: EdgeInsets.only(top: 18.w),
         child: TestPlayerWidget(audioPlayer,TestPlayerWidget.PRACTISE_TYPE),
       );
     }else{

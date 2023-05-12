@@ -80,6 +80,9 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
               )
             ],
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 14.w),
+          ),
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
@@ -104,13 +107,19 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
       for(int i = 0 ;i< questionNum;i++){
         SubtopicVoList question = element.subtopicVoList![i];
 
-        questionList.add(Padding(padding: EdgeInsets.only(top: 7.w)));
+        questionList.add(Padding(padding: EdgeInsets.only(top: 18.w)));
         questionList.add(buildQuestionDesc("Question ${i+1}"));
+        questionList.add(Padding(
+          padding: EdgeInsets.only(top: 14.w),
+        ));
         questionList.add(Visibility(
           visible: question!.problem != null && question!.problem!.isNotEmpty,
           child: Text(
             question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
           ),));
+        questionList.add(Padding(
+          padding: EdgeInsets.only(top: 18.w),
+        ));
         questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,this));
       }
       collectLogic.queryCollectState(element.id??0);
@@ -127,7 +136,7 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
   Widget buildReadQuestion(String? htmlContent){
     return Container(
       height: 204.w,
-      margin: EdgeInsets.only(top: 17.w,bottom: 18.w),
+      margin: EdgeInsets.only(top: 17.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8.w)),
           border: Border.all(color: AppColors.c_FFD2D5DC,width: 0.4.w)
@@ -142,10 +151,7 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
             }
           },
           style: {
-            // "p":Style(
-            //     fontSize:FontSize.large
-            // ),
-
+            "p": QuestionFactory.getHtml_P_TagStyle(),
             "hr":Style(
               margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
               padding: EdgeInsets.all(0),

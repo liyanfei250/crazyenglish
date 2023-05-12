@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/colors.dart';
 import '../answering/answering_view.dart';
+import '../question/question_factory.dart';
 import 'base_question.dart';
 import 'package:flutter/material.dart';
 import '../../../entity/week_detail_response.dart';
@@ -134,7 +135,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
                   }
                 },
                 style: {
-                  "p": Style(fontSize: FontSize.large),
+                  "p": QuestionFactory.getHtml_P_TagStyle(),
                   "sentence": Style(
                       textDecorationStyle: TextDecorationStyle.dashed,
                       textDecorationColor: AppColors.THEME_COLOR),

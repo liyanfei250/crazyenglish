@@ -234,10 +234,16 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       child: GetBuilder<AnsweringLogic>(
                         id: GetBuilderIds.answerPeriodTime,
                         builder: (_){
-                          return Text(
-                            TimeUtil.getPractiseTime(_.state.countTime),
-                            style: TextStyle(
-                                fontSize: 14.w, color: AppColors.c_FF353E4D),
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                TimeUtil.getPractiseTime(_.state.countTime),
+                                style: TextStyle(
+                                    fontSize: 14.w, color: AppColors.c_FF353E4D),
+                              ),
+                              Padding(padding: EdgeInsets.only(left: 17.w))
+                            ],
                           );
                         }),
                       ),
@@ -314,20 +320,56 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   if(state.currentQuestionNum+1 >= state.totalQuestionNum){
                     Get.defaultDialog(
                         title: "",
-                        textConfirm: "确定",
-                        textCancel: "取消",
+                        confirm: InkWell(
+                          onTap: (){
+                            if(currentSubjectVoList!=null){
+                              logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
+                            }else{
+                              Util.toast("未获取到试题信息");
+                            }
+
+                            Get.back();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xfff19e59),
+                                    Color(0xffec5f2a),
+                                  ]),
+                              borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
+                              boxShadow:[
+                                BoxShadow(
+                                  color: const Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
+                                  offset: Offset(0.w, 4.w),						// 阴影与容器的距离
+                                  blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
+                                  spreadRadius: 0.w,
+                                ),
+                              ],
+                            ),
+                            child: Text("确定",style: TextStyle(color:Colors.white,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+                          ),
+                        ),
+                        cancel: InkWell(
+                          onTap: (){
+                            Get.back();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 1.w, color: AppColors.c_FFD2D5DC),
+                              borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
+                            ),
+                            child: Text("取消",style: TextStyle(color:AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+                          ),
+                        ),
                         content: Text(
                             widget.answerType == AnsweringPage.answer_fix_type ?
-                            "确认纠正错题" : "是否确定提交答案"),
-                        onConfirm:(){
-                          if(currentSubjectVoList!=null){
-                            logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
-                          }else{
-                            Util.toast("未获取到试题信息");
-                          }
-
-                          Get.back();
-                        }
+                            "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
                     );
                   }else{
                     pageLogic.nextPage();

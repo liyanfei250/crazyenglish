@@ -17,8 +17,6 @@ class JsonCacheManageUtils {
   static const int APPVERSION = 0x007;
   static const int DATA_GROUP_DETAIL = 0x008;
 
-  // 胡一旭周报列表接口
-  static const int WeekListRespose = 0x009;
   static const int WeekDirectoryResponse = 0x00A;
   static const int WeekDetailResponse = 0x00B;
   static const int ErrorNoteResponse = 0x00C;

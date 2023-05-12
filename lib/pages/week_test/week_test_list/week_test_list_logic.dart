@@ -4,7 +4,6 @@ import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/home/HomeKingDate.dart';
-import '../../../entity/review/HomeWeeklyChoiceDate.dart';
 import '../../../repository/week_test_repository.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
@@ -30,7 +29,7 @@ class WeekTestListLogic extends GetxController {
         '{ "affiliatedGrade": $affiliatedGrade, "p": { "size":$pageSize, "current": $page } }';
     Map<String, dynamic> req = jsonDecode(jsonStr);
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.WeekListRespose,
+            JsonCacheManageUtils.WeekTestListResponse,
             labelId: affiliatedGrade.toString())
         .then((value) {
       if (value != null) {

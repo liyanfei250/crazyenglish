@@ -109,7 +109,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
 
   Widget buildQuestionDesc(String name){
     return Container(
-      width: 66.w,
       height: 22.w,
       child: Stack(
         alignment: Alignment.bottomLeft,
@@ -211,6 +210,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
+          itemList.add(Padding(
+            padding: EdgeInsets.only(top: 18.w),
+          ));
           itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback));
         }
         // else if(element.questionTypeStr == QuestionType.correction_question){

@@ -90,15 +90,16 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
             }
           },
           style: {
-            // "p":Style(
-            //     fontSize:FontSize.large
-            // ),
+            "p": Style(
+                fontSize:FontSize(14.sp),
+                color: const Color(0xff353e4d)
+            ),
 
-            "hr":Style(
-              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-              padding: EdgeInsets.all(0),
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-            )
+            // "hr":Style(
+            //   margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+            //   padding: EdgeInsets.all(0),
+            //   border: Border(bottom: BorderSide(color: Colors.grey)),
+            // )
           },
           tagsList: Html.tags..addAll(['gap']),
           customRenders: {

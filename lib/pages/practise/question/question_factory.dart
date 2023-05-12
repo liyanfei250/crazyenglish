@@ -28,7 +28,12 @@ import '../question_answering/base_question.dart';
  */
 
 class QuestionFactory{
-
+  static Style getHtml_P_TagStyle(){
+    return Style(
+        fontSize:FontSize(14.sp),
+        color: const Color(0xff353e4d)
+    );
+  }
   /// 纠错题 空部分
   static Widget buildFixProblemQuestion(SubjectVoList subjectVoList,String htmlContent){
 
@@ -103,9 +108,7 @@ class QuestionFactory{
           }
         },
         style: {
-          // "p":Style(
-          //     fontSize:FontSize.large
-          // ),
+          "p": getHtml_P_TagStyle(),
         },
         tagsList: Html.tags..addAll(['gap']),
         customRenders: {
@@ -232,6 +235,14 @@ class QuestionFactory{
                   style: BorderStyle.solid
               ),
             ),
+              focusedBorder:OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                borderSide: BorderSide(
+                    width: 1.w,
+                    color: _getShotInputBorderColor(correctType.value),
+                    style: BorderStyle.solid
+                ),
+              ),
           ),
           onChanged: (text){
             if(userAnswerCallback!=null){
@@ -299,9 +310,7 @@ class QuestionFactory{
         }
       },
       style: {
-        // "p":Style(
-        //     fontSize:FontSize.large
-        // ),
+        "p": getHtml_P_TagStyle(),
       },
       tagsList: Html.tags..addAll(['gap']),
       customRenders: {
@@ -476,9 +485,7 @@ class QuestionFactory{
         }
       },
       style: {
-        // "p":Style(
-        //     fontSize:FontSize.large
-        // ),
+        "p": getHtml_P_TagStyle(),
       },
       tagsList: Html.tags..addAll(['gap']),
       customRenders: {
@@ -713,9 +720,7 @@ class QuestionFactory{
           }
         },
         style: {
-          // "p":Style(
-          //     fontSize:FontSize.large
-          // ),
+          "p": getHtml_P_TagStyle(),
         },
         tagsList: Html.tags..addAll(['gap']),
         customRenders: {

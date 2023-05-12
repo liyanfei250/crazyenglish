@@ -29,7 +29,7 @@ class TestPlayerWidget extends BasePage {
   static const int READ_TOP_TYPE = 0;
   static const int READ_BOTTOM_TYPE = 1;
   static const int PRACTISE_TYPE = 2;
-  AudioPlayer? player;
+  AudioPlayer player;
   int? playerType = 0;
   String? voiceContent;
   String? playerName;
@@ -73,11 +73,22 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
   String get _durationText => TimeUtil.getMiaoFenOptional(_duration?.inSeconds ?? 0);
   String get _positionText => TimeUtil.getMiaoFenOptional(_position?.inSeconds ?? 0);
 
-  AudioPlayer? get player => widget.player;
+  AudioPlayer get player => widget.player;
 
   @override
   void initState() {
     super.initState();
+    _playerState = player.state;
+    player.getDuration().then(
+          (value) => setState(() {
+        _duration = value;
+      }),
+    );
+    player.getCurrentPosition().then(
+          (value) => setState(() {
+        _position = value;
+      }),
+    );
     _initStreams();
   }
 

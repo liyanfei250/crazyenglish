@@ -80,6 +80,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
               )
             ],
           ),
+
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
@@ -112,10 +113,7 @@ class _ReadQuestionResultState extends BaseQuestionResultState<ReadQuestionResul
             }
           },
           style: {
-            // "p":Style(
-            //     fontSize:FontSize.large
-            // ),
-
+            "p": QuestionFactory.getHtml_P_TagStyle(),
             "hr":Style(
               margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
               padding: EdgeInsets.all(0),
