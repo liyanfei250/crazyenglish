@@ -380,7 +380,8 @@ class Util {
       {bool enable = true}) {
     return InkWell(
       onTap: () {
-        callback.call();
+        enable?
+        callback.call():null;
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 28.w),

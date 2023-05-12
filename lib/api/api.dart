@@ -240,4 +240,7 @@ class Api {
   //待批改主观题列表
   static String getHomeListToCorrect =
       Config.ApiHost + "/";
+  //提交作业
+  static String toReleaseWorkUrl =
+      Config.ApiHost + "/question/operation/submitOperation";
 }
