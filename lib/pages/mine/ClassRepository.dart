@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
 import '../../entity/HomeworkExamPaperResponse.dart';
+import '../../entity/QuestionListResponse.dart';
 import '../../entity/class_bottom_info.dart';
 import '../../entity/class_detail_response.dart';
 import '../../entity/class_list_response.dart';
@@ -16,6 +17,7 @@ import '../../entity/student_ranking_response.dart';
 import '../../entity/student_time_statistics.dart';
 import '../../entity/student_work_list_response.dart';
 import '../../entity/test_paper_list.dart';
+import '../../entity/test_paper_look_response.dart';
 import '../../entity/to_correct_response.dart';
 import '../../net/net_manager.dart';
 
@@ -195,6 +197,20 @@ class ClassRepository {
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
     HomeworkExamPaperResponse paperDetail = HomeworkExamPaperResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+  //试卷库预览
+  Future<TestPaperLookResponse> toPreviewOperation(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toPreviewOperation,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TestPaperLookResponse paperDetail = TestPaperLookResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

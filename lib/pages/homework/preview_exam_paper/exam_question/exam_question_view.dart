@@ -5,12 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../../entity/QuestionListResponse.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
 import 'exam_question_logic.dart';
-
+import '../../../../entity/test_paper_look_response.dart';
 class ExamQuestionPage extends BasePage {
 
   String tagId;
@@ -26,10 +25,9 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
   final state = Get.find<ExamQuestionLogic>().state;
 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
-
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Questions> questionList = [];
+  List<Obj> questionList = [];
   final int pageStartIndex = 1;
 
 
@@ -38,7 +36,7 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
   void onCreate() {
     logic.addListenerId(GetBuilderIds.getExamper+widget.tagId,(){
       hideLoading();
-      if(state.list!=null && state.list!=null){
+      if(state.list!=null ){
         if(state.pageNo == currentPageNo+1){
           questionList.addAll(state!.list!);
           currentPageNo++;
@@ -78,11 +76,13 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
 
   void _onRefresh() async{
     currentPageNo = pageStartIndex;
+    //TODO 试卷预览把数据带过来
     logic.getQuestionList(widget.tagId,pageStartIndex,pageSize);
   }
 
   void _onLoading() async{
     // if failed,use loadFailed(),if no data return,use LoadNodata()
+    //TODO 试卷预览把数据带过来
     logic.getQuestionList(widget.tagId,currentPageNo+1,pageSize);
   }
 
@@ -122,8 +122,8 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
       child: CustomScrollView(
         slivers: [
           SliverPadding(padding: EdgeInsets.only(left: 25.w,right: 25.w),
-              sliver: SliverGroupedListView<Questions,num>(
-                groupBy: (element) => element.groupId??0,
+              sliver: SliverGroupedListView<Obj,num>(
+                groupBy: (element) => int.parse(element.classifyId??'0'),
                 groupSeparatorBuilder: buildSeparatorBuilder,
                 elements: questionList,
                 itemBuilder: buildItem,
@@ -134,7 +134,7 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
     );
   }
 
-  Widget buildGroupHeader(Questions question){
+  Widget buildGroupHeader(Obj question){
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -145,7 +145,7 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(padding: EdgeInsets.only(top: 11.w)),
-          Text("${question.groupName}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
+          Text("${question.classifyName}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
           Container(margin:EdgeInsets.only(top: 11.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
         ],
       ),
@@ -159,7 +159,7 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
     );
   }
 
-  Widget buildItem(BuildContext context, Questions question) {
+  Widget buildItem(BuildContext context, Obj question) {
     return Container(
       height: 40.w,
       width: double.infinity,
@@ -169,7 +169,7 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
       ),
       child: Text(
-        "${question.name}",
+        "${question.classifyName}",
         style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
