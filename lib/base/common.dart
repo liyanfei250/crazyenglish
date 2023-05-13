@@ -58,6 +58,18 @@ class DataGroup{
   static Map<String,String> questionType = {};
 }
 
+// 发布作业类型
+class PaperType{
+  // 习题类型
+  static const int Questions = 1;
+  // 期刊类型
+  static const int Journals = 2;
+  // 试卷库
+  static const int exam = 3;
+  // 历史作业
+  static const int HistoryHomework = 4;
+}
+
 // 题型
 class QuestionType {
 

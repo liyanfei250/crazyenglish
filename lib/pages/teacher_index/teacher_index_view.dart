@@ -11,6 +11,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
+import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'teacher_index_logic.dart';
 
 class TeacherIndexPage extends StatefulWidget {
@@ -245,11 +246,11 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               break;
             case "历史作业":
               RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
-                  arguments: {"isAssignHomework": false});
+                  arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
               break;
             case "试卷库":
               RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
-                  arguments: {"isAssignHomework": false});
+                  arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
               break;
             case "布置作业":
               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);

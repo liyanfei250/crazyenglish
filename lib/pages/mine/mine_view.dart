@@ -11,6 +11,7 @@ import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../utils/sp_util.dart';
+import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'mine_logic.dart';
 
 class MinePage extends BasePage {
@@ -317,7 +318,7 @@ class _MinePageState extends BasePageState<MinePage> {
             break;
           case '历史作业':
             RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,isNeedCheckLogin: true,
-                arguments: {"isAssignHomework": false});
+                arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
             break;
           case '题目反馈':
             RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,isNeedCheckLogin: true,arguments: {'isFeedback': true});

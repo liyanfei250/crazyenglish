@@ -14,6 +14,7 @@ import '../../../entity/HomeworkHistoryResponse.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../assign_homework/assign_homework_logic.dart';
 import '../base_choose_page_state.dart';
 import '../choose_logic.dart';
 import '../homework_complete_overview/homework_complete_overview_view.dart';
@@ -28,12 +29,17 @@ class ChooseHistoryHomeworkPage extends BasePage {
   bool isAssignHomework = false;
   bool needNotify = false;
   bool needCorrected = false;
+
+  static const String IsAssignHomework = "isAssignHomework";
+  static const String NeedNotify = "needNotify";
+  static const String NeedCorrected = "needCorrected";
+
   ChooseHistoryHomeworkPage({Key? key}) : super(key: key) {
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      isAssignHomework = Get.arguments["isAssignHomework"]??false;
-      needNotify = Get.arguments["needNotify"]??false;
-      needCorrected = Get.arguments["needCorrected"]??false;
+      isAssignHomework = Get.arguments[IsAssignHomework]??false;
+      needNotify = Get.arguments[NeedNotify]??false;
+      needCorrected = Get.arguments[NeedCorrected]??false;
     }
   }
 
@@ -45,6 +51,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
+  final assignLogic = Get.find<AssignHomeworkLogic>();
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final int pageSize = 20;
@@ -62,9 +69,17 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   @override
   void onCreate() {
     currentKey.value = "0";
+
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList,(){
       hideLoading();
       if(state.list!=null && state.list!=null){
+        if(widget.isAssignHomework && (assignLogic.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
+          state.list.forEach((element) {
+            if("${element.id}" == assignLogic.state.assignHomeworkRequest.historyOperationId){
+              addSelected(currentKey.value,element,true);
+            }
+          });
+        }
         if(state.pageNo == currentPageNo+1){
           historys.addAll(state!.list!);
           currentPageNo++;
@@ -125,6 +140,32 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             child: InkWell(
               onTap: (){
                 // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
+                if(widget.isAssignHomework){
+                  int totalNum = 0;
+                  List<History> historys = [];
+                  dataList.forEach((key, value) {
+                    if(value!=null){
+                      for(History n in value!){
+                        String id = getDataId(key,n);
+                        if(isSelectedMap[key]!=null && (isSelectedMap[key]![id]??false)){
+                          historys.add(n);
+                        }
+                      }
+                    }
+                  });
+                  if(historys.isNotEmpty){
+                    assignLogic.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
+                      historyHomeworkDesc: historys[0].name,
+                      historyOperationId: "${historys[0].id}"
+                    );
+                  }else{
+                    assignLogic.updateAssignHomeworkRequest(paperType: -1,
+                        historyHomeworkDesc: "",
+                        historyOperationId: ""
+                    );
+                  }
+                  Get.back();
+                }
               },
               child: Text("确定",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 14.sp),),
             ),
@@ -272,7 +313,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   // // goToNextPage("去提醒") :
                   // // widget.needCorrected?
                   // // buildHasChecked(false,"待批改（18）"):
-                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history}):
+                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history,}):
                   RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
                   // buildHasChecked(false,"未检查"),
                 },

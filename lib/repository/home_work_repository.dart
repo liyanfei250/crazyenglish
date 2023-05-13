@@ -33,9 +33,7 @@ class HomeworkRepository{
       actionType: 1,
       teacherId: "1651539603655626753",
       schoolClassId: 1655395694170124290.toString(),
-      startDate: "2023-04-24",
-      endDate: "2023-05-13",
-      orderType: "460",
+      orderType: "2",
       p: p
     );
 
