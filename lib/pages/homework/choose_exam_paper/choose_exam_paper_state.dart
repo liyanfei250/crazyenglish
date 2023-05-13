@@ -1,7 +1,7 @@
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 
 class ChooseExamPaperState {
-  List<Exampapers> list = [];
+  List<Records> list = [];
   bool hasMore = true;
   int pageNo = 1;
   ChooseExamPaperState() {
