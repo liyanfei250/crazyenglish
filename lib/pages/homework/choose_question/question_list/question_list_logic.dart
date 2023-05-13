@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import '../../../../entity/QuestionListResponse.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/json_cache_util.dart';
+import '../../../jingang/listening_practice/ListRepository.dart';
 import 'question_list_state.dart';
+import '../../../../entity/review/HomeSecondListDate.dart' as data;
 
 class QuestionListLogic extends GetxController {
   final QuestionListState state = QuestionListState();
-
+  ListRepository listData = ListRepository();
   @override
   void onReady() {
     // TODO: implement onReady
@@ -20,8 +22,70 @@ class QuestionListLogic extends GetxController {
     super.onClose();
   }
 
-  void getQuestionList(String tagId,int page,int pageSize) async{
-    Map<String,String> req= {};
+  void getQuestionList(int userId, dynamic classifyTypeValue,dynamic affiliatedGrade,
+      int size, int current) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> reqTwo = {};
+    req["userId"] = userId;
+    req["dictionaryId"] = classifyTypeValue;
+    req["affiliatedGrade"] = affiliatedGrade;
+    reqTwo["size"] = size;
+    reqTwo["current"] = current;
+    req["p"] = reqTwo;
+
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.SecondListDate,
+        labelId: classifyTypeValue.toString())
+        .then((value) {
+      if (value != null) {
+        return data.HomeSecondListDate.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    state.pageNo = current;
+    if (current == 1 && cache?.obj != null && cache!.obj is data.Obj) {
+      state.homeSecondListDate = cache!.obj!;
+      if (state.homeSecondListDate.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+      update(
+          [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
+    }
+
+    data.HomeSecondListDate list = await listData.getListnerList(req);
+    if (current == 1) {
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.SecondListDate,
+          labelId: classifyTypeValue.toString(),
+          list.toJson());
+    }
+    if (list.obj == null) {
+      if (current == 1) {
+        state.homeSecondListDate.clear();
+      }
+    } else {
+      if (current == 1) {
+        state.homeSecondListDate = list.obj!;
+      } else {
+        state.homeSecondListDate.addAll(list.obj!);
+      }
+      if (list.obj!.length < size) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update(
+        [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
+  }
+
+
+
+
+
+    /*Map<String,String> req= {};
     // req["weekTime"] = weekTime;
     req["current"] = "$page";
     req["size"] = "$pageSize";
@@ -101,5 +165,5 @@ class QuestionListLogic extends GetxController {
     //   }
     // }
     update([GetBuilderIds.getQuestionList+tagId]);
-  }
+  }*/
 }

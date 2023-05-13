@@ -1,16 +1,20 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkStudentResponse.dart';
 import 'package:crazyenglish/pages/homework/choose_student/student_list/student_list_view.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../entity/class_list_response.dart';
+import '../../../../entity/member_student_list.dart' as student;
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
 import 'choose_student_logic.dart';
-
 class ChooseStudentPage extends BasePage {
   const ChooseStudentPage({Key? key}) : super(key: key);
 
@@ -18,33 +22,38 @@ class ChooseStudentPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseStudentPageState();
 }
 
-class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Students> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,student.Obj> with TickerProviderStateMixin {
   final logic = Get.put(ChooseStudentLogic());
   final state = Get.find<ChooseStudentLogic>().state;
   late TabController _tabController;
 
-  final List<String> tabs = const[
-    "初一1班",
-    "初一2班",
-    "初一3班",
-    "初一4班",
-    "初一5班",
-    "初一6班",
-  ];
-
+  List<Obj> tabs = [];
   @override
-  String getDataId(String key,Students n) {
-    assert(n.id !=null);
-    return n.id!.toString();
+  String getDataId(String key,student.Obj n) {
+    assert(n.userId !=null);
+    return n.userId!.toString();
   }
 
   @override
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
-    currentKey.value = tabs[0];
-    _tabController.addListener(() {
-      currentKey.value = tabs[_tabController!.index];
+
+
+    logic.addListenerId(GetBuilderIds.getHomeClassTab, () {
+      if (state.myClassList != null && state.myClassList!.obj != null) {
+        tabs = state.myClassList!.obj!;
+        setState(() {
+          _tabController.dispose();
+          _tabController = TabController(vsync: this, length: tabs.length);
+          currentKey.value = tabs[0].id.toString();
+          _tabController.addListener(() {
+            currentKey.value = tabs[_tabController!.index].id.toString();
+          });
+        });
+      }
     });
+    //todo 真实数据
+    logic.getMyClassList(SpUtil.getString(BaseConstant.TEACHER_USER_ID));
   }
 
   @override
@@ -103,30 +112,27 @@ class _ChooseStudentPageState extends BaseChoosePageState<ChooseStudentPage,Stud
     labelStyle: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),
     unselectedLabelStyle: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR),
     labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Tab(text:e)).toList(),
+    tabs: tabs.map((e) => Tab(text:e.name)).toList(),
   );
 
 
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
       children: tabs.map((e) {
-        return StudentListPage(chooseLogic: this,classId: e);
+        return StudentListPage(chooseLogic: this,classId: e.id.toString());
       }).toList());
 
   @override
   void dispose() {
     Get.delete<ChooseStudentLogic>();
+    _tabController.dispose();
     super.dispose();
   }
 
-
-
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

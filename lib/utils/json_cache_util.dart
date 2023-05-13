@@ -65,6 +65,8 @@ class JsonCacheManageUtils {
   static const int StudentDetailReport = 0x212; //班级学生报告
   static const int StudentWorkList = 0x213; //班级学生报告
   static const int TeacherToCorrected = 0x214; //待批改主观题列表
+  static const int StudentChoiceList = 0x215; //选择学生列表
+  static const int TeacherTestPagerList = 0x216; //试卷库
 
   // String contentJson;
 

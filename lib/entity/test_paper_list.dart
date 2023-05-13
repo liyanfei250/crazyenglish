@@ -4,8 +4,8 @@
 /// p : null
 /// success : true
 
-class HomeworkExamPaperResponse {
-  HomeworkExamPaperResponse({
+class TestPaperList {
+  TestPaperList({
       num? code, 
       String? message, 
       Obj? obj, 
@@ -18,7 +18,7 @@ class HomeworkExamPaperResponse {
     _success = success;
 }
 
-  HomeworkExamPaperResponse.fromJson(dynamic json) {
+  TestPaperList.fromJson(dynamic json) {
     _code = json['code'];
     _message = json['message'];
     _obj = json['obj'] != null ? Obj.fromJson(json['obj']) : null;
@@ -30,12 +30,12 @@ class HomeworkExamPaperResponse {
   Obj? _obj;
   dynamic _p;
   bool? _success;
-HomeworkExamPaperResponse copyWith({  num? code,
+TestPaperList copyWith({  num? code,
   String? message,
   Obj? obj,
   dynamic p,
   bool? success,
-}) => HomeworkExamPaperResponse(  code: code ?? _code,
+}) => TestPaperList(  code: code ?? _code,
   message: message ?? _message,
   obj: obj ?? _obj,
   p: p ?? _p,

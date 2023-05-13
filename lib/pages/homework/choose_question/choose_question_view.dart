@@ -7,11 +7,13 @@ import 'package:get/get.dart';
 import '../../../base/AppUtil.dart';
 import '../../../entity/QuestionListResponse.dart';
 import '../../../r.dart';
+import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
 import 'choose_question_logic.dart';
 import 'question_list/question_list_view.dart';
-
+import '../../../entity/home/HomeKingDate.dart';
 class ChooseQuestionPage extends BasePage {
   const ChooseQuestionPage({Key? key}) : super(key: key);
 
@@ -19,19 +21,13 @@ class ChooseQuestionPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseQuestionPageState();
 }
 
-class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,Questions> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,Questions> with TickerProviderStateMixin{
   final logic = Get.put(ChooseQuestionLogic());
   final state = Get.find<ChooseQuestionLogic>().state;
 
   late TabController _tabController;
 
-  final List<String> tabs = const[
-    "听力",
-    "阅读",
-    "写作",
-    "语法",
-    "词汇",
-  ];
+  List<Obj> tabs = [];
 
   @override
   String getDataId(String key,Questions n) {
@@ -131,35 +127,50 @@ class _ChooseQuestionPageState extends BaseChoosePageState<ChooseQuestionPage,Qu
     labelStyle: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),
     unselectedLabelStyle: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR),
     labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Tab(text:e)).toList(),
+    tabs: tabs.map((e) => Tab(text:e.name)).toList(),
   );
 
 
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
       children: tabs.map((e) {
-        return QuestionListPage(chooseLogic: this,tagId: e);
+        return QuestionListPage(chooseLogic: this,tagId: e.id.toString());
       }).toList());
 
 
   @override
   void dispose() {
     Get.delete<ChooseQuestionLogic>();
+    _tabController.dispose();
     super.dispose();
   }
 
   @override
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
-    currentKey.value = tabs[0];
-    _tabController.addListener(() {
-      currentKey.value = tabs[_tabController!.index];
+
+    //获取金刚区列表
+    logic.addListenerId(GetBuilderIds.getHomeDateList, () {
+      if (state.tabList != null) {
+        if (state.tabList!.obj != null && state.tabList!.obj!.length > 0) {
+          tabs = state.tabList!.obj!;
+          setState(() {
+            _tabController.dispose();
+            _tabController = TabController(vsync: this, length: tabs.length);
+            currentKey.value = tabs[0].id.toString();
+            _tabController.addListener(() {
+              currentKey.value = tabs[_tabController!.index].id.toString();
+            });
+          });
+        }
+      }
     });
+
+    logic.getHomeList('classify_type');
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 
   @override

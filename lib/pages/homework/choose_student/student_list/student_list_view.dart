@@ -13,6 +13,7 @@ import '../../../../routes/getx_ids.dart';
 import '../../../../routes/routes_utils.dart';
 import '../../choose_logic.dart';
 import 'student_list_logic.dart';
+import '../../../../entity/member_student_list.dart';
 
 class StudentListPage extends BasePage {
   ChooseIntel chooseLogic;
@@ -31,16 +32,16 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
 
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Students> studentList = [];
+  List<Obj> studentList = [];
   final int pageStartIndex = 1;
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentList+widget.classId,(){
+    logic.addListenerId(GetBuilderIds.getStudentChoiceList+widget.classId,(){
       hideLoading();
-      if(state.list!=null && state.list!=null){
+      if(state.myStudentList!=null){
         if(state.pageNo == currentPageNo+1){
-          studentList.addAll(state!.list!);
+          studentList.addAll(state!.myStudentList!);
           currentPageNo++;
           if(mounted && _refreshController!=null){
             _refreshController.loadComplete();
@@ -50,7 +51,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
               _refreshController.resetNoData();
             }
             
-            widget.chooseLogic.addData(widget.classId, state!.list!);
+            widget.chooseLogic.addData(widget.classId, state!.myStudentList!);
             setState(() {
 
             });
@@ -59,7 +60,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
         }else if(state.pageNo == pageStartIndex){
           currentPageNo = pageStartIndex;
           studentList.clear();
-          studentList.addAll(state.list!);
+          studentList.addAll(state.myStudentList!);
           if(mounted && _refreshController!=null){
             _refreshController.refreshCompleted();
             if(!state!.hasMore){
@@ -67,7 +68,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
             }else{
               _refreshController.resetNoData();
             }
-            widget.chooseLogic.resetData(widget.classId, state!.list!);
+            widget.chooseLogic.resetData(widget.classId, state!.myStudentList!);
             setState(() {
             });
           }
@@ -81,19 +82,19 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
 
   void _onRefresh() async{
     currentPageNo = pageStartIndex;
-    logic.getStudentList(widget.classId,pageStartIndex,pageSize);
+    logic.getStudentList(widget.classId);
   }
 
   void _onLoading() async{
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getStudentList(widget.classId,currentPageNo+1,pageSize);
+    logic.getStudentList(widget.classId);
   }
 
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
       enablePullDown: true,
-      enablePullUp: true,
+      enablePullUp: false,
       header: WaterDropHeader(),
       footer: CustomFooter(
         builder: (BuildContext context,LoadStatus? mode){
@@ -137,7 +138,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
   }
 
   Widget buildItem(BuildContext context, int index) {
-    Students student = studentList[index];
+    Obj student = studentList[index];
 
     return Container(
       height: 60.w,
@@ -153,7 +154,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ExtendedImage.network(
-                studentList[index].img??"",
+                student.avatar??"",
                 cacheRawData: true,
                 width: 36.w,
                 height: 36.w,
@@ -177,7 +178,7 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
               ),
               Padding(padding: EdgeInsets.only(left: 30.w)),
               Text(
-                "${student.name}",
+                "${student.actualname}",
                 style: TextStyle(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w500,
