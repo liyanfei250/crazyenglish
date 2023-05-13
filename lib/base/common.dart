@@ -118,6 +118,15 @@ class SmsCodeType{
   static const int changeMobile = 3;
 }
 
+class HomeworkStatus{
+  // 未开始
+  static const int unstart = 1;
+  // 进行中
+  static const int started = 2;
+  // 已完成
+  static const int completed = 3;
+}
+
 class AnswerType{
   static const int no_answer = 0;
   static const int wrong = 1;

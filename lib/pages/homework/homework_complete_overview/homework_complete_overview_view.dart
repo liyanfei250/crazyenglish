@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/HomeworkHistoryResponse.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
@@ -13,7 +14,14 @@ import 'homework_complete_overview_logic.dart';
  * 作业完成情况概览
  */
 class HomeworkCompleteOverviewPage extends BasePage {
-  const HomeworkCompleteOverviewPage({Key? key}) : super(key: key);
+
+  static const String HistoryItem = "history";
+
+  late History history;
+
+  HomeworkCompleteOverviewPage({Key? key}) : super(key: key) {
+
+  }
 
   @override
   BasePageState<HomeworkCompleteOverviewPage> getState() => _HomeworkCompleteOverviewPageState();

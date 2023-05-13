@@ -30,13 +30,6 @@ import '../utils/sp_util.dart';
 
 class WeekTestRepository {
   Future<WeekListResponse> getWeekTestList(Map<String, dynamic> req) async {
-    String testData =
-        '{"code":0,"message":"系统正常","obj":[{"id":1648136972349313025,"p":null,"name":"ceshi","affiliatedGrade":2,"schoolYear":2,"periodsNum":21,"coverImg":"","status":false,"isDelete":false,"createTime":"2023-04-18T09:30:50","updateTime":null,"createUser":1,"updateUser":null}],"p":{"records":[],"total":1,"size":50,"current":1,"orders":[],"optimizeCountSql":true,"hitCount":false,"countId":null,"maxLimit":null,"searchCount":true,"pages":1}}';
-
-    /*if(Util.isTestMode()){
-      WeekListResponse weekTestListResponse = WeekListResponse.fromJson(json.decode(testData));
-      return weekTestListResponse;
-    }*/
 
     Map baseResp = await NetManager.getInstance()!.request(
         Method.post, Api.getHomeWeeklyList,
@@ -55,13 +48,6 @@ class WeekTestRepository {
   }
 
   Future<WeekDirectoryResponse> getWeekTestCategory(String periodicaId) async {
-    String testData =
-        "{\"code\":1,\"data\":[{\"uuid\":\"6b028a80-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一部分听力（共两节， 满分 30 分 ）\",\"sort\":267,\"parentId\":\"6b01ee40-be16-11ed-abb8-4bd615e260c3\",\"childList\":[{\"uuid\":\"6b028a81-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节 （共5小题；每小题1.5分，满分7.5分）\",\"sort\":268,\"parentId\":\"6b028a80-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b190-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第二节 （共15小题；每小题1.5分，满分22.5分）\",\"sort\":269,\"parentId\":\"6b028a80-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]}]},{\"uuid\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第二部分阅读理解（共两节，满分40分）\",\"sort\":270,\"parentId\":\"6b01ee40-be16-11ed-abb8-4bd615e260c3\",\"childList\":[{\"uuid\":\"6b02b192-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节A篇 （共3小题；每小题2分，满分6分）\",\"sort\":271,\"parentId\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b193-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节B篇 （共4小题；每小题2分，满分8分）\",\"sort\":272,\"parentId\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b194-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节C篇 （共4小题；每小题2分，满分8分）\",\"sort\":273,\"parentId\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b195-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节D篇 （共4小题；每小题2分，满分8分）\",\"sort\":274,\"parentId\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b196-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第二节 （共5小题；每小题2分，满分10分）\",\"sort\":275,\"parentId\":\"6b02b191-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]}]},{\"uuid\":\"6b02b197-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第三部分语言知识运用（共两节，满分45 分）\",\"sort\":276,\"parentId\":\"6b01ee40-be16-11ed-abb8-4bd615e260c3\",\"childList\":[{\"uuid\":\"6b02b198-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节 （共20小题；每小题1.5分，满分30分）\",\"sort\":277,\"parentId\":\"6b02b197-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02b199-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第二节 （共10小题；每小题1.5分，满分15分）\",\"sort\":278,\"parentId\":\"6b02b197-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]}]},{\"uuid\":\"6b02b19a-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第四部分写作（共两节，满分35分）\",\"sort\":279,\"parentId\":\"6b01ee40-be16-11ed-abb8-4bd615e260c3\",\"childList\":[{\"uuid\":\"6b02b19b-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第一节 短文改错 （共10小题；每小题1分，满分10分）\",\"sort\":280,\"parentId\":\"6b02b19a-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]},{\"uuid\":\"6b02d8a0-be16-11ed-abb8-4bd615e260c3\",\"name\":\"第二节 书面表达 （满分25分）\",\"sort\":281,\"parentId\":\"6b02b19a-be16-11ed-abb8-4bd615e260c3\",\"childList\":[]}]}],\"msg\":\"\"}";
-
-    // if(Util.isTestMode()){
-    //   WeekDirectoryResponse weekTestCatalogResponse = WeekDirectoryResponse.fromJson(json.decode(testData));
-    //   return weekTestCatalogResponse!;
-    // }
 
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.getHomeWeeklyDirectoryList + periodicaId,

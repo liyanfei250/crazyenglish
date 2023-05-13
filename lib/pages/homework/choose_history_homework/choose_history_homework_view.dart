@@ -9,12 +9,14 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart' as common;
 import '../../../entity/HomeworkHistoryResponse.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../base_choose_page_state.dart';
 import '../choose_logic.dart';
+import '../homework_complete_overview/homework_complete_overview_view.dart';
 import 'choose_history_homework_logic.dart';
 
 /**
@@ -172,7 +174,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             footer: CustomFooter(
               builder: (BuildContext context,LoadStatus? mode){
                 Widget body ;
-                if(mode==LoadStatus.idle){
+                if(mode== LoadStatus.idle){
                   body =  Text("");
                 }
                 else if(mode==LoadStatus.loading){
@@ -257,8 +259,8 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   // // goToNextPage("去提醒") :
                   // // widget.needCorrected?
                   // // buildHasChecked(false,"待批改（18）"):
-                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage):
-                  RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage);
+                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history}):
+                  RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
                   // buildHasChecked(false,"未检查"),
                 },
                 child: widget.needNotify?
@@ -267,7 +269,9 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                               buildHasChecked(false,"待批改（18）"):
                                 widget.isAssignHomework?
                                 goToNextPage("预览"):
-                                buildHasChecked(false,"未检查"),
+                                buildHasChecked(history.operationStatus == common.HomeworkStatus.completed,
+                                    history.operationStatus == common.HomeworkStatus.completed? "已检查":
+                                    "未检查"),
               )
             ],
           ),
@@ -289,7 +293,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
               ),)
             ],
           ),
-          buildLineItem(R.imagesExamPaperTiCount,"18/28 完成"),
+          buildLineItem(R.imagesExamPaperTiCount,"${history.studentCompleteSize}/${history.studentTotalSize} 完成"),
           Visibility(
             visible: !widget.isAssignHomework,
             child: buildLineItem(R.imagesExamPaperTiType,"班级平均分")),

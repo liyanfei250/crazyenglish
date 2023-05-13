@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 
 import '../../../entity/HomeworkHistoryResponse.dart';
+import '../../../repository/home_work_repository.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import 'choose_history_homework_state.dart';
 
 class ChooseHistoryHomeworkLogic extends GetxController {
   final ChooseHistoryHomeworkState state = ChooseHistoryHomeworkState();
+  HomeworkRepository homeworkRepository = HomeworkRepository();
 
   @override
   void onReady() {
@@ -21,6 +23,7 @@ class ChooseHistoryHomeworkLogic extends GetxController {
   }
 
 
+  //TODO 缓存key需要处理
   void getHomeworkHistoryList(int page,int pageSize) async{
     Map<String,String> req= {};
     // req["weekTime"] = weekTime;
@@ -35,52 +38,41 @@ class ChooseHistoryHomeworkLogic extends GetxController {
     });
 
     state.pageNo = page;
-    if(page==1 && cache is HomeworkHistoryResponse && cache.data!=null && cache.data!.history!=null) {
-      state.list = cache.data!.history!;
+    if(page==1 && cache is HomeworkHistoryResponse && cache.obj!=null && cache.obj!.records!=null) {
+      state.list = cache.obj!.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;
-      }else{
+      } else {
         state.hasMore = true;
       }
       update([GetBuilderIds.getHistoryHomeworkList]);
     }
 
-    List<History> historys = [];
-    for(int i = 0;i<13;i++){
-      History student = History(id: page*100+i,name: "初二阅读：${page*100+i}期");
-      historys.add(student);
-    }
-    state.list = historys!;
-    if(state.list.length < pageSize){
-      state.hasMore = false;
-    }else{
-      state.hasMore = true;
-    }
-    update([GetBuilderIds.getHistoryHomeworkList]);
 
-    // WeekPaper list = await weekRepository.getWeekPaperList(req);
-    // if(page ==1){
-    //   JsonCacheManageUtils.saveCacheData(
-    //       JsonCacheManageUtils.WeekPaperResponse,
-    //       labelId: weekTime.toString(),
-    //       list.toJson());
-    // }
-    // if(list.records==null) {
-    //   if(page ==1){
-    //     state.list.clear();
-    //   }
-    // } else {
-    //   if(page ==1){
-    //     state.list = list.records!;
-    //   } else {
-    //     state.list.addAll(list.records!);
-    //   }
-    //   if(list.records!.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    // }
+    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomework(page,pageSize);
+    if (page == 1) {
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.HomeworkHistoryResponse,
+          labelId: "",
+          list.toJson());
+    }
+
+    if (list.obj == null || list.obj!.records==null || list.obj!.records!.isEmpty) {
+      if (page == 1) {
+        state.list.clear();
+      }
+    } else {
+      if (page == 1) {
+        state.list = list.obj!.records!;
+      } else {
+        state.list.addAll(list.obj!.records!);
+      }
+      if (list.obj!.records!.length < pageSize) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
     update([GetBuilderIds.getHistoryHomeworkList]);
   }
 }
