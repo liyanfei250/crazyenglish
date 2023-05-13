@@ -75,4 +75,58 @@ class ChooseHistoryHomeworkLogic extends GetxController {
     }
     update([GetBuilderIds.getHistoryHomeworkList]);
   }
+
+
+  //TODO 缓存key需要处理
+  void getHistoryListActionPage(int actionPage,int page,int pageSize) async{
+    Map<String,String> req= {};
+    // req["weekTime"] = weekTime;
+    req["current"] = "$page";
+    req["size"] = "$pageSize";
+
+    // var cache = await JsonCacheManageUtils.getCacheData(
+    //     JsonCacheManageUtils.HomeworkHistoryResponse).then((value){
+    //   if(value!=null){
+    //     return HomeworkHistoryResponse.fromJson(value as Map<String,dynamic>?);
+    //   }
+    // });
+    //
+    // state.pageNo = page;
+    // if(page==1 && cache is HomeworkHistoryResponse && cache.obj!=null && cache.obj!.records!=null) {
+    //   state.list = cache.obj!.records!;
+    //   if(state.list.length < pageSize){
+    //     state.hasMore = false;
+    //   } else {
+    //     state.hasMore = true;
+    //   }
+    //   update([GetBuilderIds.getHistoryHomeworkList]);
+    // }
+
+
+    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomeworkActionPage(actionPage,page,pageSize);
+    if (page == 1) {
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.HomeworkHistoryResponse,
+          labelId: "",
+          list.toJson());
+    }
+
+    if (list.obj == null || list.obj!.records==null || list.obj!.records!.isEmpty) {
+      if (page == 1) {
+        state.list.clear();
+      }
+    } else {
+      if (page == 1) {
+        state.list = list.obj!.records!;
+      } else {
+        state.list.addAll(list.obj!.records!);
+      }
+      if (list.obj!.records!.length < pageSize) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update([GetBuilderIds.getHistoryHomeworkList]);
+  }
 }

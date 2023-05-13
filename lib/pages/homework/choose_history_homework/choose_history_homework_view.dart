@@ -52,6 +52,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   List<History> historys = [];
   final int pageStartIndex = 1;
 
+
   @override
   String getDataId(String key,History n) {
     assert(n.id !=null);
@@ -214,12 +215,24 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
 
   void _onRefresh() async{
     currentPageNo = pageStartIndex;
-    logic.getHomeworkHistoryList(pageStartIndex,pageSize);
+    if(widget.needNotify){
+      logic.getHistoryListActionPage(common.HomeworkStatus.unstart,pageStartIndex,pageSize);
+    }else if(widget.needCorrected){
+      logic.getHistoryListActionPage(common.HomeworkStatus.started,pageStartIndex,pageSize);
+    }else{
+      logic.getHomeworkHistoryList(pageStartIndex,pageSize);
+    }
+
   }
 
   void _onLoading() async{
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getHomeworkHistoryList(currentPageNo+1,pageSize);
+    if(widget.needNotify){
+      logic.getHistoryListActionPage(common.HomeworkStatus.unstart,currentPageNo+1,pageSize);
+    }else if(widget.needCorrected){
+      logic.getHistoryListActionPage(common.HomeworkStatus.started,currentPageNo+1,pageSize);
+    }else{
+      logic.getHomeworkHistoryList(currentPageNo+1,pageSize);
+    }
   }
 
 
