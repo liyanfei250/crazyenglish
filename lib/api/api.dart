@@ -274,4 +274,7 @@ class Api {
   // 选择学生班级列表接口
   static String memberClassStudentList = Config.ApiHost + "/member/classStudent/list/";
 
+  // 试卷预览
+  static String toPreviewOperation = Config.ApiHost + "/question/operation/previewOperation";
+
 }

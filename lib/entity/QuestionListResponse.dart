@@ -4,13 +4,13 @@
 
 class QuestionListResponse {
   QuestionListResponse({
-      num? code, 
-      String? msg, 
-      Data? data,}){
+    num? code,
+    String? msg,
+    Data? data,}){
     _code = code;
     _msg = msg;
     _data = data;
-}
+  }
 
   QuestionListResponse.fromJson(dynamic json) {
     _code = json['code'];
@@ -20,13 +20,13 @@ class QuestionListResponse {
   num? _code;
   String? _msg;
   Data? _data;
-QuestionListResponse copyWith({  num? code,
-  String? msg,
-  Data? data,
-}) => QuestionListResponse(  code: code ?? _code,
-  msg: msg ?? _msg,
-  data: data ?? _data,
-);
+  QuestionListResponse copyWith({  num? code,
+    String? msg,
+    Data? data,
+  }) => QuestionListResponse(  code: code ?? _code,
+    msg: msg ?? _msg,
+    data: data ?? _data,
+  );
   num? get code => _code;
   String? get msg => _msg;
   Data? get data => _data;
@@ -50,15 +50,15 @@ QuestionListResponse copyWith({  num? code,
 
 class Data {
   Data({
-      List<Questions>? questions, 
-      num? total, 
-      num? size, 
-      num? current,}){
+    List<Questions>? questions,
+    num? total,
+    num? size,
+    num? current,}){
     _questions = questions;
     _total = total;
     _size = size;
     _current = current;
-}
+  }
 
   Data.fromJson(dynamic json) {
     if (json['questions'] != null) {
@@ -75,15 +75,15 @@ class Data {
   num? _total;
   num? _size;
   num? _current;
-Data copyWith({  List<Questions>? questions,
-  num? total,
-  num? size,
-  num? current,
-}) => Data(  questions: questions ?? _questions,
-  total: total ?? _total,
-  size: size ?? _size,
-  current: current ?? _current,
-);
+  Data copyWith({  List<Questions>? questions,
+    num? total,
+    num? size,
+    num? current,
+  }) => Data(  questions: questions ?? _questions,
+    total: total ?? _total,
+    size: size ?? _size,
+    current: current ?? _current,
+  );
   List<Questions>? get questions => _questions;
   num? get total => _total;
   num? get size => _size;
@@ -109,19 +109,19 @@ Data copyWith({  List<Questions>? questions,
 
 class Questions {
   Questions({
-      num? id, 
-      num? groupId,
-      String? name,
-      String? groupName,
-      String? img,
-      String? createTime,}){
+    num? id,
+    num? groupId,
+    String? name,
+    String? groupName,
+    String? img,
+    String? createTime,}){
     _id = id;
     _groupId = groupId;
     _name = name;
     _groupName = groupName;
     _img = img;
     _createTime = createTime;
-}
+  }
 
   Questions.fromJson(dynamic json) {
     _id = json['id'];
@@ -137,20 +137,20 @@ class Questions {
   String? _groupName;
   String? _img;
   String? _createTime;
-Questions copyWith({  num? id,
-  String? name,
-  num? groupId,
-  String? groupName,
-  String? img,
-  String? createTime,
-}) => Questions(
-  id: id ?? _id,
-  name: name ?? _name,
-  groupId: groupId ?? _groupId,
-  groupName: groupName ?? _groupName,
-  img: img ?? _img,
-  createTime: createTime ?? _createTime,
-);
+  Questions copyWith({  num? id,
+    String? name,
+    num? groupId,
+    String? groupName,
+    String? img,
+    String? createTime,
+  }) => Questions(
+    id: id ?? _id,
+    name: name ?? _name,
+    groupId: groupId ?? _groupId,
+    groupName: groupName ?? _groupName,
+    img: img ?? _img,
+    createTime: createTime ?? _createTime,
+  );
   num? get id => _id;
   String? get name => _name;
   num? get groupId => _groupId;

@@ -1,8 +1,9 @@
-import '../../../../entity/QuestionListResponse.dart';
+
+import 'package:crazyenglish/entity/test_paper_look_response.dart';
 
 class ExamQuestionState {
 
-  List<Questions> list = [];
+  List<Obj> list = [];
   bool hasMore = true;
   int pageNo = 1;
 
