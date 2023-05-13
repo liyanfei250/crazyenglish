@@ -44,23 +44,20 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [SliverToBoxAdapter(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(left: 18.w,right: 18.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildQuestionType(QuestionType.getName(element.questionTypeStr!)),
-                  Visibility(
-                      visible: element.stem!=null && element.stem!.isNotEmpty,
-                      child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-                ],
-              ),
-            ))];
-        },
-        body: Expanded(child:getQuestionDetail(element))
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildQuestionDesc(QuestionType.getName(element.questionTypeStr!)),
+          Padding(padding: EdgeInsets.only(top: 8.w),),
+          Visibility(
+              visible: element.stem!=null && element.stem!.isNotEmpty,
+              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          Expanded(child:getQuestionDetail(element))
+        ],
+      ),
     );
   }
 

@@ -213,6 +213,39 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             padding: EdgeInsets.only(top: 18.w),
           ));
           itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback));
+        } else if(element.questionTypeStr == QuestionType.translate_question){
+          itemList.add(buildQuestionType("填空"));
+          itemList.add(Text("英汉互译",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp)));
+          itemList.add(Padding(padding: EdgeInsets.only(top: 30.w),));
+          itemList.add(Row(
+            children: [
+              Text("原文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+              Padding(padding: EdgeInsets.only(left: 11.w)),
+              Expanded(child: Container(
+                height: 44.w,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                  border: Border.all(
+                      width: 1.w,
+                      color: AppColors.c_FFB4B9C6,
+                      style: BorderStyle.solid
+                  ),
+                ),
+                child: Text("${question.problem}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+              ))
+            ],
+          ));
+          itemList.add(Padding(padding: EdgeInsets.only(top: 16.w),));
+          itemList.add(Row(
+            children: [
+              Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
+              Padding(padding: EdgeInsets.only(left: 11.w)),
+              Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback))
+            ],
+          ));
         }
         // else if(element.questionTypeStr == QuestionType.correction_question){
         //   itemList.add(buildQuestionType("纠错题"));
