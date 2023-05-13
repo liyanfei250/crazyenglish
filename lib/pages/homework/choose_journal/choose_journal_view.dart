@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import '../../../entity/week_list_response.dart' as Date;
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
@@ -22,7 +22,7 @@ class ChooseJournalPage extends BasePage {
   BasePageState<BasePage> getState() => _ChooseJournalPageState();
 }
 
-class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Journals> {
+class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Date.Obj> {
   final logic = Get.put(ChooseJournalLogic());
   final state = Get.find<ChooseJournalLogic>().state;
 
@@ -30,11 +30,11 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Jour
 
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Journals> journals = [];
+  List<Date.Obj> journals = [];
   final int pageStartIndex = 1;
 
   @override
-  String getDataId(String key,Journals n) {
+  String getDataId(String key,Date.Obj n) {
     assert(n.id !=null);
     return n.id!.toString();
   }
@@ -168,17 +168,17 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Jour
 
   void _onRefresh() async{
     currentPageNo = pageStartIndex;
-    logic.getJournalList(pageStartIndex,pageSize);
+    logic.getJournalList(null,pageStartIndex,pageSize);
   }
 
   void _onLoading() async{
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getJournalList(currentPageNo+1,pageSize);
+    logic.getJournalList(null,currentPageNo+1,pageSize);
   }
 
 
   Widget buildItem(BuildContext context, int index) {
-    Journals student = journals[index];
+    Date.Obj student = journals[index];
 
     return Container(
       height: 80.w,
@@ -194,7 +194,7 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Jour
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ExtendedImage.network(
-                journals[index].img??"",
+                journals[index].coverImg??"",
                 cacheRawData: true,
                 width: 54.w,
                 height: 54.w,
@@ -231,7 +231,7 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Jour
                   ),
                   Padding(padding: EdgeInsets.only(top: 6.w)),
                   Text(
-                    "2023-3-14",
+                    student.createTime?? '',
                     style: TextStyle(
                         fontSize: 11.sp,
                         color: Color(0xff898a93)),
@@ -243,7 +243,7 @@ class _ChooseJournalPageState extends BaseChoosePageState<ChooseJournalPage,Jour
                       Image.asset(R.imagesHomeworkJournalGrayBrowse,width: 10.w,height: 10.w,),
                       Padding(padding: EdgeInsets.only(left: 4.w)),
                       Text(
-                        "${student.id}",
+                        "${student.journalView}",
                         style: TextStyle(
                             fontSize: 8.sp,
                             color: Color(0xff898a93)),

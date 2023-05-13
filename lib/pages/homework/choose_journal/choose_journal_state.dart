@@ -1,7 +1,6 @@
-import 'package:crazyenglish/entity/HomeworkJournalResponse.dart';
-
+import '../../../entity/week_list_response.dart' as Date;
 class ChooseJournalState {
-  List<Journals> list = [];
+  List<Date.Obj> list = [];
   bool hasMore = true;
   int pageNo = 1;
   ChooseJournalState() {
