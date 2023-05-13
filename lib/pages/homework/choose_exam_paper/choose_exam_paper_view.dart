@@ -45,7 +45,7 @@ class _ChooseExamPaperPageState extends BaseChoosePageState<ChooseExamPaperPage,
     currentKey.value = "0";
     logic.addListenerId(GetBuilderIds.getExampersList,(){
       hideLoading();
-      if(state.list!=null && state.list!=null){
+      if(state.list!=null){
         if(state.pageNo == currentPageNo+1){
           exampapers.addAll(state!.list!);
           currentPageNo++;

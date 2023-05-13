@@ -9,10 +9,12 @@ import '../../entity/class_detail_response.dart';
 import '../../entity/class_list_response.dart';
 import '../../entity/class_top_info.dart';
 import '../../entity/common_response.dart';
+import '../../entity/member_student_list.dart';
 import '../../entity/student_detail_response.dart';
 import '../../entity/student_ranking_response.dart';
 import '../../entity/student_time_statistics.dart';
 import '../../entity/student_work_list_response.dart';
+import '../../entity/test_paper_list.dart';
 import '../../entity/to_correct_response.dart';
 import '../../net/net_manager.dart';
 
@@ -31,10 +33,12 @@ class ClassRepository {
     }
   }
 
-  Future<ClassDetailResponse> getMyClassDetail(String id,{isTeacher=false,isJoin =false}) async {
+  Future<ClassDetailResponse> getMyClassDetail(String id,
+      {isTeacher = false, isJoin = false}) async {
     Map map = await NetManager.getInstance()!.request(
-        data: {"isTeacher": isTeacher,"isJoin":isJoin},
-        Method.get, Api.TeacherClassDetail + id,
+        data: {"isTeacher": isTeacher, "isJoin": isJoin},
+        Method.get,
+        Api.TeacherClassDetail + id,
         options: Options(method: Method.get));
     ClassDetailResponse paperDetail = ClassDetailResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
@@ -110,7 +114,8 @@ class ClassRepository {
     }
   }
 
-  Future<StudentTimeStatistics> getStudentReport(Map<String, dynamic> req) async {
+  Future<StudentTimeStatistics> getStudentReport(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.studentReport,
         data: req,
@@ -124,7 +129,8 @@ class ClassRepository {
     }
   }
 
-  Future<StudentWorkListResponse> getStudentWorkList(Map<String, dynamic> req) async {
+  Future<StudentWorkListResponse> getStudentWorkList(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.studentWorkList,
         data: req,
@@ -138,7 +144,8 @@ class ClassRepository {
     }
   }
 
-  Future<ToCorrectResponse> getHomeListToCorrect(Map<String, dynamic> req) async {
+  Future<ToCorrectResponse> getHomeListToCorrect(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.getHomeListToCorrect,
         data: req,
@@ -159,6 +166,34 @@ class ClassRepository {
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
     CommonResponse paperDetail = CommonResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<MemberStudentList> getClassStudentList(String classId) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.memberClassStudentList + classId,
+        options: Options(
+            method: Method.get, contentType: ContentType.json.toString()));
+    MemberStudentList paperDetail = MemberStudentList.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //试卷库列表
+  Future<TestPaperList> getMyPaperPageList(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.myPaperPageList,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TestPaperList paperDetail = TestPaperList.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

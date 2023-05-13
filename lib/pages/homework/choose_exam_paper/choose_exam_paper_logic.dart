@@ -80,6 +80,6 @@ class ChooseExamPaperLogic extends GetxController {
     //     state.hasMore = true;
     //   }
     // }
-    update([GetBuilderIds.getExampersList]);
+    // update([GetBuilderIds.getExampersList]);
   }
 }

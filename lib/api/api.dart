@@ -250,29 +250,28 @@ class Api {
 
 
   // 教师端首页 待批改、待提醒状态值
-  static String indexTeacerOperationStatus = Config.ApiHost + "question/operation/actionStatus/:teacherId";
+  static String indexTeacerOperationStatus = Config.ApiHost + "/question/operation/actionStatus/:teacherId";
   //教师端首页 待批改、待提醒列表
-  static String indexTeacerOperationDetailList = Config.ApiHost + "question/operation/actionPage";
+  static String indexTeacerOperationDetailList = Config.ApiHost + "/question/operation/actionPage";
 
   // 待批改学生列表
-  static String correctionList = Config.ApiHost + "question/operation/student/correctionList/:operationClassId";
+  static String correctionList = Config.ApiHost + "/question/operation/student/correctionList/:operationClassId";
   // 待提醒学生列表
-  static String remindList = Config.ApiHost + "question/operation/student/remindList/operationClassId";
+  static String remindList = Config.ApiHost + "/question/operation/student/remindList/operationClassId";
 
   // 历史作业
   static String historyPage = Config.ApiHost + "/question/operation/historyPage";
 
   // 作业预览接口
-  static String previewOperation = Config.ApiHost + "question/operation/previewOperation";
+  static String previewOperation = Config.ApiHost + "/question/operation/previewOperation";
 
   // 关键接口：批改作业接口
-  static String correctionOperation = Config.ApiHost + "question/operation/correctionOperation";
+  static String correctionOperation = Config.ApiHost + "/question/operation/correctionOperation";
 
   // 我的试卷列表
-  static String myPaperPageList = Config.ApiHost + "question/operation/paper/page";
-
+  static String myPaperPageList = Config.ApiHost + "/question/operation/paper/page";
 
   // 选择学生班级列表接口
-  static String memberClassStudentList = Config.ApiHost + "member/classStudent/list";
+  static String memberClassStudentList = Config.ApiHost + "/member/classStudent/list/";
 
 }

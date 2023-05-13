@@ -13,7 +13,7 @@ import '../../utils/colors.dart';
 import '../class_home/class_home_view.dart';
 import 'class_logic.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
+//首页班级模块
 class ClassPage extends StatefulWidget {
   const ClassPage({Key? key}) : super(key: key);
 

@@ -14,7 +14,7 @@ import '../../routes/getx_ids.dart';
 import '../../utils/colors.dart';
 import 'class_home_logic.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
+//内部班级列表
 class ClassHomePage extends StatefulWidget {
   var classId = 0;
 
