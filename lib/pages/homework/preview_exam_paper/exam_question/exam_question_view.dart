@@ -160,7 +160,15 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
   }
 
   Widget buildItem(BuildContext context, Obj question) {
-    return Container(
+   return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: question.catalogues!.length,
+      itemBuilder: (BuildContext context, int indexSmall) {
+        return listitem(question.catalogues![indexSmall], indexSmall);
+      },
+    );
+    /*return Container(
       height: 40.w,
       width: double.infinity,
       alignment: Alignment.centerLeft,
@@ -175,10 +183,26 @@ class _ExamQuestionPageState extends BasePageState<ExamQuestionPage> {
             fontWeight: FontWeight.w500,
             color: Color(0xff353e4d)),
       ),
-    );
+    );*/
   }
 
-
+  Widget listitem(Catalogues value, index) {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
+      ),
+      child: Text(
+        "${value.catalogueName}",
+        style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff353e4d)),
+      ),
+    );
+  }
   @override
   void dispose() {
     Get.delete<ExamQuestionLogic>();

@@ -2,13 +2,15 @@ import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:crazyenglish/pages/mine/ClassRepository.dart';
 import 'package:get/get.dart';
 
+import '../../../entity/common_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import 'choose_exam_paper_state.dart';
 
 class ChooseExamPaperLogic extends GetxController {
   final ChooseExamPaperState state = ChooseExamPaperState();
-ClassRepository classRepository =ClassRepository();
+  ClassRepository classRepository = ClassRepository();
+
   @override
   void onReady() {
     // TODO: implement onReady
@@ -21,18 +23,20 @@ ClassRepository classRepository =ClassRepository();
     super.onClose();
   }
 
-  void getExampersList(String teacherId,int page,int pageSize) async{
-    Map<String,dynamic> req= {};
-    Map<String,dynamic> p= {};
+  void getExampersList(String teacherId, int page, int pageSize) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> p = {};
     p["current"] = page;
     p["size"] = pageSize;
     req["teacherId"] = teacherId;
     req["p"] = p;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.TeacherTestPagerList).then((value){
-      if(value!=null){
-        return HomeworkExamPaperResponse.fromJson(value as Map<String,dynamic>?);
+            JsonCacheManageUtils.TeacherTestPagerList)
+        .then((value) {
+      if (value != null) {
+        return HomeworkExamPaperResponse.fromJson(
+            value as Map<String, dynamic>?);
       }
     });
 
@@ -46,11 +50,11 @@ ClassRepository classRepository =ClassRepository();
       }
       update([GetBuilderIds.getExampersList]);
     }
-    HomeworkExamPaperResponse list = await classRepository.getMyPaperPageList(req);
+    HomeworkExamPaperResponse list =
+        await classRepository.getMyPaperPageList(req);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.TeacherTestPagerList,
-          list.toJson());
+          JsonCacheManageUtils.TeacherTestPagerList, list.toJson());
     }
     if (list.obj == null) {
       if (page == 1) {
@@ -69,6 +73,18 @@ ClassRepository classRepository =ClassRepository();
       }
     }
     update([GetBuilderIds.getExampersList]);
+  }
 
+  //TODO  批改调用
+  void getToCorrect(
+      String exerciseListId, num score, String remark) async {
+    Map<String, dynamic> req = {};
+    req["exerciseListId"] = '1655398612937576451';
+    req["score"] = score;
+    req["remark"] = remark;
+    CommonResponse list = await classRepository.toCorrectionOperation(req);
+    if(list.success!){
+      update([GetBuilderIds.getToCoorectWriting]);
+    }
   }
 }

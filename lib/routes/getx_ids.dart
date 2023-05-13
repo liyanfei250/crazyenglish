@@ -94,6 +94,7 @@ class GetBuilderIds {
   static const String getStudentWorkList= "getStudentWorkList";
   static const String getTeacherToCorrected= "getTeacherToCorrected";
   static const String getToReleaseWork= "getToReleaseWork";
+  static const String getToCoorectWriting= "getToCoorectWriting";
 
 }
 

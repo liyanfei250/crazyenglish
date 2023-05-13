@@ -29,6 +29,7 @@ class ExamQuestionLogic extends GetxController {
     // // req["weekTime"] = weekTime;
     // req["current"] = "$page";
     // req["size"] = "$pageSize";
+    // todo  数据写活的测试
     String jsonString =
         '{"name":"英语测试2","teacherId":"1651539603655626753","deadline":"2023-05-15 15:37:19","classInfos":[{"schoolClassId":"1655395694170124290","studentUserIds":[1651531759961624578,1651533076075499521]}],"paperType":1,"isCreatePaper":true,"journalCatalogueIds":[1648128423083769857,1648138028814798850,1648159430713421825,1654759659150610434],"journalId":null,"paperId":"382","historyOperationId":1656205266858061825}';
 
