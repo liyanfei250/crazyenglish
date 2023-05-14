@@ -220,23 +220,25 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(8.w))),
                                           child: Text(
-                                              "chooseStudentInfo.value",
+                                              state.schoolClassInfoDesc,
                                               style: TextStyle(
                                                   color: AppColors.c_FFED702D,
                                                   fontSize: 11.w)),
                                         )),
-                                    Util.buildHomeworkNormalBtn(() {
-                                      ()  {
-                                        // var result = await Get.to(
-                                        //         () => ChooseStudentPage());
-                                        // if (result != null) {
-                                        //   chooseStudentInfo.value = '';
-                                        // }
-                                      }
-                                      //todo 学生过去再带数据返回
-                                      /*RouterUtil.toNamed(
-                                            AppRoutes.ChooseStudentPage)*/;
-                                    }, "选择"),
+                                    GetBuilder<AssignHomeworkLogic>(
+                                      id: GetBuilderIds.getUpdateAssignHomeworkRequest,
+                                      builder: (logic){
+                                        return Util.buildHomeworkNormalBtn(() {
+                                          RouterUtil.toNamed(
+                                              AppRoutes.ChooseStudentPage,
+                                              arguments: {
+                                                ChooseHistoryHomeworkPage.IsAssignHomework: true
+                                              });
+                                        }, "选择",
+                                            enable: true
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
                               )
@@ -285,7 +287,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                       builder: (logic){
                                         return Util.buildHomeworkNormalBtn(() {
                                           RouterUtil.toNamed(
-                                              AppRoutes.ChooseJournalPage,
+                                              AppRoutes.ChooseQuestionPage,
                                               arguments: {
                                               });
                                         }, "选择",

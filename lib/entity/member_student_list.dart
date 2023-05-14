@@ -8,7 +8,7 @@ class MemberStudentList {
   MemberStudentList({
       num? code, 
       String? message, 
-      List<Obj>? obj, 
+      List<Student>? obj,
       dynamic p, 
       bool? success,}){
     _code = code;
@@ -23,21 +23,21 @@ class MemberStudentList {
     _message = json['message'];
     if (json['obj'] != null) {
       _obj = [];
-      json['obj'].forEach((v) {
-        _obj?.add(Obj.fromJson(v));
-      });
+      for (var item in json['obj']) {
+        _obj?.add(Student.fromJson(item));
+      }
     }
     _p = json['p'];
     _success = json['success'];
   }
   num? _code;
   String? _message;
-  List<Obj>? _obj;
+  List<Student>? _obj;
   dynamic _p;
   bool? _success;
 MemberStudentList copyWith({  num? code,
   String? message,
-  List<Obj>? obj,
+  List<Student>? obj,
   dynamic p,
   bool? success,
 }) => MemberStudentList(  code: code ?? _code,
@@ -48,7 +48,7 @@ MemberStudentList copyWith({  num? code,
 );
   num? get code => _code;
   String? get message => _message;
-  List<Obj>? get obj => _obj;
+  List<Student>? get obj => _obj;
   dynamic get p => _p;
   bool? get success => _success;
 
@@ -78,10 +78,10 @@ MemberStudentList copyWith({  num? code,
 /// avatar : "https://questions-test.jfwedu.com.cn/img%2Fuser.png"
 /// className : null
 
-class Obj {
-  Obj({
+class Student {
+  Student({
       num? classId, 
-      num? userId, 
+      num? userId = 0,
       String? nickname, 
       String? actualname, 
       dynamic sex, 
@@ -104,7 +104,7 @@ class Obj {
     _className = className;
 }
 
-  Obj.fromJson(dynamic json) {
+  Student.fromJson(dynamic json) {
     _classId = json['classId'];
     _userId = json['userId'];
     _nickname = json['nickname'];
@@ -128,7 +128,7 @@ class Obj {
   dynamic _isMembership;
   String? _avatar;
   dynamic _className;
-Obj copyWith({  num? classId,
+  Student copyWith({  num? classId,
   num? userId,
   String? nickname,
   String? actualname,
@@ -139,7 +139,7 @@ Obj copyWith({  num? classId,
   dynamic isMembership,
   String? avatar,
   dynamic className,
-}) => Obj(  classId: classId ?? _classId,
+}) => Student(  classId: classId ?? _classId,
   userId: userId ?? _userId,
   nickname: nickname ?? _nickname,
   actualname: actualname ?? _actualname,

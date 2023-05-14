@@ -72,7 +72,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
 
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList,(){
       hideLoading();
-      if(state.list!=null && state.list!=null){
+      if(state.list!=null){
         if(widget.isAssignHomework && (assignLogic.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
           state.list.forEach((element) {
             if("${element.id}" == assignLogic.state.assignHomeworkRequest.historyOperationId){
