@@ -17,6 +17,7 @@ import '../../entity/home/HomeKingNewDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/home/HomeSearchListDate.dart';
 import '../../entity/review/HomeListDate.dart';
+import '../../entity/teacher_week_list_response.dart';
 import '../../net/net_manager.dart';
 import '../../utils/sp_util.dart';
 
@@ -151,9 +152,9 @@ class HomeViewRepository {
   //金刚区列表新增
   Future<HomeKingNewDate> getHomeKingListNew(String type) async {
     int role = 0;
-    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       role = 1;
-    }else{
+    } else {
       role = 0;
     }
     Map map = await NetManager.getInstance()!
@@ -171,13 +172,15 @@ class HomeViewRepository {
   }
 
 //教师
-  //获取首页我的期刊，学生端
-  Future<WeekListResponse> getMyJournalListTeacher(String id) async {
-
+  //获取首页我的已购期刊
+  Future<TeacherWeekListResponse> getMyJournalListTeacher(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.TeacherHomeMyJournals + id,
-        options: Options(method: Method.get));
-    WeekListResponse paperDetail = WeekListResponse.fromJson(map);
+        Method.post, Api.purchaseJournals,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TeacherWeekListResponse paperDetail = TeacherWeekListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
@@ -185,12 +188,15 @@ class HomeViewRepository {
     }
   }
 
-  //获取首页我的任务
-  Future<WeekListResponse> getMyRecommendationTeacher(String id) async {
+  //获取首页推荐期刊
+  Future<TeacherWeekListResponse> getMyRecommendationTeacher(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.TeacherHomeRecommendationJournals,
-        options: Options(method: Method.get));
-    WeekListResponse paperDetail = WeekListResponse.fromJson(map);
+        Method.post, Api.recommendJournals,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TeacherWeekListResponse paperDetail = TeacherWeekListResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

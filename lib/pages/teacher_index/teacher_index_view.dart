@@ -1,8 +1,13 @@
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/entity/teacher_week_list_response.dart'
+    as weekList;
+import 'package:crazyenglish/pages/homework/choose_history_homework/choose_history_homework_view.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 import '../../entity/home/HomeKingNewDate.dart';
 import '../../base/AppUtil.dart';
 import '../../r.dart';
@@ -11,8 +16,8 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
-import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'teacher_index_logic.dart';
+import '../../../entity/week_list_response.dart' as newData;
 
 class TeacherIndexPage extends StatefulWidget {
   const TeacherIndexPage({Key? key}) : super(key: key);
@@ -24,10 +29,11 @@ class TeacherIndexPage extends StatefulWidget {
 class _TeacherIndexPageState extends State<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+  pull.RefreshController _refreshController =
+      pull.RefreshController(initialRefresh: false);
   List<Obj> functionTxtNew = [];
-
+  List<weekList.Records> myListDate = []; //我的期刊
+  List<weekList.Records> myBottomDate = []; //推荐期刊
   @override
   void initState() {
     super.initState();
@@ -42,19 +48,34 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           if (state.paperDetailNew!.obj != null &&
               state.paperDetailNew!.obj!.length > 0) {
             functionTxtNew = state.paperDetailNew!.obj!;
-            setState(() {
-            });
+            setState(() {});
           }
         }
       }
     });
     //获取金刚区我的期刊
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDateTeacher, () {
-
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+      if (state.myJournalDetail != null) {
+        if (mounted && state.myJournalDetail!.obj != null) {
+          myListDate = state.myJournalDetail!.obj!.records!;
+          setState(() {});
+        }
+      }
     });
     //获取底部推荐期刊
     logic.addListenerId(GetBuilderIds.getHomeMyRecommendation, () {
-
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+      if (state.recommendJournal != null) {
+        if (mounted && state.recommendJournal!.obj != null) {
+          myBottomDate = state.recommendJournal!.obj!.records!;
+          setState(() {});
+        }
+      }
     });
 
     _onRefresh();
@@ -68,20 +89,20 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           image: DecorationImage(
               image: AssetImage(R.imagesHomeTeachBg), fit: BoxFit.fill),
         ),
-        child: SmartRefresher(
+        child: pull.SmartRefresher(
           enablePullDown: true,
           enablePullUp: false,
-          header: WaterDropHeader(),
-          footer: CustomFooter(
-            builder: (BuildContext context, LoadStatus? mode) {
+          header: pull.WaterDropHeader(),
+          footer: pull.CustomFooter(
+            builder: (BuildContext context, pull.LoadStatus? mode) {
               Widget body;
-              if (mode == LoadStatus.idle) {
+              if (mode == pull.LoadStatus.idle) {
                 body = Text("");
-              } else if (mode == LoadStatus.loading) {
+              } else if (mode == pull.LoadStatus.loading) {
                 body = CupertinoActivityIndicator();
-              } else if (mode == LoadStatus.failed) {
+              } else if (mode == pull.LoadStatus.failed) {
                 body = Text("");
-              } else if (mode == LoadStatus.canLoading) {
+              } else if (mode == pull.LoadStatus.canLoading) {
                 body = Text("release to load more");
               } else {
                 body = Text("");
@@ -119,8 +140,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                               padding: EdgeInsets.zero,
                               itemCount: functionTxtNew.length,
                               gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5),
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 5),
                               itemBuilder: (_, int position) {
                                 Obj e = functionTxtNew[position];
                                 return _buildFuncAreaItem(e);
@@ -135,8 +156,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
   Widget _buildSearchBar() => Container(
@@ -246,11 +266,14 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               break;
             case "历史作业":
               RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
-                  arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
+                  arguments: {
+                    ChooseHistoryHomeworkPage.IsAssignHomework: false
+                  });
               break;
             case "试卷库":
-              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
-                  arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
+              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage, arguments: {
+                ChooseHistoryHomeworkPage.IsAssignHomework: false
+              });
               break;
             case "布置作业":
               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
@@ -272,7 +295,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
             ),
             Padding(padding: EdgeInsets.only(bottom: 8.w)),
             Text(
-              e.name?? '',
+              e.name ?? '',
               style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
@@ -396,8 +419,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   List<Widget> _buildListItems() {
     List<Widget> items = [];
     // 假设数据列表为 data，这里只是简单列举
-    List data = ['1', '2', '3', '4'];
-    if (data.isEmpty) {
+    if (myBottomDate.isEmpty) {
       // 如果数据列表为空，返回一个占位图组件
       items.add(
         Center(
@@ -412,53 +434,72 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: data.length,
+          itemCount: myBottomDate.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(
-                  top: 20.w, bottom: 20.w, left: 4.w, right: 4.w),
-              padding: EdgeInsets.only(left: 4.w, right: 4.w),
-              width: double.infinity,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                        height: 54.w,
-                        margin: EdgeInsets.only(left: 4.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Everyones Heart",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Color(0xff3e454e)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              "everyones heart have a hero",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff898a93),
-                                  fontWeight: FontWeight.w400),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        )),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    child: Image.asset(
-                      R.imagesShopImageLogoTest,
-                      width: 54.w,
-                      height: 54.w,
+            return InkWell(
+              onTap: (){
+                weekList.Records old =  myBottomDate[index];
+                newData.Obj updatedObj = updateObj(old);
+                RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
+                    arguments: updatedObj);
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    top: 20.w, bottom: 20.w, left: 4.w, right: 4.w),
+                padding: EdgeInsets.only(left: 4.w, right: 4.w),
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                          height: 54.w,
+                          margin: EdgeInsets.only(left: 4.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                myBottomDate[index].name ?? '',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Color(0xff3e454e)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                (myBottomDate[index].createTime ?? '')+" "+"阅读"+myBottomDate[index].journalView.toString(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xff898a93),
+                                    fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          )),
                     ),
-                  ),
-                ],
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      child: Image.network(
+                        myBottomDate[index].coverImg ?? "",
+                        width: 54.w,
+                        height: 54.w,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            child: Image.asset(
+                              R.imagesShopImageLogoTest,
+                              width: 54.w,
+                              height: 54.w,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -626,7 +667,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           // )
         ],
       ));
-  var _future = Future.delayed(Duration(seconds: 2), () {
+  var _future = Future.delayed(Duration(seconds: 1), () {
     return '老王，一个有态度的程序员'; //模拟json字符串
   });
 
@@ -666,74 +707,93 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
         margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 18.w),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 4,
+          itemCount: myListDate.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(
-                  left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
-              padding: EdgeInsets.only(left: 4.w, right: 4.w),
-              width: 288.w,
-              height: 98.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(13),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(13)),
-                    child: Image.asset(
-                      R.imagesHomeShowBuy,
-                      width: 52.w,
-                      height: 74.w,
+            return InkWell(
+              onTap: (){
+                weekList.Records old =  myListDate[index];
+                newData.Obj updatedObj = updateObj(old);
+                RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
+                    arguments: updatedObj);
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+                padding: EdgeInsets.only(left: 4.w, right: 4.w),
+                width: 288.w,
+                height: 98.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(13)),
+                      child: Image.network(
+                        myListDate[index].coverImg ?? "",
+                        width: 52.w,
                         height: 74.w,
-                        margin: EdgeInsets.only(left: 4.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "高一综合阅读",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Color(0xff3e454e)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(13)),
+                            child: Image.asset(
+                              R.imagesHomeShowBuy,
+                              width: 52.w,
+                              height: 74.w,
                             ),
-                            Text(
-                              "everyones heart have a hero",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff898a93),
-                                  fontWeight: FontWeight.w400),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "796阅读",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xff8b8f94),
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )),
-                  ),
-                ],
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                          height: 74.w,
+                          margin: EdgeInsets.only(left: 4.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                myListDate[index].name ?? '',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Color(0xff3e454e)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                myBottomDate[index].createTime ?? '',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xff898a93),
+                                    fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                myListDate[index].journalView.toString() + "阅读",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff8b8f94),
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -760,12 +820,28 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     //新增金刚区的列表，有图片
     logic.getHomeListNew('');
     //获取我的期刊列表
-    logic.getMyJournalList();
+    logic.getMyJournalList(
+        SpUtil.getString(BaseConstant.TEACHER_USER_ID), 10, 1);
     //获取我的推荐期刊任务
-    logic.getMyRecommendation();
+    logic.getMyRecommendation(
+        SpUtil.getString(BaseConstant.TEACHER_USER_ID), 10, 1);
   }
 
-  void _onLoading() async {
+  void _onLoading() async {}
 
+  newData.Obj updateObj(weekList.Records obj, {int? id, String? name, int? affiliatedGrade, int? schoolYear, int? periodsNum, bool? status, bool? isDelete, int? journalView, String? createTime, int? createUser}) {
+    return newData.Obj(
+      id: id ?? int.parse(obj.id!),
+      name: name ?? obj.name,
+      affiliatedGrade: affiliatedGrade ?? obj.affiliatedGrade,
+      schoolYear: schoolYear ?? obj.schoolYear,
+      periodsNum: periodsNum ?? obj.periodsNum,
+      status: status ?? obj.status,
+      isDelete: isDelete ?? obj.isDelete,
+      journalView: journalView ?? obj.journalView,
+      createTime: createTime ?? obj.createTime,
+      createUser: createUser ?? obj.createUser,
+    );
   }
+
 }
