@@ -2,6 +2,7 @@ import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/practise/question_result/completion_filling_question_result.dart';
+import 'package:crazyenglish/pages/practise/question_result/translate_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/writing_question_result.dart';
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
@@ -462,8 +463,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           questionList.add(QuestionReadingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
           hasTab = false;
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.translate_question){
-          questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
-          childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
+          questionList.add(TranslateQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
         } else {
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题

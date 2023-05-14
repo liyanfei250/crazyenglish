@@ -29,7 +29,7 @@ class OthersQuestion extends BaseQuestion {
 class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   late SubjectVoList element;
-
+  Widget? detailWidget ;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -44,6 +44,9 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    if(detailWidget == null){
+      detailWidget = getQuestionDetail(element);
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -55,7 +58,7 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child:getQuestionDetail(element))
+          Expanded(child:detailWidget!)
         ],
       ),
     );

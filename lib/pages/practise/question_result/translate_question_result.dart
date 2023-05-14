@@ -19,27 +19,27 @@ import '../../../entity/week_detail_response.dart';
 import '../question/question_factory.dart';
 import 'base_question_result.dart';
 /**
- * Time: 2023/2/21 14:02
+ * Time: 2023/5/14 14:02
  * Author: leixun
  * Email: leixun33@163.com
  *
  * Description:
  */
-class QuestionReadingQuestionResult extends BaseQuestionResult {
+class TranslateQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  QuestionReadingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  TranslateQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
 
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
     // TODO: implement getState
-    return _QuestionReadingQuestionResultState();
+    return _TranslateQuestionResultState();
   }
 
 }
 
-class _QuestionReadingQuestionResultState extends BaseQuestionResultState<QuestionReadingQuestionResult> {
+class _TranslateQuestionResultState extends BaseQuestionResultState<TranslateQuestionResult> {
 
   late SubjectVoList element;
 
@@ -87,11 +87,6 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          // Visibility(
-          //     visible: element.name!=null && element.name!.isNotEmpty,
-          //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          buildReadQuestion(element!.content),
-          // Expanded(child: judgeAndGetQuestionDetail(element),),
           getQuestionDetail(element)
         ],
       ),
@@ -113,15 +108,37 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
         questionList.add(Padding(
           padding: EdgeInsets.only(top: 6.w),
         ));
-        questionList.add(Visibility(
-          visible: question!.problem != null && question!.problem!.isNotEmpty,
-          child: Text(
-            question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-          ),));
+        questionList.add(Row(
+          children: [
+            Text("原文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+            Padding(padding: EdgeInsets.only(left: 11.w)),
+            Expanded(child: Container(
+              height: 44.w,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: 10.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                border: Border.all(
+                    width: 1.w,
+                    color: AppColors.c_FFB4B9C6,
+                    style: BorderStyle.solid
+                ),
+              ),
+              child: Text("${question.problem}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+            ))
+          ],
+        ));
         questionList.add(Padding(
           padding: EdgeInsets.only(top: 18.w),
         ));
-        questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,this));
+        questionList.add(Row(
+          children: [
+            Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
+            Padding(padding: EdgeInsets.only(left: 11.w)),
+            Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,))
+          ],
+        ));
       }
       collectLogic.queryCollectState(element.id??0);
     }
