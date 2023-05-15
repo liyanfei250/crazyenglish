@@ -14,81 +14,58 @@ import '../../../../r.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/sp_util.dart';
+import '../../assign_homework/assign_homework_logic.dart';
 import '../../choose_logic.dart';
 import 'question_list_logic.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
 
 class QuestionListPage extends BasePage {
-
   ChooseIntel chooseLogic;
   String tagId;
-  QuestionListPage({required this.chooseLogic,required this.tagId,Key? key}) : super(key: key);
+
+  QuestionListPage({required this.chooseLogic, required this.tagId, Key? key})
+      : super(key: key);
 
   @override
   BasePageState<BasePage> getState() => _QuestionListPageState();
-
 }
 
 class _QuestionListPageState extends BasePageState<QuestionListPage> {
   final logic = Get.put(QuestionListLogic());
   final state = Get.find<QuestionListLogic>().state;
 
-  pull.RefreshController _refreshController = pull.RefreshController(initialRefresh: false);
-
+  pull.RefreshController _refreshController =
+      pull.RefreshController(initialRefresh: false);
+  final assignLogic = Get.find<AssignHomeworkLogic>();
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Questions> questionList = [];
   final int pageStartIndex = 1;
   List<data.Obj> homeSecondListDate = [];
-
+  List<data.CatalogueRecordVoList> homeFinalListDate = [];
 
   @override
   void onCreate() {
-    // logic.addListenerId(GetBuilderIds.getQuestionList+widget.tagId,(){
-    //   hideLoading();
-    //   if(state.list!=null && state.list!=null){
-    //     if(state.pageNo == currentPageNo+1){
-    //       questionList.addAll(state!.list!);
-    //       currentPageNo++;
-    //       if(mounted && _refreshController!=null){
-    //         _refreshController.loadComplete();
-    //         if(!state!.hasMore){
-    //           _refreshController.loadNoData();
-    //         }else{
-    //           _refreshController.resetNoData();
-    //         }
-    //
-    //         widget.chooseLogic.addData(widget.tagId, state!.list!);
-    //         setState(() {
-    //
-    //         });
-    //       }
-    //
-    //     }else if(state.pageNo == pageStartIndex){
-    //       currentPageNo = pageStartIndex;
-    //       questionList.clear();
-    //       questionList.addAll(state.list!);
-    //       if(mounted && _refreshController!=null){
-    //         _refreshController.refreshCompleted();
-    //         if(!state!.hasMore){
-    //           _refreshController.loadNoData();
-    //         }else{
-    //           _refreshController.resetNoData();
-    //         }
-    //         widget.chooseLogic.resetData(widget.tagId, state!.list!);
-    //         setState(() {
-    //         });
-    //       }
-    //
-    //     }
-    //   }
-    // });
-
+    //todo 实际数据
     logic.addListenerId(
         GetBuilderIds.getHomeSecondListDate +
-            /*widget.type!.dictionaryId.toString()*/'1646439861824098306', () {
+            /*widget.type!.dictionaryId.toString()*/ '1646439861824098306', () {
       hideLoading();
       if (state.homeSecondListDate != null) {
+        //TODO 判断选择之前勾选的数据
+        if(state.homeFinalListDate!=null){
+          if (assignLogic.state.assignHomeworkRequest.journalCatalogueIds != null &&
+              assignLogic.state.assignHomeworkRequest.journalCatalogueIds!.length >
+                  0) {
+            state.homeFinalListDate.forEach((element) {
+
+              if(assignLogic.state.assignHomeworkRequest
+                  .journalCatalogueIds!.contains(element.pid)){
+                widget.chooseLogic.addSelected(widget.tagId, element, true);
+              }
+            });
+          }
+        }
+
         if (state.pageNo == currentPageNo + 1) {
           currentPageNo++;
           homeSecondListDate.addAll(state.homeSecondListDate!);
@@ -99,7 +76,7 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             } else {
               _refreshController.resetNoData();
             }
-            widget.chooseLogic.addData(widget.tagId, state!.list!);
+            widget.chooseLogic.addData(widget.tagId, state!.homeFinalListDate!);
             setState(() {});
           }
         } else if (state.pageNo == pageStartIndex) {
@@ -113,33 +90,38 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             } else {
               _refreshController.resetNoData();
             }
-            widget.chooseLogic.resetData(widget.tagId, state!.list!);
+            widget.chooseLogic
+                .resetData(widget.tagId, state!.homeFinalListDate!);
             setState(() {});
           }
         }
       }
     });
 
-
     _onRefresh();
     showLoading("加载中");
   }
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // logic.getQuestionList(widget.tagId,pageStartIndex,pageSize);
-    logic.getQuestionList(SpUtil.getInt(BaseConstant.USER_ID),
-        /*widget.type!.dictionaryId, affiliatedGrade, */'1646439861824098306',null,pageSize, pageStartIndex);
+    // todo 写活
+    logic.getQuestionList(
+        SpUtil.getInt(BaseConstant.USER_ID),
+        /*widget.type!.dictionaryId, affiliatedGrade, */ '1646439861824098306',
+        null,
+        pageSize,
+        pageStartIndex);
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     // logic.getQuestionList(widget.tagId,currentPageNo+1,pageSize);
     logic.getQuestionList(
         SpUtil.getInt(BaseConstant.USER_ID),
         /*widget.type!.dictionaryId,
         affiliatedGrade,*/
-        '1646439861824098306',null,
+        '1646439861824098306',
+        null,
         pageSize,
         currentPageNo + 1);
   }
@@ -151,26 +133,22 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
       enablePullUp: true,
       header: pull.WaterDropHeader(),
       footer: pull.CustomFooter(
-        builder: (BuildContext context,pull.LoadStatus? mode){
-          Widget body ;
-          if(mode==pull.LoadStatus.idle){
-            body =  Text("");
-          }
-          else if(mode==pull.LoadStatus.loading){
-            body =  CupertinoActivityIndicator();
-          }
-          else if(mode == pull.LoadStatus.failed){
+        builder: (BuildContext context, pull.LoadStatus? mode) {
+          Widget body;
+          if (mode == pull.LoadStatus.idle) {
             body = Text("");
-          }
-          else if(mode == pull.LoadStatus.canLoading){
+          } else if (mode == pull.LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == pull.LoadStatus.failed) {
+            body = Text("");
+          } else if (mode == pull.LoadStatus.canLoading) {
             body = Text("release to load more");
-          }
-          else{
+          } else {
             body = Text("");
           }
           return Container(
             height: 55.0,
-            child: Center(child:body),
+            child: Center(child: body),
           );
         },
       ),
@@ -179,66 +157,49 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
       onLoading: _onLoading,
       child: CustomScrollView(
         slivers: [
-          SliverPadding(padding: EdgeInsets.only(left: 25.w,right: 25.w),
-            sliver: SliverGroupedListView<data.Obj,num>(
-              groupBy: (element) => element.journalId??0,
-              elements: homeSecondListDate,
-              itemBuilder: /*buildItem*/buildItemTop,
-              groupHeaderBuilder: buildGroupHeader,
-            ))
+          SliverPadding(
+            padding: EdgeInsets.only(left: 25.w, right: 25.w),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                buildItemTop,
+                childCount: homeSecondListDate.length,
+              ),
+            ),
+          )
         ],
       ),
     );
   }
 
-  Widget buildGroupHeader(data.Obj question){
+  Widget buildGroupHeader(data.Obj question) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(padding: EdgeInsets.only(top: 11.w)),
-          Text("${question.journalName}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
-          Container(margin:EdgeInsets.only(top: 11.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
+          Text(
+            "${question.journalName}",
+            style: TextStyle(
+                fontSize: 12.sp,
+                color: AppColors.c_FF898A93,
+                fontWeight: FontWeight.w500),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 11.w),
+            width: double.infinity,
+            height: 0.2.w,
+            color: AppColors.c_FFD2D5DC,
+          ),
         ],
       ),
     );
   }
 
-  /*Widget buildItem(BuildContext context, data.Obj question) {
-    return Container(
-      height: 40.w,
-      width: double.infinity,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "${question.journalName}",
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: Color(0xff353e4d)),
-          ),
-          GetBuilder<ChooseLogic>(
-            id: GetBuilderIds.updateCheckBox+widget.tagId,
-            builder: (logic){
-              return Util.buildCheckBox(() {
-                widget.chooseLogic.addSelected(widget.tagId, question,
-                    !widget.chooseLogic.isDataSelected(widget.tagId, question)
-                );
-              },chooseEnable: widget.chooseLogic.isDataSelected(widget.tagId, question));
-            },
-          )
-        ],
-      ),
-    );
-  }*/
-
-  Widget buildItemTop(BuildContext context, data.Obj question) {
+  Widget buildItemTop(BuildContext context, int index) {
     return InkWell(
       onTap: () {},
-      child: listitemBigBg(question),
+      child: listitemBigBg(homeSecondListDate[index]),
     );
   }
 
@@ -249,8 +210,7 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-                padding: EdgeInsets.only(
-                    left: 18.w, right: 18.w, top: 8.w, bottom: 11.w),
+                padding: EdgeInsets.only(top: 8.w, bottom: 11.w),
                 child: Text(
                   obj.journalName ?? '',
                   style: TextStyle(
@@ -292,7 +252,7 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
         ),
         Container(
           margin:
-          EdgeInsets.only(top: 11.w, left: 18.w, right: 18.w, bottom: 10.w),
+              EdgeInsets.only(top: 11.w, left: 4.w, right: 4.w, bottom: 10.w),
           // padding:
           //     EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
           width: double.infinity,
@@ -394,10 +354,9 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
     return InkWell(
       onTap: () {
         //todo 勾选
-        showLoading("");
       },
       child: Container(
-        padding: EdgeInsets.only(top: 20.w,bottom: 20.w),
+        padding: EdgeInsets.only(top: 20.w, bottom: 20.w),
         child: Row(
           children: [
             Text(
@@ -415,16 +374,17 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
               height: 18.w,
             ),
             Expanded(child: Text('')),
-            /*GetBuilder<ChooseLogic>(
-              id: GetBuilderIds.updateCheckBox+widget.tagId,
-              builder: (logic){
+            GetBuilder<ChooseLogic>(
+              id: GetBuilderIds.updateCheckBox + widget.tagId,
+              builder: (logic) {
                 return Util.buildCheckBox(() {
                   widget.chooseLogic.addSelected(widget.tagId, data,
-                      !widget.chooseLogic.isDataSelected(widget.tagId, data)
-                  );
-                },chooseEnable: widget.chooseLogic.isDataSelected(widget.tagId, data));
+                      !widget.chooseLogic.isDataSelected(widget.tagId, data));
+                },
+                    chooseEnable:
+                        widget.chooseLogic.isDataSelected(widget.tagId, data));
               },
-            )*/
+            )
           ],
         ),
       ),

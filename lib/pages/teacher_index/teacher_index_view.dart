@@ -3,6 +3,7 @@ import 'package:crazyenglish/entity/teacher_week_list_response.dart'
     as weekList;
 import 'package:crazyenglish/pages/homework/choose_history_homework/choose_history_homework_view.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
+import '../homework/choose_exam_paper/choose_exam_paper_view.dart';
 import 'teacher_index_logic.dart';
 import '../../../entity/week_list_response.dart' as newData;
 
@@ -271,9 +273,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                   });
               break;
             case "试卷库":
-              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage, arguments: {
-                ChooseHistoryHomeworkPage.IsAssignHomework: false
-              });
+              RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage,
+                  arguments: {ChooseExamPaperPage.IsAssignHomework: false});
               break;
             case "布置作业":
               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage);
@@ -422,10 +423,11 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     if (myBottomDate.isEmpty) {
       // 如果数据列表为空，返回一个占位图组件
       items.add(
-        Center(
-          heightFactor: 4.0,
-          child: Text('没有数据'),
-        ),
+        PlaceholderPage(
+            imageAsset: R.imagesCommenNoDate,
+            title: '暂无数据',
+            topMargin: 0.w,
+            subtitle: ''),
       );
     } else {
       // 否则返回原来的 ListView.builder 组件
@@ -437,8 +439,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           itemCount: myBottomDate.length,
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
-              onTap: (){
-                weekList.Records old =  myBottomDate[index];
+              onTap: () {
+                weekList.Records old = myBottomDate[index];
                 newData.Obj updatedObj = updateObj(old);
                 RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
                     arguments: updatedObj);
@@ -468,7 +470,10 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                (myBottomDate[index].createTime ?? '')+" "+"阅读"+myBottomDate[index].journalView.toString(),
+                                (myBottomDate[index].createTime ?? '') +
+                                    " " +
+                                    "阅读" +
+                                    myBottomDate[index].journalView.toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xff898a93),
@@ -673,21 +678,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
 
   //构建FutureBuilder控件：
   Widget _createListView() {
-    return FutureBuilder(
-        future: _future,
-        builder: (context, snapshot) {
-          var widget;
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              widget = _loadingErrorWidget();
-            } else {
-              widget = _dataWidget(snapshot.data);
-            }
-          } else {
-            widget = _loadingWidget();
-          }
-          return widget;
-        });
+    return myListDate.length > 0 ? _dataWidget() : _loadingErrorWidget();
   }
 
   //构建loading控件：
@@ -701,7 +692,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   }
 
   //数据加载成功，构建数据展示控件：
-  _dataWidget(data) {
+  _dataWidget() {
     return Container(
         height: 100.w,
         margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 18.w),
@@ -710,8 +701,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
           itemCount: myListDate.length,
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
-              onTap: (){
-                weekList.Records old =  myListDate[index];
+              onTap: () {
+                weekList.Records old = myListDate[index];
                 newData.Obj updatedObj = updateObj(old);
                 RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
                     arguments: updatedObj);
@@ -829,7 +820,17 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
 
   void _onLoading() async {}
 
-  newData.Obj updateObj(weekList.Records obj, {int? id, String? name, int? affiliatedGrade, int? schoolYear, int? periodsNum, bool? status, bool? isDelete, int? journalView, String? createTime, int? createUser}) {
+  newData.Obj updateObj(weekList.Records obj,
+      {int? id,
+      String? name,
+      int? affiliatedGrade,
+      int? schoolYear,
+      int? periodsNum,
+      bool? status,
+      bool? isDelete,
+      int? journalView,
+      String? createTime,
+      int? createUser}) {
     return newData.Obj(
       id: id ?? int.parse(obj.id!),
       name: name ?? obj.name,
@@ -843,5 +844,4 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
       createUser: createUser ?? obj.createUser,
     );
   }
-
 }

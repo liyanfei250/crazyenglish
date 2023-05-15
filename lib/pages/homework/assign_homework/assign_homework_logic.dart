@@ -9,6 +9,7 @@ import '../../../utils/json_cache_util.dart';
 import '../../../utils/sp_util.dart';
 import '../../mine/ClassRepository.dart';
 import 'assign_homework_state.dart';
+import '../../../base/common.dart' as common;
 
 class AssignHomeworkLogic extends GetxController {
   final AssignHomeworkState state = AssignHomeworkState();
@@ -64,44 +65,67 @@ class AssignHomeworkLogic extends GetxController {
   }
 
   void toReleaseWork() async {
-    if ("${state.assignHomeworkRequest.name}".isEmpty) {
+    if ((state.assignHomeworkRequest.name?? "").isEmpty) {
       Util.toast('请填写作业名称');
       return;
     }
     // TODO 测试完毕 需打开下面内容
-    // if((state.assignHomeworkRequest.deadline?? "").isEmpty){
-    //   Util.toast('作业截止日期不能为空');
-    //   return;
-    // }
-    //
-    // if((state.assignHomeworkRequest.paperType?? 0)<=0){
-    //   Util.toast('请选择习题、期刊、试卷库、历史作业中的一种类型布置作业');
-    //   return;
-    // }
-    // if((state.assignHomeworkRequest.classInfos?? []).isEmpty){
-    //   Util.toast('请选择学生布置作业');
-    //   return;
-    // }
+    if(state.assignHomeworkRequest.classInfos==null||state.assignHomeworkRequest.classInfos!.length<=0){
+      Util.toast('学生选择不能为空');
+      return;
+    }
+    if((state.assignHomeworkRequest.deadline?? "").isEmpty){
+      Util.toast('作业截止日期不能为空');
+      return;
+    }
+
+    if((state.assignHomeworkRequest.paperType?? 0)<=0){
+      Util.toast('请选择习题、期刊、试卷库、历史作业中的一种类型布置作业');
+      return;
+    }
+    if((state.assignHomeworkRequest.classInfos?? []).isEmpty){
+      Util.toast('请选择学生布置作业');
+      return;
+    }
     num teacherId = SpUtil.getInt(BaseConstant.USER_ID);
     if (teacherId <= 0) {
       Util.toast('用户Id获取为空，请重新登录');
       return;
     }
-    String name = state.assignHomeworkRequest.name??'';
-    String deadline = '2023-05-15 15:37:19';
 
-    String schoolClassId = '1655395694170124290';
-    List<num> studentUserIds = [1651531759961624578, 1651533076075499521];
+    String name = state.assignHomeworkRequest.name ?? '';
+    String deadline = state.assignHomeworkRequest.deadline ?? "";
+
+    String schoolClassId =
+        state.assignHomeworkRequest.classInfos![0].schoolClassId!;
+    List<num> studentUserIds =
+        state.assignHomeworkRequest.classInfos![0].studentUserIds!;
     ClassInfos info = ClassInfos(
         schoolClassId: schoolClassId, studentUserIds: studentUserIds);
 
     List<ClassInfos> classInfos = [info];
-    num paperType = 1;
-    bool isCreatePaper = false;
-    List<num> journalCatalogueIds = [1648128423083769857, 1648138028814798850];
+    num paperType = state.assignHomeworkRequest.paperType!;
+    bool isCreatePaper =false;
+    List<num> journalCatalogueIds = [];
     String journalId = '';
-    String paperId = '382';
-    String historyOperationId = "991";
+    String paperId = '';
+    String historyOperationId = '';
+
+    if (paperType == common.PaperType.Questions) {
+      journalCatalogueIds = state.assignHomeworkRequest.journalCatalogueIds!;
+    }
+    if (paperType == common.PaperType.Journals) {
+      journalId = state.assignHomeworkRequest.journalId!;
+    }
+    if (state.assignHomeworkRequest.isCreatePaper!=null) {
+      isCreatePaper = state.assignHomeworkRequest.isCreatePaper!;
+    }
+    if (paperType == common.PaperType.exam) {
+      paperId = state.assignHomeworkRequest.paperId!;
+    }
+    if (paperType == common.PaperType.HistoryHomework) {
+      historyOperationId = state.assignHomeworkRequest.historyOperationId!;
+    }
 
     state.assignHomeworkRequest = state.assignHomeworkRequest.copyWith(
         name: name,

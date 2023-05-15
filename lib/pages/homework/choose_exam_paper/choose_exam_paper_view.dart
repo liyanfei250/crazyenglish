@@ -8,22 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
-
+import '../../../base/common.dart' as common;
 import '../../../base/AppUtil.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../assign_homework/assign_homework_logic.dart';
 import '../base_choose_page_state.dart';
 import '../choose_logic.dart';
 import 'choose_exam_paper_logic.dart';
 
 class ChooseExamPaperPage extends BasePage {
-  bool isAssignHomework = true;
+  bool isAssignHomework = false;
+  static const String IsAssignHomework = "isAssignHomework";
 
   ChooseExamPaperPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
-      isAssignHomework = Get.arguments[isAssignHomework] ?? false;
+      isAssignHomework = Get.arguments[IsAssignHomework] ?? false;
     }
   }
 
@@ -37,7 +39,8 @@ class _ChooseExamPaperPageState
   final state = Get.find<ChooseExamPaperLogic>().state;
 
   pull.RefreshController _refreshController =
-  pull.RefreshController(initialRefresh: false);
+      pull.RefreshController(initialRefresh: false);
+  AssignHomeworkLogic? assignLogic;
 
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -46,7 +49,11 @@ class _ChooseExamPaperPageState
 
   @override
   void onCreate() {
+    if(widget.isAssignHomework){
+      assignLogic = Get.find<AssignHomeworkLogic>();
+    }
     currentKey.value = "0";
+
     logic.addListenerId(GetBuilderIds.getExampersList, () {
       hideLoading();
       if (state.list != null) {
@@ -107,6 +114,32 @@ class _ChooseExamPaperPageState
               child: InkWell(
                 onTap: () {
                   // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
+                  if (widget.isAssignHomework) {
+                    int totalNum = 0;
+                    List<Records> historys = [];
+                    dataList.forEach((key, value) {
+                      if (value != null) {
+                        for (Records n in value!) {
+                          String id = getDataId(key, n);
+                          if (isSelectedMap[key] != null &&
+                              (isSelectedMap[key]![id] ?? false)) {
+                            historys.add(n);
+                          }
+                        }
+                      }
+                    });
+                    if (historys.isNotEmpty) {
+                      assignLogic!.updateAssignHomeworkRequest(
+                          paperType: common.PaperType.exam,
+                          paperId: historys[0].id?.toString(),
+                          examDesc: historys[0].name ?? '');
+                    } else {
+                      assignLogic!.updateAssignHomeworkRequest(
+                        paperType: -1,
+                      );
+                    }
+                    Get.back();
+                  }
                 },
                 child: Text(
                   "确定",
