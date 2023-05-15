@@ -45,9 +45,12 @@ class HomeViewRepository {
 
   //获取首页我的任务
   Future<HomeMyTasksDate> getMyTask(String id) async {
+    
+    
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeMyTasksDate,
-        options: Options(method: Method.get));
+      data:{"userId":SpUtil.getInt(BaseConstant.USER_ID)},
+        Method.post, Api.getHomeMyTasksDate,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     HomeMyTasksDate paperDetail = HomeMyTasksDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

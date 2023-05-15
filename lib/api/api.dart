@@ -159,7 +159,7 @@ class Api {
       Config.ApiHost + "/question/exercise/getPurchaseJournal/";
 
   // 首页我的任务
-  static String getHomeMyTasksDate = Config.ApiHost + "/getHomeMyTasksDate";
+  static String getHomeMyTasksDate = Config.ApiHost + "/question/studentOperation/getOperationList";
 
   // 首页顶部搜索
   static String getHomeSearchListDate = Config.ApiHost + "/getHomeSearchListDate";
