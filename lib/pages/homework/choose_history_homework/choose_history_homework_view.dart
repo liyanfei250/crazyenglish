@@ -51,7 +51,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
-  final assignLogic = Get.find<AssignHomeworkLogic>();
+  AssignHomeworkLogic? assignLogic;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final int pageSize = 20;
@@ -68,14 +68,17 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
 
   @override
   void onCreate() {
+    if(widget.isAssignHomework){
+      assignLogic = Get.find<AssignHomeworkLogic>();
+    }
     currentKey.value = "0";
 
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList,(){
       hideLoading();
       if(state.list!=null){
-        if(widget.isAssignHomework && (assignLogic.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
+        if(widget.isAssignHomework && (assignLogic!.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
           state.list.forEach((element) {
-            if("${element.id}" == assignLogic.state.assignHomeworkRequest.historyOperationId){
+            if("${element.id}" == assignLogic!.state.assignHomeworkRequest.historyOperationId){
               addSelected(currentKey.value,element,true);
             }
           });
@@ -140,6 +143,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             child: InkWell(
               onTap: (){
                 // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
+                // 先判断是否待提醒，待批改、再判断是否是布置历史作业
                 if(widget.isAssignHomework){
                   int totalNum = 0;
                   List<History> historys = [];
@@ -154,12 +158,12 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                     }
                   });
                   if(historys.isNotEmpty){
-                    assignLogic.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
+                    assignLogic!.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
                       historyHomeworkDesc: historys[0].name,
                       historyOperationId: "${historys[0].id}"
                     );
                   }else{
-                    assignLogic.updateAssignHomeworkRequest(paperType: -1,
+                    assignLogic!.updateAssignHomeworkRequest(paperType: -1,
                         historyHomeworkDesc: "",
                         historyOperationId: ""
                     );
@@ -308,14 +312,19 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
               Text("${history.name}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
               InkWell(
                 onTap: (){
-                  // HomeworkCompleteOverviewPage
-                  // // widget.needNotify?
-                  // // goToNextPage("去提醒") :
-                  // // widget.needCorrected?
-                  // // buildHasChecked(false,"待批改（18）"):
-                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history,}):
-                  RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
-                  // buildHasChecked(false,"未检查"),
+                  if(widget.needNotify){
+                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                      HomeworkCompleteOverviewPage.HistoryItem:history,
+                      HomeworkCompleteOverviewPage.Status:1,
+                    });
+                  }else if(widget.needCorrected){
+                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                      HomeworkCompleteOverviewPage.HistoryItem:history,
+                      HomeworkCompleteOverviewPage.Status:2,
+                    });
+                  }else if(widget.isAssignHomework){
+                    RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
+                  }
                 },
                 child: widget.needNotify?
                           goToNextPage("去提醒") :

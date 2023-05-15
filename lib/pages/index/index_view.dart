@@ -640,7 +640,7 @@ class _IndexPageState extends BasePageState<IndexPage>
     //获取我的期刊列表
     logic.getMyJournalList();
     //获取我的任务
-    // logic.getMyTasks();
+    logic.getMyTasks();
   }
 
   void _onLoading() async {

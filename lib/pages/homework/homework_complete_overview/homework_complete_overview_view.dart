@@ -16,11 +16,15 @@ import 'homework_complete_overview_logic.dart';
 class HomeworkCompleteOverviewPage extends BasePage {
 
   static const String HistoryItem = "history";
+  static const String Status = "remindCorrectionHistory";
 
   late History history;
 
   HomeworkCompleteOverviewPage({Key? key}) : super(key: key) {
-
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      history = Get.arguments[HistoryItem]??false;
+    }
   }
 
   @override
@@ -52,7 +56,7 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                 ),
                 Container(
                   height: 20.w,
-                  child: Text("综合评估（听力|阅读|写作）",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp,fontWeight: FontWeight.w500),),
+                  child: Text("${widget.history.name}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp,fontWeight: FontWeight.w500),),
                 ),
               ],
             ),
@@ -85,8 +89,8 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("18",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
-                              Text("/20",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
+                              Text("${widget.history.studentCompleteSize}",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
+                              Text("/${widget.history.studentTotalSize}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
                             ],
                           ),
                           Text("完成人数",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
@@ -99,11 +103,11 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("98",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
+                              Text("${widget.history.accuracy}",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
                               Text("/100",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
                             ],
                           ),
-                          Text("平均分",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
+                          Text("正确率",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
                         ],
                       )
                     ],
@@ -118,7 +122,9 @@ class _HomeworkCompleteOverviewPageState extends BasePageState<HomeworkCompleteO
                     children: [
                       InkWell(
                         onTap:(){
-                          RouterUtil.toNamed(AppRoutes.SchoolReportListPage);
+                          RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                            HomeworkCompleteOverviewPage.HistoryItem:widget.history
+                          });
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

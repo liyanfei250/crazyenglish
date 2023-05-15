@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 
 import '../../../entity/HomeworkStudentResponse.dart';
+import '../../../repository/home_work_repository.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import 'school_report_list_state.dart';
 
 class SchoolReportListLogic extends GetxController {
   final SchoolReportListState state = SchoolReportListState();
-
+  HomeworkRepository homeworkRepository = HomeworkRepository();
+  
   @override
   void onReady() {
     // TODO: implement onReady
@@ -21,72 +23,62 @@ class SchoolReportListLogic extends GetxController {
   }
 
 
-  void getStudentList(String classId,int page,int pageSize) async{
+  // 1 待提醒 2 待批改
+  void getStudentList(num homeworkId,int page,int pageSize,int status) async{
     Map<String,String> req= {};
     // req["weekTime"] = weekTime;
     req["current"] = "$page";
     req["size"] = "$pageSize";
 
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.StudentListResponse,labelId: classId.toString()).then((value){
+        JsonCacheManageUtils.StudentListResponse,labelId: "$homeworkId$status").then((value){
       if(value!=null){
         return HomeworkStudentResponse.fromJson(value as Map<String,dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==1 && cache is HomeworkStudentResponse && cache.data!=null && cache.data!.students!=null) {
-      state.list = cache.data!.students!;
+    if(page==1 && cache is HomeworkStudentResponse && cache.obj!=null) {
+      state.list = cache.obj!;
       if(state.list.length < pageSize){
         state.hasMore = false;
       } else {
         state.hasMore = true;
       }
-      update([GetBuilderIds.getStudentList+classId]);
+      update(["${GetBuilderIds.getStudentList}$homeworkId"]);
     }
 
-    HomeworkStudentResponse homeworkStudentResponse = HomeworkStudentResponse();
-    List<Students> students = [];
-    for(int i = 0;i<13;i++){
-      Students student = Students(id: page*100+i,name: "学生：${page*100+i}");
-      students.add(student);
-    }
-    Data data = Data();
-    data = data.copyWith(students: students);
-    homeworkStudentResponse = homeworkStudentResponse.copyWith(code: 1,msg: "",data: data);
+    
+    HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkStudentList(status,homeworkId, page, pageSize);
 
-    state.list = students!;
-    if(state.list.length < pageSize){
-      state.hasMore = false;
-    }else{
-      state.hasMore = true;
+    if(homeworkRepository!=null){
+      state.list = homeworkStudentResponse.obj!;
     }
-    update([GetBuilderIds.getStudentList+classId]);
 
-    // WeekPaper list = await weekRepository.getWeekPaperList(req);
-    // if(page ==1){
-    //   JsonCacheManageUtils.saveCacheData(
-    //       JsonCacheManageUtils.WeekPaperResponse,
-    //       labelId: weekTime.toString(),
-    //       list.toJson());
-    // }
-    // if(list.records==null) {
-    //   if(page ==1){
-    //     state.list.clear();
-    //   }
-    // } else {
-    //   if(page ==1){
-    //     state.list = list.records!;
-    //   } else {
-    //     state.list.addAll(list.records!);
-    //   }
-    //   if(list.records!.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    // }
-    update([GetBuilderIds.getStudentList+classId]);
+    if (page == 1) {
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.WeekTestListResponse,
+          labelId: "$homeworkId$status",
+          homeworkStudentResponse.toJson());
+    }
+    if (homeworkStudentResponse.obj == null) {
+      if (page == 1) {
+        state.list.clear();
+      }
+    } else {
+      if (page == 1) {
+        state.list = homeworkStudentResponse.obj!;
+      } else {
+        state.list.addAll(homeworkStudentResponse.obj!);
+      }
+      if (homeworkStudentResponse.obj!.length < pageSize) {
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
+    update(["${GetBuilderIds.getStudentList}$homeworkId"]);
+
   }
 
 }

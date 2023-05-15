@@ -1,6 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/entity/HomeworkStudentResponse.dart';
 import 'package:crazyenglish/entity/assign_homework_request.dart';
 import 'package:crazyenglish/entity/member_student_list.dart';
 import 'package:crazyenglish/pages/homework/assign_homework/assign_homework_logic.dart';
