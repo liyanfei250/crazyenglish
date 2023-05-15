@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import '../api/api.dart';
 import '../base/common.dart';
 import '../entity/HomeworkHistoryResponse.dart';
+import '../entity/HomeworkStudentResponse.dart';
 import '../entity/base_resp.dart';
 import '../entity/homework_detail_response.dart';
 import '../net/net_manager.dart';
@@ -106,6 +107,35 @@ class HomeworkRepository{
       }
     } else {
       return Future.error("返回homeworkDetailResponse为空");
+    }
+  }
+
+
+  // type
+  // 待提醒 1
+  // 待批改 2
+  Future<HomeworkStudentResponse> getHomeworkStudentList(int homeworkType,num operationClassId,int page ,int pageSize) async {
+
+    P p = P(
+      current: page,
+      size: pageSize,
+    );
+
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, homeworkType == 1 ? "${Api.remindList}$operationClassId":"${Api.correctionList}$operationClassId",
+        options: Options(method: Method.post,contentType: ContentType.json.toString(),));
+
+
+    if (map != null) {
+      HomeworkStudentResponse homeworkStudentResponse =
+      HomeworkStudentResponse.fromJson(map);
+      if (homeworkStudentResponse.code != ResponseCode.status_success) {
+        return Future.error("返回homeworkStudentResponse为空");
+      } else {
+        return homeworkStudentResponse!;
+      }
+    } else {
+      return Future.error("返回homeworkStudentResponse为空");
     }
   }
 }

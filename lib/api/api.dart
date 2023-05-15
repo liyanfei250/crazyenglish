@@ -255,9 +255,9 @@ class Api {
   static String indexTeacerOperationDetailList = Config.ApiHost + "/question/operation/actionPage";
 
   // 待批改学生列表
-  static String correctionList = Config.ApiHost + "/question/operation/student/correctionList/:operationClassId";
+  static String correctionList = Config.ApiHost + "/question/operation/student/correctionList/";
   // 待提醒学生列表
-  static String remindList = Config.ApiHost + "/question/operation/student/remindList/operationClassId";
+  static String remindList = Config.ApiHost + "/question/operation/student/remindList/";
 
   // 历史作业
   static String historyPage = Config.ApiHost + "/question/operation/historyPage";

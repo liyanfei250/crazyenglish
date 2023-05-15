@@ -143,6 +143,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             child: InkWell(
               onTap: (){
                 // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
+                // 先判断是否待提醒，待批改、再判断是否是布置历史作业
                 if(widget.isAssignHomework){
                   int totalNum = 0;
                   List<History> historys = [];
@@ -311,14 +312,19 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
               Text("${history.name}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
               InkWell(
                 onTap: (){
-                  // HomeworkCompleteOverviewPage
-                  // // widget.needNotify?
-                  // // goToNextPage("去提醒") :
-                  // // widget.needCorrected?
-                  // // buildHasChecked(false,"待批改（18）"):
-                  widget.needNotify? RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history,}):
-                  RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
-                  // buildHasChecked(false,"未检查"),
+                  if(widget.needNotify){
+                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                      HomeworkCompleteOverviewPage.HistoryItem:history,
+                      HomeworkCompleteOverviewPage.Status:1,
+                    });
+                  }else if(widget.needCorrected){
+                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                      HomeworkCompleteOverviewPage.HistoryItem:history,
+                      HomeworkCompleteOverviewPage.Status:2,
+                    });
+                  }else if(widget.isAssignHomework){
+                    RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
+                  }
                 },
                 child: widget.needNotify?
                           goToNextPage("去提醒") :

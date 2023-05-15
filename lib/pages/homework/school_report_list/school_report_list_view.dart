@@ -5,18 +5,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../entity/HomeworkStudentResponse.dart';
+import '../../../entity/HomeworkHistoryResponse.dart';
+import '../../../entity/HomeworkStudentResponse.dart' as student;
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
+import '../homework_complete_overview/homework_complete_overview_view.dart';
 import 'school_report_list_logic.dart';
 
 /**
  * 成绩单列表页
  */
 class SchoolReportListPage extends BasePage {
-  final String classId = "0";
-  SchoolReportListPage({Key? key}) : super(key: key);
+  late History history;
+  late int remindOrCrorrection;
+
+  SchoolReportListPage({Key? key}) : super(key: key){
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      history = Get.arguments[HomeworkCompleteOverviewPage.HistoryItem]??false;
+      remindOrCrorrection = Get.arguments[HomeworkCompleteOverviewPage.Status]??1;
+    }
+  }
 
   @override
   BasePageState<SchoolReportListPage> getState() => _SchoolReportListPageState();
@@ -31,12 +41,12 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<Students> studentList = [];
+  List<student.Obj> studentList = [];
   final int pageStartIndex = 1;
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentList+widget.classId,(){
+    logic.addListenerId(GetBuilderIds.getStudentList+"${widget.history.id}",(){
       hideLoading();
       if(state.list!=null && state.list!=null){
         if(state.pageNo == currentPageNo+1){
@@ -79,12 +89,12 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   void _onRefresh() async{
     currentPageNo = pageStartIndex;
-    logic.getStudentList(widget.classId,pageStartIndex,pageSize);
+    logic.getStudentList(widget.history.id??0,pageStartIndex,pageSize,widget.remindOrCrorrection);
   }
 
   void _onLoading() async{
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getStudentList(widget.classId,currentPageNo+1,pageSize);
+    logic.getStudentList(widget.history.id??0,currentPageNo+1,pageSize,widget.remindOrCrorrection);
   }
 
 
@@ -181,7 +191,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
 
   Widget buildItem(BuildContext context, int index) {
-    Students student = studentList[index];
+    student.Obj studentItem = studentList[index];
 
     return Container(
       height: 60.w,
@@ -203,7 +213,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
               Padding(padding: EdgeInsets.only(left: 20.w)),
               Text(
-                "${student.name}",
+                "${studentItem.name}",
                 style: TextStyle(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w500,
