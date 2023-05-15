@@ -50,6 +50,8 @@ class QuestionListLogic extends GetxController {
       } else {
         state.hasMore = true;
       }
+      state.homeFinalListDate = extractCatalogueRecordVoLists(cache);
+
       update(
           [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
     }
@@ -64,12 +66,15 @@ class QuestionListLogic extends GetxController {
     if (list.obj == null) {
       if (current == 1) {
         state.homeSecondListDate.clear();
+        state.homeFinalListDate.clear();
       }
     } else {
       if (current == 1) {
         state.homeSecondListDate = list.obj!;
+        state.homeFinalListDate = extractCatalogueRecordVoLists(list);
       } else {
         state.homeSecondListDate.addAll(list.obj!);
+        state.homeFinalListDate.addAll(extractCatalogueRecordVoLists(list));
       }
       if (list.obj!.length < size) {
         state.hasMore = false;
@@ -81,6 +86,20 @@ class QuestionListLogic extends GetxController {
         [GetBuilderIds.getHomeSecondListDate + classifyTypeValue.toString()]);
   }
 
+  List<data.CatalogueRecordVoList> extractCatalogueRecordVoLists(data.HomeSecondListDate homeSecondListDate) {
+    List<data.CatalogueRecordVoList> newList = [];
+
+    // 遍历obj列表
+    for (data.Obj obj in homeSecondListDate.obj!) {
+      // 遍历catalogueMergeVo列表
+      for (data.CatalogueMergeVo catalogueMergeVo in obj.catalogueMergeVo!) {
+        // 将catalogueRecordVoList中的元素添加到新列表中
+        newList.addAll(catalogueMergeVo.catalogueRecordVoList!);
+      }
+    }
+
+    return newList;
+  }
 
 
 

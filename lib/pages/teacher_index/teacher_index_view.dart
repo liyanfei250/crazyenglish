@@ -16,6 +16,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
+import '../homework/choose_exam_paper/choose_exam_paper_view.dart';
 import 'teacher_index_logic.dart';
 import '../../../entity/week_list_response.dart' as newData;
 
@@ -272,7 +273,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               break;
             case "试卷库":
               RouterUtil.toNamed(AppRoutes.ChooseExamPaperPage, arguments: {
-                ChooseHistoryHomeworkPage.IsAssignHomework: false
+                ChooseExamPaperPage.IsAssignHomework: false
               });
               break;
             case "布置作业":

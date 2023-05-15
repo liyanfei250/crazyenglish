@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/homework/choose_exam_paper/choose_exam_paper_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -50,13 +51,10 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.getToReleaseWork, () {
-      if(state.releaseWork.success!){
+      if (state.releaseWork.success!) {
         Util.toast('发布作业成功');
-        setState(() {
-
-        });
+        setState(() {});
       }
-
     });
   }
 
@@ -179,7 +177,8 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                     color: AppColors.c_FFED702D,
                                   ),
                                   onChanged: (String str) {
-                                    logic.updateAssignHomeworkRequest(homeworkName: str);
+                                    logic.updateAssignHomeworkRequest(
+                                        homeworkName: str);
                                   },
                                   controller: _editingController,
                                 ),
@@ -190,255 +189,348 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                         Padding(padding: EdgeInsets.only(top: 30.w)),
                         GetBuilder<AssignHomeworkLogic>(
                             id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                            builder: (logic){
-                            return Row(
-                            crossAxisAlignment:
-                            logic.state.assignHomeworkRequest.classInfos == null || logic.state.assignHomeworkRequest.classInfos!.isEmpty
-                                ? CrossAxisAlignment.center
-                                : CrossAxisAlignment.start,
-                            children: [
-                              buildTipsWidget("学生选择"),
-                              Padding(
-                                padding: EdgeInsets.only(left: 18.w),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Visibility(
-                                        visible: logic.state.assignHomeworkRequest.classInfos != null && logic.state.assignHomeworkRequest.classInfos!.isNotEmpty,
-                                        child: Container(
-                                          width: 168.w,
-                                          margin:
-                                          EdgeInsets.only(bottom: 18.w),
-                                          padding: EdgeInsets.only(
-                                              left: 10.w,
-                                              right: 10.w,
-                                              top: 8.w,
-                                              bottom: 8.w),
-                                          decoration: BoxDecoration(
-                                              color: AppColors.c_FFFFF7ED,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.w))),
-                                          child: Text(
-                                              state.schoolClassInfoDesc,
-                                              style: TextStyle(
-                                                  color: AppColors.c_FFED702D,
-                                                  fontSize: 11.w)),
-                                        )),
-                                    GetBuilder<AssignHomeworkLogic>(
-                                      id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                                      builder: (logic){
-                                        return Util.buildHomeworkNormalBtn(() {
-                                          RouterUtil.toNamed(
-                                              AppRoutes.ChooseStudentPage,
-                                              arguments: {
-                                                ChooseHistoryHomeworkPage.IsAssignHomework: true
-                                              });
-                                        }, "选择",
-                                            enable: true
-                                        );
-                                      },
+                            builder: (logic) {
+                              return Row(
+                                crossAxisAlignment: logic
+                                                .state
+                                                .assignHomeworkRequest
+                                                .classInfos ==
+                                            null ||
+                                        logic.state.assignHomeworkRequest
+                                            .classInfos!.isEmpty
+                                    ? CrossAxisAlignment.center
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  buildTipsWidget("学生选择"),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 18.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Visibility(
+                                            visible: logic
+                                                        .state
+                                                        .assignHomeworkRequest
+                                                        .classInfos !=
+                                                    null &&
+                                                logic
+                                                    .state
+                                                    .assignHomeworkRequest
+                                                    .classInfos!
+                                                    .isNotEmpty,
+                                            child: Container(
+                                              width: 168.w,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 18.w),
+                                              padding: EdgeInsets.only(
+                                                  left: 10.w,
+                                                  right: 10.w,
+                                                  top: 8.w,
+                                                  bottom: 8.w),
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.c_FFFFF7ED,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.w))),
+                                              child: Text(
+                                                  logic.state
+                                                      .schoolClassInfoDesc,
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.c_FFED702D,
+                                                      fontSize: 11.w)),
+                                            )),
+                                        GetBuilder<AssignHomeworkLogic>(
+                                          id: GetBuilderIds
+                                              .getUpdateAssignHomeworkRequest,
+                                          builder: (logic) {
+                                            return Util.buildHomeworkNormalBtn(
+                                                () {
+                                              RouterUtil.toNamed(
+                                                  AppRoutes.ChooseStudentPage,
+                                                  arguments: {
+                                                    ChooseHistoryHomeworkPage
+                                                        .IsAssignHomework: true
+                                                  });
+                                            }, "选择", enable: true);
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        }),
+                                  )
+                                ],
+                              );
+                            }),
                         Padding(padding: EdgeInsets.only(top: 30.w)),
                         GetBuilder<AssignHomeworkLogic>(
-                            builder: (logic){
-                          return Row(
-                            crossAxisAlignment:
-                            (logic.state.assignHomeworkRequest.journalCatalogueIds??[]).isEmpty
-                                ? CrossAxisAlignment.center
-                                : CrossAxisAlignment.start,
-                            children: [
-                              buildTipsWidget("习题选择"),
-                              Padding(
-                                padding: EdgeInsets.only(left: 18.w),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Visibility(
-                                        visible: (logic.state.assignHomeworkRequest.journalCatalogueIds??[]).isNotEmpty,
-                                        child: Container(
-                                          width: 168.w,
-                                          margin:
-                                          EdgeInsets.only(bottom: 18.w),
-                                          padding: EdgeInsets.only(
-                                              left: 10.w,
-                                              right: 10.w,
-                                              top: 8.w,
-                                              bottom: 8.w),
-                                          decoration: BoxDecoration(
-                                              color: AppColors.c_FFFFF7ED,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.w))),
-                                          child: Text(
-                                              "chooseQuestionsInfo.value",
-                                              style: TextStyle(
-                                                  color: AppColors.c_FFED702D,
-                                                  fontSize: 11.w)),
-                                        )),
-                                    GetBuilder<AssignHomeworkLogic>(
-                                      id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                                      builder: (logic){
-                                        return Util.buildHomeworkNormalBtn(() {
-                                          RouterUtil.toNamed(
-                                              AppRoutes.ChooseQuestionPage,
-                                              arguments: {
-                                              });
-                                        }, "选择",
-                                            enable: (logic.state.assignHomeworkRequest.paperType??0) <=0 ||
-                                                (logic.state.assignHomeworkRequest.paperType??0) == PaperType.Questions
-                                        );
-                                      },
+                            id: GetBuilderIds.getUpdateAssignHomeworkRequest,
+                            builder: (logic) {
+                              return Row(
+                                crossAxisAlignment: (logic
+                                                .state
+                                                .assignHomeworkRequest
+                                                .journalCatalogueIds ??
+                                            [])
+                                        .isEmpty
+                                    ? CrossAxisAlignment.center
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  buildTipsWidget("习题选择"),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 18.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Visibility(
+                                            visible: (logic
+                                                        .state
+                                                        .assignHomeworkRequest
+                                                        .journalCatalogueIds ??
+                                                    [])
+                                                .isNotEmpty,
+                                            child: Container(
+                                              width: 168.w,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 18.w),
+                                              padding: EdgeInsets.only(
+                                                  left: 10.w,
+                                                  right: 10.w,
+                                                  top: 8.w,
+                                                  bottom: 8.w),
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.c_FFFFF7ED,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.w))),
+                                              child: Text(
+                                                  logic.state.questionDesc,
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.c_FFED702D,
+                                                      fontSize: 11.w)),
+                                            )),
+                                        GetBuilder<AssignHomeworkLogic>(
+                                          id: GetBuilderIds
+                                              .getUpdateAssignHomeworkRequest,
+                                          builder: (logic) {
+                                            return Util.buildHomeworkNormalBtn(
+                                                () {
+                                              RouterUtil.toNamed(
+                                                  AppRoutes.ChooseQuestionPage,
+                                                  arguments: {});
+                                            }, "选择",
+                                                enable: (logic
+                                                                .state
+                                                                .assignHomeworkRequest
+                                                                .paperType ??
+                                                            0) <=
+                                                        0 ||
+                                                    (logic.state.assignHomeworkRequest
+                                                                .paperType ??
+                                                            0) ==
+                                                        PaperType.Questions);
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        }),
+                                  )
+                                ],
+                              );
+                            }),
                         Padding(padding: EdgeInsets.only(top: 30.w)),
                         GetBuilder<AssignHomeworkLogic>(
-                          builder: (logic){
-                            return Row(
-                              crossAxisAlignment:
-                              (logic.state.assignHomeworkRequest.journalId??"").isEmpty
-                                  ? CrossAxisAlignment.center
-                                  : CrossAxisAlignment.start,
-                              children: [
-                                buildTipsWidget("期刊选择"),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 18.w),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Visibility(
-                                          visible: (logic.state.assignHomeworkRequest.journalId??"").isNotEmpty,
-                                          child: Container(
-                                            width: 168.w,
-                                            margin:
-                                            EdgeInsets.only(bottom: 18.w),
-                                            padding: EdgeInsets.only(
-                                                left: 10.w,
-                                                right: 10.w,
-                                                top: 8.w,
-                                                bottom: 8.w),
-                                            decoration: BoxDecoration(
-                                                color: AppColors.c_FFFFF7ED,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8.w))),
-                                            child: Text(
-                                                "chooseJournalInfo.value",
-                                                style: TextStyle(
-                                                    color: AppColors.c_FFED702D,
-                                                    fontSize: 11.w)),
-                                          )),
-                                      GetBuilder<AssignHomeworkLogic>(
-                                        id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                                        builder: (logic){
-                                          return Util.buildHomeworkNormalBtn(() {
-                                            RouterUtil.toNamed(
-                                                AppRoutes.ChooseJournalPage,
-                                                arguments: {
-                                                });
-                                          }, "选择",
-                                              enable: (logic.state.assignHomeworkRequest.paperType??0) <=0 ||
-                                                  (logic.state.assignHomeworkRequest.paperType??0) == PaperType.Journals
-                                          );
-                                        },
-                                      ),
-                                    ],
+                            id: GetBuilderIds.getUpdateAssignHomeworkRequest,
+                            builder: (logic) {
+                              return Row(
+                                crossAxisAlignment: (logic
+                                                .state
+                                                .assignHomeworkRequest
+                                                .journalId ??
+                                            "")
+                                        .isEmpty
+                                    ? CrossAxisAlignment.center
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  buildTipsWidget("期刊选择"),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 18.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Visibility(
+                                            visible: (logic
+                                                        .state
+                                                        .assignHomeworkRequest
+                                                        .journalId ??
+                                                    "")
+                                                .isNotEmpty,
+                                            child: Container(
+                                              width: 168.w,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 18.w),
+                                              padding: EdgeInsets.only(
+                                                  left: 10.w,
+                                                  right: 10.w,
+                                                  top: 8.w,
+                                                  bottom: 8.w),
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.c_FFFFF7ED,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.w))),
+                                              child: Text(
+                                                  logic.state.journalDesc,
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.c_FFED702D,
+                                                      fontSize: 11.w)),
+                                            )),
+                                        GetBuilder<AssignHomeworkLogic>(
+                                          id: GetBuilderIds
+                                              .getUpdateAssignHomeworkRequest,
+                                          builder: (logic) {
+                                            return Util.buildHomeworkNormalBtn(
+                                                () {
+                                              RouterUtil.toNamed(
+                                                  AppRoutes.ChooseJournalPage,
+                                                  arguments: {});
+                                            }, "选择",
+                                                enable: (logic
+                                                                .state
+                                                                .assignHomeworkRequest
+                                                                .paperType ??
+                                                            0) <=
+                                                        0 ||
+                                                    (logic.state.assignHomeworkRequest
+                                                                .paperType ??
+                                                            0) ==
+                                                        PaperType.Journals);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
+                        Padding(padding: EdgeInsets.only(top: 30.w)),
+                        GetBuilder<AssignHomeworkLogic>(
+                            id: GetBuilderIds.getUpdateAssignHomeworkRequest,
+                            builder: (logic) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  buildTipsWidget("作业截止时间"),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 12.w, right: 12.w),
+                                    margin: EdgeInsets.only(left: 8.w),
+                                    height: 22.w,
+                                    width: (logic.state.assignHomeworkRequest
+                                                    .deadline ??
+                                                "")
+                                            .isEmpty
+                                        ? 150.w
+                                        : null,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.c_FFFFF7ED,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16.5.w))),
+                                    child: Text(
+                                        (logic.state.assignHomeworkRequest
+                                                        .deadline ??
+                                                    "")
+                                                .isEmpty
+                                            ? ''
+                                            : (logic.state.assignHomeworkRequest
+                                                    .deadline ??
+                                                ""),
+                                        style: TextStyle(
+                                            color: AppColors.c_FFED702D,
+                                            fontSize: 11.w)),
                                   ),
-                                )
-                              ],
-                            );
-                          }
-                        ),
+                                  InkWell(
+                                    onTap: () {
+                                      _onClickItem(DateMode.YMDHMS);
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 6.w),
+                                      child: Image.asset(
+                                        R.imagesHomeWorkTime,
+                                        width: 16.w,
+                                        height: 16.w,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
                         Padding(padding: EdgeInsets.only(top: 30.w)),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            buildTipsWidget("作业截止时间"),
-                            Container(
-                              padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                              margin: EdgeInsets.only(left: 8.w),
-                              height: 22.w,
-                              width: (logic.state.assignHomeworkRequest.deadline??"").isEmpty
-                                  ? 150.w
-                                  : null,
-                              decoration: BoxDecoration(
-                                  color: AppColors.c_FFFFF7ED,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(16.5.w))),
-                              child: Text(
-                                  (logic.state.assignHomeworkRequest.deadline??"").isEmpty
-                                      ? ''
-                                      : (logic.state.assignHomeworkRequest.deadline??""),
-                                  style: TextStyle(
-                                      color: AppColors.c_FFED702D,
-                                      fontSize: 11.w)),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _onClickItem(DateMode.YMDHMS);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 6.w),
-                                child: Image.asset(
-                                  R.imagesHomeWorkTime,
-                                  width: 16.w,
-                                  height: 16.w,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 30.w)),
-                        Row(
-                          children: [
-                            buildTipsWidget("是否存入个人试卷库"),
-                            Padding(padding: EdgeInsets.only(left: 12.w)),
-                            GetBuilder<AssignHomeworkLogic>(
-                              id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                              builder: (logic){
-                                return Util.buildCheckBox(() {
-                                  logic.updateAssignHomeworkRequest(
-                                      isCreatePaper:
-                                      !(logic.state.assignHomeworkRequest.isCreatePaper??false));
-                                }, chooseEnable: logic.state.assignHomeworkRequest.isCreatePaper??false);
-                              },
-                            ),
-                          ],
-                        ),
+                        GetBuilder<AssignHomeworkLogic>(
+                            id: GetBuilderIds.getUpdateAssignHomeworkRequest,
+                            builder: (logic) {
+                              return Row(
+                                children: [
+                                  buildTipsWidget("是否存入个人试卷库"),
+                                  Padding(padding: EdgeInsets.only(left: 12.w)),
+                                  GetBuilder<AssignHomeworkLogic>(
+                                    id: GetBuilderIds
+                                        .getUpdateAssignHomeworkRequest,
+                                    builder: (logic) {
+                                      return Util.buildCheckBox(() {
+                                        logic.updateAssignHomeworkRequest(
+                                            isCreatePaper: !(logic
+                                                    .state
+                                                    .assignHomeworkRequest
+                                                    .isCreatePaper ??
+                                                false));
+                                      },
+                                          chooseEnable: logic
+                                                  .state
+                                                  .assignHomeworkRequest
+                                                  .isCreatePaper ??
+                                              false);
+                                    },
+                                  ),
+                                ],
+                              );
+                            }),
                         Padding(padding: EdgeInsets.only(top: 30.w)),
                         GetBuilder<AssignHomeworkLogic>(
                           id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                          builder: (logic){
+                          builder: (logic) {
                             return Row(
                               crossAxisAlignment:
-                              (logic.state.assignHomeworkRequest.paperId??"").isEmpty
-                                  ? CrossAxisAlignment.center
-                                  : CrossAxisAlignment.start,
+                                  (logic.state.assignHomeworkRequest.paperId ??
+                                              "")
+                                          .isEmpty
+                                      ? CrossAxisAlignment.center
+                                      : CrossAxisAlignment.start,
                               children: [
                                 buildTipsWidget("试卷库"),
                                 Padding(
                                   padding: EdgeInsets.only(left: 18.w),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Visibility(
-                                          visible: (logic.state.assignHomeworkRequest.paperId??"").isNotEmpty,
+                                          visible: (logic
+                                                      .state
+                                                      .assignHomeworkRequest
+                                                      .paperId ??
+                                                  "")
+                                              .isNotEmpty,
                                           child: Container(
                                             width: 168.w,
                                             margin:
-                                            EdgeInsets.only(bottom: 18.w),
+                                                EdgeInsets.only(bottom: 18.w),
                                             padding: EdgeInsets.only(
                                                 left: 10.w,
                                                 right: 10.w,
@@ -448,24 +540,34 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                                 color: AppColors.c_FFFFF7ED,
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(8.w))),
-                                            child: Text(
-                                                "chooseExamPaperInfo.value",
+                                            child: Text(logic.state.examDesc,
                                                 style: TextStyle(
                                                     color: AppColors.c_FFED702D,
                                                     fontSize: 11.w)),
                                           )),
                                       GetBuilder<AssignHomeworkLogic>(
-                                        id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                                        builder: (logic){
-                                          return Util.buildHomeworkNormalBtn(() {
+                                        id: GetBuilderIds
+                                            .getUpdateAssignHomeworkRequest,
+                                        builder: (logic) {
+                                          return Util.buildHomeworkNormalBtn(
+                                              () {
                                             RouterUtil.toNamed(
                                                 AppRoutes.ChooseExamPaperPage,
                                                 arguments: {
+                                                  ChooseExamPaperPage
+                                                      .IsAssignHomework: true
                                                 });
                                           }, "选择",
-                                              enable: (logic.state.assignHomeworkRequest.paperType??0) <=0 ||
-                                                  (logic.state.assignHomeworkRequest.paperType??0) == PaperType.exam
-                                          );
+                                              enable: (logic
+                                                              .state
+                                                              .assignHomeworkRequest
+                                                              .paperType ??
+                                                          0) <=
+                                                      0 ||
+                                                  (logic.state.assignHomeworkRequest
+                                                              .paperType ??
+                                                          0) ==
+                                                      PaperType.exam);
                                         },
                                       ),
                                     ],
@@ -478,10 +580,14 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                         Padding(padding: EdgeInsets.only(top: 30.w)),
                         GetBuilder<AssignHomeworkLogic>(
                           id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                          builder: (logic){
+                          builder: (logic) {
                             return Row(
-                              crossAxisAlignment:
-                              (logic.state.assignHomeworkRequest.historyOperationId??"").isEmpty
+                              crossAxisAlignment: (logic
+                                              .state
+                                              .assignHomeworkRequest
+                                              .historyOperationId ??
+                                          "")
+                                      .isEmpty
                                   ? CrossAxisAlignment.center
                                   : CrossAxisAlignment.start,
                               children: [
@@ -490,10 +596,15 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                   padding: EdgeInsets.only(left: 18.w),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Visibility(
-                                          visible: (logic.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty,
+                                          visible: (logic
+                                                      .state
+                                                      .assignHomeworkRequest
+                                                      .historyOperationId ??
+                                                  "")
+                                              .isNotEmpty,
                                           child: Container(
                                             width: 168.w,
                                             padding: EdgeInsets.only(
@@ -502,7 +613,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                                 top: 8.w,
                                                 bottom: 8.w),
                                             margin:
-                                            EdgeInsets.only(bottom: 18.w),
+                                                EdgeInsets.only(bottom: 18.w),
                                             decoration: BoxDecoration(
                                                 color: AppColors.c_FFFFF7ED,
                                                 borderRadius: BorderRadius.all(
@@ -514,18 +625,30 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                                     fontSize: 11.w)),
                                           )),
                                       GetBuilder<AssignHomeworkLogic>(
-                                        id: GetBuilderIds.getUpdateAssignHomeworkRequest,
-                                        builder: (logic){
-                                          return Util.buildHomeworkNormalBtn(() {
+                                        id: GetBuilderIds
+                                            .getUpdateAssignHomeworkRequest,
+                                        builder: (logic) {
+                                          return Util.buildHomeworkNormalBtn(
+                                              () {
                                             RouterUtil.toNamed(
-                                                AppRoutes.ChooseHistoryHomeworkPage,
+                                                AppRoutes
+                                                    .ChooseHistoryHomeworkPage,
                                                 arguments: {
-                                                  ChooseHistoryHomeworkPage.IsAssignHomework: true
+                                                  ChooseHistoryHomeworkPage
+                                                      .IsAssignHomework: true
                                                 });
                                           }, "选择",
-                                              enable: (logic.state.assignHomeworkRequest.paperType??0) <=0 ||
-                                              (logic.state.assignHomeworkRequest.paperType??0) == PaperType.HistoryHomework
-                                          );
+                                              enable: (logic
+                                                              .state
+                                                              .assignHomeworkRequest
+                                                              .paperType ??
+                                                          0) <=
+                                                      0 ||
+                                                  (logic.state.assignHomeworkRequest
+                                                              .paperType ??
+                                                          0) ==
+                                                      PaperType
+                                                          .HistoryHomework);
                                         },
                                       ),
                                     ],

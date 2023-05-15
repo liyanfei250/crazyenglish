@@ -182,6 +182,7 @@ class _ChooseStudentPageState
             int totalNum = 0;
             List<Student> historys = [];
             List<num> studentsId = [];
+            List<String> studentsName = [];
             dataList.forEach((key, value) {
               if (value != null) {
                 for (Student n in value!) {
@@ -190,6 +191,7 @@ class _ChooseStudentPageState
                       (isSelectedMap[key]![id] ?? false)) {
                     historys.add(n);
                     studentsId.add(n.userId!);
+                    studentsName.add(n.actualname!);
                   }
                 }
               }
@@ -200,7 +202,7 @@ class _ChooseStudentPageState
                   schoolClassId: '1655395694170124290',
                   studentUserIds: studentsId);
               assignLogic
-                  .updateAssignHomeworkRequest(schoolClassInfos: [clsss],schoolClassInfoDesc:studentsId.toString());
+                  .updateAssignHomeworkRequest(schoolClassInfos: [clsss],schoolClassInfoDesc:studentsName.toString());
             } else {
               assignLogic.updateAssignHomeworkRequest(
                   paperType: -1,
