@@ -1,14 +1,11 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/entity/HomeworkQuestionResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
-import '../../../entity/QuestionListResponse.dart';
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
-import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../assign_homework/assign_homework_logic.dart';
 import '../base_choose_page_state.dart';

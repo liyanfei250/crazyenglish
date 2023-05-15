@@ -74,6 +74,7 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
 
   Widget buildListenQuestion(String listtenUrl){
     if(listtenUrl.isNotEmpty){
+      // String url = Uri.encodeComponent(listtenUrl);
       audioPlayer.setSourceUrl(listtenUrl);
       return Container(
         margin: EdgeInsets.only(top: 18.w),
