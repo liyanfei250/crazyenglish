@@ -51,7 +51,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
-  final assignLogic = Get.find<AssignHomeworkLogic>();
+  AssignHomeworkLogic? assignLogic;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final int pageSize = 20;
@@ -68,14 +68,17 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
 
   @override
   void onCreate() {
+    if(widget.isAssignHomework){
+      assignLogic = Get.find<AssignHomeworkLogic>();
+    }
     currentKey.value = "0";
 
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList,(){
       hideLoading();
       if(state.list!=null){
-        if(widget.isAssignHomework && (assignLogic.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
+        if(widget.isAssignHomework && (assignLogic!.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
           state.list.forEach((element) {
-            if("${element.id}" == assignLogic.state.assignHomeworkRequest.historyOperationId){
+            if("${element.id}" == assignLogic!.state.assignHomeworkRequest.historyOperationId){
               addSelected(currentKey.value,element,true);
             }
           });
@@ -154,12 +157,12 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                     }
                   });
                   if(historys.isNotEmpty){
-                    assignLogic.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
+                    assignLogic!.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
                       historyHomeworkDesc: historys[0].name,
                       historyOperationId: "${historys[0].id}"
                     );
                   }else{
-                    assignLogic.updateAssignHomeworkRequest(paperType: -1,
+                    assignLogic!.updateAssignHomeworkRequest(paperType: -1,
                         historyHomeworkDesc: "",
                         historyOperationId: ""
                     );
