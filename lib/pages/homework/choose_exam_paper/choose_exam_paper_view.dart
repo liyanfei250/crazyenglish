@@ -164,13 +164,13 @@ class _ChooseExamPaperPageState
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getExampersList(SpUtil.getString(BaseConstant.TEACHER_USER_ID),
+    logic.getExampersList(SpUtil.getString(BaseConstant.USER_ID),
         pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getExampersList(SpUtil.getString(BaseConstant.TEACHER_USER_ID),currentPageNo + 1, pageSize);
+    logic.getExampersList(SpUtil.getString(BaseConstant.USER_ID),currentPageNo + 1, pageSize);
   }
 
   Widget buildItem(BuildContext context, int index) {

@@ -116,7 +116,7 @@ class HomeViewRepository {
   //获取个人信息
   Future<PersonInfo> getPersonInfo(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getPersonInfo,
+        Method.get, Api.getUserIofo,
         options: Options(method: Method.get));
     PersonInfo paperDetail = PersonInfo.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {

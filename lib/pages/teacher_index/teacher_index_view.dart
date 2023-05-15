@@ -821,10 +821,10 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
     logic.getHomeListNew('');
     //获取我的期刊列表
     logic.getMyJournalList(
-        SpUtil.getString(BaseConstant.TEACHER_USER_ID), 10, 1);
+        SpUtil.getString(BaseConstant.USER_ID), 10, 1);
     //获取我的推荐期刊任务
     logic.getMyRecommendation(
-        SpUtil.getString(BaseConstant.TEACHER_USER_ID), 10, 1);
+        SpUtil.getString(BaseConstant.USER_ID), 10, 1);
   }
 
   void _onLoading() async {}

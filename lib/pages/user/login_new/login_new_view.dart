@@ -22,7 +22,17 @@ import '../../../base/widgetPage/base_page_widget.dart';
 import 'login_new_logic.dart';
 
 class LoginNewPage extends BasePage {
-  const LoginNewPage({Key? key}) : super(key: key);
+
+  static const String inEnterHome = "enter_home";
+
+  bool isEnterHome = true;
+
+  LoginNewPage({Key? key}) : super(key: key){
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      isEnterHome = Get.arguments[inEnterHome]??false;
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() {
@@ -119,10 +129,6 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if (state.loginResponse.data !=null) {
         Util.toast("登录成功");
-        SpUtil.putBool(BaseConstant.ISLOGING, true);
-        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
-        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
-        Util.getHeader();
         logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
       } else {
         Util.toast("登录失败");
@@ -131,13 +137,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.passwordLogin, () {
       if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
-        SpUtil.putBool(BaseConstant.ISLOGING, true);
-        SpUtil.putString(
-            BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
-        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
-        Util.getHeader();
+
         logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
-        RouterUtil.offAndToNamed(AppRoutes.HOME);
+
       } else {
         Util.toast("登录失败");
       }
@@ -151,48 +153,52 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putString(BaseConstant.USER_NAME, state.infoResponse.obj!.username);
         SpUtil.putString(BaseConstant.NICK_NAME, state.infoResponse.obj!.nickname);
         print("66666+="+state.infoResponse.obj!.id!.toString());
-      }
-      //判断有没有选择身份
-      //todo 如果是老师就保存老师的信息
-     var isTeacher = true;
-      if(isTeacher){
-        SpUtil.putString(BaseConstant.TEACHER_USER_ID,'1651539603655626753');
-        SpUtil.putString(BaseConstant.TEACHER_NAME,'');
-        SpUtil.putString(BaseConstant.TEACHER_SEX,'');
-        SpUtil.putString(BaseConstant.TEACHER_AGE,'');
-        SpUtil.putString(BaseConstant.TEACHER_PHONE,'');
-      }
-      /*if (state.infoResponse.code == 1) {
-        if (state.infoResponse.obj?.identity == 2 ||
-            state.infoResponse.obj?.identity == 3) {
-          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
-        } else {
-          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, false);
-        }
 
-        if (state.infoResponse.obj?.identity == 3 &&
-            state.infoResponse.obj?.grade == 0) {
-          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
-        } else {
-          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
-        }
+        SpUtil.putBool(BaseConstant.ISLOGING, true);
+        SpUtil.putString(
+            BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
+        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
+        SpUtil.putObject(BaseConstant.USER_INFO, state.infoResponse);
+        Util.getHeader();
 
-        if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
-          //没选角色
-          RouterUtil.offAndToNamed(AppRoutes.RolePage);
-        } else {
-          if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
-            ////是学生且没选年级
-            //如果没选年级就去选年级
-            RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
-                arguments: {'identity': 3});
-            //选了去首页
-          } else {
-            //直接去首页
-            RouterUtil.offAndToNamed(AppRoutes.HOME);
-          }
+        // if (state.infoResponse.obj?.identity == 2 ||
+        //     state.infoResponse.obj?.identity == 3) {
+        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
+        // } else {
+        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, false);
+        // }
+        //
+        // if (state.infoResponse.obj?.identity == 3 &&
+        //     state.infoResponse.obj?.grade == 0) {
+        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
+        // } else {
+        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
+        // }
+        //
+        // if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
+        //   //没选角色
+        //   RouterUtil.offAndToNamed(AppRoutes.RolePage);
+        // } else {
+        //   if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
+        //     ////是学生且没选年级
+        //     //如果没选年级就去选年级
+        //     RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
+        //         arguments: {'identity': 3});
+        //     //选了去首页
+        //   } else {
+        //     //直接去首页
+        //     RouterUtil.offAndToNamed(AppRoutes.HOME);
+        //   }
+        // }
+
+        if(widget.isEnterHome){
+          RouterUtil.offAndToNamed(AppRoutes.HOME);
+        }else{
+          Get.back();
         }
-      }*/
+      }else{
+        Util.toast("登录失败，获取个人信息失败");
+      }
     });
   }
 

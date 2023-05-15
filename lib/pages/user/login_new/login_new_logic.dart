@@ -69,4 +69,6 @@ class Login_newLogic extends GetxController {
       Util.toast("${state.loginResponse.message}");
     }
   }
+
+
 }

@@ -58,7 +58,7 @@ class _ChooseStudentPageState
       }
     });
     //todo 真实数据
-    logic.getMyClassList(SpUtil.getString(BaseConstant.TEACHER_USER_ID));
+    logic.getMyClassList(SpUtil.getString(BaseConstant.USER_ID));
   }
 
   @override

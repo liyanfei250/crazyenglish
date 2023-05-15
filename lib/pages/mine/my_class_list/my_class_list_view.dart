@@ -7,6 +7,7 @@ import '../../../base/AppUtil.dart';
 import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../entity/class_list_response.dart';
+import '../../../entity/user_info_response.dart' as userIfo;
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
@@ -27,10 +28,13 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   final state = Get.find<My_class_listLogic>().state;
   late TabController _tabController;
   List<Obj> tabs = [];
+  userIfo.UserInfoResponse? userInfoResponse;
+
 
   @override
   void initState() {
     super.initState();
+    userInfoResponse = userIfo.UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override
@@ -82,7 +86,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
         });
       }
     });
-    logic.getMyClassList(SpUtil.getString(BaseConstant.TEACHER_USER_ID));
+    logic.getMyClassList(SpUtil.getString(BaseConstant.USER_ID));
   }
 
   @override
@@ -123,10 +127,10 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
           classImage: e.image!,
           studentSize: e.studentSize!.toString(),
           classId: e.id!,
-          teacherName: SpUtil.getString(BaseConstant.TEACHER_NAME),
-          teacherSex: SpUtil.getString(BaseConstant.TEACHER_SEX),
-          teacherAge: SpUtil.getString(BaseConstant.TEACHER_AGE),
-          teacherConnect: SpUtil.getString(BaseConstant.TEACHER_PHONE),
+          teacherName: "${userInfoResponse?.obj?.username}",
+          teacherSex: "${userInfoResponse?.obj?.sexName}",
+          teacherAge: "${userInfoResponse?.obj?.username}",
+          teacherConnect: "${userInfoResponse?.obj?.phone}",
         );
       }).toList());
 
