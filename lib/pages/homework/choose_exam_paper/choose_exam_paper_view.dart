@@ -40,7 +40,7 @@ class _ChooseExamPaperPageState
 
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
-  final assignLogic = Get.find<AssignHomeworkLogic>();
+  AssignHomeworkLogic? assignLogic;
 
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -49,7 +49,11 @@ class _ChooseExamPaperPageState
 
   @override
   void onCreate() {
+    if(widget.isAssignHomework){
+      assignLogic = Get.find<AssignHomeworkLogic>();
+    }
     currentKey.value = "0";
+
     logic.addListenerId(GetBuilderIds.getExampersList, () {
       hideLoading();
       if (state.list != null) {
@@ -125,12 +129,12 @@ class _ChooseExamPaperPageState
                       }
                     });
                     if (historys.isNotEmpty) {
-                      assignLogic.updateAssignHomeworkRequest(
+                      assignLogic!.updateAssignHomeworkRequest(
                           paperType: common.PaperType.exam,
                           paperId: historys[0].id?.toString(),
                           examDesc: historys[0].name ?? '');
                     } else {
-                      assignLogic.updateAssignHomeworkRequest(
+                      assignLogic!.updateAssignHomeworkRequest(
                         paperType: -1,
                       );
                     }
