@@ -35,12 +35,16 @@ class CommitAnswer {
     String? type,
     num? examId,
     num? userId,
+    String? operationId,
+    String? operationStudentId,
     List<SubjectAnswerVo>? subjectAnswerVo,}){
     _journalId = journalId;
     _journalCatalogueId = journalCatalogueId;
     _type = type;
     _examId = examId;
     _userId = userId;
+    _operationId = operationId;
+    _operationStudentId = operationStudentId;
     _subjectAnswerVo = subjectAnswerVo;
   }
 
@@ -50,6 +54,8 @@ class CommitAnswer {
     _type = json['type'];
     _examId = json['examId'];
     _userId = json['userId'];
+    _operationId = json['operationId'];
+    _operationStudentId = json['operationStudentId'];
     if (json['subjectAnswerVo'] != null) {
       _subjectAnswerVo = [];
       json['subjectAnswerVo'].forEach((v) {
@@ -62,18 +68,24 @@ class CommitAnswer {
   String? _type;
   num? _examId;
   num? _userId;
+  String? _operationStudentId;
+  String? _operationId;
   List<SubjectAnswerVo>? _subjectAnswerVo;
   CommitAnswer copyWith({  num? journalId,
     num? journalCatalogueId,
     String? type,
     num? examId,
     num? userId,
+    String? operationId,
+    String? operationStudentId,
     List<SubjectAnswerVo>? subjectAnswerVo,
   }) => CommitAnswer(  journalId: journalId ?? _journalId,
     journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
     type: type ?? _type,
     examId: examId ?? _examId,
     userId: userId ?? _userId,
+    operationId: operationId ?? _operationId,
+    operationStudentId: operationStudentId ?? _operationStudentId,
     subjectAnswerVo: subjectAnswerVo ?? _subjectAnswerVo,
   );
   num? get journalId => _journalId;
@@ -81,6 +93,8 @@ class CommitAnswer {
   String? get type => _type;
   num? get examId => _examId;
   num? get userId => _userId;
+  String? get operationId => _operationId;
+  String? get operationStudentId => _operationStudentId;
   List<SubjectAnswerVo>? get subjectAnswerVo => _subjectAnswerVo;
 
   Map<String, dynamic> toJson() {
@@ -90,6 +104,8 @@ class CommitAnswer {
     map['type'] = _type;
     map['examId'] = _examId;
     map['userId'] = _userId;
+    map['operationId'] = _operationId;
+    map['operationStudentId'] = _operationStudentId;
     if (_subjectAnswerVo != null) {
       map['subjectAnswerVo'] = _subjectAnswerVo?.map((v) => v.toJson()).toList();
     }

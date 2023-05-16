@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/practise/question_result/completion_filling_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/translate_question_result.dart';
@@ -49,6 +50,8 @@ class ResultPage extends BasePage{
   int childIndex = 0;
   int? resultType = AnsweringPage.result_normal_type;
 
+  String operationId = "";
+  String operationStudentId = "";
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
@@ -59,6 +62,9 @@ class ResultPage extends BasePage{
       childIndex = Get.arguments[AnsweringPage.childIndexKey];
       lastFinishResult = Get.arguments[AnsweringPage.LastFinishResult];
       resultType = Get.arguments[AnsweringPage.result_type]?? AnsweringPage.result_normal_type;
+
+      operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
+      operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
     }
   }
 
@@ -257,11 +263,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         mainAxisSize: MainAxisSize.min,
         children: [
           Visibility(
-              visible: widget.resultType == AnsweringPage.result_normal_type,
+              visible: widget.resultType == AnsweringPage.result_normal_type || widget.resultType == AnsweringPage.result_homework_type,
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
+              Visibility(
+                visible: widget.resultType != AnsweringPage.result_homework_type,
+                  child: InkWell(
                 onTap: (){
                   logicDetail.addJumpToStartExamListen();
                   logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
@@ -283,7 +291,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   ),
                   child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
                 ),
-              ),
+              )),
               InkWell(
                 onTap: (){
                   // 开始作答逻辑 跳转到下一题
@@ -291,18 +299,33 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                     // TODO 不用请求了 直接下一题，除非是下一节
                     var nextHasResult = false;
                     detail.SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1);
-                    if(nextSubjectVoList!=null && widget.lastFinishResult!=null){
-                      if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
-                        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,nextSubjectVoList!.id??0);
-                        Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
-                        if(nextSubtopicAnswerVoMap.isEmpty){
-                          nextHasResult = false;
+                    if(nextSubjectVoList!=null){
+                      if(widget.resultType == AnsweringPage.result_homework_type){
+                        if(widget.examResult!=null){
+                          ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.examResult!,nextSubjectVoList!.id??0);
+                          Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
+                          if(nextSubtopicAnswerVoMap.isEmpty){
+                            nextHasResult = false;
+                          }else{
+                            nextHasResult = true;
+                          }
                         }else{
-                          nextHasResult = true;
+                          nextHasResult = false;
                         }
                       }else{
-                        nextHasResult = false;
+                        if(widget.lastFinishResult!=null && widget.lastFinishResult!.obj!=null){
+                          ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,nextSubjectVoList!.id??0);
+                          Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
+                          if(nextSubtopicAnswerVoMap.isEmpty){
+                            nextHasResult = false;
+                          }else{
+                            nextHasResult = true;
+                          }
+                        }else{
+                          nextHasResult = false;
+                        }
                       }
+
                     }else{
                       nextHasResult = false;
                     }
@@ -316,13 +339,24 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         AnsweringPage.catlogIdKey:widget.uuid,
                         AnsweringPage.parentIndexKey:widget.parentIndex+1,
                         AnsweringPage.childIndexKey:widget.childIndex,
-                        AnsweringPage.examResult: widget.lastFinishResult!.obj,
+                        AnsweringPage.examResult: widget.examResult,
                         AnsweringPage.LastFinishResult: widget.lastFinishResult,
+                        AnsweringPage.result_type:widget.resultType,
+                        PreviewExamPaperPage.PaperId: widget.operationId,
+                        PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
                       });
                     } else {
-                      // 跳作答页
-                      logicDetail.addJumpToStartExamListen();
-                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
+                      if(widget.resultType == AnsweringPage.result_homework_type){
+                        logicDetail.addJumpToStartHomeworkListen();
+                        logicDetail.getDetailAndStartHomework("${currentSubjectVoList!.journalCatalogueId}",
+                            "${widget.operationStudentId}","${widget.operationId}",enterResult: false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
+                        showLoading("");
+                      }else{
+                        // 跳作答页
+                        logicDetail.addJumpToStartExamListen();
+                        logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
+                      }
+
                     }
                   } else {
                     // TODO 有下一节且有内容 传参需要带上目录

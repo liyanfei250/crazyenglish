@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/practise/question_answering/completion_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/others_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/listen_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/read_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/select_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/writing_question.dart';
+import 'package:crazyenglish/pages/practise/result/result_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,6 +50,9 @@ class AnsweringPage extends BasePage {
   int parentIndex = 0;
   int childIndex = 0;
   int answerType = answer_normal_type;
+  String operationId = "";
+  String operationStudentId = "";
+
 
   static const examDetailKey = "examDetail";
   static const catlogIdKey = "catlogId";
@@ -58,10 +63,14 @@ class AnsweringPage extends BasePage {
   static const result_type = "result_type";
   static const result_browse_type = 1;
   static const result_normal_type = 2;
+  static const result_homework_type = 3;
   static const answer_type = "answer_type";
   static const answer_normal_type = 1;
   static const answer_continue_type = 2;
   static const answer_fix_type = 3;
+  static const answer_homework_draft_type = 4;
+  static const answer_homework_type = 5;
+  static const answer_browse_type = 6;
 
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -72,6 +81,8 @@ class AnsweringPage extends BasePage {
       childIndex = Get.arguments[childIndexKey];
       lastFinishResult = Get.arguments[LastFinishResult];
       answerType = Get.arguments[answer_type]?? answer_normal_type;
+      operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
+      operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
     }
   }
 
@@ -161,9 +172,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   bool hasBottomPageTab = true;
   @override
   void onCreate() {
-    if(widget.answerType != AnsweringPage.answer_fix_type){
+    if(widget.answerType != AnsweringPage.answer_fix_type
+        && widget.answerType!= AnsweringPage.answer_browse_type){
       startTimer();
     }
+    logic.updateOperationInfo(widget.operationId, widget.operationStudentId);
 
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
@@ -185,7 +198,13 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     logic.addListenerId(GetBuilderIds.examResult, () {
       if(widget.answerType == AnsweringPage.answer_fix_type){
         Get.back();
-      }else{
+      } else {
+        int resultType = AnsweringPage.result_normal_type;
+        if(widget.answerType == AnsweringPage.answer_normal_type){
+          resultType = AnsweringPage.result_normal_type;
+        }else{
+          resultType = AnsweringPage.result_homework_type;
+        }
         RouterUtil.offAndToNamed(
             AppRoutes.ResultPage,
             isNeedCheckLogin:true,
@@ -196,9 +215,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           AnsweringPage.childIndexKey:widget.childIndex,
           AnsweringPage.examResult: state.examResult.obj,
           AnsweringPage.LastFinishResult: widget.lastFinishResult,
+          AnsweringPage.result_type:resultType,
+          PreviewExamPaperPage.PaperId: widget.operationId,
+          PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
         });
       }
-
     });
   }
 
@@ -318,7 +339,23 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               InkWell(
                 onTap: (){
                   if(state.currentQuestionNum+1 >= state.totalQuestionNum){
-                    Get.defaultDialog(
+                    if(widget.answerType == AnsweringPage.answer_browse_type){
+                      if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
+                        RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                            isNeedCheckLogin:true,
+                            arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                              AnsweringPage.catlogIdKey:widget.uuid,
+                              AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                              AnsweringPage.childIndexKey:0,
+                              AnsweringPage.LastFinishResult:widget.lastFinishResult,
+                              AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+                            });
+                      }else{
+                        Get.back();
+                      }
+
+                    }else{
+                      Get.defaultDialog(
                         title: "",
                         confirm: InkWell(
                           onTap: (){
@@ -368,9 +405,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                           ),
                         ),
                         content: Text(
-                            widget.answerType == AnsweringPage.answer_fix_type ?
-                            "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
-                    );
+                          widget.answerType == AnsweringPage.answer_fix_type ?
+                          "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+                      );
+                    }
                   }else{
                     pageLogic.nextPage();
                   }

@@ -668,7 +668,8 @@ Widget _listOne(homemytask.Obj value) => InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
           PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
-          PreviewExamPaperPage.PaperId:value.operationClassId});
+          PreviewExamPaperPage.StudentOperationId:value.id,
+          PreviewExamPaperPage.PaperId:value.operationId});
       },
       child: Container(
         padding: EdgeInsets.only(top: 16.w, bottom: 16.w),

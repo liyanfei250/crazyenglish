@@ -11,6 +11,7 @@ import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
+import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'preview_exam_paper_logic.dart';
 import '../../../entity/test_paper_look_response.dart' as paper;
 
@@ -19,15 +20,24 @@ import '../../../entity/test_paper_look_response.dart' as paper;
  */
 class PreviewExamPaperPage extends BasePage {
   static const String PaperType = "PaperType";
-  static const String PaperId = "PaperId";
+  static const String PaperId = "OperationId";
+  static const String ShowAssignHomework = "isShowAssignHomework";
+  static const String StudentOperationId = "StudentOperationId";
   late int paperType;
   late int paperId;
+  late bool isShowAssignHomework;
+  int? studentOperationId;
+  int? operationId;
 
   PreviewExamPaperPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
       paperType = Get.arguments[PaperType];
       paperId = Get.arguments[PaperId];
+      isShowAssignHomework = Get.arguments[ShowAssignHomework] ?? false;
+      studentOperationId = Get.arguments[StudentOperationId] ?? 0;
+    }else {
+      Get.back();
     }
   }
 
@@ -38,6 +48,9 @@ class PreviewExamPaperPage extends BasePage {
 class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(PreviewExamPaperLogic());
   final state = Get.find<PreviewExamPaperLogic>().state;
+
+  final logicDetail = Get.put(WeekTestDetailLogic());
+  final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   var isChooseName = "".obs;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -82,7 +95,9 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
             // bottom: ,
             elevation: 0,
             actions: [
-              Container(
+              Visibility(
+                visible: widget.isShowAssignHomework,
+                child: Container(
                 height: 22.w,
                 margin: EdgeInsets.only(left:17.w,right: 22.w),
                 child: InkWell(
@@ -91,7 +106,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
                   },
                   child: Text("布置作业",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FFED702D),),
                 ),
-              ),
+              ),)
             ],
           ),
           Expanded(child: NestedScrollView(
@@ -198,25 +213,42 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
   }
 
   Widget listitem(paper.Catalogues value, index) {
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
-      ),
-      child: Text(
-        "${value.catalogueName}",
-        style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: Color(0xff353e4d)),
+    return InkWell(
+      onTap: (){
+        // studentOperationId
+        if((widget.studentOperationId??0) > 0){
+          // 做作业流程
+          logicDetail.addJumpToStartHomeworkListen();
+          logicDetail.getDetailAndStartHomework(value.journalCatalogueId??"","${widget.studentOperationId}","${widget.paperId}");
+          showLoading("");
+        }else{
+          // 预览试题流程
+          logicDetail.addJumpToBrowsePaperListen();
+          logicDetail.getDetailAndEnterBrowsePaperPage(value.journalCatalogueId??"");
+          showLoading("");
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
+        ),
+        child: Text(
+          "${value.catalogueName}",
+          style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xff353e4d)),
+        ),
       ),
     );
   }
   @override
   void dispose() {
     Get.delete<PreviewExamPaperLogic>();
+    Get.delete<WeekTestDetailLogic>();
     super.dispose();
   }
 

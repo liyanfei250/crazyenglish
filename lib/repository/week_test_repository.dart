@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crazyenglish/entity/boo_obj_response.dart';
 import 'package:crazyenglish/entity/common_response.dart';
 import 'package:crazyenglish/entity/week_directory_response.dart';
 import 'package:crazyenglish/entity/week_list_response.dart' as weekTest;
@@ -122,6 +123,43 @@ class WeekTestRepository {
       return startExam;
     } else {
       return Future.error("返回开始作答信息为空");
+    }
+  }
+
+  Future<StartExam> getStartHomework(String jouralCatalogueId,String operationStudentId) async {
+    Map map = await NetManager.getInstance()!.request(
+        data: "{\"operationStudentId\":$operationStudentId,\"journalCatalogueId\":$jouralCatalogueId}",
+        Method.post,
+        Api.getStartHomework,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+
+    StartExam startExam = StartExam.fromJson(map);
+
+    if (startExam.code != ResponseCode.status_success) {
+      return Future.error(startExam.message!);
+    }
+    if (startExam.code == 0) {
+      return startExam;
+    } else {
+      return Future.error("返回开始作答信息为空");
+    }
+  }
+
+  Future<BoolObjResponse> getVerifyDeadline(String id) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getVerifyDeadline+"/${id}",
+        options: Options(method: Method.get));
+
+    BoolObjResponse startExam = BoolObjResponse.fromJson(map);
+
+    if (startExam.code != ResponseCode.status_success) {
+      return Future.error(startExam.message!);
+    }
+    if (startExam.code == 0) {
+      return startExam;
+    } else {
+      return Future.error("校验截止日期错误");
     }
   }
 

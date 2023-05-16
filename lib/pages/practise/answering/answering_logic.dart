@@ -33,6 +33,11 @@ class AnsweringLogic extends GetxController {
     }
   }
 
+  void updateOperationInfo(String? operationId,String? operationStudentId){
+    state.operationId = operationId;
+    state.operationStudentId = operationStudentId;
+  }
+
   void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
     state.subtopicAnswerVoMap[subtopicId] = subtopicAnswerVo;
   }
@@ -89,6 +94,8 @@ class AnsweringLogic extends GetxController {
         journalCatalogueId: subjectVoList.journalCatalogueId,
         type: "${examType}",
         examId: 0,
+        operationId:state.operationId??"",
+        operationStudentId:state.operationStudentId,
         userId: SpUtil.getInt(BaseConstant.USER_ID),
         subjectAnswerVo:subjectAnswerVoList);
 
@@ -96,6 +103,8 @@ class AnsweringLogic extends GetxController {
     state.commitResponse = commitResponse;
     if(examType == AnsweringPage.answer_fix_type){
       update([GetBuilderIds.examResult]);
+    }else if(examType == AnsweringPage.answer_homework_type){
+      getHomeworkResult("${subjectVoList.journalCatalogueId}",state.operationStudentId??"");
     }else{
       getResult(subjectVoList);
     }
@@ -106,6 +115,12 @@ class AnsweringLogic extends GetxController {
 
   void getResult(SubjectVoList subjectVoList) async{
     StartExam startExam = await weekTestRepository.getExamResult("${subjectVoList.journalCatalogueId}");
+    state.examResult = startExam;
+    update([GetBuilderIds.examResult]);
+  }
+
+  void getHomeworkResult(String catalogId,String operationStudentId) async{
+    StartExam startExam = await weekTestRepository.getStartHomework(catalogId,operationStudentId);
     state.examResult = startExam;
     update([GetBuilderIds.examResult]);
   }
