@@ -161,6 +161,16 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
+  // 待订正错题 跳转到答题页
+  void getDetailAndEnterBrowsePaperPage(String catalogId) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(catalogId);
+    if(weekDetailResponse!=null){
+      jumpToBrowsePaper(catalogId);
+    } else {
+      Util.toast("暂不能跳转");
+    }
+  }
+
 
   void jumpToStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{
     StartExam startExam = await weekTestRepository.getStartExam(id);
@@ -363,6 +373,12 @@ class WeekTestDetailLogic extends GetxController {
     update([GetBuilderIds.resoultOverView]);
   }
 
+
+  // 跳转期刊成绩页
+  void jumpToBrowsePaper(String catalogId) async{
+    update([GetBuilderIds.browseExam]);
+  }
+
   // 跳转答题页监听
   // TODO 到底是增加监听前 添加索引合适呢 还是 发起请求前添加索引合适呢
   // 接着上次作答 显然不适合增加监听时添加
@@ -501,6 +517,23 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.LastFinishResult: state.startExam,
               });
       }
+    });
+  }
+
+
+  // 跳转答题页 纯 浏览监听
+  void addJumpToBrowsePaperListen(){
+    disposeId(GetBuilderIds.browseExam);
+    addListenerId(GetBuilderIds.browseExam, () {
+      RouterUtil.toNamed(AppRoutes.AnsweringPage,
+          isNeedCheckLogin:true,
+          arguments: {AnsweringPage.examDetailKey: state.weekDetailResponse,
+            AnsweringPage.catlogIdKey:state.uuid,
+            AnsweringPage.parentIndexKey:0,
+            AnsweringPage.childIndexKey:0,
+            AnsweringPage.LastFinishResult:state.startExam,
+            AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+          });
     });
   }
 

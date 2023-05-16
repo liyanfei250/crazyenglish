@@ -62,6 +62,7 @@ class AnsweringPage extends BasePage {
   static const answer_normal_type = 1;
   static const answer_continue_type = 2;
   static const answer_fix_type = 3;
+  static const answer_browse_type = 4;
 
 
   AnsweringPage({Key? key}) : super(key: key) {
@@ -161,7 +162,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   bool hasBottomPageTab = true;
   @override
   void onCreate() {
-    if(widget.answerType != AnsweringPage.answer_fix_type){
+    if(widget.answerType != AnsweringPage.answer_fix_type
+        && widget.answerType!= AnsweringPage.answer_browse_type){
       startTimer();
     }
 
@@ -185,7 +187,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     logic.addListenerId(GetBuilderIds.examResult, () {
       if(widget.answerType == AnsweringPage.answer_fix_type){
         Get.back();
-      }else{
+      } else {
         RouterUtil.offAndToNamed(
             AppRoutes.ResultPage,
             isNeedCheckLogin:true,
@@ -318,7 +320,23 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               InkWell(
                 onTap: (){
                   if(state.currentQuestionNum+1 >= state.totalQuestionNum){
-                    Get.defaultDialog(
+                    if(widget.answerType == AnsweringPage.answer_browse_type){
+                      if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
+                        RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                            isNeedCheckLogin:true,
+                            arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                              AnsweringPage.catlogIdKey:widget.uuid,
+                              AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                              AnsweringPage.childIndexKey:0,
+                              AnsweringPage.LastFinishResult:widget.lastFinishResult,
+                              AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+                            });
+                      }else{
+                        Get.back();
+                      }
+
+                    }else{
+                      Get.defaultDialog(
                         title: "",
                         confirm: InkWell(
                           onTap: (){
@@ -368,9 +386,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                           ),
                         ),
                         content: Text(
-                            widget.answerType == AnsweringPage.answer_fix_type ?
-                            "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
-                    );
+                          widget.answerType == AnsweringPage.answer_fix_type ?
+                          "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+                      );
+                    }
                   }else{
                     pageLogic.nextPage();
                   }
