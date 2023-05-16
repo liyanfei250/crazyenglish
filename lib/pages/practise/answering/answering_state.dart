@@ -20,6 +20,10 @@ class AnsweringState {
   int totalQuestionNum = 0;
   int currentQuestionNum = -1;
 
+  String? operationId = "";
+  String? operationStudentId = "";
+
+
   StartExam examResult = StartExam();
   AnsweringState() {
     ///Initialize variables

@@ -11,6 +11,8 @@ class WeekTestDetailState {
   bool isOffCurrentPage = false;
   int parentIndex = 0;
   int childIndex = 0;
+  String operationStudentId ="";
+  String operationId ="";
 
   JouralResultResponse jouralResultResponse = JouralResultResponse();
   List<CatalogueRecordVoList> catalogueRecordVoList = [];

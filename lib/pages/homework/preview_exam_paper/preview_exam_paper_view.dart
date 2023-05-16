@@ -20,13 +20,14 @@ import '../../../entity/test_paper_look_response.dart' as paper;
  */
 class PreviewExamPaperPage extends BasePage {
   static const String PaperType = "PaperType";
-  static const String PaperId = "PaperId";
+  static const String PaperId = "OperationId";
   static const String ShowAssignHomework = "isShowAssignHomework";
   static const String StudentOperationId = "StudentOperationId";
   late int paperType;
   late int paperId;
   late bool isShowAssignHomework;
   int? studentOperationId;
+  int? operationId;
 
   PreviewExamPaperPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
@@ -217,7 +218,9 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
         // studentOperationId
         if((widget.studentOperationId??0) > 0){
           // 做作业流程
-          Util.toast("${widget.studentOperationId}");
+          logicDetail.addJumpToStartHomeworkListen();
+          logicDetail.getDetailAndStartHomework(value.journalCatalogueId??"","${widget.studentOperationId}","${widget.paperId}");
+          showLoading("");
         }else{
           // 预览试题流程
           logicDetail.addJumpToBrowsePaperListen();

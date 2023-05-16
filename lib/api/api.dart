@@ -69,6 +69,15 @@ class Api {
   static String getStartExam =
       Config.ApiHost + "/question/exercise/isFinishByCatalogueId/";
 
+
+  // 开始作答作业接口
+  static String getStartHomework =
+      Config.ApiHost + "/question/studentOperation/getOperationExerciseRecords";
+
+  // 校验作业截止日期
+  static String getVerifyDeadline =
+      Config.ApiHost + "/question/studentOperation/verifyDeadline";
+
   // 练习记录作答数据
   static String getExerciseDetail =
       Config.ApiHost + "/question/exercise/getExerciseDetail/";

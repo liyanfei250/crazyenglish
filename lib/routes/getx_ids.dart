@@ -24,6 +24,7 @@ class GetBuilderIds {
   static const String startExam = "startExam";
   static const String examResult = "examResult";
   static const String browseExam = "browseExam";
+  static const String startHomework = "answerHomework";
   static const String exerciseHistory = "exerciseHistory";
   static const String resoultOverView = "resoultOverView";
   static const String examToFix = "examToFix";
