@@ -113,6 +113,7 @@ class _ReviewPageState extends State<ReviewPage> {
             AppBar(
               elevation: 0,
               automaticallyImplyLeading: false,
+              centerTitle: true,
               title: Text(
                 "复习巩固",
                 style: TextStyle(

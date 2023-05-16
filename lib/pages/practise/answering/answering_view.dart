@@ -458,6 +458,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
         || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.translate_question){
+          questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题

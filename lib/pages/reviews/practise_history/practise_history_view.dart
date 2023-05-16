@@ -42,7 +42,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
   late final ValueNotifier<List<Event>> _selectedEvents;
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();

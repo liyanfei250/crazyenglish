@@ -114,7 +114,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     // showLoading("");
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {
-      Util.toast('成功或者取消');
+      // Util.toast('成功或者取消');
     });
   }
 
@@ -376,8 +376,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
             Expanded(child: Text('')),
             GestureDetector(
               onTap: () {
-                //todo  换成具体的id
-                logic.toCollect(1648489081851772929);
+                logic.toCollect(weekPaperList.subjectId??0,subtopicId: weekPaperList.subtopicId);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 2.w),
