@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crazyenglish/entity/common_response.dart';
 import 'package:crazyenglish/entity/week_directory_response.dart';
 import 'package:crazyenglish/entity/week_list_response.dart' as weekTest;
 import 'package:dio/dio.dart';
@@ -215,6 +216,19 @@ class WeekTestRepository {
         options: Options(contentType: ContentType.json.toString()),
         Api.getHomeKingList + type);
     HomeKingDate paperDetail = HomeKingDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<CommonResponse> toUpdateShowNum(String type) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get,
+        options: Options(contentType: ContentType.json.toString()),
+        Api.updateJournalView + type);
+    CommonResponse paperDetail = CommonResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

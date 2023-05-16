@@ -502,6 +502,11 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         logicDetail.addJumpToStartExamListen();
         logicDetail.getDetailAndStartExam(data.catalogueId.toString(),enterResult: true);
         showLoading("");
+        //更新阅读量
+        if(!isLook){
+          logic.toUpdateJournalView(widget.records!.id.toString());
+          isLook =!isLook;
+        }
       },
       child: Container(
         padding: EdgeInsets.only(top: 20.w,bottom: 20.w),
