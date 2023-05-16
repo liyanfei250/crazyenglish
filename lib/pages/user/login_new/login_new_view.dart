@@ -129,7 +129,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if (state.loginResponse.data !=null) {
         Util.toast("登录成功");
-        logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
+        Util.getHeader();
+        logic.getUserinfo(phoneStr.value);
       } else {
         Util.toast("登录失败");
       }
@@ -137,8 +139,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.passwordLogin, () {
       if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
-
-        logic.getUserinfo(SpUtil.getString(BaseConstant.USER_NAME));
+        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
+        Util.getHeader();
+        logic.getUserinfo(phoneStr.value);
 
       } else {
         Util.toast("登录失败");
@@ -159,7 +162,6 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
         SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
         SpUtil.putObject(BaseConstant.USER_INFO, state.infoResponse);
-        Util.getHeader();
 
         // if (state.infoResponse.obj?.identity == 2 ||
         //     state.infoResponse.obj?.identity == 3) {

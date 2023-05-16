@@ -108,6 +108,8 @@ class Exercise {
       num? questionCount, 
       num? parentIndex, 
       num? sublevelIndex,
+      String? correctionRemark,
+      bool? isCorrection,
       num? journalCatalogueId,
       num? time,
       List<ExerciseVos>? exerciseVos,}){
@@ -116,6 +118,8 @@ class Exercise {
     _questionCount = questionCount;
     _parentIndex = parentIndex;
     _sublevelIndex = sublevelIndex;
+    _correctionRemark = correctionRemark;
+    _isCorrection = isCorrection;
     _journalCatalogueId = journalCatalogueId;
     _time = time;
     _exerciseVos = exerciseVos;
@@ -127,6 +131,8 @@ class Exercise {
     _questionCount = json['questionCount'];
     _parentIndex = json['parentIndex'];
     _sublevelIndex = json['sublevelIndex'];
+    _correctionRemark = json['correctionRemark'];
+    _isCorrection = json['isCorrection'];
     _journalCatalogueId = json['journalCatalogueId'];
     _time = json['time'];
     if (json['exerciseVos'] != null) {
@@ -141,6 +147,8 @@ class Exercise {
   num? _questionCount;
   num? _parentIndex;
   num? _sublevelIndex;
+  String? _correctionRemark;
+  bool? _isCorrection;
   num? _journalCatalogueId;
   num? _time;
   List<ExerciseVos>? _exerciseVos;
@@ -149,6 +157,8 @@ class Exercise {
   num? questionCount,
   num? parentIndex,
   num? sublevelIndex,
+  String? correctionRemark,
+  bool? isCorrection,
   num? journalCatalogueId,
   num? time,
   List<ExerciseVos>? exerciseVos,
@@ -157,6 +167,8 @@ class Exercise {
   questionCount: questionCount ?? _questionCount,
   parentIndex: parentIndex ?? _parentIndex,
   sublevelIndex: sublevelIndex ?? _sublevelIndex,
+  correctionRemark: correctionRemark ?? _correctionRemark,
+  isCorrection: isCorrection ?? _isCorrection,
   journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
   time: time ?? _time,
   exerciseVos: exerciseVos ?? _exerciseVos,
@@ -166,6 +178,8 @@ class Exercise {
   num? get questionCount => _questionCount;
   num? get parentIndex => _parentIndex;
   num? get sublevelIndex => _sublevelIndex;
+  String? get correctionRemark => _correctionRemark;
+  bool? get isCorrection => _isCorrection;
   num? get journalCatalogueId => _journalCatalogueId;
   num? get time => _time;
   List<ExerciseVos>? get exerciseVos => _exerciseVos;
