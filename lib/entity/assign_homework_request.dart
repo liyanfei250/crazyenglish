@@ -19,7 +19,8 @@ class AssignHomeworkRequest {
       bool? isCreatePaper, 
       List<num>? journalCatalogueIds, 
       String? journalId,
-      String? paperId, 
+      String? historyOperationClassId,
+      String? paperId,
       String? historyOperationId,}){
     _name = name;
     _teacherId = teacherId;
@@ -31,6 +32,7 @@ class AssignHomeworkRequest {
     _journalId = journalId;
     _paperId = paperId;
     _historyOperationId = historyOperationId;
+    _historyOperationClassId = historyOperationClassId;
 }
 
   AssignHomeworkRequest.fromJson(dynamic json) {
@@ -49,6 +51,7 @@ class AssignHomeworkRequest {
     _journalId = json['journalId'];
     _paperId = json['paperId'];
     _historyOperationId = json['historyOperationId'];
+    _historyOperationClassId = json['historyOperationClassId'];
   }
   String? _name;
   String? _teacherId;
@@ -60,6 +63,7 @@ class AssignHomeworkRequest {
   String? _journalId;
   String? _paperId;
   String? _historyOperationId;
+  String? _historyOperationClassId;
 AssignHomeworkRequest copyWith({  String? name,
   String? teacherId,
   String? deadline,
@@ -70,6 +74,7 @@ AssignHomeworkRequest copyWith({  String? name,
   String? journalId,
   String? paperId,
   String? historyOperationId,
+  String? historyOperationClassId,
 }) => AssignHomeworkRequest(  name: name ?? _name,
   teacherId: teacherId ?? _teacherId,
   deadline: deadline ?? _deadline,
@@ -80,6 +85,7 @@ AssignHomeworkRequest copyWith({  String? name,
   journalId: journalId ?? _journalId,
   paperId: paperId ?? _paperId,
   historyOperationId: historyOperationId ?? _historyOperationId,
+  historyOperationClassId: historyOperationClassId ?? _historyOperationClassId,
 );
   String? get name => _name;
   String? get teacherId => _teacherId;
@@ -91,6 +97,7 @@ AssignHomeworkRequest copyWith({  String? name,
   String? get journalId => _journalId;
   String? get paperId => _paperId;
   String? get historyOperationId => _historyOperationId;
+  String? get historyOperationClassId => _historyOperationClassId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -106,6 +113,7 @@ AssignHomeworkRequest copyWith({  String? name,
     map['journalId'] = _journalId;
     map['paperId'] = _paperId;
     map['historyOperationId'] = _historyOperationId;
+    map['historyOperationClassId'] = _historyOperationClassId;
     return map;
   }
 

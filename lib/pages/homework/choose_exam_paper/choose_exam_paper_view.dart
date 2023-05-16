@@ -3,6 +3,7 @@ import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,7 +50,7 @@ class _ChooseExamPaperPageState
 
   @override
   void onCreate() {
-    if(widget.isAssignHomework){
+    if (widget.isAssignHomework) {
       assignLogic = Get.find<AssignHomeworkLogic>();
     }
     currentKey.value = "0";
@@ -132,7 +133,7 @@ class _ChooseExamPaperPageState
                       assignLogic!.updateAssignHomeworkRequest(
                           paperType: common.PaperType.exam,
                           paperId: historys[0].id?.toString(),
-                          examDesc: "试卷名称："+(historys[0].name ?? ''));
+                          examDesc: "试卷名称：" + (historys[0].name ?? ''));
                     } else {
                       assignLogic!.updateAssignHomeworkRequest(
                         paperType: -1,
@@ -182,12 +183,19 @@ class _ChooseExamPaperPageState
           slivers: [
             SliverPadding(
               padding: EdgeInsets.only(top: 4.w, bottom: 14.w),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  buildItem,
-                  childCount: exampapers.length,
-                ),
-              ),
+              sliver: exampapers.length > 0
+                  ? SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        buildItem,
+                        childCount: exampapers.length,
+                      ),
+                    )
+                  : SliverToBoxAdapter(
+                      child: PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 100.w,
+                          subtitle: '')),
             )
           ],
         ),
@@ -203,7 +211,8 @@ class _ChooseExamPaperPageState
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getExampersList(SpUtil.getInt(BaseConstant.USER_ID).toString(),currentPageNo + 1, pageSize);
+    logic.getExampersList(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        currentPageNo + 1, pageSize);
   }
 
   Widget buildItem(BuildContext context, int index) {
@@ -244,7 +253,7 @@ class _ChooseExamPaperPageState
                         id: GetBuilderIds.updateCheckBox + currentKey.value,
                         builder: (logic) {
                           return Util.buildCheckBox(() {
-                            selectSingle(currentKey.value,exampaper);
+                            selectSingle(currentKey.value, exampaper);
                           },
                               chooseEnable:
                                   isDataSelected(currentKey.value, exampaper));

@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkJournalResponse.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -153,12 +154,19 @@ class _ChooseJournalPageState
                       slivers: [
                         SliverPadding(
                           padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              buildItem,
-                              childCount: journals.length,
-                            ),
-                          ),
+                          sliver: journals.length > 0
+                              ? SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    buildItem,
+                                    childCount: journals.length,
+                                  ),
+                                )
+                              : SliverToBoxAdapter(
+                                  child: PlaceholderPage(
+                                      imageAsset: R.imagesCommenNoDate,
+                                      title: '暂无数据',
+                                      topMargin: 100.w,
+                                      subtitle: '')),
                         )
                       ],
                     ),
@@ -310,7 +318,7 @@ class _ChooseJournalPageState
             id: GetBuilderIds.updateCheckBox + currentKey.value,
             builder: (logic) {
               return Util.buildCheckBox(() {
-                selectSingle(currentKey.value,student);
+                selectSingle(currentKey.value, student);
               }, chooseEnable: isDataSelected(currentKey.value, student));
             },
           )

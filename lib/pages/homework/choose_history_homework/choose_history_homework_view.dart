@@ -2,6 +2,7 @@ import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -160,12 +161,14 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   if(historys.isNotEmpty){
                     assignLogic!.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
                       historyHomeworkDesc: '作业名称：'+historys[0].name.toString(),
-                      historyOperationId: "${historys[0].id}"
+                      historyOperationId: "${historys[0].operationId}",
+                        historyOperationClassId:"${historys[0].id}"
                     );
                   }else{
                     assignLogic!.updateAssignHomeworkRequest(paperType: -1,
                         historyHomeworkDesc: "",
-                        historyOperationId: ""
+                        historyOperationId: "",
+                        historyOperationClassId:''
                     );
                   }
                   Get.back();
@@ -246,12 +249,17 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             onLoading: _onLoading,
             child: CustomScrollView(
               slivers: [
-                SliverList(
+               historys.length>0? SliverList(
                   delegate: SliverChildBuilderDelegate(
                     buildItem,
                     childCount: historys.length,
                   ),
-                )
+                ): SliverToBoxAdapter(
+                    child: PlaceholderPage(
+                        imageAsset: R.imagesCommenNoDate,
+                        title: '暂无数据',
+                        topMargin: 100.w,
+                        subtitle: ''))
               ],
             ),
           )),

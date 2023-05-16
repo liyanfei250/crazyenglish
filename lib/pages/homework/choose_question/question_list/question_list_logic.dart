@@ -1,3 +1,4 @@
+import 'package:crazyenglish/pages/homework/choose_question/choose_question_state.dart';
 import 'package:get/get.dart';
 
 import '../../../../entity/QuestionListResponse.dart';
@@ -8,7 +9,7 @@ import 'question_list_state.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
 
 class QuestionListLogic extends GetxController {
-  final QuestionListState state = QuestionListState();
+  final ChooseQuestionState state = ChooseQuestionState();
   ListRepository listData = ListRepository();
   @override
   void onReady() {
