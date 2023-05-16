@@ -120,8 +120,8 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
     return InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
-          PreviewExamPaperPage.PaperType:common.PaperType.exam,
-          PreviewExamPaperPage.PaperId:listData[index].id});
+          PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+          PreviewExamPaperPage.PaperId:listData[index].operationClassId});
       },
       child: Container(
           margin:

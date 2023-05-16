@@ -80,10 +80,9 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
         margin: EdgeInsets.only(top: 18.w),
         child: TestPlayerWidget(audioPlayer,TestPlayerWidget.PRACTISE_TYPE),
       );
-    }else{
+    } else {
       return Container();
     }
-
   }
 
 

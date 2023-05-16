@@ -667,8 +667,8 @@ LinearGradient _getLinearGradient(Color left, Color right,
 Widget _listOne(homemytask.Obj value) => InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
-          PreviewExamPaperPage.PaperType:common.PaperType.exam,
-          PreviewExamPaperPage.PaperId:value.id});
+          PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+          PreviewExamPaperPage.PaperId:value.operationClassId});
       },
       child: Container(
         padding: EdgeInsets.only(top: 16.w, bottom: 16.w),

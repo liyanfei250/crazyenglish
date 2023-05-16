@@ -35,7 +35,7 @@ class PreviewExamPaperLogic extends GetxController {
       state.list = cache.obj!;
       update([(GetBuilderIds.getExamper)]);
     }
-    TestPaperLookResponse list = await classRepository.toPreviewOperation({"paperType":paperType,"paperId":paperId});
+    TestPaperLookResponse list = await classRepository.toPreviewOperation({"paperType":paperType,"historyOperationId":paperId});
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.TeacherTestPagerLook,
         list.toJson(),
