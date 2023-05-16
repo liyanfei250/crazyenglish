@@ -5,12 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../base/common.dart' as common;
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/search_bar.dart';
+import '../preview_exam_paper/preview_exam_paper_view.dart';
 import 'my_task_logic.dart';
+import 'package:crazyenglish/entity/home/HomeMyTasksDate.dart' as homemytask;
 
 class MyTaskPage extends BasePage {
   const MyTaskPage({Key? key}) : super(key: key);
@@ -22,22 +25,13 @@ class MyTaskPage extends BasePage {
 class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
   final logic = Get.put(My_taskLogic());
   final state = Get.find<My_taskLogic>().state;
-  List listData = [
-    {
-      "title": "【完形填空】Module 1 Unit3",
-      "type": 0,
-    },
-    {"title": "【单词速记】Module 1 Unit3", "type": 1},
-    {"title": "【单词速记】Module 2 Unit3", "type": 2},
-    {"title": "【单词速记】Module 3 Unit3", "type": 3},
-  ];
+  List<homemytask.Obj> listData = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   final int pageSize = 10;
   int currentPageNo = 1;
 
-  // List<Rows> weekPaperList = [];
   final int pageStartIndex = 1;
 
   @override
@@ -46,23 +40,14 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
     //获取我的任务
     logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
       if (state.paperList != null) {
-        /*paperList = state.paperList;
+        listData = state.paperList;
         if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
           setState(() {
           });
-        }*/
-
+        }
       }
     });
+    _onRefresh();
   }
 
   @override
@@ -112,7 +97,7 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
-                childCount: 4,
+                childCount: listData!=null? listData.length:0,
               ),
             ),
           ],
@@ -134,8 +119,9 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        //todo 需要接入真实的数据
-        RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: 4);
+        RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+          PreviewExamPaperPage.PaperType:common.PaperType.exam,
+          PreviewExamPaperPage.PaperId:listData[index].id});
       },
       child: Container(
           margin:
@@ -158,12 +144,11 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
     );
   }
 
-  Widget _listOne(value) => Container(
+  Widget _listOne(homemytask.Obj value) => Container(
         padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -181,14 +166,14 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
                               bottomRight: Radius.circular(7.w),
                               bottomLeft: Radius.circular(0.w)),
                           color: Color(0xfff0e9ff)),
-                      child: Text("7/99",
+                      child: Text("${value.completeSize}/${value.totalSize}",
                           style: TextStyle(
                               color: Color(0xff8b8f9f),
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w700)),
                     ),
                     SizedBox(width: 10.w),
-                    Text(value['title'],
+                    Text("${value.name}",
                         style: TextStyle(
                             color: Color(0xff353e4d),
                             fontSize: 16.sp,
@@ -199,7 +184,7 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
                   ),
                   Row(
                     children: [
-                      Text("剩余时间：7小时29分钟",
+                      Text("剩余时间：${value.timeRemaining}",
                           style: TextStyle(
                               color: Color(0xff8b8f9f),
                               fontSize: 12.sp,

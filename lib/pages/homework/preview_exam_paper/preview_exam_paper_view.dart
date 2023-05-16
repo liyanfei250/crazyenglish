@@ -1,21 +1,35 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/pages/homework/preview_exam_paper/exam_question/exam_question_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:grouped_list/sliver_grouped_list.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/AppUtil.dart';
-import '../../../r.dart';
 import '../../../routes/app_pages.dart';
+import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import 'preview_exam_paper_logic.dart';
+import '../../../entity/test_paper_look_response.dart' as paper;
 
 /**
  * 试卷预览
  */
 class PreviewExamPaperPage extends BasePage {
-  const PreviewExamPaperPage({Key? key}) : super(key: key);
+  static const String PaperType = "PaperType";
+  static const String PaperId = "PaperId";
+  late int paperType;
+  late int paperId;
+
+  PreviewExamPaperPage({Key? key}) : super(key: key){
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      paperType = Get.arguments[PaperType];
+      paperId = Get.arguments[PaperId];
+    }
+  }
 
   @override
   BasePageState<PreviewExamPaperPage> getState() => _PreviewExamPaperPageState();
@@ -25,24 +39,32 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
   final logic = Get.put(PreviewExamPaperLogic());
   final state = Get.find<PreviewExamPaperLogic>().state;
 
-  late TabController _tabController;
-
-  final List<String> tabs = const[
-    "听力",
-    "阅读",
-    "写作",
-    "语法",
-    "词汇",
-  ];
-
   var isChooseName = "".obs;
-
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  List<paper.Obj> questionList = [];
   @override
   void onCreate() {
-    _tabController = TabController(vsync: this, length: tabs.length);
-    _tabController.addListener(() {
-      isChooseName.value = tabs[_tabController!.index];
+    logic.addListenerId(GetBuilderIds.getExamper,(){
+      hideLoading();
+      questionList.clear();
+      questionList.addAll(state.list!);
+      if(mounted && _refreshController!=null){
+        _refreshController.refreshCompleted();
+          _refreshController.loadNoData();
+        setState(() {
+        });
+      }
     });
+    _onRefresh();
+    showLoading("加载中");
+  }
+
+  void _onRefresh() async{
+    logic.getPreviewQuestionList(widget.paperType,widget.paperId);
+  }
+
+  void _onLoading() async{
+    logic.getPreviewQuestionList(widget.paperType,widget.paperId);
   }
 
 
@@ -72,10 +94,6 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
               ),
             ],
           ),
-          Container(
-            color: AppColors.c_FFFFFFFF,
-            child: _buildTabBar(),
-          ),
           Expanded(child: NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [SliverToBoxAdapter(
@@ -93,56 +111,109 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage> wit
                 ),
               )];
             },
-            body: _buildTableBarView(),
+            body: SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              header: WaterDropHeader(),
+              footer: CustomFooter(
+                builder: (BuildContext context,LoadStatus? mode){
+                  Widget body ;
+                  if(mode==LoadStatus.idle){
+                    body =  Text("");
+                  }
+                  else if(mode==LoadStatus.loading){
+                    body =  CupertinoActivityIndicator();
+                  }
+                  else if(mode == LoadStatus.failed){
+                    body = Text("");
+                  }
+                  else if(mode == LoadStatus.canLoading){
+                    body = Text("release to load more");
+                  }
+                  else{
+                    body = Text("");
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child:body),
+                  );
+                },
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(padding: EdgeInsets.only(left: 25.w,right: 25.w),
+                      sliver: SliverGroupedListView<paper.Obj,num>(
+                        groupBy: (element) => int.parse(element.classifyId??'0'),
+                        groupSeparatorBuilder: buildSeparatorBuilder,
+                        elements: questionList,
+                        itemBuilder: buildItem,
+                        groupHeaderBuilder: buildGroupHeader,
+                      ))
+                ],
+              ),
+            ),
           ),),
         ],
       ),
     );
   }
 
-
-  Widget _buildTabBar() => TabBar(
-    onTap: (tab)=> print(tab),
-    controller: _tabController,
-    indicatorColor: AppColors.c_FFFFFFFF,
-    indicatorSize: TabBarIndicatorSize.tab,
-    isScrollable: true,
-    labelPadding: EdgeInsets.symmetric(horizontal: 10.w),
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
-    indicatorWeight: 3,
-    labelColor: AppColors.TEXT_COLOR,
-    tabs: tabs.map((e) => Tab(child: Obx(()=>Container(
-      height: 26.w,
-      padding: EdgeInsets.only(left:18.w,right: 18.w),
-      decoration: isChooseName.value == e ? BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xfff19e59),
-              Color(0xffec5f2a),
-            ]),
-        borderRadius: BorderRadius.all(Radius.circular(16.5.w)),
-        boxShadow:[
-          BoxShadow(
-            color: Color(0xffee754f).withOpacity(0.25),		// 阴影的颜色
-            offset: Offset(0.w, 4.w),						// 阴影与容器的距离
-            blurRadius: 8.w,							// 高斯的标准偏差与盒子的形状卷积。
-            spreadRadius: 0.w,
-          ),
+  Widget buildGroupHeader(paper.Obj question){
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.w),topRight: Radius.circular(7.w)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 11.w)),
+          Text("${question.classifyName}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
+          Container(margin:EdgeInsets.only(top: 11.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
         ],
-      ):BoxDecoration(color: AppColors.c_FFFFFFFF),
-      child: Text(e,style: TextStyle(fontSize: 14.sp,color: isChooseName.value == e ? AppColors.c_FFFFFFFF:AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
-    )),)).toList(),
-  );
+      ),
+    );
+  }
 
+  Widget buildSeparatorBuilder(num question){
+    return Container(
+      height: 24.w,
+      color: Colors.transparent,
+    );
+  }
 
-  Widget _buildTableBarView() => TabBarView(
-      controller: _tabController,
-      children: tabs.map((e) {
-        return ExamQuestionPage(tagId: e);
-      }).toList());
+  Widget buildItem(BuildContext context, paper.Obj question) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: question.catalogues!.length,
+      itemBuilder: (BuildContext context, int indexSmall) {
+        return listitem(question.catalogues![indexSmall], indexSmall);
+      },
+    );
+  }
 
+  Widget listitem(paper.Catalogues value, index) {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
+      ),
+      child: Text(
+        "${value.catalogueName}",
+        style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff353e4d)),
+      ),
+    );
+  }
   @override
   void dispose() {
     Get.delete<PreviewExamPaperLogic>();

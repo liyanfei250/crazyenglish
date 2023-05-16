@@ -44,11 +44,11 @@ class HomeViewRepository {
   }
 
   //获取首页我的任务
-  Future<HomeMyTasksDate> getMyTask(String id) async {
+  Future<HomeMyTasksDate> getMyTask(Map<String,dynamic> req) async {
     
     
     Map map = await NetManager.getInstance()!.request(
-      data:{"userId":SpUtil.getInt(BaseConstant.USER_ID)},
+      data:req,
         Method.post, Api.getHomeMyTasksDate,
         options: Options(method: Method.post,contentType: ContentType.json.toString()));
     HomeMyTasksDate paperDetail = HomeMyTasksDate.fromJson(map);
