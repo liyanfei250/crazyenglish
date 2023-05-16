@@ -39,6 +39,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   final logic = Get.put(Listening_practiceLogic());
   final state = Get.find<Listening_practiceLogic>().state;
   late AnimationController _controller;
+  bool isLook =false;
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
 
@@ -502,6 +503,12 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         logicDetail.addJumpToStartExamListen();
         logicDetail.getDetailAndStartExam(data.catalogueId.toString(),enterResult: true);
         showLoading("");
+
+        //更新阅读量
+        // if(!isLook){
+        //   logic.toUpdateJournalView(widget.type!.id.toString());
+        //   isLook =!isLook;
+        // }
       },
       child: Container(
         padding: EdgeInsets.only(top: 20.w,bottom: 20.w),

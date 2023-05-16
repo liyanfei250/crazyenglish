@@ -1,3 +1,5 @@
+import 'package:crazyenglish/entity/common_response.dart';
+import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:crazyenglish/repository/week_test_repository.dart';
 import 'package:get/get.dart';
 
@@ -57,5 +59,10 @@ class WeekTestCatalogLogic extends GetxController {
       });
     }
     return nodes;
+  }
+
+  void toUpdateJournalView(String recordsId) async{
+    CommonResponse loginResponse = await weekTestRepository.toUpdateShowNum(recordsId);
+    update([GetBuilderIds.passwordLogin]);
   }
 }

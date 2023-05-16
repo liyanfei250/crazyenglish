@@ -84,7 +84,6 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
     _tabController = TabController(vsync: this, length: tabs.length);
     logic.addListenerId(GetBuilderIds.getMyClassList, () {
       if (state.myClassList != null && state.myClassList!.obj != null) {
-        print("班级数据===" + state.myClassList!.obj![0]!.name!);
 
         tabs = state.myClassList!.obj!;
         setState(() {

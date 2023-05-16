@@ -243,6 +243,9 @@ class Api {
   //提交作业
   static String toReleaseWorkUrl =
       Config.ApiHost + "/question/operation/submitOperation";
+  //更新阅读
+  static String updateJournalView =
+      Config.ApiHost + "/question/exercise/updateJournalView/";
 
 
   // 教师端首页 待批改、待提醒状态值

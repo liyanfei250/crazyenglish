@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/widgets/dash_line.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -52,7 +54,7 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
   Set<String> nodeSecondParent = {};
   Set<String> nodeEnd = {};
   Set<String> nodeSecondEndParent = {};
-
+  bool isLook =false;
   final logicDetail = Get.put(WeekTestDetailLogic());
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
@@ -287,6 +289,12 @@ class _WeekTestCatalogPageState extends BasePageState<WeekTestCatalogPage> {
           logicDetail.addJumpToStartExamListen();
           logicDetail.getDetailAndStartExam(node.key,enterResult: true,hideLoading: hideLoading);
           showLoading("");
+
+          //更新阅读量
+          if(!isLook){
+            logic.toUpdateJournalView(widget.records!.id.toString());
+            isLook =!isLook;
+          }
         },
         child: Container(
           height: 48.w,
