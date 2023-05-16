@@ -1,4 +1,5 @@
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,11 +31,11 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   List<Obj> tabs = [];
   userIfo.UserInfoResponse? userInfoResponse;
 
-
   @override
   void initState() {
     super.initState();
-    userInfoResponse = userIfo.UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
+    userInfoResponse = userIfo.UserInfoResponse.fromJson(
+        SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override
@@ -64,7 +65,13 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
                 margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 10.w),
                 child: _buildTabBar(),
               ),
-              Expanded(child: _buildTableBarView()),
+              tabs.length > 0
+                  ? Expanded(child: _buildTableBarView())
+                  : PlaceholderPage(
+                      imageAsset: R.imagesCommenNoDate,
+                      title: '暂无数据',
+                      topMargin: 100.w,
+                      subtitle: '快去创建班级吧'),
             ],
           ),
         ],

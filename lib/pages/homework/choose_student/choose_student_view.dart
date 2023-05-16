@@ -5,6 +5,7 @@ import 'package:crazyenglish/entity/member_student_list.dart';
 import 'package:crazyenglish/pages/homework/assign_homework/assign_homework_logic.dart';
 import 'package:crazyenglish/pages/homework/choose_student/student_list/student_list_view.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -90,7 +91,7 @@ class _ChooseStudentPageState
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20.w)),
                   ),
-                  child: NestedScrollView(
+                  child: tabs.length>0?NestedScrollView(
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return [
@@ -100,7 +101,11 @@ class _ChooseStudentPageState
                       ];
                     },
                     body: _buildTableBarView(),
-                  ),
+                  ):PlaceholderPage(
+                      imageAsset: R.imagesCommenNoDate,
+                      title: '暂无数据',
+                      topMargin: 0.w,
+                      subtitle: '快去创建班级吧'),
                 ),
               ),
               buildBottomWidgetStudent()
