@@ -1,5 +1,8 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +16,7 @@ import '../../utils/colors.dart';
 import 'class_home/class_home_view.dart';
 import 'class_logic.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
 //首页班级模块
 class ClassPage extends StatefulWidget {
   const ClassPage({Key? key}) : super(key: key);
@@ -35,7 +39,13 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
 
-    logic.addListenerId(GetBuilderIds.getHomeClassTab, () {
+    setListner();
+  }
+
+  void setListner() {
+    logic.addListenerId(
+        GetBuilderIds.getHomeClassTab +
+            SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
       if (state.myClassList != null && state.myClassList!.obj != null) {
         print("班级数据===" + state.myClassList!.obj![0]!.name!);
         tabs = state.myClassList!.obj!;
@@ -45,17 +55,8 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
         });
       }
     });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // 判断当前页面是否可见
-    //   if (ModalRoute.of(context)!.isCurrent) {
-    //     // 当前页面可见
-    //     //todo 真实数据
-    //     logic.getMyClassList('1651539603655626753');
-    //   }
-    // });
 
-    //todo 真实数据
-    logic.getMyClassList('1651539603655626753');
+    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString(),isCash: true);
   }
 
   @override
@@ -67,24 +68,24 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
           Image.asset(R.imagesTeacherClassTop, width: double.infinity),
           tabs.length <= 0
               ? Container(
-            margin: EdgeInsets.only(top: 116.w,left: 20.w,right: 20.w),
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                    offset: Offset(10, 20), // 阴影与容器的距离
-                    blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
-                    spreadRadius: 10.0,
-                  )
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(10.w)),
-                color: AppColors.c_FFFFFFFF),
-            child: PlaceholderPage(
-                imageAsset: R.imagesCommenNoDate,
-                title: '暂无数据',
-                topMargin: 0.w,
-                subtitle: '快去创建班级吧'),
-          )
+                  margin: EdgeInsets.only(top: 116.w, left: 20.w, right: 20.w),
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+                          offset: Offset(10, 20), // 阴影与容器的距离
+                          blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+                          spreadRadius: 10.0,
+                        )
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                      color: AppColors.c_FFFFFFFF),
+                  child: PlaceholderPage(
+                      imageAsset: R.imagesCommenNoDate,
+                      title: '暂无数据',
+                      topMargin: 0.w,
+                      subtitle: '快去创建班级吧'),
+                )
               : Column(
                   children: [
                     AppBar(
@@ -150,8 +151,13 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
               curve: Curves.easeInOut,
               vsync: this,
               child: GestureDetector(
-                onTap: () {
-                  RouterUtil.toNamed(AppRoutes.Teacher_Class_Create);
+                onTap: () async {
+                  //RouterUtil.toNamed(AppRoutes.Teacher_Class_Create);
+
+                  var result = await Get.to(() => Create_classPage());
+                  if (result != null && 'add_success' == result) {
+                    setListner();
+                  }
                 },
                 child: Container(
                   width: extend ? 44.w : 0.w,

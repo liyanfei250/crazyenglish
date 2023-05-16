@@ -45,7 +45,9 @@ class _ChooseStudentPageState
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
 
-    logic.addListenerId(GetBuilderIds.getHomeClassTab, () {
+    logic.addListenerId(
+        GetBuilderIds.getHomeClassTab +
+            SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
       if (state.myClassList != null && state.myClassList!.obj != null) {
         tabs = state.myClassList!.obj!;
         setState(() {
@@ -91,21 +93,23 @@ class _ChooseStudentPageState
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20.w)),
                   ),
-                  child: tabs.length>0?NestedScrollView(
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return [
-                        SliverToBoxAdapter(
-                          child: _buildTabBar(),
+                  child: tabs.length > 0
+                      ? NestedScrollView(
+                          headerSliverBuilder:
+                              (BuildContext context, bool innerBoxIsScrolled) {
+                            return [
+                              SliverToBoxAdapter(
+                                child: _buildTabBar(),
+                              )
+                            ];
+                          },
+                          body: _buildTableBarView(),
                         )
-                      ];
-                    },
-                    body: _buildTableBarView(),
-                  ):PlaceholderPage(
-                      imageAsset: R.imagesCommenNoDate,
-                      title: '暂无数据',
-                      topMargin: 0.w,
-                      subtitle: '快去创建班级吧'),
+                      : PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 0.w,
+                          subtitle: '快去创建班级吧'),
                 ),
               ),
               buildBottomWidgetStudent()
@@ -201,16 +205,20 @@ class _ChooseStudentPageState
               }
             });
             if (historys.isNotEmpty) {
-               //todo 班级id 的获取
+              //todo 班级id 的获取
               ClassInfos clsss = ClassInfos(
                   schoolClassId: '1655395694170124290',
                   studentUserIds: studentsId);
-              assignLogic
-                  .updateAssignHomeworkRequest(schoolClassInfos: [clsss],schoolClassInfoDesc:'已选学生（'+historys.length.toString()+"）人\n已选班级"+studentsName.toString());
+              assignLogic.updateAssignHomeworkRequest(
+                  schoolClassInfos: [clsss],
+                  schoolClassInfoDesc: '已选学生（' +
+                      historys.length.toString() +
+                      "）人\n已选班级" +
+                      studentsName.toString());
             } else {
               assignLogic.updateAssignHomeworkRequest(
-                  paperType: -1,
-                  );
+                paperType: -1,
+              );
             }
             Get.back();
           }, "完成")
