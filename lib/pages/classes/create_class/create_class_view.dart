@@ -246,7 +246,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                       logic.toAddClass(
                           'https://p0.ssl.img.360kuai.com/t01736c309615e3dc19.jpg',
                           _controller.text,
-                          SpUtil.getString(BaseConstant.USER_ID));
+                          SpUtil.getInt(BaseConstant.USER_ID).toString());
                     },
                     child: Text(
                       '创建班级',

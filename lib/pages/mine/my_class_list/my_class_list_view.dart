@@ -86,7 +86,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
         });
       }
     });
-    logic.getMyClassList(SpUtil.getString(BaseConstant.USER_ID));
+    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
   }
 
   @override
