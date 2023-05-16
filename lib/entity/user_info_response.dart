@@ -75,7 +75,8 @@ class Obj {
       String? sexName, 
       String? phone, 
       String? nickname, 
-      String? password, 
+      String? classId,
+      String? password,
       dynamic url,}){
     _id = id;
     _infoId = infoId;
@@ -86,6 +87,7 @@ class Obj {
     _sexName = sexName;
     _phone = phone;
     _nickname = nickname;
+    _classId = classId;
     _password = password;
     _url = url;
 }
@@ -100,6 +102,7 @@ class Obj {
     _sexName = json['sexName'];
     _phone = json['phone'];
     _nickname = json['nickname'];
+    _classId = json['classId'];
     _password = json['password'];
     _url = json['url'];
   }
@@ -112,6 +115,7 @@ class Obj {
   String? _sexName;
   String? _phone;
   String? _nickname;
+  String? _classId;
   String? _password;
   dynamic _url;
 Obj copyWith({  num? id,
@@ -123,6 +127,7 @@ Obj copyWith({  num? id,
   String? sexName,
   String? phone,
   String? nickname,
+  String? classId,
   String? password,
   dynamic url,
 }) => Obj(  id: id ?? _id,
@@ -134,6 +139,7 @@ Obj copyWith({  num? id,
   sexName: sexName ?? _sexName,
   phone: phone ?? _phone,
   nickname: nickname ?? _nickname,
+  classId: classId ?? _classId,
   password: password ?? _password,
   url: url ?? _url,
 );
@@ -146,6 +152,7 @@ Obj copyWith({  num? id,
   String? get sexName => _sexName;
   String? get phone => _phone;
   String? get nickname => _nickname;
+  String? get classId => _classId;
   String? get password => _password;
   dynamic get url => _url;
 
@@ -160,6 +167,7 @@ Obj copyWith({  num? id,
     map['sexName'] = _sexName;
     map['phone'] = _phone;
     map['nickname'] = _nickname;
+    map['classId'] = _classId;
     map['password'] = _password;
     map['url'] = _url;
     return map;

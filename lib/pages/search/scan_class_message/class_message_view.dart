@@ -22,7 +22,8 @@ import '../../../entity/class_detail_response.dart';
 
 class Class_messagePage extends BasePage {
   int? isShowAdd;
-  String? classId;
+  //TODO 后面从登录信息中获取
+  String? classId = '1655395694170124290';
 
   // bool? isStudent;
   // bool? isAdd;

@@ -273,7 +273,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
     }else if(widget.needCorrected){
       logic.getHistoryListActionPage(common.HomeworkStatus.started,pageStartIndex,pageSize);
     }else{
-      // logic.getHomeworkHistoryList(pageStartIndex,pageSize);
+      logic.getHomeworkHistoryList(null,pageStartIndex,pageSize);
     }
 
   }
@@ -284,7 +284,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
     }else if(widget.needCorrected){
       logic.getHistoryListActionPage(common.HomeworkStatus.started,currentPageNo+1,pageSize);
     }else{
-      // logic.getHomeworkHistoryList(currentPageNo+1,pageSize);
+      logic.getHomeworkHistoryList(null,currentPageNo+1,pageSize);
     }
   }
 

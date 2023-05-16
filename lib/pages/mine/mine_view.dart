@@ -13,6 +13,7 @@ import '../../utils/colors.dart';
 import '../../utils/sp_util.dart';
 import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'mine_logic.dart';
+import '../../../entity/user_info_response.dart' as userIfo;
 
 class MinePage extends BasePage {
   const MinePage({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _MinePageState extends BasePageState<MinePage> {
   final state = Get.find<MineLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
-
+  userIfo.UserInfoResponse? userInfoResponse;
   void onClickPosition(int position) {
     switch (position) {
       case 1: //意见反馈
@@ -307,11 +308,12 @@ class _MinePageState extends BasePageState<MinePage> {
 
         switch (menu) {
           case '我的班级':
-            RouterUtil.toNamed(AppRoutes.MyClassListPage,
-                isNeedCheckLogin: true);
-            // RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-            //     isNeedCheckLogin: true,
-            //     arguments: {'isShowAdd': 0});
+            // RouterUtil.toNamed(AppRoutes.MyClassListPage,
+            //     isNeedCheckLogin: true);
+          //TODO  是否去获取我的班级 学生的班级id
+            RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
+                isNeedCheckLogin: true,
+                arguments: {'isShowAdd': 0,'classId':userInfoResponse!.obj!.classId});
             break;
           case '我的订单':
             RouterUtil.toNamed(AppRoutes.MyOrderPage,isNeedCheckLogin: true,);
@@ -397,7 +399,8 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
+    userInfoResponse = userIfo.UserInfoResponse.fromJson(
+        SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override
