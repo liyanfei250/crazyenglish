@@ -1,7 +1,6 @@
 import '../config.dart';
 
 class Api {
-  static String getUser = Config.ApiHost + "/user.site";
   static String getPsdLoginNew = Config.ApiHost+"/oauth/token";
   static String getLoginNew = Config.ApiHost+"/user/login/sms";
   static String getResetPsdNew = Config.ApiHost+"/member/user/login/resettingPasswd";
@@ -176,9 +175,6 @@ class Api {
 
   // 提交头像
   static String toPushHeaderImage = Config.ApiHost + "/toPushHeaderImage";
-
-  // 获取个人信息
-  static String getPersonInfo = Config.ApiHost + "/getPersonInfo";
 
   // 修改昵称
   static String toChangeNickName = Config.ApiHost + "/toChangeNickName";

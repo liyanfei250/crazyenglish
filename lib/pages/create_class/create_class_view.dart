@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../base/AppUtil.dart';
 import '../../base/widgetPage/base_page_widget.dart';
+import '../../entity/user_info_response.dart';
 import '../../r.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/FullScreenImage.dart';
@@ -35,6 +36,8 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
   bool _hasImage = false;
   FileNew.File? _image;
 
+  UserInfoResponse? userInfoResponse;
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -54,6 +57,8 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
       Util.toast("添加成功");
       Get.back();
     });
+    userInfoResponse = UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
+
   }
 
   @override
@@ -196,22 +201,23 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherName, "讲师名称:",
-                    SpUtil.getString(BaseConstant.TEACHER_NAME)),
+                    SpUtil.getString(BaseConstant.USER_NAME)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherSex, "讲师性别:",
-                    SpUtil.getString(BaseConstant.TEACHER_SEX)),
+                    "${userInfoResponse?.obj?.sexName}"),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
+                // TODO 需增加教龄字段
                 _myHorizontalLayout(R.imagesClassInfoTeacherAge, "讲师教龄:",
-                    SpUtil.getString(BaseConstant.TEACHER_AGE)),
+                    "${userInfoResponse?.obj?.sex}"),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherPhoneNum, "联系方式:",
-                    SpUtil.getString(BaseConstant.TEACHER_PHONE)),
+                    "${userInfoResponse?.obj?.phone}"),
                 SizedBox(
                   height: 36.w,
                 ),
@@ -240,7 +246,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                       logic.toAddClass(
                           'https://p0.ssl.img.360kuai.com/t01736c309615e3dc19.jpg',
                           _controller.text,
-                          SpUtil.getString(BaseConstant.TEACHER_USER_ID));
+                          SpUtil.getString(BaseConstant.USER_ID));
                     },
                     child: Text(
                       '创建班级',
