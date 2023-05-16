@@ -132,7 +132,7 @@ class _ChooseExamPaperPageState
                       assignLogic!.updateAssignHomeworkRequest(
                           paperType: common.PaperType.exam,
                           paperId: historys[0].id?.toString(),
-                          examDesc: historys[0].name ?? '');
+                          examDesc: "试卷名称："+(historys[0].name ?? ''));
                     } else {
                       assignLogic!.updateAssignHomeworkRequest(
                         paperType: -1,
@@ -245,8 +245,7 @@ class _ChooseExamPaperPageState
                         id: GetBuilderIds.updateCheckBox + currentKey.value,
                         builder: (logic) {
                           return Util.buildCheckBox(() {
-                            addSelected(currentKey.value, exampaper,
-                                !isDataSelected(currentKey.value, exampaper));
+                            selectSingle(currentKey.value,exampaper);
                           },
                               chooseEnable:
                                   isDataSelected(currentKey.value, exampaper));

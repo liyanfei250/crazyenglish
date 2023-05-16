@@ -201,7 +201,7 @@ class _ChooseStudentPageState
                   schoolClassId: '1655395694170124290',
                   studentUserIds: studentsId);
               assignLogic
-                  .updateAssignHomeworkRequest(schoolClassInfos: [clsss],schoolClassInfoDesc:studentsName.toString());
+                  .updateAssignHomeworkRequest(schoolClassInfos: [clsss],schoolClassInfoDesc:'已选学生（'+historys.length.toString()+"）人\n已选班级"+studentsName.toString());
             } else {
               assignLogic.updateAssignHomeworkRequest(
                   paperType: -1,

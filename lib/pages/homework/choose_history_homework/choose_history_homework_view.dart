@@ -159,7 +159,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   });
                   if(historys.isNotEmpty){
                     assignLogic!.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
-                      historyHomeworkDesc: historys[0].name,
+                      historyHomeworkDesc: '作业名称：'+historys[0].name.toString(),
                       historyOperationId: "${historys[0].id}"
                     );
                   }else{
@@ -348,9 +348,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                   id: GetBuilderIds.updateCheckBox+currentKey.value,
                   builder: (logic){
                     return Util.buildCheckBox(() {
-                      addSelected(currentKey.value, history,
-                          !isDataSelected(currentKey.value, history)
-                      );
+                      selectSingle(currentKey.value,history);
                     },chooseEnable: isDataSelected(currentKey.value, history));
                   },
               ),)

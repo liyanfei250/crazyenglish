@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkStudentResponse.dart';
 import 'package:crazyenglish/pages/homework/assign_homework/assign_homework_logic.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,6 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
   }
 
   void _onLoading() async {
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
     logic.getStudentList(widget.classId);
   }
 
@@ -145,11 +145,17 @@ class _StudentListPageState extends BasePageState<StudentListPage> {
         slivers: [
           SliverPadding(
             padding: EdgeInsets.only(left: 10.w, right: 10.w),
-            sliver: SliverList(
+            sliver:studentList.length>0? SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
                 childCount: studentList.length,
               ),
+            ):SliverToBoxAdapter(
+              child:PlaceholderPage(
+                  imageAsset: R.imagesCommenNoDate,
+                  title: '暂无数据',
+                  topMargin: 100.w,
+                  subtitle: '')
             ),
           ),
         ],

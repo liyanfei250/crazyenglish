@@ -59,7 +59,7 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             state.homeFinalListDate.forEach((element) {
 
               if(assignLogic.state.assignHomeworkRequest
-                  .journalCatalogueIds!.contains(element.pid)){
+                  .journalCatalogueIds!.contains(element.catalogueId)){
                 widget.chooseLogic.addSelected(widget.tagId, element, true);
               }
             });

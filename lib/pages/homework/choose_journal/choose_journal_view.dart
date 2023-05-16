@@ -173,19 +173,6 @@ class _ChooseJournalPageState
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            selectAll(
-                                currentKey.value, !hasSelectedAllFlag.value);
-                          },
-                          child: Obx(() => Text(
-                                hasSelectedAllFlag.value ? "取消全选" : "全选",
-                                style: TextStyle(
-                                    color: AppColors.c_FFED702D,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ),
                         Padding(padding: EdgeInsets.only(left: 36.w)),
                         Obx(() => Text(
                               "已选${hasSelectedNum.value}",
@@ -323,8 +310,7 @@ class _ChooseJournalPageState
             id: GetBuilderIds.updateCheckBox + currentKey.value,
             builder: (logic) {
               return Util.buildCheckBox(() {
-                addSelected(currentKey.value, student,
-                    !isDataSelected(currentKey.value, student));
+                selectSingle(currentKey.value,student);
               }, chooseEnable: isDataSelected(currentKey.value, student));
             },
           )

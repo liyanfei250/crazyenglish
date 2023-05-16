@@ -175,10 +175,27 @@ abstract class BaseChoosePageState<T extends BasePage,N> extends BasePageState<T
             ],
           ),
           Util.buildHomeworkNormalBtn(() {
-            Get.back(result: {'date':'123456','chooesNum':1});
+
           }, "完成")
         ],
       ),
     );
   }
+
+  void selectSingle(String key, N n) {
+    // 取消选中当前已选中的项
+    if (isSelectedMap[key] != null) {
+      for (String id in isSelectedMap[key]!.keys) {
+        isSelectedMap[key]![id] = false;
+      }
+    }
+    // 选中新的项
+    addSelected(key, n, true);
+    // 更新选中数量
+    hasSelectedNum.value = countSelectedNum();
+
+    // 更新复选框状态
+    _logic.updateCheckboxState(key);
+  }
+
 }

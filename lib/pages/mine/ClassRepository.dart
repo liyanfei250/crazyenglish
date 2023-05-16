@@ -179,11 +179,11 @@ class ClassRepository {
   }
 
   Future<MemberStudentList> getClassStudentList(String classId) async {
-    //todo  模拟数据，数据中不能有空的存在
-     String testData = '{"code": 0,"message": "系统正常","obj": [{"classId": 1655395694170124300,"userId": 1651531759961624600,"nickname": "太阳","actualname": "张三","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null},{"classId": 1655395694170124300,"userId": 1651533076075499500,"nickname": "月亮","actualname": "李四","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null}],"p": null,"success": true}';
+    //模拟数据，数据中不能有空的存在
+     /*String testData = '{"code": 0,"message": "系统正常","obj": [{"classId": 1655395694170124300,"userId": 1651531759961624600,"nickname": "太阳","actualname": "张三","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null},{"classId": 1655395694170124300,"userId": 1651533076075499500,"nickname": "月亮","actualname": "李四","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null}],"p": null,"success": true}';
 
      MemberStudentList weekTestListResponse = MemberStudentList.fromJson(json.decode(testData));
-      return weekTestListResponse;
+      return weekTestListResponse;*/
     Map map = await NetManager.getInstance()!.request(
         Method.get, Api.memberClassStudentList + classId,
         options: Options(

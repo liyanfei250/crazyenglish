@@ -37,8 +37,8 @@ class _ChooseQuestionPageState
 
   @override
   String getDataId(String key, data.CatalogueRecordVoList n) {
-    assert(n.pid != null);
-    return n.pid!.toString();
+    assert(n.catalogueId != null);
+    return n.catalogueId!.toString();
   }
 
   @override
@@ -174,7 +174,7 @@ class _ChooseQuestionPageState
                   if (isSelectedMap[key] != null &&
                       (isSelectedMap[key]![id] ?? false)) {
                     exercises.add(n);
-                    exercisesId.add(n.pid!);
+                    exercisesId.add(n.catalogueId!);
                     exercisesName.add(n.catalogueName!);
                   }
                 }
