@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../base/common.dart' as common;
 import '../../entity/week_list_response.dart' as weekListResponse;
 import '../../r.dart';
 import '../../routes/app_pages.dart';
@@ -14,6 +15,7 @@ import '../../routes/getx_ids.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
+import '../homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'index_logic.dart';
 import '../../entity/home/HomeKingNewDate.dart';
 import '../../entity/home/HomeMyTasksDate.dart' as homemytask;
@@ -664,8 +666,9 @@ LinearGradient _getLinearGradient(Color left, Color right,
 
 Widget _listOne(homemytask.Obj value) => InkWell(
       onTap: () {
-        //todo 需要接入真实的数据
-        RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: 4);
+        RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+          PreviewExamPaperPage.PaperType:common.PaperType.exam,
+          PreviewExamPaperPage.PaperId:value.id});
       },
       child: Container(
         padding: EdgeInsets.only(top: 16.w, bottom: 16.w),

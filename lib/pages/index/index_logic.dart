@@ -92,7 +92,8 @@ class IndexLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getMyTasksDate]);
     }
-    HomeMyTasksDate list = await homeViewRepository.getMyTask('');
+
+    HomeMyTasksDate list = await homeViewRepository.getMyTask({"userId":SpUtil.getInt(BaseConstant.USER_ID)});
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyTasks, list.toJson());
     state.myTask = list!;
