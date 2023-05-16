@@ -1,4 +1,4 @@
-import 'package:crazyenglish/pages/user/auth_code/auth_code_view.dart';
+import 'package:crazyenglish/pages/mine/auth_code/auth_code_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

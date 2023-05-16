@@ -9,7 +9,7 @@ import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../r.dart';
 import '../../../utils/text_util.dart';
-import '../../writing/writingDialog.dart';
+import '../writingDialog.dart';
 import '../answer_interface.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';

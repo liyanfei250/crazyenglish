@@ -16,6 +16,7 @@ import '../../utils/colors.dart';
 import '../../widgets/swiper.dart';
 import 'index_logic.dart';
 import '../../entity/home/HomeKingNewDate.dart';
+import '../../entity/home/HomeMyTasksDate.dart' as homemytask;
 
 class IndexPage extends BasePage {
   const IndexPage({Key? key}) : super(key: key);
@@ -34,17 +35,7 @@ class _IndexPageState extends BasePageState<IndexPage>
       RefreshController(initialRefresh: false);
   List<weekListResponse.Obj> myListDate = [];
   List<Obj> functionTxtNew = [];
-
-  List listData = [
-    {
-      "title": "【完形填空】Module 1 Unit3",
-      "type": 0,
-    },
-    {"title": "【单词速记】Module 1 Unit3", "type": 1},
-    {"title": "【单词速记】Module 2 Unit3", "type": 2},
-    {"title": "【单词速记】Module 3 Unit3", "type": 3},
-  ];
-
+  List<homemytask.Obj> listData = [];
   @override
   void initState() {
     super.initState();
@@ -101,22 +92,12 @@ class _IndexPageState extends BasePageState<IndexPage>
         _refreshController.refreshCompleted();
       }
 
-      if (state.myTask != null) {
-        /*myTask = state.myTask;
+      if (state.myTask != null && state.myTask!.obj !=null) {
+        listData = state.myTask!.obj!;
         if(mounted && _refreshController!=null){
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.videoFile!=null
-              && paperDetail!.data!.videoFile!.isNotEmpty){
-          }
-          if(paperDetail!.data!=null
-              && paperDetail!.data!.audioFile!=null
-              && paperDetail!.data!.audioFile!.isNotEmpty){
-
-          }
           setState(() {
           });
-        }*/
-
+        }
       }
     });
     _onRefresh();
@@ -681,7 +662,7 @@ LinearGradient _getLinearGradient(Color left, Color right,
       end: end,
     );
 
-Widget _listOne(value) => InkWell(
+Widget _listOne(homemytask.Obj value) => InkWell(
       onTap: () {
         //todo 需要接入真实的数据
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: 4);
@@ -709,14 +690,14 @@ Widget _listOne(value) => InkWell(
                               bottomRight: Radius.circular(7.w),
                               bottomLeft: Radius.circular(0.w)),
                           color: Color(0xfff0e9ff)),
-                      child: Text("7/99",
+                      child: Text("${value.completeSize}/${value.totalSize}",
                           style: TextStyle(
                               color: Color(0xff8b8f9f),
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w700)),
                     ),
                     SizedBox(width: 10.w),
-                    Text(value['title'],
+                    Text("${value.name}",
                         style: TextStyle(
                             color: Color(0xff353e4d),
                             fontSize: 16.sp,
@@ -727,7 +708,7 @@ Widget _listOne(value) => InkWell(
                   ),
                   Row(
                     children: [
-                      Text("剩余时间：7小时29分钟",
+                      Text("剩余时间：${value.timeRemaining}",
                           style: TextStyle(
                               color: Color(0xff8b8f9f),
                               fontSize: 12.sp,

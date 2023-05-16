@@ -7,8 +7,8 @@ import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
-import '../../provider/CheckOutProvider.dart';
-import '../../provider/cartItem.dart';
+import '../provider/CheckOutProvider.dart';
+import '../provider/cartItem.dart';
 import 'shop_car_logic.dart';
 
 class ShopCarPage extends BasePage {

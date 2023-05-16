@@ -1,9 +1,9 @@
 import 'dart:io' as io;
 
 import 'package:crazyenglish/entity/check_update_resp.dart';
-import 'package:crazyenglish/pages/class/class_view.dart';
+import 'package:crazyenglish/pages/classes/class_view.dart';
 import 'package:crazyenglish/pages/config/config_logic.dart';
-import 'package:crazyenglish/pages/teacher_index/teacher_index_view.dart';
+import 'package:crazyenglish/pages/index/teacher_index_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

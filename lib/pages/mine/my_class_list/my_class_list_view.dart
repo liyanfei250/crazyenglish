@@ -11,7 +11,7 @@ import '../../../entity/user_info_response.dart' as userIfo;
 import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
-import '../../scan_class_message/class_message_view.dart';
+import '../../search/scan_class_message/class_message_view.dart';
 import '../class_page_card/class_page_card_view.dart';
 import 'my_class_list_logic.dart';
 

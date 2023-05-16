@@ -13,7 +13,6 @@ import '../utils/colors.dart';
 import '../utils/updateApp/app_upgrade.dart';
 import '../utils/updateApp/download_status.dart';
 import 'app_update_panel/app_update_panel_logic.dart';
-import 'course/course_view.dart';
 import 'index/index_view.dart';
 import 'mine/mine_view.dart';
 import 'reviews/review/review_view.dart';
