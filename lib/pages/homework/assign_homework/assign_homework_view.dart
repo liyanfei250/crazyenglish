@@ -51,7 +51,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
   @override
   void onCreate() {
     logic.addListenerId(GetBuilderIds.getToReleaseWork, () {
-      if (state.releaseWork.success!) {
+      if (state.releaseWork.code==0) {
         Util.toast('发布作业成功');
         setState(() {});
       }

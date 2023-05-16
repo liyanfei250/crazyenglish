@@ -1,4 +1,6 @@
 import 'package:crazyenglish/entity/review/HomeSecondListDate.dart';
+import 'package:crazyenglish/pages/homework/choose_question/choose_question_logic.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,6 +39,8 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
   final assignLogic = Get.find<AssignHomeworkLogic>();
+
+  final gradeLogic = Get.find<ChooseQuestionLogic>();
   final int pageSize = 20;
   int currentPageNo = 1;
   final int pageStartIndex = 1;
@@ -46,52 +50,54 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
   @override
   void onCreate() {
     //todo 实际数据
-    logic.addListenerId(
+    gradeLogic.state.dictionaryId = widget.tagId;
+    gradeLogic.addListenerId(
         GetBuilderIds.getHomeSecondListDate +
-            /*widget.type!.dictionaryId.toString()*/ '1646439861824098306', () {
+            gradeLogic.state.dictionaryId.toString(), () {
       hideLoading();
-      if (state.homeSecondListDate != null) {
+      if (gradeLogic.state.homeSecondListDate != null) {
         //TODO 判断选择之前勾选的数据
-        if(state.homeFinalListDate!=null){
-          if (assignLogic.state.assignHomeworkRequest.journalCatalogueIds != null &&
-              assignLogic.state.assignHomeworkRequest.journalCatalogueIds!.length >
+        if (gradeLogic.state.homeFinalListDate != null) {
+          if (assignLogic.state.assignHomeworkRequest.journalCatalogueIds !=
+                  null &&
+              assignLogic
+                      .state.assignHomeworkRequest.journalCatalogueIds!.length >
                   0) {
-            state.homeFinalListDate.forEach((element) {
-
-              if(assignLogic.state.assignHomeworkRequest
-                  .journalCatalogueIds!.contains(element.catalogueId)){
+            gradeLogic.state.homeFinalListDate.forEach((element) {
+              if (assignLogic.state.assignHomeworkRequest.journalCatalogueIds!
+                  .contains(element.catalogueId)) {
                 widget.chooseLogic.addSelected(widget.tagId, element, true);
               }
             });
           }
         }
 
-        if (state.pageNo == currentPageNo + 1) {
+        if (gradeLogic.state.pageNo == currentPageNo + 1) {
           currentPageNo++;
-          homeSecondListDate.addAll(state.homeSecondListDate!);
+          homeSecondListDate.addAll(gradeLogic.state.homeSecondListDate!);
           if (mounted && _refreshController != null) {
             _refreshController.loadComplete();
-            if (!state!.hasMore) {
+            if (!gradeLogic.state!.hasMore) {
               _refreshController.loadNoData();
             } else {
               _refreshController.resetNoData();
             }
-            widget.chooseLogic.addData(widget.tagId, state!.homeFinalListDate!);
+            widget.chooseLogic.addData(widget.tagId, gradeLogic.state!.homeFinalListDate!);
             setState(() {});
           }
-        } else if (state.pageNo == pageStartIndex) {
+        } else if (gradeLogic.state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
           homeSecondListDate.clear();
-          homeSecondListDate.addAll(state!.homeSecondListDate!);
+          homeSecondListDate.addAll(gradeLogic.state!.homeSecondListDate!);
           if (mounted && _refreshController != null) {
             _refreshController.refreshCompleted();
-            if (!state!.hasMore) {
+            if (!gradeLogic.state!.hasMore) {
               _refreshController.loadNoData();
             } else {
               _refreshController.resetNoData();
             }
             widget.chooseLogic
-                .resetData(widget.tagId, state!.homeFinalListDate!);
+                .resetData(widget.tagId, gradeLogic.state!.homeFinalListDate!);
             setState(() {});
           }
         }
@@ -105,24 +111,21 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     // todo 写活
-    logic.getQuestionList(
+    gradeLogic.getQuestionList(
         SpUtil.getInt(BaseConstant.USER_ID),
-        /*widget.type!.dictionaryId, affiliatedGrade, */ '1646439861824098306',
-        null,
+        gradeLogic.state.dictionaryId,
+        gradeLogic.state.affiliatedGrade,
         pageSize,
         pageStartIndex);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // logic.getQuestionList(widget.tagId,currentPageNo+1,pageSize);
-    logic.getQuestionList(
+    gradeLogic.getQuestionList(
         SpUtil.getInt(BaseConstant.USER_ID),
-        /*widget.type!.dictionaryId,
-        affiliatedGrade,*/
-        '1646439861824098306',
-        null,
-        pageSize,
+        gradeLogic.state.dictionaryId,
+        gradeLogic.state.affiliatedGrade,
+        gradeLogic.state.pageSize,
         currentPageNo + 1);
   }
 
@@ -159,12 +162,19 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
         slivers: [
           SliverPadding(
             padding: EdgeInsets.only(left: 25.w, right: 25.w),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                buildItemTop,
-                childCount: homeSecondListDate.length,
-              ),
-            ),
+            sliver: homeSecondListDate.length > 0
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      buildItemTop,
+                      childCount: homeSecondListDate.length,
+                    ),
+                  )
+                : SliverToBoxAdapter(
+                    child: PlaceholderPage(
+                        imageAsset: R.imagesCommenNoDate,
+                        title: '暂无数据',
+                        topMargin: 100.w,
+                        subtitle: '')),
           )
         ],
       ),

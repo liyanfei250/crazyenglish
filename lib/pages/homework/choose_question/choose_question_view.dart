@@ -1,4 +1,7 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/homework/choose_question/question_list/question_list_logic.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,6 +16,7 @@ import 'choose_question_logic.dart';
 import 'question_list/question_list_view.dart';
 import '../../../entity/home/HomeKingDate.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
+import '../../../entity/home/HomeKingDate.dart' as choiceDate;
 import '../../../base/common.dart' as common;
 
 class ChooseQuestionPage extends BasePage {
@@ -30,7 +34,10 @@ class _ChooseQuestionPageState
 
   late TabController _tabController;
   final assignLogic = Get.find<AssignHomeworkLogic>();
+  List<choiceDate.Obj> choiceList = [];
   List<Obj> tabs = [];
+  bool _isOpen = false;
+  late List<String> items = [];
 
   @override
   String getDataId(String key, data.CatalogueRecordVoList n) {
@@ -60,7 +67,12 @@ class _ChooseQuestionPageState
                       ],
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        //筛选
+                        setState(() {
+                          _isOpen = !_isOpen;
+                        });
+                      },
                       child: Container(
                         height: 27.w,
                         width: 27.w,
@@ -124,6 +136,136 @@ class _ChooseQuestionPageState
               buildBottomWidget()
             ],
           ),
+          Visibility(
+            child: InkWell(onTap: (){
+              setState(() {
+                _isOpen = !_isOpen;
+              });
+            },child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.black.withOpacity(0.5),
+            ),),
+            visible: _isOpen,
+          ),
+          Visibility(
+              visible: _isOpen,
+              child: Container(
+                padding: EdgeInsets.only(
+                    left: 15.w, right: 15.w, top: 50.w, bottom: 20.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(10.w),
+                      bottomLeft: Radius.circular(10.w)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      offset: Offset(0, 3),
+                      blurRadius: 3,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 25.w,
+                          width: MediaQuery.of(context).size.width / 4,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(bottom: 12.w, top: 18.w),
+                          padding: EdgeInsets.only(left: 8.w, right: 8.w),
+                          decoration: BoxDecoration(
+                            color: Color(0xfff5f6f9),
+                            borderRadius: BorderRadius.circular(20.w),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                state.selectedIndex = -1;
+                                _isOpen = false;
+                                state.choiceText.value ="全部";
+                              });
+                              state.affiliatedGrade = null;
+                              logic.getQuestionList(
+                                  SpUtil.getInt(BaseConstant.USER_ID),
+                                  state.dictionaryId,
+                                  state.affiliatedGrade,
+                                  state.pageSize,
+                                  state.pageStartIndex); //全部
+                            },
+                            child: Text(
+                              '全部分类',
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                color: state.selectedIndex == -1
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Wrap(
+                            spacing: 18.w,
+                            runSpacing: 4.w,
+                            children: List.generate(
+                              items.length,
+                                  (index) => GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    state.selectedIndex = index;
+                                    _isOpen = false;
+                                    state.choiceText.value = choiceList[index]!.name!;
+                                  });
+                                  state.affiliatedGrade =
+                                      choiceList[index]!.id!.toInt();
+
+                                  logic.getQuestionList(
+                                      SpUtil.getInt(BaseConstant.USER_ID),
+                                      state.dictionaryId.toString(),
+                                      state.affiliatedGrade,
+                                      state.pageSize,
+                                      state.pageStartIndex);
+                                },
+                                child: Container(
+                                  height: 25.w,
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xfff5f6f9),
+                                    borderRadius: BorderRadius.circular(20.w),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 4.0,
+                                    vertical: 8.0,
+                                  ),
+                                  child: Text(
+                                    items[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 11.sp,
+                                      color: state.selectedIndex == index
+                                          ? Colors.black
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )),
         ],
       ),
     );
@@ -226,6 +368,17 @@ class _ChooseQuestionPageState
   @override
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
+    logic.addListenerId(GetBuilderIds.getHomeListChoiceDate, () {
+      if (state.paperDetail != null) {
+        if (state.paperDetail!.obj != null &&
+            state.paperDetail!.obj!.length > 0) {
+          choiceList = state.paperDetail!.obj!;
+          items = choiceList.map((obj) => obj.name!).toList();
+          setState(() {});
+        }
+      }
+    });
+    logic.getChoiceMap('grade_type');
 
     //获取金刚区列表
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {

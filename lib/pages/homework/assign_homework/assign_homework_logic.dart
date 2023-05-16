@@ -36,6 +36,7 @@ class AssignHomeworkLogic extends GetxController {
     List<ClassInfos>? schoolClassInfos,
     List<num>? journalCatalogueIds,
     String? journalId,
+    String? historyOperationClassId,
     String? paperId,
     String? historyOperationId,
     String? schoolClassInfoDesc,
@@ -51,6 +52,7 @@ class AssignHomeworkLogic extends GetxController {
         isCreatePaper: isCreatePaper,
         journalCatalogueIds: journalCatalogueIds,
         journalId: journalId,
+        historyOperationClassId: historyOperationClassId,
         paperId: paperId,
         deadline: deadline,
         historyOperationId: historyOperationId);
