@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/choose_exam_paper/choose_exam_paper_view.dart';
+import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -632,9 +633,9 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                               () {
                                             RouterUtil.toNamed(
                                                 AppRoutes
-                                                    .ChooseHistoryHomeworkPage,
+                                                    .ChooseHistoryNewHomeworkPage,
                                                 arguments: {
-                                                  ChooseHistoryHomeworkPage
+                                                  ChooseHistoryNewHomeworkPage
                                                       .IsAssignHomework: true
                                                 });
                                           }, "选择",

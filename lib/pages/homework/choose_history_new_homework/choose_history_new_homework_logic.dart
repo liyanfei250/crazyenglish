@@ -1,24 +1,24 @@
+import 'package:crazyenglish/entity/HomeworkHistoryResponse.dart';
+import 'package:crazyenglish/entity/class_list_response.dart';
+import 'package:crazyenglish/pages/mine/ClassRepository.dart';
+import 'package:crazyenglish/repository/home_work_repository.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/utils/json_cache_util.dart';
 import 'package:get/get.dart';
 
-import '../../../entity/HomeworkHistoryResponse.dart';
-import '../../../repository/home_work_repository.dart';
-import '../../../routes/getx_ids.dart';
-import '../../../utils/json_cache_util.dart';
-import 'choose_history_homework_state.dart';
+import 'choose_history_new_homework_state.dart';
 
-class ChooseHistoryHomeworkLogic extends GetxController {
-  final ChooseHistoryHomeworkState state = ChooseHistoryHomeworkState();
+class Choose_history_new_homeworkLogic extends GetxController {
+  final Choose_history_new_homeworkState state = Choose_history_new_homeworkState();
   HomeworkRepository homeworkRepository = HomeworkRepository();
-
+  ClassRepository netTool = ClassRepository();
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
@@ -128,5 +128,33 @@ class ChooseHistoryHomeworkLogic extends GetxController {
       }
     }
     update([GetBuilderIds.getHistoryHomeworkList]);
+  }
+
+  //班级列表查询
+  void getMyClassList(String teacherUserId) async {
+    Map<String, String> req = {};
+    req['teacherUserId'] = teacherUserId;
+
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.HomeClassTab,labelId: teacherUserId)
+        .then((value) {
+      if (value != null) {
+        return ClassListResponse.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is ClassListResponse) {
+      state.myClassList = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeClassTab+teacherUserId]);
+    }
+    ClassListResponse list = await netTool.getMyClassList(req);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeClassTab, list.toJson(),labelId: teacherUserId);
+    state.myClassList = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeClassTab+teacherUserId]);
+    }
   }
 }

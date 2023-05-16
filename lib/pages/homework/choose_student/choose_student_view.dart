@@ -60,7 +60,6 @@ class _ChooseStudentPageState
         });
       }
     });
-    //todo 真实数据
     logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
   }
 
