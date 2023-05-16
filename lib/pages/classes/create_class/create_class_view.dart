@@ -55,7 +55,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
 
     logic.addListenerId(GetBuilderIds.getMyClassAdd, () {
       Util.toast("添加成功");
-      Get.back();
+      Get.back(result: 'add_success');
     });
     userInfoResponse = UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
 
@@ -235,7 +235,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                       end: Alignment.centerRight,
                     ),
                   ),
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () {
                       if (_controller.text.isEmpty) {
                         Util.toast('班级名称不能为空！');

@@ -13,32 +13,38 @@ class ClassLogic extends GetxController {
   ClassRepository netTool = ClassRepository();
 
   //班级列表查询
-  void getMyClassList(String teacherUserId) async {
+  void getMyClassList(String teacherUserId, {isCash = false}) async {
     Map<String, String> req = {};
     req['teacherUserId'] = teacherUserId;
+    if (!isCash) {
+      var cache = await JsonCacheManageUtils.getCacheData(
+          JsonCacheManageUtils.HomeClassTab,
+          labelId: teacherUserId)
+          .then((value) {
+        if (value != null) {
+          return ClassListResponse.fromJson(value as Map<String, dynamic>?);
+        }
+      });
 
-    var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeClassTab,
-            labelId: teacherUserId)
-        .then((value) {
-      if (value != null) {
-        return ClassListResponse.fromJson(value as Map<String, dynamic>?);
+      bool hasCache = false;
+      if (cache is ClassListResponse) {
+        state.myClassList = cache!;
+        hasCache = true;
+        update([GetBuilderIds.getHomeClassTab + teacherUserId]);
       }
-    });
+      ClassListResponse list = await netTool.getMyClassList(req);
+      JsonCacheManageUtils.saveCacheData(
+          JsonCacheManageUtils.HomeClassTab, list.toJson(),
+          labelId: teacherUserId);
+      state.myClassList = list!;
+      if (!hasCache) {
+        update([GetBuilderIds.getHomeClassTab + teacherUserId]);
+      }
+    }else{
+      ClassListResponse list = await netTool.getMyClassList(req);
+      state.myClassList = list!;
+      update([GetBuilderIds.getHomeClassTab + teacherUserId]);
+    }
 
-    bool hasCache = false;
-    if (cache is ClassListResponse) {
-      state.myClassList = cache!;
-      hasCache = true;
-      update([GetBuilderIds.getHomeClassTab + teacherUserId]);
-    }
-    ClassListResponse list = await netTool.getMyClassList(req);
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeClassTab, list.toJson(),
-        labelId: teacherUserId);
-    state.myClassList = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getHomeClassTab + teacherUserId]);
-    }
   }
 }
