@@ -82,9 +82,11 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   @override
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
-    logic.addListenerId(GetBuilderIds.getMyClassList, () {
+    logic.addListenerId(
+        GetBuilderIds.getMyClassList +
+            SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
+      hideLoading();
       if (state.myClassList != null && state.myClassList!.obj != null) {
-
         tabs = state.myClassList!.obj!;
         setState(() {
           _tabController.dispose();
@@ -93,6 +95,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
       }
     });
     logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
+    showLoading('');
   }
 
   @override

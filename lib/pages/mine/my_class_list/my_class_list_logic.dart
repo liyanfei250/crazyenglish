@@ -17,7 +17,7 @@ class My_class_listLogic extends GetxController {
     req['teacherUserId'] = teacherUserId;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeMyClassList)
+            JsonCacheManageUtils.HomeMyClassList,labelId: teacherUserId)
         .then((value) {
       if (value != null) {
         return ClassListResponse.fromJson(value as Map<String, dynamic>?);
@@ -28,14 +28,14 @@ class My_class_listLogic extends GetxController {
     if (cache is ClassListResponse) {
       state.myClassList = cache!;
       hasCache = true;
-      update([GetBuilderIds.getMyClassList]);
+      update([GetBuilderIds.getMyClassList+teacherUserId]);
     }
     ClassListResponse list = await netTool.getMyClassList(req);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeMyClassList, list.toJson());
+        JsonCacheManageUtils.HomeMyClassList, list.toJson(),labelId: teacherUserId);
     state.myClassList = list!;
     if (!hasCache) {
-      update([GetBuilderIds.getMyClassList]);
+      update([GetBuilderIds.getMyClassList+teacherUserId]);
     }
   }
 

@@ -1,5 +1,8 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +38,7 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
 
-    logic.addListenerId(GetBuilderIds.getHomeClassTab, () {
+    logic.addListenerId(GetBuilderIds.getHomeClassTab+SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
       if (state.myClassList != null && state.myClassList!.obj != null) {
         print("班级数据===" + state.myClassList!.obj![0]!.name!);
         tabs = state.myClassList!.obj!;
@@ -54,8 +57,7 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     //   }
     // });
 
-    //todo 真实数据
-    logic.getMyClassList('1651539603655626753');
+    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
   }
 
   @override
@@ -150,8 +152,13 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
               curve: Curves.easeInOut,
               vsync: this,
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   RouterUtil.toNamed(AppRoutes.Teacher_Class_Create);
+
+                  var result = await Get.to(() => Create_classPage());
+                  if (result != null) {
+                    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
+                  }
                 },
                 child: Container(
                   width: extend ? 44.w : 0.w,
