@@ -19,7 +19,7 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
 class ListenQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  ListenQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  ListenQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,int childIndex,{required this.data,Key? key}) : super(subtopicAnswerVoMap,childIndex,key: key);
 
 
   @override

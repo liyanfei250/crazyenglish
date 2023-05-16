@@ -16,9 +16,9 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
 class WritingQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  WritingQuestionResult(Map<String, ExerciseLists> subtopicAnswerVoMap,
+  WritingQuestionResult(Map<String, ExerciseLists> subtopicAnswerVoMap,int childIndex,
       {required this.data, Key? key})
-      : super(subtopicAnswerVoMap, key: key);
+      : super(subtopicAnswerVoMap, childIndex,key: key);
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
