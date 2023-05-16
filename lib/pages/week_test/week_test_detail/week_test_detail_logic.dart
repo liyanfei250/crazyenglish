@@ -226,11 +226,11 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
-  // 待订正错题 跳转到答题页
+  // 待订正错题 跳转到批改页
   void getDetailAndEnterCorrectionPage(String operationStudentId) async {
-    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(catalogId);
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(operationStudentId);
     if(weekDetailResponse!=null){
-      jumpToBrowsePaper(catalogId);
+      jumpToBrowsePaper(operationStudentId);
     } else {
       Util.toast("暂不能跳转");
     }
