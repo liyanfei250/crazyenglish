@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:get/get.dart';
 
 import '../../../../entity/home/HomeKingDate.dart';
@@ -100,14 +101,23 @@ class Collect_practicLogic extends GetxController {
 
   void toCollect(num subjectId,{num? subtopicId=-1}) async {
     if(subjectId>0){
+      CollectDate collectResponse;
       if(subtopicId!=null && subtopicId>0){
-        CollectDate collectResponse = await recordData.toCollect(subjectId.toString(),subtopicId: subtopicId);
+        collectResponse = await recordData.toCollect(subjectId.toString(),subtopicId: subtopicId);
         state.collectMap["${subjectId}:${subtopicId}"] = collectResponse.obj!.isCollect??false;
+
         update(["${GetBuilderIds.collectState}:${subjectId}:${subtopicId}"]);
       } else {
-        CollectDate collectResponse = await recordData.toCollect(subjectId.toString());
+        collectResponse = await recordData.toCollect(subjectId.toString());
         state.collectMap["${subjectId}"] = collectResponse.obj!.isCollect??false;
         update(["${GetBuilderIds.collectState}:${subjectId}"]);
+      }
+      if(collectResponse!=null){
+        if(collectResponse.obj!.isCollect??false){
+          Util.toast("收藏成功");
+        }else{
+          Util.toast("取消收藏");
+        }
       }
     } else {
       print("subjectId 有误");

@@ -143,7 +143,7 @@ class Api {
 
   // 收藏
   static String toCollect =
-      Config.ApiHost + "/question/collected/collectOrCancelQuestion/";
+      Config.ApiHost + "/question/collected/collectOrCancelQuestion";
 
   // 题目收藏状态查询
   static String queryQuestionCollect =
@@ -284,5 +284,10 @@ class Api {
 
   // 试卷预览
   static String toPreviewOperation = Config.ApiHost + "/question/operation/previewOperation";
+
+  // 根据作业获取主观题试题详情
+  static String getOperSubjectiveDetails = Config.ApiHost + "/question/studentOperation/getOperSubjectiveDetails";
+
+  static String getOperSubjectiveExercise = Config.ApiHost + "/question/studentOperation/getOperSubjectiveExercise";
 
 }

@@ -19,7 +19,7 @@ import 'base_question_result.dart';
 class OthersQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  OthersQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  OthersQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,int childIndex,{required this.data,Key? key}) : super(subtopicAnswerVoMap,childIndex,key: key);
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {

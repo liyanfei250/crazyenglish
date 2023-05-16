@@ -28,7 +28,7 @@ import 'base_question_result.dart';
 class TranslateQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  TranslateQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  TranslateQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,int childIndex,{required this.data,Key? key}) : super(subtopicAnswerVoMap,childIndex,key: key);
 
 
   @override

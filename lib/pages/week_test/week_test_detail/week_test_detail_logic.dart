@@ -1,7 +1,5 @@
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:crazyenglish/base/common.dart';
-import 'package:crazyenglish/entity/base_resp.dart';
 import 'package:crazyenglish/entity/boo_obj_response.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/jingang/result_overview/result_overview_view.dart';
@@ -63,6 +61,35 @@ class WeekTestDetailLogic extends GetxController {
     return list;
   }
 
+
+  // 根据作业id获取主观题试题详情页数据
+  Future<WeekDetailResponse> getWeekTestDetailByOperationStudentId(String operationStudentId) async{
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.WeekDetailResponse,labelId: "operationStudentId"+operationStudentId.toString()).then((value){
+      if(value!=null){
+        return WeekDetailResponse.fromJson(value as Map<String,dynamic>?);
+      }
+    });
+
+    if(cache is WeekDetailResponse) {
+      state.weekDetailResponse = cache!;
+      state.uuid = operationStudentId;
+      getWeekTestDetailByOperationStudentIdFromServer(operationStudentId);
+      return cache!;
+    }
+    return getWeekTestDetailByOperationStudentIdFromServer(operationStudentId);
+  }
+
+  Future<WeekDetailResponse> getWeekTestDetailByOperationStudentIdFromServer(String operationStudentId) async{
+    WeekDetailResponse list = await weekTestRepository.getWeekTestDetailFromCatalogId(operationStudentId);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.WeekDetailResponse,
+        labelId: "operationStudentId"+operationStudentId.toString(),
+        list.toJson());
+    state.weekDetailResponse = list!;
+    state.uuid = operationStudentId;
+    return list;
+  }
 
   // 获取试题详情页数据
   Future<WeekDetailResponse> getWeekTestDetailBySubjectId(String id) async{
@@ -198,6 +225,17 @@ class WeekTestDetailLogic extends GetxController {
       Util.toast("暂不能跳转");
     }
   }
+
+  // 待订正错题 跳转到批改页
+  void getDetailAndEnterCorrectionPage(String operationStudentId) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(operationStudentId);
+    if(weekDetailResponse!=null){
+      jumpToBrowsePaper(operationStudentId);
+    } else {
+      Util.toast("暂不能跳转");
+    }
+  }
+
 
 
   void jumpToStartExam(String id,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{

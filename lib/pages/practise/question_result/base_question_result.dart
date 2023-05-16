@@ -38,7 +38,8 @@ typedef PageControllerListener = TextEditingController Function(String key);
 abstract class BaseQuestionResult extends StatefulWidget with AnswerMixin{
   late BaseQuestionResultState baseQuestionResultState;
   late Map<String,ExerciseLists> subtopicAnswerVoMap;
-  BaseQuestionResult(this.subtopicAnswerVoMap, {Key? key}) : super(key: key);
+  late int childIndex;
+  BaseQuestionResult(this.subtopicAnswerVoMap,this.childIndex, {Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state

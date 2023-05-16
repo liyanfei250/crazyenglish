@@ -20,7 +20,7 @@ class SelectWordsFillingQuestionResult extends BaseQuestionResult {
 
   SubjectVoList data;
 
-  SelectWordsFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  SelectWordsFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,int childIndex,{required this.data,Key? key}) : super(subtopicAnswerVoMap,childIndex,key: key);
 
   @override
   BaseQuestionResultState<SelectWordsFillingQuestionResult> getState() => _SelectWordsFillingQuestionResultState();

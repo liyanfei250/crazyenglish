@@ -19,7 +19,7 @@ import 'base_question_result.dart';
 class CompletionFillingQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  CompletionFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,{required this.data,Key? key}) : super(subtopicAnswerVoMap,key: key);
+  CompletionFillingQuestionResult(Map<String,ExerciseLists> subtopicAnswerVoMap,int childIndex,{required this.data,Key? key}) : super(subtopicAnswerVoMap,childIndex,key: key);
 
   @override
   BaseQuestionResultState<CompletionFillingQuestionResult> getState() => _CompletionFillingQuestionResultState();

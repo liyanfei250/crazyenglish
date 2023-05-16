@@ -131,7 +131,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       for(int i =0;i<questionNum;i++){
         tabs.add(widget.testDetailResponse!.obj!.subjectVoList![widget.parentIndex].subtopicVoList![i]);
       }
-      _tabController = TabController(vsync: this, length: questionNum);
+      _tabController = TabController(vsync: this, length: questionNum,initialIndex: widget.childIndex<questionNum? widget.childIndex:0);
     }
   }
 
@@ -472,50 +472,50 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         currentSubjectVoList = weekTestDetailResponse.obj!.subjectVoList![widget.parentIndex];
         if(currentSubjectVoList!.questionTypeStr == QuestionType.select_words_filling){
           // 选词填空
-          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(SelectWordsFillingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
           // 选择填空
-          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(SelectFillingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.completion_filling
             || currentSubjectVoList!.questionTypeStr == QuestionType.translate_filling
             || currentSubjectVoList!.questionTypeStr == QuestionType.normal_gap
         ){
           // 补全填空 翻译填空 普通填空
-          questionList.add(CompletionFillingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(CompletionFillingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           // 写作题
-          questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(WritingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
           hasTab = false;
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
             || currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling
           ){
           // 常规阅读题 完型填空
-          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(ReadQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
           childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
           // 简答阅读题
-          questionList.add(QuestionReadingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(QuestionReadingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
           hasTab = false;
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.translate_question){
-          questionList.add(TranslateQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+          questionList.add(TranslateQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
         } else {
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
-              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              questionList.add(ListenQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
               childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
               break;
             case QuestionTypeClassify.reading: // 阅读题
-              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              questionList.add(ReadQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
               childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
               break;
             case QuestionTypeClassify.writing:
-              questionList.add(WritingQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              questionList.add(WritingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
               if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
                 hasTab = false;
               }
               break;
             default:
-              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,data: currentSubjectVoList!));
+              questionList.add(OthersQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
               print("题型分类："
                   "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
                   "题型：${currentSubjectVoList!.questionTypeName}"
