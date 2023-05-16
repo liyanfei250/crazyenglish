@@ -237,7 +237,6 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      Util.toast('message');
                       if (_controller.text.isEmpty) {
                         Util.toast('班级名称不能为空！');
                         return;
