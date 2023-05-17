@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/choose_exam_paper/choose_exam_paper_view.dart';
+import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -24,7 +25,17 @@ import 'assign_homework_logic.dart';
  * 布置作业
  */
 class AssignHomeworkPage extends BasePage {
-  const AssignHomeworkPage({Key? key}) : super(key: key);
+  late int paperType = 0;
+  late String? paperId;
+  late String? examDesc;
+
+  AssignHomeworkPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      paperType = Get.arguments['paperType'] ?? 0;
+      paperId = Get.arguments['paperId'] ?? '';
+      examDesc = Get.arguments['examDesc'] ?? '';
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _AssignHomeworkPageState();
@@ -50,8 +61,15 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
 
   @override
   void onCreate() {
+    if (widget.paperType! > 0) {
+      logic!.updateAssignHomeworkRequest(
+          paperType: widget.paperType,
+          paperId: widget.paperId,
+          examDesc: widget.examDesc.toString());
+    }
+
     logic.addListenerId(GetBuilderIds.getToReleaseWork, () {
-      if (state.releaseWork.code==0) {
+      if (state.releaseWork.code == 0) {
         Util.toast('发布作业成功');
         setState(() {});
       }
@@ -632,9 +650,9 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                               () {
                                             RouterUtil.toNamed(
                                                 AppRoutes
-                                                    .ChooseHistoryHomeworkPage,
+                                                    .ChooseHistoryNewHomeworkPage,
                                                 arguments: {
-                                                  ChooseHistoryHomeworkPage
+                                                  ChooseHistoryNewHomeworkPage
                                                       .IsAssignHomework: true
                                                 });
                                           }, "选择",

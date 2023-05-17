@@ -1,5 +1,6 @@
 import 'package:crazyenglish/pages/classes/class_view.dart';
 import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
+import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/search/home_search/home_search_view.dart';
 import 'package:crazyenglish/pages/mine/about_us/about_us_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/change_nick_name_view.dart';
@@ -122,6 +123,7 @@ abstract class AppPages {
     GetPage(name: AppRoutes.AssignHomeworkPage , page:()=> AssignHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseExamPaperPage , page:()=> ChooseExamPaperPage(),),
     GetPage(name: AppRoutes.ChooseHistoryHomeworkPage , page:()=> ChooseHistoryHomeworkPage(),),
+    GetPage(name: AppRoutes.ChooseHistoryNewHomeworkPage , page:()=> ChooseHistoryNewHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseJournalPage , page:()=> ChooseJournalPage(),),
     GetPage(name: AppRoutes.ChooseQuestionPage , page:()=> ChooseQuestionPage(),),
     GetPage(name: AppRoutes.ChooseStudentPage , page:()=> ChooseStudentPage(),),

@@ -72,11 +72,12 @@ class Obj {
       String? nickname, 
       String? actualname, 
       String? phone, 
-      num? identity, 
-      dynamic url, 
+      num? identity,
+      String? url,
+      String? classId,
       String? affiliatedSchool, 
       String? affiliatedGrade, 
-      dynamic affiliatedGradeName,}){
+      String? affiliatedGradeName,}){
     _id = id;
     _username = username;
     _password = password;
@@ -84,6 +85,7 @@ class Obj {
     _actualname = actualname;
     _phone = phone;
     _identity = identity;
+    _classId = classId;
     _url = url;
     _affiliatedSchool = affiliatedSchool;
     _affiliatedGrade = affiliatedGrade;
@@ -98,6 +100,7 @@ class Obj {
     _actualname = json['actualname'];
     _phone = json['phone'];
     _identity = json['identity'];
+    _classId = json['classId'];
     _url = json['url'];
     _affiliatedSchool = json['affiliatedSchool'];
     _affiliatedGrade = json['affiliatedGrade'];
@@ -110,10 +113,11 @@ class Obj {
   String? _actualname;
   String? _phone;
   num? _identity;
-  dynamic _url;
+  String? _classId;
+  String? _url;
   String? _affiliatedSchool;
   String? _affiliatedGrade;
-  dynamic _affiliatedGradeName;
+  String? _affiliatedGradeName;
 Obj copyWith({  num? id,
   String? username,
   String? password,
@@ -121,10 +125,11 @@ Obj copyWith({  num? id,
   String? actualname,
   String? phone,
   num? identity,
-  dynamic url,
+  String? classId,
+  String? url,
   String? affiliatedSchool,
   String? affiliatedGrade,
-  dynamic affiliatedGradeName,
+  String? affiliatedGradeName,
 }) => Obj(  id: id ?? _id,
   username: username ?? _username,
   password: password ?? _password,
@@ -132,6 +137,7 @@ Obj copyWith({  num? id,
   actualname: actualname ?? _actualname,
   phone: phone ?? _phone,
   identity: identity ?? _identity,
+  classId: classId ?? _classId,
   url: url ?? _url,
   affiliatedSchool: affiliatedSchool ?? _affiliatedSchool,
   affiliatedGrade: affiliatedGrade ?? _affiliatedGrade,
@@ -144,10 +150,11 @@ Obj copyWith({  num? id,
   String? get actualname => _actualname;
   String? get phone => _phone;
   num? get identity => _identity;
-  dynamic get url => _url;
+  String? get classId => _classId;
+  String? get url => _url;
   String? get affiliatedSchool => _affiliatedSchool;
   String? get affiliatedGrade => _affiliatedGrade;
-  dynamic get affiliatedGradeName => _affiliatedGradeName;
+  String? get affiliatedGradeName => _affiliatedGradeName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -158,6 +165,7 @@ Obj copyWith({  num? id,
     map['actualname'] = _actualname;
     map['phone'] = _phone;
     map['identity'] = _identity;
+    map['classId'] = _classId;
     map['url'] = _url;
     map['affiliatedSchool'] = _affiliatedSchool;
     map['affiliatedGrade'] = _affiliatedGrade;

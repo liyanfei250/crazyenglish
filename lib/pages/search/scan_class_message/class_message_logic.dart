@@ -38,6 +38,7 @@ class Class_messageLogic extends GetxController {
   }
 
   //班级详情
+  //isTeacher是否返回老师信息
   void getMyClassDetail(String id, {isTeacher = false, isJoin = false}) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeMyClassDetail,

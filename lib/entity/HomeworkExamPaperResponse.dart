@@ -210,7 +210,8 @@ class Records {
       String? name, 
       num? totalSize, 
       String? classifyIds, 
-      bool? isDelete, 
+      String? classifyNames,
+      bool? isDelete,
       num? createUser, 
       String? createTime, 
       num? updateUser, 
@@ -221,6 +222,7 @@ class Records {
     _name = name;
     _totalSize = totalSize;
     _classifyIds = classifyIds;
+    _classifyNames = classifyNames;
     _isDelete = isDelete;
     _createUser = createUser;
     _createTime = createTime;
@@ -235,6 +237,7 @@ class Records {
     _name = json['name'];
     _totalSize = json['totalSize'];
     _classifyIds = json['classifyIds'];
+    _classifyNames = json['classifyNames'];
     _isDelete = json['isDelete'];
     _createUser = json['createUser'];
     _createTime = json['createTime'];
@@ -247,6 +250,7 @@ class Records {
   String? _name;
   num? _totalSize;
   String? _classifyIds;
+  String? _classifyNames;
   bool? _isDelete;
   num? _createUser;
   String? _createTime;
@@ -258,6 +262,7 @@ Records copyWith({  num? id,
   String? name,
   num? totalSize,
   String? classifyIds,
+  String? classifyNames,
   bool? isDelete,
   num? createUser,
   String? createTime,
@@ -269,6 +274,7 @@ Records copyWith({  num? id,
   name: name ?? _name,
   totalSize: totalSize ?? _totalSize,
   classifyIds: classifyIds ?? _classifyIds,
+  classifyNames: classifyNames ?? _classifyNames,
   isDelete: isDelete ?? _isDelete,
   createUser: createUser ?? _createUser,
   createTime: createTime ?? _createTime,
@@ -281,6 +287,7 @@ Records copyWith({  num? id,
   String? get name => _name;
   num? get totalSize => _totalSize;
   String? get classifyIds => _classifyIds;
+  String? get classifyNames => _classifyNames;
   bool? get isDelete => _isDelete;
   num? get createUser => _createUser;
   String? get createTime => _createTime;
@@ -295,6 +302,7 @@ Records copyWith({  num? id,
     map['name'] = _name;
     map['totalSize'] = _totalSize;
     map['classifyIds'] = _classifyIds;
+    map['classifyNames'] = _classifyNames;
     map['isDelete'] = _isDelete;
     map['createUser'] = _createUser;
     map['createTime'] = _createTime;

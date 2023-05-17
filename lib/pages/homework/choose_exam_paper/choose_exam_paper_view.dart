@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
@@ -58,6 +59,15 @@ class _ChooseExamPaperPageState
     logic.addListenerId(GetBuilderIds.getExampersList, () {
       hideLoading();
       if (state.list != null) {
+
+        if(widget.isAssignHomework && (assignLogic!.state.assignHomeworkRequest.paperId??"").isNotEmpty){
+          state.list.forEach((element) {
+            if("${element.id}" == assignLogic!.state.assignHomeworkRequest.paperId){
+              addSelected(currentKey.value,element,true);
+            }
+          });
+        }
+
         if (state.pageNo == currentPageNo + 1) {
           exampapers.addAll(state!.list!);
           currentPageNo++;
@@ -281,16 +291,26 @@ class _ChooseExamPaperPageState
               )),
           InkWell(
             onTap: () {
-              RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage);
+              RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+                PreviewExamPaperPage.ShowAssignHomework:
+                    widget.isAssignHomework,
+                PreviewExamPaperPage.PaperType: common.PaperType.exam,
+                PreviewExamPaperPage.StudentOperationId: null,
+                PreviewExamPaperPage.PaperId: exampaper.id,
+                PreviewExamPaperPage.PaperName: exampaper.name
+              });
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildLineItem(R.imagesExamPaperName, "试卷名称：${exampaper.name}"),
-                buildLineItem(R.imagesExamPaperTiCount, "题目数量：85道"),
-                buildLineItem(R.imagesExamPaperTiType, "试题类型：听力、阅读、写作"),
-                buildLineItem(R.imagesExamPaperTime, "组卷时间：2023年03月21日"),
+                buildLineItem(
+                    R.imagesExamPaperTiCount, "题目数量：${exampaper.totalSize}道"),
+                buildLineItem(
+                    R.imagesExamPaperTiType, "试题类型：${exampaper.classifyNames}"),
+                buildLineItem(
+                    R.imagesExamPaperTime, "组卷时间：${exampaper.createTime}"),
               ],
             ),
           )

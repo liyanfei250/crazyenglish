@@ -23,17 +23,16 @@ import '../net/net_manager.dart';
 class HomeworkRepository{
 
   // 获取作业历史列表
-  Future<HomeworkHistoryResponse> getHistoryHomework(int page ,int pageSize) async {
+  Future<HomeworkHistoryResponse> getHistoryHomework(dynamic schoolClassId,int page ,int pageSize) async {
 
     P p = P(
       current: page,
       size: pageSize,
     );
-    // TODO 替换成真实id 用户登录完毕就应该确定 是进入教师端还是学生端 不应本地单独存入是学生还是老师
     HomeworkRequest request = HomeworkRequest(
       actionType: 1,
-      teacherId: "1651539603655626753",
-      schoolClassId: 1655395694170124290.toString(),
+      teacherId: SpUtil.getInt(BaseConstant.USER_ID).toString(),
+      schoolClassId: schoolClassId.toString(),
       orderType: "2",
       p: p
     );

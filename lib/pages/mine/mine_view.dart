@@ -13,6 +13,7 @@ import '../../utils/colors.dart';
 import '../../utils/sp_util.dart';
 import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'mine_logic.dart';
+import '../../../entity/user_info_response.dart' as userIfo;
 
 class MinePage extends BasePage {
   const MinePage({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class _MinePageState extends BasePageState<MinePage> {
   final state = Get.find<MineLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
+  userIfo.UserInfoResponse? userInfoResponse;
 
   void onClickPosition(int position) {
     switch (position) {
@@ -114,13 +116,14 @@ class _MinePageState extends BasePageState<MinePage> {
               margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: GestureDetector(
                 onTap: () {
-                  if(!Util.isIOSMode()){
+                  if (!Util.isIOSMode()) {
                     RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                         isNeedCheckLogin: true,
                         arguments: {
-                          'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                              ? false
-                              : true
+                          'isStudent':
+                              SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                  ? false
+                                  : true
                         });
                   }
                 },
@@ -141,16 +144,18 @@ class _MinePageState extends BasePageState<MinePage> {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    if(!Util.isIOSMode()){
-                                      RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                    if (!Util.isIOSMode()) {
+                                      RouterUtil.toNamed(
+                                          AppRoutes.PersonInfoPage,
                                           isNeedCheckLogin: true,
                                           arguments: {
-                                            'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                            'isStudent': SpUtil.getBool(
+                                                    BaseConstant
+                                                        .IS_TEACHER_LOGIN)
                                                 ? false
                                                 : true
                                           });
                                     }
-
                                   },
                                   child: Text(
                                     SpUtil.getString(BaseConstant.USER_NAME),
@@ -171,7 +176,8 @@ class _MinePageState extends BasePageState<MinePage> {
                               RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                                   isNeedCheckLogin: true,
                                   arguments: {
-                                    'isStudent': SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                    'isStudent': SpUtil.getBool(
+                                            BaseConstant.IS_TEACHER_LOGIN)
                                         ? false
                                         : true
                                   });
@@ -202,34 +208,34 @@ class _MinePageState extends BasePageState<MinePage> {
           ),
           Visibility(
             visible: !Util.isIOSMode(),
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
-                margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(13),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    buildItemType('我的班级', R.imagesMineClass),
-                    buildItemType('我的订单', R.imagesMineOrder),
-                    SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                        ? buildItemType('历史作业', R.imagesMineHistoryWork)
-                        : buildItemType('题目反馈', R.imagesMineHistoryWork),
-                  ],
-                ),
-              ),),
-
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+              margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  buildItemType('我的班级', R.imagesMineClass),
+                  buildItemType('我的订单', R.imagesMineOrder),
+                  SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                      ? buildItemType('历史作业', R.imagesMineHistoryWork)
+                      : buildItemType('题目反馈', R.imagesMineHistoryWork),
+                ],
+              ),
+            ),
+          ),
           Container(
               width: double.infinity,
               padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
@@ -249,15 +255,15 @@ class _MinePageState extends BasePageState<MinePage> {
               child: Column(
                 children: [
                   Visibility(
-                      visible:!Util.isIOSMode(),
+                      visible: !Util.isIOSMode(),
                       child: buildItem(
-                      "给我们评价",
-                      Image(
-                        image: AssetImage(R.imagesMineAppraise),
-                        width: 20.w,
-                        height: 20.w,
-                      ),
-                      0)),
+                          "给我们评价",
+                          Image(
+                            image: AssetImage(R.imagesMineAppraise),
+                            width: 20.w,
+                            height: 20.w,
+                          ),
+                          0)),
                   buildItem(
                       "意见反馈",
                       Image(
@@ -277,13 +283,14 @@ class _MinePageState extends BasePageState<MinePage> {
                   Visibility(
                     visible: !Util.isIOSMode(),
                     child: buildItem(
-                      "切换用户",
-                      Image(
-                        image: AssetImage("images/my_icon_setting.png"),
-                        width: 20.w,
-                        height: 20.w,
-                      ),
-                      5),),
+                        "切换用户",
+                        Image(
+                          image: AssetImage("images/my_icon_setting.png"),
+                          width: 20.w,
+                          height: 20.w,
+                        ),
+                        5),
+                  ),
                   buildItem(
                       "我的设置",
                       Image(
@@ -292,7 +299,6 @@ class _MinePageState extends BasePageState<MinePage> {
                         height: 20.w,
                       ),
                       3),
-
                 ],
               )),
         ],
@@ -307,21 +313,36 @@ class _MinePageState extends BasePageState<MinePage> {
 
         switch (menu) {
           case '我的班级':
-            RouterUtil.toNamed(AppRoutes.MyClassListPage,
-                isNeedCheckLogin: true);
-            // RouterUtil.toNamed(AppRoutes.QRViewPageNextClass,
-            //     isNeedCheckLogin: true,
-            //     arguments: {'isShowAdd': 0});
+            if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
+              RouterUtil.toNamed(AppRoutes.MyClassListPage,
+                  isNeedCheckLogin: true);
+            } else {
+              //TODO  是否去获取我的班级 学生的班级id
+
+              RouterUtil.toNamed(
+                  AppRoutes.QRViewPageNextClass,
+                  isNeedCheckLogin: true,
+                  arguments: {
+                    'isShowAdd': 0,
+                    'classId': '1655395694170124290'
+                    // 'classId': userInfoResponse!.obj!.classId
+                  });
+            }
             break;
           case '我的订单':
-            RouterUtil.toNamed(AppRoutes.MyOrderPage,isNeedCheckLogin: true,);
+            RouterUtil.toNamed(
+              AppRoutes.MyOrderPage,
+              isNeedCheckLogin: true,
+            );
             break;
           case '历史作业':
-            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,isNeedCheckLogin: true,
+            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+                isNeedCheckLogin: true,
                 arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
             break;
           case '题目反馈':
-            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,isNeedCheckLogin: true,arguments: {'isFeedback': true});
+            RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
+                isNeedCheckLogin: true, arguments: {'isFeedback': true});
             break;
           default:
             return null;
@@ -397,7 +418,8 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
+    userInfoResponse = userIfo.UserInfoResponse.fromJson(
+        SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override
