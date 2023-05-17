@@ -144,7 +144,6 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
-
   // 作业作答 跳转到答题页
   void getDetailAndStartHomework(String id,String operationStudentId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,
     int jumpParentIndex = -1,int jumpChildIndex = -1,CancelFunc? hideLoading}) async {

@@ -42,8 +42,8 @@ class Login_newLogic extends GetxController {
 
   void updateNativeUserInfo(UserInfoResponse infoResponse){
     SpUtil.putInt(BaseConstant.USER_ID, infoResponse.obj!.id!.toInt());
-    SpUtil.putString(BaseConstant.USER_NAME, infoResponse.obj!.username);
-    SpUtil.putString(BaseConstant.NICK_NAME, infoResponse.obj!.nickname);
+    SpUtil.putString(BaseConstant.USER_NAME, "${infoResponse.obj!.username}");
+    SpUtil.putString(BaseConstant.NICK_NAME, "${infoResponse.obj!.nickname}");
     SpUtil.putBool(BaseConstant.ISLOGING, true);
     SpUtil.putObject(BaseConstant.USER_INFO, infoResponse);
   }

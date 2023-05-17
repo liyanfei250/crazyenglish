@@ -76,9 +76,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   /// 运营商信息
   final String f_opr_key = "operator";
 
-  String _result = "token=";
   var controllerPHone = new TextEditingController();
-  String? _token;
   int tryTime = 0;
   var isHidePasswd = true.obs;
   var isCanLogin = false.obs;
@@ -133,6 +131,17 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
         Util.getHeader();
         logic.getUserinfo(phoneStr.value);
+        // TODO need delete
+        UserInfoResponse userInfoResponse = UserInfoResponse(obj: Obj(
+          username: phoneStr.value,
+          id: phoneStr.value == "13800011188"? 1651539603655626753:1651531759961624578,
+        ));
+        logic.updateNativeUserInfo(userInfoResponse);
+        if(widget.isEnterHome){
+          RouterUtil.offAndToNamed(AppRoutes.HOME);
+        }else{
+          Get.back();
+        }
       } else {
         Util.toast("登录失败");
       }
@@ -143,7 +152,17 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
         Util.getHeader();
         logic.getUserinfo(phoneStr.value);
-
+        // TODO need delete
+        UserInfoResponse userInfoResponse = UserInfoResponse(obj: Obj(
+          username: phoneStr.value,
+          id: phoneStr.value == "13800011188"? 1651539603655626753:1651531759961624578,
+        ));
+        logic.updateNativeUserInfo(userInfoResponse);
+        if(widget.isEnterHome){
+          RouterUtil.offAndToNamed(AppRoutes.HOME);
+        }else{
+          Get.back();
+        }
       } else {
         Util.toast("登录失败");
       }
