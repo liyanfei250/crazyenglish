@@ -112,6 +112,10 @@ class AnsweringLogic extends GetxController {
 
   }
 
+  void uploadCorrectionOperation() async{
+
+  }
+
 
   void getResult(SubjectVoList subjectVoList) async{
     StartExam startExam = await weekTestRepository.getExamResult("${subjectVoList.journalCatalogueId}");

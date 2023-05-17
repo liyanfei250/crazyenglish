@@ -7,13 +7,13 @@ import '../../../entity/review/HomeListChoiceDate.dart';
 import '../../../entity/review/HomeSecondListDate.dart' as data;
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import 'ListRepository.dart';
+import '../../../repository/other_repository.dart';
 import 'listening_practice_state.dart';
 
 class Listening_practiceLogic extends GetxController {
   final Listening_practiceState state = Listening_practiceState();
   ErrorNoteRepository resposi = ErrorNoteRepository();
-  ListRepository listData = ListRepository();
+  OtherRepository listData = OtherRepository();
 
   void getPracCords(page, pageSize) async {
     PracticeListResponse sendCodeResponse =
@@ -22,10 +22,10 @@ class Listening_practiceLogic extends GetxController {
     update([GetBuilderIds.getPracticeList]);
   }
 
-  void getChoiceMap(String id) async {
+  void getChoiceMap(String dictionaryType) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeListChoiceDate,
-            labelId: id.toString())
+            labelId: dictionaryType.toString())
         .then((value) {
       if (value != null) {
         return HomeKingDate.fromJson(value as Map<String, dynamic>?);
@@ -38,9 +38,9 @@ class Listening_practiceLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getHomeListChoiceDate]);
     }
-    HomeKingDate list = await listData.getHomeListChoiceDate(id);
+    HomeKingDate list = await listData.getDictionaryDataByType(dictionaryType);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeListChoiceDate, labelId: id, list.toJson());
+        JsonCacheManageUtils.HomeListChoiceDate, labelId: dictionaryType, list.toJson());
     state.paperDetail = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeListChoiceDate]);

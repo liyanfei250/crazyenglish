@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../entity/home/CommentDate.dart';
 import '../../../routes/getx_ids.dart';
-import '../../index/HomeViewRepository.dart';
+import '../../../repository/HomeViewRepository.dart';
 import 'question_feedback_state.dart';
 
 class Question_feedbackLogic extends GetxController {

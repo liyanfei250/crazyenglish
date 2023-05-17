@@ -137,7 +137,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
           studentSize: e.studentSize!.toString(),
           classId: e.id!,
           teacherName: "${userInfoResponse?.obj?.username}",
-          teacherSex: "${userInfoResponse?.obj?.sexName}",
+          teacherSex: "${userInfoResponse?.obj?.username}",
           teacherAge: "${userInfoResponse?.obj?.username}",
           teacherConnect: "${userInfoResponse?.obj?.phone}",
         );

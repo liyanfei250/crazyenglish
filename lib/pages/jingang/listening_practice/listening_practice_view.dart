@@ -77,7 +77,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
         }
       }
     });
-    logic.getChoiceMap('grade_type');
+    logic.getChoiceMap(DictionaryType.GradeType);
 
     logic.addListenerId(
         GetBuilderIds.getHomeSecondListDate +

@@ -206,13 +206,13 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherSex, "讲师性别:",
-                    "${userInfoResponse?.obj?.sexName}"),
+                    "${userInfoResponse?.obj?.username}"),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
                 // TODO 需增加教龄字段
                 _myHorizontalLayout(R.imagesClassInfoTeacherAge, "讲师教龄:",
-                    "${userInfoResponse?.obj?.sex}"),
+                    "${userInfoResponse?.obj?.username}"),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),

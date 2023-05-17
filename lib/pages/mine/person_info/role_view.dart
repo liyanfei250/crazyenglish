@@ -1,48 +1,67 @@
+import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/user_info_response.dart';
+import 'package:crazyenglish/pages/mine/login_new/login_new_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/r.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/utils/colors.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../base/AppUtil.dart';
-import '../../../base/common.dart';
-import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../r.dart';
-import '../../../routes/app_pages.dart';
-import '../../../routes/getx_ids.dart';
-import '../../../routes/routes_utils.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/sp_util.dart';
-import 'role_logic.dart';
 
 class RolePage extends BasePage {
-  const RolePage({Key? key}) : super(key: key);
+
+  bool isEnterHome = true;
+  UserInfoResponse? userInfoResponse;
+
+  RolePage({Key? key}) : super(key: key){
+    if(Get.arguments!=null &&
+        Get.arguments is Map){
+      isEnterHome = Get.arguments[LoginNewPage.inEnterHome]??false;
+      userInfoResponse = Get.arguments[LoginNewPage.UserInfoResponse];
+    }
+  }
 
   @override
   BasePageState<BasePage> getState() => _ToRolePageState();
 }
 
 class _ToRolePageState extends BasePageState<RolePage> {
-  final logic = Get.put(RoleLogic());
-  final state = Get.find<RoleLogic>().state;
-  int? identity; //2老师  3学生
+  final logic = Get.put(Person_infoLogic());
+  final state = Get.find<Person_infoLogic>().state;
+  int? identity; // 1老师  2学生
   @override
   void initState() {
     super.initState();
-
-    logic.addListenerId(GetBuilderIds.choiceRole, () {
-      if (state.sendCodeResponse.code == 1) {
-        SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
-        if (identity == 3) {
-          SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true);//是学生且没选年级
-          RouterUtil.toNamed(AppRoutes.RoleTwoPage, arguments: {'identity': 3});
-        } else {
-          Util.toast("选择成功");
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
+    logic.addListenerId(GetBuilderIds.getPersonInfo,() {
+      if(state.infoResponse.obj?.identity == RoleType.student
+      || state.infoResponse.obj?.identity == RoleType.teacher ){
+        SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", true);//是学生且没选年级
+        if (state.infoResponse.obj?.identity == RoleType.student && !SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+          RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
+              arguments: {
+                LoginNewPage.inEnterHome: widget.isEnterHome,
+                LoginNewPage.UserInfoResponse: state.infoResponse,
+              });
+        }else{
+          logic.updateNativeUserInfo(state.infoResponse);
+          if(widget.isEnterHome){
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }else{
+            Get.back();
+          }
         }
-      } else {
-        Util.toast("选择失败");
       }
     });
-    // Future.delayed(Duration(milliseconds: 400),quickLogin(""));
+    logic.addListenerId(GetBuilderIds.choiceRole, () {
+      logic.getPersonInfo(widget.userInfoResponse?.obj?.username??"");
+    });
   }
 
   @override
@@ -72,8 +91,8 @@ class _ToRolePageState extends BasePageState<RolePage> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      identity = 3;
-                      logic.setUserInfo(identity!);
+                      identity = RoleType.student;
+                      logic.toChangeRole(identity!);
                     },
                     child: Container(
                       height: 44.w,
@@ -129,10 +148,8 @@ class _ToRolePageState extends BasePageState<RolePage> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      //直接掉接口
-                      //RouterUtil.toNamed(AppRoutes.RoleTwoPage,arguments: {'identity':2});
-                      identity = 2;
-                      logic.setUserInfo(identity!);
+                      identity = RoleType.teacher;
+                      logic.toChangeRole(identity!);
                     },
                     child: Container(
                       height: 44.w,

@@ -60,17 +60,31 @@ class AnsweringPage extends BasePage {
   static const childIndexKey = "childIndex";
   static const LastFinishResult = "LastFinishResult";
   static const examResult = "examResult";
-  static const result_type = "result_type";
-  static const result_browse_type = 1;
-  static const result_normal_type = 2;
-  static const result_homework_type = 3;
-  static const answer_type = "answer_type";
-  static const answer_normal_type = 1;
-  static const answer_continue_type = 2;
-  static const answer_fix_type = 3;
-  static const answer_homework_draft_type = 4;
-  static const answer_homework_type = 5;
-  static const answer_browse_type = 6;
+
+  static const String result_type = "result_type";
+  // 浏览模式
+  static const int result_browse_type = 1;
+  // 正常作答反显答案模式
+  static const int result_normal_type = 2;
+  // 做作业反显答案模式
+  static const int result_homework_type = 3;
+  // 教师批改模式
+  static const int result_homework_correctioin_type = 4;
+
+  // 也是上传参数值
+  static const String answer_type = "answer_type";
+  // 正常作答模式
+  static const int answer_normal_type = 1;
+  // 草稿模式 继续作答
+  static const int answer_continue_type = 2;
+  // 修正错题模式
+  static const int answer_fix_type = 3;
+  // 保存作业草稿
+  static const int answer_homework_draft_type = 4;
+  // 学生做作业模式
+  static const int answer_homework_type = 5;
+  // 试卷预览模式 无交互 无答案 不跳转结果页
+  static const int answer_browse_type = 6;
 
 
   AnsweringPage({Key? key}) : super(key: key) {

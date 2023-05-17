@@ -57,7 +57,7 @@ class RequestPermissionsDialog extends Dialog {
             Padding(
               padding: EdgeInsets.only(bottom: 30.h),
               child: Container(
-                height: 79.h,
+                height: 84.h,
                 child: ListView.builder(
                   itemBuilder: (c, i) {
                     return Container(

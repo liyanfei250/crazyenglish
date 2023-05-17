@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import '../../../../entity/QuestionListResponse.dart';
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/json_cache_util.dart';
-import '../../../jingang/listening_practice/ListRepository.dart';
+import '../../../../repository/other_repository.dart';
 import 'question_list_state.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
 
 class QuestionListLogic extends GetxController {
   final ChooseQuestionState state = ChooseQuestionState();
-  ListRepository listData = ListRepository();
+  OtherRepository listData = OtherRepository();
   @override
   void onReady() {
     // TODO: implement onReady

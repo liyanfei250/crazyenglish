@@ -292,6 +292,31 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
                 ),
               )),
+              Visibility(
+                  visible: widget.resultType == AnsweringPage.result_homework_correctioin_type,
+                  child: InkWell(
+                    onTap: (){
+                      logicDetail.addJumpToStartExamListen();
+                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
+                      showLoading("");
+                    },
+                    child: Container(
+                      width: 134.w,
+                      height: 35.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xfff19e59),
+                              Color(0xffec5f2a),
+                            ]),
+                        borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                      ),
+                      child: Text("阅卷",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                    ),
+                  )),
               InkWell(
                 onTap: (){
                   // 开始作答逻辑 跳转到下一题
@@ -592,7 +617,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
           }else{
             // TODO 判断是否是图片选择题的逻辑需要修改
-            if(question.optionsList![0].content!.isNotEmpty){
+            if((question.optionsList![0].content??"").isNotEmpty){
               itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
             }else{
               itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));

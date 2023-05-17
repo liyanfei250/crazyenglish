@@ -76,18 +76,6 @@ class UserRepository {
       return Future.error("返回SendCodeResponse为空");
     }
   }
-  //修改手机号
-  Future<CommentDate> toChangePhoneNum(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.toChangePhoneNum,
-        data: req, options: Options(method: Method.post));
-    CommentDate paperDetail = CommentDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
   //重置密码和上面共用一个实体类接收
   Future<SendCodeResponseNew> sendResetPsd(Map<String, String> req) async {
     Map map = await NetManager.getInstance()!
@@ -135,6 +123,33 @@ class UserRepository {
       return sendCodeResponse!;
     } else {
       return Future.error("返回SendCodeResponse为空");
+    }
+  }
+
+
+  //提交头像
+  Future<CommentDate> toPushHeaderImage(Map<String, String> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.toPushHeaderImage,
+        data: req, options: Options(method: Method.post));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //修改昵称
+  Future<CommentDate> toChangePersonInfo(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.put, Api.putUserIofo,
+        data: req, options: Options(method: Method.put));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
     }
   }
 }

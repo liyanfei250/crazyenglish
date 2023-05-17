@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../entity/home/HomeSearchListDate.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import '../../index/HomeViewRepository.dart';
+import '../../../repository/HomeViewRepository.dart';
 
 class Search_listLogic extends GetxController {
   final Search_listState state = Search_listState();

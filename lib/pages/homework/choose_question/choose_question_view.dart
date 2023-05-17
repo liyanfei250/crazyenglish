@@ -403,7 +403,7 @@ class _ChooseQuestionPageState
         }
       }
     });
-    logic.getChoiceMap('grade_type');
+    logic.getChoiceMap(DictionaryType.GradeType);
 
     //获取金刚区列表
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {

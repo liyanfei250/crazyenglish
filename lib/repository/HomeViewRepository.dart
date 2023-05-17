@@ -1,25 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crazyenglish/entity/home/PersonInfo.dart';
 import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:dio/dio.dart';
 
-import '../../api/api.dart';
-import '../../base/AppUtil.dart';
-import '../../base/common.dart';
-import '../../entity/SendCodeResponseNew.dart';
-import '../../entity/base_resp.dart';
-import '../../entity/home/ClassInfoDate.dart';
-import '../../entity/home/CommentDate.dart';
-import '../../entity/home/HomeKingDate.dart';
-import '../../entity/home/HomeKingNewDate.dart';
-import '../../entity/home/HomeMyTasksDate.dart';
-import '../../entity/home/HomeSearchListDate.dart';
-import '../../entity/review/HomeListDate.dart';
-import '../../entity/teacher_week_list_response.dart';
-import '../../net/net_manager.dart';
-import '../../utils/sp_util.dart';
+import '../api/api.dart';
+import '../base/AppUtil.dart';
+import '../base/common.dart';
+import '../entity/SendCodeResponseNew.dart';
+import '../entity/base_resp.dart';
+import '../entity/home/ClassInfoDate.dart';
+import '../entity/home/CommentDate.dart';
+import '../entity/home/HomeKingDate.dart';
+import '../entity/home/HomeKingNewDate.dart';
+import '../entity/home/HomeMyTasksDate.dart';
+import '../entity/home/HomeSearchListDate.dart';
+import '../entity/review/HomeListDate.dart';
+import '../entity/teacher_week_list_response.dart';
+import '../net/net_manager.dart';
+import '../utils/sp_util.dart';
 
 class HomeViewRepository {
   //获取首页我的期刊，学生端
@@ -101,57 +100,6 @@ class HomeViewRepository {
     }
   }
 
-  //提交头像
-  Future<CommentDate> toPushHeaderImage(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.toPushHeaderImage,
-        data: req, options: Options(method: Method.post));
-    CommentDate paperDetail = CommentDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
-
-  //获取个人信息
-  Future<PersonInfo> getPersonInfo(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getUserIofo,
-        options: Options(method: Method.get));
-    PersonInfo paperDetail = PersonInfo.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
-
-  //修改昵称
-  Future<CommentDate> toChangeNickName(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.toChangeNickName,
-        data: req, options: Options(method: Method.post));
-    CommentDate paperDetail = CommentDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
-
-  //修改密码
-  Future<CommentDate> toChangePassword(Map<String, String> req) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.toChangePassword,
-        data: req, options: Options(method: Method.post));
-    CommentDate paperDetail = CommentDate.fromJson(map);
-    if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
-    } else {
-      return paperDetail!;
-    }
-  }
 
   //金刚区列表新增
   Future<HomeKingNewDate> getHomeKingListNew(String type) async {

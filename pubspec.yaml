@@ -193,6 +193,7 @@ flutter:
     - images/review_practise_record.png
     - images/weekly_de_browse.png
     - images/index_collection_words.png
+    - images/icon_permissions_store.png
     - images/icon_intensive_listening_translate_yes_clicked.png
     - images/torid_five_hide.png
     - images/home_my_journals.png
@@ -273,6 +274,7 @@ flutter:
     - images/report_three.png
     - images/xunfei_english.png
     - images/icon_transmission_speed_05_clicked.png
+    - images/icon_permissions_camera.png
     - images/ranking_close.png
     - images/ranking_second.png
     - images/student_no_date.png
@@ -408,6 +410,7 @@ flutter:
     - images/class_report_gold.png
     - images/result_favor.png
     - images/torid_one_hide.png
+    - images/icon_permissions_record.png
     - images/practise_next_question_enable.png
     - images/judge_right_unknow.png
     - images/index_icon_6.png

@@ -1,12 +1,13 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../routes/getx_ids.dart';
-import '../../../utils/colors.dart';
-import 'change_nick_name_logic.dart';
 
 class ChangeNickNamePage extends BasePage {
   const ChangeNickNamePage({Key? key}) : super(key: key);
@@ -16,8 +17,7 @@ class ChangeNickNamePage extends BasePage {
 }
 
 class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
-  final logic = Get.put(Change_nick_nameLogic());
-  final state = Get.find<Change_nick_nameLogic>().state;
+  final logic = Get.find<Person_infoLogic>();
   late TextEditingController _controller;
   final TextStyle textStyle = TextStyle(
       fontSize: 23, color: Color(0xff353e4d), fontWeight: FontWeight.w500);
@@ -27,7 +27,7 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
     super.initState();
     _controller = TextEditingController();
     logic.addListenerId(GetBuilderIds.toChangeNickName, () {
-      //todo nickname
+      logic.getPersonInfo("${SpUtil.getString(BaseConstant.USER_NAME)}");
     });
   }
 
@@ -90,9 +90,7 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
                 ),
                 onPressed: () {
                   // 点击按钮触发的逻辑
-                  Util.toast('修改');
-
-                  logic.changeNickName('');
+                  logic.changeNickName(_controller.text);
                 },
               ),
             ),
