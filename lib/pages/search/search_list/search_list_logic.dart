@@ -21,19 +21,18 @@ class Search_listLogic extends GetxController {
             labelId: weekTime.toString())
         .then((value) {
       if (value != null) {
-        return HomeSearchListDate.fromJson(value as Map<String, dynamic>?);
+        return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
       }
     });
 
     state.pageNo = page;
     if (page == 1 && cache is HomeSearchListDate && cache != null) {
       state.paperList = cache!;
-      //todo 具体的参数获取
-      // if(state.paperList.length < pageSize){
-      //   state.hasMore = false;
-      // } else {
-      //   state.hasMore = true;
-      // }
+      if(state.paperList.length < pageSize){
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
       update([GetBuilderIds.getHomeSearchDate]);
     }
 
@@ -44,23 +43,22 @@ class Search_listLogic extends GetxController {
           labelId: weekTime.toString(),
           list.toJson());
     }
-    //todo 具体的参数获取
-    // if(list.rows==null) {
-    //   if(page ==1){
-    //     state.paperList.clear();
-    //   }
-    // } else {
-    //   if(page ==1){
-    //     state.paperList = list.rows!;
-    //   } else {
-    //     state.paperList.addAll(list.rows!);
-    //   }
-    //   if(list.rows!.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    // }
+    if(list.rows==null) {
+      if(page ==1){
+        state.paperList.clear();
+      }
+    } else {
+      if(page ==1){
+        state.paperList = list.rows!;
+      } else {
+        state.paperList.addAll(list.rows!);
+      }
+      if(list.rows!.length < pageSize){
+        state.hasMore = false;
+      } else {
+        state.hasMore = true;
+      }
+    }
     update([GetBuilderIds.getHomeSearchDate]);
   }
 }

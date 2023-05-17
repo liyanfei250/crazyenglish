@@ -39,42 +39,42 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void initState() {
     super.initState();
     //收藏列表
-    logic.addListenerId(GetBuilderIds.getHomeSearchDate, () {
-      hideLoading();
-      /*if(state.paperList!=null && state.paperList!=null){
-        if(state.pageNo == currentPageNo+1){
-          weekPaperList = state.paperList;
-          currentPageNo++;
-          weekPaperList.addAll(state!.paperList!);
-          if(mounted && _refreshController!=null){
-            _refreshController.loadComplete();
-            if(!state!.hasMore){
-              _refreshController.loadNoData();
-            }else{
-              _refreshController.resetNoData();
-            }
-            setState(() {
-
-            });
-          }
-        }else if(state.pageNo == pageStartIndex){
-          currentPageNo = pageStartIndex;
-          weekPaperList.clear();
-          weekPaperList.addAll(state.paperList!);
-          if(mounted && _refreshController!=null){
-            _refreshController.refreshCompleted();
-            if(!state!.hasMore){
-              _refreshController.loadNoData();
-            }else{
-              _refreshController.resetNoData();
-            }
-            setState(() {
-            });
-          }
-
-        }
-      }*/
-    });
+    // logic.addListenerId(GetBuilderIds.getHomeSearchDate, () {
+    //   hideLoading();
+    //   if(state.paperList!=null && state.paperList!=null){
+    //     if(state.pageNo == currentPageNo+1){
+    //       weekPaperList = state.paperList;
+    //       currentPageNo++;
+    //       weekPaperList.addAll(state!.paperList!);
+    //       if(mounted && _refreshController!=null){
+    //         _refreshController.loadComplete();
+    //         if(!state!.hasMore){
+    //           _refreshController.loadNoData();
+    //         }else{
+    //           _refreshController.resetNoData();
+    //         }
+    //         setState(() {
+    //
+    //         });
+    //       }
+    //     }else if(state.pageNo == pageStartIndex){
+    //       currentPageNo = pageStartIndex;
+    //       weekPaperList.clear();
+    //       weekPaperList.addAll(state.paperList!);
+    //       if(mounted && _refreshController!=null){
+    //         _refreshController.refreshCompleted();
+    //         if(!state!.hasMore){
+    //           _refreshController.loadNoData();
+    //         }else{
+    //           _refreshController.resetNoData();
+    //         }
+    //         setState(() {
+    //         });
+    //       }
+    //
+    //     }
+    //   }
+    // });
   }
   @override
   Widget build(BuildContext context) {

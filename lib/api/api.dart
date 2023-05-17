@@ -170,7 +170,7 @@ class Api {
   static String getHomeMyTasksDate = Config.ApiHost + "/question/studentOperation/getOperationList";
 
   // 首页顶部搜索
-  static String getHomeSearchListDate = Config.ApiHost + "/getHomeSearchListDate";
+  static String getHomeSearchListDate = Config.ApiHost + "/question/home/fullSearch";
 
   // 首页扫描班级信息
   static String getHClassInfoDate = Config.ApiHost + "/getHClassInfoDate";

@@ -266,7 +266,6 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
             case "英语周报":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
               break;
-              break;
             case "历史作业":
               RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
                   arguments: {
