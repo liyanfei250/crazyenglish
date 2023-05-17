@@ -29,6 +29,8 @@ class R {
   static final String imagesWeeklyDeBrowse = 'images/weekly_de_browse.png';
   /// ![](http://127.0.0.1:11/images/index_collection_words.png)
   static final String imagesIndexCollectionWords = 'images/index_collection_words.png';
+  /// ![](http://127.0.0.1:11/images/icon_permissions_store.png)
+  static final String imagesIconPermissionsStore = 'images/icon_permissions_store.png';
   /// ![](http://127.0.0.1:11/images/icon_intensive_listening_translate_yes_clicked.png)
   static final String imagesIconIntensiveListeningTranslateYesClicked = 'images/icon_intensive_listening_translate_yes_clicked.png';
   /// ![](http://127.0.0.1:11/images/torid_five_hide.png)
@@ -189,6 +191,8 @@ class R {
   static final String imagesXunfeiEnglish = 'images/xunfei_english.png';
   /// ![](http://127.0.0.1:11/images/icon_transmission_speed_05_clicked.png)
   static final String imagesIconTransmissionSpeed05Clicked = 'images/icon_transmission_speed_05_clicked.png';
+  /// ![](http://127.0.0.1:11/images/icon_permissions_camera.png)
+  static final String imagesIconPermissionsCamera = 'images/icon_permissions_camera.png';
   /// ![](http://127.0.0.1:11/images/ranking_close.png)
   static final String imagesRankingClose = 'images/ranking_close.png';
   /// ![](http://127.0.0.1:11/images/ranking_second.png)
@@ -459,6 +463,8 @@ class R {
   static final String imagesResultFavor = 'images/result_favor.png';
   /// ![](http://127.0.0.1:11/images/torid_one_hide.png)
   static final String imagesToridOneHide = 'images/torid_one_hide.png';
+  /// ![](http://127.0.0.1:11/images/icon_permissions_record.png)
+  static final String imagesIconPermissionsRecord = 'images/icon_permissions_record.png';
   /// ![](http://127.0.0.1:11/images/practise_next_question_enable.png)
   static final String imagesPractiseNextQuestionEnable = 'images/practise_next_question_enable.png';
   /// ![](http://127.0.0.1:11/images/judge_right_unknow.png)

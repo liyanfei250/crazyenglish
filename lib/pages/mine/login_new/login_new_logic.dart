@@ -1,3 +1,5 @@
+import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +38,14 @@ class Login_newLogic extends GetxController {
       Util.toast("${state.loginResponse.message}");
     }
 
+  }
+
+  void updateNativeUserInfo(UserInfoResponse infoResponse){
+    SpUtil.putInt(BaseConstant.USER_ID, infoResponse.obj!.id!.toInt());
+    SpUtil.putString(BaseConstant.USER_NAME, infoResponse.obj!.username);
+    SpUtil.putString(BaseConstant.NICK_NAME, infoResponse.obj!.nickname);
+    SpUtil.putBool(BaseConstant.ISLOGING, true);
+    SpUtil.putObject(BaseConstant.USER_INFO, infoResponse);
   }
 
   void passwordLogin(String phone, String phoneCode) async {

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../entity/home/HomeKingDate.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import '../../jingang/listening_practice/ListRepository.dart';
+import '../../../repository/other_repository.dart';
 import '../../reviews/repository/ReviewRepository.dart';
 import 'choose_question_state.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
@@ -11,7 +11,7 @@ import '../../../../entity/review/HomeSecondListDate.dart' as data;
 class ChooseQuestionLogic extends GetxController {
   final ChooseQuestionState state = ChooseQuestionState();
   ReviewRepository reviewRepository = ReviewRepository();
-  ListRepository listData = ListRepository();
+  OtherRepository listData = OtherRepository();
   @override
   void onReady() {
     super.onReady();
@@ -21,10 +21,10 @@ class ChooseQuestionLogic extends GetxController {
   void onClose() {
     super.onClose();
   }
-  void getChoiceMap(String id) async {
+  void getChoiceMap(String dictionaryType) async {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.HomeListChoiceDate,
-        labelId: id.toString())
+        labelId: dictionaryType.toString())
         .then((value) {
       if (value != null) {
         return HomeKingDate.fromJson(value as Map<String, dynamic>?);
@@ -37,9 +37,9 @@ class ChooseQuestionLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getHomeListChoiceDate]);
     }
-    HomeKingDate list = await listData.getHomeListChoiceDate(id);
+    HomeKingDate list = await listData.getDictionaryDataByType(dictionaryType);
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeListChoiceDate, labelId: id, list.toJson());
+        JsonCacheManageUtils.HomeListChoiceDate, labelId: dictionaryType, list.toJson());
     state.paperDetail = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeListChoiceDate]);

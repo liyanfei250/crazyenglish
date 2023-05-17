@@ -1,6 +1,6 @@
 /// code : 0
 /// message : "系统正常"
-/// obj : {"id":1,"infoId":null,"sourceType":null,"username":"admin","actualname":"里里","sex":1,"sexName":"男","phone":"13803541111","nickname":"尤克里里","password":"e10adc3949ba59abbe56e057f20f883e","url":null}
+/// obj : {"id":1651531759961624578,"username":"zhangsan","password":"e10adc3949ba59abbe56e057f20f883e","nickname":"太阳","actualname":"张三","phone":"13800001111","identity":2,"url":null,"affiliatedSchool":"sssssssss","affiliatedGrade":"1648226541879005185,1648226681310253058","affiliatedGradeName":null}
 /// p : null
 
 class UserInfoResponse {
@@ -52,116 +52,116 @@ UserInfoResponse copyWith({  num? code,
 
 }
 
-/// id : 1
-/// infoId : null
-/// sourceType : null
-/// username : "admin"
-/// actualname : "里里"
-/// sex : 1
-/// sexName : "男"
-/// phone : "13803541111"
-/// nickname : "尤克里里"
+/// id : 1651531759961624578
+/// username : "zhangsan"
 /// password : "e10adc3949ba59abbe56e057f20f883e"
+/// nickname : "太阳"
+/// actualname : "张三"
+/// phone : "13800001111"
+/// identity : 2
 /// url : null
+/// affiliatedSchool : "sssssssss"
+/// affiliatedGrade : "1648226541879005185,1648226681310253058"
+/// affiliatedGradeName : null
 
 class Obj {
   Obj({
       num? id, 
-      dynamic infoId, 
-      dynamic sourceType, 
       String? username, 
-      String? actualname, 
-      num? sex, 
-      String? sexName, 
-      String? phone, 
-      String? nickname, 
       String? password, 
-      dynamic url,}){
+      String? nickname, 
+      String? actualname, 
+      String? phone, 
+      num? identity, 
+      dynamic url, 
+      String? affiliatedSchool, 
+      String? affiliatedGrade, 
+      dynamic affiliatedGradeName,}){
     _id = id;
-    _infoId = infoId;
-    _sourceType = sourceType;
     _username = username;
-    _actualname = actualname;
-    _sex = sex;
-    _sexName = sexName;
-    _phone = phone;
-    _nickname = nickname;
     _password = password;
+    _nickname = nickname;
+    _actualname = actualname;
+    _phone = phone;
+    _identity = identity;
     _url = url;
+    _affiliatedSchool = affiliatedSchool;
+    _affiliatedGrade = affiliatedGrade;
+    _affiliatedGradeName = affiliatedGradeName;
 }
 
   Obj.fromJson(dynamic json) {
     _id = json['id'];
-    _infoId = json['infoId'];
-    _sourceType = json['sourceType'];
     _username = json['username'];
-    _actualname = json['actualname'];
-    _sex = json['sex'];
-    _sexName = json['sexName'];
-    _phone = json['phone'];
-    _nickname = json['nickname'];
     _password = json['password'];
+    _nickname = json['nickname'];
+    _actualname = json['actualname'];
+    _phone = json['phone'];
+    _identity = json['identity'];
     _url = json['url'];
+    _affiliatedSchool = json['affiliatedSchool'];
+    _affiliatedGrade = json['affiliatedGrade'];
+    _affiliatedGradeName = json['affiliatedGradeName'];
   }
   num? _id;
-  dynamic _infoId;
-  dynamic _sourceType;
   String? _username;
-  String? _actualname;
-  num? _sex;
-  String? _sexName;
-  String? _phone;
-  String? _nickname;
   String? _password;
+  String? _nickname;
+  String? _actualname;
+  String? _phone;
+  num? _identity;
   dynamic _url;
+  String? _affiliatedSchool;
+  String? _affiliatedGrade;
+  dynamic _affiliatedGradeName;
 Obj copyWith({  num? id,
-  dynamic infoId,
-  dynamic sourceType,
   String? username,
-  String? actualname,
-  num? sex,
-  String? sexName,
-  String? phone,
-  String? nickname,
   String? password,
+  String? nickname,
+  String? actualname,
+  String? phone,
+  num? identity,
   dynamic url,
+  String? affiliatedSchool,
+  String? affiliatedGrade,
+  dynamic affiliatedGradeName,
 }) => Obj(  id: id ?? _id,
-  infoId: infoId ?? _infoId,
-  sourceType: sourceType ?? _sourceType,
   username: username ?? _username,
-  actualname: actualname ?? _actualname,
-  sex: sex ?? _sex,
-  sexName: sexName ?? _sexName,
-  phone: phone ?? _phone,
-  nickname: nickname ?? _nickname,
   password: password ?? _password,
+  nickname: nickname ?? _nickname,
+  actualname: actualname ?? _actualname,
+  phone: phone ?? _phone,
+  identity: identity ?? _identity,
   url: url ?? _url,
+  affiliatedSchool: affiliatedSchool ?? _affiliatedSchool,
+  affiliatedGrade: affiliatedGrade ?? _affiliatedGrade,
+  affiliatedGradeName: affiliatedGradeName ?? _affiliatedGradeName,
 );
   num? get id => _id;
-  dynamic get infoId => _infoId;
-  dynamic get sourceType => _sourceType;
   String? get username => _username;
-  String? get actualname => _actualname;
-  num? get sex => _sex;
-  String? get sexName => _sexName;
-  String? get phone => _phone;
-  String? get nickname => _nickname;
   String? get password => _password;
+  String? get nickname => _nickname;
+  String? get actualname => _actualname;
+  String? get phone => _phone;
+  num? get identity => _identity;
   dynamic get url => _url;
+  String? get affiliatedSchool => _affiliatedSchool;
+  String? get affiliatedGrade => _affiliatedGrade;
+  dynamic get affiliatedGradeName => _affiliatedGradeName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['infoId'] = _infoId;
-    map['sourceType'] = _sourceType;
     map['username'] = _username;
-    map['actualname'] = _actualname;
-    map['sex'] = _sex;
-    map['sexName'] = _sexName;
-    map['phone'] = _phone;
-    map['nickname'] = _nickname;
     map['password'] = _password;
+    map['nickname'] = _nickname;
+    map['actualname'] = _actualname;
+    map['phone'] = _phone;
+    map['identity'] = _identity;
     map['url'] = _url;
+    map['affiliatedSchool'] = _affiliatedSchool;
+    map['affiliatedGrade'] = _affiliatedGrade;
+    map['affiliatedGradeName'] = _affiliatedGradeName;
     return map;
   }
 

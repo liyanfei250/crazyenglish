@@ -1,3 +1,4 @@
+import 'package:crazyenglish/entity/home/HomeKingDate.dart';
 import 'package:get/get.dart';
 
 import '../../entity/datagroup_detail_response.dart';
@@ -30,11 +31,11 @@ class ConfigLogic extends GetxController {
     /// LISTENING_TYPE 题目类型
     /// LISTENING_MODE 听力类型
 
-    DatagroupDetailResponse groupCLASS_GRADE = await _getGroupDetail("CLASS_GRADE");
-    DatagroupDetailResponse groupQUESTION_TYPE = await _getGroupDetail("QUESTION_TYPE");
-    DatagroupDetailResponse groupQUESTION_DIFFICULTY = await _getGroupDetail("QUESTION_DIFFICULTY");
-    DatagroupDetailResponse groupLISTENING_TYPE = await _getGroupDetail("LISTENING_TYPE");
-    DatagroupDetailResponse groupLISTENING_MODE = await _getGroupDetail("LISTENING_MODE");
+    HomeKingDate groupCLASS_GRADE = await _getGroupDetail("CLASS_GRADE");
+    HomeKingDate groupQUESTION_TYPE = await _getGroupDetail("QUESTION_TYPE");
+    HomeKingDate groupQUESTION_DIFFICULTY = await _getGroupDetail("QUESTION_DIFFICULTY");
+    HomeKingDate groupLISTENING_TYPE = await _getGroupDetail("LISTENING_TYPE");
+    HomeKingDate groupLISTENING_MODE = await _getGroupDetail("LISTENING_MODE");
 
     if(groupCLASS_GRADE!=null
         && groupQUESTION_TYPE!=null
@@ -50,26 +51,26 @@ class ConfigLogic extends GetxController {
     }
   }
 
-  Future<DatagroupDetailResponse> _getGroupDetail(String code) async {
+  Future<HomeKingDate> _getGroupDetail(String code) async {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.DATA_GROUP_DETAIL,labelId: code).then((value){
       if(value!=null){
-        return DatagroupDetailResponse.fromJson(value as Map<String,dynamic>?);
+        return HomeKingDate.fromJson(value as Map<String,dynamic>?);
       }
     });
 
-    if(cache is DatagroupDetailResponse) {
+    if(cache is HomeKingDate) {
       _getGroupDetailByNet(code);
       return cache;
     } else {
       print("${code} not cached");
     }
-    DatagroupDetailResponse list = await _getGroupDetailByNet(code);
+    HomeKingDate list = await _getGroupDetailByNet(code);
     return list;
   }
 
-  Future<DatagroupDetailResponse> _getGroupDetailByNet(String code) async{
-    DatagroupDetailResponse list = await otherRepository.getDataGroupDetail(code);
+  Future<HomeKingDate> _getGroupDetailByNet(String code) async{
+    HomeKingDate list = await otherRepository.getDictionaryDataByType(code);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.DATA_GROUP_DETAIL,
         labelId: code,

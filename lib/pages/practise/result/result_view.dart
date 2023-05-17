@@ -592,7 +592,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
           }else{
             // TODO 判断是否是图片选择题的逻辑需要修改
-            if(question.optionsList![0].content!.isNotEmpty){
+            if((question.optionsList![0].content??"").isNotEmpty){
               itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
             }else{
               itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));

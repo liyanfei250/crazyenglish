@@ -9,7 +9,7 @@ import '../../entity/week_list_response.dart';
 import '../../routes/getx_ids.dart';
 import '../../utils/json_cache_util.dart';
 import '../../utils/sp_util.dart';
-import 'HomeViewRepository.dart';
+import '../../repository/HomeViewRepository.dart';
 
 class TeacherIndexLogic extends GetxController {
   final TeacherIndexState state = TeacherIndexState();

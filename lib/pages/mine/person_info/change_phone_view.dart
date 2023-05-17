@@ -1,25 +1,28 @@
+import 'package:crazyenglish/pages/mine/auth_code/auth_code_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../base/AppUtil.dart';
+import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
 import '../../../r.dart';
+import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
+import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
-import 'change_psd_logic.dart';
 
-class ChangePsdPage extends BasePage {
-  const ChangePsdPage({Key? key}) : super(key: key);
+class ChangePhonePage extends BasePage {
+  const ChangePhonePage({Key? key}) : super(key: key);
 
   @override
   BasePageState<BasePage> getState() => _ToMyOrderPageState();
 }
 
-class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
-  final logic = Get.put(Change_psdLogic());
-  final state = Get.find<Change_psdLogic>().state;
+class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
+  final logic = Get.find<Person_infoLogic>();
   TextEditingController? _phoneController;
   var phoneCodeStr = "".obs;
   var phoneNumStr = "".obs;
@@ -30,47 +33,62 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
     super.initState();
     isShowPsd = false;
     _phoneController = TextEditingController();
-    logic.toChangePassword('id');
-    logic.addListenerId(GetBuilderIds.toChangePassword, () {
+    logic.toChangePhoneNum('id');
+    logic.addListenerId(GetBuilderIds.toChangePhoneNumber, () {
       //todo
+    });
+
+    logic.addListenerId(GetBuilderIds.sendCode, () {
+      // Util.toast(state.sendCodeResponse.data??"");
+      hideLoading();
+      // Util.toast(state.sendCodeResponse.data??"");
+      if (logic.state.sendCodeResponse.code == 1) {
+        var date = {
+          AuthCodePage.PHONE: _phoneController!.text,
+          AuthCodePage.SMS_CODE: phoneCodeStr.value,
+          AuthCodePage.SMS_TYPE: SmsCodeType.changeMobile
+        };
+        RouterUtil.offAndToNamed(AppRoutes.AuthCodePage, arguments: date);
+      } else {
+        Util.toast(logic.state.sendCodeResponse.message!);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNormalAppBar("修改密码"),
-      backgroundColor: AppColors.theme_bg,
-      body: SafeArea(
-        child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              hideKeyBoard();
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(padding: EdgeInsets.only(top: 25.w)),
-                _getLoginInput(),
-                Padding(padding: EdgeInsets.only(top: 10.w)),
-                const Spacer(),
-                Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 46.w, right: 46.w, bottom: 43.w),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [],
+        appBar: buildNormalAppBar("修改手机号"),
+        backgroundColor: AppColors.theme_bg,
+        body: SafeArea(
+          child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                hideKeyBoard();
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(padding: EdgeInsets.only(top: 25.w)),
+                  _getLoginInput(),
+                  Padding(padding: EdgeInsets.only(top: 10.w)),
+                  const Spacer(),
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: 46.w, right: 46.w, bottom: 43.w),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [],
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            )),
-      ),
-    );
+                    ],
+                  )
+                ],
+              )),
+        ));
   }
 
   ///收起键盘
@@ -109,8 +127,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
                 return;
               }
               //todo 发送验证码，去验证码界面
-              // logic.sendCode(_phoneController!.text);
-
+              logic.sendCode(_phoneController!.text,SmsCodeType.changeMobile);
             },
             child: Container(
               height: 47.w,
@@ -142,46 +159,13 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('旧密码: '),
+          Text('绑定手机号: '),
           SizedBox(
             width: 14.w,
           ),
           Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        obscureText: isShowPsd,
-                        style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (String str) {
-                          phoneCodeStr.value = str;
-                        },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: '请输入旧密码',
-                          hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
-                        ),
-                      )),
-                  InkWell(
-                    onTap: () {
-                      toPsdShow();
-                    },
-                    child: Container(
-                      width: 47.w,
-                      height: 47.w,
-                      padding: EdgeInsets.all(15.w),
-                      margin: EdgeInsets.only(right: 4.w),
-                      child: Image.asset(
-                        isShowPsd ? R.imagesLoginEyeClose : R.imagesLoginEyeOpen,
-                        width: 17.w,
-                        height: 17.w,
-                      ),
-                    ),
-                  )
-                ],
-              ))
+              child: Text(Util.formatPhoneNumber('13299195686'),
+                  style: TextStyle(fontSize: 15, color: Color(0xff898a93))))
         ],
       ),
     );
@@ -198,7 +182,7 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('新密码: '),
+          Text('更换手机号: '),
           SizedBox(
             width: 14.w,
           ),
@@ -216,26 +200,10 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: '请输入新密码',
+                  hintText: '请输入要更换的手机号',
                   hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
                 ),
               )),
-              InkWell(
-                onTap: () {
-                  toPsdShow();
-                },
-                child: Container(
-                  width: 47.w,
-                  height: 47.w,
-                  padding: EdgeInsets.all(15.w),
-                  margin: EdgeInsets.only(right: 4.w),
-                  child: Image.asset(
-                    isShowPsd ? R.imagesLoginEyeClose : R.imagesLoginEyeOpen,
-                    width: 17.w,
-                    height: 17.w,
-                  ),
-                ),
-              )
             ],
           ))
         ],

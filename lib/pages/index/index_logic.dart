@@ -1,5 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
-import 'package:crazyenglish/pages/index/HomeViewRepository.dart';
+import 'package:crazyenglish/repository/HomeViewRepository.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
 

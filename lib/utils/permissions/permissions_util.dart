@@ -102,12 +102,12 @@ class PermissionsUtil {
   static String getImageUrl(RequestPermissionsTag permissionsTag) {
 
     switch (permissionsTag) {
-    // case RequestPermissionsTag.PHOTOS:
-    //   return R.imagesIconPermissionsStore;
-    // case RequestPermissionsTag.RECORD_AUDIO:
-    //   return R.imagesIconPermissionsRecord;
-    // case RequestPermissionsTag.CAMERA:
-    //   return R.imagesIconPermissionsCamera;
+    case RequestPermissionsTag.PHOTOS:
+      return R.imagesIconPermissionsStore;
+    case RequestPermissionsTag.RECORD_AUDIO:
+      return R.imagesIconPermissionsRecord;
+    case RequestPermissionsTag.CAMERA:
+      return R.imagesIconPermissionsCamera;
       default:
         return "";
     }

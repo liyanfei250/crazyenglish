@@ -181,7 +181,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           }
 
           if(element.questionTypeStr == QuestionType.multi_choice){
-            if(question.optionsList![0].content!.isNotEmpty){
+            if((question.optionsList![0].content??"").isNotEmpty){
               itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true));
             } else {
               itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true,isImgChoice: true,));
@@ -190,7 +190,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isJudge:true));
           }else{
             // TODO 判断是否是图片选择题的逻辑需要修改
-            if(question.optionsList![0].content!.isNotEmpty){
+            if((question.optionsList![0].content??"").isNotEmpty){
               itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false));
             } else {
               itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false,isImgChoice: true));

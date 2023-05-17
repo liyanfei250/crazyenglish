@@ -77,9 +77,9 @@ class _HomePageState extends State<HomeTeacherPage> {
     });
     // dataGroupLogic.getConfig();
     dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
-      if (dataGroupState.groupQUESTION_TYPE.data != null) {
-        dataGroupState.groupQUESTION_TYPE.data!.forEach((e) {
-          DataGroup.questionType[e.value!] = e.label ?? "";
+      if(dataGroupState.groupQUESTION_TYPE.obj!=null){
+        dataGroupState.groupQUESTION_TYPE.obj!.forEach((e) {
+          DataGroup.questionType["${e.value??0}"] = e.name??"";
         });
       }
     });

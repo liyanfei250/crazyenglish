@@ -5,7 +5,7 @@ import '../../../entity/home/HomeMyTasksDate.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import '../../../utils/sp_util.dart';
-import '../../index/HomeViewRepository.dart';
+import '../../../repository/HomeViewRepository.dart';
 import 'my_task_state.dart';
 
 class My_taskLogic extends GetxController {

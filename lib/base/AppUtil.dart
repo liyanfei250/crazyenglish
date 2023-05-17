@@ -613,21 +613,6 @@ class Util {
     // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
   }
 
-  static bool isChoiceRole() {
-    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE);
-    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
-  }
-
-  static bool isChoiceRoleGrade() {
-    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_GRADE);
-    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
-  }
-
-  static bool isChoiceRoleStudent() {
-    return SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT);
-    // return ObjectUtil.isNotEmpty(SpUtil.getString(BaseConstant.Sid));
-  }
-
   static bool isDesktop() {
     return Platform.isMacOS || Platform.isWindows || Platform.isLinux;
   }

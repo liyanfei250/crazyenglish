@@ -78,6 +78,8 @@ class GetBuilderIds {
   static const String getPersonInfo = "getPersonInfo";
   static const String toChangeNickName = "toChangeNickName";
   static const String toChangePassword = "toChangePassword";
+  static const String toAffiliatedGrade = "toAffiliatedGrade";
+  static const String toChangeRole = "toChangeRole";
   static const String toChangePhoneNumber = "toChangePhoneNumber";
   static const String PracticeDate = "PracticeDate";
   //教师端

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../entity/class_detail_response.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import '../../index/HomeViewRepository.dart';
+import '../../../repository/HomeViewRepository.dart';
 import '../../mine/ClassRepository.dart';
 import 'class_message_state.dart';
 

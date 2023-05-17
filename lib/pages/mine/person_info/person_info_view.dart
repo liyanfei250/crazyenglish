@@ -56,10 +56,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
     super.initState();
 
     //从本地或者接口获取个人信息
-    logic.getPersonInfo('');
-    logic.addListenerId(GetBuilderIds.getPersonInfo, () {
-      //todo 用户信息
-    });
+    logic.getPersonInfo("${SpUtil.getString(BaseConstant.USER_NAME)}");
 
     logic.postImageContent('');
     logic.addListenerId(GetBuilderIds.toPushHeaderImage, () {
@@ -189,7 +186,11 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                   SizedBox(
                     height: 20.w,
                   ),
-                  buildItemType('修改昵称', '真不睡懒觉'),
+                  GetBuilder<Person_infoLogic>(
+                    id: GetBuilderIds.getPersonInfo,
+                    builder: (logic){
+                    return buildItemType('修改昵称', logic.state.infoResponse?.obj?.nickname);
+                  }),
                   SizedBox(
                     height: 14.w,
                   ),
@@ -205,7 +206,11 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                   SizedBox(
                     height: 14.w,
                   ),
-                  buildItemType('更换手机号', '198****0987'),
+                  GetBuilder<Person_infoLogic>(
+                      id: GetBuilderIds.getPersonInfo,
+                      builder: (logic){
+                        return buildItemType('更换手机号', logic.state.infoResponse?.obj?.phone);
+                      }),
                   SizedBox(
                     height: 20.w,
                   ),
@@ -246,12 +251,16 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                       SizedBox(
                         width: 38.w,
                       ),
-                      Expanded(
-                        child: Text(
-                          '山西省第七实验中学',
-                          style: textSenStyle,
-                        ),
-                      ),
+                      GetBuilder<Person_infoLogic>(
+                          id: GetBuilderIds.getPersonInfo,
+                          builder: (logic){
+                            return Expanded(
+                              child: Text(
+                                "${logic.state.infoResponse?.obj?.username}",
+                                style: textSenStyle,
+                              ),
+                            );
+                          }),
                     ],
                   ),
                   SizedBox(
@@ -282,12 +291,17 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                         SizedBox(
                           width: 38.w,
                         ),
-                        Expanded(
-                          child: Text(
-                            '所属年级',
-                            style: textSenStyle,
-                          ),
-                        ),
+                        GetBuilder<Person_infoLogic>(
+                            id: GetBuilderIds.getPersonInfo,
+                            builder: (logic){
+                              return Expanded(
+                                child: Text(
+                                  "${logic.state.infoResponse?.obj?.username}",
+                                  style: textSenStyle,
+                                ),
+                              );
+                            }),
+
                       ],
                     ),
                     visible: widget.isStudent,
@@ -366,8 +380,6 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
   Widget buildItemType(String menu, [String? second]) {
     return GestureDetector(
       onTap: () {
-        //todo 具体的跳转界面
-
         switch (menu) {
           case '修改昵称':
             RouterUtil.toNamed(AppRoutes.ChangeNickNamePage);

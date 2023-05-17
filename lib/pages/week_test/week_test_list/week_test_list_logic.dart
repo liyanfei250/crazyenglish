@@ -73,10 +73,10 @@ class WeekTestListLogic extends GetxController {
     update([GetBuilderIds.weekTestList + affiliatedGrade.toString()]);
   }
 
-  void getChoiceMap(String id) async {
+  void getChoiceMap(String dictionaryType) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeWeeklyListChoiceDate,
-            labelId: id.toString())
+            labelId: dictionaryType.toString())
         .then((value) {
       if (value != null) {
         return HomeKingDate.fromJson(value as Map<String, dynamic>?);
@@ -89,10 +89,10 @@ class WeekTestListLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getHomeWeeklyChoiceDate]);
     }
-    HomeKingDate list = await weekTestListResponse.getHomeWeeklyChoiceDate(id);
+    HomeKingDate list = await weekTestListResponse.getHomeWeeklyChoiceDate(dictionaryType);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeWeeklyListChoiceDate,
-        labelId: id,
+        labelId: dictionaryType,
         list.toJson());
     state.paperDetailNew = list!;
     if (!hasCache) {

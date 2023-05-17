@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:crazyenglish/base/common.dart' as common;
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,9 +19,8 @@ import '../../../routes/routes_utils.dart';
 import '../../../base/AppUtil.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/PlaceholderPage.dart';
-import '../../../widgets/search_bar.dart';
-import '../../jingang/listening_practice/MenuWidget.dart';
 import 'week_test_list_logic.dart';
+
 
 // 周报列表页
 class WeekTestListPage extends BasePage {
@@ -80,7 +80,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
         }
       }
     });
-    logic.getChoiceMap('grade_type');
+    logic.getChoiceMap(common.DictionaryType.GradeType);
   }
 
   void addlistner() {

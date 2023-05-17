@@ -32,7 +32,6 @@ class BaseConstant{
   static const String NOTICE_PERMISSION = "notice_permission";
   static const String ISLOGING = "is_login";
   static const String IS_CHOICE_ROLE = "is_choice_role";
-  static const String IS_CHOICE_ROLE_STUDENT = "is_choice_role_student";
   static const String IS_CHOICE_ROLE_GRADE = "is_choice_role_grade";
   static const String loginTOKEN = "loginTOKEN";
   static const String IS_TEACHER_LOGIN = "is_TEacher_login";
@@ -50,8 +49,17 @@ class LoadStatus {
   static const int empty = 2;
 }
 
+class RoleType{
+  static const int teacher = 1;
+  static const int student = 2;
+}
+
 class DataGroup{
   static Map<String,String> questionType = {};
+}
+
+class DictionaryType{
+  static const String GradeType = "grade_type";
 }
 
 // 发布作业类型

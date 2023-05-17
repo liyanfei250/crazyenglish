@@ -1,7 +1,7 @@
 import 'package:crazyenglish/entity/SendCodeResponseNew.dart';
+import 'package:crazyenglish/entity/user_info_response.dart';
 
 import '../../../entity/login/LoginNewResponse.dart';
-import '../../../entity/user_info_response.dart';
 
 class Login_newState {
   late LoginNewResponse loginResponse;

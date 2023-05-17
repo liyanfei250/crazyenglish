@@ -24,6 +24,7 @@ import 'login_new_logic.dart';
 class LoginNewPage extends BasePage {
 
   static const String inEnterHome = "enter_home";
+  static const String UserInfoResponse = "UserInfoResponse";
 
   bool isEnterHome = true;
 
@@ -152,51 +153,39 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.getUserInfo, () {
       if (state.infoResponse.code == 0 && state.infoResponse.obj != null) {
         Util.toast('获取信息成功');
-        SpUtil.putInt(BaseConstant.USER_ID, state.infoResponse.obj!.id!.toInt());
-        SpUtil.putString(BaseConstant.USER_NAME, state.infoResponse.obj!.username);
-        SpUtil.putString(BaseConstant.NICK_NAME, state.infoResponse.obj!.nickname);
-        print("66666+="+state.infoResponse.obj!.id!.toString());
 
-        SpUtil.putBool(BaseConstant.ISLOGING, true);
-        SpUtil.putString(
-            BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken);
-        SpUtil.putString(BaseConstant.USER_NAME, phoneStr.value);
-        SpUtil.putObject(BaseConstant.USER_INFO, state.infoResponse);
+        if (state.infoResponse.obj?.identity == RoleType.student ||
+            state.infoResponse.obj?.identity == RoleType.teacher) {
+          SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", true);
+        } else {
+          SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", false);
+        }
 
-        // if (state.infoResponse.obj?.identity == 2 ||
-        //     state.infoResponse.obj?.identity == 3) {
-        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, true);
-        // } else {
-        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE, false);
-        // }
-        //
-        // if (state.infoResponse.obj?.identity == 3 &&
-        //     state.infoResponse.obj?.grade == 0) {
-        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, true); //是学生且没选年级
-        // } else {
-        //   SpUtil.putBool(BaseConstant.IS_CHOICE_ROLE_STUDENT, false); //是学生已选年级
-        // }
-        //
-        // if (!SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE)) {
-        //   //没选角色
-        //   RouterUtil.offAndToNamed(AppRoutes.RolePage);
-        // } else {
-        //   if (SpUtil.getBool(BaseConstant.IS_CHOICE_ROLE_STUDENT)) {
-        //     ////是学生且没选年级
-        //     //如果没选年级就去选年级
-        //     RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
-        //         arguments: {'identity': 3});
-        //     //选了去首页
-        //   } else {
-        //     //直接去首页
-        //     RouterUtil.offAndToNamed(AppRoutes.HOME);
-        //   }
-        // }
+        if (!SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}")) {
+          //没选角色
+          RouterUtil.offAndToNamed(AppRoutes.RolePage,arguments: {
+            LoginNewPage.inEnterHome: widget.isEnterHome,
+            LoginNewPage.UserInfoResponse: state.infoResponse,
+          });
 
-        if(widget.isEnterHome){
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
-        }else{
-          Get.back();
+        } else {
+          if (SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+            ////是学生且没选年级
+            //如果没选年级就去选年级
+            RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
+                arguments: {
+                LoginNewPage.inEnterHome: widget.isEnterHome,
+                LoginNewPage.UserInfoResponse: state.infoResponse,
+                });
+            //选了去首页
+          } else {
+            logic.updateNativeUserInfo(state.infoResponse);
+            if(widget.isEnterHome){
+              RouterUtil.offAndToNamed(AppRoutes.HOME);
+            }else{
+              Get.back();
+            }
+          }
         }
       }else{
         Util.toast("登录失败，获取个人信息失败");
