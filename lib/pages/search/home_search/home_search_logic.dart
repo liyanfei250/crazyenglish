@@ -22,13 +22,14 @@ class Home_searchLogic extends GetxController {
             labelId: weekTime.toString())
         .then((value) {
       if (value != null) {
-        return HomeSearchListDate.fromJson(value as Map<String, dynamic>?);
+        return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
       }
     });
 
     state.pageNo = page;
     if (page == 1 && cache is HomeSearchListDate && cache != null) {
-      state.paperList = cache!;
+      state.listJ = cache!.obj!.journals!.records!;
+      state.listS = cache!.obj!.students!.records!;
       //todo 具体的参数获取
       // if(state.paperList.length < pageSize){
       //   state.hasMore = false;
@@ -45,7 +46,6 @@ class Home_searchLogic extends GetxController {
           labelId: weekTime.toString(),
           list.toJson());
     }
-    //todo 具体的参数获取
     // if(list.rows==null) {
     //   if(page ==1){
     //     state.paperList.clear();

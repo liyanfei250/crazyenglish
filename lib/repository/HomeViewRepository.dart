@@ -59,10 +59,11 @@ class HomeViewRepository {
   }
 
   //获取首页顶部搜索
-  Future<HomeSearchListDate> getSearchDateList(Map<String, String> req) async {
+  Future<HomeSearchListDate> getSearchDateList(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getHomeSearchListDate,
-        options: Options(method: Method.get));
+        Method.post, Api.getHomeSearchListDate,
+        data: req,
+        options: Options(method: Method.post,contentType: ContentType.json.toString()));
     HomeSearchListDate paperDetail = HomeSearchListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);

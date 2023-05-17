@@ -1,7 +1,10 @@
-import '../../../entity/home/HomeSearchListDate.dart';
+
+
+import 'package:crazyenglish/entity/home/HomeSearchListDate.dart';
 
 class Home_searchState {
-  HomeSearchListDate paperList = HomeSearchListDate();
+  List<Records> listJ = [];
+  List<RecordsS> listS = [];
   bool hasMore = true;
   int pageNo = 1;
   Home_searchState() {
