@@ -137,15 +137,18 @@ class _ChooseQuestionPageState
             ],
           ),
           Visibility(
-            child: InkWell(onTap: (){
-              setState(() {
-                _isOpen = !_isOpen;
-              });
-            },child: Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              color: Colors.black.withOpacity(0.5),
-            ),),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _isOpen = !_isOpen;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
             visible: _isOpen,
           ),
           Visibility(
@@ -174,6 +177,27 @@ class _ChooseQuestionPageState
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            Expanded(child: Text('')),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isOpen = !_isOpen;
+                                });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 10.w),
+                                child: Image.asset(
+                                  R.imagesToridClose,
+                                  color: Color(0xff898A93),
+                                  width: 19.w,
+                                  height: 19.w,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Container(
                           height: 25.w,
                           width: MediaQuery.of(context).size.width / 4,
@@ -189,7 +213,7 @@ class _ChooseQuestionPageState
                               setState(() {
                                 state.selectedIndex = -1;
                                 _isOpen = false;
-                                state.choiceText.value ="全部";
+                                state.choiceText.value = "全部";
                               });
                               state.affiliatedGrade = null;
                               logic.getQuestionList(
@@ -217,12 +241,13 @@ class _ChooseQuestionPageState
                             runSpacing: 4.w,
                             children: List.generate(
                               items.length,
-                                  (index) => GestureDetector(
+                              (index) => GestureDetector(
                                 onTap: () {
                                   setState(() {
                                     state.selectedIndex = index;
                                     _isOpen = false;
-                                    state.choiceText.value = choiceList[index]!.name!;
+                                    state.choiceText.value =
+                                        choiceList[index]!.name!;
                                   });
                                   state.affiliatedGrade =
                                       choiceList[index]!.id!.toInt();

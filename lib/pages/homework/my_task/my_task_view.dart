@@ -122,7 +122,6 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
           PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
           PreviewExamPaperPage.StudentOperationId:listData[index].id,
-          PreviewExamPaperPage.StudentOperationId:listData[index].id,
           PreviewExamPaperPage.PaperId:listData[index].operationId});
       },
       child: Container(
