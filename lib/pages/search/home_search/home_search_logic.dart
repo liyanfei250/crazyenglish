@@ -11,15 +11,18 @@ class Home_searchLogic extends GetxController {
   final Home_searchState state = Home_searchState();
   HomeViewRepository homeViewRepository = HomeViewRepository();
 
-  void getSearchList(String weekTime, int page, int pageSize) async {
-    Map<String, String> req = {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
+  void getSearchList(String keyWord, int type,int userId,int page, int pageSize) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> p = {};
+    req['type'] =type;
+    req['keyWord'] =keyWord;
+    req['userId'] =userId;
+    p["current"] = page;
+    p["size"] = pageSize;
+    req["p"] = p;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeTopSearch,
-            labelId: weekTime.toString())
+            JsonCacheManageUtils.HomeTopSearch,)
         .then((value) {
       if (value != null) {
         return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
@@ -43,7 +46,6 @@ class Home_searchLogic extends GetxController {
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.HomeTopSearch,
-          labelId: weekTime.toString(),
           list.toJson());
     }
     // if(list.rows==null) {

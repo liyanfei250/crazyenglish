@@ -27,12 +27,12 @@ class Search_listLogic extends GetxController {
 
     state.pageNo = page;
     if (page == 1 && cache is HomeSearchListDate && cache != null) {
-      state.paperList = cache!;
-      if(state.paperList.length < pageSize){
-        state.hasMore = false;
-      } else {
-        state.hasMore = true;
-      }
+      // state.paperList = cache!;
+      // if(state.paperList.length < pageSize){
+      //   state.hasMore = false;
+      // } else {
+      //   state.hasMore = true;
+      // }
       update([GetBuilderIds.getHomeSearchDate]);
     }
 
@@ -43,22 +43,22 @@ class Search_listLogic extends GetxController {
           labelId: weekTime.toString(),
           list.toJson());
     }
-    if(list.rows==null) {
-      if(page ==1){
-        state.paperList.clear();
-      }
-    } else {
-      if(page ==1){
-        state.paperList = list.rows!;
-      } else {
-        state.paperList.addAll(list.rows!);
-      }
-      if(list.rows!.length < pageSize){
-        state.hasMore = false;
-      } else {
-        state.hasMore = true;
-      }
-    }
+    // if(list.rows==null) {
+    //   if(page ==1){
+    //     state.paperList.clear();
+    //   }
+    // } else {
+    //   if(page ==1){
+    //     state.paperList = list.rows!;
+    //   } else {
+    //     state.paperList.addAll(list.rows!);
+    //   }
+    //   if(list.rows!.length < pageSize){
+    //     state.hasMore = false;
+    //   } else {
+    //     state.hasMore = true;
+    //   }
+    // }
     update([GetBuilderIds.getHomeSearchDate]);
   }
 }
