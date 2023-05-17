@@ -22,33 +22,27 @@ import '../homework_complete_overview/homework_complete_overview_view.dart';
 import 'choose_history_homework_logic.dart';
 
 /**
- * 待提醒、待批改、历史作业、布置历史作业 三页面复用
- * 先判断是否待提醒，待批改、再判断是否是布置历史作业
+ * 待提醒、待批改
  */
-class ChooseHistoryHomeworkPage extends BasePage {
+class CorrectHomeworkPage extends BasePage {
 
   bool isAssignHomework = false;
   bool needNotify = false;
-  bool needCorrected = false;
 
-  static const String IsAssignHomework = "isAssignHomework";
   static const String NeedNotify = "needNotify";
-  static const String NeedCorrected = "needCorrected";
 
-  ChooseHistoryHomeworkPage({Key? key}) : super(key: key) {
+  CorrectHomeworkPage({Key? key}) : super(key: key) {
     if(Get.arguments!=null &&
         Get.arguments is Map){
-      isAssignHomework = Get.arguments[IsAssignHomework]??false;
       needNotify = Get.arguments[NeedNotify]??false;
-      needCorrected = Get.arguments[NeedCorrected]??false;
     }
   }
 
   @override
-  BasePageState<BasePage> getState() => _ChooseHistoryHomeworkPageState();
+  BasePageState<BasePage> getState() => _CorrectHomeworkPageState();
 }
 
-class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryHomeworkPage,History> {
+class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage> {
   final logic = Get.put(ChooseHistoryHomeworkLogic());
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
@@ -72,18 +66,9 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
     if(widget.isAssignHomework){
       assignLogic = Get.find<AssignHomeworkLogic>();
     }
-    currentKey.value = "0";
-
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList,(){
       hideLoading();
       if(state.list!=null){
-        if(widget.isAssignHomework && (assignLogic!.state.assignHomeworkRequest.historyOperationId??"").isNotEmpty){
-          state.list.forEach((element) {
-            if("${element.id}" == assignLogic!.state.assignHomeworkRequest.historyOperationId){
-              addSelected(currentKey.value,element,true);
-            }
-          });
-        }
         if(state.pageNo == currentPageNo+1){
           historys.addAll(state!.list!);
           currentPageNo++;
@@ -94,8 +79,6 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             }else{
               _refreshController.resetNoData();
             }
-
-            addData(currentKey.value, state!.list!);
             setState(() {
 
             });
@@ -112,7 +95,6 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
             }else{
               _refreshController.resetNoData();
             }
-            resetData(currentKey.value, state!.list!);
             setState(() {
             });
           }
@@ -132,8 +114,7 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
       appBar: AppBar(
         backgroundColor: AppColors.c_FFFFFFFF,
         centerTitle: true,
-        title: Text(widget.needNotify? "作业待提醒":
-                  widget.needCorrected? "作业待批改":"历史作业",
+        title: Text(widget.needNotify? "作业待提醒":"作业待批改",
                   style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp),),
         leading: Util.buildBackWidget(context),
         elevation: 0,
@@ -145,34 +126,6 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
               onTap: (){
                 // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
                 // 先判断是否待提醒，待批改、再判断是否是布置历史作业
-                if(widget.isAssignHomework){
-                  int totalNum = 0;
-                  List<History> historys = [];
-                  dataList.forEach((key, value) {
-                    if(value!=null){
-                      for(History n in value!){
-                        String id = getDataId(key,n);
-                        if(isSelectedMap[key]!=null && (isSelectedMap[key]![id]??false)){
-                          historys.add(n);
-                        }
-                      }
-                    }
-                  });
-                  if(historys.isNotEmpty){
-                    assignLogic!.updateAssignHomeworkRequest(paperType: common.PaperType.HistoryHomework,
-                      historyHomeworkDesc: '作业名称：'+historys[0].name.toString(),
-                      historyOperationId: "${historys[0].operationId}",
-                        historyOperationClassId:"${historys[0].id}"
-                    );
-                  }else{
-                    assignLogic!.updateAssignHomeworkRequest(paperType: -1,
-                        historyHomeworkDesc: "",
-                        historyOperationId: "",
-                        historyOperationClassId:''
-                    );
-                  }
-                  Get.back();
-                }
               },
               child: Text("确定",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 14.sp),),
             ),
@@ -270,10 +223,8 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
     currentPageNo = pageStartIndex;
     if(widget.needNotify){
       logic.getHistoryListActionPage(common.HomeworkStatus.unstart,pageStartIndex,pageSize);
-    }else if(widget.needCorrected){
-      logic.getHistoryListActionPage(common.HomeworkStatus.started,pageStartIndex,pageSize);
     }else{
-      logic.getHomeworkHistoryList(null,pageStartIndex,pageSize);
+      logic.getHistoryListActionPage(common.HomeworkStatus.started,pageStartIndex,pageSize);
     }
 
   }
@@ -281,10 +232,8 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
   void _onLoading() async{
     if(widget.needNotify){
       logic.getHistoryListActionPage(common.HomeworkStatus.unstart,currentPageNo+1,pageSize);
-    }else if(widget.needCorrected){
-      logic.getHistoryListActionPage(common.HomeworkStatus.started,currentPageNo+1,pageSize);
     }else{
-      logic.getHomeworkHistoryList(null,currentPageNo+1,pageSize);
+      logic.getHistoryListActionPage(common.HomeworkStatus.started,currentPageNo+1,pageSize);
     }
   }
 
@@ -325,24 +274,16 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
                       HomeworkCompleteOverviewPage.HistoryItem:history,
                       HomeworkCompleteOverviewPage.Status:1,
                     });
-                  }else if(widget.needCorrected){
+                  }else {
                     RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
                       HomeworkCompleteOverviewPage.HistoryItem:history,
                       HomeworkCompleteOverviewPage.Status:2,
                     });
-                  }else if(widget.isAssignHomework){
-                    RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem:history});
                   }
                 },
                 child: widget.needNotify?
                           goToNextPage("去提醒") :
-                            widget.needCorrected?
-                              buildHasChecked(false,"待批改（18）"):
-                                widget.isAssignHomework?
-                                goToNextPage("预览"):
-                                buildHasChecked(history.operationStatus == common.HomeworkStatus.completed,
-                                    history.operationStatus == common.HomeworkStatus.completed? "已检查":
-                                    "未检查"),
+                buildHasChecked(false,"待批改（18）"),
               )
             ],
           ),
@@ -350,16 +291,6 @@ class _ChooseHistoryHomeworkPageState extends BaseChoosePageState<ChooseHistoryH
           Row(
             children: [
               buildLineItem(R.imagesExamPaperName,"${history.name}"),
-              Visibility(
-                visible: widget.isAssignHomework,
-                child: GetBuilder<ChooseLogic>(
-                  id: GetBuilderIds.updateCheckBox+currentKey.value,
-                  builder: (logic){
-                    return Util.buildCheckBox(() {
-                      selectSingle(currentKey.value,history);
-                    },chooseEnable: isDataSelected(currentKey.value, history));
-                  },
-              ),)
             ],
           ),
           buildLineItem(R.imagesExamPaperTiCount,"${history.studentCompleteSize}/${history.studentTotalSize} 完成"),

@@ -1,7 +1,8 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/teacher_week_list_response.dart'
     as weekList;
-import 'package:crazyenglish/pages/homework/choose_history_homework/choose_history_homework_view.dart';
+import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
+import 'package:crazyenglish/pages/homework/correct_homework/correct_homework_view.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -267,9 +268,9 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
               break;
             case "历史作业":
-              RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+              RouterUtil.toNamed(AppRoutes.ChooseHistoryNewHomeworkPage,
                   arguments: {
-                    ChooseHistoryHomeworkPage.IsAssignHomework: false
+                    ChooseHistoryNewHomeworkPage.IsAssignHomework: false
                   });
               break;
             case "试卷库":
@@ -362,8 +363,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
               child: Row(
                 children: [
                   _buildItem(() {
-                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
-                        arguments: {"needNotify": true});
+                    RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
+                        arguments: {CorrectHomeworkPage.NeedNotify: true});
                   }, context, R.imagesHomeWorkTips, '待提醒', '(10)'),
                   Container(
                     width: 1,
@@ -372,8 +373,8 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
                     color: Colors.grey.withOpacity(0.5),
                   ),
                   _buildItem(() {
-                    RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
-                        arguments: {"needCorrected": true});
+                    RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
+                        arguments: {CorrectHomeworkPage.NeedNotify: false});
                   }, context, R.imagesHomeWorkChange, '待批改', '(10)'),
                 ],
               ),

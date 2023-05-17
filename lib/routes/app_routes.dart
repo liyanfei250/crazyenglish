@@ -58,7 +58,7 @@ abstract class AppRoutes{
 
   static const AssignHomeworkPage = '/AssignHomeworkPage';
   static const ChooseExamPaperPage = '/ChooseExamPaperPage';
-  static const ChooseHistoryHomeworkPage = '/ChooseHistoryHomeworkPage';
+  static const CorrectHomeworkPage = '/CorrectHomeworkPage';
   static const ChooseHistoryNewHomeworkPage = '/ChooseHistoryNewHomeworkPage';
   static const ChooseJournalPage = '/ChooseJournalPage';
   static const ChooseQuestionPage = '/ChooseQuestionPage';
