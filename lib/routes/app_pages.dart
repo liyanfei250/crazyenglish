@@ -1,7 +1,7 @@
 import 'package:crazyenglish/pages/classes/class_view.dart';
 import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
-import 'package:crazyenglish/pages/homework/correct_homework/correct_homework_view.dart';
+import 'package:crazyenglish/pages/homework/correct_notify_homework/correct_homework_view.dart';
 import 'package:crazyenglish/pages/search/home_search/home_search_view.dart';
 import 'package:crazyenglish/pages/mine/about_us/about_us_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/change_nick_name_view.dart';

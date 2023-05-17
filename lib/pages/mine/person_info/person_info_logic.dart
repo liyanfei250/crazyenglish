@@ -25,7 +25,10 @@ class Person_infoLogic extends GetxController {
     update([GetBuilderIds.toPushHeaderImage]);
   }
 
-  void getPersonInfo(String id) async {
+  void getPersonInfo(String id,{bool needCheckLogin = false}) async {
+    if(needCheckLogin && !SpUtil.getBool(BaseConstant.ISLOGING)){
+      return;
+    }
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.PersonInfo,
         labelId: id)
@@ -35,10 +38,8 @@ class Person_infoLogic extends GetxController {
       }
     });
 
-    bool hasCache = false;
     if (cache is UserInfoResponse) {
       state.infoResponse = cache!;
-      hasCache = true;
       update([GetBuilderIds.getPersonInfo]);
     }
     UserInfoResponse list = await recordData.getUserInfo();
@@ -47,9 +48,7 @@ class Person_infoLogic extends GetxController {
         labelId: id,
         list.toJson());
     state.infoResponse = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getPersonInfo]);
-    }
+    update([GetBuilderIds.getPersonInfo]);
   }
 
   void updateNativeUserInfo(UserInfoResponse? infoResponse){
