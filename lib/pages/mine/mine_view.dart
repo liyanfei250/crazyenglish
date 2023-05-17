@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -336,9 +337,9 @@ class _MinePageState extends BasePageState<MinePage> {
             );
             break;
           case '历史作业':
-            RouterUtil.toNamed(AppRoutes.ChooseHistoryHomeworkPage,
+            RouterUtil.toNamed(AppRoutes.ChooseHistoryNewHomeworkPage,
                 isNeedCheckLogin: true,
-                arguments: {ChooseHistoryHomeworkPage.IsAssignHomework: false});
+                arguments: {ChooseHistoryNewHomeworkPage.IsAssignHomework: false});
             break;
           case '题目反馈':
             RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,

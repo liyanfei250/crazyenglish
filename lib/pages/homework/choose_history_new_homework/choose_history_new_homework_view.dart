@@ -184,6 +184,7 @@ class _ChooseHistoryNewHomeworkPageState extends BaseChoosePageState<ChooseHisto
                     ],
                   ),
                 ),
+        widget.isAssignHomework?
                 InkWell(
                   onTap: (){
                     // RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
@@ -218,7 +219,7 @@ class _ChooseHistoryNewHomeworkPageState extends BaseChoosePageState<ChooseHisto
                     }
                   },
                   child: Text("确定",style: TextStyle(color: AppColors.c_FFED702D,fontSize: 14.sp),),
-                )
+                ):SizedBox.shrink()
               ],
             )
           ,

@@ -10,16 +10,20 @@ class Search_listLogic extends GetxController {
   final Search_listState state = Search_listState();
   HomeViewRepository homeViewRepository = HomeViewRepository();
 
-  void getSearchList(String weekTime, int page, int pageSize) async {
-    Map<String, String> req = {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
+  void getSearchList(
+      String keyWord, int type, int userId, int page, int pageSize) async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> p = {};
+    req['type'] = type;
+    req['keyWord'] = keyWord;
+    req['userId'] = userId;
+    p["current"] = page;
+    p["size"] = pageSize;
+    req["p"] = p;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeTopSearch,
-            labelId: weekTime.toString())
-        .then((value) {
+      JsonCacheManageUtils.HomeTopSearch,
+    ).then((value) {
       if (value != null) {
         return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
       }
@@ -27,7 +31,16 @@ class Search_listLogic extends GetxController {
 
     state.pageNo = page;
     if (page == 1 && cache is HomeSearchListDate && cache != null) {
-      // state.paperList = cache!;
+      if (cache!.obj!.journals != null &&
+          cache!.obj!.journals!.records != null) {
+        state.listJ = cache!.obj!.journals!.records!;
+      }
+      if (cache!.obj!.students != null &&
+          cache!.obj!.students!.records != null) {
+        state.listS = cache!.obj!.students!.records!;
+      }
+
+      //todo 具体的参数获取
       // if(state.paperList.length < pageSize){
       //   state.hasMore = false;
       // } else {
@@ -39,9 +52,7 @@ class Search_listLogic extends GetxController {
     HomeSearchListDate list = await homeViewRepository.getSearchDateList(req);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.HomeTopSearch,
-          labelId: weekTime.toString(),
-          list.toJson());
+          JsonCacheManageUtils.HomeTopSearch, list.toJson());
     }
     // if(list.rows==null) {
     //   if(page ==1){
