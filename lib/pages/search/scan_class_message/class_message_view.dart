@@ -23,7 +23,7 @@ import '../../../entity/class_detail_response.dart';
 class Class_messagePage extends BasePage {
   int? isShowAdd;
   //TODO 后面从登录信息中获取
-  String? classId = '1655395694170124290';
+  String? classId;
 
   // bool? isStudent;
   // bool? isAdd;
@@ -68,11 +68,27 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
         setState(() {});
       }
     });
+    logic.addListenerId(
+        GetBuilderIds.getMyClassListDetail +
+            widget.classId.toString() +
+            (true).toString(), () {
+      if (mounted &&
+          state.myClassListDetail != null &&
+          state.myClassListDetail!.obj != null) {
+        print("班级数据===" + state.myClassListDetail!.obj!.name!);
+
+        detailBean = state.myClassListDetail!.obj!;
+        if (state.myClassListDetail!.obj!.teacherInfo != null) {
+          teacherInfo = state.myClassListDetail!.obj!.teacherInfo!;
+        }
+        setState(() {});
+      }
+    });
     if (widget.isShowAdd == 1) {
       logic.getMyClassDetail(widget.classId.toString(),
           isTeacher: true, isJoin: true);
     } else {
-      logic.getMyClassDetail(widget.classId.toString());
+      logic.getMyClassDetail(widget.classId.toString(),isTeacher: true, isJoin: false);
     }
   }
 
