@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/utils/colors.dart';
+import 'package:crazyenglish/widgets/image_get_widget/image_get_widget_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -39,29 +40,17 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
       fontSize: 12, color: Color(0xff898a93), fontWeight: FontWeight.w500);
   final TextStyle styleScend = TextStyle(
       fontSize: 11, color: Color(0xff4d3535), fontWeight: FontWeight.w400);
-  FileNew.File? _image;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = FileNew.File(pickedFile.path);
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
 
     //从本地或者接口获取个人信息
-    logic.getPersonInfo("${SpUtil.getString(BaseConstant.USER_NAME)}");
+    logic.getPersonInfo("${SpUtil.getInt(BaseConstant.USER_ID)}");
 
-    logic.postImageContent('');
-    logic.addListenerId(GetBuilderIds.toPushHeaderImage, () {
+    logic.addListenerId(GetBuilderIds.toChangeHeadImg, () {
       Util.toast('头像更换成功');
-      //todo 头像
+      logic.getPersonInfo("${SpUtil.getInt(BaseConstant.USER_ID)}");
     });
   }
 
@@ -79,69 +68,24 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
           Stack(
             alignment: Alignment.center,
             children: [
-              _image != null
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration: Duration(milliseconds: 500),
-                            pageBuilder: (_, __, ___) =>
-                                FullScreenImage(imageFile: _image),
-                            transitionsBuilder: (_, animation, __, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: 'imageHero',
-                        child: ClipOval(
-                          child: Image.file(
-                            FileNew.File(_image!.path),
-                            width: 56.w,
-                            height: 56.w,
-                          ),
-                        ),
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () async {
-                        await PermissionsUtil.checkPermissions(
-                            context,
-                            "为了正常访问相册，需要您授权以下权限",
-                            [RequestPermissionsTag.PHOTOS], () {
-                          _pickImage();
-                        });
-                      },
-                      child: ClipOval(
-                          child: Image.asset(
-                        R.imagesIconHomeMeDefaultHead,
-                        width: 56.w,
-                        height: 56.w,
-                      )),
-                    ),
+              GetBuilder<Person_infoLogic>(
+                  id: GetBuilderIds.getPersonInfo,
+                  builder: (logic){
+                return ImageGetWidgetPage("headimg_${SpUtil.getInt(BaseConstant.USER_ID)}_img","${logic.state.infoResponse?.obj?.url}",(imgUrl){
+                  logic.toChangeHeadImg(imgUrl);
+                },(){
+                  return !"${logic.state.infoResponse?.obj?.url}".startsWith("http");
+                  },true);
+              }),
               Positioned(
                 bottom: 0.w,
                 left: 1.w,
                 right: 1.w,
-                child: GestureDetector(
-                    onTap: () async {
-                      await PermissionsUtil.checkPermissions(
-                          context,
-                          "为了正常访问相册，需要您授权以下权限",
-                          [RequestPermissionsTag.PHOTOS], () {
-                        _pickImage();
-                      });
-                    },
-                    child: Image.asset(
-                      R.imagesMinePhone,
-                      width: 31.w,
-                      height: 19.w,
-                    )),
+                child: Image.asset(
+                  R.imagesMinePhone,
+                  width: 31.w,
+                  height: 19.w,
+                ),
               ),
             ],
           ),

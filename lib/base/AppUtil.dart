@@ -53,8 +53,8 @@ class Util {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: filePath,
       aspectRatio: is4x1Picture
-          ? CropAspectRatio(ratioX: 360.w, ratioY: 90.w)
-          : CropAspectRatio(ratioX: 360.w, ratioY: 360.w),
+          ? CropAspectRatio(ratioX: 90.w, ratioY: 90.w)
+          : CropAspectRatio(ratioX: 90.w, ratioY: 90.w),
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: '图片裁剪',

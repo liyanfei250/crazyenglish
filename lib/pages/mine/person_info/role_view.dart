@@ -1,6 +1,8 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/login_change_bloc.dart';
+import 'package:crazyenglish/blocs/login_change_event.dart';
 import 'package:crazyenglish/entity/user_info_response.dart';
 import 'package:crazyenglish/pages/mine/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
@@ -11,6 +13,7 @@ import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -51,6 +54,8 @@ class _ToRolePageState extends BasePageState<RolePage> {
               });
         }else{
           logic.updateNativeUserInfo(state.infoResponse);
+          BlocProvider.of<LoginChangeBloc>(context)
+              .add(SendLoginChangeEvent());
           if(widget.isEnterHome){
             if(state.infoResponse.obj?.identity == RoleType.teacher){
               RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);

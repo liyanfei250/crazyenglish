@@ -19,12 +19,6 @@ class Person_infoLogic extends GetxController {
   UserRepository recordData = UserRepository();
   OtherRepository otherRepository = OtherRepository();
 
-  void postImageContent(String id) async {
-    CommentDate collectResponse = await recordData.toPushHeaderImage({"mobile": id});
-    state.pushDate = collectResponse;
-    update([GetBuilderIds.toPushHeaderImage]);
-  }
-
   void getPersonInfo(String id,{bool needCheckLogin = false}) async {
     if(needCheckLogin && !SpUtil.getBool(BaseConstant.ISLOGING)){
       return;
@@ -129,6 +123,16 @@ class Person_infoLogic extends GetxController {
     state.pushDate = collectResponse;
     if(collectResponse.code == ResponseCode.status_success){
       update([GetBuilderIds.toChangeRole]);
+
+    }
+  }
+
+  void toChangeHeadImg(String url) async{
+    UpdateUserinfoRequest updateUserinfoRequest = UpdateUserinfoRequest(url: url);
+    CommentDate collectResponse = await recordData.toChangePersonInfo(updateUserinfoRequest.toJson());
+    state.pushDate = collectResponse;
+    if(collectResponse.code == ResponseCode.status_success){
+      update([GetBuilderIds.toChangeHeadImg]);
 
     }
   }

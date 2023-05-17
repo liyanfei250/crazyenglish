@@ -1,12 +1,12 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../base/AppUtil.dart';
 import '../../base/common.dart';
-import '../../config.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
@@ -25,9 +25,10 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
+  final personInfoLogic = Get.find<Person_infoLogic>();
+
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
-  userIfo.UserInfoResponse? userInfoResponse;
 
   void onClickPosition(int position) {
     switch (position) {
@@ -48,6 +49,14 @@ class _MinePageState extends BasePageState<MinePage> {
       default:
         break;
     }
+  }
+
+
+  @override
+  void loginChanged() {
+    setState(() {
+      isLogin = Util.isLogin();
+    });
   }
 
   @override
@@ -268,8 +277,6 @@ class _MinePageState extends BasePageState<MinePage> {
               RouterUtil.toNamed(AppRoutes.MyClassListPage,
                   isNeedCheckLogin: true);
             } else {
-              //TODO  是否去获取我的班级 学生的班级id
-
               RouterUtil.toNamed(
                   AppRoutes.QRViewPageNextClass,
                   isNeedCheckLogin: true,
@@ -369,8 +376,6 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onCreate() {
-    userInfoResponse = userIfo.UserInfoResponse.fromJson(
-        SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override

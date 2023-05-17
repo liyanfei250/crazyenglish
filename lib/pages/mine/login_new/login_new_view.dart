@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:crazyenglish/blocs/login_change_bloc.dart';
+import 'package:crazyenglish/blocs/login_change_event.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -173,6 +176,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             //选了去首页
           } else {
             logic.updateNativeUserInfo(state.infoResponse);
+            BlocProvider.of<LoginChangeBloc>(context)
+                .add(SendLoginChangeEvent());
             if(widget.isEnterHome){
               if(state.infoResponse.obj?.identity == RoleType.teacher){
                 RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);

@@ -3,6 +3,7 @@ import 'package:crazyenglish/entity/teacher_week_list_response.dart'
     as weekList;
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/homework/correct_notify_homework/correct_homework_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,9 @@ class TeacherIndexPage extends StatefulWidget {
 class _TeacherIndexPageState extends State<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
+  final personInfoLogic = Get.put(Person_infoLogic());
+  final personInfoState = Get.find<Person_infoLogic>().state;
+
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
   List<Obj> functionTxtNew = [];
@@ -804,6 +808,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   @override
   void dispose() {
     Get.delete<TeacherIndexLogic>();
+    Get.delete<Person_infoLogic>();
     _refreshController.dispose();
     super.dispose();
   }

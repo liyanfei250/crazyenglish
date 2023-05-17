@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,6 +33,8 @@ class _IndexPageState extends BasePageState<IndexPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
+  final personInfoLogic = Get.put(Person_infoLogic());
+  final personInfoState = Get.find<Person_infoLogic>().state;
   List<String> functionTxt = [
   ];
   RefreshController _refreshController =
@@ -634,6 +637,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   @override
   void dispose() {
     Get.delete<IndexLogic>();
+    Get.delete<Person_infoLogic>();
     _refreshController.dispose();
     super.dispose();
   }

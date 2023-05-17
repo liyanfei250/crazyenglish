@@ -20,8 +20,8 @@ class ImageGetWidgetPage extends StatefulWidget {
   String? imageUrl;
   Function(String imgUrl) callback;
   bool Function() isEditCallback;
-  bool is4x1Picture  = false;
-  ImageGetWidgetPage(this.imageKey,this.imageUrl,this.callback,this.isEditCallback,{Key? key}) : super(key: key);
+  bool isHeadImg  = true;
+  ImageGetWidgetPage(this.imageKey,this.imageUrl,this.callback,this.isEditCallback,this.isHeadImg,{Key? key}) : super(key: key);
 
   @override
   _ImageGetWidgetPageState createState() => _ImageGetWidgetPageState();
@@ -36,22 +36,22 @@ class _ImageGetWidgetPageState extends State<ImageGetWidgetPage> {
     return GetBuilder<ImageGetWidgetLogic>(
       id:widget.imageKey,
       builder: (logic){
-        if(state.imageQcloudUrl[widget.imageKey]!=null){
-          if(state.imageQcloudUrl[widget.imageKey]!.startsWith(SnsLoginUtil.QCloud_domain)){
+        if(state.imageQcloudUrl[widget.imageKey]!=null
+          && state.imageQcloudUrl[widget.imageKey]!.isNotEmpty
+            && widget.imageUrl!=state.imageQcloudUrl[widget.imageKey]){
+
             String imageUrl = state.imageQcloudUrl[widget.imageKey]!;
+            state.imageQcloudUrl[widget.imageKey] = "";
             widget.callback(imageUrl);
-          }else{
-            String imageUrl = SnsLoginUtil.QCloud_domain+state.imageQcloudUrl[widget.imageKey]!;
-            widget.callback(imageUrl);
-          }
         }
         return ImagePickerUtils.imagePicker(
-          width: widget.is4x1Picture? 360.w:90.w,
-          height: widget.is4x1Picture? 90.w:90.w,
+            widget.isHeadImg,
+          width: widget.isHeadImg? 56.w:90.w,
+          height: widget.isHeadImg? 56.w:90.w,
             widget.imageKey,
             (value) {
               if(widget.isEditCallback.call()){
-                logic.showSelectImageDialog(context, widget.imageKey,widget.is4x1Picture);
+                logic.showSelectImageDialog(context, widget.imageKey,widget.isHeadImg);
               }else{
                 if(state.imageQcloudUrl[widget.imageKey]!=null){
                   DialogManager.showPreViewImageDialog(

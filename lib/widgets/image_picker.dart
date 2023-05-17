@@ -17,6 +17,7 @@ import '../utils/colors.dart';
  */
 class ImagePickerUtils{
   static Widget imagePicker(
+      bool isHeadImg,
       String formKey,
       ValueChanged<String> onTapped, {
         File? imageFile,
@@ -26,9 +27,12 @@ class ImagePickerUtils{
         bool? isUploaded,
         double width = 90.0,
         double height = 90.0,
+
       }) {
     return GestureDetector(
-      child: Container(
+      child: isHeadImg? ClipOval(
+        child: _getImageWidget(imageFile,imageUrl,imageQcloudUrl,isUploading,isUploaded, width, height),
+      ):Container(
         margin: const EdgeInsets.all(10),
         alignment: Alignment.center,
         decoration: BoxDecoration(
