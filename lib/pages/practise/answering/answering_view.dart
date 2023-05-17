@@ -235,6 +235,32 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         });
       }
     });
+
+    if(widget.answerType== AnsweringPage.answer_homework_type ||
+        widget.answerType== AnsweringPage.answer_homework_draft_type){
+      logic.addListenerId(GetBuilderIds.answerHomework, () {
+        if(widget.testDetailResponse!=null){
+          if(widget.parentIndex+1 < widget.testDetailResponse!.obj!.subjectVoList!.length){
+            RouterUtil.offAndToNamed(AppRoutes.AnsweringPage,
+                isNeedCheckLogin:true,
+                arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                  AnsweringPage.catlogIdKey:widget.uuid,
+                  AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                  AnsweringPage.childIndexKey:widget.childIndex,
+                  AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
+                  PreviewExamPaperPage.PaperId: widget.operationId,
+                  PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
+                });
+          }else{
+            // TODO 刷新上级列表接口
+            Get.back();
+          }
+        }else{
+          // TODO 刷新上级列表接口
+          Get.back();
+        }
+      });
+    }
   }
 
   @override

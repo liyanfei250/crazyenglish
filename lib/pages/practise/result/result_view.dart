@@ -263,7 +263,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         mainAxisSize: MainAxisSize.min,
         children: [
           Visibility(
-              visible: widget.resultType == AnsweringPage.result_normal_type || widget.resultType == AnsweringPage.result_homework_type,
+              visible: widget.resultType == AnsweringPage.result_normal_type,
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
