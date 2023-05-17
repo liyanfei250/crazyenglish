@@ -12,7 +12,7 @@ class Api {
   static String getChangeGrade = "${Config.ApiHost}/app/user/put";
 
   //获取用户信息
-  static String getUserIofo = "${Config.ApiHost}/member/user/";
+  static String getUserIofo = "${Config.ApiHost}/member/user/getPersonalInfo";
 
   // 修改个人信息
   static String putUserIofo = "${Config.ApiHost}/member/user/updatePersonalInfo";

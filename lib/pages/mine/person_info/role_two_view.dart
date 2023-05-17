@@ -51,8 +51,17 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
           logic.updateNativeUserInfo(state.infoResponse);
         }
         if(widget.isEnterHome){
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
+          if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+            RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+          }else{
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }
         }else{
+          if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.student){
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }else if(!SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.teacher){
+            RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+          }
           Get.back();
         }
       }

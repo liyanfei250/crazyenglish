@@ -112,8 +112,8 @@ class UserRepository {
   }
 
   //获取用户信息
-  Future<UserInfoResponse> getUserInfo(String user) async {
-    Map map = await NetManager.getInstance()!.request(Method.get, Api.getUserIofo + user);
+  Future<UserInfoResponse> getUserInfo() async {
+    Map map = await NetManager.getInstance()!.request(Method.get, Api.getUserIofo);
     UserInfoResponse sendCodeResponse = UserInfoResponse.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);

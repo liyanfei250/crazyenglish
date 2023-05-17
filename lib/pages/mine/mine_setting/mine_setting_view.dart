@@ -56,7 +56,8 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
                           SpUtil.putString(BaseConstant.loginTOKEN, '');
                           SpUtil.putString(BaseConstant.USER_NAME, '');
                           //直接去首页
-                          RouterUtil.offAndToNamed(AppRoutes.HOME);
+                          Get.back();
+
                         },
                       ),
                     ],

@@ -45,44 +45,6 @@ class _MinePageState extends BasePageState<MinePage> {
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
             arguments: {'isFeedback': true});
         break;
-      case 5:
-        var role = '';
-        if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-          role = '学生端';
-        } else {
-          role = '教师端';
-        }
-        showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("提示"),
-              content: Text("您确定要切换到" + role + "吗？"),
-              actions: <Widget>[
-                TextButton(
-                  child: Text("取消"),
-                  onPressed: () => Navigator.of(context).pop(), // 关闭对话框
-                ),
-                TextButton(
-                  child: Text("确定"),
-                  onPressed: () {
-                    Navigator.of(context).pop(true); //关闭对话框
-                    // ... 执行
-                    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-                      RouterUtil.offAndToNamed(AppRoutes.HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, false);
-                    } else {
-                      RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, true);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-
-        break;
       default:
         break;
     }
@@ -280,17 +242,6 @@ class _MinePageState extends BasePageState<MinePage> {
                         height: 20.w,
                       ),
                       2),
-                  Visibility(
-                    visible: !Util.isIOSMode(),
-                    child: buildItem(
-                        "切换用户",
-                        Image(
-                          image: AssetImage("images/my_icon_setting.png"),
-                          width: 20.w,
-                          height: 20.w,
-                        ),
-                        5),
-                  ),
                   buildItem(
                       "我的设置",
                       Image(

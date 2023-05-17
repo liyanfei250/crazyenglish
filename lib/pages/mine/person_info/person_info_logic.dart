@@ -41,7 +41,7 @@ class Person_infoLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getPersonInfo]);
     }
-    UserInfoResponse list = await recordData.getUserInfo(id);
+    UserInfoResponse list = await recordData.getUserInfo();
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.PersonInfo,
         labelId: id,

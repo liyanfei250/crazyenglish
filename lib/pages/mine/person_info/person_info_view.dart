@@ -315,63 +315,6 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 ],
               )),
           Expanded(child: Text('')),
-          GestureDetector(
-            onTap: () {
-              showDialog<bool>(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("提示"),
-                    content: Text("您确定要退出吗？"),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text("取消"),
-                        onPressed: () => Navigator.of(context).pop(), // 关闭对话框
-                      ),
-                      TextButton(
-                        child: Text("确定"),
-                        onPressed: () {
-                          Navigator.of(context).pop(true); //关闭对话框
-                          // ... 执行
-                          //退出
-                          SpUtil.putBool(BaseConstant.ISLOGING, false);
-                          SpUtil.putString(BaseConstant.loginTOKEN, '');
-                          SpUtil.putString(BaseConstant.USER_NAME, '');
-                          //直接去首页
-                          RouterUtil.offAndToNamed(AppRoutes.HOME);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(
-                    left: 18.w, right: 18.w, top: 25.w, bottom: 30.w),
-                padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  '退出当前帐号',
-                  style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff353e4d)),
-                )),
-          ),
         ],
       ),
     );
