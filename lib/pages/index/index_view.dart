@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _IndexPageState extends BasePageState<IndexPage>
   @override
   void initState() {
     super.initState();
-
+    SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN,false);
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
       hideLoading();
@@ -619,7 +620,7 @@ class _IndexPageState extends BasePageState<IndexPage>
 
   void _onRefresh() async {
     //新增金刚区的列表，有图片
-    logic.getHomeListNew('');
+    logic.getHomeListNew();
     //获取我的期刊列表
     logic.getMyJournalList();
     //获取我的任务

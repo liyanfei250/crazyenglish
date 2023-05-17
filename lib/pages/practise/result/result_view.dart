@@ -296,9 +296,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                   visible: widget.resultType == AnsweringPage.result_homework_correctioin_type,
                   child: InkWell(
                     onTap: (){
-                      logicDetail.addJumpToStartExamListen();
-                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
-                      showLoading("");
+                      // Get.bottomSheet(bottomsheet);
                     },
                     child: Container(
                       width: 134.w,

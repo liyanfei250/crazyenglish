@@ -162,7 +162,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
           });
 
         } else {
-          if (SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+          if (!SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
             ////是学生且没选年级
             //如果没选年级就去选年级
             RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,

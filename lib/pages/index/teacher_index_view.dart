@@ -41,7 +41,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   @override
   void initState() {
     super.initState();
-
+    SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,true);
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListTeacher, () {
       if (mounted && _refreshController != null) {
@@ -810,7 +810,7 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
 
   void _onRefresh() async {
     //新增金刚区的列表，有图片
-    logic.getHomeListNew('');
+    logic.getHomeListNew();
     //获取我的期刊列表
     logic.getMyJournalList(
         "${SpUtil.getInt(BaseConstant.USER_ID)}", 10, 1);

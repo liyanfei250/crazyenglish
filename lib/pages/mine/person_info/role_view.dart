@@ -52,7 +52,7 @@ class _ToRolePageState extends BasePageState<RolePage> {
         }else{
           logic.updateNativeUserInfo(state.infoResponse);
           if(widget.isEnterHome){
-            if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+            if(state.infoResponse.obj?.identity == RoleType.teacher){
               RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
             }else{
               RouterUtil.offAndToNamed(AppRoutes.HOME);

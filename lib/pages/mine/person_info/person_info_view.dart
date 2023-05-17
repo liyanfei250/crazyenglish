@@ -334,7 +334,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
             RouterUtil.toNamed(AppRoutes.ChangePhonePage);
             break;
           default:
-            return null;
+            return;
         }
       },
       child: Row(

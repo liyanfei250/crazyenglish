@@ -25,9 +25,10 @@ class TeacherIndexLogic extends GetxController {
     super.onClose();
   }
 
-  void getHomeListNew(String type) async {
+  void getHomeListNew() async {
+    String type = "1";
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeKingListNewTeacher)
+            JsonCacheManageUtils.HomeKingListNewTeacher,labelId: type)
         .then((value) {
       if (value != null) {
         return HomeKingNewDate.fromJson(value as Map<String, dynamic>?);
@@ -44,7 +45,7 @@ class TeacherIndexLogic extends GetxController {
     HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
 
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeKingListNewTeacher, list.toJson());
+        JsonCacheManageUtils.HomeKingListNewTeacher,labelId: type, list.toJson());
     state.paperDetailNew = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateListTeacher]);

@@ -51,7 +51,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
           logic.updateNativeUserInfo(state.infoResponse);
         }
         if(widget.isEnterHome){
-          if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+          if(state.infoResponse.obj?.identity == RoleType.teacher){
             RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
           }else{
             RouterUtil.offAndToNamed(AppRoutes.HOME);
@@ -93,6 +93,13 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AppBar(
+              elevation: 0,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              title: Text("",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
+              backgroundColor:Colors.transparent,
+            ),
             Padding(
               padding: EdgeInsets.only(top: 9.w, left: 30.w),
               child: Text(
@@ -114,7 +121,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
               ),
             ),
             GetBuilder<Person_infoLogic>(
-                id: GetBuilderIds.getPersonInfo,
+                id: GetBuilderIds.getHomeListChoiceDate,
                 builder: (logic){
               return Padding(
                 padding: EdgeInsets.only(top: 16.w, left: 30.w, right: 30.w),
