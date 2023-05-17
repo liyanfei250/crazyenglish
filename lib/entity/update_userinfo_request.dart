@@ -15,6 +15,7 @@ class UpdateUserinfoRequest {
       String? nickname, 
       String? phone, 
       String? code, 
+      String? url,
       List<num>? affiliatedGrade,}){
     _identity = identity;
     _oldPassword = oldPassword;
@@ -22,6 +23,7 @@ class UpdateUserinfoRequest {
     _nickname = nickname;
     _phone = phone;
     _code = code;
+    _url = url;
     _affiliatedGrade = affiliatedGrade;
 }
 
@@ -32,6 +34,7 @@ class UpdateUserinfoRequest {
     _nickname = json['nickname'];
     _phone = json['phone'];
     _code = json['code'];
+    _url = json['url'];
     _affiliatedGrade = json['affiliatedGrade'] != null ? json['affiliatedGrade'].cast<num>() : [];
   }
   num? _identity;
@@ -40,6 +43,7 @@ class UpdateUserinfoRequest {
   String? _nickname;
   String? _phone;
   String? _code;
+  String? _url;
   List<num>? _affiliatedGrade;
 UpdateUserinfoRequest copyWith({  num? identity,
   String? oldPassword,
@@ -47,6 +51,7 @@ UpdateUserinfoRequest copyWith({  num? identity,
   String? nickname,
   String? phone,
   String? code,
+  String? url,
   List<num>? affiliatedGrade,
 }) => UpdateUserinfoRequest(  identity: identity ?? _identity,
   oldPassword: oldPassword ?? _oldPassword,
@@ -54,6 +59,7 @@ UpdateUserinfoRequest copyWith({  num? identity,
   nickname: nickname ?? _nickname,
   phone: phone ?? _phone,
   code: code ?? _code,
+  url: url ?? _url,
   affiliatedGrade: affiliatedGrade ?? _affiliatedGrade,
 );
   num? get identity => _identity;
@@ -62,6 +68,7 @@ UpdateUserinfoRequest copyWith({  num? identity,
   String? get nickname => _nickname;
   String? get phone => _phone;
   String? get code => _code;
+  String? get url => _url;
   List<num>? get affiliatedGrade => _affiliatedGrade;
 
   Map<String, dynamic> toJson() {
@@ -81,6 +88,9 @@ UpdateUserinfoRequest copyWith({  num? identity,
     }
     if((_code??"").isNotEmpty){
       map['code'] = _code;
+    }
+    if((_url??"").isNotEmpty){
+      map['url'] = _url;
     }
     if((_affiliatedGrade??[]).isNotEmpty){
       map['affiliatedGrade'] = _affiliatedGrade;

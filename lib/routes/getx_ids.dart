@@ -23,6 +23,7 @@ class GetBuilderIds {
   static const String weekTestDetailList = "weekTestDetailList";
   static const String startExam = "startExam";
   static const String examResult = "examResult";
+  static const String answerHomework = "answerHomework";
   static const String browseExam = "browseExam";
   static const String startHomework = "answerHomework";
   static const String exerciseHistory = "exerciseHistory";
@@ -74,12 +75,12 @@ class GetBuilderIds {
   static const String getHomeSearchDate = "getHomeSearchDate";
   static const String getHomeScanDate = "getHomeScanDate";
   static const String toPushContent = "toPushContent";
-  static const String toPushHeaderImage = "toPushHeaderImage";
   static const String getPersonInfo = "getPersonInfo";
   static const String toChangeNickName = "toChangeNickName";
   static const String toChangePassword = "toChangePassword";
   static const String toAffiliatedGrade = "toAffiliatedGrade";
   static const String toChangeRole = "toChangeRole";
+  static const String toChangeHeadImg = "toChangeHeadImg";
   static const String toChangePhoneNumber = "toChangePhoneNumber";
   static const String PracticeDate = "PracticeDate";
   //教师端

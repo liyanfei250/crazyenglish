@@ -102,13 +102,8 @@ class HomeViewRepository {
 
 
   //金刚区列表新增
-  Future<HomeKingNewDate> getHomeKingListNew(String type) async {
-    int role = 0;
-    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-      role = 1;
-    } else {
-      role = 0;
-    }
+  Future<HomeKingNewDate> getHomeKingListNew(String role) async {
+
     Map map = await NetManager.getInstance()!
         .request(Method.get, "${Api.getHomeKingListNew}$role");
     HomeKingNewDate sendCodeResponse = HomeKingNewDate.fromJson(map);

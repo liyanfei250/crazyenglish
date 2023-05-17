@@ -1,18 +1,20 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
+<<<<<<< HEAD
+=======
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+>>>>>>> 58a1cac8edcbcd58651a92070935eb14fce3c24e
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../base/AppUtil.dart';
 import '../../base/common.dart';
-import '../../config.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/routes_utils.dart';
 import '../../utils/colors.dart';
 import '../../utils/sp_util.dart';
-import '../homework/choose_history_homework/choose_history_homework_view.dart';
 import 'mine_logic.dart';
 import '../../../entity/user_info_response.dart' as userIfo;
 
@@ -26,9 +28,10 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
+  final personInfoLogic = Get.find<Person_infoLogic>();
+
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
-  userIfo.UserInfoResponse? userInfoResponse;
 
   void onClickPosition(int position) {
     switch (position) {
@@ -46,47 +49,17 @@ class _MinePageState extends BasePageState<MinePage> {
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
             arguments: {'isFeedback': true});
         break;
-      case 5:
-        var role = '';
-        if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-          role = '学生端';
-        } else {
-          role = '教师端';
-        }
-        showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("提示"),
-              content: Text("您确定要切换到" + role + "吗？"),
-              actions: <Widget>[
-                TextButton(
-                  child: Text("取消"),
-                  onPressed: () => Navigator.of(context).pop(), // 关闭对话框
-                ),
-                TextButton(
-                  child: Text("确定"),
-                  onPressed: () {
-                    Navigator.of(context).pop(true); //关闭对话框
-                    // ... 执行
-                    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-                      RouterUtil.offAndToNamed(AppRoutes.HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, false);
-                    } else {
-                      RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
-                      SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, true);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-
-        break;
       default:
         break;
     }
+  }
+
+
+  @override
+  void loginChanged() {
+    setState(() {
+      isLogin = Util.isLogin();
+    });
   }
 
   @override
@@ -281,17 +254,6 @@ class _MinePageState extends BasePageState<MinePage> {
                         height: 20.w,
                       ),
                       2),
-                  Visibility(
-                    visible: !Util.isIOSMode(),
-                    child: buildItem(
-                        "切换用户",
-                        Image(
-                          image: AssetImage("images/my_icon_setting.png"),
-                          width: 20.w,
-                          height: 20.w,
-                        ),
-                        5),
-                  ),
                   buildItem(
                       "我的设置",
                       Image(
@@ -318,8 +280,6 @@ class _MinePageState extends BasePageState<MinePage> {
               RouterUtil.toNamed(AppRoutes.MyClassListPage,
                   isNeedCheckLogin: true);
             } else {
-              //TODO  是否去获取我的班级 学生的班级id
-
               RouterUtil.toNamed(
                   AppRoutes.QRViewPageNextClass,
                   isNeedCheckLogin: true,
@@ -419,8 +379,6 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onCreate() {
-    userInfoResponse = userIfo.UserInfoResponse.fromJson(
-        SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override

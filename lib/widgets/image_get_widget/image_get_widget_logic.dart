@@ -107,7 +107,7 @@ class ImageGetWidgetLogic extends GetxController {
             update([key]);
             var name = path.substring(path.lastIndexOf("/") + 1, path.length);
             String cosPath =
-                "${SnsLoginUtil.QCloud_path}${SpUtil.getString(BaseConstant.USER_ID)}/$key$name";
+                "${SnsLoginUtil.QCloud_path}${SpUtil.getInt(BaseConstant.USER_ID)}/$key$name";
             String? response;
             try{
               response = await COSClient(COSConfig(

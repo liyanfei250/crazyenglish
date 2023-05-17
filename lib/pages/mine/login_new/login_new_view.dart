@@ -1,16 +1,16 @@
 import 'dart:async';
 
+import 'package:crazyenglish/blocs/login_change_bloc.dart';
+import 'package:crazyenglish/blocs/login_change_event.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../base/common.dart';
 import '../../../base/widgetPage/base_page_widget.dart';
-import '../../../entity/login/login_util.dart';
-import '../../../entity/user_info_response.dart';
-import '../../../entity/user_info_response.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -18,7 +18,6 @@ import '../../../routes/routes_utils.dart';
 import '../../../base/AppUtil.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/sp_util.dart';
-import '../../../base/widgetPage/base_page_widget.dart';
 import 'login_new_logic.dart';
 
 class LoginNewPage extends BasePage {
@@ -126,22 +125,11 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       hideLoading();
     });
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
-      if (state.loginResponse.data !=null) {
+      if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
         Util.getHeader();
-        logic.getUserinfo(phoneStr.value);
-        // TODO need delete
-        UserInfoResponse userInfoResponse = UserInfoResponse(obj: Obj(
-          username: phoneStr.value,
-          id: phoneStr.value == "13800011188"? 1651539603655626753:1651531759961624578,
-        ));
-        logic.updateNativeUserInfo(userInfoResponse);
-        if(widget.isEnterHome){
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
-        }else{
-          Get.back();
-        }
+        logic.getUserinfo();
       } else {
         Util.toast("登录失败");
       }
@@ -151,18 +139,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
         Util.toast("登录成功");
         SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
         Util.getHeader();
-        logic.getUserinfo(phoneStr.value);
-        // TODO need delete
-        UserInfoResponse userInfoResponse = UserInfoResponse(obj: Obj(
-          username: phoneStr.value,
-          id: phoneStr.value == "13800011188"? 1651539603655626753:1651531759961624578,
-        ));
-        logic.updateNativeUserInfo(userInfoResponse);
-        if(widget.isEnterHome){
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
-        }else{
-          Get.back();
-        }
+        logic.getUserinfo();
       } else {
         Util.toast("登录失败");
       }
@@ -188,7 +165,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
           });
 
         } else {
-          if (SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+          if (!SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
             ////是学生且没选年级
             //如果没选年级就去选年级
             RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
@@ -199,9 +176,20 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             //选了去首页
           } else {
             logic.updateNativeUserInfo(state.infoResponse);
+            BlocProvider.of<LoginChangeBloc>(context)
+                .add(SendLoginChangeEvent());
             if(widget.isEnterHome){
-              RouterUtil.offAndToNamed(AppRoutes.HOME);
+              if(state.infoResponse.obj?.identity == RoleType.teacher){
+                RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+              }else{
+                RouterUtil.offAndToNamed(AppRoutes.HOME);
+              }
             }else{
+              if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.student){
+                RouterUtil.offAndToNamed(AppRoutes.HOME);
+              }else if(!SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.teacher){
+                RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+              }
               Get.back();
             }
           }

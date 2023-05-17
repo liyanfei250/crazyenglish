@@ -1,6 +1,7 @@
 import 'package:crazyenglish/pages/classes/class_view.dart';
 import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
+import 'package:crazyenglish/pages/homework/correct_notify_homework/correct_homework_view.dart';
 import 'package:crazyenglish/pages/search/home_search/home_search_view.dart';
 import 'package:crazyenglish/pages/mine/about_us/about_us_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/change_nick_name_view.dart';
@@ -12,7 +13,6 @@ import 'package:crazyenglish/pages/search/qr_scan/qr_scan_view.dart';
 import 'package:crazyenglish/pages/mine/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note/error_note_view.dart';
 import 'package:crazyenglish/pages/home_teacher_page.dart';
-import 'package:crazyenglish/pages/homework/make_home_work/make_home_work_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/splash_new/splash_new_view.dart';
 import 'package:crazyenglish/pages/classes/student_list/student_list_view.dart';
@@ -34,7 +34,6 @@ import '../pages/buy/shop_car/shop_car_view.dart';
 import '../pages/buy/shoplist/view.dart';
 import '../pages/homework/assign_homework/assign_homework_view.dart';
 import '../pages/homework/choose_exam_paper/choose_exam_paper_view.dart';
-import '../pages/homework/choose_history_homework/choose_history_homework_view.dart';
 import '../pages/homework/choose_journal/choose_journal_view.dart';
 import '../pages/homework/choose_question/choose_question_view.dart';
 import '../pages/homework/choose_student/choose_student_view.dart';
@@ -104,7 +103,6 @@ abstract class AppPages {
     GetPage(name: AppRoutes.ChangePhonePage, page:()=>ChangePhonePage(),),
 
     GetPage(name: AppRoutes.TEACHER_HOME, page:()=>HomeTeacherPage(),),
-    GetPage(name: AppRoutes.TEACHER_WORK, page:()=>MakeHomeWorkPage(),),
     GetPage(name: AppRoutes.TEACHER_CLASS, page:()=>ClassPage(),),
     GetPage(name: AppRoutes.TEACHER_STUDENT, page:()=>StudentPage(),),
     GetPage(name: AppRoutes.TEACHER_Index, page:()=>TeacherIndexPage(),),
@@ -122,7 +120,7 @@ abstract class AppPages {
 
     GetPage(name: AppRoutes.AssignHomeworkPage , page:()=> AssignHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseExamPaperPage , page:()=> ChooseExamPaperPage(),),
-    GetPage(name: AppRoutes.ChooseHistoryHomeworkPage , page:()=> ChooseHistoryHomeworkPage(),),
+    GetPage(name: AppRoutes.CorrectHomeworkPage , page:()=> CorrectHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseHistoryNewHomeworkPage , page:()=> ChooseHistoryNewHomeworkPage(),),
     GetPage(name: AppRoutes.ChooseJournalPage , page:()=> ChooseJournalPage(),),
     GetPage(name: AppRoutes.ChooseQuestionPage , page:()=> ChooseQuestionPage(),),

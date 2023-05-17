@@ -33,14 +33,12 @@ class SnsLoginUtil {
 
 
   // https://ps-1252082677.cos.ap-beijing.myqcloud.com
-  static const String QCloud_scheme = "https";
-  static const String QCloud_bucketName = "ps-1252082677";
+  static const String QCloud_bucketName = "test-1315843937";
   static const String QCloud_region = "ap-beijing";
-  static const String QCloud_secretKey = "qa8UjnndMuHSTIvMsJdmlYAaqywmRuCI";
-  static const String QCloud_secretId = "AKID0ta5PYH0MadXFlwQ3hFqOojVCj4bxJOH";
-  static const String QCloud_secretAppid = "1252082677";
-  static const String QCloud_path = "crazyenglish/";
-  static const String QCloud_domain = "https://ps-1252082677.cos.ap-beijing.myqcloud.com/";
+  static const String QCloud_secretKey = "vgCTclhP6kADBwRioiMm04ua1Wp3LUUi";
+  static const String QCloud_secretId = "AKIDMW7UfdPxIRRWQ5XnRyMniSxEHH5f5IHJ";
+  static const String QCloud_path = "crazyenglish/app/";
+  static const String QCloud_domain = "http://cdn-files-test.crazyenglishweekly.com/";
 
 
 

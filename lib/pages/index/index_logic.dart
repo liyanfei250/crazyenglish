@@ -26,9 +26,10 @@ class IndexLogic extends GetxController {
     super.onClose();
   }
 
-  void getHomeListNew(String type) async {
+  void getHomeListNew() async {
+    String type = "0";
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeKingListNew)
+            JsonCacheManageUtils.HomeKingListNew,labelId: type)
         .then((value) {
       if (value != null) {
         return HomeKingNewDate.fromJson(value as Map<String, dynamic>?);
@@ -41,11 +42,10 @@ class IndexLogic extends GetxController {
       hasCache = true;
       update([GetBuilderIds.getHomeDateListNew]);
     }
-
     HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
 
     JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeKingListNew, list.toJson());
+        JsonCacheManageUtils.HomeKingListNew,labelId:type, list.toJson());
     state.paperDetailNew = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateListNew]);

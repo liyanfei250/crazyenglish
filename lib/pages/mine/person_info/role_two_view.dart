@@ -1,6 +1,8 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/login_change_bloc.dart';
+import 'package:crazyenglish/blocs/login_change_event.dart';
 import 'package:crazyenglish/entity/user_info_response.dart';
 import 'package:crazyenglish/pages/mine/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
@@ -11,6 +13,7 @@ import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/home/HomeKingDate.dart' as king;
@@ -50,9 +53,20 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
         }else{
           logic.updateNativeUserInfo(state.infoResponse);
         }
+        BlocProvider.of<LoginChangeBloc>(context)
+            .add(SendLoginChangeEvent());
         if(widget.isEnterHome){
-          RouterUtil.offAndToNamed(AppRoutes.HOME);
+          if(state.infoResponse.obj?.identity == RoleType.teacher){
+            RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+          }else{
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }
         }else{
+          if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.student){
+            RouterUtil.offAndToNamed(AppRoutes.HOME);
+          }else if(!SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.teacher){
+            RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
+          }
           Get.back();
         }
       }
@@ -84,6 +98,13 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AppBar(
+              elevation: 0,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              title: Text("",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 20.sp,fontWeight: FontWeight.w700),),
+              backgroundColor:Colors.transparent,
+            ),
             Padding(
               padding: EdgeInsets.only(top: 9.w, left: 30.w),
               child: Text(
@@ -105,7 +126,7 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
               ),
             ),
             GetBuilder<Person_infoLogic>(
-                id: GetBuilderIds.getPersonInfo,
+                id: GetBuilderIds.getHomeListChoiceDate,
                 builder: (logic){
               return Padding(
                 padding: EdgeInsets.only(top: 16.w, left: 30.w, right: 30.w),

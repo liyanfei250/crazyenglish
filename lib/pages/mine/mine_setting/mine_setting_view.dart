@@ -1,4 +1,7 @@
+import 'package:crazyenglish/blocs/login_change_bloc.dart';
+import 'package:crazyenglish/blocs/login_change_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -55,8 +58,11 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
                           SpUtil.putBool(BaseConstant.ISLOGING, false);
                           SpUtil.putString(BaseConstant.loginTOKEN, '');
                           SpUtil.putString(BaseConstant.USER_NAME, '');
+                          BlocProvider.of<LoginChangeBloc>(context)
+                              .add(SendLoginChangeEvent());
                           //直接去首页
-                          RouterUtil.offAndToNamed(AppRoutes.HOME);
+                          Get.back();
+
                         },
                       ),
                     ],

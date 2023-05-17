@@ -19,13 +19,10 @@ class Person_infoLogic extends GetxController {
   UserRepository recordData = UserRepository();
   OtherRepository otherRepository = OtherRepository();
 
-  void postImageContent(String id) async {
-    CommentDate collectResponse = await recordData.toPushHeaderImage({"mobile": id});
-    state.pushDate = collectResponse;
-    update([GetBuilderIds.toPushHeaderImage]);
-  }
-
-  void getPersonInfo(String id) async {
+  void getPersonInfo(String id,{bool needCheckLogin = false}) async {
+    if(needCheckLogin && !SpUtil.getBool(BaseConstant.ISLOGING)){
+      return;
+    }
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.PersonInfo,
         labelId: id)
@@ -35,28 +32,24 @@ class Person_infoLogic extends GetxController {
       }
     });
 
-    bool hasCache = false;
     if (cache is UserInfoResponse) {
       state.infoResponse = cache!;
-      hasCache = true;
       update([GetBuilderIds.getPersonInfo]);
     }
-    UserInfoResponse list = await recordData.getUserInfo(id);
+    UserInfoResponse list = await recordData.getUserInfo();
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.PersonInfo,
         labelId: id,
         list.toJson());
     state.infoResponse = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getPersonInfo]);
-    }
+    update([GetBuilderIds.getPersonInfo]);
   }
 
   void updateNativeUserInfo(UserInfoResponse? infoResponse){
     if(infoResponse!=null) {
       SpUtil.putInt(BaseConstant.USER_ID, infoResponse.obj!.id!.toInt());
-      SpUtil.putString(BaseConstant.USER_NAME, infoResponse.obj!.username);
-      SpUtil.putString(BaseConstant.NICK_NAME, infoResponse.obj!.nickname);
+      SpUtil.putString(BaseConstant.USER_NAME, "${infoResponse.obj!.username}");
+      SpUtil.putString(BaseConstant.NICK_NAME, "${infoResponse.obj!.nickname}");
       SpUtil.putBool(BaseConstant.ISLOGING, true);
       SpUtil.putObject(BaseConstant.USER_INFO, infoResponse);
     }
@@ -130,6 +123,16 @@ class Person_infoLogic extends GetxController {
     state.pushDate = collectResponse;
     if(collectResponse.code == ResponseCode.status_success){
       update([GetBuilderIds.toChangeRole]);
+
+    }
+  }
+
+  void toChangeHeadImg(String url) async{
+    UpdateUserinfoRequest updateUserinfoRequest = UpdateUserinfoRequest(url: url);
+    CommentDate collectResponse = await recordData.toChangePersonInfo(updateUserinfoRequest.toJson());
+    state.pushDate = collectResponse;
+    if(collectResponse.code == ResponseCode.status_success){
+      update([GetBuilderIds.toChangeHeadImg]);
 
     }
   }

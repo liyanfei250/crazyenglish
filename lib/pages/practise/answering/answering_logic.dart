@@ -104,7 +104,8 @@ class AnsweringLogic extends GetxController {
     if(examType == AnsweringPage.answer_fix_type){
       update([GetBuilderIds.examResult]);
     }else if(examType == AnsweringPage.answer_homework_type){
-      getHomeworkResult("${subjectVoList.journalCatalogueId}",state.operationStudentId??"");
+      update([GetBuilderIds.answerHomework]);
+      // getHomeworkResult("${subjectVoList.journalCatalogueId}",state.operationStudentId??"");
     }else{
       getResult(subjectVoList);
     }

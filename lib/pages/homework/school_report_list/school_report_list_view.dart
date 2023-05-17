@@ -97,8 +97,6 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
     logic.getStudentList(widget.history.id??0,currentPageNo+1,pageSize,widget.remindOrCrorrection);
   }
 
-
-
   @override
   void onDestroy() {
     // TODO: implement onDestroy

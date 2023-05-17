@@ -17,8 +17,6 @@ import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
-import '../choose_history_homework/choose_history_homework_view.dart';
-import '../choose_question/choose_question_view.dart';
 import 'assign_homework_logic.dart';
 
 /**
@@ -269,7 +267,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                               RouterUtil.toNamed(
                                                   AppRoutes.ChooseStudentPage,
                                                   arguments: {
-                                                    ChooseHistoryHomeworkPage
+                                                    ChooseHistoryNewHomeworkPage
                                                         .IsAssignHomework: true
                                                   });
                                             }, "选择", enable: true);

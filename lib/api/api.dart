@@ -12,7 +12,7 @@ class Api {
   static String getChangeGrade = "${Config.ApiHost}/app/user/put";
 
   //获取用户信息
-  static String getUserIofo = "${Config.ApiHost}/member/user/";
+  static String getUserIofo = "${Config.ApiHost}/member/user/getPersonalInfo";
 
   // 修改个人信息
   static String putUserIofo = "${Config.ApiHost}/member/user/updatePersonalInfo";
@@ -262,7 +262,7 @@ class Api {
   static String historyPage = "${Config.ApiHost}/question/operation/historyPage";
 
   // 作业预览接口
-  static String previewOperation = "${Config.ApiHost}/question/operation/previewOperation";
+  static String previewOperation = "${Config.ApiHost}/question/studentOperation/getOperationCatalogue";
 
   // 关键接口：批改作业接口
   static String correctionOperation = "${Config.ApiHost}/question/operation/correctionOperation";
