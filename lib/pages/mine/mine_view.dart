@@ -1,9 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
-<<<<<<< HEAD
-=======
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
->>>>>>> 58a1cac8edcbcd58651a92070935eb14fce3c24e
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
