@@ -1,3 +1,10 @@
+import 'dart:io';
+
+import 'package:crazyenglish/api/api.dart';
+import 'package:crazyenglish/entity/homework_detail_response.dart';
+import 'package:crazyenglish/net/net_manager.dart';
+import 'package:crazyenglish/repository/home_work_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/test_paper_look_response.dart';
@@ -10,6 +17,7 @@ import 'package:crazyenglish/base/common.dart' as common;
 class PreviewExamPaperLogic extends GetxController {
   final PreviewExamPaperState state = PreviewExamPaperState();
   ClassRepository classRepository = ClassRepository();
+  HomeworkRepository homework = HomeworkRepository();
 
   @override
   void onReady() {
@@ -45,6 +53,33 @@ class PreviewExamPaperLogic extends GetxController {
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.TeacherTestPagerLook, list.toJson(),
         labelId: "$paperType$paperId");
+    if (list.obj == null) {
+      state.list.clear();
+    } else {
+      state.list = list.obj!;
+    }
+    update([(GetBuilderIds.getExamper)]);
+  }
+
+  void getPreviewOperation(int paperId) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+            JsonCacheManageUtils.TeacherTestPagerLook,
+            labelId: "$paperId")
+        .then((value) {
+      if (value != null) {
+        return TestPaperLookResponse.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    if (cache is TestPaperLookResponse && cache.obj != null) {
+      state.list = cache.obj!;
+      update([(GetBuilderIds.getExamper)]);
+    }
+    TestPaperLookResponse list =
+        await classRepository.getPreviewOperation(paperId);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.TeacherTestPagerLook, list.toJson(),
+        labelId: "$paperId");
     if (list.obj == null) {
       state.list.clear();
     } else {

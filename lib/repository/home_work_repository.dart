@@ -20,31 +20,32 @@ import '../net/net_manager.dart';
  * Description:
  */
 
-class HomeworkRepository{
-
+class HomeworkRepository {
   // 获取作业历史列表
-  Future<HomeworkHistoryResponse> getHistoryHomework(dynamic schoolClassId,int page ,int pageSize) async {
-
+  Future<HomeworkHistoryResponse> getHistoryHomework(
+      dynamic schoolClassId, int page, int pageSize) async {
     P p = P(
       current: page,
       size: pageSize,
     );
     HomeworkRequest request = HomeworkRequest(
-      actionType: 1,
-      teacherId: SpUtil.getInt(BaseConstant.USER_ID).toString(),
-      schoolClassId: schoolClassId.toString(),
-      orderType: "2",
-      p: p
-    );
+        actionType: 1,
+        teacherId: SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        schoolClassId: schoolClassId.toString(),
+        orderType: "2",
+        p: p);
 
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.historyPage,
-        data: request,
-        options: Options(method: Method.post,contentType: ContentType.json.toString(),));
+    Map map =
+        await NetManager.getInstance()!.request(Method.post, Api.historyPage,
+            data: request,
+            options: Options(
+              method: Method.post,
+              contentType: ContentType.json.toString(),
+            ));
 
     if (map != null) {
       HomeworkHistoryResponse homeworkHistoryResponse =
-      HomeworkHistoryResponse.fromJson(map);
+          HomeworkHistoryResponse.fromJson(map);
       if (homeworkHistoryResponse.code != ResponseCode.status_success) {
         return Future.error("返回WeekDirectoryResponse为空");
       } else {
@@ -55,10 +56,9 @@ class HomeworkRepository{
     }
   }
 
-
   // 获取待提醒 1 待批改 2 列表
-  Future<HomeworkHistoryResponse> getHistoryHomeworkActionPage(int actionType,int page ,int pageSize) async {
-
+  Future<HomeworkHistoryResponse> getHistoryHomeworkActionPage(
+      int actionType, int page, int pageSize) async {
     P p = P(
       current: page,
       size: pageSize,
@@ -68,17 +68,19 @@ class HomeworkRepository{
         actionType: actionType,
         teacherId: "1651539603655626753",
         orderType: "1",
-        p: p
-    );
+        p: p);
 
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.indexTeacerOperationDetailList,
-        data: request,
-        options: Options(method: Method.post,contentType: ContentType.json.toString(),));
+    Map map = await NetManager.getInstance()!
+        .request(Method.post, Api.indexTeacerOperationDetailList,
+            data: request,
+            options: Options(
+              method: Method.post,
+              contentType: ContentType.json.toString(),
+            ));
 
     if (map != null) {
       HomeworkHistoryResponse homeworkHistoryResponse =
-      HomeworkHistoryResponse.fromJson(map);
+          HomeworkHistoryResponse.fromJson(map);
       if (homeworkHistoryResponse.code != ResponseCode.status_success) {
         return Future.error("返回WeekDirectoryResponse为空");
       } else {
@@ -90,15 +92,18 @@ class HomeworkRepository{
   }
 
   // 获取作业详情
-  Future<HomeworkDetailResponse> getPreviewOperation(int paperType,int paperId) async {
-
-    Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.previewOperation,
-        options: Options(method: Method.post,contentType: ContentType.json.toString(),));
+  Future<HomeworkDetailResponse> getPreviewOperation(int operationId) async {
+    Map<String, dynamic> req = {"operationId": operationId};
+    Map map = await NetManager.getInstance()!
+        .request(Method.post, Api.previewOperation,data: req,
+            options: Options(
+              method: Method.post,
+              contentType: ContentType.json.toString(),
+            ));
 
     if (map != null) {
       HomeworkDetailResponse homeworkDetailResponse =
-      HomeworkDetailResponse.fromJson(map);
+          HomeworkDetailResponse.fromJson(map);
       if (homeworkDetailResponse.code != ResponseCode.status_success) {
         return Future.error("返回homeworkDetailResponse为空");
       } else {
@@ -109,25 +114,29 @@ class HomeworkRepository{
     }
   }
 
-
   // type
   // 待提醒 1
   // 待批改 2
-  Future<HomeworkStudentResponse> getHomeworkStudentList(int homeworkType,num operationClassId,int page ,int pageSize) async {
-
+  Future<HomeworkStudentResponse> getHomeworkStudentList(
+      int homeworkType, num operationClassId, int page, int pageSize) async {
     P p = P(
       current: page,
       size: pageSize,
     );
 
     Map map = await NetManager.getInstance()!.request(
-        Method.post, homeworkType == 1 ? "${Api.remindList}$operationClassId":"${Api.correctionList}$operationClassId",
-        options: Options(method: Method.post,contentType: ContentType.json.toString(),));
-
+        Method.post,
+        homeworkType == 1
+            ? "${Api.remindList}$operationClassId"
+            : "${Api.correctionList}$operationClassId",
+        options: Options(
+          method: Method.post,
+          contentType: ContentType.json.toString(),
+        ));
 
     if (map != null) {
       HomeworkStudentResponse homeworkStudentResponse =
-      HomeworkStudentResponse.fromJson(map);
+          HomeworkStudentResponse.fromJson(map);
       if (homeworkStudentResponse.code != ResponseCode.status_success) {
         return Future.error("返回homeworkStudentResponse为空");
       } else {

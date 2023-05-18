@@ -1,21 +1,18 @@
 /// code : 0
 /// message : "系统正常"
-/// obj : [{"classifyId":"1646439861824098314","classifyName":"其它","catalogues":[{"journalCatalogueId":"1648138028814798850","catalogueName":"测试01-03"}]}]
+/// obj : [{"classifyId":"1646439861824098314","classifyName":"其它","catalogues":[{"journalCatalogueId":"1648138028814798850","catalogueName":"测试01-03","questionCount":1,"finishQuestionCount":0}]}]
 /// p : null
-/// success : true
 
 class HomeworkDetailResponse {
   HomeworkDetailResponse({
       num? code, 
       String? message, 
       List<Obj>? obj, 
-      dynamic p, 
-      bool? success,}){
+      dynamic p,}){
     _code = code;
     _message = message;
     _obj = obj;
     _p = p;
-    _success = success;
 }
 
   HomeworkDetailResponse.fromJson(dynamic json) {
@@ -28,29 +25,24 @@ class HomeworkDetailResponse {
       });
     }
     _p = json['p'];
-    _success = json['success'];
   }
   num? _code;
   String? _message;
   List<Obj>? _obj;
   dynamic _p;
-  bool? _success;
 HomeworkDetailResponse copyWith({  num? code,
   String? message,
   List<Obj>? obj,
   dynamic p,
-  bool? success,
 }) => HomeworkDetailResponse(  code: code ?? _code,
   message: message ?? _message,
   obj: obj ?? _obj,
   p: p ?? _p,
-  success: success ?? _success,
 );
   num? get code => _code;
   String? get message => _message;
   List<Obj>? get obj => _obj;
   dynamic get p => _p;
-  bool? get success => _success;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -60,7 +52,6 @@ HomeworkDetailResponse copyWith({  num? code,
       map['obj'] = _obj?.map((v) => v.toJson()).toList();
     }
     map['p'] = _p;
-    map['success'] = _success;
     return map;
   }
 
@@ -68,7 +59,7 @@ HomeworkDetailResponse copyWith({  num? code,
 
 /// classifyId : "1646439861824098314"
 /// classifyName : "其它"
-/// catalogues : [{"journalCatalogueId":"1648138028814798850","catalogueName":"测试01-03"}]
+/// catalogues : [{"journalCatalogueId":"1648138028814798850","catalogueName":"测试01-03","questionCount":1,"finishQuestionCount":0}]
 
 class Obj {
   Obj({
@@ -118,33 +109,51 @@ Obj copyWith({  String? classifyId,
 
 /// journalCatalogueId : "1648138028814798850"
 /// catalogueName : "测试01-03"
+/// questionCount : 1
+/// finishQuestionCount : 0
 
 class Catalogues {
   Catalogues({
       String? journalCatalogueId, 
-      String? catalogueName,}){
+      String? catalogueName, 
+      num? questionCount, 
+      num? finishQuestionCount,}){
     _journalCatalogueId = journalCatalogueId;
     _catalogueName = catalogueName;
+    _questionCount = questionCount;
+    _finishQuestionCount = finishQuestionCount;
 }
 
   Catalogues.fromJson(dynamic json) {
     _journalCatalogueId = json['journalCatalogueId'];
     _catalogueName = json['catalogueName'];
+    _questionCount = json['questionCount'];
+    _finishQuestionCount = json['finishQuestionCount'];
   }
   String? _journalCatalogueId;
   String? _catalogueName;
+  num? _questionCount;
+  num? _finishQuestionCount;
 Catalogues copyWith({  String? journalCatalogueId,
   String? catalogueName,
+  num? questionCount,
+  num? finishQuestionCount,
 }) => Catalogues(  journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
   catalogueName: catalogueName ?? _catalogueName,
+  questionCount: questionCount ?? _questionCount,
+  finishQuestionCount: finishQuestionCount ?? _finishQuestionCount,
 );
   String? get journalCatalogueId => _journalCatalogueId;
   String? get catalogueName => _catalogueName;
+  num? get questionCount => _questionCount;
+  num? get finishQuestionCount => _finishQuestionCount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['journalCatalogueId'] = _journalCatalogueId;
     map['catalogueName'] = _catalogueName;
+    map['questionCount'] = _questionCount;
+    map['finishQuestionCount'] = _finishQuestionCount;
     return map;
   }
 

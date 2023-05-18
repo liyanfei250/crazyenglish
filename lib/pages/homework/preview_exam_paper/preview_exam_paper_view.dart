@@ -1,12 +1,14 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/r.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 
 import '../../../base/AppUtil.dart';
 import '../../../routes/app_pages.dart';
@@ -60,8 +62,8 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   var isChooseName = "".obs;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  pull.RefreshController _refreshController =
+  pull.RefreshController(initialRefresh: false);
   List<paper.Obj> questionList = [];
 
   @override
@@ -81,11 +83,20 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   }
 
   void _onRefresh() async {
-    logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+      logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+    }else{
+      logic.getPreviewOperation(widget.paperId);
+    }
+
   }
 
   void _onLoading() async {
-    logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+      logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+    }else{
+      logic.getPreviewOperation(widget.paperId);
+    }
   }
 
   @override
@@ -108,7 +119,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
               //TODO 如果不是布置作业进去的就带着题去布置作业
               widget.isShowAssignHomework
                   ? SizedBox.shrink()
-                  : Container(
+                  : SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)?Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(left: 17.w, right: 22.w),
                       child: InkWell(
@@ -119,10 +130,6 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                                 "paperId": widget.paperId.toString(),
                                 "examDesc": "试卷名称：" + (widget.paperName ?? '')
                               });
-                          // assignLogic!.updateAssignHomeworkRequest(
-                          //     paperType: common.PaperType.exam,
-                          //     paperId: historys[0].id?.toString(),
-                          //     examDesc: "试卷名称：" + (historys[0].name ?? ''));
                         },
                         child: Text(
                           "布置作业",
@@ -130,7 +137,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                               fontSize: 14.sp, color: AppColors.c_FFED702D),
                         ),
                       ),
-                    )
+                    ):SizedBox.shrink()
             ],
           ),
           Expanded(
@@ -154,20 +161,20 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                   )
                 ];
               },
-              body: SmartRefresher(
+              body: pull.SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
-                header: WaterDropHeader(),
-                footer: CustomFooter(
-                  builder: (BuildContext context, LoadStatus? mode) {
+                header: pull.WaterDropHeader(),
+                footer: pull.CustomFooter(
+                  builder: (BuildContext context, pull.LoadStatus? mode) {
                     Widget body;
-                    if (mode == LoadStatus.idle) {
+                    if (mode == pull.LoadStatus.idle) {
                       body = Text("");
-                    } else if (mode == LoadStatus.loading) {
+                    } else if (mode == pull.LoadStatus.loading) {
                       body = CupertinoActivityIndicator();
-                    } else if (mode == LoadStatus.failed) {
+                    } else if (mode == pull.LoadStatus.failed) {
                       body = Text("");
-                    } else if (mode == LoadStatus.canLoading) {
+                    } else if (mode == pull.LoadStatus.canLoading) {
                       body = Text("release to load more");
                     } else {
                       body = Text("");
@@ -186,13 +193,11 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                     questionList.length > 0
                         ? SliverPadding(
                             padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                            sliver: SliverGroupedListView<paper.Obj, num>(
-                              groupBy: (element) =>
-                                  int.parse(element.classifyId ?? '0'),
-                              groupSeparatorBuilder: buildSeparatorBuilder,
-                              elements: questionList,
-                              itemBuilder: buildItem,
-                              groupHeaderBuilder: buildGroupHeader,
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                buildItem,
+                                childCount: questionList.length,
+                              ),
                             ))
                         : SliverToBoxAdapter(
                             child: PlaceholderPage(
@@ -211,89 +216,103 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
     );
   }
 
-  Widget buildGroupHeader(paper.Obj question) {
+  Widget buildItem(BuildContext context, int index) {
     return Container(
+      margin: EdgeInsets.only(top: 24.w),
+      padding: EdgeInsets.only(left: 17.w, right: 17.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(7.w), topRight: Radius.circular(7.w)),
+        borderRadius: BorderRadius.all(Radius.circular(7.w)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xffe3edff).withOpacity(0.5), // 阴影的颜色
+            offset: Offset(0.w, 0.w), // 阴影与容器的距离
+            blurRadius: 10.w, // 高斯的标准偏差与盒子的形状卷积。
+            spreadRadius: 0.w,
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsets.only(top: 11.w)),
+          SizedBox(
+            height: 16.w,
+          ),
           Text(
-            "${question.classifyName}",
+            questionList[index].classifyName ?? '',
             style: TextStyle(
                 fontSize: 12.sp,
-                color: AppColors.c_FF898A93,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.w600,
+                color: Color(0xff898a93)),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 11.w),
-            width: double.infinity,
-            height: 0.2.w,
-            color: AppColors.c_FFD2D5DC,
+          SizedBox(
+            height: 11.w,
           ),
+          Divider(height: 1, color: Color(0xffd2d5dc)),
+          ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int indexs) {
+              return listitemSmall(
+                  questionList[index].catalogues![indexs], indexs);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(height: 1, color: Color(0xffd2d5dc));
+            },
+            itemCount: questionList[index].catalogues!.length,
+          )
         ],
       ),
     );
   }
 
-  Widget buildSeparatorBuilder(num question) {
-    return Container(
-      height: 24.w,
-      color: Colors.transparent,
-    );
-  }
-
-  Widget buildItem(BuildContext context, paper.Obj question) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: question.catalogues!.length,
-      itemBuilder: (BuildContext context, int indexSmall) {
-        return listitem(question.catalogues![indexSmall], indexSmall);
-      },
-    );
-  }
-
-  Widget listitem(paper.Catalogues value, index) {
+  Widget listitemSmall(paper.Catalogues smallList, int index) {
     return InkWell(
       onTap: () {
         // studentOperationId
         if ((widget.studentOperationId ?? 0) > 0) {
           // 做作业流程
           logicDetail.addJumpToStartHomeworkListen();
-          logicDetail.getDetailAndStartHomework(value.journalCatalogueId ?? "",
+          logicDetail.getDetailAndStartHomework(smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}", "${widget.paperId}");
           showLoading("");
         } else {
           // 预览试题流程
           logicDetail.addJumpToBrowsePaperListen();
           logicDetail
-              .getDetailAndEnterBrowsePaperPage(value.journalCatalogueId ?? "");
+              .getDetailAndEnterBrowsePaperPage(smallList.journalCatalogueId ?? "");
           showLoading("");
         }
       },
       child: Container(
-        width: double.infinity,
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(7.w),
-              bottomRight: Radius.circular(7.w)),
-        ),
-        child: Text(
-          "${value.catalogueName}",
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff353e4d)),
+        padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+        child: Row(
+          children: [
+            Expanded(child: Text(smallList.catalogueName ?? '',
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff353e4d))))
+            ,
+            SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)?SizedBox.shrink():
+            Text(smallList.questionCount.toString() +  smallList.finishQuestionCount.toString(),
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff353e4d)))
+          ],
         ),
       ),
+    );
+  }
+
+
+  Widget buildSeparatorBuilder(num question) {
+    return Container(
+      height: 24.w,
+      color: Colors.transparent,
     );
   }
 

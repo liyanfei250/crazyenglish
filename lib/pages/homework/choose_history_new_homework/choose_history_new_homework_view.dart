@@ -326,9 +326,9 @@ class _ChooseHistoryNewHomeworkPageState
                         : SliverToBoxAdapter(
                             child: PlaceholderPage(
                                 imageAsset: R.imagesCommenNoDate,
-                                title: '暂无数据',
+                                title: '暂无历史作业',
                                 topMargin: 100.w,
-                                subtitle: ''))
+                                subtitle: '快去布置作业吧'))
                   ],
                 ),
               )),
@@ -475,9 +475,7 @@ class _ChooseHistoryNewHomeworkPageState
     History history = historys[index];
 
     return InkWell(
-      onTap: () {
-
-      },
+      onTap: () {},
       child: Container(
         margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 24.w),
         padding:
@@ -532,38 +530,50 @@ class _ChooseHistoryNewHomeworkPageState
                 )
               ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: 11.w, bottom: 6.w),
-              width: double.infinity,
-              height: 0.2.w,
-              color: AppColors.c_FFD2D5DC,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: buildLineItem(
-                        R.imagesExamPaperName, "${history.name}")),
-                Visibility(
-                  visible: widget.isAssignHomework,
-                  child: GetBuilder<ChooseLogic>(
-                    id: GetBuilderIds.updateCheckBox + currentKey.value,
-                    builder: (logic) {
-                      return Util.buildCheckBox(() {
-                        selectSingle(currentKey.value, history);
-                      },
-                          chooseEnable:
-                              isDataSelected(currentKey.value, history));
-                    },
+            InkWell(
+              onTap: () {
+                RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,
+                    arguments: {
+                      HomeworkCompleteOverviewPage.HistoryItem: history
+                    });
+              },
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 11.w, bottom: 6.w),
+                    width: double.infinity,
+                    height: 0.2.w,
+                    color: AppColors.c_FFD2D5DC,
                   ),
-                )
-              ],
+                  Row(
+                    children: [
+                      Expanded(
+                          child: buildLineItem(
+                              R.imagesExamPaperName, "${history.name}")),
+                      Visibility(
+                        visible: widget.isAssignHomework,
+                        child: GetBuilder<ChooseLogic>(
+                          id: GetBuilderIds.updateCheckBox + currentKey.value,
+                          builder: (logic) {
+                            return Util.buildCheckBox(() {
+                              selectSingle(currentKey.value, history);
+                            },
+                                chooseEnable:
+                                    isDataSelected(currentKey.value, history));
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  buildLineItem(R.imagesExamPaperTiCount,
+                      "${history.studentCompleteSize}/${history.studentTotalSize} 完成"),
+                  Visibility(
+                      visible: !widget.isAssignHomework,
+                      child: buildLineItem(
+                          R.imagesExamPaperTiType, "班级正确率：${history.accuracy}"))
+                ],
+              ),
             ),
-            buildLineItem(R.imagesExamPaperTiCount,
-                "${history.studentCompleteSize}/${history.studentTotalSize} 完成"),
-            Visibility(
-                visible: !widget.isAssignHomework,
-                child: buildLineItem(
-                    R.imagesExamPaperTiType, "班级正确率：${history.accuracy}")),
           ],
         ),
       ),
