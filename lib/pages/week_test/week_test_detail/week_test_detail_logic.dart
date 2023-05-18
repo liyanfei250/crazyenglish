@@ -268,6 +268,7 @@ class WeekTestDetailLogic extends GetxController {
       }
     }
     if(enterResult??false){
+
       state.enterResult = enterResult??false;
       // 有结果才正真跳结果页 否则还是不行 进入作答页
       var nextHasResult = false;
@@ -287,13 +288,25 @@ class WeekTestDetailLogic extends GetxController {
       }else{
         nextHasResult = false;
       }
-      if(nextHasResult){
-        state.enterResult = true;
+      if((startExam!.obj!.isFinish?? true)){
+        if(nextHasResult){
+          state.enterResult = true;
+        }else{
+          state.enterResult = false;
+        }
       }else{
         state.enterResult = false;
+        if(nextHasResult){
+          state.continueAnswer = true;
+        }else{
+          state.continueAnswer = false;
+        }
       }
+
+
     }else{
       state.enterResult = false;
+      state.continueAnswer = false;
     }
 
     update([GetBuilderIds.startExam]);
@@ -544,7 +557,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
-                AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
+                AnsweringPage.answer_type:state.continueAnswer? AnsweringPage.answer_continue_type:AnsweringPage.answer_normal_type,
               });
         }
 
@@ -568,7 +581,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
-                AnsweringPage.answer_type:AnsweringPage.answer_normal_type,
+                AnsweringPage.answer_type:state.continueAnswer? AnsweringPage.answer_continue_type:AnsweringPage.answer_normal_type,
               });
         }
       }

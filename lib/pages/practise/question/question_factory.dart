@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/pages/practise/answer_interface.dart';
+import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/widgets/ChoiceImageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -260,7 +261,9 @@ class QuestionFactory{
 
   /// 常规填空、补全填空、翻译填空 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
+  /// 客观题
+  static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,
+    bool isResult = false,int answerType = AnsweringPage.answer_normal_type,UserAnswerCallback? userAnswerCallback}){
     int max = 0;
     String gap = "____";
 
@@ -338,12 +341,22 @@ class QuestionFactory{
                         affinity: TextAffinity.downstream,
                         offset: '${userAnswer??""}'.length));
               }else{
-                getFocusNodeControllerCallback(key);
-                getEditingControllerCallback(key).text = _.contentMap[key]??"";
-                getEditingControllerCallback(key).selection =
-                    TextSelection.fromPosition(TextPosition(
-                        affinity: TextAffinity.downstream,
-                        offset: '${_.contentMap[key]??""}'.length));
+                if(answerType == AnsweringPage.answer_homework_draft_type
+                || answerType == AnsweringPage.answer_continue_type){
+                  getFocusNodeControllerCallback(key);
+                  getEditingControllerCallback(key).text = userAnswer??"";
+                  getEditingControllerCallback(key).selection =
+                      TextSelection.fromPosition(TextPosition(
+                          affinity: TextAffinity.downstream,
+                          offset: '${userAnswer??""}'.length));
+                }else{
+                  getFocusNodeControllerCallback(key);
+                  getEditingControllerCallback(key).text = _.contentMap[key]??"";
+                  getEditingControllerCallback(key).selection =
+                      TextSelection.fromPosition(TextPosition(
+                          affinity: TextAffinity.downstream,
+                          offset: '${_.contentMap[key]??""}'.length));
+                }
               }
               if(userAnswerCallback!=null){
                 SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,

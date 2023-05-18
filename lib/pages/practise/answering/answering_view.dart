@@ -184,6 +184,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   // subjectId:subtopicId SubtopicAnswerVo
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   bool hasBottomPageTab = true;
+  bool isCommiting = false;
   @override
   void onCreate() {
     if(widget.answerType != AnsweringPage.answer_fix_type
@@ -214,7 +215,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         Get.back();
       } else {
         int resultType = AnsweringPage.result_normal_type;
-        if(widget.answerType == AnsweringPage.answer_normal_type){
+        if(widget.answerType == AnsweringPage.answer_normal_type
+            || widget.answerType == AnsweringPage.answer_continue_type ){
           resultType = AnsweringPage.result_normal_type;
         }else{
           resultType = AnsweringPage.result_homework_type;
@@ -400,7 +402,16 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                         confirm: InkWell(
                           onTap: (){
                             if(currentSubjectVoList!=null){
-                              logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
+                              isCommiting = true;
+                              // 草稿模式提交的时候要转变
+                              if(widget.answerType == AnsweringPage.answer_homework_draft_type){
+                                logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_type);
+                              }else if(widget.answerType == AnsweringPage.answer_continue_type){
+                                logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_normal_type);
+                              }else{
+                                logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
+                              }
+
                             }else{
                               Util.toast("未获取到试题信息");
                             }
@@ -538,7 +549,32 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   @override
   void onDestroy() {
     cancelTimer();
-
+    if(!isCommiting){
+      if(widget.answerType == AnsweringPage.answer_normal_type
+      || widget.answerType == AnsweringPage.answer_continue_type
+      ){
+        num? lastSubtopicId = 0;
+        if(logic.state.currentQuestionNum>-1){
+          if(currentSubjectVoList!.subtopicVoList!=null && currentSubjectVoList!.subtopicVoList!.length>logic.state.currentQuestionNum){
+            lastSubtopicId = currentSubjectVoList!.subtopicVoList![logic.state.currentQuestionNum].id;
+          }
+        }
+        logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_continue_type,
+            lastSubjectId: currentSubjectVoList!.id,
+            lastSubtopicId: lastSubtopicId);
+      }else if(widget.answerType == AnsweringPage.answer_homework_type
+          || widget.answerType == AnsweringPage.answer_homework_draft_type){
+        num? lastSubtopicId = 0;
+        if(logic.state.currentQuestionNum>-1){
+          if(currentSubjectVoList!.subtopicVoList!=null && currentSubjectVoList!.subtopicVoList!.length>logic.state.currentQuestionNum){
+            lastSubtopicId = currentSubjectVoList!.subtopicVoList![logic.state.currentQuestionNum].id;
+          }
+        }
+        logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_draft_type,
+            lastSubjectId: currentSubjectVoList!.id,
+            lastSubtopicId: lastSubtopicId);
+      }
+    }
     Get.delete<AnsweringLogic>();
     Get.delete<PageGetxController>();
   }

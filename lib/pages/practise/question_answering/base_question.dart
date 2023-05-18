@@ -78,6 +78,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     onCreate();
     pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     tag = tag+curPage;
+    selectGapGetxController.updateFocus("${widget.childIndex+1}",true,isInit: true);
     print(tag + "initState\n");
     pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
       pre();

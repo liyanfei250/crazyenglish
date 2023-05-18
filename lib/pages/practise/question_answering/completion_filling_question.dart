@@ -36,7 +36,7 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
 
   @override
   Widget build(BuildContext context) {
-    sub ??= QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
+    sub ??= QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback,answerType: widget.answerType);
     int focusIndex = getFocusIndex();
     return Container(
       width: MediaQuery.of(context).size.width,
