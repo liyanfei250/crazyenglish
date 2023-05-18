@@ -180,7 +180,7 @@ class ClassRepository {
 
   Future<MemberStudentList> getClassStudentList(String classId) async {
     //模拟数据，数据中不能有空的存在
-     /*String testData = '{"code": 0,"message": "系统正常","obj": [{"classId": 1655395694170124300,"userId": 1651531759961624600,"nickname": "太阳","actualname": "张三","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null},{"classId": 1655395694170124300,"userId": 1651533076075499500,"nickname": "月亮","actualname": "李四","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null}],"p": null,"success": true}';
+    /*String testData = '{"code": 0,"message": "系统正常","obj": [{"classId": 1655395694170124300,"userId": 1651531759961624600,"nickname": "太阳","actualname": "张三","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null},{"classId": 1655395694170124300,"userId": 1651533076075499500,"nickname": "月亮","actualname": "李四","sex": null,"affiliatedSchool": null,"affiliatedGrade": null,"identity": null,"isMembership": null,"avatar": "https://questions-test.jfwedu.com.cn/img%2Fuser.png","className": null}],"p": null,"success": true}';
 
      MemberStudentList weekTestListResponse = MemberStudentList.fromJson(json.decode(testData));
       return weekTestListResponse;*/
@@ -210,22 +210,27 @@ class ClassRepository {
       return paperDetail!;
     }
   }
+
   //试卷库列表
-  Future<HomeworkExamPaperResponse> getMyPaperPageList(Map<String, dynamic> req) async {
+  Future<HomeworkExamPaperResponse> getMyPaperPageList(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.myPaperPageList,
         data: req,
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
-    HomeworkExamPaperResponse paperDetail = HomeworkExamPaperResponse.fromJson(map);
+    HomeworkExamPaperResponse paperDetail =
+        HomeworkExamPaperResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {
       return paperDetail!;
     }
   }
+
   //试卷库预览
-  Future<TestPaperLookResponse> toPreviewOperation(Map<String, dynamic> req) async {
+  Future<TestPaperLookResponse> toPreviewOperation(
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.toPreviewOperation,
         data: req,
@@ -236,6 +241,30 @@ class ClassRepository {
       return Future.error(paperDetail.message!);
     } else {
       return paperDetail!;
+    }
+  }
+
+//  学生端获取试卷预览
+  Future<TestPaperLookResponse> getPreviewOperation(int operationId) async {
+    Map<String, dynamic> req = {"operationId": operationId};
+    Map map = await NetManager.getInstance()!
+        .request(Method.post, Api.previewOperation,
+            data: req,
+            options: Options(
+              method: Method.post,
+              contentType: ContentType.json.toString(),
+            ));
+
+    if (map != null) {
+      TestPaperLookResponse homeworkDetailResponse =
+          TestPaperLookResponse.fromJson(map);
+      if (homeworkDetailResponse.code != ResponseCode.status_success) {
+        return Future.error("返回homeworkDetailResponse为空");
+      } else {
+        return homeworkDetailResponse!;
+      }
+    } else {
+      return Future.error("返回homeworkDetailResponse为空");
     }
   }
 }

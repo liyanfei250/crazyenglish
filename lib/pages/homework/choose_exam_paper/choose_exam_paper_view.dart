@@ -203,9 +203,9 @@ class _ChooseExamPaperPageState
                   : SliverToBoxAdapter(
                       child: PlaceholderPage(
                           imageAsset: R.imagesCommenNoDate,
-                          title: '暂无数据',
+                          title: '暂无试卷',
                           topMargin: 100.w,
-                          subtitle: '')),
+                          subtitle: '快去组卷吧')),
             )
           ],
         ),

@@ -94,6 +94,7 @@ class Listening_practiceLogic extends GetxController {
       if (current == 1) {
         state.homeSecondListDate = list.obj!;
       } else {
+        state.homeSecondListDate.clear();
         state.homeSecondListDate.addAll(list.obj!);
       }
       if (list.obj!.length < size) {
