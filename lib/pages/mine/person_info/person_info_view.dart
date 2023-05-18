@@ -74,7 +74,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 return ImageGetWidgetPage("headimg_${SpUtil.getInt(BaseConstant.USER_ID)}_img","${logic.state.infoResponse?.obj?.url}",(imgUrl){
                   logic.toChangeHeadImg(imgUrl);
                 },(){
-                  return !"${logic.state.infoResponse?.obj?.url}".startsWith("http");
+                  return true;
                   },true);
               }),
               Positioned(

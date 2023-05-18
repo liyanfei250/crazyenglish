@@ -123,7 +123,7 @@ class _HomePageState extends State<HomeTeacherPage> {
                     child: PageView(
                       controller: pageController,
                       physics: _neverScroll,
-                      children: const [
+                      children: [
                         TeacherIndexPage(),
                         ClassPage(),
                         MinePage()

@@ -1,6 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -85,26 +89,65 @@ class _MinePageState extends BasePageState<MinePage> {
               margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: GestureDetector(
                 onTap: () {
-                  if (!Util.isIOSMode()) {
-                    RouterUtil.toNamed(AppRoutes.PersonInfoPage,
-                        isNeedCheckLogin: true,
-                        arguments: {
-                          'isStudent':
-                              SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                                  ? false
-                                  : true
-                        });
-                  }
+                  RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                      isNeedCheckLogin: true,
+                      arguments: {
+                        'isStudent':
+                            SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                ? false
+                                : true
+                      });
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipOval(
-                        child: Image.asset(
-                      R.imagesIconHomeMeDefaultHead,
-                      width: 54.w,
-                      height: 54.w,
-                    )),
+                        child: GetBuilder<Person_infoLogic>(
+                            id: GetBuilderIds.getPersonInfo,
+                            builder: (logic){
+                              return InkWell(
+                                onTap: (){
+                                  if((logic.state.infoResponse.obj?.url ?? "").startsWith("http")){
+                                    DialogManager.showPreViewImageDialog(
+                                        BackButtonBehavior.close,
+                                        logic.state.infoResponse.obj?.url ?? ""
+                                    );
+                                  }else{
+                                    RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                        isNeedCheckLogin: true,
+                                        arguments: {
+                                          'isStudent':
+                                          SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                              ? false
+                                              : true
+                                        });
+                                  }
+                                },
+                                child: ExtendedImage.network(
+                                  isLogin? logic.state.infoResponse.obj?.url ?? "":"",
+                                  cacheRawData: true,
+                                  width: 54.w,
+                                  height: 54.w,
+                                  fit: BoxFit.fill,
+                                  shape: BoxShape.circle,
+                                  enableLoadState: true,
+                                  loadStateChanged: (state) {
+                                    switch (state.extendedImageLoadState) {
+                                      case LoadState.completed:
+                                        return ExtendedRawImage(
+                                          image: state.extendedImageInfo?.image,
+                                          fit: BoxFit.cover,
+                                        );
+                                      default:
+                                        return Image.asset(
+                                          R.imagesIconHomeMeDefaultHead,
+                                          fit: BoxFit.fill,
+                                        );
+                                    }
+                                  },
+                                ),
+                              );
+                            })),
                     Padding(padding: EdgeInsets.only(left: 15.w)),
                     isLogin //是否登录
                         ? Column(
@@ -197,7 +240,7 @@ class _MinePageState extends BasePageState<MinePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   buildItemType('我的班级', R.imagesMineClass),
-                  buildItemType('我的订单', R.imagesMineOrder),
+                  // buildItemType('我的订单', R.imagesMineOrder),
                   SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
                       ? buildItemType('历史作业', R.imagesMineHistoryWork)
                       : buildItemType('题目反馈', R.imagesMineHistoryWork),

@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/teacher_week_list_response.dart'
     as weekList;
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
@@ -6,6 +7,7 @@ import 'package:crazyenglish/pages/homework/correct_notify_homework/correct_home
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,14 +26,15 @@ import '../homework/choose_exam_paper/choose_exam_paper_view.dart';
 import 'teacher_index_logic.dart';
 import '../../../entity/week_list_response.dart' as newData;
 
-class TeacherIndexPage extends StatefulWidget {
-  const TeacherIndexPage({Key? key}) : super(key: key);
+class TeacherIndexPage extends BasePage {
+
+  TeacherIndexPage({Key? key}) : super(key: key);
 
   @override
-  _TeacherIndexPageState createState() => _TeacherIndexPageState();
+  _TeacherIndexPageState getState() => _TeacherIndexPageState();
 }
 
-class _TeacherIndexPageState extends State<TeacherIndexPage> {
+class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
   final personInfoLogic = Get.find<Person_infoLogic>();
@@ -166,17 +169,59 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
         ));
   }
 
+
+  @override
+  void loginChanged() {
+    setState(() {
+
+    });
+  }
+
   Widget _buildSearchBar() => Container(
         margin: EdgeInsets.only(top: 15.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ClipOval(
-              child: Image.asset(
-                R.imagesShopImageLogoTest,
-                width: 32.w,
-                height: 32.w,
-              ),
+              child: GetBuilder<Person_infoLogic>(
+                  id: GetBuilderIds.getPersonInfo,
+                  builder: (logic){
+                    return InkWell(
+                      onTap: (){
+                        RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                            isNeedCheckLogin: true,
+                            arguments: {
+                              'isStudent':
+                              SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                  ? false
+                                  : true
+                            });
+                      },
+                      child: ExtendedImage.network(
+                        isLogin? logic.state.infoResponse.obj?.url ?? "":"",
+                        cacheRawData: true,
+                        width: 32.w,
+                        height: 32.w,
+                        fit: BoxFit.fill,
+                        shape: BoxShape.circle,
+                        enableLoadState: true,
+                        loadStateChanged: (state) {
+                          switch (state.extendedImageLoadState) {
+                            case LoadState.completed:
+                              return ExtendedRawImage(
+                                image: state.extendedImageInfo?.image,
+                                fit: BoxFit.cover,
+                              );
+                            default:
+                              return Image.asset(
+                                R.imagesShopImageLogoTest,
+                                fit: BoxFit.fill,
+                              );
+                          }
+                        },
+                      ),
+                    );
+                  }),
             ),
             GestureDetector(
               onTap: () {
@@ -847,5 +892,15 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
       createTime: createTime ?? obj.createTime,
       createUser: createUser ?? obj.createUser,
     );
+  }
+
+  @override
+  void onCreate() {
+    // TODO: implement onCreate
+  }
+
+  @override
+  void onDestroy() {
+    // TODO: implement onDestroy
   }
 }
