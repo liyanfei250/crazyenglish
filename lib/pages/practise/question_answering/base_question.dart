@@ -78,6 +78,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     onCreate();
     pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     tag = tag+curPage;
+    selectGapGetxController.updateFocus("${widget.childIndex+1}",true,isInit: true);
     print(tag + "initState\n");
     pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
       pre();
@@ -108,6 +109,19 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       });
 
     });
+  }
+
+  int getFocusIndex(){
+    int returnIndex = -1;
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
+      if(value){
+        int index = int.parse(key) -1;
+        if(index >-1 ){
+          returnIndex = index;
+        }
+      }
+    });
+    return returnIndex;
   }
 
 

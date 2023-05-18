@@ -37,6 +37,8 @@ class CommitAnswer {
     num? userId,
     String? operationId,
     String? operationStudentId,
+    String? lastSubjectId,
+    String? lastSubtopicId,
     List<SubjectAnswerVo>? subjectAnswerVo,}){
     _journalId = journalId;
     _journalCatalogueId = journalCatalogueId;
@@ -45,6 +47,8 @@ class CommitAnswer {
     _userId = userId;
     _operationId = operationId;
     _operationStudentId = operationStudentId;
+    _lastSubjectId = lastSubjectId;
+    _lastSubtopicId = lastSubtopicId;
     _subjectAnswerVo = subjectAnswerVo;
   }
 
@@ -56,6 +60,8 @@ class CommitAnswer {
     _userId = json['userId'];
     _operationId = json['operationId'];
     _operationStudentId = json['operationStudentId'];
+    _lastSubjectId = json['lastSubjectId'];
+    _lastSubtopicId = json['lastSubtopicId'];
     if (json['subjectAnswerVo'] != null) {
       _subjectAnswerVo = [];
       json['subjectAnswerVo'].forEach((v) {
@@ -70,6 +76,8 @@ class CommitAnswer {
   num? _userId;
   String? _operationStudentId;
   String? _operationId;
+  String? _lastSubtopicId;
+  String? _lastSubjectId;
   List<SubjectAnswerVo>? _subjectAnswerVo;
   CommitAnswer copyWith({  num? journalId,
     num? journalCatalogueId,
@@ -78,6 +86,8 @@ class CommitAnswer {
     num? userId,
     String? operationId,
     String? operationStudentId,
+    String? lastSubjectId,
+    String? lastSubtopicId,
     List<SubjectAnswerVo>? subjectAnswerVo,
   }) => CommitAnswer(  journalId: journalId ?? _journalId,
     journalCatalogueId: journalCatalogueId ?? _journalCatalogueId,
@@ -85,6 +95,8 @@ class CommitAnswer {
     examId: examId ?? _examId,
     userId: userId ?? _userId,
     operationId: operationId ?? _operationId,
+    lastSubjectId: lastSubjectId ?? _lastSubjectId,
+    lastSubtopicId: lastSubtopicId ?? _lastSubtopicId,
     operationStudentId: operationStudentId ?? _operationStudentId,
     subjectAnswerVo: subjectAnswerVo ?? _subjectAnswerVo,
   );
@@ -94,6 +106,8 @@ class CommitAnswer {
   num? get examId => _examId;
   num? get userId => _userId;
   String? get operationId => _operationId;
+  String? get lastSubjectId => _lastSubjectId;
+  String? get lastSubtopicId => _lastSubtopicId;
   String? get operationStudentId => _operationStudentId;
   List<SubjectAnswerVo>? get subjectAnswerVo => _subjectAnswerVo;
 
@@ -105,6 +119,8 @@ class CommitAnswer {
     map['examId'] = _examId;
     map['userId'] = _userId;
     map['operationId'] = _operationId;
+    map['lastSubjectId'] = _lastSubjectId;
+    map['lastSubtopicId'] = _lastSubtopicId;
     map['operationStudentId'] = _operationStudentId;
     if (_subjectAnswerVo != null) {
       map['subjectAnswerVo'] = _subjectAnswerVo?.map((v) => v.toJson()).toList();

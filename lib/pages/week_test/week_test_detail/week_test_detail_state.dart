@@ -8,6 +8,7 @@ class WeekTestDetailState {
 
   String uuid = "";
   bool enterResult = false;
+  bool continueAnswer = false;
   bool isOffCurrentPage = false;
   int parentIndex = 0;
   int childIndex = 0;

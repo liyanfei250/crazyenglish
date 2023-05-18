@@ -44,7 +44,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   final logic = Get.put(Login_newLogic());
   final state = Get.find<Login_newLogic>().state;
 
-  var agreePolicy = true.obs;
+  var agreePolicy = false.obs;
 
   var _isHavePhoneNum = false.obs;
   var _isHaveVerifyCode = false.obs;
@@ -93,7 +93,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     super.initState();
     Util.initWhenEnterMain();
     isThirdInstalled();
-    isPhoneLog = false;
+    isPhoneLog = true;
     isShowPsd = false;
     _phoneController = TextEditingController();
     _psdControl = TextEditingController();
@@ -212,11 +212,21 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     } else {
       ScreenUtil.init(context, designSize: const Size(375, 812));
     }
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.theme_bg,
-        body: SafeArea(
-          child: GestureDetector(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,//状态栏颜色
+          statusBarIconBrightness: Brightness.light, //状态栏图标颜色
+          statusBarBrightness: Brightness.dark,  //状态栏亮度
+          systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
+          systemNavigationBarColor: Colors.white,  //导航栏颜色
+          systemNavigationBarIconBrightness: Brightness.light,//导航栏图标颜色
+          systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
+          systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
+        ),
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: AppColors.theme_bg,
+          body: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 hideKeyBoard();
@@ -234,16 +244,13 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(padding: EdgeInsets.only(left: 14.w)),
-                          Image.asset(
-                            R.imagesLoginLogoTop,
-                            width: 30.w,
-                            height: 30.w,
-                          ),
-                          Expanded(child: Text('')),
+                      AppBar(
+                        elevation: 0,
+                        centerTitle: true,
+                        automaticallyImplyLeading: false,
+                        title: Text(""),
+                        backgroundColor:Colors.transparent,
+                        actions: [
                           TextButton(
                               onPressed: toPsdLogin,
                               child: Text(
@@ -251,10 +258,9 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                 style: TextStyle(
                                     color: Color(0xff353e4d), fontSize: 14.sp),
                               )),
-                          Padding(padding: EdgeInsets.only(right: 20.w)),
                         ],
                       ),
-                      Padding(padding: EdgeInsets.only(top: 74.w)),
+
                       Text(isPhoneLog ? '手机号登录' : '账号密码登录',
                           style: TextStyle(
                             fontSize: 21.sp,
@@ -263,11 +269,11 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                           )),
                       isPhoneLog
                           ? Text('未注册过的手机号将自动创建账号',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w100,
-                                color: Color(0xff898a93),
-                              ))
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w100,
+                            color: Color(0xff898a93),
+                          ))
                           : Text(''),
                       _getLoginInput(),
                       Padding(padding: EdgeInsets.only(top: 10.w)),
@@ -282,26 +288,26 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Obx(() => InkWell(
-                                      onTap: () {
-                                        agreePolicy.value = !agreePolicy.value;
-                                      },
-                                      child: Container(
-                                        width: 20.w,
-                                        height: 20.w,
-                                        padding: EdgeInsets.only(
-                                            left: 5.w,
-                                            right: 5.w,
-                                            top: 1.w,
-                                            bottom: 5.w),
-                                        child: Image.asset(
-                                          agreePolicy.value
-                                              ? R.imagesLoginAgreeSelected
-                                              : R.imagesLoginAgreeDefault,
-                                          width: 10.w,
-                                          height: 10.w,
-                                        ),
-                                      ),
-                                    )),
+                                  onTap: () {
+                                    agreePolicy.value = !agreePolicy.value;
+                                  },
+                                  child: Container(
+                                    width: 20.w,
+                                    height: 20.w,
+                                    padding: EdgeInsets.only(
+                                        left: 5.w,
+                                        right: 5.w,
+                                        top: 1.w,
+                                        bottom: 5.w),
+                                    child: Image.asset(
+                                      agreePolicy.value
+                                          ? R.imagesLoginAgreeSelected
+                                          : R.imagesLoginAgreeDefault,
+                                      width: 10.w,
+                                      height: 10.w,
+                                    ),
+                                  ),
+                                )),
                                 Expanded(
                                   child: RichText(
                                     maxLines: 2,
@@ -317,7 +323,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: AppColors.THEME_COLOR,
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                    TextDecoration.none),
+                                                TextDecoration.none),
                                             recognizer: recognizerRegister,
                                           ),
                                           TextSpan(
@@ -326,7 +332,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: Color(0xff727a89),
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                    TextDecoration.none),
+                                                TextDecoration.none),
                                           ),
                                           TextSpan(
                                             text: "《隐私政策》",
@@ -334,7 +340,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: AppColors.THEME_COLOR,
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                    TextDecoration.none),
+                                                TextDecoration.none),
                                             recognizer: recognizerPrivacyLaw,
                                           ),
                                           // TextSpan(
@@ -364,8 +370,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                     ],
                   )
                 ],
-              )),
-        ));
+              ))),
+    );
   }
 
   ///收起键盘
@@ -394,31 +400,28 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                           color: AppColors.c_4DD9D9D9),
                       child: Row(
                         children: [
-                          Obx(
-                            () => Container(
-                                padding: EdgeInsets.only(left: 15.w),
-                                width: 220.w,
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  controller: _verifyCodeController,
-                                  obscureText: isHidePasswd.value,
-                                  style: TextStyle(
-                                      fontSize: 15.sp,
-                                      color: Color(0xff32374e)),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  onChanged: (String str) {
-                                    phoneAuthStr.value = str;
-                                  },
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: '请输入验证码',
-                                    hintStyle: TextStyle(
-                                        fontSize: 15, color: Color(0xff717171)),
-                                  ),
-                                )),
-                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 15.w),
+                            width: 220.w,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _verifyCodeController,
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Color(0xff32374e)),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              onChanged: (String str) {
+                                phoneAuthStr.value = str;
+                              },
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: '请输入验证码',
+                                hintStyle: TextStyle(
+                                    fontSize: 15, color: Color(0xff717171)),
+                              ),
+                            )),
                           VerticalDivider(
                             color: Colors.grey,
                             width: 1,
@@ -481,6 +484,10 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
+              if(!agreePolicy.value){
+                Util.toast("同意协议后才能登录");
+                return;
+              }
               if (isPhoneLog) {
                 if (_phoneController!.text.isEmpty) {
                   Util.toast("请输入手机号");

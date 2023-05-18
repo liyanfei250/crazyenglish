@@ -49,7 +49,7 @@ class _HomePageState extends State<HomeTeacherPage> {
   final dataGroupLogic = Get.put(ConfigLogic());
   final dataGroupState = Get.find<ConfigLogic>().state;
 
-  final personInfoLogic = Get.put(Person_infoLogic());
+  final personInfoLogic = Get.lazyPut(()=>Person_infoLogic());
   final personInfoState = Get.find<Person_infoLogic>().state;
 
   List<String> bottomTitles = [

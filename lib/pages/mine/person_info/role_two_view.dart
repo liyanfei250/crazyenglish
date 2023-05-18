@@ -182,7 +182,9 @@ class _ToRoleTwoPageState extends BasePageState<RoleTwoPage> {
   void onCreate() {}
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+    Get.delete<Person_infoLogic>();
+  }
 
   void onPressed() {}
 

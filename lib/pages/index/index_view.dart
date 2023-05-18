@@ -33,7 +33,6 @@ class _IndexPageState extends BasePageState<IndexPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
-  final personInfoLogic = Get.find<Person_infoLogic>();
 
   List<String> functionTxt = [
   ];
