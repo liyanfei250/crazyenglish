@@ -37,6 +37,7 @@ class GetBuilderIds {
   static const String answerPeriodTime = "answerPeriodTime";
   static const String answerNextPage = "answerNextPage";
   static const String answerPrePage = "answerPrePage";
+  static const String updateFocus = "updateFocus";
   static const String answerPageInitNum = "answerPageInitNum";
   static const String commitAnswer = "commitAnswer";
   static const String commitAnswerWriting = "commitAnswer";

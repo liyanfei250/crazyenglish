@@ -84,7 +84,6 @@ class QuestionFactory{
   }
 
   static Widget buildNarmalGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
-    FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
@@ -97,101 +96,93 @@ class QuestionFactory{
       htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex"></gap>');
 
     }
-    return FocusScope(
-      node: _scopeNode,
-      child: Html(
-        data: htmlContent??"",
-        onImageTap: (url,context,attributes,element,){
-          if(url!=null && url!.startsWith('http')){
-            DialogManager.showPreViewImageDialog(
-                BackButtonBehavior.close, url);
+    return Html(
+      data: htmlContent??"",
+      onImageTap: (url,context,attributes,element,){
+        if(url!=null && url!.startsWith('http')){
+          DialogManager.showPreViewImageDialog(
+              BackButtonBehavior.close, url);
+        }
+      },
+      style: {
+        "p": getHtml_P_TagStyle(),
+      },
+      tagsList: Html.tags..addAll(['gap']),
+      customRenders: {
+        tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+          String key = context.tree.element!.attributes["value"]??"unknown";
+          String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+          String content = "";
+          int num = 0;
+          var correctType = 0.obs;
+          try {
+            num = int.parse(gapIndex);
+            max = num;
+
+            // if(subtopicVoList!=null && num< subtopicVoList!.length){
+            //   content = list![num].value!;
+            // }else{
+            content = "";
+            // }
+            print("num: $num content: $content");
+          } catch (e) {
+            e.printError();
           }
-        },
-        style: {
-          "p": getHtml_P_TagStyle(),
-        },
-        tagsList: Html.tags..addAll(['gap']),
-        customRenders: {
-          tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
-            String key = context.tree.element!.attributes["value"]??"unknown";
-            String gapIndex = context.tree.element!.attributes["index"]??"unknown";
-            String content = "";
-            int num = 0;
-            var correctType = 0.obs;
-            try {
-              num = int.parse(gapIndex);
-              max = num;
 
-              // if(subtopicVoList!=null && num< subtopicVoList!.length){
-              //   content = list![num].value!;
-              // }else{
-                content = "";
-              // }
-              print("num: $num content: $content");
-            } catch (e) {
-              e.printError();
-            }
-
-            return SizedBox(
-              width: 50.w,
-              child: Obx(()=>TextField(
-                  keyboardType: TextInputType.name,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: _getInputColor(correctType.value)),
-                  decoration: InputDecoration(
-                    isDense:true,
-                    contentPadding: EdgeInsets.all(0.w),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1.w,
-                          color: _getInputColor(correctType.value),
-                          style: BorderStyle.solid
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1.w,
-                          color: _getInputColor(correctType.value),
-                          style: BorderStyle.solid
-                      ),
+          return SizedBox(
+            width: 50.w,
+            child: Obx(()=>TextField(
+                keyboardType: TextInputType.name,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: _getInputColor(correctType.value)),
+                decoration: InputDecoration(
+                  isDense:true,
+                  contentPadding: EdgeInsets.all(0.w),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1.w,
+                        color: _getInputColor(correctType.value),
+                        style: BorderStyle.solid
                     ),
                   ),
-                  onChanged: (text){
-                    print("intput:"+text+"  content:"+content);
-                    if(content.isNotEmpty){
-                      if(text.isNotEmpty){
-                        if(content.startsWith(text)){
-                          correctType.value = 1;
-                        }else{
-                          correctType.value = -1;
-                        }
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1.w,
+                        color: _getInputColor(correctType.value),
+                        style: BorderStyle.solid
+                    ),
+                  ),
+                ),
+                onChanged: (text){
+                  print("intput:"+text+"  content:"+content);
+                  if(content.isNotEmpty){
+                    if(text.isNotEmpty){
+                      if(content.startsWith(text)){
+                        correctType.value = 1;
                       }else{
-                        correctType.value = 0;
+                        correctType.value = -1;
                       }
                     }else{
                       correctType.value = 0;
                     }
+                  }else{
+                    correctType.value = 0;
+                  }
 
-                  },
-                  onSubmitted: (text){
+                },
+                onSubmitted: (text){
 
-                  },
-                  onEditingComplete: (){
-                    if(num < max){
-                      _scopeNode.nextFocus();
-                    }else{
-                      _scopeNode.unfocus();
-                    }
+                },
+                onEditingComplete: (){
 
-                  },
-                  controller: getEditingControllerCallback(key))),
+                },
+                controller: getEditingControllerCallback(key))),
 
-            );
-          })
-        },
+          );
+        })
+      },
 
-      ),
     );
   }
 
@@ -270,7 +261,6 @@ class QuestionFactory{
   /// 常规填空、补全填空、翻译填空 题干部分
   /// gapKey 默认空的索引号
   static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
-    FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
@@ -419,11 +409,6 @@ class QuestionFactory{
                         _.updateFocus(key, false,isInit:false);
                       },
                       onEditingComplete: (){
-                        // if(num < max){
-                        //   _scopeNode.nextFocus();
-                        // }else{
-                        //   _scopeNode.unfocus();
-                        // }
                         print("=====+++===onEditingComplete====");
                         answerMin.clearFocus();
                         getFocusNodeControllerCallback(key).unfocus();
@@ -445,7 +430,6 @@ class QuestionFactory{
   /// 选词填空 题干部分
   /// gapKey 默认空的索引号
   static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
-    FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
@@ -589,11 +573,6 @@ class QuestionFactory{
                         _.updateFocus(key, false,isInit:false);
                       },
                       onEditingComplete: (){
-                        // if(num < max){
-                        //   _scopeNode.nextFocus();
-                        // }else{
-                        //   _scopeNode.unfocus();
-                        // }
                         print("=====+++===onEditingComplete====");
                         answerMin.clearFocus();
                         getFocusNodeControllerCallback(key).unfocus();
@@ -678,7 +657,6 @@ class QuestionFactory{
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
   static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback,bool isResult = false}){
-    FocusScopeNode _scopeNode = FocusScopeNode();
     int max = 0;
     String gap = "____";
 
@@ -709,96 +687,88 @@ class QuestionFactory{
     }
 
 
-    return FocusScope(
-      node: _scopeNode,
-      child: Html(
-        data: htmlContent??"",
-        onImageTap: (url,context,attributes,element,){
-          if(url!=null && url!.startsWith('http')){
-            DialogManager.showPreViewImageDialog(
-                BackButtonBehavior.close, url);
-          }
-        },
-        style: {
-          "p": getHtml_P_TagStyle(),
-        },
-        tagsList: Html.tags..addAll(['gap']),
-        customRenders: {
-          tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
-            String key = context.tree.element!.attributes["value"]??"unknown";
-            String gapIndex = context.tree.element!.attributes["index"]??"unknown";
-            String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
-            int subtopicId = int.parse(subtopicIdstr);
-            String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
-            String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
-            String content = "";
-            int num = 0;
-            print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
+    return Html(
+      data: htmlContent??"",
+      onImageTap: (url,context,attributes,element,){
+        if(url!=null && url!.startsWith('http')){
+          DialogManager.showPreViewImageDialog(
+              BackButtonBehavior.close, url);
+        }
+      },
+      style: {
+        "p": getHtml_P_TagStyle(),
+      },
+      tagsList: Html.tags..addAll(['gap']),
+      customRenders: {
+        tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
+          String key = context.tree.element!.attributes["value"]??"unknown";
+          String gapIndex = context.tree.element!.attributes["index"]??"unknown";
+          String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
+          int subtopicId = int.parse(subtopicIdstr);
+          String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
+          String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
+          String content = "";
+          int num = 0;
+          print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
 
-            return SizedBox(
-              width: 80.w,
-              height: 17.w,
-              child: GetBuilder<SelectGapGetxController>(
-                id:key,
-                builder: (_){
+          return SizedBox(
+            width: 80.w,
+            height: 17.w,
+            child: GetBuilder<SelectGapGetxController>(
+              id:key,
+              builder: (_){
 
-                  if(_.nextFocus){
-                    _.resetNextFocus();
-                    _scopeNode.nextFocus();
-                  }
+                if(userAnswerCallback!=null){
+                  // 更新作答答案
+                  SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
+                      optionId:0,
+                      userAnswer: _.contentMap[key]??"",
+                      answer: subtopicAnswer,
+                      isCorrect: false);
+                  userAnswerCallback.call(subtopicAnswerVo);
+                }
 
-                  if(userAnswerCallback!=null){
-                    // 更新作答答案
-                    SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
-                        optionId:0,
-                        userAnswer: _.contentMap[key]??"",
-                        answer: subtopicAnswer,
-                        isCorrect: false);
-                    userAnswerCallback.call(subtopicAnswerVo);
-                  }
-
-                  return Container(
-                    width: 70.w,
-                    height: 17.w,
-                    margin: EdgeInsets.only(left:3.w,right:3.w),
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: (){
-                        _.updateFocus(key, !(_.hasFocusMap[key]??false));
-                      },
-                      focusNode: getFocusNodeControllerCallback(key),
-                      onFocusChange:(focused){
-                        _.updateFocus(key, focused);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            color: (_.hasFocusMap[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
-                            width: double.infinity,
-                            height: 13.w,
-                            child: Center(
-                              child: Text(isResult? userAnswer??"" : (_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
-                            ),
+                return Container(
+                  width: 70.w,
+                  height: 17.w,
+                  margin: EdgeInsets.only(left:3.w,right:3.w),
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: (){
+                      _.updateFocus(key, true);
+                    },
+                    focusNode: getFocusNodeControllerCallback(key),
+                    // onFocusChange:(focused){
+                    //   _.updateFocus(key, focused);
+                    // },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          color: (_.hasFocusMap[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
+                          width: double.infinity,
+                          height: 13.w,
+                          child: Center(
+                            child: Text(isResult? userAnswer??"" : (_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
                           ),
-                          Container(
-                            color: AppColors.c_FF353E4D,
-                            width: double.infinity,
-                            height: 2.w,
-                          )
-                        ],
-                      ),
+                        ),
+                        Container(
+                          color: AppColors.c_FF353E4D,
+                          width: double.infinity,
+                          height: 2.w,
+                        )
+                      ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
+            ),
 
-            );
-          })
-        },
+          );
+        })
+      },
 
-      ),
     );
   }
 
