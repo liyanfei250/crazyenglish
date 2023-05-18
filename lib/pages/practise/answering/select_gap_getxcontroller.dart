@@ -1,3 +1,4 @@
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:get/get.dart';
 
 /**
@@ -13,7 +14,14 @@ class SelectGapGetxController extends GetxController{
   List<String> indexContentList = [];
 
   // 填空的 焦点 key-bool  : 用于焦点切换
+  // 只允许一个为true
   Map<String,bool> hasFocusMap = {};
+
+  // gapKey 大于
+  // 填空索引 - 是否高亮显示空
+  // 只允许一个为true?
+  Map<String,bool> gapKeyIndexMap = {};
+
   // 填空的内容  填空索引-内容：用于储存空中 用户作答洗洗
   Map<String,String> contentMap = {};
   Map<String,num> optionIdMap = {};
@@ -21,22 +29,30 @@ class SelectGapGetxController extends GetxController{
   // 答案索引-填空索引
   Map<String,String> answerIndexToGapIndexMap = {};
 
-  bool nextFocus = false;
 
-  // 填空索引 - 是否高亮显示空
-  Map<String,bool> gapKeyIndexMap = {};
+
+
 
   initContent(List<String> list){
     indexContentList.clear();
     indexContentList.addAll(list);
   }
 
+  // 1. 只允许一个空的焦点为true
+  // 2. 初始化的时候不发送update
   updateFocus(String key,bool hasFocus,{bool isInit = false}){
     print("updateFocus: ${key}:${hasFocus}:isInit:${isInit}");
     if(hasFocus){
+      hasFocusMap.keys.toList().forEach((element) {
+        hasFocusMap.addIf(true, element, false);
+      });
+      hasFocusMap.addIf(true, key, hasFocus);
+      gapKeyIndexMap.keys.toList().forEach((element) {
+        gapKeyIndexMap.addIf(true, element, false);
+      });
+      gapKeyIndexMap.addIf(true, key, hasFocus);
+      update([GetBuilderIds.updateFocus+(isInit? "isInit":"")]);
       if(!isInit){
-        hasFocusMap.addIf(true, key, hasFocus);
-        gapKeyIndexMap.addIf(true, key, hasFocus);
         hasFocusMap.keys.toList().forEach((element) {
           update([element]);
         });
@@ -68,17 +84,8 @@ class SelectGapGetxController extends GetxController{
     if(optionId>0){
       optionIdMap.addIf(true,gapKey,optionId);
     }
-    if(contentTxt.isNotEmpty){
-      nextFocus = true;
-    }else{
-      nextFocus = false;
-    }
     print("updateGapKeyContent: $gapKey, $contentTxt");
     update([gapKey]);
-  }
-
-  resetNextFocus(){
-    nextFocus = false;
   }
 
   updateAnswerIndexToGapKey(String answerIndex,String gapKey){

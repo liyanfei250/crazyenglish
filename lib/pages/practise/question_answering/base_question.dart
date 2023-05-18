@@ -85,6 +85,29 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     pagLogic.addListenerId(GetBuilderIds.answerNextPage,() {
       next();
     });
+    selectGapGetxController.addListenerId(GetBuilderIds.updateFocus+"isInit", () {
+      selectGapGetxController.hasFocusMap.forEach((key, value) {
+        if(value){
+          int index = int.parse(key) -1;
+          if(index >-1 ){
+            print("更新空位置 $index");
+            logic.updateCurrentPage(index,totalQuestion:questionList.length,isInit: true);
+          }
+        }
+      });
+    });
+    selectGapGetxController.addListenerId(GetBuilderIds.updateFocus, () {
+      selectGapGetxController.hasFocusMap.forEach((key, value) {
+        if(value){
+          int index = int.parse(key) -1;
+          if(index >-1 ){
+            print("更新空位置 $index");
+            logic.updateCurrentPage(index,totalQuestion:questionList.length,isInit: false);
+          }
+        }
+      });
+
+    });
   }
 
 
