@@ -110,6 +110,19 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     });
   }
 
+  int getFocusIndex(){
+    int returnIndex = -1;
+    selectGapGetxController.hasFocusMap.forEach((key, value) {
+      if(value){
+        int index = int.parse(key) -1;
+        if(index >-1 ){
+          returnIndex = index;
+        }
+      }
+    });
+    return returnIndex;
+  }
+
 
   @override
   bool get mounted {

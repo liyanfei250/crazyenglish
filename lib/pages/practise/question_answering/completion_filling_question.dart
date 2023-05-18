@@ -12,7 +12,7 @@ import '../question/question_factory.dart';
  * Author: leixun
  * Email: leixun33@163.com
  *
- * Description:
+ * Description: 补全阅读 翻译填空 普通填空
  */
 
 class CompletionFillingQuestion extends BaseQuestion {
@@ -37,7 +37,7 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
   @override
   Widget build(BuildContext context) {
     sub ??= QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
-
+    int focusIndex = getFocusIndex();
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -49,7 +49,7 @@ class _CompletionFillingQuestionState extends BaseQuestionState<CompletionFillin
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          Expanded(child: getDetail(0,sub!),)
+          Expanded(child: getDetail(focusIndex>=0? focusIndex:widget.childIndex,sub!),)
         ],
       ),
     );

@@ -367,7 +367,6 @@ class QuestionFactory{
                       onTap: () {
                         print("textfield clicked ${int.parse(key)-1}");
                         _.updateFocus(key, true);
-                        answerMin.jumpToQuestion(int.parse(key)-1);
                       },
                       decoration: InputDecoration(
                         isDense:true,
@@ -531,7 +530,6 @@ class QuestionFactory{
                       onTap: () {
                         print("textfield clicked ${int.parse(key)-1}");
                         _.updateFocus(key, true);
-                        answerMin.jumpToQuestion(int.parse(key)-1);
                       },
                       decoration: InputDecoration(
                         isDense:true,
