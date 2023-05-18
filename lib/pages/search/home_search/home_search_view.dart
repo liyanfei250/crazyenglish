@@ -186,6 +186,7 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
 
   @override
   void onDestroy() {
+    Get.delete<Home_searchLogic>();
     getBoyController.dispose();
   }
 

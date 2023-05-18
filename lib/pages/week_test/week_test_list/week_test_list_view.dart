@@ -199,11 +199,18 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
               ),
             ),
             Visibility(
-              child: Container(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _isOpen = !_isOpen;
+                  });
+                  _startAnimation(_isOpen);
+                },
+                child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height,
                 color: Colors.black.withOpacity(0.5),
-              ),
+              ),),
               visible: _isOpen,
             ),
             Visibility(
@@ -252,6 +259,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                   _isOpen = false;
                                   choiceText.value = '全部';
                                 });
+                                _startAnimation(_isOpen);
                                 affiliatedGrade = null;
                                 addlistner();
                                 logic.getList(affiliatedGrade,
@@ -282,6 +290,7 @@ class _WeekTestListPageState extends BasePageState<WeekTestListPage>
                                       _isOpen = false;
                                       choiceText.value = choiceList[index]!.name!;
                                     });
+                                    _startAnimation(_isOpen);
                                     affiliatedGrade =
                                         choiceList[index]!.id!.toInt();
                                     addlistner();
