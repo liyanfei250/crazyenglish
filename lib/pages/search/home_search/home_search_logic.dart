@@ -51,7 +51,7 @@ class Home_searchLogic extends GetxController {
           state.hasMore = true;
         }
       }
-      update([GetBuilderIds.getHomeSearchDate]);
+      update([GetBuilderIds.getHomeSearchDate+keyWord.toString() + type.toString()]);
     }
 
     HomeSearchListDate list = await homeViewRepository.getSearchDateList(req);
@@ -95,6 +95,6 @@ class Home_searchLogic extends GetxController {
     //   }
     // }
 
-    update([GetBuilderIds.getHomeSearchDate]);
+    update([GetBuilderIds.getHomeSearchDate+keyWord.toString() + type.toString()]);
   }
 }
