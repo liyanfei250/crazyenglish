@@ -23,8 +23,9 @@ class Home_searchLogic extends GetxController {
     req["p"] = p;
 
     var cache = await JsonCacheManageUtils.getCacheData(
-      JsonCacheManageUtils.HomeTopSearch,
-    ).then((value) {
+            JsonCacheManageUtils.HomeTopSearch,
+            labelId: keyWord.toString() + type.toString())
+        .then((value) {
       if (value != null) {
         return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
       }
@@ -56,7 +57,8 @@ class Home_searchLogic extends GetxController {
     HomeSearchListDate list = await homeViewRepository.getSearchDateList(req);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.HomeTopSearch, list.toJson());
+          JsonCacheManageUtils.HomeTopSearch, list.toJson(),
+          labelId: keyWord.toString() + type.toString());
     }
 //TODO 分页处理后面做
     // if (list.obj!.journals == null) {

@@ -63,7 +63,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
 
   var isChooseName = "".obs;
   pull.RefreshController _refreshController =
-  pull.RefreshController(initialRefresh: false);
+      pull.RefreshController(initialRefresh: false);
   List<paper.Obj> questionList = [];
 
   @override
@@ -83,18 +83,17 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   }
 
   void _onRefresh() async {
-    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       logic.getPreviewQuestionList(widget.paperType, widget.paperId);
-    }else{
+    } else {
       logic.getPreviewOperation(widget.paperId);
     }
-
   }
 
   void _onLoading() async {
-    if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)){
+    if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       logic.getPreviewQuestionList(widget.paperType, widget.paperId);
-    }else{
+    } else {
       logic.getPreviewOperation(widget.paperId);
     }
   }
@@ -119,49 +118,32 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
               //TODO 如果不是布置作业进去的就带着题去布置作业
               widget.isShowAssignHomework
                   ? SizedBox.shrink()
-                  : SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)?Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(left: 17.w, right: 22.w),
-                      child: InkWell(
-                        onTap: () {
-                          RouterUtil.toNamed(AppRoutes.AssignHomeworkPage,
-                              arguments: {
-                                "paperType": common.PaperType.exam,
-                                "paperId": widget.paperId.toString(),
-                                "examDesc": "试卷名称：" + (widget.paperName ?? '')
-                              });
-                        },
-                        child: Text(
-                          "布置作业",
-                          style: TextStyle(
-                              fontSize: 14.sp, color: AppColors.c_FFED702D),
-                        ),
-                      ),
-                    ):SizedBox.shrink()
+                  : SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                      ? Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(left: 17.w, right: 22.w),
+                          child: InkWell(
+                            onTap: () {
+                              RouterUtil.toNamed(AppRoutes.AssignHomeworkPage,
+                                  arguments: {
+                                    "paperType": common.PaperType.exam,
+                                    "paperId": widget.paperId.toString(),
+                                    "examDesc":
+                                        "试卷名称：" + (widget.paperName ?? '')
+                                  });
+                            },
+                            child: Text(
+                              "布置作业",
+                              style: TextStyle(
+                                  fontSize: 14.sp, color: AppColors.c_FFED702D),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
             ],
           ),
           Expanded(
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xffee754f), // 阴影的颜色
-                            offset: Offset(0.w, 0.w), // 阴影与容器的距离
-                            blurRadius: 9.w, // 高斯的标准偏差与盒子的形状卷积。
-                            spreadRadius: 0.w,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ];
-              },
-              body: pull.SmartRefresher(
+              child: pull.SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
                 header: pull.WaterDropHeader(),
@@ -209,7 +191,6 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                   ],
                 ),
               ),
-            ),
           ),
         ],
       ),
@@ -275,14 +256,16 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
         if ((widget.studentOperationId ?? 0) > 0) {
           // 做作业流程
           logicDetail.addJumpToStartHomeworkListen();
-          logicDetail.getDetailAndStartHomework(smallList.journalCatalogueId ?? "",
-              "${widget.studentOperationId}", "${widget.paperId}");
+          logicDetail.getDetailAndStartHomework(
+              smallList.journalCatalogueId ?? "",
+              "${widget.studentOperationId}",
+              "${widget.paperId}");
           showLoading("");
         } else {
           // 预览试题流程
           logicDetail.addJumpToBrowsePaperListen();
-          logicDetail
-              .getDetailAndEnterBrowsePaperPage(smallList.journalCatalogueId ?? "");
+          logicDetail.getDetailAndEnterBrowsePaperPage(
+              smallList.journalCatalogueId ?? "");
           showLoading("");
         }
       },
@@ -290,24 +273,21 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
         padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
         child: Row(
           children: [
-            Expanded(child: Text(smallList.catalogueName ?? '',
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff353e4d))))
-            ,
-            SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)?SizedBox.shrink():
-            Text(smallList.questionCount.toString() +  smallList.finishQuestionCount.toString(),
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff353e4d)))
+            Expanded(
+                child: Text(smallList.catalogueName ?? '',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff353e4d)))),
+            SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                ? SizedBox.shrink()
+                : getStatusWidget(
+                    smallList.questionCount, smallList.finishQuestionCount)
           ],
         ),
       ),
     );
   }
-
 
   Widget buildSeparatorBuilder(num question) {
     return Container(
@@ -328,4 +308,60 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget getStatusWidget(num? questionCount, num? finishQuestionCount) {
+    if (questionCount! > 0 && questionCount == finishQuestionCount) {
+      return Container(
+        alignment: Alignment.center,
+        width: 42.w,
+        padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xffec6b6a),
+                Color(0xffee7b8a),
+              ]),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(7.w), bottomRight: Radius.circular(7.w)),
+        ),
+        child: Text(
+          '已完成',
+          style: TextStyle(fontSize: 10.sp, color: Colors.white),
+        ),
+      );
+    } else {
+      return getContainer(finishQuestionCount, questionCount);
+    }
+    return SizedBox.shrink();
+  }
+
+  Container getContainer(num? finishQuestionCount, num? questionCount) {
+    return Container(
+      width: 42.w,
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffd2d5dc),
+              Color(0xffd2d5dc),
+            ]),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(2.w),
+            bottomRight: Radius.circular(2.w),
+            bottomLeft: Radius.circular(2.w),
+            topRight: Radius.circular(2.w)),
+      ),
+      child: Text(
+        (finishQuestionCount ?? 0).toString() +
+            "/" +
+            (questionCount ?? 0).toString(),
+        style: TextStyle(fontSize: 10.sp, color: Colors.white),
+      ),
+    );
+  }
 }
