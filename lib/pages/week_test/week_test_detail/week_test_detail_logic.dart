@@ -697,12 +697,13 @@ class WeekTestDetailLogic extends GetxController {
 
 
   // 跳转期刊成绩页
-  void addJumpToResutOverViewListen(){
+  void addJumpToResutOverViewListen(String? journalName){
     disposeId(GetBuilderIds.resoultOverView);
     addListenerId(GetBuilderIds.resoultOverView, () {
       RouterUtil.toNamed(AppRoutes.ResultOverviewPage,
           isNeedCheckLogin:true,
           arguments: {
+            ResultOverviewPage.journalName:journalName,
             ResultOverviewPage.exerciseOverView: state.jouralResultResponse,
             ResultOverviewPage.listCatalogueMergeVo: state.catalogueRecordVoList,
           });

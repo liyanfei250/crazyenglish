@@ -22,14 +22,16 @@ import 'result_overview_logic.dart';
 class ResultOverviewPage extends BasePage {
 
   static const exerciseOverView = "exerciseOverview";
+  static const journalName = "journalName";
   static const listCatalogueMergeVo = "catalogueRecordVoList";
 
   List<CatalogueRecordVoList> catalogueRecordVoList = [];
   JouralResultResponse jouralResultResponse = JouralResultResponse();
-
+  String title = "";
   ResultOverviewPage({Key? key}) : super(key: key){
     if (Get.arguments != null && Get.arguments is Map) {
       jouralResultResponse = Get.arguments[exerciseOverView];
+      title = Get.arguments[journalName]??"";
       catalogueRecordVoList = Get.arguments[listCatalogueMergeVo];
     }
   }
@@ -102,7 +104,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
           ),
           child: Column(
             children: [
-              buildTransparentAppBar("Module 1 Unit3"),
+              buildTransparentAppBar(widget.title),
               Util.buildTopIndicator(totalCount,totalRightCount,totalTime,""),
               Expanded(child: Container(
                 margin: EdgeInsets.only(top: 8.w),
