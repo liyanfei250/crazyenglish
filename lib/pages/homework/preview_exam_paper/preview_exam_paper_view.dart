@@ -1,4 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/r.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +16,7 @@ import '../../../utils/colors.dart';
 import '../../week_test/week_test_detail/week_test_detail_logic.dart';
 import 'preview_exam_paper_logic.dart';
 import '../../../entity/test_paper_look_response.dart' as paper;
-import '../../../base/common.dart' as common;
+import 'package:crazyenglish/base/common.dart' as common;
 
 /**
  * 试卷预览
@@ -111,11 +113,12 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                       margin: EdgeInsets.only(left: 17.w, right: 22.w),
                       child: InkWell(
                         onTap: () {
-                          RouterUtil.toNamed(AppRoutes.AssignHomeworkPage,arguments: {
-                            "paperType": common.PaperType.exam,
-                            "paperId": widget.paperId.toString(),
-                            "examDesc": "试卷名称：" + (widget.paperName ?? '')
-                          });
+                          RouterUtil.toNamed(AppRoutes.AssignHomeworkPage,
+                              arguments: {
+                                "paperType": common.PaperType.exam,
+                                "paperId": widget.paperId.toString(),
+                                "examDesc": "试卷名称：" + (widget.paperName ?? '')
+                              });
                           // assignLogic!.updateAssignHomeworkRequest(
                           //     paperType: common.PaperType.exam,
                           //     paperId: historys[0].id?.toString(),
@@ -180,16 +183,24 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                 onLoading: _onLoading,
                 child: CustomScrollView(
                   slivers: [
-                    SliverPadding(
-                        padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                        sliver: SliverGroupedListView<paper.Obj, num>(
-                          groupBy: (element) =>
-                              int.parse(element.classifyId ?? '0'),
-                          groupSeparatorBuilder: buildSeparatorBuilder,
-                          elements: questionList,
-                          itemBuilder: buildItem,
-                          groupHeaderBuilder: buildGroupHeader,
-                        ))
+                    questionList.length > 0
+                        ? SliverPadding(
+                            padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                            sliver: SliverGroupedListView<paper.Obj, num>(
+                              groupBy: (element) =>
+                                  int.parse(element.classifyId ?? '0'),
+                              groupSeparatorBuilder: buildSeparatorBuilder,
+                              elements: questionList,
+                              itemBuilder: buildItem,
+                              groupHeaderBuilder: buildGroupHeader,
+                            ))
+                        : SliverToBoxAdapter(
+                            child: PlaceholderPage(
+                                imageAsset: R.imagesCommenNoDate,
+                                title: '暂无数据',
+                                topMargin: 100.w,
+                                subtitle: ''),
+                          ),
                   ],
                 ),
               ),
