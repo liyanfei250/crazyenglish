@@ -50,78 +50,62 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
       if (widget.type == 4) {
         searchLogic.state.searchType = 3;
         if (state.listS != null) {
-          listS = state.listS!;
-
-          // if (state.pageNo == state.currentPageNo + 1) {
-          //   listS = state.listS;
-          //   state.currentPageNo++;
-          //   listS.addAll(state!.listS!);
-          //   if (mounted && _refreshController != null) {
-          //     _refreshController.loadComplete();
-          //     if (!state!.hasMore) {
-          //       _refreshController.loadNoData();
-          //     } else {
-          //       _refreshController.resetNoData();
-          //     }
-          //     setState(() {});
-          //   }
-          // } else if (state.pageNo == state.pageStartIndex) {
-          //   state.currentPageNo = state.pageStartIndex;
-          //   listS.clear();
-          //   listS.addAll(state.listS!);
-          //   if (mounted && _refreshController != null) {
-          //     _refreshController.refreshCompleted();
-          //     if (!state!.hasMore) {
-          //       _refreshController.loadNoData();
-          //     } else {
-          //       _refreshController.resetNoData();
-          //     }
-          //     setState(() {});
-          //   }
-          // }
-
+          if (state.pageNoS == state.currentPageNoS + 1) {
+            state.currentPageNoS++;
+            listS.addAll(state!.listS!);
             if (mounted && _refreshController != null) {
-              _refreshController.refreshCompleted();
+              _refreshController.loadComplete();
+              if (!state!.hasMoreS) {
+                _refreshController.loadNoData();
+              } else {
+                _refreshController.resetNoData();
+              }
               setState(() {});
             }
+          } else if (state.pageNoS == state.pageStartIndex) {
+            state.currentPageNoS = state.pageStartIndex;
+            listS.clear();
+            listS.addAll(state.listS!);
+            if (mounted && _refreshController != null) {
+              _refreshController.refreshCompleted();
+              if (!state!.hasMoreS) {
+                _refreshController.loadNoData();
+              } else {
+                _refreshController.resetNoData();
+              }
+              setState(() {});
+            }
+          }
         }
       }
       if (widget.type == 1 || widget.type == 2 || widget.type == 3) {
         searchLogic.state.searchType = 1;
         if (state.listJ != null) {
-          listJ = state.listJ!;
-
-          // if (state.pageNo == state.currentPageNo + 1) {
-          //   listJ = state.listJ;
-          //   state.currentPageNo++;
-          //   listJ.addAll(state!.listJ!);
-          //   if (mounted && _refreshController != null) {
-          //     _refreshController.loadComplete();
-          //     if (!state!.hasMore) {
-          //       _refreshController.loadNoData();
-          //     } else {
-          //       _refreshController.resetNoData();
-          //     }
-          //     setState(() {});
-          //   }
-          // } else if (state.pageNo == state.pageStartIndex) {
-          //   state.currentPageNo = state.pageStartIndex;
-          //   listJ.clear();
-          //   listJ.addAll(state.listJ!);
-          //   if (mounted && _refreshController != null) {
-          //     _refreshController.refreshCompleted();
-          //     if (!state!.hasMore) {
-          //       _refreshController.loadNoData();
-          //     } else {
-          //       _refreshController.resetNoData();
-          //     }
-          //     setState(() {});
-          //   }
-          // }
-
-          if (mounted && _refreshController != null) {
-            _refreshController.refreshCompleted();
-            setState(() {});
+          if (state.pageNoj == state.currentPageNoj + 1) {
+            state.currentPageNoj++;
+            listJ.addAll(state!.listJ!);
+            if (mounted && _refreshController != null) {
+              _refreshController.loadComplete();
+              if (!state!.hasMorej) {
+                _refreshController.loadNoData();
+              } else {
+                _refreshController.resetNoData();
+              }
+              setState(() {});
+            }
+          } else if (state.pageNoj == state.pageStartIndex) {
+            state.currentPageNoj = state.pageStartIndex;
+            listJ.clear();
+            listJ.addAll(state.listJ!);
+            if (mounted && _refreshController != null) {
+              _refreshController.refreshCompleted();
+              if (!state!.hasMorej) {
+                _refreshController.loadNoData();
+              } else {
+                _refreshController.resetNoData();
+              }
+              setState(() {});
+            }
           }
         }
       }
@@ -423,7 +407,9 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   }
 
   void _onRefresh() async {
-    searchLogic.state.currentPageNo = searchLogic.state.pageStartIndex;
+    searchLogic.state.currentPageNoj = searchLogic.state.pageStartIndex;
+    searchLogic.state.currentPageNoS = searchLogic.state.pageStartIndex;
+
     //搜索数据，之后数据更新
     searchLogic.getSearchList(
         searchLogic.state.searchText,
@@ -439,7 +425,9 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
         searchLogic.state.searchText,
         searchLogic.state.searchType,
         SpUtil.getInt(BaseConstant.USER_ID),
-        searchLogic.state.currentPageNo + 1,
+        widget.type == 4
+            ? searchLogic.state.currentPageNoS + 1
+            : searchLogic.state.currentPageNoj + 1,
         searchLogic.state.pageSize);
   }
 
@@ -447,8 +435,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void onCreate() {}
 
   @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 
   Widget getLayout() {
     if (widget.typeTwo == widget.JOURNALS_FORMAT) {
