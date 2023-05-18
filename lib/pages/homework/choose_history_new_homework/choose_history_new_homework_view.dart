@@ -313,11 +313,18 @@ class _ChooseHistoryNewHomeworkPageState extends BaseChoosePageState<ChooseHisto
                 ),
               )),
           Visibility(
-            child: Container(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _isOpen = !_isOpen;
+                });
+                _startAnimation(_isOpen);
+              },
+              child: Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               color: Colors.black.withOpacity(0.5),
-            ),
+            ),),
             visible: _isOpen,
           ),
           Visibility(
@@ -364,6 +371,7 @@ class _ChooseHistoryNewHomeworkPageState extends BaseChoosePageState<ChooseHisto
                                 choiceText.value ="全部";
                                 schoolClassId = null;
                               });
+                              _startAnimation(_isOpen);
                               logic.getHomeworkHistoryList(schoolClassId,pageStartIndex,pageSize);//全部
                             },
                             child: Text(
@@ -391,6 +399,7 @@ class _ChooseHistoryNewHomeworkPageState extends BaseChoosePageState<ChooseHisto
                                     _isOpen = false;
                                     choiceText.value = tabs[index]!.name!;
                                   });
+                                  _startAnimation(_isOpen);
                                   logic.getHomeworkHistoryList(tabs[index]!.id!,pageStartIndex,pageSize);
                                 },
                                 child: Container(

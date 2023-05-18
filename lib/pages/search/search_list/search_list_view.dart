@@ -447,7 +447,8 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void onCreate() {}
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+  }
 
   Widget getLayout() {
     if (widget.typeTwo == widget.JOURNALS_FORMAT) {
