@@ -271,7 +271,14 @@ class _ChooseExamPaperPageState
                       ),
                       InkWell(
                         onTap: () {
-                          RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage);
+                          RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+                            PreviewExamPaperPage.ShowAssignHomework:
+                            widget.isAssignHomework,
+                            PreviewExamPaperPage.PaperType: common.PaperType.exam,
+                            PreviewExamPaperPage.StudentOperationId: null,
+                            PreviewExamPaperPage.PaperId: exampaper.id,
+                            PreviewExamPaperPage.PaperName: exampaper.name
+                          });
                         },
                         child: Image.asset(
                           R.imagesExamPaperBrowse,

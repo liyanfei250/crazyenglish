@@ -5,29 +5,29 @@ import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import '../../mine/ClassRepository.dart';
 import 'preview_exam_paper_state.dart';
+import 'package:crazyenglish/base/common.dart' as common;
 
 class PreviewExamPaperLogic extends GetxController {
   final PreviewExamPaperState state = PreviewExamPaperState();
-  ClassRepository classRepository =ClassRepository();
+  ClassRepository classRepository = ClassRepository();
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
-  void getPreviewQuestionList(int paperType,int paperId) async{
-
+  void getPreviewQuestionList(int paperType, int paperId) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.TeacherTestPagerLook,labelId: "$paperType$paperId").then((value){
-      if(value!=null){
-        return TestPaperLookResponse.fromJson(value as Map<String,dynamic>?);
+            JsonCacheManageUtils.TeacherTestPagerLook,
+            labelId: "$paperType$paperId")
+        .then((value) {
+      if (value != null) {
+        return TestPaperLookResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
@@ -35,16 +35,20 @@ class PreviewExamPaperLogic extends GetxController {
       state.list = cache.obj!;
       update([(GetBuilderIds.getExamper)]);
     }
-    TestPaperLookResponse list = await classRepository.toPreviewOperation({"paperType":paperType,"historyOperationId":paperId});
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.TeacherTestPagerLook,
-        list.toJson(),
-      labelId: "$paperType$paperId"
-    );
-    if (list.obj == null) {
-        state.list.clear();
+    Map<String, dynamic> req = Map();
+    if (paperType == common.PaperType.exam) {
+      req = {"paperType": paperType, "paperId": paperId};
     } else {
-        state.list = list.obj!;
+      req = {"paperType": paperType, "historyOperationId": paperId};
+    }
+    TestPaperLookResponse list = await classRepository.toPreviewOperation(req);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.TeacherTestPagerLook, list.toJson(),
+        labelId: "$paperType$paperId");
+    if (list.obj == null) {
+      state.list.clear();
+    } else {
+      state.list = list.obj!;
     }
     update([(GetBuilderIds.getExamper)]);
   }
