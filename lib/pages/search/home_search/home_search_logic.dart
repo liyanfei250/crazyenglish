@@ -22,44 +22,42 @@ class Home_searchLogic extends GetxController {
     p["size"] = pageSize;
     req["p"] = p;
 
-    var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeTopSearch,
-            labelId: keyWord.toString() + type.toString())
-        .then((value) {
-      if (value != null) {
-        return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
-      }
-    });
-
-    state.pageNo = page;
-    if (page == 1 && cache is HomeSearchListDate && cache != null) {
-      if (cache!.obj!.journals != null &&
-          cache!.obj!.journals!.records != null) {
-        state.listJ = cache!.obj!.journals!.records!;
-        if (state.listJ.length < pageSize) {
-          state.hasMore = false;
-        } else {
-          state.hasMore = true;
-        }
-      }
-      if (cache!.obj!.students != null &&
-          cache!.obj!.students!.records != null) {
-        state.listS = cache!.obj!.students!.records!;
-        if (state.listS.length < pageSize) {
-          state.hasMore = false;
-        } else {
-          state.hasMore = true;
-        }
-      }
-      update([GetBuilderIds.getHomeSearchDate+keyWord.toString() + type.toString()]);
-    }
+    // var cache = await JsonCacheManageUtils.getCacheData(
+    //         JsonCacheManageUtils.HomeTopSearch)
+    //     .then((value) {
+    //   if (value != null) {
+    //     return HomeSearchListDate.fromJson(value as Map<String, dynamic>);
+    //   }
+    // });
+    //
+    // state.pageNo = page;
+    // if (page == 1 && cache is HomeSearchListDate && cache != null) {
+    //   if (cache!.obj!.journals != null &&
+    //       cache!.obj!.journals!.records != null) {
+    //     state.listJ = cache!.obj!.journals!.records!;
+    //     if (state.listJ.length < pageSize) {
+    //       state.hasMore = false;
+    //     } else {
+    //       state.hasMore = true;
+    //     }
+    //   }
+    //   if (cache!.obj!.students != null &&
+    //       cache!.obj!.students!.records != null) {
+    //     state.listS = cache!.obj!.students!.records!;
+    //     if (state.listS.length < pageSize) {
+    //       state.hasMore = false;
+    //     } else {
+    //       state.hasMore = true;
+    //     }
+    //   }
+    //   update([GetBuilderIds.getHomeSearchDate]);
+    // }
 
     HomeSearchListDate list = await homeViewRepository.getSearchDateList(req);
-    if (page == 1) {
-      JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.HomeTopSearch, list.toJson(),
-          labelId: keyWord.toString() + type.toString());
-    }
+    // if (page == 1) {
+    //   JsonCacheManageUtils.saveCacheData(
+    //       JsonCacheManageUtils.HomeTopSearch, list.toJson(),);
+    // }
 //TODO 分页处理后面做
     // if (list.obj!.journals == null) {
     //   if (page == 1) {
@@ -95,6 +93,43 @@ class Home_searchLogic extends GetxController {
     //   }
     // }
 
-    update([GetBuilderIds.getHomeSearchDate+keyWord.toString() + type.toString()]);
+    if (list!.obj!.journals != null && list!.obj!.journals!.records != null) {
+
+      if (page == 1) {
+        state.listJ = list.obj!.journals!.records!;
+      } else {
+        // state.listJ.clear();
+        state.listJ.addAll(list.obj!.journals!.records!);
+      }
+      if (list.obj!.journals!.records!.length < pageSize) {
+        state.hasMorej = false;
+      } else {
+        state.hasMorej = true;
+      }
+    } else {
+      // if (page == 1) {
+      //   state.listJ.clear();
+      // }
+    }
+
+    if (list!.obj!.students != null && list!.obj!.students!.records != null) {
+
+      if (page == 1) {
+        state.listS = list.obj!.students!.records!;
+      } else {
+        // state.listS.clear();
+        state.listS.addAll(list.obj!.students!.records!);
+      }
+      if (list.obj!.students!.records!.length < pageSize) {
+        state.hasMoreS = false;
+      } else {
+        state.hasMoreS = true;
+      }
+    }else {
+      // if (page == 1) {
+      //   state.listS.clear();
+      // }
+    }
+    update([GetBuilderIds.getHomeSearchDate]);
   }
 }

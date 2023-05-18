@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/search/search_list/search_list_view.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -174,6 +175,7 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
       );
 
   void _handleSubmitted(String text) {
+
     logic.getSearchList(
         text, state.searchType, SpUtil.getInt(BaseConstant.USER_ID), state.pageStartIndex, state.pageSize);
     // 在这里处理提交的文本
