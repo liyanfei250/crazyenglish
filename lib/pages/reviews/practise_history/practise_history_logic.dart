@@ -46,40 +46,6 @@ class Practise_historyLogic extends GetxController {
     }
   }
 
-  // void getRecordInfo(String userId, String date, int size, int current) async {
-  //   Map<String, dynamic> req = {};
-  //   Map<String, dynamic> reqTwo = {};
-  //   req["userId"] = userId;
-  //   req["date"] = date;
-  //   reqTwo["size"] = size;
-  //   reqTwo["current"] = current;
-  //   req["p"] = reqTwo;
-  //   var cache = await JsonCacheManageUtils.getCacheData(
-  //           JsonCacheManageUtils.PracRecordInfoResponse,
-  //           labelId: date.toString())
-  //       .then((value) {
-  //     if (value != null) {
-  //       return PractiseHistoryDate.fromJson(value as Map<String, dynamic>?);
-  //     }
-  //   });
-  //
-  //   bool hasCache = false;
-  //   if (cache is PractiseHistoryDate) {
-  //     state.paperDetail = cache!;
-  //     hasCache = true;
-  //     update([GetBuilderIds.getPracticeRecordList + date.toString()]);
-  //   }
-  //   PractiseHistoryDate list = await recordData.getPracticeRecordList(req);
-  //   JsonCacheManageUtils.saveCacheData(
-  //       JsonCacheManageUtils.PracRecordInfoResponse,
-  //       labelId: date.toString(),
-  //       list.toJson());
-  //   state.paperDetail = list!;
-  //   if (!hasCache) {
-  //     update([GetBuilderIds.getPracticeRecordList + date.toString()]);
-  //   }
-  // }
-
 
   void getRecordInfo(String userId, String date, int size, int current) async {
     Map<String, dynamic> req = {};
@@ -124,6 +90,7 @@ class Practise_historyLogic extends GetxController {
       if (current == 1) {
         state.list = list.obj!;
       } else {
+        state.list.clear();
         state.list.addAll(list.obj!);
       }
       if (list.obj!.length < size) {

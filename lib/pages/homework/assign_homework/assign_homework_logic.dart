@@ -5,7 +5,6 @@ import '../../../base/common.dart';
 import '../../../entity/assign_homework_request.dart';
 import '../../../entity/common_response.dart';
 import '../../../routes/getx_ids.dart';
-import '../../../utils/json_cache_util.dart';
 import '../../../utils/sp_util.dart';
 import '../../mine/ClassRepository.dart';
 import 'assign_homework_state.dart';
@@ -71,7 +70,6 @@ class AssignHomeworkLogic extends GetxController {
       Util.toast('请填写作业名称');
       return;
     }
-    // TODO 测试完毕 需打开下面内容
     if(state.assignHomeworkRequest.classInfos==null||state.assignHomeworkRequest.classInfos!.length<=0){
       Util.toast('学生选择不能为空');
       return;
