@@ -335,6 +335,5 @@ class _ChooseJournalPageState
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }

@@ -43,52 +43,54 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       pull.RefreshController(initialRefresh: false);
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.week;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   List timeTestList = [
-    "2023-05-03T16:00:00.000+0000",
-    "2023-05-01T16:00:00.000+0000"
   ];
   int currentPageNo = 1;
-  DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+  late DateTime _selectedDay;
   PractiseHistoryDate? paperDetail;
   PractiseDate? dateDetail;
   late List<Obj> listData = [];
   int pageSize = 10;
   int current = 1;
   var formatter = DateFormat('yyyy-M-d');
-  late var formattedDate;
-  Map<DateTime, List<Event>> _events = {
-    DateTime(2023, 5, 1): [
-      Event('Event A'),
-    ],
-    DateTime(2023, 5, 3): [
-      Event('Event C'),
-    ],
+  Map<String, List<Event>> _events = {
   };
+
+  int month = 0;
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
 
     logic.addListenerId(GetBuilderIds.PracticeDate, () {
       if (state.dateDetail != null) {
         dateDetail = state.dateDetail;
-        //todo 日期数据处理
         if (state.dateDetail!.obj != null &&
-            state.dateDetail!.obj!.length > 0) {
-          setState(() {});
+            state.dateDetail!.obj!.isNotEmpty) {
+          setState(() {
+            state.dateDetail!.obj!.forEach((element) {
+              _events[formatter.format(DateTime.parse(element))] = [const Event('Event A',isMarked:true),];
+            });
+          });
         }
+
       }
     });
+    logic.getPracticeDateInfo(
+        widget.studentId.toString(), "'${formatter.format(_selectedDay)}'");
+    _addDayListListener(null, _selectedDay);
+    _onRefresh();
 
-    logic.addListenerId(GetBuilderIds.getPracticeRecordList + formatter.format(DateTime.now()),
-        () {
+  }
+
+  _addDayListListener(DateTime? oldDay,DateTime newDay){
+    if(oldDay!=null){
+      logic.disposeId(GetBuilderIds.getPracticeRecordList + formatter.format(oldDay));
+    }
+    logic.addListenerId(GetBuilderIds.getPracticeRecordList + formatter.format(newDay),
+            () {
           hideLoading();
           if (state.list != null ) {
             if (state.pageNo == currentPageNo + 1) {
@@ -119,29 +121,12 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
             }
           }
 
-    });
-    var now = DateTime.now();
-    formattedDate = formatter.format(now);
-    //todo 日期处理，哪天有数据提前处理
-    logic.getPracticeDateInfo(
-        widget.studentId.toString(), "'$formattedDate'");
-
-    _onRefresh();
-
+        });
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
-  }
-
-  List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
-    final days = daysInRange(start, end);
-
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
+    String key = formatter.format(day);
+    return _events[key] ?? [];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -149,12 +134,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay);
 
       logic.addListenerId(GetBuilderIds.getPracticeRecordList + formatter.format(selectedDay),
               () {
@@ -190,28 +170,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
 
           });
 
-      formattedDate = formatter.format(selectedDay);
       _onRefresh();
 
-    }
-  }
-
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
-
-    // `start` or `end` could be null
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
     }
   }
 
@@ -267,14 +227,11 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       focusedDay: _focusedDay,
                       selectedDayPredicate: (day) =>
                           isSameDay(_selectedDay, day),
-                      rangeStartDay: _rangeStart,
-                      rangeEndDay: _rangeEnd,
                       calendarFormat: _calendarFormat,
                       availableCalendarFormats: const {
                         CalendarFormat.month: 'Month',
                         CalendarFormat.week: 'Week',
                       },
-                      rangeSelectionMode: _rangeSelectionMode,
                       eventLoader: _getEventsForDay,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekStyle:
@@ -356,6 +313,10 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       ),
                       calendarBuilders: CalendarBuilders<Event>(
                         headerTitleBuilder: (context, day) {
+                          if(month!=day.month){
+                            logic.getPracticeDateInfo(widget.studentId.toString(), "'${formatter.format(day)}'");
+                          }
+                          month = day.month;
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -378,7 +339,6 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                         },
                       ),
                       onDaySelected: _onDaySelected,
-                      onRangeSelected: _onRangeSelected,
                       onFormatChanged: (format) {
                         if (_calendarFormat != format) {
                           setState(() {
@@ -388,6 +348,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       },
                       onPageChanged: (focusedDay) {
                         _focusedDay = focusedDay;
+
                       },
                     ),
                   ),
@@ -596,13 +557,13 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   void _onRefresh() async {
     currentPageNo = current;
     logic.getRecordInfo(widget.studentId.toString(),
-        formattedDate, pageSize, current);
+        formatter.format(_selectedDay), pageSize, current);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     logic.getRecordInfo(widget.studentId.toString(),
-        formattedDate, pageSize, currentPageNo+1);
+        formatter.format(_selectedDay), pageSize, currentPageNo+1);
   }
 
   @override

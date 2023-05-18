@@ -15,13 +15,11 @@ class AppUpdatePanelLogic extends GetxController {
   final WeekTestRepository weekTestRepository = WeekTestRepository();
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
   void getAppUserInfo() async {
