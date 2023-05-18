@@ -152,30 +152,23 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
             onLoading: _onLoading,
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height - 100,
-                        child: homeSecondListDate.length == 0
-                            ? PlaceholderPage(
-                                imageAsset: R.imagesCommenNoDate,
-                                title: '暂无数据',
-                                topMargin: 0.w,
-                                subtitle: '')
-                            : ListView.builder(
-                                itemCount: homeSecondListDate.length,
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: buildItemTop,
-                                padding: EdgeInsets.only(top: 20.w),
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
+
+                SliverPadding(
+                  padding: EdgeInsets.only(top: 4.w, bottom: 14.w),
+                  sliver: homeSecondListDate.length > 0
+                      ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      buildItemTop,
+                      childCount: homeSecondListDate.length,
+                    ),
+                  )
+                      : SliverToBoxAdapter(
+                      child: PlaceholderPage(
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 100.w,
+                          subtitle: '')),
+                )
               ],
             ),
           ),
@@ -531,12 +524,6 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                   color: Color(0xff353e4d)),
             ),
             Padding(padding: EdgeInsets.only(left: 11.w)),
-            Image.asset(
-              R.imagesListenigLastIcon,
-              fit: BoxFit.cover,
-              width: 26.w,
-              height: 18.w,
-            ),
             Expanded(child: Text('')),
             Text(
               '正确率' +
