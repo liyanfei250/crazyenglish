@@ -252,14 +252,14 @@ class WeekTestDetailLogic extends GetxController {
       state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
     } else {
       // 找到上次作答位置索引
-      if(startExam!.obj==null || (startExam!.obj!.isFinish?? true)){
+      if(startExam!.obj==null || (startExam!.obj?.isFinish?? true)){
         // 已经做完 从第一道题开始即可
         state.parentIndex = 0;
         state.childIndex = 0;
       } else {
         // 未做完 从后台返回的索引开始
-        state.parentIndex = (startExam!.obj!.parentIndex?? 0).toInt();
-        state.childIndex = (startExam!.obj!.sublevelIndex?? 0).toInt();
+        state.parentIndex = (startExam!.obj?.parentIndex?? 0).toInt();
+        state.childIndex = (startExam!.obj?.sublevelIndex?? 0).toInt();
         // 索引异常
         if(state.parentIndex > maxLength){
           state.parentIndex = 0;
@@ -288,7 +288,7 @@ class WeekTestDetailLogic extends GetxController {
       }else{
         nextHasResult = false;
       }
-      if((startExam!.obj!.isFinish?? true)){
+      if((startExam!.obj?.isFinish?? true)){
         if(nextHasResult){
           state.enterResult = true;
         }else{
@@ -394,14 +394,14 @@ class WeekTestDetailLogic extends GetxController {
         state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
       } else {
         // 找到上次作答位置索引
-        if(startExam!.obj==null || (startExam!.obj!.isFinish?? true)){
+        if(startExam!.obj==null || (startExam!.obj?.isFinish?? true)){
           // 已经做完 从第一道题开始即可
           state.parentIndex = 0;
           state.childIndex = 0;
         } else {
           // 未做完 从后台返回的索引开始
-          state.parentIndex = (startExam!.obj!.parentIndex?? 0).toInt();
-          state.childIndex = (startExam!.obj!.sublevelIndex?? 0).toInt();
+          state.parentIndex = (startExam!.obj?.parentIndex?? 0).toInt();
+          state.childIndex = (startExam!.obj?.sublevelIndex?? 0).toInt();
           // 索引异常
           if(state.parentIndex > maxLength){
             state.parentIndex = 0;
@@ -670,7 +670,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.catlogIdKey:state.uuid,
               AnsweringPage.parentIndexKey:parentIndex,
               AnsweringPage.childIndexKey:state.childIndex,
-              AnsweringPage.examResult:state.startExam!.obj!,
+              AnsweringPage.examResult:state.startExam!.obj,
               AnsweringPage.result_type:resultType,
             });
       }else{
@@ -697,12 +697,13 @@ class WeekTestDetailLogic extends GetxController {
 
 
   // 跳转期刊成绩页
-  void addJumpToResutOverViewListen(){
+  void addJumpToResutOverViewListen(String? journalName){
     disposeId(GetBuilderIds.resoultOverView);
     addListenerId(GetBuilderIds.resoultOverView, () {
       RouterUtil.toNamed(AppRoutes.ResultOverviewPage,
           isNeedCheckLogin:true,
           arguments: {
+            ResultOverviewPage.journalName:journalName,
             ResultOverviewPage.exerciseOverView: state.jouralResultResponse,
             ResultOverviewPage.listCatalogueMergeVo: state.catalogueRecordVoList,
           });

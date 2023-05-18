@@ -369,7 +369,7 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
             Expanded(child: Text('')),
             InkWell(
               onTap: () {
-                logicDetail.addJumpToResutOverViewListen();
+                logicDetail.addJumpToResutOverViewListen(obj.journalName);
                 logicDetail.jumpToResutOverView("${obj.journalId}","${widget.type!.dictionaryId}",obj.catalogueMergeVo!);
               },
               child: Padding(
