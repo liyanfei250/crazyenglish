@@ -1,4 +1,5 @@
 import 'package:crazyenglish/pages/config/config_logic.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +46,8 @@ class _HomePageState extends State<HomePage> {
   final appUpdatePanelState = Get.find<AppUpdatePanelLogic>().state;
   final dataGroupLogic = Get.put(ConfigLogic());
   final dataGroupState = Get.find<ConfigLogic>().state;
+  final personInfoLogic = Get.put(Person_infoLogic());
+  final personInfoState = Get.find<Person_infoLogic>().state;
 
   List<String> bottomTitles = [
     "首页",
@@ -93,8 +96,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose(){
-    // Get.delete<TrackEffectsLogic>();
-    // Get.delete<UserCenterLogic>();
+    Get.delete<AppUpdatePanelLogic>();
+    Get.delete<ConfigLogic>();
+    Get.delete<Person_infoLogic>();
     super.dispose();
   }
 

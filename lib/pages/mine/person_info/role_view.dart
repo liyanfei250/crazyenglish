@@ -46,7 +46,7 @@ class _ToRolePageState extends BasePageState<RolePage> {
       if(state.infoResponse.obj?.identity == RoleType.student
       || state.infoResponse.obj?.identity == RoleType.teacher ){
         SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", true);//是学生且没选年级
-        if (state.infoResponse.obj?.identity == RoleType.student && !SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+        if (state.infoResponse.obj?.identity == RoleType.student && (state.infoResponse.obj?.affiliatedGrade??"").isEmpty && !SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
           RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
               arguments: {
                 LoginNewPage.inEnterHome: widget.isEnterHome,

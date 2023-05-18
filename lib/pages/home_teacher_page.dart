@@ -4,6 +4,7 @@ import 'package:crazyenglish/entity/check_update_resp.dart';
 import 'package:crazyenglish/pages/classes/class_view.dart';
 import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:crazyenglish/pages/index/teacher_index_view.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,6 +49,9 @@ class _HomePageState extends State<HomeTeacherPage> {
   final dataGroupLogic = Get.put(ConfigLogic());
   final dataGroupState = Get.find<ConfigLogic>().state;
 
+  final personInfoLogic = Get.put(Person_infoLogic());
+  final personInfoState = Get.find<Person_infoLogic>().state;
+
   List<String> bottomTitles = [
     "首页",
     "班级",
@@ -87,8 +91,9 @@ class _HomePageState extends State<HomeTeacherPage> {
 
   @override
   void dispose() {
-    // Get.delete<TrackEffectsLogic>();
-    // Get.delete<UserCenterLogic>();
+    Get.delete<AppUpdatePanelLogic>();
+    Get.delete<ConfigLogic>();
+    Get.delete<Person_infoLogic>();
     super.dispose();
   }
 

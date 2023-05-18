@@ -34,8 +34,7 @@ class TeacherIndexPage extends StatefulWidget {
 class _TeacherIndexPageState extends State<TeacherIndexPage> {
   final logic = Get.put(TeacherIndexLogic());
   final state = Get.find<TeacherIndexLogic>().state;
-  final personInfoLogic = Get.put(Person_infoLogic());
-  final personInfoState = Get.find<Person_infoLogic>().state;
+  final personInfoLogic = Get.find<Person_infoLogic>();
 
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
@@ -808,7 +807,6 @@ class _TeacherIndexPageState extends State<TeacherIndexPage> {
   @override
   void dispose() {
     Get.delete<TeacherIndexLogic>();
-    Get.delete<Person_infoLogic>();
     _refreshController.dispose();
     super.dispose();
   }
