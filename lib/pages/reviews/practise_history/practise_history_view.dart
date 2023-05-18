@@ -430,96 +430,94 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                         "${element.exerciseId}");
                                                 showLoading("");
                                               },
-                                              child: Expanded(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          element.questionTypeName ??
-                                                              "",
-                                                          style: TextStyle(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                                children: [
+                                                  Column(
+                                                    mainAxisSize:
+                                                    MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Text(
+                                                        element.questionTypeName ??
+                                                            "",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xff353e4d),
+                                                            fontSize: 14.sp),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                              top: 11.w)),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .start,
+                                                        mainAxisSize:
+                                                        MainAxisSize.max,
+                                                        children: [
+                                                          Container(
+                                                            alignment:
+                                                            Alignment
+                                                                .center,
+                                                            padding: EdgeInsets
+                                                                .only(
+                                                                left:
+                                                                10.w,
+                                                                right:
+                                                                10.w,
+                                                                top: 4.w,
+                                                                bottom:
+                                                                4.w),
+                                                            margin: EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                13.w),
+                                                            decoration:
+                                                            BoxDecoration(
                                                               color: Color(
-                                                                  0xff353e4d),
-                                                              fontSize: 14.sp),
-                                                        ),
-                                                        Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 11.w)),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          10.w,
-                                                                      right:
-                                                                          10.w,
-                                                                      top: 4.w,
-                                                                      bottom:
-                                                                          4.w),
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right:
-                                                                          13.w),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Color(
-                                                                    0xfffff7ed),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            2.w)),
-                                                              ),
-                                                              child: Text(
-                                                                element.time ??
-                                                                    "",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffed702d),
-                                                                    fontSize:
-                                                                        12.sp),
-                                                              ),
+                                                                  0xfffff7ed),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                  .circular(
+                                                                  2.w)),
                                                             ),
-                                                            Text(
-                                                              element.accuracy! +
-                                                                  "%正确率",
+                                                            child: Text(
+                                                              element.time ??
+                                                                  "",
                                                               style: TextStyle(
                                                                   color: Color(
-                                                                      0xff898a93),
+                                                                      0xffed702d),
                                                                   fontSize:
-                                                                      12.sp),
+                                                                  12.sp),
                                                             ),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Image.asset(
-                                                      R.imagesHistoryJumpArrow,
-                                                      width: 10.w,
-                                                      height: 10.w,
-                                                    )
-                                                  ],
-                                                ),
+                                                          ),
+                                                          Text(
+                                                            element.accuracy! +
+                                                                "%正确率",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xff898a93),
+                                                                fontSize:
+                                                                12.sp),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Image.asset(
+                                                    R.imagesHistoryJumpArrow,
+                                                    width: 10.w,
+                                                    height: 10.w,
+                                                  )
+                                                ],
                                               ),
                                             ),
                                             Visibility(

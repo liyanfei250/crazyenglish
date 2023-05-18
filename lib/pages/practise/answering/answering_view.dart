@@ -177,7 +177,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   var _selectedIndex = 0.obs;
-  final PageController pageController = PageController(keepPage: true);
 
   detail.SubjectVoList? currentSubjectVoList;
   ExerciseVos? currentExerciseVos;

@@ -720,6 +720,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     Get.delete<AnsweringLogic>();
     Get.delete<WeekTestDetailLogic>();
     Get.delete<Collect_practicLogic>();
+    _tabController.dispose();
   }
 
   @override

@@ -302,6 +302,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(logic!=null){
       logic.updateCurrentPage(widget.childIndex,totalQuestion:questionList.length,isInit: true);
     }
+    selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
+    selectGapGetxController.disposeId(GetBuilderIds.updateFocus);
     return PageView(
       controller: pageController,
       physics: _neverScroll,
@@ -386,7 +388,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   @override
   void jumpToQuestion(int index) {
     int currentPage = index;
-    pageController.jumpToPage(currentPage);
+    // 检测
+    if(pageController.hasClients){
+      pageController.jumpToPage(currentPage);
+    }
     logic.updateCurrentPage(currentPage);
   }
 
@@ -457,6 +462,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void dispose() {
     print(tag + "dispose\n");
     Get.delete<SelectGapGetxController>();
+    if(pageController.hasClients){
+      pageController.dispose();
+    }
+
     onDestroy();
     super.dispose();
   }
