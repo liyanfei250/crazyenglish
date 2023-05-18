@@ -451,7 +451,7 @@ class _IndexPageState extends BasePageState<IndexPage>
             child: GestureDetector(
                 onTap: () {
                   RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                      arguments: {'isteacher': true});
+                      arguments: {'isteacher': false});
                 },
                 child: Container(
                   width: double.infinity,
