@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:crazyenglish/r.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,9 @@ class ImagePickerUtils{
         height: height,);
     }
 
-    return const Icon(Icons.add_photo_alternate);
+    return Image.asset(
+      R.imagesIconHomeMeDefaultHead,
+      fit: BoxFit.fill,
+    );
   }
 }

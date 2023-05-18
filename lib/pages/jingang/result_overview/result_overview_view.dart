@@ -145,7 +145,13 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 24.w)),
+                    Padding(padding: EdgeInsets.only(top: 10.w)),
+                    Container(
+                      color: AppColors.c_FFD2D5DC,
+                      height: 0.2.w,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(left: 18.w,right: 18.w),
+                    ),
                     Expanded(child: ListView.builder(
                       itemCount: questionList.length,
                         itemBuilder: buildItem)),
@@ -161,23 +167,32 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
 
   Widget buildGroupHeader(CatalogueRecordVoList question){
     return Container(
+      margin: EdgeInsets.only(bottom: 10.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(topLeft: Radius.circular(7.w),topRight: Radius.circular(7.w)),
       ),
-      child: Stack(
+      child: Row(
         children: [
           Container(
             height: 20.w,
-            width: 85.w,
-            decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: AppColors.c_FFFCEFD8,width: 3.w,))
-            ),
+            child: Text("${question.catalogueMergeName} > ",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
           ),
-          Container(
-            height: 20.w,
-            child: Text("${question.catalogueMergeName} > ${question.catalogueName}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
-          ),
+          Stack(
+            children: [
+              Container(
+                height: 20.w,
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: AppColors.c_FFFCEFD8,width: 5.w,))
+                ),
+                child: Text("${question.catalogueName}",style: TextStyle(color: Colors.white,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+              ),
+              Container(
+                height: 20.w,
+                child: Text("${question.catalogueName}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -185,7 +200,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
 
   Widget buildSeparatorBuilder(CatalogueRecordVoList question){
     return Container(
-      padding: EdgeInsets.only(left: 18.w,right: 18.w),
+      padding: EdgeInsets.only(top: 8.w,bottom:8.w),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -248,7 +263,12 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
               ),
             ],
           ),
-
+          Container(
+            color: AppColors.c_FFD2D5DC,
+            height: 0.2.w,
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 18.w,bottom: 28.w),
+          ),
         ],
       ),
     );
@@ -357,7 +377,7 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
       width: 34.w,
       height: 34.w,
       alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: 9.w),
+      margin: EdgeInsets.only(bottom: 9.w,right:20.w),
       decoration: decoration,
       child: Text(e,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: textColor),),
     );

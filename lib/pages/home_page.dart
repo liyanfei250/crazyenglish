@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
           body: PageView(
             controller: pageController,
             physics: _neverScroll,
-            children: const [
+            children: [
               IndexPage(),
               ReviewPage(),
               MinePage()

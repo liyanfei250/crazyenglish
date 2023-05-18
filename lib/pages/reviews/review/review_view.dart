@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,14 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import 'review_logic.dart';
 
-class ReviewPage extends StatefulWidget {
-  const ReviewPage({Key? key}) : super(key: key);
+class ReviewPage extends BasePage {
+  ReviewPage({Key? key}) : super(key: key);
 
   @override
-  _ReviewPageState createState() => _ReviewPageState();
+  _ReviewPageState getState() => _ReviewPageState();
 }
 
-class _ReviewPageState extends State<ReviewPage> {
+class _ReviewPageState extends BasePageState<ReviewPage> {
   final logic = Get.put(ReviewLogic());
   final state = Get.find<ReviewLogic>().state;
   ReviewHomeDetail? paperDetail;
@@ -95,6 +96,13 @@ class _ReviewPageState extends State<ReviewPage> {
               arguments: state.tabList!.obj!);
         }
       }
+    });
+  }
+
+  @override
+  void loginChanged() {
+    setState(() {
+      isLogin = Util.isLogin();
     });
   }
 
@@ -411,5 +419,13 @@ class _ReviewPageState extends State<ReviewPage> {
   void dispose() {
     Get.delete<ReviewLogic>();
     super.dispose();
+  }
+
+  @override
+  void onCreate() {
+  }
+
+  @override
+  void onDestroy() {
   }
 }
