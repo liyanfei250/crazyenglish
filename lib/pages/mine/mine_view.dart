@@ -25,8 +25,6 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
-  final personInfoLogic = Get.find<Person_infoLogic>();
-
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
