@@ -91,12 +91,12 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
               // 点击事件处理逻辑
               _upLoadImage();
               //todo 图片地址获取
-              logic.postContent(SpUtil.getInt(BaseConstant.USER_ID),getBoyController!.text,['https://www.baidu.com/img/flexible/logo/pc/result.png','https://www.baidu.com/img/flexible/logo/pc/result.png']);
+              logic.postContent(SpUtil.getInt(BaseConstant.USER_ID),getBoyController!.text,[]);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               alignment: Alignment.center,
-              child: Text(
+              child: const Text(
                 '提交',
                 style: TextStyle(
                   color: Color(0xffed702d),

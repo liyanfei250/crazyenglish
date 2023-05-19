@@ -320,12 +320,13 @@ class _MinePageState extends BasePageState<MinePage> {
               RouterUtil.toNamed(AppRoutes.MyClassListPage,
                   isNeedCheckLogin: true);
             } else {
+              userIfo.UserInfoResponse? infoResponse = Util.getUserInfoResponse();
               RouterUtil.toNamed(
                   AppRoutes.QRViewPageNextClass,
                   isNeedCheckLogin: true,
                   arguments: {
                     'isShowAdd': 0,
-                    'classId': '1655395694170124290'
+                    'classId': infoResponse?.obj?.classId??""
                     // 'classId': userInfoResponse!.obj!.classId
                   });
             }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/entity/user_info_response.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -105,6 +106,13 @@ class Util {
         ),
       ),
     );
+  }
+
+  static UserInfoResponse? getUserInfoResponse(){
+    Map? map = SpUtil.getObject(BaseConstant.USER_INFO);
+    if(map!=null){
+      return UserInfoResponse.fromJson(map);
+    }
   }
 
   static Widget buildAnswerState(int state) {
