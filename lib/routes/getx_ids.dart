@@ -84,6 +84,7 @@ class GetBuilderIds {
   static const String toChangeHeadImg = "toChangeHeadImg";
   static const String toChangePhoneNumber = "toChangePhoneNumber";
   static const String PracticeDate = "PracticeDate";
+  static const String HomeworkHistoryDate = "HomeworkHistoryDate";
   //教师端
   static const String getHomeDateListTeacher = "getHomeDateListTeacher";
   static const String getHomeMyJournalDateTeacher = "getHomeMyJournalDateTeacher";
