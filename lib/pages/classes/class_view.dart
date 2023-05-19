@@ -46,7 +46,7 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     logic.addListenerId(
         GetBuilderIds.getHomeClassTab +
             SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
-      if (state.myClassList != null && state.myClassList!.obj != null) {
+      if (mounted&&state.myClassList != null && state.myClassList!.obj != null) {
         print("班级数据===" + state.myClassList!.obj![0]!.name!);
         tabs = state.myClassList!.obj!;
         setState(() {

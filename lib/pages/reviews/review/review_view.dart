@@ -101,9 +101,11 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
 
   @override
   void loginChanged() {
-    setState(() {
-      isLogin = Util.isLogin();
-    });
+    if(mounted){
+      setState(() {
+        isLogin = Util.isLogin();
+      });
+    }
   }
 
   @override

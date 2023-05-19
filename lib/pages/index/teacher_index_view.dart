@@ -172,9 +172,11 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
 
   @override
   void loginChanged() {
-    setState(() {
+    if(mounted){
+      setState(() {
 
-    });
+      });
+    }
   }
 
   Widget _buildSearchBar() => Container(
