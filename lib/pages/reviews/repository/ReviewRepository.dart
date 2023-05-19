@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crazyenglish/entity/history_homework_date.dart';
 import 'package:dio/dio.dart';
 
 import '../../../api/api.dart';
@@ -72,14 +73,14 @@ class ReviewRepository {
     }
   }
 
-  Future<PractiseHistoryDate> getHistHomeWorkRecordList(
+  Future<HistoryHomeworkDate> getHistHomeWorkRecordList(
       Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.getHistHomeWorkRecordList,
         data: req,
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
-    PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
+    HistoryHomeworkDate paperDetail = HistoryHomeworkDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

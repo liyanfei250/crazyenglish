@@ -129,7 +129,7 @@ class Api {
 
   // 历史作业接口数据
   static String getHistHomeWorkRecordList =
-      "${Config.ApiHost}/question/operation/student/dayList/";
+      "${Config.ApiHost}/question/operation/student/dayList";
 
   // 期刊成绩接口数据
   static String getJournalExerciseResult =

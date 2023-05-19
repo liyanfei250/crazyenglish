@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:crazyenglish/entity/history_homework_date.dart' as history;
 
 import '../../../r.dart';
 import '../../../utils/colors.dart';
@@ -40,22 +41,21 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  List timeTestList = [
-  ];
+  List timeTestList = [];
   int currentPageNo = 1;
   late DateTime _selectedDay;
   PractiseHistoryDate? paperDetail;
   PractiseDate? dateDetail;
-  late List<Obj> listData = [];
+  late List<history.Records> listData = [];
   int pageSize = 10;
   int current = 1;
-  var formatter = DateFormat('yyyy-M-d');
-  Map<String, List<Event>> _events = {
-  };
+  var formatter = DateFormat('yyyy-MM');
+  var formatterTwo = DateFormat('yyyy-MM-dd');
+  Map<String, List<Event>> _events = {};
 
   int month = 0;
 
@@ -73,7 +73,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
             state.dateDetail!.obj!.isNotEmpty) {
           setState(() {
             state.dateDetail!.obj!.forEach((element) {
-              _events[formatter.format(DateTime.parse(element))] = [
+              _events[formatterTwo.format(DateTime.parse(element))] = [
                 const Event('Event A', isMarked: true),
               ];
             });
@@ -89,11 +89,11 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
   _addDayListListener(DateTime? oldDay, DateTime newDay) {
     if (oldDay != null) {
-      logic.disposeId(
-          GetBuilderIds.HistoryHomeworkInfoResponse + formatter.format(oldDay));
+      logic.disposeId(GetBuilderIds.HistoryHomeworkInfoResponse +
+          formatterTwo.format(oldDay));
     }
     logic.addListenerId(
-        GetBuilderIds.HistoryHomeworkInfoResponse + formatter.format(newDay),
+        GetBuilderIds.HistoryHomeworkInfoResponse + formatterTwo.format(newDay),
         () {
       hideLoading();
       if (state.list != null) {
@@ -128,7 +128,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    String key = formatter.format(day);
+    String key = formatterTwo.format(day);
     return _events[key] ?? [];
   }
 
@@ -141,7 +141,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
       logic.addListenerId(
           GetBuilderIds.HistoryHomeworkInfoResponse +
-              formatter.format(selectedDay), () {
+              formatterTwo.format(selectedDay), () {
         hideLoading();
         if (state.list != null) {
           if (state.pageNo == currentPageNo + 1) {
@@ -237,7 +237,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                       eventLoader: _getEventsForDay,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekStyle:
-                      DaysOfWeekStyle(dowTextFormatter: (date, locale) {
+                          DaysOfWeekStyle(dowTextFormatter: (date, locale) {
                         String week = DateFormat.E("en_US").format(date);
                         switch (week) {
                           case "Mon":
@@ -315,8 +315,10 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                       ),
                       calendarBuilders: CalendarBuilders<Event>(
                         headerTitleBuilder: (context, day) {
-                          if(month!=day.month){
-                            logic.getPracticeDateInfo(widget.studentId.toString(), '${formatter.format(day)}');
+                          if (month != day.month) {
+                            logic.getPracticeDateInfo(
+                                widget.studentId.toString(),
+                                '${formatter.format(day)}');
                           }
                           month = day.month;
                           return Row(
@@ -350,7 +352,6 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                       },
                       onPageChanged: (focusedDay) {
                         _focusedDay = focusedDay;
-
                       },
                     ),
                   ),
@@ -359,7 +360,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                       valueListenable: _selectedEvents,
                       builder: (context, value, _) {
                         return Visibility(
-                            visible: value.length > 0,
+                            visible: listData.length > 0,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -386,132 +387,151 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                       }),
                   listData.length == 0
                       ? PlaceholderPage(
-                      imageAsset: R.imagesCommenNoDate,
-                      title: '暂无数据',
-                      topMargin: 20.w,
-                      subtitle: '')
-                      :
-                  Container(
-                    decoration: MyDecoration(),
-                    margin: EdgeInsets.only(left: 24, top: 12.w),
-                    padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
-                    child: ValueListenableBuilder<List<Event>>(
-                      valueListenable: _selectedEvents,
-                      builder: (context, value, _) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(13.w)),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xfffbf4f2),
-                                  offset: Offset(0, 0),
-                                  blurRadius: 20,
-                                  spreadRadius: 0,
-                                )
-                              ]),
-                          child: ListView(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            children: value.map((element) {
+                          imageAsset: R.imagesCommenNoDate,
+                          title: '暂无数据',
+                          topMargin: 20.w,
+                          subtitle: '')
+                      : Container(
+                          decoration: MyDecoration(),
+                          margin: EdgeInsets.only(left: 24, top: 12.w),
+                          padding: EdgeInsets.fromLTRB(11.w, 0, 16, 16),
+                          child: ValueListenableBuilder<List<Event>>(
+                            valueListenable: _selectedEvents,
+                            builder: (context, value, _) {
                               return Container(
-                                  padding:
-                                      EdgeInsets.only(left: 28.2, right: 24.w),
-                                  margin: EdgeInsets.only(top: 16.w),
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          logicDetail
-                                              .addJumpToStartExamListen();
-                                          logicDetail
-                                              .getDetailAndStartExam("0");
-                                          showLoading("");
-                                        },
-                                        child: Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "综合评估（听力｜阅读｜写作）",
-                                                style: TextStyle(
-                                                    color: Color(0xff898a93),
-                                                    fontSize: 12.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(13.w)),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0xfffbf4f2),
+                                        offset: Offset(0, 0),
+                                        blurRadius: 20,
+                                        spreadRadius: 0,
+                                      )
+                                    ]),
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: listData.map((element) {
+                                    String formattedPercentage;
+                                    if (element.objectiveSize != 0) {
+                                      double percentage =
+                                          (element.objectiveProperSize! /
+                                                  element.objectiveSize!) *
+                                              100;
+                                      formattedPercentage =
+                                          percentage.toStringAsFixed(2);
+                                    } else {
+                                      formattedPercentage = "0";
+                                    }
+
+                                    return Container(
+                                        padding: EdgeInsets.only(
+                                            left: 28.2, right: 24.w),
+                                        margin: EdgeInsets.only(top: 16.w),
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                logicDetail
+                                                    .addJumpToStartExamListen();
+                                                logicDetail
+                                                    .getDetailAndStartExam("0");
+                                                showLoading("");
+                                              },
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    element.name ?? '',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff898a93),
+                                                        fontSize: 12.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 12.w,
+                                                  ),
+                                                  Container(
+                                                    height: 0.5.w,
+                                                    color: Color(0xffd2d5dc),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 14.w,
+                                                  ),
+                                                  Text(
+                                                    element.className ?? '',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff353e4d),
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.w,
+                                                  ),
+                                                  Text(
+                                                    "个人正确率：" +
+                                                        formattedPercentage +
+                                                        "%",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff353e4d),
+                                                        fontSize: 12.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.w,
+                                                  ),
+                                                  Text(
+                                                    "班级正确率：${element.classAccuracy}%",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff353e4d),
+                                                        fontSize: 12.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.w,
+                                                  ),
+                                                  Text(
+                                                    "班级排名：" +
+                                                        (element.classRanking ??
+                                                                0)
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff353e4d),
+                                                        fontSize: 12.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20.w,
+                                                  )
+                                                ],
                                               ),
-                                              SizedBox(
-                                                height: 12.w,
-                                              ),
-                                              Container(
-                                                height: 0.5.w,
-                                                color: Color(0xffd2d5dc),
-                                              ),
-                                              SizedBox(
-                                                height: 14.w,
-                                              ),
-                                              Text(
-                                                "一班（七年级）",
-                                                style: TextStyle(
-                                                    color: Color(0xff353e4d),
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                height: 6.w,
-                                              ),
-                                              Text(
-                                                "个人正确率：98%",
-                                                style: TextStyle(
-                                                    color: Color(0xff353e4d),
-                                                    fontSize: 12.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                height: 6.w,
-                                              ),
-                                              Text(
-                                                "班级正确率：94%",
-                                                style: TextStyle(
-                                                    color: Color(0xff353e4d),
-                                                    fontSize: 12.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                height: 6.w,
-                                              ),
-                                              Text(
-                                                "班级排名：21",
-                                                style: TextStyle(
-                                                    color: Color(0xff353e4d),
-                                                    fontSize: 12.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                height: 20.w,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            }).toList(),
+                                            ),
+                                          ],
+                                        ));
+                                  }).toList(),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  )
+                        )
                 ],
               ),
             ),
@@ -533,14 +553,13 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
 
   void _onRefresh() async {
     currentPageNo = current;
-    logic.getRecordInfo(widget.studentId.toString(),
-        formatter.format(_selectedDay), pageSize, current);
+    logic.getRecordInfo(formatterTwo.format(_selectedDay), pageSize, current);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getRecordInfo(widget.studentId.toString(),
-        formatter.format(_selectedDay), pageSize, currentPageNo + 1);
+    logic.getRecordInfo(
+        formatterTwo.format(_selectedDay), pageSize, currentPageNo + 1);
   }
 
   @override
