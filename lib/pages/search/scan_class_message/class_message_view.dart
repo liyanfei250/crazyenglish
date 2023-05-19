@@ -22,7 +22,7 @@ import '../../../entity/class_detail_response.dart';
 
 class Class_messagePage extends BasePage {
   int? isShowAdd;
-  //TODO 后面从登录信息中获取
+
   String? classId;
 
   // bool? isStudent;
@@ -84,11 +84,14 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
         setState(() {});
       }
     });
-    if (widget.isShowAdd == 1) {
-      logic.getMyClassDetail(widget.classId.toString(),
-          isTeacher: true, isJoin: true);
-    } else {
-      logic.getMyClassDetail(widget.classId.toString(),isTeacher: true, isJoin: false);
+    if (widget.classId != null && widget.classId!.isNotEmpty) {
+      if (widget.isShowAdd == 1) {
+        logic.getMyClassDetail(widget.classId.toString(),
+            isTeacher: true, isJoin: true);
+      } else {
+        logic.getMyClassDetail(widget.classId.toString(),
+            isTeacher: true, isJoin: false);
+      }
     }
   }
 
@@ -118,7 +121,7 @@ class _ToClassMessagePageState extends BasePageState<Class_messagePage> {
             child: detailBean == null || detailBean.name == null
                 ? PlaceholderPage(
                     imageAsset: R.imagesCommenNoDate,
-                    title: '识别错误',
+                    title: widget.classId != null && widget.classId!.isNotEmpty ? '识别错误':'未加入班级' ,
                     topMargin: 0.w,
                     subtitle: '')
                 : ClassCard(

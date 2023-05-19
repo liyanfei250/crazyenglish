@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../base/AppUtil.dart';
+import '../../base/AppUtil.dart' as appUtil;
 import '../../base/common.dart';
 import '../../r.dart';
 import '../../routes/app_pages.dart';
@@ -59,7 +59,7 @@ class _MinePageState extends BasePageState<MinePage> {
   @override
   void loginChanged() {
     setState(() {
-      isLogin = Util.isLogin();
+      isLogin = appUtil.Util.isLogin();
     });
   }
 
@@ -158,7 +158,7 @@ class _MinePageState extends BasePageState<MinePage> {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    if (!Util.isIOSMode()) {
+                                    if (!appUtil.Util.isIOSMode()) {
                                       RouterUtil.toNamed(
                                           AppRoutes.PersonInfoPage,
                                           isNeedCheckLogin: true,
@@ -221,7 +221,7 @@ class _MinePageState extends BasePageState<MinePage> {
             ),
           ),
           Visibility(
-            visible: !Util.isIOSMode(),
+            visible: !appUtil.Util.isIOSMode(),
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
@@ -269,7 +269,7 @@ class _MinePageState extends BasePageState<MinePage> {
               child: Column(
                 children: [
                   Visibility(
-                      visible: !Util.isIOSMode(),
+                      visible: !appUtil.Util.isIOSMode(),
                       child: buildItem(
                           "给我们评价",
                           Image(
@@ -320,14 +320,13 @@ class _MinePageState extends BasePageState<MinePage> {
               RouterUtil.toNamed(AppRoutes.MyClassListPage,
                   isNeedCheckLogin: true);
             } else {
-              userIfo.UserInfoResponse? infoResponse = Util.getUserInfoResponse();
+              userIfo.UserInfoResponse? infoResponse =appUtil.Util.getUserInfoResponse();
               RouterUtil.toNamed(
                   AppRoutes.QRViewPageNextClass,
                   isNeedCheckLogin: true,
                   arguments: {
                     'isShowAdd': 0,
                     'classId': infoResponse?.obj?.classId??""
-                    // 'classId': userInfoResponse!.obj!.classId
                   });
             }
             break;
