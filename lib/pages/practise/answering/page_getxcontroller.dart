@@ -12,6 +12,7 @@ import '../../../routes/getx_ids.dart';
 
 class PageGetxController extends GetxController{
   void nextPage(){
+    print("PageGetxController call next Page");
     update([GetBuilderIds.answerNextPage]);
   }
 

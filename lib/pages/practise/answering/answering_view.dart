@@ -164,7 +164,7 @@ class AnsweringPage extends BasePage {
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final logic = Get.put(AnsweringLogic());
-  final pageLogic = Get.put(PageGetxController());
+  final pageLogic = Get.lazyPut(()=>PageGetxController());
   final state = Get
       .find<AnsweringLogic>()
       .state;

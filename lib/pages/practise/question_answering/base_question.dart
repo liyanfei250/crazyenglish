@@ -84,6 +84,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       pre();
     });
     pagLogic.addListenerId(GetBuilderIds.answerNextPage,() {
+      print(tag + "listener Next Page\n");
       next();
     });
     selectGapGetxController.addListenerId(GetBuilderIds.updateFocus+"isInit", () {
@@ -300,6 +301,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }
 
     if(logic!=null){
+      print("call updateCurrentPage getQuestionDetail");
       logic.updateCurrentPage(widget.childIndex,totalQuestion:questionList.length,isInit: true);
     }
     selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
@@ -309,9 +311,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
       physics: _neverScroll,
       pageSnapping: false,
       onPageChanged: (int value){
-        if(logic!=null){
-          logic.updateCurrentPage(value,totalQuestion:questionList.length);
-        }
+        // if(logic!=null){
+        //   logic.updateCurrentPage(value,totalQuestion:questionList.length);
+        // }
       },
       children: questionList,
     );
@@ -365,6 +367,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(logic.state.currentQuestionNum< logic.state.totalQuestionNum){
       int currentPage = logic.state.currentQuestionNum;
       currentPage = currentPage+1;
+      print("next==${currentPage}");
       jumpToQuestion(currentPage);
     }
   }
@@ -374,6 +377,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     int currentPage = logic.state.currentQuestionNum;
     if(currentPage>0){
       currentPage = currentPage-1;
+      print("pre==${currentPage}");
       jumpToQuestion(currentPage);
     }
   }
@@ -392,6 +396,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(pageController.hasClients){
       pageController.jumpToPage(currentPage);
     }
+    print("jumpToQuestion==${currentPage}");
     logic.updateCurrentPage(currentPage);
   }
 
@@ -465,7 +470,8 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(pageController.hasClients){
       pageController.dispose();
     }
-
+    pagLogic.disposeId(GetBuilderIds.answerPrePage);
+    pagLogic.disposeId(GetBuilderIds.answerNextPage);
     onDestroy();
     super.dispose();
   }

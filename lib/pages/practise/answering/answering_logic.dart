@@ -54,6 +54,8 @@ class AnsweringLogic extends GetxController {
       state.currentQuestionNum = currentQuestion;
     }
 
+    print("updateCurrentPage == ${currentQuestion} ${totalQuestion}");
+    print("updateCurrentPage state== ${state.currentQuestionNum} ${state.totalQuestionNum}");
     if(!isInit){
       update([GetBuilderIds.answerPageNum]);
     }
