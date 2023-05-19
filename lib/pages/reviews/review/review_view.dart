@@ -332,8 +332,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
                       visible: !Util.isIOSMode(),
                       child: _buildItem(() {
                     RouterUtil.toNamed(
-                      AppRoutes.HomeworkHistoryPage,
-                    );
+                      AppRoutes.HomeworkHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)});
                   },
                       title: "历史作业",
                       subTitle: "历史作业$histoty套",

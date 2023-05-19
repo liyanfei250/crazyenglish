@@ -60,6 +60,7 @@ class GetBuilderIds {
   //复习
   static const String getReviewHomeDate = "getReviewHomeDate";
   static const String getPracticeRecordList = "getPracticeRecordList";
+  static const String HistoryHomeworkInfoResponse = "HistoryHomeworkInfoResponse";
   static const String getErrorNoteTab = "getErrorNoteTab";
   static const String getErrorNoteTabDate = "getErrorNoteTabDate";
   static const String getSearchRecord = "getSearchRecord";

@@ -46,9 +46,37 @@ class ReviewRepository {
   }
 
   Future<PractiseHistoryDate> getPracticeRecordList(
-      Map<String,dynamic> req) async {
+      Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.getPracticeRecordList, data: req,
+        Method.post, Api.getPracticeRecordList,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<PractiseDate> getHistHomeWorkDateList(String date) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get, Api.getHistHomeWorkDateList + date,
+        options: Options(method: Method.get));
+    PractiseDate paperDetail = PractiseDate.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  Future<PractiseHistoryDate> getHistHomeWorkRecordList(
+      Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.getHistHomeWorkRecordList,
+        data: req,
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
     PractiseHistoryDate paperDetail = PractiseHistoryDate.fromJson(map);
@@ -73,8 +101,10 @@ class ReviewRepository {
 
   Future<SearchCollectListDate> getCollectList(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
-        Method.post, Api.getSearchCollectListDate,data: req,
-        options: Options(method: Method.post,contentType: ContentType.json.toString()));
+        Method.post, Api.getSearchCollectListDate,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
     SearchCollectListDate paperDetail = SearchCollectListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
@@ -84,9 +114,10 @@ class ReviewRepository {
   }
 
   //收藏列表的详情接口
-  Future<SearchCollectListDetail> getCollectListDetail(int userid, String id) async {
-    Map map = await NetManager.getInstance()!.request(
-        Method.get, Api.getSearchCollectListDateDetail + userid.toString() + "/" + id,
+  Future<SearchCollectListDetail> getCollectListDetail(
+      int userid, String id) async {
+    Map map = await NetManager.getInstance()!.request(Method.get,
+        Api.getSearchCollectListDateDetail + userid.toString() + "/" + id,
         options: Options(method: Method.get));
     SearchCollectListDetail paperDetail = SearchCollectListDetail.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
@@ -97,16 +128,17 @@ class ReviewRepository {
   }
 
   //收藏
-  Future<CollectDate> toCollect(String id,{num subtopicId=-1}) async {
+  Future<CollectDate> toCollect(String id, {num subtopicId = -1}) async {
     int userid = SpUtil.getInt(BaseConstant.USER_ID);
     String uploadData = "";
-    if(subtopicId>0){
-      uploadData = "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
-    }else{
+    if (subtopicId > 0) {
+      uploadData =
+          "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
+    } else {
       uploadData = "{\"userId\":${userid},\"subjectId\":${id}}";
     }
     Map map = await NetManager.getInstance()!.request(
-        data:uploadData,
+        data: uploadData,
         Method.post,
         Api.toCollect,
         options: Options(
@@ -120,12 +152,13 @@ class ReviewRepository {
   }
 
   //收藏
-  Future<CollectDate> queryCollect(String id,{num subtopicId=-1}) async {
+  Future<CollectDate> queryCollect(String id, {num subtopicId = -1}) async {
     int userid = SpUtil.getInt(BaseConstant.USER_ID);
     String uploadData = "";
-    if(subtopicId>0){
-      uploadData = "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
-    }else{
+    if (subtopicId > 0) {
+      uploadData =
+          "{\"userId\":${userid},\"subjectId\":${id},\"subtopicId\":${subtopicId}}";
+    } else {
       uploadData = "{\"userId\":${userid},\"subjectId\":${id}}";
     }
     Map map = await NetManager.getInstance()!.request(
@@ -145,8 +178,10 @@ class ReviewRepository {
 
   //金刚区列表和周报筛选
   Future<HomeKingDate> getHomeKingList(String type) async {
-    Map map = await NetManager.getInstance()!
-        .request(Method.get,options: Options(contentType: ContentType.json.toString()), Api.getHomeKingList + type);
+    Map map = await NetManager.getInstance()!.request(
+        Method.get,
+        options: Options(contentType: ContentType.json.toString()),
+        Api.getHomeKingList + type);
     HomeKingDate sendCodeResponse = HomeKingDate.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
@@ -158,5 +193,4 @@ class ReviewRepository {
       return Future.error("返回SendCodeResponse为空");
     }
   }
-
 }

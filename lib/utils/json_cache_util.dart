@@ -49,7 +49,8 @@ class JsonCacheManageUtils {
   static const int SearchRecordDetail = 0x116; //练习记录日期
   static const int WeekDetailResponseFromSUBJECTID = 0x117; //从subjectId获取的试题数据
   static const int HomeKingListNew = 0x118; //金刚区
-  static const int HomeworkHistoryDate = 0x119; //历史作业
+  static const int HomeworkHistoryDate = 0x119; //历史作业日期
+  static const int HistoryHomeworkInfoResponse = 0x120; //历史作业
 
   //教师端
   static const int HomeKingListNewTeacher = 0x201; //金刚区

@@ -123,6 +123,14 @@ class Api {
   static String getPracticeRecordList =
       "${Config.ApiHost}/question/exercise/getExerciseRecordList";
 
+  // 历史作业有数据的天数获取
+  static String getHistHomeWorkDateList =
+      "${Config.ApiHost}/question/operation/student/monthDate/";
+
+  // 历史作业接口数据
+  static String getHistHomeWorkRecordList =
+      "${Config.ApiHost}/question/operation/student/dayList/";
+
   // 期刊成绩接口数据
   static String getJournalExerciseResult =
       "${Config.ApiHost}/question/exercise/getJournalExerciseResult";
