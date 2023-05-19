@@ -51,7 +51,7 @@ class SplashNewPageState extends State<SplashPageNew> {
     //1.首次安装
     firstInstall =
         SpUtil.getBool(BaseConstant.key_first_installation, defValue: true);
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (!firstInstall) {
         _goMain();
       }

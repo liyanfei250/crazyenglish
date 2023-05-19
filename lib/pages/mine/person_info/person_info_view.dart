@@ -201,7 +201,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                           builder: (logic){
                             return Expanded(
                               child: Text(
-                                "${logic.state.infoResponse?.obj?.affiliatedSchool}",
+                                logic.state.infoResponse?.obj?.affiliatedSchool??"",
                                 style: textSenStyle,
                               ),
                             );
@@ -222,6 +222,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                     visible: widget.isStudent,
                   ),
                   Visibility(
+                    visible: widget.isStudent,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,7 +242,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                             builder: (logic){
                               return Expanded(
                                 child: Text(
-                                  "${logic.state.infoResponse?.obj?.affiliatedGradeName}",
+                                  logic.state.infoResponse?.obj?.affiliatedGradeName??"",
                                   style: textSenStyle,
                                 ),
                               );
@@ -249,7 +250,6 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
 
                       ],
                     ),
-                    visible: widget.isStudent,
                   ),
                   Visibility(
                     child: SizedBox(
