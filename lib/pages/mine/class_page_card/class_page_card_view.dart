@@ -299,16 +299,14 @@ class _ClassCardState extends State<ClassCard> {
           SizedBox(
             width: 10.w,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
-            child: Expanded(
-              child: Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff353e4d),
-                ),
+          Container(
+            margin: EdgeInsets.only(top: 10.w, bottom: 10.w),
+            child: Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff353e4d),
               ),
             ),
           ),

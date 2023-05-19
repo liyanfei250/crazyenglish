@@ -143,18 +143,19 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                     height: 14.w,
                   ),
                   buildItemType('修改密码'),
-                  SizedBox(
-                    height: 14.w,
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 14.w,
-                  ),
-                  GetBuilder<Person_infoLogic>(
-                      id: GetBuilderIds.getPersonInfo,
-                      builder: (logic){
-                        return buildItemType('更换手机号', logic.state.infoResponse?.obj?.phone);
-                      }),
+                  // SizedBox(
+                  //   height: 14.w,
+                  // ),
+                  // Divider(),
+                  // SizedBox(
+                  //   height: 14.w,
+                  // ),
+                  // TODO 必改
+                  // GetBuilder<Person_infoLogic>(
+                  //     id: GetBuilderIds.getPersonInfo,
+                  //     builder: (logic){
+                  //       return buildItemType('更换手机号', logic.state.infoResponse?.obj?.phone);
+                  //     }),
                   SizedBox(
                     height: 20.w,
                   ),
@@ -200,7 +201,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                           builder: (logic){
                             return Expanded(
                               child: Text(
-                                "${logic.state.infoResponse?.obj?.username}",
+                                logic.state.infoResponse?.obj?.affiliatedSchool??"",
                                 style: textSenStyle,
                               ),
                             );
@@ -221,6 +222,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                     visible: widget.isStudent,
                   ),
                   Visibility(
+                    visible: widget.isStudent,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,7 +242,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                             builder: (logic){
                               return Expanded(
                                 child: Text(
-                                  "${logic.state.infoResponse?.obj?.username}",
+                                  logic.state.infoResponse?.obj?.affiliatedGradeName??"",
                                   style: textSenStyle,
                                 ),
                               );
@@ -248,7 +250,6 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
 
                       ],
                     ),
-                    visible: widget.isStudent,
                   ),
                   Visibility(
                     child: SizedBox(

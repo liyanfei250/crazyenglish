@@ -66,7 +66,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
                 child: _buildTabBar(),
               ),
               tabs.length > 0
-                  ? Expanded(child: _buildTableBarView())
+                  ? _buildTableBarView()
                   : PlaceholderPage(
                       imageAsset: R.imagesCommenNoDate,
                       title: '暂无数据',

@@ -164,7 +164,8 @@ class AnsweringPage extends BasePage {
 
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final logic = Get.put(AnsweringLogic());
-  final pageLogic = Get.put(PageGetxController());
+  final pageLogicLazy = Get.lazyPut(()=>PageGetxController());
+  late PageGetxController pageLogic ;
   final state = Get
       .find<AnsweringLogic>()
       .state;
@@ -184,8 +185,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   bool hasBottomPageTab = true;
   bool isCommiting = false;
+
   @override
   void onCreate() {
+    pageLogic = Get.find<PageGetxController>();
     if(widget.answerType != AnsweringPage.answer_fix_type
         && widget.answerType!= AnsweringPage.answer_browse_type){
       startTimer();

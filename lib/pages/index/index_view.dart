@@ -2,6 +2,7 @@ import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -427,7 +428,7 @@ class _IndexPageState extends BasePageState<IndexPage>
           ],
           borderRadius: BorderRadius.all(Radius.circular(10.w)),
           color: AppColors.c_FFFFFFFF),
-      child: ListView.separated(
+      child: listData.isNotEmpty ? ListView.separated(
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         physics: NeverScrollableScrollPhysics(),
@@ -438,7 +439,14 @@ class _IndexPageState extends BasePageState<IndexPage>
           return Divider(height: 1, color: Color(0xffd2d5dc));
         },
         itemCount: listData.length,
-      ));
+      ): Container(
+        margin: EdgeInsets.only( left: 20.w, right: 20.w),
+        child: PlaceholderPage(
+            imageAsset: R.imagesCommenNoDate,
+            title: '暂无作业任务',
+            topMargin: 0.w,
+            subtitle: ''),
+      )) ;
 
   Widget _buildSearchBar() => Util.isIOSMode() ? Container():Container(
     margin: EdgeInsets.only(top: 7.w),
@@ -472,7 +480,7 @@ class _IndexPageState extends BasePageState<IndexPage>
                       ),
                       Padding(padding: EdgeInsets.only(left: 9.w)),
                       Text(
-                        "搜词/翻译",
+                        "搜索",
                         style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.TEXT_GRAY_COLOR),

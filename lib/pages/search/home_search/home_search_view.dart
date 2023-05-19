@@ -120,7 +120,7 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
         children: [
           _buildSearchBar(),
           TextButton(
-            child: Text(
+            child: const Text(
               "取消",
               style: TextStyle(
                 color: Colors.black,
@@ -155,16 +155,16 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
                 child: TextField(
               cursorColor: Colors.black,
               textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 12, color: Colors.black),
+              style: TextStyle(fontSize: 12.sp, color: Colors.black),
               controller: getBoyController,
               autofocus: false,
               onChanged: (String str) {
                 state.searchText = str;
               },
               onSubmitted: _handleSubmitted,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   //提示信息
-                  hintText: "输入题目或关键词",
+                  hintText: "搜索",
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Color(0xffb3b7c0), fontSize: 12)),
               //设置最大行数

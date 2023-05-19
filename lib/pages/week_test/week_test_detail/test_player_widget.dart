@@ -228,12 +228,20 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
           borderRadius: BorderRadius.all(Radius.circular(32.w)),
         ),
         margin: EdgeInsets.only(left: 27.w,right: 27.w),
-        padding: EdgeInsets.only(left: 24.w,right: 15.w),
-        child: Stack(
-          alignment: Alignment.center,
+        padding: EdgeInsets.only(left: 24.w,right: 10.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            InkWell(
+              onTap: (){
+                _isPlaying ? _pause() : _play();
+              },
+              child: Image.asset(
+                _isPlaying? R.imagesPlayerPractisePause : _isPaused? R.imagesPlayerPractisePlay:R.imagesPlayerPractisePlay,
+                width: 22.w,height: 22.w,),
+            ),
             Expanded(child: Container(
-              margin: EdgeInsets.only(left: 12.w,right: 50.w),
               child: SfSliderTheme(
                 data: SfSliderThemeData(
                     activeTrackColor: AppColors.c_FFFFBC00,
@@ -245,7 +253,6 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
                     tickOffset:Offset.zero
                 ),
                 child: SfSlider(
-
                   // thumbIcon: Image.asset(R.imagesPlayerPractiseSlide,width: 23.w,height: 23.w,),
                   onChanged: (v) {
                     final duration = _duration;
@@ -267,32 +274,16 @@ class _TestPlayerWidgetState extends BasePageState<TestPlayerWidget> {
                 ),
               ),
             )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: (){
-                    _isPlaying ? _pause() : _play();
-                  },
-                  child: Image.asset(
-                    _isPlaying? R.imagesPlayerPractisePause : _isPaused? R.imagesPlayerPractisePlay:R.imagesPlayerPractisePlay,
-                    width: 22.w,height: 22.w,),
-                ),
-                Container(
-                  width: 70.w,
-                  child: Text(
-                    _position != null
-                        ? '$_positionText/$_durationText'
-                        : _duration != null
-                        ? "00:00/"+_durationText
-                        : '',
-                    style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
-                  ),
-                )
-              ],
-            ),
-
+            Container(
+              child: Text(
+                _position != null
+                    ? '$_positionText/$_durationText'
+                    : _duration != null
+                    ? "00:00/"+_durationText
+                    : '',
+                style: TextStyle(fontSize: 12.sp,color: AppColors.TEXT_GRAY_COLOR),
+              ),
+            )
           ],
         ),
       );
