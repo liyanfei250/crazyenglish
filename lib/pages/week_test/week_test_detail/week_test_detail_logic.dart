@@ -500,14 +500,10 @@ class WeekTestDetailLogic extends GetxController {
           break;
         }
       }
-      if(exerciseVosList.length>0){
-        Exercise exercise = Exercise(exerciseVos: exerciseVosList);
-        StartExam startExam = StartExam(code:0,obj: exercise);
-        state.startExam = startExam;
-        update([GetBuilderIds.examToFix]);
-      }else{
-        Util.toast("正确作答拼装发生错误");
-      }
+      Exercise exercise = Exercise(exerciseVos: exerciseVosList);
+      StartExam startExam = StartExam(code:0,obj: exercise);
+      state.startExam = startExam;
+      update([GetBuilderIds.examToFix]);
     }else{
       Util.toast("正确作答拼装发生错误");
     }

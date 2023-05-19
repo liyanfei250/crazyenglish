@@ -29,6 +29,8 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
+  final personInfoLogic = Get.lazyPut(()=>Person_infoLogic());
+  final personInfoState = Get.find<Person_infoLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
@@ -124,7 +126,7 @@ class _MinePageState extends BasePageState<MinePage> {
                                   }
                                 },
                                 child: ExtendedImage.network(
-                                  isLogin? logic.state.infoResponse.obj?.url ?? "":"",
+                                  "",
                                   cacheRawData: true,
                                   width: 54.w,
                                   height: 54.w,
@@ -412,6 +414,7 @@ class _MinePageState extends BasePageState<MinePage> {
   @override
   void dispose() {
     Get.delete<MineLogic>();
+    Get.delete<Person_infoLogic>();
     super.dispose();
   }
 

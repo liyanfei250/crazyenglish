@@ -54,8 +54,10 @@ class _ToRolePageState extends BasePageState<RolePage> {
               });
         }else{
           logic.updateNativeUserInfo(state.infoResponse);
-          BlocProvider.of<LoginChangeBloc>(context)
-              .add(SendLoginChangeEvent());
+          if(mounted){
+            BlocProvider.of<LoginChangeBloc>(context)
+                .add(SendLoginChangeEvent());
+          }
           if(widget.isEnterHome){
             if(state.infoResponse.obj?.identity == RoleType.teacher){
               RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
@@ -73,7 +75,7 @@ class _ToRolePageState extends BasePageState<RolePage> {
         }
       }
     });
-    logic.addListenerId(GetBuilderIds.choiceRole, () {
+    logic.addListenerId(GetBuilderIds.toChangeRole, () {
       logic.getPersonInfo(widget.userInfoResponse?.obj?.username??"");
     });
   }
