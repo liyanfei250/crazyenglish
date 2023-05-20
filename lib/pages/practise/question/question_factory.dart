@@ -260,7 +260,7 @@ class QuestionFactory{
     );
   }
 
-  /// 常规填空、补全填空、翻译填空 题干部分
+  /// 常规填空、补全填空、翻译填空 选词填空题干部分
   /// gapKey 默认空的索引号
   /// 客观题
   static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,
@@ -279,7 +279,7 @@ class QuestionFactory{
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
-        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+        if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
           if(userAnswer.isNotEmpty){
             if(subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.isRight??false){
@@ -525,7 +525,7 @@ class QuestionFactory{
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
-        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+        if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
           if(userAnswer.isNotEmpty){
             if(subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.isRight??false){
