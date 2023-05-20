@@ -74,7 +74,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
         children: [
           buildQuestionType("选词填空题"),
           sub,
-          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
+          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!,)
         ],
       ),
     );

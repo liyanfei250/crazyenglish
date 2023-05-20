@@ -372,7 +372,7 @@ class QuestionFactory{
                   child: TextField(
                       keyboardType: TextInputType.name,
                       maxLines: 1,
-                      readOnly: userAnswerCallback==null,
+                      readOnly: userAnswerCallback==null ||  (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right),
                       textAlign: TextAlign.center,
                       style: TextStyle(color: _getFieldInputTxtColor(isResult,answerType,isRight)),
                       // autofocus: _.hasFocusMap[key]??false,
@@ -441,9 +441,9 @@ class QuestionFactory{
   }
 
   /// 选词填空的词
-  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers){
+  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers,{Set<String>? gapKeySet}){
     return Wrap(
-      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e,gapKeySet)).toList(),
     );
   }
 
@@ -451,7 +451,7 @@ class QuestionFactory{
 
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerItem(int answerIndex,OptionsList answer) {
+  static Widget _colorAnswerItem(int answerIndex,OptionsList answer,Set<String>? gapKeySet) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
@@ -460,7 +460,9 @@ class QuestionFactory{
             String gapKey = "";
             _.hasFocusMap.forEach((key, value) {
               if(value){
-                gapKey = key;
+                if(gapKeySet==null || !gapKeySet.contains(key)){
+                  gapKey = key;
+                }
               }
             });
 
@@ -475,10 +477,12 @@ class QuestionFactory{
               _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
             }
 
-            // 修改当前选中状态 当前选项 answerIndex 映射到 此空
-            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-            // 当前选项内容 映射到 空
-            _.updateGapKeyContent(gapKey, answer.content??"",optionId: answer.id??0);
+            if(gapKey.isNotEmpty){
+              // 修改当前选中状态 当前选项 answerIndex 映射到 此空
+              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+              // 当前选项内容 映射到 空
+              _.updateGapKeyContent(gapKey, answer.content??"",optionId: answer.id??0);
+            }
           },
           child: Container(
             height: 22.w,
@@ -594,7 +598,7 @@ class QuestionFactory{
                   margin: EdgeInsets.only(left:3.w,right:3.w),
                   color: Colors.white,
                   child: InkWell(
-                    onTap: (){
+                    onTap: (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right)? null:(){
                       _.updateFocus(key, true);
                     },
                     focusNode: getFocusNodeControllerCallback(key),
@@ -706,7 +710,7 @@ class QuestionFactory{
   }
 
   /// 选择填空的选项
-  static Widget buildSelectOptionQuestion(List<OptionsList> answers,{isClickEnable = true}){
+  static Widget buildSelectOptionQuestion(List<OptionsList> answers,{isClickEnable = true,Set<String>? gapKeySet}){
     return Wrap(
       children: answers.map((e) => _colorAnswerOption(answers.indexOf(e),e,isClickEnable:isClickEnable)).toList(),
     );
@@ -717,7 +721,7 @@ class QuestionFactory{
   /// 选择填空 选项显示部分
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerOption(int answerIndex,OptionsList answer,{isClickEnable = true}) {
+  static Widget _colorAnswerOption(int answerIndex,OptionsList answer,{isClickEnable = true,Set<String>? gapKeySet}) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
@@ -725,7 +729,7 @@ class QuestionFactory{
             onTap: isClickEnable? () {
               String gapKey = "";
               _.hasFocusMap.forEach((key, value) {
-                if(value){
+                if(gapKeySet==null || !gapKeySet.contains(key)){
                   gapKey = key;
                 }
               });
@@ -741,16 +745,20 @@ class QuestionFactory{
                 _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
               }
 
-              // 修改当前选中状态 当前选项 answerIndex 映射到 空
-              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-              // 别的空对应的此选项内容 清空
-              // 别的空对应的 anserIndex 清空
-              _.contentMap.forEach((key, value) {
-                if(value == answer.sequence){
-                  _.updateGapKeyContent(key, "");
-                }
-              });
-              _.updateGapKeyContent(gapKey, answer.sequence??"");
+              if(gapKey.isNotEmpty){
+                // 修改当前选中状态 当前选项 answerIndex 映射到 空
+                _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+                // 别的空对应的此选项内容 清空
+                // 别的空对应的 anserIndex 清空
+                _.contentMap.forEach((key, value) {
+                  if(value == answer.sequence){
+                    if(gapKeySet==null || !gapKeySet.contains(key)){
+                      _.updateGapKeyContent(key, "");
+                    }
+                  }
+                });
+                _.updateGapKeyContent(gapKey, answer.sequence??"");
+              }
 
             }:null,
             child: Container(

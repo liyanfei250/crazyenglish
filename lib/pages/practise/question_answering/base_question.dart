@@ -73,6 +73,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   final logic = Get.find<AnsweringLogic>();
   final pagLogic = Get.find<PageGetxController>();
 
+  final Set<String> gapKeySet = {};
   @override
   void initState(){
     super.initState();
@@ -151,6 +152,9 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             String userAnswer = widget.subtopicAnswerVoMap["${subjectid}:${subtopicId}"]!.answer??"";
             if(userAnswer.isNotEmpty){
               contentMap["${i+1}"] = userAnswer;
+              if(widget.answerType == AnsweringPage.answer_fix_type){
+                gapKeySet.add("${i+1}");
+              }
             }
           }
 
