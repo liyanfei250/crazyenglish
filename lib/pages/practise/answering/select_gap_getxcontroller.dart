@@ -38,6 +38,10 @@ class SelectGapGetxController extends GetxController{
     indexContentList.addAll(list);
   }
 
+  initLastAnswer(Map<String,String> lastAnswer){
+    contentMap.addAll(lastAnswer);
+  }
+
   // 1. 只允许一个空的焦点为true
   // 2. 初始化的时候不发送update
   updateFocus(String key,bool hasFocus,{bool isInit = false}){

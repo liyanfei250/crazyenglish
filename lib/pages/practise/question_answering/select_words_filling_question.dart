@@ -36,7 +36,7 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
 
   @override
   Widget build(BuildContext context) {
-    sub ??= QuestionFactory.buildSelectWordsFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,userAnswerCallback: userAnswerCallback);
+    sub ??= QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this,answerType:widget.answerType,userAnswerCallback: userAnswerCallback);
 
     int focusIndex = getFocusIndex();
 

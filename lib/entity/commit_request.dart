@@ -142,6 +142,7 @@ class SubjectAnswerVo {
     String? questionTypeStr,
     String? answer,
     num? answerTime,
+    num? exerciseId,
     List<SubtopicAnswerVo>? subtopicAnswerVo,}){
     _subjectId = subjectId;
     _answerTime = answerTime;
@@ -153,6 +154,7 @@ class SubjectAnswerVo {
 
   SubjectAnswerVo.fromJson(dynamic json) {
     _subjectId = json['subjectId'];
+    _exerciseId = json['exerciseId'];
     _answerTime = json['answerTime'];
     _answer = json['answer'];
     _isSubjectivity = json['isSubjectivity'];
@@ -165,18 +167,23 @@ class SubjectAnswerVo {
     }
   }
   num? _subjectId;
+  num? _exerciseId;
   num? _answerTime;
   bool? _isSubjectivity;
   String? _answer;
   String? _questionTypeStr;
   List<SubtopicAnswerVo>? _subtopicAnswerVo;
-  SubjectAnswerVo copyWith({  num? subjectId,
+  SubjectAnswerVo copyWith({
+    num? subjectId,
+    num? exerciseId,
     bool? isSubjectivity,
     String? questionTypeStr,
     String? answer,
     num? answerTime,
     List<SubtopicAnswerVo>? subtopicAnswerVo,
-  }) => SubjectAnswerVo(  subjectId: subjectId ?? _subjectId,
+  }) => SubjectAnswerVo(
+    subjectId: subjectId ?? _subjectId,
+    exerciseId: exerciseId ?? _exerciseId,
     isSubjectivity: isSubjectivity ?? _isSubjectivity,
     questionTypeStr: questionTypeStr ?? _questionTypeStr,
     answer: answer ?? _answer,
@@ -184,6 +191,7 @@ class SubjectAnswerVo {
     subtopicAnswerVo: subtopicAnswerVo ?? _subtopicAnswerVo,
   );
   num? get subjectId => _subjectId;
+  num? get exerciseId => _exerciseId;
   num? get answerTime => _answerTime;
   String? get answer => _answer;
   bool? get isSubjectivity => _isSubjectivity;
@@ -193,6 +201,7 @@ class SubjectAnswerVo {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['subjectId'] = _subjectId;
+    map['exerciseId'] = _exerciseId;
     map['answerTime'] = _answerTime;
     map['answer'] = _answer;
     map['isSubjectivity'] = _isSubjectivity;

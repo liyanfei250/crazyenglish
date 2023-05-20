@@ -5,20 +5,15 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../base/common.dart';
 import '../../../base/widgetPage/dialog_manager.dart';
-import '../../../entity/commit_request.dart';
 import '../../../entity/start_exam.dart';
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
-import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../answer_interface.dart';
-import '../../../entity/week_detail_response.dart';
 import '../answering/answering_logic.dart';
 import '../answering/select_gap_getxcontroller.dart';
-import '../question/choice_question/choice_question_view.dart';
 import '../question/question_factory.dart';
 
 /**
@@ -109,8 +104,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
   Widget buildQuestionType(String name){
     return Container(
       height: 22.w,
-      alignment: Alignment.center,
       margin: EdgeInsets.only(top:14.w,bottom: 10.w),
+      padding: EdgeInsets.only(left: 8.w,right: 8.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(2.w)),
           border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
