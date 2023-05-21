@@ -41,6 +41,9 @@ class _MinePageState extends BasePageState<MinePage> {
 
   void onClickPosition(int position) {
     switch (position) {
+      case 0:
+
+        break;
       case 1: //意见反馈
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
             isNeedCheckLogin: true, arguments: { QuestionFeedbackPage.FeedBack : true});
@@ -300,16 +303,14 @@ class _MinePageState extends BasePageState<MinePage> {
               ),
               child: Column(
                 children: [
-                  Visibility(
-                      visible: !appUtil.Util.isIOSMode(),
-                      child: buildItem(
-                          "给我们评价",
-                          Image(
-                            image: AssetImage(R.imagesMineAppraise),
-                            width: 20.w,
-                            height: 20.w,
-                          ),
-                          0)),
+                  // buildItem(
+                  //     "给我们评价",
+                  //     Image(
+                  //       image: AssetImage(R.imagesMineAppraise),
+                  //       width: 20.w,
+                  //       height: 20.w,
+                  //     ),
+                  //     0),
                   buildItem(
                       "意见反馈",
                       Image(

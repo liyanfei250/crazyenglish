@@ -379,31 +379,36 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     return GetBuilder<IndexLogic>(
       id: GetBuilderIds.getHomeBanner,
       builder: (logic){
-        return Container(
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 14.w),
-          height: 130.w,
-          child: Swiper(
-              autoStart: true,
-              circular: true,
-              indicator: CustomSwiperIndicator(
-                spacing: 4.w,
-                // radius: 4.0,
-                padding: EdgeInsets.only(bottom: 10.w),
-                // itemColor: AppColors.c_FFC2BFC2,
-                // itemActiveColor: AppColors.c_FF11CA9C
-                normalHeight: 4.w,
-                normalWidth: 4.w,
-                noralBoxDecoration: BoxDecoration(
-                    color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
-                selectHeight: 4.w,
-                selectWidth: 4.w,
-                selectBoxDecoration: BoxDecoration(
-                    color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
-              ),
-              indicatorAlignment: AlignmentDirectional.bottomCenter,
-              children: makeBanner(logic.state.banner)),
-        );
+        if(logic.state.banner!=null && logic.state.banner.obj!=null && logic.state.banner.obj!.isNotEmpty){
+          return Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 14.w),
+            height: 130.w,
+            child: Swiper(
+                autoStart: true,
+                circular: true,
+                indicator: CustomSwiperIndicator(
+                  spacing: 4.w,
+                  // radius: 4.0,
+                  padding: EdgeInsets.only(bottom: 10.w),
+                  // itemColor: AppColors.c_FFC2BFC2,
+                  // itemActiveColor: AppColors.c_FF11CA9C
+                  normalHeight: 4.w,
+                  normalWidth: 4.w,
+                  noralBoxDecoration: BoxDecoration(
+                      color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
+                  selectHeight: 4.w,
+                  selectWidth: 4.w,
+                  selectBoxDecoration: BoxDecoration(
+                      color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
+                ),
+                indicatorAlignment: AlignmentDirectional.bottomCenter,
+                children: makeBanner(logic.state.banner)),
+          );
+        }else{
+          return const SizedBox();
+        }
+
       },
     );
   }

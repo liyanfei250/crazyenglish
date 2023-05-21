@@ -149,7 +149,6 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
             AnimatedSize(
               duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              vsync: this,
               child: GestureDetector(
                 onTap: () async {
                   //RouterUtil.toNamed(AppRoutes.Teacher_Class_Create);
