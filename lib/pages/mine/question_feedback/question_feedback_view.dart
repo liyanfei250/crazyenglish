@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/pages/mine/question_feedback/question_feedback_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/widgets/image_get_widget/image_get_widget_view.dart';
 import 'package:dio/dio.dart' as newdio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -20,11 +21,19 @@ import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 
 class QuestionFeedbackPage extends BasePage {
+  final String subtopicStr = "subtopicId";
+  final String subjectidStr = "subjectId";
   bool isFeedback = false;
+
+  num subtopicId = 0;
+  num subjectId = 0;
+
 
   QuestionFeedbackPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       isFeedback = Get.arguments['isFeedback'];
+      subtopicId = Get.arguments['subtopicStr'];
+      subjectId = Get.arguments['subjectidStr'];
     }
   }
 
@@ -37,8 +46,6 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
   final state = Get.find<Question_feedbackLogic>().state;
 
   //图片上传相关
-  String _title = "图片上传";
-  List<XFile> _imageFileList = List.empty(growable: true); //存放选择的图片
   final ImagePicker _picker = ImagePicker();
   int maxFileCount = 4; //最大选择图片数量
   dynamic _pickImageError;
@@ -48,14 +55,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
    TextEditingController? contentContro ;
    TextEditingController? getBoyController ;
 
-  //获取当前展示的图的数量
-  int getImageCount() {
-    if (_imageFileList.length < maxFileCount) {
-      return _imageFileList.length + 1;
-    } else {
-      return _imageFileList.length;
-    }
-  }
+   Map<String,String> imgsMap = {};
 
   @override
   void initState() {
@@ -88,10 +88,23 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         actions: [
           InkWell(
             onTap: () {
-              // 点击事件处理逻辑
-              _upLoadImage();
-              //todo 图片地址获取
-              logic.postContent(SpUtil.getInt(BaseConstant.USER_ID),getBoyController!.text,[]);
+              List<String> imgsList = [];
+              imgsMap.forEach((key, value) {
+                if(value.isNotEmpty){
+                  imgsList.add(value);
+                }
+              });
+              if(widget.isFeedback){
+                logic.postFeedback(0,FeedbackType.system,getBoyController!.text,imgsList);
+              }else{
+                if(widget.subtopicId>0){
+                  logic.postFeedback(widget.subtopicId,FeedbackType.subtopicType,getBoyController!.text,imgsList);
+                }else if(widget.subjectId>0){
+                  logic.postFeedback(widget.subjectId,FeedbackType.subjectType,getBoyController!.text,imgsList);
+                }else{
+                  Util.toast("没法获取试题数据");
+                }
+              }
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -182,32 +195,6 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         ),
       );
 
-//图片上传
-  _upLoadImage() async {
-    List<dynamic> _imgListUpload = [];
-    _imageFileList.forEach((element) {
-      //遍历图片 加入到dio的批量文件里面
-      _imgListUpload.add(newdio.MultipartFile.fromFileSync(element.path,
-          filename: element.name));
-    });
-    var formData = newdio.FormData.fromMap({
-      'files': _imgListUpload, //批量的图片
-      'WAREHOUSEID': 'TEST', //其他的参数
-      'ORDERNO': 'HZ00000000001'
-    });
-    try {
-      newdio.Dio dio = new newdio.Dio();
-      var respone = await dio.post<String>(
-          "http://192.168.1.21:8080/FlutterService/UploadImages",
-          data: formData);
-      if (respone.statusCode == 200) {
-        Util.toast("上传成功!");
-      }
-    } catch (e) {
-      Util.toast("上传失败!");
-    }
-  }
-
   Widget _buildQuestionLayout() => Container(
         margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
         padding: EdgeInsets.only(left: 18.w, right: 18.w),
@@ -261,158 +248,15 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         childAspectRatio: 1.0, //宽高比1：1
       ),
       itemBuilder: (context, index) {
-        if (_imageFileList.length < maxFileCount) {
-          //没选满
-          if (index < _imageFileList.length) {
-            //需要展示的图片
-            return Stack(
-              //层叠布局 图片上面要有一个删除的框
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    bottom: 0.0,
-                    child: GestureDetector(
-                      child: Image.file(File(_imageFileList[index].path),
-                          fit: BoxFit.cover),
-                      onTap: () => showBigImage(index),
-                    )),
-                Positioned(
-                  top: 0.0,
-                  right: 0.0,
-                  bottom: 0.0,
-                  left: 0.0,
-                  child: GestureDetector(
-                    child: SizedBox(
-                      child: Image.asset(R.imagesReporterDeletePhone),
-                    ),
-                    onTap: () => _removeImage(index),
-                  ),
-                ),
-              ],
-            );
-            //return Image.file(File(_imageFileList[index].path),fit:BoxFit.cover ,) ;
-          } else {
-            //显示添加符号
-            return GestureDetector(
-              //手势包含添加按钮 实现点击进行选择图片
-              child: Image.asset(R.imagesReporterAddPhone),
-              onTap: () => _onImageButtonPressed(
-                //执行打开相册
-                ImageSource.gallery,
-                context: context,
-                imageQuality: 40, //图片压缩
-              ),
-            );
-          }
-        } else {
-          //选满了
-          return Stack(
-            //层叠布局 图片上面要有一个删除的框
-            alignment: Alignment.center,
-            children: [
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                bottom: 0.0,
-                child: GestureDetector(
-                  child: Image.file(File(_imageFileList[index].path),
-                      fit: BoxFit.cover),
-                  onTap: () => showBigImage(index),
-                ),
-              ),
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                bottom: 0.0,
-                child: GestureDetector(
-                  child: SizedBox(
-                    child: Image.asset(R.imagesReporterDeletePhone),
-                  ),
-                  onTap: () => _removeImage(index),
-                ),
-              ),
-            ],
-          );
-        }
+        return ImageGetWidgetPage("feekback_${SpUtil.getInt(BaseConstant.USER_ID)}_${index}",
+            "",(imgUrl){
+              imgsMap["feekback_${SpUtil.getInt(BaseConstant.USER_ID)}_${index}"] = imgUrl;
+        },(){
+          return true;
+        },true);
       },
-      itemCount: getImageCount(),
+      itemCount: 3,
     );
-  }
-
-  void _onImageButtonPressed(ImageSource source,
-      {BuildContext? context,
-      double? maxHeight,
-      double? maxWidth,
-      int? imageQuality}) async {
-    try {
-      final pickedFileList = await _picker.pickMultiImage(
-        maxWidth: maxWidth,
-        maxHeight: maxHeight,
-        imageQuality: imageQuality,
-      );
-      setState(() {
-        //pickedFileList.e
-        if (_imageFileList.length < maxFileCount) {
-          //小于最大数量
-          if ((_imageFileList.length + (pickedFileList?.length ?? 0)) <=
-              maxFileCount) {
-            //加上新选中的不超过最大数量
-            pickedFileList!.forEach((element) {
-              _imageFileList.add(element);
-            });
-          } else {
-            //否则报错
-            Util.toast("超过可选最大数量!自动移除多余的图片");
-            int avaliableCount = maxFileCount - _imageFileList.length;
-            for (int i = 0; i < avaliableCount; i++) {
-              _imageFileList.add(pickedFileList![i]);
-            }
-          }
-        }
-      });
-    } catch (e) {
-      setState(() {
-        Util.toast("$_pickImageError");
-        _pickImageError = e;
-      });
-    }
-  }
-
-  //移除图片
-  void _removeImage(int index) {
-    setState(() {
-      _imageFileList.removeAt(index);
-    });
-  }
-
-  //通过双击小图的时候获取当前需要放大预览的图的下标
-  void showBigImage(int index) {
-    setState(() {
-      _bigImageIndex = index;
-      _bigImageVisibility = true;
-    });
-  }
-
-  //通过大图的双击事件 隐藏大图
-  void hiddenBigImage() {
-    setState(() {
-      _bigImageVisibility = false;
-    });
-  }
-
-  //展示大图
-  Widget? displayBigImage() {
-    if (_imageFileList.length > _bigImageIndex) {
-      return Image.file(File(_imageFileList[_bigImageIndex].path),
-          fit: BoxFit.fill);
-    } else {
-      return null;
-    }
   }
 
   @override

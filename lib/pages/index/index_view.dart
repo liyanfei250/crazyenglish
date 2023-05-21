@@ -35,8 +35,6 @@ class _IndexPageState extends BasePageState<IndexPage>
   final logic = Get.put(IndexLogic());
   final state = Get.find<IndexLogic>().state;
 
-  List<String> functionTxt = [
-  ];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   List<weekListResponse.Obj> myListDate = [];
@@ -47,37 +45,6 @@ class _IndexPageState extends BasePageState<IndexPage>
     super.initState();
     SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN,false);
     //获取金刚区列表新增的列表
-    logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
-      hideLoading();
-      if (mounted && _refreshController != null) {
-        _refreshController.refreshCompleted();
-      }
-      if (state.paperDetailNew != null) {
-        if (state.paperDetailNew != null) {
-          if (state.paperDetailNew!.obj != null &&
-              state.paperDetailNew!.obj!.length > 0) {
-            setState(() {
-              if(Util.isIOSMode()){
-                int length = state.paperDetailNew!.obj!.length;
-                functionTxtNew = [];
-                for(int i = 0;i< length;i++){
-                  if("shopping_type" == state.paperDetailNew!.obj![i].type){
-                    continue;
-                  }else{
-                    functionTxtNew.add(state.paperDetailNew!.obj![i]);
-                  }
-                }
-              }else{
-                functionTxtNew = state.paperDetailNew!.obj!;
-              }
-
-              functionTxt =
-                  functionTxtNew.map((obj) => obj.name!).toList();
-            });
-          }
-        }
-      }
-    });
 
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
       hideLoading();
@@ -165,16 +132,38 @@ class _IndexPageState extends BasePageState<IndexPage>
                           Padding(padding: EdgeInsets.only(top: 9.w)),
                           adsBanner,
                           Padding(padding: EdgeInsets.only(top: 13.w)),
-                          Container(
-                            height: 80.w,
-                            margin: EdgeInsets.symmetric(horizontal: 14.w),
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: functionTxtNew.length,
-                                itemBuilder: (_, int position) {
-                                  Obj e = functionTxtNew[position];
-                                  return _buildFuncAreaItem(e);
-                                }),
+                          GetBuilder<IndexLogic>(
+                            id: GetBuilderIds.getHomeDateListNew,
+                            builder: (logic){
+                              if (state.paperDetailNew!=null && state.paperDetailNew!.obj!=null && state.paperDetailNew!.obj!.isNotEmpty) {
+                                functionTxtNew.clear();
+                                if(Util.isIOSMode()){
+                                  int length = state.paperDetailNew!.obj!.length;
+                                  for(int i = 0;i< length;i++){
+                                    if("shopping_type" == state.paperDetailNew!.obj![i].type){
+                                      continue;
+                                    }else{
+                                      functionTxtNew.add(state.paperDetailNew!.obj![i]);
+                                    }
+                                  }
+                                }else{
+                                  functionTxtNew.addAll(state.paperDetailNew!.obj!);
+                                }
+                                return Container(
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                      itemCount: functionTxtNew.length,
+                                      itemBuilder: (_, int position) {
+                                        Obj e = functionTxtNew[position];
+                                        return _buildFuncAreaItem(e);
+                                      }, gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,),
+                                ));
+                              }
+                              return const SizedBox();
+                            },
                           ),
                           Padding(padding: EdgeInsets.only(top: 12.w)),
                           //我的期刊
@@ -324,9 +313,10 @@ class _IndexPageState extends BasePageState<IndexPage>
           }
         },
         child: Container(
-          margin: EdgeInsets.only(right: 29.w),
+          alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ExtendedImage.network(
                 e.icon ?? "",

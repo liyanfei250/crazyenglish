@@ -186,7 +186,7 @@ class Api {
 
   // 提交反馈信息
   static String postContentDate =
-      "${Config.ApiHost}/question/collected/saveFeedback";
+      "${Config.ApiHost}/question/feedback";
 
   // 获取反馈信息
   static String getContentDate = "${Config.ApiHost}/getContentDate";

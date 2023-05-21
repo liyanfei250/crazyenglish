@@ -86,7 +86,7 @@ class HomeViewRepository {
   }
 
   //提交反馈信息
-  Future<CommentDate> toPushContent(Map<String, dynamic> req) async {
+  Future<CommentDate> toUploadFeeedback(Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(
         Method.post, Api.postContentDate,
         data: req,
