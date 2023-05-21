@@ -170,7 +170,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       .find<AnsweringLogic>()
       .state;
   bool isCountTime = true;
-  late Timer _timer;
+  Timer? _timer;
   var title = "".obs;
 
   List<BaseQuestion> pages = <BaseQuestion>[];
@@ -410,6 +410,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                                 logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_type);
                               }else if(widget.answerType == AnsweringPage.answer_continue_type){
                                 logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_normal_type);
+                              }else  if(widget.answerType == AnsweringPage.answer_fix_type){
+                                logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
                               }else{
                                 logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
                               }
@@ -544,7 +546,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   void cancelTimer() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
   }
 
