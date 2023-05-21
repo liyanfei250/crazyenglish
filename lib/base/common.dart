@@ -62,6 +62,12 @@ class DictionaryType{
   static const String GradeType = "grade_type";
 }
 
+class FeedbackType{
+  static const int subtopicType = 1;
+  static const int subjectType = 2;
+  static const int system = 3;
+}
+
 // 发布作业类型
 class PaperType{
   // 习题类型
