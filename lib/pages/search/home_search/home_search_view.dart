@@ -85,7 +85,6 @@ class _ToHomeSearchPageState extends BasePageState<HomeSearchPage>
       controller: _tabController,
       children: tabs.map((e) {
         return SearchListPage(e['lacal'], e['type']);
-        /*ErrorNoteChildListPage(widget.type, e['type'])*/;
       }).toList());
 
   Widget buildBg() =>Visibility(child: Container(

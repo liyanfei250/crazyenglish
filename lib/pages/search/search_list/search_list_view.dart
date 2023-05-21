@@ -111,8 +111,6 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
       }
     });
 
-    _onRefresh();
-    showLoading('');
   }
 
   @override
