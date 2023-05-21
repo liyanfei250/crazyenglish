@@ -5,6 +5,7 @@ import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/pages/mine/question_feedback/question_feedback_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _MinePageState extends BasePageState<MinePage> {
     switch (position) {
       case 1: //意见反馈
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
-            arguments: {'isFeedback': false});
+            isNeedCheckLogin: true, arguments: { QuestionFeedbackPage.FeedBack : true});
         break;
       case 2: //关于我们
         RouterUtil.toNamed(AppRoutes.AboutUsPage);
@@ -372,7 +373,7 @@ class _MinePageState extends BasePageState<MinePage> {
             break;
           case '题目反馈':
             RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
-                isNeedCheckLogin: true, arguments: {'isFeedback': true});
+                isNeedCheckLogin: true, arguments: { QuestionFeedbackPage.FeedBack : true});
             break;
           default:
             return null;

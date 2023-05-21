@@ -83,7 +83,10 @@ class ImagePickerUtils{
       return ExtendedImage.network(
         loadStateChanged:(ExtendedImageState state){
           if(state.extendedImageLoadState == LoadState.failed) {
-            return const Icon(Icons.add_photo_alternate);
+            return Image.asset(
+              R.imagesReporterAddPhone,
+              fit: BoxFit.fill,
+            );
           }
         },
         fit:BoxFit.fill,

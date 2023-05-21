@@ -21,8 +21,9 @@ import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 
 class QuestionFeedbackPage extends BasePage {
-  final String subtopicStr = "subtopicId";
-  final String subjectidStr = "subjectId";
+  static final String subtopicStr = "subtopicId";
+  static final String subjectidStr = "subjectId";
+  static final String FeedBack = "FeedBack";
   bool isFeedback = false;
 
   num subtopicId = 0;
@@ -31,9 +32,9 @@ class QuestionFeedbackPage extends BasePage {
 
   QuestionFeedbackPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
-      isFeedback = Get.arguments['isFeedback'];
-      subtopicId = Get.arguments['subtopicStr'];
-      subjectId = Get.arguments['subjectidStr'];
+      isFeedback = Get.arguments[FeedBack]??false;
+      subtopicId = Get.arguments['subtopicStr']??0;
+      subjectId = Get.arguments['subjectidStr']??0;
     }
   }
 
@@ -253,7 +254,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
               imgsMap["feekback_${SpUtil.getInt(BaseConstant.USER_ID)}_${index}"] = imgUrl;
         },(){
           return true;
-        },true);
+        },false);
       },
       itemCount: 3,
     );
