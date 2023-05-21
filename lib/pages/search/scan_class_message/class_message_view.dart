@@ -32,9 +32,6 @@ class Class_messagePage extends BasePage {
     if (Get.arguments != null && Get.arguments is Map) {
       isShowAdd = Get.arguments['isShowAdd'];
       classId = Get.arguments['classId'];
-      //todo 学生进去的逻辑处理  1.查看自己是否已经加入，加入不显示“加入班级”按钮，2.显示讲师的数据；3.加入班级的按钮接口处理；
-      // isStudent = Get.arguments['isStudent'];
-      // isAdd = Get.arguments['isAdd'];
     }
   }
 

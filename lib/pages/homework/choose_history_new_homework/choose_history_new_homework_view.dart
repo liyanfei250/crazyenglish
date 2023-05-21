@@ -514,7 +514,8 @@ class _ChooseHistoryNewHomeworkPageState
                     if (widget.isAssignHomework) {
                       RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,
                           arguments: {
-                            HomeworkCompleteOverviewPage.HistoryItem: history
+                            HomeworkCompleteOverviewPage.HistoryItem: history,
+                            HomeworkCompleteOverviewPage.IsAssignHomework: widget.isAssignHomework
                           });
                     }
                   },
@@ -534,7 +535,8 @@ class _ChooseHistoryNewHomeworkPageState
               onTap: () {
                 RouterUtil.toNamed(AppRoutes.HomeworkCompleteOverviewPage,
                     arguments: {
-                      HomeworkCompleteOverviewPage.HistoryItem: history
+                      HomeworkCompleteOverviewPage.HistoryItem: history,
+                      HomeworkCompleteOverviewPage.IsAssignHomework: widget.isAssignHomework
                     });
               },
               child: Column(

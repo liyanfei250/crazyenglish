@@ -41,7 +41,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   final int pageSize = 20;
   int currentPageNo = 1;
-  List<student.Obj> studentList = [];
+  List<student.Records> studentList = [];
   final int pageStartIndex = 1;
 
   @override
@@ -189,7 +189,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
 
   Widget buildItem(BuildContext context, int index) {
-    student.Obj studentItem = studentList[index];
+    student.Records studentItem = studentList[index];
 
     return Container(
       height: 60.w,
@@ -211,7 +211,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
               Padding(padding: EdgeInsets.only(left: 20.w)),
               Text(
-                "${studentItem.name}",
+                "${studentItem.studentName}",
                 style: TextStyle(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w500,
