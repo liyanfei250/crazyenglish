@@ -36,11 +36,6 @@ class ImagePickerUtils{
       ):Container(
         margin: const EdgeInsets.all(10),
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          border: Border.all(width: 0.5, style: BorderStyle.solid),
-          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-        ),
         width: width,
         height: height,
         child: _getImageWidget(imageFile,imageUrl,imageQcloudUrl,isUploading,isUploaded, width, height),

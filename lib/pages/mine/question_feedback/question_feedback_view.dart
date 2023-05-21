@@ -76,7 +76,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
         backgroundColor: AppColors.c_FFFFFFFF,
         centerTitle: true,
         title: Text(
-          widget.isFeedback ? '题目反馈' : '意见反馈',
+          widget.isFeedback ? '意见反馈' : '题目反馈',
           style: TextStyle(
             color: AppColors.c_FF32374E,
             fontSize: 18,
@@ -243,9 +243,9 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
 
   Widget _previewImages() {
     return GridView.builder(
+      shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4, //每行三个
-        crossAxisSpacing: 14.w,
         childAspectRatio: 1.0, //宽高比1：1
       ),
       itemBuilder: (context, index) {

@@ -46,8 +46,8 @@ class _ImageGetWidgetPageState extends State<ImageGetWidgetPage> {
         }
         return ImagePickerUtils.imagePicker(
             widget.isHeadImg,
-          width: widget.isHeadImg? 56.w:90.w,
-          height: widget.isHeadImg? 56.w:90.w,
+          width: widget.isHeadImg? 56.w:120.w,
+          height: widget.isHeadImg? 56.w:120.w,
             widget.imageKey,
             (value) {
               if(widget.isEditCallback.call()){
