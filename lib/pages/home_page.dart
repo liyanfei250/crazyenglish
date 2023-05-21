@@ -1,4 +1,5 @@
 import 'package:crazyenglish/pages/config/config_logic.dart';
+import 'package:crazyenglish/pages/index/index_new/index_new_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
             controller: pageController,
             physics: _neverScroll,
             children: [
-              IndexPage(),
+              IndexNewPage(),
               ReviewPage(),
               MinePage()
             ],
