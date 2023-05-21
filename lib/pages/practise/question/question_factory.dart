@@ -84,7 +84,8 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildNarmalGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback){
+  // 暂时未用着
+  static Widget buildNarmalGapQuestion(SubtopicVoList subtopicVoList,int gapKey,GetEditingControllerCallback getEditingControllerCallback,{bool isResult = false,int answerType = AnsweringPage.answer_normal_type,}){
     int max = 0;
     String gap = "____";
 
@@ -136,21 +137,21 @@ class QuestionFactory{
                 keyboardType: TextInputType.name,
                 maxLines: 1,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: _getInputColor(correctType.value)),
+                style: TextStyle(color: _getFieldInputTxtColor(isResult,answerType,correctType.value)),
                 decoration: InputDecoration(
                   isDense:true,
                   contentPadding: EdgeInsets.all(0.w),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                         width: 1.w,
-                        color: _getInputColor(correctType.value),
+                        color: _getFieldInputTxtColor(isResult,answerType,correctType.value),
                         style: BorderStyle.solid
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                         width: 1.w,
-                        color: _getInputColor(correctType.value),
+                        color: _getFieldInputTxtColor(isResult,answerType,correctType.value),
                         style: BorderStyle.solid
                     ),
                   ),
@@ -227,14 +228,14 @@ class QuestionFactory{
                   style: BorderStyle.solid
               ),
             ),
-              focusedBorder:OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(7.w)),
-                borderSide: BorderSide(
-                    width: 1.w,
-                    color: _getShotInputBorderColor(correctType.value),
-                    style: BorderStyle.solid
-                ),
+            focusedBorder:OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7.w)),
+              borderSide: BorderSide(
+                  width: 1.w,
+                  color: _getShotInputBorderColor(correctType.value),
+                  style: BorderStyle.solid
               ),
+            ),
           ),
           onChanged: (text){
             if(userAnswerCallback!=null){
@@ -259,12 +260,11 @@ class QuestionFactory{
     );
   }
 
-  /// 常规填空、补全填空、翻译填空 题干部分
+  /// 常规填空、补全填空、翻译填空 选词填空题干部分
   /// gapKey 默认空的索引号
   /// 客观题
   static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,
     bool isResult = false,int answerType = AnsweringPage.answer_normal_type,UserAnswerCallback? userAnswerCallback}){
-    int max = 0;
     String gap = "____";
 
     int gapIndex = -1;
@@ -274,11 +274,20 @@ class QuestionFactory{
       num subtopicId = -1;
       String subtopicAnswer = "";
       String userAnswer = "";
+      int isRight = AnswerType.no_answer;
+      // 填充答案
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
-        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+        if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
+          if(userAnswer.isNotEmpty){
+            if(subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.isRight??false){
+              isRight = AnswerType.right;
+            }else{
+              isRight = AnswerType.wrong;
+            }
+          }
         }
       }else{
         print("试题空和答案不匹配");
@@ -291,7 +300,7 @@ class QuestionFactory{
         gapIndex++;
         print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
         // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" userAnswer="$userAnswer"></gap>');
+        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" userAnswer="$userAnswer" isright="$isRight"></gap>');
       }
     }
     return Html(
@@ -314,10 +323,11 @@ class QuestionFactory{
           int subtopicId = int.parse(subtopicIdstr);
           String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
           String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
+          String isRightStr = context.tree.element!.attributes["isright"]??"0";
+          int isRight = int.parse(isRightStr)??0;
           String content = "";
           int num = 0;
           print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
-          var correctType = 0.obs;
 
           return GetBuilder<SelectGapGetxController>(
             id: key,
@@ -341,178 +351,6 @@ class QuestionFactory{
                         affinity: TextAffinity.downstream,
                         offset: '${userAnswer??""}'.length));
               }else{
-                if(answerType == AnsweringPage.answer_homework_draft_type
-                || answerType == AnsweringPage.answer_continue_type){
-                  getFocusNodeControllerCallback(key);
-                  getEditingControllerCallback(key).text = userAnswer??"";
-                  getEditingControllerCallback(key).selection =
-                      TextSelection.fromPosition(TextPosition(
-                          affinity: TextAffinity.downstream,
-                          offset: '${userAnswer??""}'.length));
-                }else{
-                  getFocusNodeControllerCallback(key);
-                  getEditingControllerCallback(key).text = _.contentMap[key]??"";
-                  getEditingControllerCallback(key).selection =
-                      TextSelection.fromPosition(TextPosition(
-                          affinity: TextAffinity.downstream,
-                          offset: '${_.contentMap[key]??""}'.length));
-                }
-              }
-              if(userAnswerCallback!=null){
-                SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
-                    optionId:_.optionIdMap[key]??0,
-                    userAnswer: _.contentMap[key]??"",
-                    answer: subtopicAnswer,
-                    isCorrect: getEditingControllerCallback(key).text == subtopicAnswer);
-                userAnswerCallback.call(subtopicAnswerVo);
-              }
-              return ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 48),
-                child: IntrinsicWidth(
-                  child: TextField(
-                      keyboardType: TextInputType.name,
-                      maxLines: 1,
-                      readOnly: userAnswerCallback==null,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: _getInputColor(1)),
-                      // autofocus: _.hasFocusMap[key]??false,
-                      focusNode: getFocusNodeControllerCallback(key),
-                      onTap: () {
-                        print("textfield clicked ${int.parse(key)-1}");
-                        _.updateFocus(key, true);
-                      },
-                      decoration: InputDecoration(
-                        isDense:true,
-                        contentPadding: EdgeInsets.all(0.w),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 1.w,
-                              color: _getInputColor(1),
-                              style: BorderStyle.solid
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 1.w,
-                              color: _getInputColor(1),
-                              style: BorderStyle.solid
-                          ),
-                        ),
-                      ),
-                      onChanged: (text){
-                        print("intput:"+text+"  content:"+content);
-                        // 当前选项内容 映射到 空
-                        _.contentMap[key]=text;
-                        if(userAnswerCallback!=null){
-                          SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
-                              optionId:_.optionIdMap[key]??0,
-                              userAnswer: text,
-                              answer: subtopicAnswer,
-                              isCorrect: text == subtopicAnswer);
-                          userAnswerCallback.call(subtopicAnswerVo);
-                        }
-                      },
-
-                      onSubmitted: (text){
-                        print("======+++==onSubmitted====");
-                        answerMin.clearFocus();
-                        _.updateGapKeyContent(key, text??"");
-                        getFocusNodeControllerCallback(key).unfocus();
-                        _.updateFocus(key, false,isInit:false);
-                      },
-                      onEditingComplete: (){
-                        print("=====+++===onEditingComplete====");
-                        answerMin.clearFocus();
-                        getFocusNodeControllerCallback(key).unfocus();
-                        _.updateFocus(key, false,isInit:false);
-                      },
-                      controller: getEditingControllerCallback(key)
-                  ),
-                ),
-              );
-            },
-          );
-        })
-      },
-
-    );
-  }
-
-
-  /// 选词填空 题干部分
-  /// gapKey 默认空的索引号
-  static Widget buildSelectWordsFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,bool isResult = false,bool isErrorCome = false,UserAnswerCallback? userAnswerCallback}){
-    int max = 0;
-    String gap = "____";
-
-    int gapIndex = -1;
-    String htmlContent = subjectVoList.content??"";
-
-    while(htmlContent.contains(gap)){
-      num subtopicId = -1;
-      String subtopicAnswer = "";
-      String userAnswer = "";
-      if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
-        subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
-        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
-        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
-          userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
-        }
-      }else{
-        print("试题空和答案不匹配");
-      }
-      if(subtopicId<0){
-        print("试题答案id获取失败");
-        break;
-      }else{
-        gapKey++;
-        gapIndex++;
-        print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
-        // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-        htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" useranswer="$userAnswer"></gap>');
-      }
-    }
-    return Html(
-      data: htmlContent??"",
-      onImageTap: (url,context,attributes,element,){
-        if(url!=null && url!.startsWith('http')){
-          DialogManager.showPreViewImageDialog(
-              BackButtonBehavior.close, url);
-        }
-      },
-      style: {
-        "p": getHtml_P_TagStyle(),
-      },
-      tagsList: Html.tags..addAll(['gap']),
-      customRenders: {
-        tagMatcher("gap"):CustomRender.widget(widget: (context, buildChildren){
-          String key = context.tree.element!.attributes["value"]??"unknown";
-          String gapIndex = context.tree.element!.attributes["index"]??"unknown";
-          String subtopicIdstr = context.tree.element!.attributes["subtopicid"]??"0";
-          int subtopicId = int.parse(subtopicIdstr);
-          String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
-          String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
-          String content = "";
-          int num = 0;
-          print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
-          var correctType = 0.obs;
-
-          if(isResult){
-
-          }else if(isErrorCome){
-
-          }
-          return GetBuilder<SelectGapGetxController>(
-            id: key,
-            builder: (_){
-              if(isResult){
-                getFocusNodeControllerCallback(key);
-                getEditingControllerCallback(key).text = userAnswer??"";
-                getEditingControllerCallback(key).selection =
-                    TextSelection.fromPosition(TextPosition(
-                        affinity: TextAffinity.downstream,
-                        offset: '${userAnswer??""}'.length));
-              }else{
                 getFocusNodeControllerCallback(key);
                 getEditingControllerCallback(key).text = _.contentMap[key]??"";
                 getEditingControllerCallback(key).selection =
@@ -520,7 +358,6 @@ class QuestionFactory{
                         affinity: TextAffinity.downstream,
                         offset: '${_.contentMap[key]??""}'.length));
               }
-
               if(userAnswerCallback!=null){
                 SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(subtopicId:subtopicId,
                     optionId:_.optionIdMap[key]??0,
@@ -535,9 +372,9 @@ class QuestionFactory{
                   child: TextField(
                       keyboardType: TextInputType.name,
                       maxLines: 1,
-                      readOnly: userAnswerCallback==null,
+                      readOnly: userAnswerCallback==null ||  (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right),
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: _getInputColor(1)),
+                      style: TextStyle(color: _getFieldInputTxtColor(isResult,answerType,isRight)),
                       // autofocus: _.hasFocusMap[key]??false,
                       focusNode: getFocusNodeControllerCallback(key),
                       onTap: () {
@@ -546,18 +383,20 @@ class QuestionFactory{
                       },
                       decoration: InputDecoration(
                         isDense:true,
+                        fillColor: _getFieldInputBgColor(isResult,_.hasFocusMap[key]??false),
+                        filled: true,
                         contentPadding: EdgeInsets.all(0.w),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               width: 1.w,
-                              color: _getInputColor(1),
+                              color: _getFieldInputTxtColor(isResult,answerType,isRight),
                               style: BorderStyle.solid
                           ),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               width: 1.w,
-                              color: _getInputColor(1),
+                              color: _getFieldInputTxtColor(isResult,answerType,isRight),
                               style: BorderStyle.solid
                           ),
                         ),
@@ -602,9 +441,9 @@ class QuestionFactory{
   }
 
   /// 选词填空的词
-  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers){
+  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers,{Set<String>? gapKeySet}){
     return Wrap(
-      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e)).toList(),
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e,gapKeySet)).toList(),
     );
   }
 
@@ -612,7 +451,7 @@ class QuestionFactory{
 
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerItem(int answerIndex,OptionsList answer) {
+  static Widget _colorAnswerItem(int answerIndex,OptionsList answer,Set<String>? gapKeySet) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
@@ -621,7 +460,9 @@ class QuestionFactory{
             String gapKey = "";
             _.hasFocusMap.forEach((key, value) {
               if(value){
-                gapKey = key;
+                if(gapKeySet==null || !gapKeySet.contains(key)){
+                  gapKey = key;
+                }
               }
             });
 
@@ -636,10 +477,12 @@ class QuestionFactory{
               _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
             }
 
-            // 修改当前选中状态 当前选项 answerIndex 映射到 此空
-            _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-            // 当前选项内容 映射到 空
-            _.updateGapKeyContent(gapKey, answer.content??"",optionId: answer.id??0);
+            if(gapKey.isNotEmpty){
+              // 修改当前选中状态 当前选项 answerIndex 映射到 此空
+              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+              // 当前选项内容 映射到 空
+              _.updateGapKeyContent(gapKey, answer.content??"",optionId: answer.id??0);
+            }
           },
           child: Container(
             height: 22.w,
@@ -667,7 +510,7 @@ class QuestionFactory{
 
   /// 选择填空题 题干部分
   /// gapKey 默认空的索引号
-  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback,bool isResult = false}){
+  static Widget buildSelectFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,{int gapKey = 0,UserAnswerCallback? userAnswerCallback,bool isResult = false,int answerType = AnsweringPage.answer_normal_type}){
     int max = 0;
     String gap = "____";
 
@@ -678,11 +521,19 @@ class QuestionFactory{
       num subtopicId = -1;
       String subtopicAnswer = "";
       String userAnswer = "";
+      int isRight = AnswerType.no_answer;
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
         subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
-        if(isResult && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
+        if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
+          if(userAnswer.isNotEmpty){
+            if(subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.isRight??false){
+              isRight = AnswerType.right;
+            }else{
+              isRight = AnswerType.wrong;
+            }
+          }
         }
       }else{
         print("试题空和答案不匹配");
@@ -694,7 +545,7 @@ class QuestionFactory{
       gapIndex++;
       print("gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
       // gapKey 内部通知使用采用按空排序的方式 index: 展示使用 subtopicId: 此空对应的正确答案的subtopicId ,subtopicAnswer:
-      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" useranswer="$userAnswer"></gap>');
+      htmlContent = htmlContent.replaceFirst(gap, '<gap value="$gapKey" index="$gapIndex" subtopicid="$subtopicId" answer="$subtopicAnswer" userAnswer="$userAnswer" isright="$isRight"></gap>');
     }
 
 
@@ -718,6 +569,8 @@ class QuestionFactory{
           int subtopicId = int.parse(subtopicIdstr);
           String subtopicAnswer = context.tree.element!.attributes["answer"]??" ";
           String userAnswer = context.tree.element!.attributes["useranswer"]??" ";
+          String isRightStr = context.tree.element!.attributes["isright"]??"0";
+          int isRight = int.parse(isRightStr)??0;
           String content = "";
           int num = 0;
           print("jiexi: gapKey: $gapKey gapIndex:$gapIndex subtopicId: $subtopicId subtopicAnswer: $subtopicAnswer");
@@ -745,7 +598,7 @@ class QuestionFactory{
                   margin: EdgeInsets.only(left:3.w,right:3.w),
                   color: Colors.white,
                   child: InkWell(
-                    onTap: (){
+                    onTap: (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right)? null:(){
                       _.updateFocus(key, true);
                     },
                     focusNode: getFocusNodeControllerCallback(key),
@@ -757,15 +610,15 @@ class QuestionFactory{
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
-                          color: (_.hasFocusMap[key]??false)? AppColors.c_FFD2D5DC : Colors.white,
+                          color: isResult? Colors.white:((_.hasFocusMap[key]??false)? AppColors.c_FFD2D5DC : Colors.white),
                           width: double.infinity,
                           height: 13.w,
                           child: Center(
-                            child: Text(isResult? userAnswer??"" : (_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??""),
+                            child: Text(isResult? userAnswer??"" : (_.contentMap[key]??"").isEmpty? "${key}":_.contentMap[key]??"",style: TextStyle(color: _getFieldInputTxtColor(isResult,answerType,isRight)),),
                           ),
                         ),
                         Container(
-                          color: AppColors.c_FF353E4D,
+                          color: _getFieldInputTxtColor(isResult,answerType,isRight),
                           width: double.infinity,
                           height: 2.w,
                         )
@@ -783,17 +636,38 @@ class QuestionFactory{
     );
   }
 
-  static Color _getInputColor(int type){
-    switch(type){
-      case 0: // 默认 未作答
-        return AppColors.c_FF101010;
-      case -1:  // 作答错误
-        return AppColors.c_FFEC9D4E;
-      case 1: // 作答正确
-        return AppColors.c_FF58BC6D;
-      default:
-        return AppColors.c_FF101010;
+  static Color _getFieldInputTxtColor(bool isResult,int answerType,int isRight){
+    if(isResult){
+      switch(isRight){
+        case AnswerType.no_answer: // 默认 未作答
+          return AppColors.c_FF101010;
+        case AnswerType.wrong:  // 作答错误
+          return AppColors.c_FFEC9D4E;
+        case AnswerType.right: // 作答正确
+          return AppColors.c_FF58BC6D;
+        default:
+          return AppColors.c_FF101010;
+      }
+    }else{
+      // 答题页模式
+      return AppColors.c_FF101010;
     }
+
+  }
+
+  static Color _getFieldInputBgColor(bool isResult,bool hasFocus){
+    if(isResult){
+      return Colors.white;
+    }else{
+      // 答题页模式
+      if(hasFocus){
+        return AppColors.c_FFD2D5DC;
+      }else{
+        return Colors.white;
+      }
+
+    }
+
   }
 
   static Color _getShotInputTxtColor(int type){
@@ -836,7 +710,7 @@ class QuestionFactory{
   }
 
   /// 选择填空的选项
-  static Widget buildSelectOptionQuestion(List<OptionsList> answers,{isClickEnable = true}){
+  static Widget buildSelectOptionQuestion(List<OptionsList> answers,{isClickEnable = true,Set<String>? gapKeySet}){
     return Wrap(
       children: answers.map((e) => _colorAnswerOption(answers.indexOf(e),e,isClickEnable:isClickEnable)).toList(),
     );
@@ -847,7 +721,7 @@ class QuestionFactory{
   /// 选择填空 选项显示部分
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerOption(int answerIndex,OptionsList answer,{isClickEnable = true}) {
+  static Widget _colorAnswerOption(int answerIndex,OptionsList answer,{isClickEnable = true,Set<String>? gapKeySet}) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
@@ -855,7 +729,7 @@ class QuestionFactory{
             onTap: isClickEnable? () {
               String gapKey = "";
               _.hasFocusMap.forEach((key, value) {
-                if(value){
+                if(gapKeySet==null || !gapKeySet.contains(key)){
                   gapKey = key;
                 }
               });
@@ -871,16 +745,20 @@ class QuestionFactory{
                 _.updateAnswerIndexToGapKey("${findBeforeAnswerIndex}","");
               }
 
-              // 修改当前选中状态 当前选项 answerIndex 映射到 空
-              _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
-              // 别的空对应的此选项内容 清空
-              // 别的空对应的 anserIndex 清空
-              _.contentMap.forEach((key, value) {
-                if(value == answer.sequence){
-                  _.updateGapKeyContent(key, "");
-                }
-              });
-              _.updateGapKeyContent(gapKey, answer.sequence??"");
+              if(gapKey.isNotEmpty){
+                // 修改当前选中状态 当前选项 answerIndex 映射到 空
+                _.updateAnswerIndexToGapKey("answer:${answerIndex}", gapKey);
+                // 别的空对应的此选项内容 清空
+                // 别的空对应的 anserIndex 清空
+                _.contentMap.forEach((key, value) {
+                  if(value == answer.sequence){
+                    if(gapKeySet==null || !gapKeySet.contains(key)){
+                      _.updateGapKeyContent(key, "");
+                    }
+                  }
+                });
+                _.updateGapKeyContent(gapKey, answer.sequence??"");
+              }
 
             }:null,
             child: Container(
@@ -892,7 +770,7 @@ class QuestionFactory{
                   answer!.content!,
                   double.infinity,
                   52.w,
-                false
+                  false
               ),
             )
         );

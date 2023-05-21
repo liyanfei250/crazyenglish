@@ -36,6 +36,7 @@ typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
 abstract class BaseQuestion extends StatefulWidget{
   late BaseQuestionState baseQuestionState;
   late SubjectVoList data;
+  // key subjectId:subtopicId
   late Map<String,ExerciseLists> subtopicAnswerVoMap;
   late int answerType;
   late int childIndex;
@@ -72,13 +73,16 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   final logic = Get.find<AnsweringLogic>();
   final pagLogic = Get.find<PageGetxController>();
 
+  final Set<String> gapKeySet = {};
   @override
   void initState(){
     super.initState();
     onCreate();
     pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     tag = tag+curPage;
+    selectGapGetxController.initLastAnswer(getLastAnswer());
     selectGapGetxController.updateFocus("${widget.childIndex+1}",true,isInit: true);
+
     print(tag + "initState\n");
     pagLogic.addListenerId(GetBuilderIds.answerPrePage,() {
       pre();
@@ -130,6 +134,34 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   bool get mounted {
     print(tag + "mounted\n");
     return super.mounted;
+  }
+
+  Map<String,String> getLastAnswer(){
+    Map<String,String> contentMap = {};
+    if(widget.data!=null && widget.subtopicAnswerVoMap.isNotEmpty){
+      if(widget.data.questionTypeStr == QuestionType.normal_gap
+          || widget.data.questionTypeStr == QuestionType.completion_filling
+          || widget.data.questionTypeStr == QuestionType.translate_filling
+          || widget.data.questionTypeStr == QuestionType.select_words_filling){
+        int totalLength = (widget.data.subtopicVoList??[]).length;
+
+        num subjectid = widget.data.id??0;
+        for(int i = 0;i<totalLength;i++){
+          num subtopicId = widget.data.subtopicVoList![i].id??0;
+          if(widget.subtopicAnswerVoMap["${subjectid}:${subtopicId}"]!=null){
+            String userAnswer = widget.subtopicAnswerVoMap["${subjectid}:${subtopicId}"]!.answer??"";
+            if(userAnswer.isNotEmpty){
+              contentMap["${i+1}"] = userAnswer;
+              if(widget.answerType == AnsweringPage.answer_fix_type){
+                gapKeySet.add("${i+1}");
+              }
+            }
+          }
+
+        }
+      }
+    }
+    return contentMap;
   }
 
   Widget buildQuestionType(String name){
@@ -239,7 +271,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           itemList.add(buildQuestionType("填空题"));
           // itemList.add(buildReadQuestion(element.content ?? ""));
           itemList.add(QuestionFactory.buildNarmalGapQuestion(
-              question, 0, makeEditController));
+              question, 0, makeEditController,answerType: widget.answerType));
         }else if(element.questionTypeStr == QuestionType.question_reading){
           itemList.add(buildQuestionType("填空"));
           itemList.add(Visibility(

@@ -1,4 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../entity/start_exam.dart';
@@ -58,12 +61,55 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+          Visibility(
+            visible: (element!.content??"").isNotEmpty,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildReadQuestion(element!.content),
+              buildQuestionDesc("Question"),
+            ],
+          )),
           Expanded(child:detailWidget!)
         ],
       ),
     );
   }
 
+  Widget buildReadQuestion(String? htmlContent){
+    return Container(
+      height: 204.w,
+      margin: EdgeInsets.only(top: 17.w,bottom: 18.w),
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        child:  Html(
+          data: htmlContent??"",
+          onImageTap: (url,context,attributes,element,){
+            if(url!=null && url!.startsWith('http')){
+              DialogManager.showPreViewImageDialog(
+                  BackButtonBehavior.close, url);
+            }
+          },
+          style: {
+            "p": Style(
+                fontSize:FontSize(14.sp),
+                color: const Color(0xff353e4d)
+            ),
+
+            // "hr":Style(
+            //   margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
+            //   padding: EdgeInsets.all(0),
+            //   border: Border(bottom: BorderSide(color: Colors.grey)),
+            // )
+          },
+          tagsList: Html.tags..addAll(['gap']),
+          customRenders: {
+          },
+
+        ),
+      ),
+    );
+  }
 
 
   @override

@@ -71,7 +71,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选择填空题"),
-          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback,widget.subtopicAnswerVoMap),
+          QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback,widget.subtopicAnswerVoMap,answerType: widget.answerType),
           QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
         ],
       ),

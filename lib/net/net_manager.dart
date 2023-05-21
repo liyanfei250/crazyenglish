@@ -162,6 +162,10 @@ class NetManager {
                 RouterUtil.toNamed(AppRoutes.LoginNew);
                 Util.toast("${e.response!.data["message"]}");
                 return e.response!.data;
+              }else if(e.response!.data.containsKey("status")){
+                Util.toast("网络错误：status: ${e.response!.data["status"]}");
+              }else{
+                Util.toast("网络错误");
               }
             }else{
               Map<String, dynamic> _dataMap = _decodeData(e.response!)!;
