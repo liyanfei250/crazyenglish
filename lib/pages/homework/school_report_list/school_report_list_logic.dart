@@ -39,7 +39,7 @@ class SchoolReportListLogic extends GetxController {
 
     state.pageNo = page;
     if(page==1 && cache is HomeworkStudentResponse && cache.obj!=null) {
-      state.list = cache.obj!;
+      state.list = cache.obj!.records!;
       if(state.list.length < pageSize){
         state.hasMore = false;
       } else {
@@ -52,7 +52,7 @@ class SchoolReportListLogic extends GetxController {
     HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkStudentList(status,homeworkId, page, pageSize);
 
     if(homeworkRepository!=null){
-      state.list = homeworkStudentResponse.obj!;
+      state.list = homeworkStudentResponse.obj!.records!;
     }
 
     if (page == 1) {
@@ -67,11 +67,11 @@ class SchoolReportListLogic extends GetxController {
       }
     } else {
       if (page == 1) {
-        state.list = homeworkStudentResponse.obj!;
+        state.list = homeworkStudentResponse.obj!.records!;
       } else {
-        state.list.addAll(homeworkStudentResponse.obj!);
+        state.list.addAll(homeworkStudentResponse.obj!.records!);
       }
-      if (homeworkStudentResponse.obj!.length < pageSize) {
+      if (homeworkStudentResponse.obj!.records!.length < pageSize) {
         state.hasMore = false;
       } else {
         state.hasMore = true;

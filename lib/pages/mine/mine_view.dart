@@ -312,8 +312,6 @@ class _MinePageState extends BasePageState<MinePage> {
   Widget buildItemType(String menu, String icon) {
     return GestureDetector(
       onTap: () {
-        //todo 具体的跳转界面
-
         switch (menu) {
           case '我的班级':
             if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
@@ -408,7 +406,6 @@ class _MinePageState extends BasePageState<MinePage> {
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
   @override
@@ -424,6 +421,5 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }
