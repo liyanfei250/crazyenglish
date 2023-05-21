@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/search/home_search/home_search_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
@@ -110,7 +111,6 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
         }
       }
     });
-
   }
 
   @override
@@ -193,7 +193,7 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(1.0),
               child: Image.network(
-                recordsS.avatar ??
+                recordsS. coverImg??
                     "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
                 width: 72.w,
                 height: 72.w,
@@ -407,26 +407,34 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void _onRefresh() async {
     searchLogic.state.currentPageNoj = searchLogic.state.pageStartIndex;
     searchLogic.state.currentPageNoS = searchLogic.state.pageStartIndex;
-
-    //搜索数据，之后数据更新
-    searchLogic.getSearchList(
-        searchLogic.state.searchText,
-        searchLogic.state.searchType,
-        SpUtil.getInt(BaseConstant.USER_ID),
-        searchLogic.state.pageStartIndex,
-        searchLogic.state.pageSize);
+    if (searchLogic.state.searchText.isNotEmpty) {
+      //搜索数据，之后数据更新
+      searchLogic.getSearchList(
+          searchLogic.state.searchText,
+          searchLogic.state.searchType,
+          SpUtil.getInt(BaseConstant.USER_ID),
+          searchLogic.state.pageStartIndex,
+          searchLogic.state.pageSize);
+    } else {
+      if (_refreshController != null) {
+        _refreshController.refreshCompleted();
+        Util.toast('请输入搜索的内容');
+      }
+    }
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    searchLogic.getSearchList(
-        searchLogic.state.searchText,
-        searchLogic.state.searchType,
-        SpUtil.getInt(BaseConstant.USER_ID),
-        widget.type == 4
-            ? searchLogic.state.currentPageNoS + 1
-            : searchLogic.state.currentPageNoj + 1,
-        searchLogic.state.pageSize);
+    if (searchLogic.state.searchText.isNotEmpty) {
+      searchLogic.getSearchList(
+          searchLogic.state.searchText,
+          searchLogic.state.searchType,
+          SpUtil.getInt(BaseConstant.USER_ID),
+          widget.type == 4
+              ? searchLogic.state.currentPageNoS + 1
+              : searchLogic.state.currentPageNoj + 1,
+          searchLogic.state.pageSize);
+    }
   }
 
   @override
@@ -447,7 +455,9 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
           : SliverToBoxAdapter(
               child: PlaceholderPage(
                   imageAsset: R.imagesCommenNoDate,
-                  title: '没有找到与"${searchLogic.state.searchText}"相关的结果',
+                  title: searchLogic.state.searchText.isNotEmpty
+                      ? '没有找到与"${searchLogic.state.searchText}"相关的结果'
+                      : "请输入要搜索的内容",
                   topMargin: 50.w,
                   subtitle: ''),
             );
@@ -463,7 +473,9 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
           : SliverToBoxAdapter(
               child: PlaceholderPage(
                   imageAsset: R.imagesCommenNoDate,
-                  title: '没有找到与"${searchLogic.state.searchText}"相关的结果',
+                  title: searchLogic.state.searchText.isNotEmpty
+                      ? '没有找到与"${searchLogic.state.searchText}"相关的结果'
+                      : "请输入要搜索的内容",
                   topMargin: 50.w,
                   subtitle: ''),
             );

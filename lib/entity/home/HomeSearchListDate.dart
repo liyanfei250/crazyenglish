@@ -273,7 +273,8 @@ class RecordsS {
       String? nickname, 
       String? actualname, 
       String? avatar, 
-      num? studyTime, 
+      String? coverImg,
+      num? studyTime,
       num? effort, 
       num? accuracy, 
       num? score, 
@@ -286,6 +287,7 @@ class RecordsS {
     _nickname = nickname;
     _actualname = actualname;
     _avatar = avatar;
+    _coverImg = coverImg;
     _studyTime = studyTime;
     _effort = effort;
     _accuracy = accuracy;
@@ -302,6 +304,7 @@ class RecordsS {
     _nickname = json['nickname'];
     _actualname = json['actualname'];
     _avatar = json['avatar'];
+    _coverImg = json['coverImg'];
     _studyTime = json['studyTime'];
     _effort = json['effort'];
     _accuracy = json['accuracy'];
@@ -321,6 +324,7 @@ class RecordsS {
   String? _nickname;
   String? _actualname;
   String? _avatar;
+  String? _coverImg;
   num? _studyTime;
   num? _effort;
   num? _accuracy;
@@ -333,7 +337,7 @@ class RecordsS {
   RecordsS copyWith({  num? userId,
   String? nickname,
   String? actualname,
-  String? avatar,
+  String? coverImg,
   num? studyTime,
   num? effort,
   num? accuracy,
@@ -346,7 +350,7 @@ class RecordsS {
 }) => RecordsS(  userId: userId ?? _userId,
   nickname: nickname ?? _nickname,
   actualname: actualname ?? _actualname,
-  avatar: avatar ?? _avatar,
+    coverImg: coverImg ?? _coverImg,
   studyTime: studyTime ?? _studyTime,
   effort: effort ?? _effort,
   accuracy: accuracy ?? _accuracy,
@@ -360,7 +364,7 @@ class RecordsS {
   num? get userId => _userId;
   String? get nickname => _nickname;
   String? get actualname => _actualname;
-  String? get avatar => _avatar;
+  String? get coverImg => _coverImg;
   num? get studyTime => _studyTime;
   num? get effort => _effort;
   num? get accuracy => _accuracy;
@@ -376,7 +380,7 @@ class RecordsS {
     map['userId'] = _userId;
     map['nickname'] = _nickname;
     map['actualname'] = _actualname;
-    map['avatar'] = _avatar;
+    map['coverImg'] = _coverImg;
     map['studyTime'] = _studyTime;
     map['effort'] = _effort;
     map['accuracy'] = _accuracy;

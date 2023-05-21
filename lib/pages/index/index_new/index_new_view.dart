@@ -1,7 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/index/index_logic.dart';
-import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
@@ -12,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/common.dart' as common;
+import '../../../entity/home/HomeKingNewDate.dart';
+import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
 import '../../../entity/week_list_response.dart' as weekListResponse;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
@@ -19,9 +20,6 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/swiper.dart';
-import '../../homework/preview_exam_paper/preview_exam_paper_view.dart';
-import '../../../entity/home/HomeKingNewDate.dart';
-import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
 
 class IndexNewPage extends BasePage {
   const IndexNewPage({Key? key}) : super(key: key);
@@ -62,19 +60,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       }
     });
 
-    logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
-      hideLoading();
-      if (mounted && _refreshController != null) {
-        _refreshController.refreshCompleted();
-      }
-
-      if (state.myTask != null && state.myTask!.obj != null) {
-        listData = state.myTask!.obj!;
-        if (mounted && _refreshController != null) {
-          setState(() {});
-        }
-      }
-    });
     _onRefresh();
     showLoading("");
   }
@@ -167,6 +152,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                                 return Container(
                                     child: GridView.builder(
                                   shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.zero,
                                   itemCount: functionTxtNew.length,
                                   itemBuilder: (_, int position) {
@@ -233,30 +219,30 @@ class _IndexPageState extends BasePageState<IndexNewPage>
             SizedBox(
               width: 14.w,
             ),
-        ExtendedImage.network(
-          myListDate[index].coverImg ?? "",
-          cacheRawData: true,
-          width: 88.w,
-          height: 122.w,
-          fit: BoxFit.fill,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(6.w)),
-          enableLoadState: true,
-          loadStateChanged: (state) {
-            switch (state.extendedImageLoadState) {
-              case LoadState.completed:
-                return ExtendedRawImage(
-                  image: state.extendedImageInfo?.image,
-                  fit: BoxFit.cover,
-                );
-              default:
-                return Image.asset(
-                  R.imagesReadingDefault,
-                  fit: BoxFit.fill,
-                );
-            }
-          },
-        ),
+            ExtendedImage.network(
+              myListDate[index].coverImg ?? "",
+              cacheRawData: true,
+              width: 88.w,
+              height: 122.w,
+              fit: BoxFit.fill,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              enableLoadState: true,
+              loadStateChanged: (state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.completed:
+                    return ExtendedRawImage(
+                      image: state.extendedImageInfo?.image,
+                      fit: BoxFit.cover,
+                    );
+                  default:
+                    return Image.asset(
+                      R.imagesReadingDefault,
+                      fit: BoxFit.fill,
+                    );
+                }
+              },
+            ),
             SizedBox(
               width: 14.w,
             ),
@@ -567,8 +553,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     logic.getHomeListNew();
     //获取我的期刊列表
     logic.getMyJournalList();
-    //获取我的任务
-    logic.getMyTasks();
   }
 
   void _onLoading() async {}
