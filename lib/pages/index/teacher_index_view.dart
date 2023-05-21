@@ -143,7 +143,7 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(padding: EdgeInsets.only(top: 16.w)),
-                          adsBanner,
+                          // adsBanner,
                           Padding(padding: EdgeInsets.only(top: 22.w)),
                           GridView.builder(
                               shrinkWrap: true,
@@ -260,56 +260,56 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
         ),
       );
 
-  Widget get adsBanner {
-    return Container(
-      width: double.infinity,
-      height: 130.w,
-      child: Swiper(
-          autoStart: true,
-          circular: true,
-          indicator: CustomSwiperIndicator(
-            spacing: 4.w,
-            // radius: 4.0,
-            padding: EdgeInsets.only(bottom: 10.w),
-            // itemColor: AppColors.c_FFC2BFC2,
-            // itemActiveColor: AppColors.c_FF11CA9C
-            normalHeight: 4.w,
-            normalWidth: 4.w,
-            noralBoxDecoration: BoxDecoration(
-                color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
-            selectHeight: 4.w,
-            selectWidth: 4.w,
-            selectBoxDecoration: BoxDecoration(
-                color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
-          ),
-          indicatorAlignment: AlignmentDirectional.bottomCenter,
-          children: makeBanner()),
-    );
-  }
+  // Widget get adsBanner {
+  //   return Container(
+  //     width: double.infinity,
+  //     height: 130.w,
+  //     child: Swiper(
+  //         autoStart: true,
+  //         circular: true,
+  //         indicator: CustomSwiperIndicator(
+  //           spacing: 4.w,
+  //           // radius: 4.0,
+  //           padding: EdgeInsets.only(bottom: 10.w),
+  //           // itemColor: AppColors.c_FFC2BFC2,
+  //           // itemActiveColor: AppColors.c_FF11CA9C
+  //           normalHeight: 4.w,
+  //           normalWidth: 4.w,
+  //           noralBoxDecoration: BoxDecoration(
+  //               color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
+  //           selectHeight: 4.w,
+  //           selectWidth: 4.w,
+  //           selectBoxDecoration: BoxDecoration(
+  //               color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
+  //         ),
+  //         indicatorAlignment: AlignmentDirectional.bottomCenter,
+  //         children: makeBanner()),
+  //   );
+  // }
 
   ///banner条目适配器
-  List<Widget> makeBanner() {
-    List<Widget> items = [];
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
-    return items;
-  }
+  // List<Widget> makeBanner() {
+  //   List<Widget> items = [];
+  //   items.add(Image.asset(
+  //     R.imagesIndexAd,
+  //     fit: BoxFit.fill,
+  //     width: double.infinity,
+  //     height: 130.w,
+  //   ));
+  //   items.add(Image.asset(
+  //     R.imagesIndexAd,
+  //     fit: BoxFit.fill,
+  //     width: double.infinity,
+  //     height: 130.w,
+  //   ));
+  //   items.add(Image.asset(
+  //     R.imagesIndexAd,
+  //     fit: BoxFit.fill,
+  //     width: double.infinity,
+  //     height: 130.w,
+  //   ));
+  //   return items;
+  // }
 
   Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {

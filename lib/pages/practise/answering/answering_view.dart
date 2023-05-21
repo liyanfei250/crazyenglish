@@ -217,6 +217,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     }
 
     logic.addListenerId(GetBuilderIds.examResult, () {
+      // 刷新各个页面数据
+      BlocProvider.of<RefreshBlocBloc>(context)
+          .add(RefreshAnswerStateInfoEvent());
       if(widget.answerType == AnsweringPage.answer_fix_type){
         Get.back();
       } else {
@@ -409,9 +412,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                           onTap: (){
                             if(currentSubjectVoList!=null){
                               isCommiting = true;
-                              // 刷新各个页面数据
-                              BlocProvider.of<RefreshBlocBloc>(context)
-                                  .add(RefreshAnswerStateInfoEvent());
                               // 草稿模式提交的时候要转变
                               if(widget.answerType == AnsweringPage.answer_homework_draft_type){
                                 logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_type);

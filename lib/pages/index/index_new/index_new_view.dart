@@ -20,6 +20,7 @@ import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/swiper.dart';
+import 'package:crazyenglish/entity/home/banner.dart' as banner;
 
 class IndexNewPage extends BasePage {
   const IndexNewPage({Key? key}) : super(key: key);
@@ -102,16 +103,20 @@ class _IndexPageState extends BasePageState<IndexNewPage>
           onLoading: _onLoading,
           child: CustomScrollView(
             slivers: [
+              SliverPersistentHeader(
+                pinned: false,
+                delegate: _MyAppbarDelegate(child: AppBar(
+                automaticallyImplyLeading: false,
+                title: _buildSearchBar(),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              )),
+
+              ),
               SliverToBoxAdapter(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AppBar(
-                      automaticallyImplyLeading: false,
-                      title: _buildSearchBar(),
-                      elevation: 0,
-                      backgroundColor: Colors.transparent,
-                    ),
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,54 +376,84 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   }
 
   Widget get adsBanner {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 14.w),
-      height: 130.w,
-      child: Swiper(
-          autoStart: true,
-          circular: true,
-          indicator: CustomSwiperIndicator(
-            spacing: 4.w,
-            // radius: 4.0,
-            padding: EdgeInsets.only(bottom: 10.w),
-            // itemColor: AppColors.c_FFC2BFC2,
-            // itemActiveColor: AppColors.c_FF11CA9C
-            normalHeight: 4.w,
-            normalWidth: 4.w,
-            noralBoxDecoration: BoxDecoration(
-                color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
-            selectHeight: 4.w,
-            selectWidth: 4.w,
-            selectBoxDecoration: BoxDecoration(
-                color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
-          ),
-          indicatorAlignment: AlignmentDirectional.bottomCenter,
-          children: makeBanner()),
+    return GetBuilder<IndexLogic>(
+      id: GetBuilderIds.getHomeBanner,
+      builder: (logic){
+        return Container(
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal: 14.w),
+          height: 130.w,
+          child: Swiper(
+              autoStart: true,
+              circular: true,
+              indicator: CustomSwiperIndicator(
+                spacing: 4.w,
+                // radius: 4.0,
+                padding: EdgeInsets.only(bottom: 10.w),
+                // itemColor: AppColors.c_FFC2BFC2,
+                // itemActiveColor: AppColors.c_FF11CA9C
+                normalHeight: 4.w,
+                normalWidth: 4.w,
+                noralBoxDecoration: BoxDecoration(
+                    color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
+                selectHeight: 4.w,
+                selectWidth: 4.w,
+                selectBoxDecoration: BoxDecoration(
+                    color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
+              ),
+              indicatorAlignment: AlignmentDirectional.bottomCenter,
+              children: makeBanner(logic.state.banner)),
+        );
+      },
     );
   }
 
   ///banner条目适配器
-  List<Widget> makeBanner() {
+  List<Widget> makeBanner(banner.Banner banner) {
     List<Widget> items = [];
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
-    items.add(Image.asset(
-      R.imagesIndexAd,
-      fit: BoxFit.fill,
-      width: double.infinity,
-      height: 130.w,
-    ));
+    if(banner!=null && banner.obj!=null && banner.obj!.isNotEmpty){
+      for(int i = 0;i<banner.obj!.length;i++){
+        items.add(InkWell(
+          onTap: (){
+            if((banner.obj![i].externalLinks??"").isNotEmpty){
+              RouterUtil.toWebPage(
+                banner.obj![i].externalLinks,
+                title: banner.obj![i].positionName??"",
+                showStatusBar: true,
+                showAppBar: true,
+                showH5Title: true,
+              );
+            }
+          },
+          child: ExtendedImage.network(
+            banner.obj![i].img??"",
+            cacheRawData: true,
+            width: double.infinity,
+            height: 130.w,
+            fit: BoxFit.fill,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(10.0.w)),
+            enableLoadState: true,
+            loadStateChanged: (state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.completed:
+                  return ExtendedRawImage(
+                    image: state.extendedImageInfo?.image,
+                    fit: BoxFit.cover,
+                  );
+                default:
+                  return Image.asset(
+                    R.imagesIconHomeMeDefaultHead,
+                    fit: BoxFit.fill,
+                  );
+              }
+            },
+          ),
+        ));
+      }
+
+    }
+
     return items;
   }
 
@@ -498,52 +533,50 @@ class _IndexPageState extends BasePageState<IndexNewPage>
         ),
       );
 
-  Widget _buildSearchBar() => Util.isIOSMode()
-      ? Container()
-      : Container(
-          margin: EdgeInsets.only(top: 7.w),
-          width: double.infinity,
-          height: 28.w,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  child: GestureDetector(
-                      onTap: () {
-                        RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                            arguments: {'isteacher': false});
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 33.w,
-                        // margin: EdgeInsets.only(right: 19.w, left: 19.w),
-                        padding: EdgeInsets.only(left: 11.w),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(14.w)),
-                            color: AppColors.c_FFFFFFFF),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              R.imagesIndexSearch,
-                              fit: BoxFit.cover,
-                              width: 22.w,
-                              height: 22.w,
-                              color: Color(0xffb3b7c0),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 9.w)),
-                            Text(
-                              "搜索",
-                              style: TextStyle(
-                                  fontSize: 14.sp, color: Color(0xffb3b7c0)),
-                            )
-                          ],
-                        ),
-                      ))),
-            ],
-          ),
-        );
+  Widget _buildSearchBar() => Container(
+    margin: EdgeInsets.only(top: 7.w),
+    width: double.infinity,
+    height: 28.w,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+            child: GestureDetector(
+                onTap: () {
+                  RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                      arguments: {'isteacher': false});
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 33.w,
+                  // margin: EdgeInsets.only(right: 19.w, left: 19.w),
+                  padding: EdgeInsets.only(left: 11.w),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(14.w)),
+                      color: AppColors.c_FFFFFFFF),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        R.imagesIndexSearch,
+                        fit: BoxFit.cover,
+                        width: 22.w,
+                        height: 22.w,
+                        color: Color(0xffb3b7c0),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 9.w)),
+                      Text(
+                        "搜索",
+                        style: TextStyle(
+                            fontSize: 14.sp, color: Color(0xffb3b7c0)),
+                      )
+                    ],
+                  ),
+                ))),
+      ],
+    ),
+  );
 
   @override
   bool get wantKeepAlive => true;
@@ -553,6 +586,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     logic.getHomeListNew();
     //获取我的期刊列表
     logic.getMyJournalList();
+    logic.getHomeBanner();
   }
 
   void _onLoading() async {}
@@ -590,3 +624,31 @@ LinearGradient _getLinearGradient(Color left, Color right,
       begin: begin,
       end: end,
     );
+
+class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
+  final Widget child;
+
+  _MyAppbarDelegate({required this.child});
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // TODO: implement build
+    return child;
+  }
+
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => 70.w;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => 70.w;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return true;
+  }
+
+
+}

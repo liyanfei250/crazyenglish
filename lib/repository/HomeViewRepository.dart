@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crazyenglish/entity/home/banner.dart';
 import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:dio/dio.dart';
 
@@ -107,6 +108,23 @@ class HomeViewRepository {
     Map map = await NetManager.getInstance()!
         .request(Method.get, "${Api.getHomeKingListNew}$role");
     HomeKingNewDate sendCodeResponse = HomeKingNewDate.fromJson(map);
+    if (sendCodeResponse.code != ResponseCode.status_success) {
+      return Future.error(sendCodeResponse.message!);
+    }
+
+    if (sendCodeResponse != null) {
+      return sendCodeResponse!;
+    } else {
+      return Future.error("返回HomeKingNewDateResponse为空");
+    }
+  }
+
+  //banner列表
+  Future<Banner> getHomeBanner(int role) async {
+
+    Map map = await NetManager.getInstance()!
+        .request(Method.get, "${Api.getHomeBanner}$role");
+    Banner sendCodeResponse = Banner.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
     }

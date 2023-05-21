@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/entity/home/banner.dart';
 import 'package:crazyenglish/repository/HomeViewRepository.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,36 @@ class IndexLogic extends GetxController {
     state.paperDetailNew = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateListNew]);
+    }
+  }
+  void getHomeBanner() async {
+    bool isTeacherLogin = SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN);
+    int roleType = RoleType.student;
+    if(isTeacherLogin){
+      roleType = RoleType.teacher;
+    }
+
+    var cache = await JsonCacheManageUtils.getCacheData(
+            JsonCacheManageUtils.Banner,labelId: roleType.toString())
+        .then((value) {
+      if (value != null) {
+        return Banner.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is HomeKingNewDate) {
+      state.banner = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeBanner]);
+    }
+    Banner list = await homeViewRepository.getHomeBanner(roleType);
+
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.Banner,labelId:roleType.toString(), list.toJson());
+    state.banner = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeBanner]);
     }
   }
 
