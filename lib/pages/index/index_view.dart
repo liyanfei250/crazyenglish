@@ -150,16 +150,17 @@ class _IndexPageState extends BasePageState<IndexPage>
                                   functionTxtNew.addAll(state.paperDetailNew!.obj!);
                                 }
                                 return Container(
-                                  height: 80.w,
-                                  margin: EdgeInsets.symmetric(horizontal: 14.w),
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
                                       itemCount: functionTxtNew.length,
                                       itemBuilder: (_, int position) {
                                         Obj e = functionTxtNew[position];
                                         return _buildFuncAreaItem(e);
-                                      }),
-                                );
+                                      }, gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,),
+                                ));
                               }
                               return const SizedBox();
                             },
@@ -312,9 +313,10 @@ class _IndexPageState extends BasePageState<IndexPage>
           }
         },
         child: Container(
-          margin: EdgeInsets.only(right: 29.w),
+          alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ExtendedImage.network(
                 e.icon ?? "",
