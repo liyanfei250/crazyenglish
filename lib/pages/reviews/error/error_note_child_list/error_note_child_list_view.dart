@@ -53,10 +53,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   @override
   void initState() {
     super.initState();
-    print('type==' +
-        widget.type.toString() +
-        'typeTwo==' +
-        widget.typeTwo.toString());
+    print('type==${widget.type}typeTwo==${widget.typeTwo}');
 
     //isCorrect是否订正 0 否 1 是
     //classify 题型value
@@ -274,7 +271,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                         padding: EdgeInsets.only(top: 4.w),
                         child: Text(
                           '正确率' +
-                              value[index].errorCount.toString() +
+                              "${value[index].correctCount??0}" +
                               "/" +
                               value[index].totalCount.toString(),
                           style: TextStyle(

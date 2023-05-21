@@ -132,6 +132,7 @@ class RecordListVos {
       String? questionTypeName, 
       num? totalCount, 
       num? errorCount, 
+      num? correctCount,
       List<CorrectionNotebooks>? correctionNotebooks,}){
     _journalId = journalId;
     _subjectId = subjectId;
@@ -139,6 +140,7 @@ class RecordListVos {
     _questionTypeName = questionTypeName;
     _totalCount = totalCount;
     _errorCount = errorCount;
+    _correctCount = correctCount;
     _correctionNotebooks = correctionNotebooks;
 }
 
@@ -149,6 +151,7 @@ class RecordListVos {
     _questionTypeName = json['questionTypeName'];
     _totalCount = json['totalCount'];
     _errorCount = json['errorCount'];
+    _correctCount = json['correctCount'];
     if (json['correctionNotebooks'] != null) {
       _correctionNotebooks = [];
       json['correctionNotebooks'].forEach((v) {
@@ -162,6 +165,7 @@ class RecordListVos {
   String? _questionTypeName;
   num? _totalCount;
   num? _errorCount;
+  num? _correctCount;
   List<CorrectionNotebooks>? _correctionNotebooks;
 RecordListVos copyWith({  num? journalId,
   num? subjectId,
@@ -169,6 +173,7 @@ RecordListVos copyWith({  num? journalId,
   String? questionTypeName,
   num? totalCount,
   num? errorCount,
+  num? correctCount,
   List<CorrectionNotebooks>? correctionNotebooks,
 }) => RecordListVos(  journalId: journalId ?? _journalId,
   subjectId: subjectId ?? _subjectId,
@@ -176,6 +181,7 @@ RecordListVos copyWith({  num? journalId,
   questionTypeName: questionTypeName ?? _questionTypeName,
   totalCount: totalCount ?? _totalCount,
   errorCount: errorCount ?? _errorCount,
+  correctCount: correctCount ?? _correctCount,
   correctionNotebooks: correctionNotebooks ?? _correctionNotebooks,
 );
   num? get journalId => _journalId;
@@ -184,6 +190,7 @@ RecordListVos copyWith({  num? journalId,
   String? get questionTypeName => _questionTypeName;
   num? get totalCount => _totalCount;
   num? get errorCount => _errorCount;
+  num? get correctCount => _correctCount;
   List<CorrectionNotebooks>? get correctionNotebooks => _correctionNotebooks;
 
   Map<String, dynamic> toJson() {
@@ -194,6 +201,7 @@ RecordListVos copyWith({  num? journalId,
     map['questionTypeName'] = _questionTypeName;
     map['totalCount'] = _totalCount;
     map['errorCount'] = _errorCount;
+    map['correctCount'] = _correctCount;
     if (_correctionNotebooks != null) {
       map['correctionNotebooks'] = _correctionNotebooks?.map((v) => v.toJson()).toList();
     }

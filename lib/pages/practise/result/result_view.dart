@@ -539,6 +539,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               break;
             default:
               questionList.add(OthersQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
+              childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
               print("题型分类："
                   "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
                   "题型：${currentSubjectVoList!.questionTypeName}"
