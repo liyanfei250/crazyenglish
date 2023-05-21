@@ -1,6 +1,7 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
-import 'package:crazyenglish/pages/index/index_new/index_new_logic.dart';
+import 'package:crazyenglish/pages/index/index_logic.dart';
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
@@ -19,7 +20,6 @@ import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/swiper.dart';
 import '../../homework/preview_exam_paper/preview_exam_paper_view.dart';
-import '../index_logic.dart';
 import '../../../entity/home/HomeKingNewDate.dart';
 import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
 
@@ -32,51 +32,19 @@ class IndexNewPage extends BasePage {
 
 class _IndexPageState extends BasePageState<IndexNewPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final logic = Get.put(Index_newLogic());
-  final state = Get.find<Index_newLogic>().state;
+  final logic = Get.put(IndexLogic());
+  final state = Get.find<IndexLogic>().state;
 
-  List<String> functionTxt = [];
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
   List<weekListResponse.Obj> myListDate = [];
   List<Obj> functionTxtNew = [];
   List<homemytask.Obj> listData = [];
-
   @override
   void initState() {
     super.initState();
-    SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN, false);
+    SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN,false);
     //获取金刚区列表新增的列表
-    logic.addListenerId(GetBuilderIds.getHomeDateListNew, () {
-      hideLoading();
-      if (mounted && _refreshController != null) {
-        _refreshController.refreshCompleted();
-      }
-      if (state.paperDetailNew != null) {
-        if (state.paperDetailNew != null) {
-          if (state.paperDetailNew!.obj != null &&
-              state.paperDetailNew!.obj!.length > 0) {
-            setState(() {
-              if (Util.isIOSMode()) {
-                int length = state.paperDetailNew!.obj!.length;
-                functionTxtNew = [];
-                for (int i = 0; i < length; i++) {
-                  if ("shopping_type" == state.paperDetailNew!.obj![i].type) {
-                    continue;
-                  } else {
-                    functionTxtNew.add(state.paperDetailNew!.obj![i]);
-                  }
-                }
-              } else {
-                functionTxtNew = state.paperDetailNew!.obj!;
-              }
-
-              functionTxt = functionTxtNew.map((obj) => obj.name!).toList();
-            });
-          }
-        }
-      }
-    });
 
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
       hideLoading();
@@ -91,6 +59,20 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       }
     });
 
+    logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
+      hideLoading();
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+
+      if (state.myTask != null && state.myTask!.obj !=null) {
+        listData = state.myTask!.obj!;
+        if(mounted && _refreshController!=null){
+          setState(() {
+          });
+        }
+      }
+    });
     _onRefresh();
     showLoading("");
   }
@@ -147,27 +129,49 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(padding: EdgeInsets.only(top: 20.w)),
+                          Padding(padding: EdgeInsets.only(top: 9.w)),
                           adsBanner,
                           Padding(padding: EdgeInsets.only(top: 13.w)),
-                          Container(
-                            height: 80.w,
-                            margin: EdgeInsets.symmetric(horizontal: 14.w),
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: functionTxtNew.length,
-                                itemBuilder: (_, int position) {
-                                  Obj e = functionTxtNew[position];
-                                  return _buildFuncAreaItem(e);
-                                }),
+                          GetBuilder<IndexLogic>(
+                            id: GetBuilderIds.getHomeDateListNew,
+                            builder: (logic){
+                              if (state.paperDetailNew!=null && state.paperDetailNew!.obj!=null && state.paperDetailNew!.obj!.isNotEmpty) {
+                                functionTxtNew.clear();
+                                if(Util.isIOSMode()){
+                                  int length = state.paperDetailNew!.obj!.length;
+                                  for(int i = 0;i< length;i++){
+                                    if("shopping_type" == state.paperDetailNew!.obj![i].type){
+                                      continue;
+                                    }else{
+                                      functionTxtNew.add(state.paperDetailNew!.obj![i]);
+                                    }
+                                  }
+                                }else{
+                                  functionTxtNew.addAll(state.paperDetailNew!.obj!);
+                                }
+                                return Container(
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      itemCount: functionTxtNew.length,
+                                      itemBuilder: (_, int position) {
+                                        Obj e = functionTxtNew[position];
+                                        return _buildFuncAreaItem(e);
+                                      }, gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,),
+                                    ));
+                              }
+                              return const SizedBox();
+                            },
                           ),
                           Padding(padding: EdgeInsets.only(top: 12.w)),
                           //我的期刊
                           //todo 我的期刊跳转到期刊的列表，之前的页面复用
                           buildImageWithClickableIcon(
                             R.imagesStudentHomeJou,
-                            () {
-                              Util.toast('推荐期刊');
+                                () {
+                              Util.toast('我的期刊');
                             },
                           ),
                           SizedBox(height: 30.w,)
@@ -179,17 +183,17 @@ class _IndexPageState extends BasePageState<IndexNewPage>
               ),
               myListDate.length > 0
                   ? SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        buildItem,
-                        childCount: myListDate.length,
-                      ),
-                    )
+                delegate: SliverChildBuilderDelegate(
+                  buildItem,
+                  childCount: myListDate.length,
+                ),
+              )
                   : SliverToBoxAdapter(
-                      child: PlaceholderPage(
-                          imageAsset: R.imagesCommenNoDate,
-                          title: '暂无数据',
-                          topMargin: 100.w,
-                          subtitle: '')),
+                  child: PlaceholderPage(
+                      imageAsset: R.imagesCommenNoDate,
+                      title: '暂无数据',
+                      topMargin: 100.w,
+                      subtitle: '')),
             ],
           ),
         ),
@@ -320,7 +324,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 14.w),
-      height: 140.w,
+      height: 130.w,
       child: Swiper(
           autoStart: true,
           circular: true,
@@ -369,126 +373,335 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   }
 
   Widget _buildFuncAreaItem(Obj e) => InkWell(
-        onTap: () {
-          // switch (e.name) {
-          //   case "数字英语":
-          //     RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
-          //     break;
-          //   case "综合听力":
-          //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
-          //         arguments: e);
-          //     break;
-          //   case "阅读理解":
-          //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
-          //         arguments: e);
-          //     break;
-          //   case "写作训练":
-          //     RouterUtil.toNamed(AppRoutes.WritingResultPage);
-          //     break;
+    onTap: () {
+      // switch (e.name) {
+      //   case "数字英语":
+      //     RouterUtil.toNamed(AppRoutes.WeeklyTestList,arguments: e);
+      //     break;
+      //   case "综合听力":
+      //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+      //         arguments: e);
+      //     break;
+      //   case "阅读理解":
+      //     RouterUtil.toNamed(AppRoutes.ListeningPracticePage,
+      //         arguments: e);
+      //     break;
+      //   case "写作训练":
+      //     RouterUtil.toNamed(AppRoutes.WritingResultPage);
+      //     break;
 
-          switch (e.type) {
-            case "weekly_type":
-              RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
-              break;
-            case "lable_type":
-              RouterUtil.toNamed(AppRoutes.ListeningPracticePage, arguments: e);
-              break;
+      switch (e.type) {
+        case "weekly_type":
+          RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
+          break;
+        case "lable_type":
+          RouterUtil.toNamed(AppRoutes.ListeningPracticePage, arguments: e);
+          break;
 
-            /*case "周报题库":
+      /*case "周报题库":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList);
               break;
             case "shopping_type":
               RouterUtil.toNamed(AppRoutes.ToShoppingPage,
                   arguments: e);
               break;*/
-          }
-        },
-        child: Container(
-          margin: EdgeInsets.only(right: 29.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      }
+    },
+    child: Container(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ExtendedImage.network(
+            e.icon ?? "",
+            cacheRawData: true,
+            width: 50.w,
+            height: 50.w,
+            fit: BoxFit.fill,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(10.0.w)),
+            enableLoadState: true,
+            loadStateChanged: (state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.completed:
+                  return ExtendedRawImage(
+                    image: state.extendedImageInfo?.image,
+                    fit: BoxFit.cover,
+                  );
+                default:
+                  return Image.asset(
+                    R.imagesShopImageLogoTest,
+                    fit: BoxFit.fill,
+                  );
+              }
+            },
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 10.w)),
+          Text(
+            e.name!,
+            style: TextStyle(
+                fontSize: 12.sp, color: AppColors.TEXT_BLACK_COLOR),
+          )
+        ],
+      ),
+    ),
+  );
+
+  Widget _buildClassArea() => Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage(R.imagesIndexTodayTodo), fit: BoxFit.cover),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 22.w,
+        ),
+        GestureDetector(
+          onTap: () {
+            //新的界面
+            RouterUtil.toNamed(AppRoutes.MyTaskPage);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ExtendedImage.network(
-                e.icon ?? "",
-                cacheRawData: true,
-                width: 50.w,
-                height: 50.w,
-                fit: BoxFit.fill,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(10.0.w)),
-                enableLoadState: true,
-                loadStateChanged: (state) {
-                  switch (state.extendedImageLoadState) {
-                    case LoadState.completed:
-                      return ExtendedRawImage(
-                        image: state.extendedImageInfo?.image,
-                        fit: BoxFit.cover,
-                      );
-                    default:
-                      return Image.asset(
-                        R.imagesShopImageLogoTest,
-                        fit: BoxFit.fill,
-                      );
-                  }
-                },
+              SizedBox(
+                width: 14.w,
               ),
-              Padding(padding: EdgeInsets.only(bottom: 10.w)),
               Text(
-                e.name!,
+                "我的任务",
                 style: TextStyle(
-                    fontSize: 12.sp, color: AppColors.TEXT_BLACK_COLOR),
-              )
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16.sp,
+                    color: Color(0xff151619)),
+              ),
+              Expanded(
+                child: Text(''),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.only(right: 20),
+                child: Image.asset(
+                  R.imagesHomeNextIcBlack,
+                  width: 10,
+                  height: 10,
+                ),
+              ),
             ],
           ),
         ),
-      );
+        _buildClassCard(0),
+      ],
+    ),
+  );
+
+  Widget _buildClassCard(int index) => Container(
+      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
+      padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 2.w, bottom: 2.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: listData.isNotEmpty ? ListView.separated(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return _listOne(listData[index]);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(height: 1, color: Color(0xffd2d5dc));
+        },
+        itemCount: listData.length,
+      ): Container(
+        margin: EdgeInsets.only( left: 20.w, right: 20.w),
+        child: PlaceholderPage(
+            imageAsset: R.imagesCommenNoDate,
+            title: '暂无作业任务',
+            topMargin: 0.w,
+            subtitle: ''),
+      )) ;
 
   Widget _buildSearchBar() => Util.isIOSMode()
       ? Container()
       : Container(
-          margin: EdgeInsets.only(top: 7.w),
-          width: double.infinity,
-          height: 28.w,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  child: GestureDetector(
-                      onTap: () {
-                        RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                            arguments: {'isteacher': false});
-                      },
+    margin: EdgeInsets.only(top: 7.w),
+    width: double.infinity,
+    height: 28.w,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+            child: GestureDetector(
+                onTap: () {
+                  RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                      arguments: {'isteacher': false});
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 33.w,
+                  // margin: EdgeInsets.only(right: 19.w, left: 19.w),
+                  padding: EdgeInsets.only(left: 11.w),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(14.w)),
+                      color: AppColors.c_FFFFFFFF),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        R.imagesIndexSearch,
+                        fit: BoxFit.cover,
+                        width: 22.w,
+                        height: 22.w,
+                        color: Color(0xffb3b7c0),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 9.w)),
+                      Text(
+                        "搜索",
+                        style: TextStyle(
+                            fontSize: 14.sp, color: Color(0xffb3b7c0)),
+                      )
+                    ],
+                  ),
+                ))),
+      ],
+    ),
+  );
+  var _future = Future.delayed(Duration(seconds: 2), () {
+    return '老王，一个有态度的程序员'; //模拟json字符串
+  });
+
+  //构建FutureBuilder控件：
+  Widget _createListView() {
+    if (myListDate.length > 0) {
+      return _dataWidget();
+    } else {
+      return _loadingErrorWidget();
+    }
+  }
+
+  //构建loading控件：
+  _loadingWidget() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  //数据加载成功，构建数据展示控件：
+  _dataWidget() {
+    return Container(
+        height: 100.w,
+        margin: EdgeInsets.only(left: 14.w, right: 14.w, top: 18.w),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: myListDate.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                //todo 去具体的某一个期刊的列表界面，带上id
+                RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
+                    arguments: myListDate![index]);
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: 4.w, right: 14.w, bottom: 6.w, top: 6.w),
+                width: 288.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      child: Image.asset(
+                        R.imagesSearchPlaceIc,
+                        width: 52.w,
+                        height: 74.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    Expanded(
                       child: Container(
-                        width: double.infinity,
-                        height: 33.w,
-                        // margin: EdgeInsets.only(right: 19.w, left: 19.w),
-                        padding: EdgeInsets.only(left: 11.w),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(14.w)),
-                            color: AppColors.c_FFFFFFFF),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              R.imagesIndexSearch,
-                              fit: BoxFit.cover,
-                              width: 22.w,
-                              height: 22.w,
-                              color: Color(0xffb3b7c0),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 9.w)),
-                            Text(
-                              "搜索",
-                              style: TextStyle(
-                                  fontSize: 14.sp, color: Color(0xffb3b7c0)),
-                            )
-                          ],
-                        ),
-                      ))),
-            ],
-          ),
-        );
+                          height: 74.w,
+                          margin: EdgeInsets.only(left: 4.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                myListDate[index].name ?? '',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Color(0xff3e454e)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "everyones heart have a hero",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xff898a93),
+                                    fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "796阅读",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff8b8f94),
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ));
+  }
+
+//构建网络加载失败控件：
+  _loadingErrorWidget() {
+    return Image.asset(
+      R.imagesHomeMyListNoData,
+      width: double.infinity,
+      height: 98.w,
+    );
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -496,10 +709,15 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   void _onRefresh() async {
     //新增金刚区的列表，有图片
     logic.getHomeListNew();
+    //获取我的期刊列表
     logic.getMyJournalList();
+    //获取我的任务
+    logic.getMyTasks();
   }
 
-  void _onLoading() async {}
+  void _onLoading() async {
+
+  }
 
   @override
   void dispose() {
@@ -516,16 +734,16 @@ class _IndexPageState extends BasePageState<IndexNewPage>
 }
 
 LinearGradient yellowGreen(
-        {begin = AlignmentDirectional.centerStart,
-        end = AlignmentDirectional.centerEnd,
-        opacity = 1.0}) =>
+    {begin = AlignmentDirectional.centerStart,
+      end = AlignmentDirectional.centerEnd,
+      opacity = 1.0}) =>
     _getLinearGradient(Color(0xfffaeed7), Color(0xffe5d2ac),
         begin: begin, end: end, opacity: opacity);
 
 LinearGradient _getLinearGradient(Color left, Color right,
-        {begin = AlignmentDirectional.centerStart,
-        end = AlignmentDirectional.centerEnd,
-        opacity = 1.0}) =>
+    {begin = AlignmentDirectional.centerStart,
+      end = AlignmentDirectional.centerEnd,
+      opacity = 1.0}) =>
     LinearGradient(
       colors: [
         left.withOpacity(opacity),
@@ -534,3 +752,67 @@ LinearGradient _getLinearGradient(Color left, Color right,
       begin: begin,
       end: end,
     );
+
+Widget _listOne(homemytask.Obj value) => InkWell(
+  onTap: () {
+    RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+      PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+      PreviewExamPaperPage.StudentOperationId:value.id,
+      PreviewExamPaperPage.PaperId:value.operationId});
+  },
+  child: Container(
+    padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(children: [
+                Container(
+                  width: 27.w,
+                  height: 14.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      gradient: yellowGreen(),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(7.w),
+                          topRight: Radius.circular(7.w),
+                          bottomRight: Radius.circular(7.w),
+                          bottomLeft: Radius.circular(0.w)),
+                      color: Color(0xfff0e9ff)),
+                  child: Text("${value.completeSize}/${value.totalSize}",
+                      style: TextStyle(
+                          color: Color(0xff8b8f9f),
+                          fontSize: 8.sp,
+                          fontWeight: FontWeight.w700)),
+                ),
+                SizedBox(width: 10.w),
+                Text("${value.name}",
+                    style: TextStyle(
+                        color: Color(0xff353e4d),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600)),
+              ]),
+              SizedBox(
+                height: 5.w,
+              ),
+              Row(
+                children: [
+                  Text("剩余时间：${value.timeRemaining}",
+                      style: TextStyle(
+                          color: Color(0xff8b8f9f),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700)),
+                  SizedBox(width: 30.w),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+);
