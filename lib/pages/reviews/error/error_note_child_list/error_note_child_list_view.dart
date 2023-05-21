@@ -1,6 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart'as refresh;
@@ -54,7 +57,13 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   void initState() {
     super.initState();
     print('type==${widget.type}typeTwo==${widget.typeTwo}');
-
+    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if(event is RefreshAnswerState){
+        if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+          _onRefresh();
+        }
+      }
+    });
     //isCorrect是否订正 0 否 1 是
     //classify 题型value
     logic.addListenerId(

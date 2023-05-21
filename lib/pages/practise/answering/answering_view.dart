@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
@@ -13,6 +16,7 @@ import 'package:crazyenglish/pages/practise/question_answering/writing_question.
 import 'package:crazyenglish/pages/practise/result/result_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -405,6 +409,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                           onTap: (){
                             if(currentSubjectVoList!=null){
                               isCommiting = true;
+                              // 刷新各个页面数据
+                              BlocProvider.of<RefreshBlocBloc>(context)
+                                  .add(RefreshAnswerStateInfoEvent());
                               // 草稿模式提交的时候要转变
                               if(widget.answerType == AnsweringPage.answer_homework_draft_type){
                                 logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_type);
@@ -525,7 +532,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
               break;
             default:
               questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
-              Util.toast("题型分类："
+              print("题型分类："
                   "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
                   "题型：${currentSubjectVoList!.questionTypeName}"
                   "\n不支持解析");

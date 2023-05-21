@@ -1,7 +1,10 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/widgets/image_get_widget/image_get_widget_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,6 +54,8 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
     logic.addListenerId(GetBuilderIds.toChangeHeadImg, () {
       Util.toast('头像更换成功');
       logic.getPersonInfo("${SpUtil.getInt(BaseConstant.USER_ID)}");
+      BlocProvider.of<RefreshBlocBloc>(context)
+          .add(RefreshPersonInfoEvent());
     });
   }
 

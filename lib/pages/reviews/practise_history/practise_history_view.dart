@@ -1,10 +1,13 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/MyDecoration.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +66,13 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     super.initState();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-
+    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if(event is RefreshAnswerState){
+        if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+          _onRefresh();
+        }
+      }
+    });
     logic.addListenerId(GetBuilderIds.PracticeDate, () {
       if (state.dateDetail != null) {
         dateDetail = state.dateDetail;

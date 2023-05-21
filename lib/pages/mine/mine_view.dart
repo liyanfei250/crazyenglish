@@ -1,11 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +32,8 @@ class MinePage extends BasePage {
 class _MinePageState extends BasePageState<MinePage> {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
-  final personInfoLogic = Get.lazyPut(()=>Person_infoLogic());
+  final personInfoLazyLogic = Get.lazyPut(()=>Person_infoLogic());
+  final personInfoLogic = Get.find<Person_infoLogic>();
   final personInfoState = Get.find<Person_infoLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
@@ -100,8 +104,8 @@ class _MinePageState extends BasePageState<MinePage> {
                                 : true
                       });
                 },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipOval(
                         child: GetBuilder<Person_infoLogic>(
@@ -126,10 +130,10 @@ class _MinePageState extends BasePageState<MinePage> {
                                   }
                                 },
                                 child: ExtendedImage.network(
-                                  "",
+                                  logic.state.infoResponse.obj?.url??"",
                                   cacheRawData: true,
-                                  width: 54.w,
-                                  height: 54.w,
+                                  width: 82.w,
+                                  height: 82.w,
                                   fit: BoxFit.fill,
                                   shape: BoxShape.circle,
                                   enableLoadState: true,
@@ -150,11 +154,12 @@ class _MinePageState extends BasePageState<MinePage> {
                                 ),
                               );
                             })),
-                    Padding(padding: EdgeInsets.only(left: 15.w)),
+                    Padding(padding: EdgeInsets.only(top: 15.w)),
                     isLogin //是否登录
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               InkWell(
                                   onTap: () {
@@ -178,11 +183,6 @@ class _MinePageState extends BasePageState<MinePage> {
                                         fontSize: 20.w),
                                   )),
                               //TextButton(onPressed: toLogin(), child: Text("用户登录")),
-                              Text(
-                                "要读的书太多，没时间写签名",
-                                style: TextStyle(
-                                    color: Color(0xff898a93), fontSize: 10.sp),
-                              )
                             ],
                           )
                         : GestureDetector(
@@ -202,19 +202,50 @@ class _MinePageState extends BasePageState<MinePage> {
                                       color: Color(0xff353e4d),
                                       fontSize: 16.sp)),
                             )),
-                    Expanded(
-                      child: Text(''),
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      height: 42,
-                      margin: EdgeInsets.only(right: 20),
-                      child: Image.asset(
-                        R.imagesHomeNextIcBlack,
-                        width: 10,
-                        height: 10,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(R.imagesHistoryJumpArrow,width: 20.w,height: 20.w,),
+                            Padding(padding: EdgeInsets.only(left: 10.w)),
+                            GetBuilder<Person_infoLogic>(
+                                id: GetBuilderIds.getPersonInfo,
+                                builder: (logic){
+                              return Text(
+                                (logic.state.infoResponse.obj?.affiliatedGradeName ?? "").replaceAll(",", " "),
+                                style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),
+                              );
+                            })
+                          ],
+                        ),
+                        InkWell(
+                          onTap: (){
+                            RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                isNeedCheckLogin: true,
+                                arguments: {
+                                  'isStudent':
+                                  SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                      ? false
+                                      : true
+                                });
+                          },
+                          child: Container(
+                            width: 67.w,
+                            height: 20.w,
+                            margin: EdgeInsets.only(right: 18.w),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.c_FFDFE2E9,width: 0.4.w),
+                              borderRadius: BorderRadius.all(Radius.circular(17.w))
+                            ),
+                            child: Text("编辑资料",style: TextStyle(color: AppColors.c_FF8B8F94,fontSize:12.sp),),
+                          ),
+                        )
+                      ],
                     )
+
                   ],
                 ),
               ),
@@ -417,6 +448,18 @@ class _MinePageState extends BasePageState<MinePage> {
 
   @override
   void onCreate() {
+    int userId = SpUtil.getInt(BaseConstant.USER_ID);
+    if(personInfoLogic!=null && userId>0){
+      personInfoLogic!.getPersonInfo("$userId");
+    }
+    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if(event is RefreshPersonInfoEvent){
+        int userId = SpUtil.getInt(BaseConstant.USER_ID);
+        if(personInfoLogic!=null && userId>0){
+          personInfoLogic!.getPersonInfo("$userId");
+        }
+      }
+    });
   }
 
   @override

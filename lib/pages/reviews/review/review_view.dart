@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -40,6 +43,13 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
   void initState() {
     super.initState();
 
+    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if(event is RefreshAnswerState){
+        if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+          logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
+        }
+      }
+    });
     logic.addListenerId(GetBuilderIds.getReviewHomeDate, () {
       if (state.paperDetail != null) {
         paperDetail = state.paperDetail;

@@ -1,9 +1,12 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
@@ -57,7 +60,13 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
         _showClearButton = _searchController.text.isNotEmpty;
       });
     });
-
+    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if(event is RefreshAnswerState){
+        if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+          _onRefresh();
+        }
+      }
+    });
     //获取筛选列表
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (state.tabList != null) {
@@ -115,6 +124,7 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage> {
     //收藏
     logic.addListenerId(GetBuilderIds.toCollectDate, () {
       // Util.toast('成功或者取消');
+      _onRefresh();
     });
   }
 
