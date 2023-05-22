@@ -200,7 +200,10 @@ class QuestionFactory{
 
     String userAnswer = "";
     int isRight = AnswerType.no_answer;
-    if(exerciseLists!=null){
+    if(exerciseLists!=null &&
+        (answerType == AnsweringPage.answer_continue_type
+            || answerType == AnsweringPage.answer_fix_type
+            || answerType == AnsweringPage.answer_homework_draft_type || isResult)){
       userAnswer = exerciseLists.answer??"";
       if(userAnswer.isNotEmpty){
         if(exerciseLists!.isRight??false){
@@ -216,7 +219,7 @@ class QuestionFactory{
 
     return SizedBox(
       width: double.infinity,
-      child: Obx(()=>TextField(
+      child: TextField(
           keyboardType: TextInputType.name,
           readOnly: userAnswerCallback==null ||  (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right),
           maxLines: 1,
@@ -263,7 +266,7 @@ class QuestionFactory{
             print("=====+++===onEditingComplete====");
             answerMin.clearFocus();
           },
-          controller: controller)),
+          controller: controller),
     );
   }
 
@@ -704,7 +707,7 @@ class QuestionFactory{
       }
     }else{
       // 答题页模式
-      return AppColors.c_FF101010;
+      return AppColors.c_FFD2D5DC;
     }
   }
 

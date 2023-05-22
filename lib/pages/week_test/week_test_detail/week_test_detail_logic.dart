@@ -553,7 +553,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
-                AnsweringPage.answer_type:state.continueAnswer? AnsweringPage.answer_continue_type:AnsweringPage.answer_normal_type,
+                AnsweringPage.answer_type: state.continueAnswer? AnsweringPage.answer_continue_type:AnsweringPage.answer_normal_type,
               });
         }
 
