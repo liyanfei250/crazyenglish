@@ -211,7 +211,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   }
 
   Widget buildItem(BuildContext context, int index) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
             arguments: myListDate![index]);

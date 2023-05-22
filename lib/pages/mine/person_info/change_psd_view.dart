@@ -29,9 +29,16 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
     super.initState();
     isShowPsd = false;
     _phoneController = TextEditingController();
-    logic.toChangePassword("","");
+
     logic.addListenerId(GetBuilderIds.toChangePassword, () {
-      //todo
+
+      if(mounted&&logic.state.pushDate!=null&&logic.state.pushDate!.code!=0){
+        Util.toast(logic.state.pushDate!.message.toString());
+      }else{
+        Util.toast('修改成功');
+        Get.back();
+      }
+
     });
   }
 
@@ -111,9 +118,9 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
                 Util.toast("密码长度为6-18位，满足字母大小写、数字、符号三类中其中两类");
                 return;
               }
-              //todo 发送验证码，去验证码界面
-              // logic.sendCode(_phoneController!.text);
 
+
+              logic.toChangePassword(oldPasswordStr.value,newPasswordStr.value);
             },
             child: Container(
               height: 47.w,
@@ -248,7 +255,9 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
   void onCreate() {}
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+
+  }
 
   toPsdShow() {
     setState(() {
