@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/r.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -132,24 +134,34 @@ class _WebViewPageState extends State<WebViewPage> {
       return AppBar(
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          icon: _buildBackIcon(),
-          onPressed: () async {
-            ///点击返回按钮
+        leading: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () async{
             if (backIconType == BackIconType.back) {
               //返回按钮
-                bool canGoBack = await _controller!.canGoBack();
-                if (canGoBack) {
-                  _controller!.goBack();
-                } else {
-                  Get.back();
-                }
+              bool canGoBack = await _controller!.canGoBack();
+              if (canGoBack) {
+                _controller!.goBack();
+              } else {
+                Get.back();
+              }
             } else {
               //关闭按钮
               Get.back();
             }
           },
+          child: Center(
+            child: Container(
+              width: Util.setWidth(20) as double?,
+              height: Util.setWidth(20) as double?,
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: Util.setWidth(13) as double),
+              child: Image.asset(
+                R.imagesIconBackBlack,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
         ),
         title: Text(
           widget.title!,
