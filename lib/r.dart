@@ -143,6 +143,8 @@ class R {
   static final String imagesToridTop = 'images/torid_top.png';
   /// ![](http://127.0.0.1:11/images/make1.jpg)
   static final String imagesMake1 = 'images/make1.jpg';
+  /// ![](http://127.0.0.1:11/images/app_icon.png)
+  static final String imagesAppIcon = 'images/app_icon.png';
   /// ![](http://127.0.0.1:11/images/review_jump_practise.png)
   static final String imagesReviewJumpPractise = 'images/review_jump_practise.png';
   /// ![](http://127.0.0.1:11/images/index_teacher_icon2.png)

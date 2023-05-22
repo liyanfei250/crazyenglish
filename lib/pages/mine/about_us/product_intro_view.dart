@@ -12,14 +12,14 @@ import '../../../utils/colors.dart';
 import 'about_us_logic.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class AboutUsPage extends BasePage {
-  const AboutUsPage({Key? key}) : super(key: key);
+class ProductIntroPage extends BasePage {
+  const ProductIntroPage({Key? key}) : super(key: key);
 
   @override
-  BasePageState<BasePage> getState() => _ToMyOrderPageState();
+  BasePageState<BasePage> getState() => _ProductIntroPageState();
 }
 
-class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
+class _ProductIntroPageState extends BasePageState<ProductIntroPage> {
   final logic = Get.put(About_usLogic());
   final state = Get.find<About_usLogic>().state;
   final TextStyle textStyle = TextStyle(
@@ -48,28 +48,10 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
     });
   }
 
-  void onClickPosition(int position) {
-    switch (position) {
-      case 1: //意见反馈
-        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
-            arguments: {'isFeedback': false});
-        break;
-      case 2: //关于我们
-        RouterUtil.toNamed(AppRoutes.AboutUsPage);
-        break;
-      case 6:
-        RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
-            arguments: {'isFeedback': true});
-        break;
-      default:
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNormalAppBar("关于我们"),
+      appBar: buildNormalAppBar("产品介绍"),
       backgroundColor: AppColors.theme_bg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,25 +67,13 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
           ),
           Text(_packageInfo.appName,style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.bold)),
           SizedBox(
-            height: 60.w,
+            height: 65.w,
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 20.w, bottom: 20.w),
             margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 20.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                buildItemType('版本信息', _packageInfo.version,false),
-                Divider(height: 1.0.w,color: const Color(0xFFF7F8FA),),
-                buildItemType('隐私协议'),
-                Divider(height: 1.0.w,color: const Color(0xFFF7F8FA),),
-                buildItemType('产品介绍'),
-              ],
+            child: Text("       “数字英语”APP是英语周报数字化融媒体平台，是一款基于数字化的英语学习平台，该平台围绕周报内容课程化、教师教案工具化和用户体验智能化等内容，真正实现人机交互的学习方式。使学习者和教师能够更加便捷、高效、个性化的学习或教学，提升英语学习和教学的效果。",
+            style: TextStyle(color: AppColors.c_FF898A93,fontSize: 14.sp),
             ),
           )
 
@@ -113,7 +83,7 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
     );
   }
 
-  Widget buildItemType(String menu, [String? second,bool isArrowVisible = true]) {
+  Widget buildItemType(String menu, [String? second]) {
     return GestureDetector(
       onTap: () {
         //todo 具体的跳转界面
@@ -132,7 +102,13 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
             );
             break;
           case '产品介绍':
-          RouterUtil.toNamed(AppRoutes.ProductIntroPage);
+            RouterUtil.toWebPage(
+              C.REGISTER_PRIVACY_POLICY_LAW,
+              title: "隐私保护政策",
+              showStatusBar: true,
+              showAppBar: true,
+              showH5Title: true,
+            );
             break;
           default:
             return null;
@@ -140,35 +116,40 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
       },
       child: Container(
           width: double.infinity,
-          padding: EdgeInsets.only(left:29.w,top: 20.w, bottom: 20.w,right: 25.w),
+          padding: EdgeInsets.only(top: 20.w, bottom: 20.w),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                width: 29.w,
+              ),
               Text(
                 menu,
                 style: textStyle,
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  (second != null)
-                      ? Text(
-                    second,
-                    style: textSenStyle,
-                  )
-                      : Text(''),
-                  Visibility(visible: isArrowVisible,
-                      child: Image.asset(
-                        R.imagesHomeNextIcBlack,
-                        height: 7.w,
-                        width: 11.w,
-                      ))
-                ],
+              SizedBox(
+                width: 38.w,
+              ),
+              Expanded(
+                child: (second != null)
+                    ? Text(
+                        second,
+                        style: textSenStyle,
+                      )
+                    : Text(''),
+              ),
+              Image.asset(
+                R.imagesHomeNextIcBlack,
+                height: 7.w,
+                width: 11.w,
+              ),
+              SizedBox(
+                width: 25.w,
               ),
             ],
           )),

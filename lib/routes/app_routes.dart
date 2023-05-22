@@ -53,6 +53,7 @@ abstract class AppRoutes{
   static const MyTaskPage = '/MyTaskPage';
   static const PersonInfoPage = '/PersonInfoPage';
   static const AboutUsPage = '/AboutUsPage';
+  static const ProductIntroPage = '/ProductIntroPage';
   static const ChangeNickNamePage = '/ChangeNickNamePage';
   static const ChangePsdPage = '/ChangePsdPage';
 
