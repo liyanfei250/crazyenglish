@@ -96,6 +96,7 @@ class Obj {
     num? classId,
     num? operationId,
     String? name,
+    String? journalName,
     num? teacherId,
     num? studentUserId,
     String? deadline,
@@ -135,6 +136,7 @@ class Obj {
     _classId = classId;
     _operationId = operationId;
     _name = name;
+    _journalName = journalName;
     _teacherId = teacherId;
     _studentUserId = studentUserId;
     _deadline = deadline;
@@ -176,6 +178,7 @@ class Obj {
     _classId = json['classId'];
     _operationId = json['operationId'];
     _name = json['name'];
+    _journalName = json['journalName'];
     _teacherId = json['teacherId'];
     _studentUserId = json['studentUserId'];
     _deadline = json['deadline'];
@@ -215,6 +218,7 @@ class Obj {
   num? _classId;
   num? _operationId;
   String? _name;
+  String? _journalName;
   num? _teacherId;
   num? _studentUserId;
   String? _deadline;
@@ -253,6 +257,7 @@ class Obj {
     num? classId,
     num? operationId,
     String? name,
+    String? journalName,
     num? teacherId,
     num? studentUserId,
     String? deadline,
@@ -291,6 +296,7 @@ class Obj {
     classId: classId ?? _classId,
     operationId: operationId ?? _operationId,
     name: name ?? _name,
+    journalName: journalName ?? _journalName,
     teacherId: teacherId ?? _teacherId,
     studentUserId: studentUserId ?? _studentUserId,
     deadline: deadline ?? _deadline,
@@ -330,6 +336,7 @@ class Obj {
   num? get classId => _classId;
   num? get operationId => _operationId;
   String? get name => _name;
+  String? get journalName => _journalName;
   num? get teacherId => _teacherId;
   num? get studentUserId => _studentUserId;
   String? get deadline => _deadline;
@@ -371,6 +378,7 @@ class Obj {
     map['classId'] = _classId;
     map['operationId'] = _operationId;
     map['name'] = _name;
+    map['journalName'] = _journalName;
     map['teacherId'] = _teacherId;
     map['studentUserId'] = _studentUserId;
     map['deadline'] = _deadline;

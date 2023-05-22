@@ -4,7 +4,7 @@ import '../../../entity/home/HomeKingDate.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
 import '../../../repository/other_repository.dart';
-import '../../reviews/repository/ReviewRepository.dart';
+import '../../../repository/ReviewRepository.dart';
 import 'choose_question_state.dart';
 import '../../../../entity/review/HomeSecondListDate.dart' as data;
 

@@ -457,8 +457,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                         .start,
                                                     children: [
                                                       Text(
-                                                        element.questionTypeName ??
-                                                            "",
+                                                        element.journalName??""+(element.questionTypeName??""),
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xff353e4d),

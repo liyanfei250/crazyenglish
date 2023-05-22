@@ -1,6 +1,6 @@
 import 'package:crazyenglish/entity/history_homework_date.dart';
 import 'package:crazyenglish/entity/home/PractiseDate.dart';
-import 'package:crazyenglish/pages/reviews/repository/ReviewRepository.dart';
+import 'package:crazyenglish/repository/ReviewRepository.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:crazyenglish/utils/json_cache_util.dart';
 import 'package:get/get.dart';

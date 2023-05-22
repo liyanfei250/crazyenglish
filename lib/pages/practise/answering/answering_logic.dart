@@ -63,7 +63,7 @@ class AnsweringLogic extends GetxController {
   }
 
   // "type": "1: 学生练习 2: 练习保存草稿 3：错题本提交 4：老师作业 5: 模拟考试"
-  void uploadWeekTest(SubjectVoList subjectVoList,int examType,{num? lastSubjectId, num? lastSubtopicId}) async{
+  void uploadWeekTest(SubjectVoList subjectVoList,int examType,{ExerciseVos? exerciseVos,num? lastSubjectId, num? lastSubtopicId}) async{
     List<SubtopicAnswerVo> subtopicAnswerVoList = [];
 
     // 填充已做答的数据
@@ -87,6 +87,8 @@ class AnsweringLogic extends GetxController {
         answer: state.subjectAnswerVo.answer??"",
         isSubjectivity: subjectVoList.isSubjectivity,
         questionTypeStr: subjectVoList.questionTypeStr,
+        exerciseId: exerciseVos?.id,
+        isOperation: examType == AnsweringPage.answer_homework_draft_type || examType == AnsweringPage.answer_continue_type,
         subtopicAnswerVo: subtopicAnswerVoList);
 
     List<SubjectAnswerVo> subjectAnswerVoList = [];

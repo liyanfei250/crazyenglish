@@ -4,7 +4,7 @@ import '../../../entity/home/PractiseDate.dart';
 import '../../../entity/review/PractiseHistoryDate.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import '../repository/ReviewRepository.dart';
+import '../../../repository/ReviewRepository.dart';
 import 'practise_history_state.dart';
 
 class Practise_historyLogic extends GetxController {

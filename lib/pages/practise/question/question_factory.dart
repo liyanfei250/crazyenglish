@@ -188,7 +188,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback,bool isResult=false}){
+  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback,bool isResult=false,int answerType = AnsweringPage.answer_normal_type,}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     num subtopicId = subtopicVoList.id??0;
@@ -199,11 +199,18 @@ class QuestionFactory{
     ExerciseLists? exerciseLists = subtopicAnswerVoMap["$subjecId:$subtopicId"];
 
     String userAnswer = "";
+    int isRight = AnswerType.no_answer;
     if(exerciseLists!=null){
       userAnswer = exerciseLists.answer??"";
-      if(userAnswerCallback==null){
-        correctType.value = (exerciseLists!.isRight??false)? 2:1;
+      if(userAnswer.isNotEmpty){
+        if(exerciseLists!.isRight??false){
+          isRight = AnswerType.right;
+        }else{
+          isRight = AnswerType.wrong;
+        }
       }
+    }else{
+
     }
     controller.text = userAnswer;
 
@@ -211,20 +218,20 @@ class QuestionFactory{
       width: double.infinity,
       child: Obx(()=>TextField(
           keyboardType: TextInputType.name,
-          readOnly: userAnswerCallback==null,
+          readOnly: userAnswerCallback==null ||  (answerType == AnsweringPage.answer_fix_type && isRight == AnswerType.right),
           maxLines: 1,
           textAlign: TextAlign.left,
           style: const TextStyle(color: AppColors.c_FF353E4D),
           decoration: InputDecoration(
             filled: true,
-            fillColor: _getShotInputBgColor(correctType.value),
+            fillColor: _getShotInputBgColor(isResult,isRight),
             isDense:true,
             contentPadding: EdgeInsets.all(10.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(7.w)),
               borderSide: BorderSide(
                   width: 1.w,
-                  color: _getShotInputBorderColor(correctType.value),
+                  color: _getShotInputBorderColor(isResult,isRight),
                   style: BorderStyle.solid
               ),
             ),
@@ -232,7 +239,7 @@ class QuestionFactory{
               borderRadius: BorderRadius.all(Radius.circular(7.w)),
               borderSide: BorderSide(
                   width: 1.w,
-                  color: _getShotInputBorderColor(correctType.value),
+                  color: _getShotInputBorderColor(isResult,isRight),
                   style: BorderStyle.solid
               ),
             ),
@@ -683,30 +690,42 @@ class QuestionFactory{
     }
   }
 
-  static Color _getShotInputBorderColor(int type){
-    switch(type){
-      case AnswerType.no_answer: // 默认 未作答
-        return AppColors.c_FFD2D5DC;
-      case AnswerType.wrong:  // 作答错误
-        return AppColors.c_FFEB5447;
-      case AnswerType.right: // 作答正确
-        return AppColors.c_FF58BC6D;
-      default:
-        return AppColors.c_FFD2D5DC;
+  static Color _getShotInputBorderColor(bool isResult,int type){
+    if(isResult){
+      switch(type){
+        case AnswerType.no_answer: // 默认 未作答
+          return AppColors.c_FFD2D5DC;
+        case AnswerType.wrong:  // 作答错误
+          return AppColors.c_FFEB5447;
+        case AnswerType.right: // 作答正确
+          return AppColors.c_FF58BC6D;
+        default:
+          return AppColors.c_FFD2D5DC;
+      }
+    }else{
+      // 答题页模式
+      return AppColors.c_FF101010;
     }
   }
 
-  static Color _getShotInputBgColor(int type){
-    switch(type){
-      case AnswerType.no_answer: // 默认 未作答
-        return AppColors.c_FFF5F7FB;
-      case AnswerType.wrong:  // 作答错误
-        return AppColors.c_FFFBF5F5;
-      case AnswerType.right: // 作答正确
-        return AppColors.c_FF58BC6D;
-      default:
-        return AppColors.c_FFF5F7FB;
+
+
+  static Color _getShotInputBgColor(bool isResult,int type){
+    if(isResult){
+      switch(type){
+        case AnswerType.no_answer: // 默认 未作答
+          return AppColors.c_FFF5F7FB;
+        case AnswerType.wrong:  // 作答错误
+          return AppColors.c_FFFBF5F5;
+        case AnswerType.right: // 作答正确
+          return AppColors.c_FF58BC6D;
+        default:
+          return AppColors.c_FFF5F7FB;
+      }
+    }else{
+      return AppColors.c_FFF5F7FB;
     }
+
   }
 
   /// 选择填空的选项

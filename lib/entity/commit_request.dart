@@ -143,11 +143,14 @@ class SubjectAnswerVo {
     String? answer,
     num? answerTime,
     num? exerciseId,
+    bool? isOperation,
     List<SubtopicAnswerVo>? subtopicAnswerVo,}){
     _subjectId = subjectId;
     _answerTime = answerTime;
     _answer = answer;
     _isSubjectivity = isSubjectivity;
+    _isOperation = isOperation;
+    _exerciseId = exerciseId;
     _questionTypeStr = questionTypeStr;
     _subtopicAnswerVo = subtopicAnswerVo;
   }
@@ -158,6 +161,7 @@ class SubjectAnswerVo {
     _answerTime = json['answerTime'];
     _answer = json['answer'];
     _isSubjectivity = json['isSubjectivity'];
+    _isOperation = json['isOperation'];
     _questionTypeStr = json['questionTypeStr'];
     if (json['subtopicAnswerVo'] != null) {
       _subtopicAnswerVo = [];
@@ -170,6 +174,7 @@ class SubjectAnswerVo {
   num? _exerciseId;
   num? _answerTime;
   bool? _isSubjectivity;
+  bool? _isOperation;
   String? _answer;
   String? _questionTypeStr;
   List<SubtopicAnswerVo>? _subtopicAnswerVo;
@@ -177,6 +182,7 @@ class SubjectAnswerVo {
     num? subjectId,
     num? exerciseId,
     bool? isSubjectivity,
+    bool? isOperation,
     String? questionTypeStr,
     String? answer,
     num? answerTime,
@@ -185,6 +191,7 @@ class SubjectAnswerVo {
     subjectId: subjectId ?? _subjectId,
     exerciseId: exerciseId ?? _exerciseId,
     isSubjectivity: isSubjectivity ?? _isSubjectivity,
+    isOperation: isOperation ?? _isOperation,
     questionTypeStr: questionTypeStr ?? _questionTypeStr,
     answer: answer ?? _answer,
     answerTime: answerTime ?? _answerTime,
@@ -195,6 +202,7 @@ class SubjectAnswerVo {
   num? get answerTime => _answerTime;
   String? get answer => _answer;
   bool? get isSubjectivity => _isSubjectivity;
+  bool? get isOperation => _isOperation;
   String? get questionTypeStr => _questionTypeStr;
   List<SubtopicAnswerVo>? get subtopicAnswerVo => _subtopicAnswerVo;
 
@@ -205,6 +213,7 @@ class SubjectAnswerVo {
     map['answerTime'] = _answerTime;
     map['answer'] = _answer;
     map['isSubjectivity'] = _isSubjectivity;
+    map['isOperation'] = _isOperation;
     map['questionTypeStr'] = _questionTypeStr;
     if (_subtopicAnswerVo != null) {
       map['subtopicAnswerVo'] = _subtopicAnswerVo?.map((v) => v.toJson()).toList();

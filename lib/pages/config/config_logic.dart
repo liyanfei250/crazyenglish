@@ -29,22 +29,10 @@ class ConfigLogic extends GetxController {
     /// LISTENING_TYPE 题目类型
     /// LISTENING_MODE 听力类型
 
-    HomeKingDate groupCLASS_GRADE = await _getGroupDetail("CLASS_GRADE");
-    HomeKingDate groupQUESTION_TYPE = await _getGroupDetail("QUESTION_TYPE");
-    HomeKingDate groupQUESTION_DIFFICULTY = await _getGroupDetail("QUESTION_DIFFICULTY");
-    HomeKingDate groupLISTENING_TYPE = await _getGroupDetail("LISTENING_TYPE");
-    HomeKingDate groupLISTENING_MODE = await _getGroupDetail("LISTENING_MODE");
+    HomeKingDate groupQUESTION_TYPE = await _getGroupDetail('classify_type');
 
-    if(groupCLASS_GRADE!=null
-        && groupQUESTION_TYPE!=null
-    && groupQUESTION_DIFFICULTY!=null
-    && groupLISTENING_TYPE!=null
-    && groupLISTENING_MODE!=null){
-      state.groupCLASS_GRADE = groupCLASS_GRADE;
+    if(groupQUESTION_TYPE!=null){
       state.groupQUESTION_TYPE = groupQUESTION_TYPE;
-      state.groupQUESTION_DIFFICULTY= groupQUESTION_DIFFICULTY;
-      state.groupLISTENING_TYPE = groupLISTENING_TYPE;
-      state.groupLISTENING_MODE = groupLISTENING_MODE;
       update([GetBuilderIds.datagroupDetailResponse]);
     }
   }
