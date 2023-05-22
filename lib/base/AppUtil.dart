@@ -655,9 +655,37 @@ class Util {
   }
 
   static bool isLoginPassword(String input) {
-    RegExp passwordRegExp =
+    /*RegExp passwordRegExp =
         RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\d\s])[A-Za-z\d\W]{8,20}$');
-    return passwordRegExp.hasMatch(input);
+    return passwordRegExp.hasMatch(input);*/
+
+    if (input.length < 6 || input.length > 18) {
+      return false;
+    }
+
+    int conditionsMet = 0;
+
+    // 包含大写字母
+    if (RegExp(r'[A-Z]').hasMatch(input)) {
+      conditionsMet++;
+    }
+
+    // 包含小写字母
+    if (RegExp(r'[a-z]').hasMatch(input)) {
+      conditionsMet++;
+    }
+
+    // 包含数字
+    if (RegExp(r'\d').hasMatch(input)) {
+      conditionsMet++;
+    }
+
+    // 包含符号
+    if (RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(input)) {
+      conditionsMet++;
+    }
+
+    return conditionsMet >= 2;
   }
 
   static String formatPhoneNumber(String phoneNumber) {

@@ -130,8 +130,9 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
                 return;
               }
               //密码的格式是否通过？
-              if (Util.isLoginPassword(phoneCodeStr.value)) {
-                Util.toast("新密码需8-20位字符，必须包含字母/数字/字符中两种以上组合");
+              if (!Util.isLoginPassword(phoneCodeStr.value)) {
+                print('密码无效');
+                Util.toast("密码长度为6-18位，满足字母大小写、数字、符号三类中其中两类");
                 return;
               }
               logic.mobileExists(_phoneController!.text,SmsCodeType.resetPwd);
@@ -207,7 +208,6 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
               keyboardType: TextInputType.number,
               obscureText: isShowPsd,
               style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: (String str) {
                 phoneCodeStr.value = str;
               },
