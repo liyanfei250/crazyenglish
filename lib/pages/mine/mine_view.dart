@@ -96,7 +96,7 @@ class _MinePageState extends BasePageState<MinePage> {
             ),
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 30.w, left: 18.w),
+              margin: EdgeInsets.only(top: 30.w+ statusBarHeight, left: 18.w),
               child: GestureDetector(
                 onTap: () {
                   RouterUtil.toNamed(AppRoutes.PersonInfoPage,
@@ -206,48 +206,51 @@ class _MinePageState extends BasePageState<MinePage> {
                                       color: Color(0xff353e4d),
                                       fontSize: 16.sp)),
                             )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(R.imagesHistoryJumpArrow,width: 20.w,height: 20.w,),
-                            Padding(padding: EdgeInsets.only(left: 10.w)),
-                            GetBuilder<Person_infoLogic>(
-                                id: GetBuilderIds.getPersonInfo,
-                                builder: (logic){
-                              return Text(
-                                (logic.state.infoResponse.obj?.affiliatedGradeName ?? "").replaceAll(",", " "),
-                                style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),
-                              );
-                            })
-                          ],
-                        ),
-                        InkWell(
-                          onTap: (){
-                            RouterUtil.toNamed(AppRoutes.PersonInfoPage,
-                                isNeedCheckLogin: true,
-                                arguments: {
-                                  'isStudent':
-                                  SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                                      ? false
-                                      : true
-                                });
-                          },
-                          child: Container(
-                            width: 67.w,
-                            height: 20.w,
-                            margin: EdgeInsets.only(right: 18.w),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.c_FFDFE2E9,width: 0.4.w),
-                              borderRadius: BorderRadius.all(Radius.circular(17.w))
-                            ),
-                            child: Text("编辑资料",style: TextStyle(color: AppColors.c_FF8B8F94,fontSize:12.sp),),
+                    Container(
+                      margin: EdgeInsets.only(left: 2.w,top: 6.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(R.imagesMineGradeIcon,width: 20.w,height: 20.w,),
+                              Padding(padding: EdgeInsets.only(left: 10.w)),
+                              GetBuilder<Person_infoLogic>(
+                                  id: GetBuilderIds.getPersonInfo,
+                                  builder: (logic){
+                                    return Text(
+                                      (logic.state.infoResponse.obj?.affiliatedGradeName ?? "").replaceAll(",", " "),
+                                      style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),
+                                    );
+                                  })
+                            ],
                           ),
-                        )
-                      ],
+                          InkWell(
+                            onTap: (){
+                              RouterUtil.toNamed(AppRoutes.PersonInfoPage,
+                                  isNeedCheckLogin: true,
+                                  arguments: {
+                                    'isStudent':
+                                    SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                        ? false
+                                        : true
+                                  });
+                            },
+                            child: Container(
+                              width: 67.w,
+                              height: 20.w,
+                              margin: EdgeInsets.only(right: 18.w),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: AppColors.c_FFDFE2E9,width: 0.4.w),
+                                  borderRadius: BorderRadius.all(Radius.circular(17.w))
+                              ),
+                              child: Text("编辑资料",style: TextStyle(color: AppColors.c_FF8B8F94,fontSize:12.sp),),
+                            ),
+                          )
+                        ],
+                      ),
                     )
 
                   ],
