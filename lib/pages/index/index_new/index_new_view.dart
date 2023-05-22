@@ -14,7 +14,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../base/common.dart' as common;
 import '../../../entity/home/HomeKingNewDate.dart';
 import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
-import '../../../entity/week_list_response.dart' as weekListResponse;
+import 'package:crazyenglish/entity/teacher_week_list_response.dart' as weekListResponse;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
@@ -37,7 +37,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  List<weekListResponse.Obj> myListDate = [];
+  List<weekListResponse.Records> myListDate = [];
   List<Obj> functionTxtNew = [];
   late Obj weekData;
 
@@ -56,7 +56,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       }
       if (state.myJournalDetail != null) {
         if (mounted && state.myJournalDetail!.obj != null) {
-          myListDate = state.myJournalDetail!.obj!;
+          myListDate = state.myJournalDetail!.obj!.records!;
           setState(() {});
         }
       }
@@ -590,7 +590,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     //新增金刚区的列表，有图片
     logic.getHomeListNew();
     //获取我的期刊列表
-    logic.getMyJournalList();
+    logic.getMyRecommendation();
     logic.getHomeBanner();
   }
 

@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/entity/home/banner.dart';
+import 'package:crazyenglish/entity/teacher_week_list_response.dart';
 import 'package:crazyenglish/repository/HomeViewRepository.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
@@ -83,23 +84,29 @@ class IndexLogic extends GetxController {
     }
   }
 
-  void getMyJournalList() async {
-
+  void getMyRecommendation() async {
+    Map<String, dynamic> req = {};
+    Map<String, dynamic> p = {};
+    p['current'] = 1;
+    p['size'] = 10;
+    req['userId'] = SpUtil.getInt(BaseConstant.USER_ID);
+    req['p'] = p;
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeMyJournalDate)
+        JsonCacheManageUtils.HomeMyJournalDate)
         .then((value) {
       if (value != null) {
-        return WeekListResponse.fromJson(value as Map<String, dynamic>?);
+        return TeacherWeekListResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is WeekListResponse) {
+    if (cache is TeacherWeekListResponse) {
       state.myJournalDetail = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeMyJournalDate]);
     }
-    WeekListResponse list = await homeViewRepository.getMyJournalList(SpUtil.getInt(BaseConstant.USER_ID).toString());
+    TeacherWeekListResponse list =
+    await homeViewRepository.getMyRecommendationTeacher(req);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyJournalDate, list.toJson());
     state.myJournalDetail = list!;
@@ -108,28 +115,4 @@ class IndexLogic extends GetxController {
     }
   }
 
-  void getMyTasks() async {
-    var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeMyTasks)
-        .then((value) {
-      if (value != null) {
-        return HomeMyTasksDate.fromJson(value as Map<String, dynamic>?);
-      }
-    });
-
-    bool hasCache = false;
-    if (cache is HomeMyTasksDate) {
-      state.myTask = cache!;
-      hasCache = true;
-      update([GetBuilderIds.getMyTasksDate]);
-    }
-
-    HomeMyTasksDate list = await homeViewRepository.getMyTask({"userId":SpUtil.getInt(BaseConstant.USER_ID)});
-    JsonCacheManageUtils.saveCacheData(
-        JsonCacheManageUtils.HomeMyTasks, list.toJson());
-    state.myTask = list!;
-    if (!hasCache) {
-      update([GetBuilderIds.getMyTasksDate]);
-    }
-  }
 }

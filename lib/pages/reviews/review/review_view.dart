@@ -271,7 +271,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(R.imagesReviewFavorQuestionBg),
+                      image: AssetImage(R.imagesHomeReviewCardBg),
                       fit: BoxFit.cover)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -317,7 +317,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(R.imagesReviewFavorQuestionBg),
+                      image: AssetImage(R.imagesHomeReviewCardBg),
                       fit: BoxFit.cover)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
