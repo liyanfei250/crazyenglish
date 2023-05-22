@@ -101,7 +101,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 30.w+ statusBarHeight, left: 18.w),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                       isNeedCheckLogin: true,
@@ -193,7 +193,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
                               //TextButton(onPressed: toLogin(), child: Text("用户登录")),
                             ],
                           )
-                        : GestureDetector(
+                        : InkWell(
                             onTap: () {
                               RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                                   isNeedCheckLogin: true,
@@ -350,7 +350,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
   }
 
   Widget buildItemType(String menu, String icon) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         switch (menu) {
           case '我的班级':
@@ -412,7 +412,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
     return Container(
         padding: EdgeInsets.only(left: 24.w),
         height: 58.5.w,
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             onClickPosition(position);
           },

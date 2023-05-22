@@ -179,7 +179,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                           buildImageWithClickableIcon(
                             R.imagesStudentHomeJou,
                             () {
-                              Util.toast('我的期刊');
+                              // Util.toast('我的期刊');
                             },
                           ),
                           SizedBox(
@@ -346,7 +346,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
           Expanded(
             child: Text(''),
           ),
-          GestureDetector(
+          InkWell(
             onTap: () {
               RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: weekData);
             },

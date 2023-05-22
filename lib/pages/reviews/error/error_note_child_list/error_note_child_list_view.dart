@@ -268,15 +268,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                                 color: Color(0xff353e4d)),
                           ),
                           Padding(padding: EdgeInsets.only(left: 11.w)),
-                          Visibility(
-                            child: Image.asset(
+                          index == 0? Image.asset(
                               R.imagesListenigLastIcon,
                               fit: BoxFit.cover,
                               width: 26.w,
                               height: 18.w,
-                            ),
-                            visible: index == 0,
-                          ),
+                            ):SizedBox.shrink(),
                         ],
                       ),
                       Padding(
