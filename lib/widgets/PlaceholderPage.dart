@@ -38,6 +38,7 @@ class PlaceholderPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
+              color: Color(0xff353E4D)
             ),
           ),
           SizedBox(height: 8.0),

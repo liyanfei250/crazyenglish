@@ -1,5 +1,7 @@
 import 'package:crazyenglish/pages/reviews/collect/collect_practic_page/collect_practic_page_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/widgets/CustomTab.dart';
+import 'package:crazyenglish/widgets/CustomTabIndicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +48,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage>
     super.initState();
 
     _tabController = TabController(vsync: this, length: searchList!.length);
-
     //获取筛选列表
     logic.addListenerId(GetBuilderIds.getHomeDateList, () {
       if (mounted && state.tabList != null && state.tabList!.obj != null) {
@@ -61,7 +62,6 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage>
     });
     //先获取tab接口，用来筛选
     logic.getHomeList('classify_type');
-
   }
 
   @override
@@ -79,8 +79,8 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage>
     Get.delete<Collect_practicLogic>();
     Get.delete<WeekTestDetailLogic>();
     _refreshController.dispose();
+    _tabController.dispose();
   }
-
 
   Widget _buildTableBarView() => TabBarView(
       controller: _tabController,
@@ -116,9 +116,11 @@ class _ToErrorColectPrctePageState extends BasePageState<ErrorColectPrctePage>
           controller: _tabController,
           labelColor: Color(0xffffbc00),
           indicatorWeight: 2,
-          // indicatorPadding: const EdgeInsets.symmetric(horizontal: 28),
+          indicatorPadding: EdgeInsets.symmetric(horizontal: 18.w),
           unselectedLabelColor: Colors.grey,
           indicatorColor: Color(0xffffbc00),
+          indicator: CustomTabIndicator(),
+          // 添加自定义指示器
           tabs: searchList!.map((e) => Tab(text: e.name)).toList(),
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/pages/reviews/error/error_note_child_list/error_note_child_list_view.dart';
+import 'package:crazyenglish/widgets/CustomTabIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -88,12 +89,6 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
         height: 38.w,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            /*boxShadow: [
-              BoxShadow(
-                color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-                offset: Offset(2, 4), // 阴影与容器的距离
-              )
-            ],*/
             borderRadius: BorderRadius.all(Radius.circular(8.w)),
             color: Color(0xfff2f5fc)),
         child: TabBar(
@@ -101,13 +96,13 @@ class _ErrorNoteChildPageState extends State<ErrorNoteChildPage>
           labelStyle:
               const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           unselectedLabelStyle: const TextStyle(fontSize: 14),
-          isScrollable: true,
+          isScrollable: false,
           controller: _tabController,
           labelColor: Color(0xffffbc00),
           indicatorWeight: 2,
-          // indicatorPadding: const EdgeInsets.symmetric(horizontal: 28),
+          indicatorPadding:EdgeInsets.symmetric(horizontal: 28.w),
           unselectedLabelColor: Colors.grey,
-          indicatorColor: Color(0xffffbc00),
+          indicator: CustomTabIndicator(),
           tabs: widget.tablist!.map((e) => Tab(text: e.name)).toList(),
         ),
       );
