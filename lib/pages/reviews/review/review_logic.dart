@@ -32,8 +32,9 @@ class ReviewLogic extends GetxController {
     bool hasCache = false;
     if(cache is ReviewHomeDetail) {
       state.paperDetail = cache!;
+      resetOtherCount(state.paperDetail);
       hasCache = true;
-      update([GetBuilderIds.getReviewHomeDate]);
+
     }
     ReviewHomeDetail list = await reviewRepository.getReviewHomeDetail(id);
     JsonCacheManageUtils.saveCacheData(
@@ -41,9 +42,7 @@ class ReviewLogic extends GetxController {
         labelId: id,
         list.toJson());
     state.paperDetail = list!;
-    if(!hasCache){
-      update([GetBuilderIds.getReviewHomeDate]);
-    }
+    resetOtherCount(state.paperDetail);
   }
 
   void getHomeList(String type) async {
@@ -68,5 +67,55 @@ class ReviewLogic extends GetxController {
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateList]);
     }
+  }
+
+  void resetOtherCount(ReviewHomeDetail paperDetail){
+    if (paperDetail!.obj != null) {
+      if (paperDetail!.obj!.cumulativeExercise != null) {
+          state.cumulativeExercise =
+              paperDetail!.obj!.cumulativeExercise!.toInt();
+      }else{
+        state.cumulativeExercise = 0;
+      }
+      if (paperDetail!.obj!.todayExercise != null) {
+          state.todayExercise = paperDetail!.obj!.todayExercise!.toInt();
+      }else{
+        state.todayExercise = 0;
+      }
+      if (paperDetail!.obj!.cumulativeError != null) {
+          state.cumulativeError = paperDetail!.obj!.cumulativeError!.toInt();
+      }else{
+        state.cumulativeError = 0;
+      }
+      if (paperDetail!.obj!.crrect != null) {
+          state.correct = paperDetail!.obj!.crrect!.toInt();
+      }else{
+        state.correct = 0;
+      }
+      if (paperDetail!.obj!.collected != null) {
+          state.collected = paperDetail!.obj!.collected!.toInt();
+      }else{
+        state.collected = 0;
+      }
+      if (paperDetail!.obj!.historyJob != null) {
+          state.histoty = paperDetail!.obj!.historyJob!.toInt();
+      }else{
+        state.histoty = 0;
+      }
+      if (paperDetail!.obj!.exerciseRecord != null) {
+          state.practiceRecord = paperDetail!.obj!.exerciseRecord!.toInt();
+      }else{
+        state.practiceRecord = 0;
+      }
+    }else{
+        state.cumulativeExercise = 0;
+        state.todayExercise = 0;
+        state.cumulativeError = 0;
+        state.correct = 0;
+        state.collected = 0;
+        state.histoty = 0;
+        state.practiceRecord = 0;
+    }
+    update([GetBuilderIds.getReviewHomeDate]);
   }
 }

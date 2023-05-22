@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
@@ -30,7 +32,7 @@ class MinePage extends BasePage {
   BasePageState<BasePage> getState() => _MinePageState();
 }
 
-class _MinePageState extends BasePageState<MinePage> {
+class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(MineLogic());
   final state = Get.find<MineLogic>().state;
   final personInfoLazyLogic = Get.lazyPut(()=>Person_infoLogic());
@@ -39,6 +41,7 @@ class _MinePageState extends BasePageState<MinePage> {
   final TextStyle textStyle = TextStyle(
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
+  StreamSubscription? refrehUserInfoStreamSubscription;
   void onClickPosition(int position) {
     switch (position) {
       case 0:
@@ -220,7 +223,7 @@ class _MinePageState extends BasePageState<MinePage> {
                                   id: GetBuilderIds.getPersonInfo,
                                   builder: (logic){
                                     return Text(
-                                      (logic.state.infoResponse.obj?.affiliatedGradeName ?? "").replaceAll(",", " "),
+                                      isLogin? (logic.state.infoResponse.obj?.affiliatedGradeName ?? "").replaceAll(",", " "):"年级未知",
                                       style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),
                                     );
                                   })
@@ -448,6 +451,9 @@ class _MinePageState extends BasePageState<MinePage> {
   void dispose() {
     Get.delete<MineLogic>();
     Get.delete<Person_infoLogic>();
+    if(refrehUserInfoStreamSubscription !=null){
+      refrehUserInfoStreamSubscription!.cancel();
+    }
     super.dispose();
   }
 
@@ -457,7 +463,7 @@ class _MinePageState extends BasePageState<MinePage> {
     if(personInfoLogic!=null && userId>0){
       personInfoLogic!.getPersonInfo("$userId");
     }
-    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+    refrehUserInfoStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshPersonInfoEvent){
         int userId = SpUtil.getInt(BaseConstant.USER_ID);
         if(personInfoLogic!=null && userId>0){

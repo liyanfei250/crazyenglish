@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
@@ -61,12 +63,13 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
   };
 
   int month = 0;
+  StreamSubscription? refrehStreamSubscription;
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+    refrehStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshAnswerState){
         if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
           _onRefresh();
@@ -558,6 +561,9 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
     _refreshController.dispose();
     Get.delete<Practise_historyLogic>();
     Get.delete<WeekTestDetailLogic>();
+    if(refrehStreamSubscription!=null){
+      refrehStreamSubscription!.cancel();
+    }
     super.dispose();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
@@ -53,11 +55,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   List<errorDate.Obj> weekPaperList = [];
   final int pageStartIndex = 1;
 
+  StreamSubscription? refrehStreamSubscription;
   @override
   void initState() {
     super.initState();
     print('type==${widget.type}typeTwo==${widget.typeTwo}');
-    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+    refrehStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshAnswerState){
         if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
           _onRefresh();
@@ -335,6 +338,9 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     Get.delete<Error_note_child_listLogic>();
     Get.delete<Error_noteLogic>();
     _refreshController.dispose();
+    if(refrehStreamSubscription!=null){
+      refrehStreamSubscription!.cancel();
+    }
     super.dispose();
   }
 

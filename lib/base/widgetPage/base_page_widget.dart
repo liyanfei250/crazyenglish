@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,6 +37,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   String tag = "BasePageState_";
   bool isLogin = Util.isLogin();
   CancelFunc? _cancelLoading;
+  StreamSubscription? loginStreamSubscription;
   @override
   void initState(){
       super.initState();
@@ -53,7 +55,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
 
   // 不监听登录状态页面可以
   void registerLoginChangeListener(){
-    BlocProvider.of<LoginChangeBloc>(context).stream.listen((event) {
+    loginStreamSubscription = BlocProvider.of<LoginChangeBloc>(context).stream.listen((event) {
       if(event is LoginChangeSuccess){
         loginChanged();
       }
@@ -141,7 +143,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
 
   void onCreate();
 
-  void onDestroy();
+  void onDestroy(){}
 
   @override
   void didUpdateWidget(T oldWidget) {
@@ -165,6 +167,9 @@ abstract class BasePageState<T extends BasePage> extends State<T> {
   void dispose() {
     hideLoading();
     print(tag + "dispose\n");
+    if(loginStreamSubscription!=null){
+      loginStreamSubscription!.cancel();
+    }
     onDestroy();
     super.dispose();
   }

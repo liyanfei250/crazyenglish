@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:crazyenglish/base/common.dart';
@@ -27,71 +28,20 @@ class ReviewPage extends BasePage {
   _ReviewPageState getState() => _ReviewPageState();
 }
 
-class _ReviewPageState extends BasePageState<ReviewPage> {
+class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(ReviewLogic());
   final state = Get.find<ReviewLogic>().state;
-  ReviewHomeDetail? paperDetail;
-  int cumulativeExercise = 0;
-  int todayExercise = 0;
-  int cumulativeError = 0;
-  int correct = 0;
-  int collected = 0;
-  int histoty = 0;
-  int practiceRecord = 0;
+  // ReviewHomeDetail? paperDetail;
+  StreamSubscription? refrehUserInfoStreamSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+    refrehUserInfoStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshAnswerState){
         if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
           logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
-        }
-      }
-    });
-    logic.addListenerId(GetBuilderIds.getReviewHomeDate, () {
-      if (state.paperDetail != null) {
-        paperDetail = state.paperDetail;
-        if (mounted) {
-          if (paperDetail!.obj != null) {
-            if (paperDetail!.obj!.cumulativeExercise != null) {
-              setState(() {
-                cumulativeExercise =
-                    paperDetail!.obj!.cumulativeExercise!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.todayExercise != null) {
-              setState(() {
-                todayExercise = paperDetail!.obj!.todayExercise!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.cumulativeError != null) {
-              setState(() {
-                cumulativeError = paperDetail!.obj!.cumulativeError!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.crrect != null) {
-              setState(() {
-                correct = paperDetail!.obj!.crrect!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.collected != null) {
-              setState(() {
-                collected = paperDetail!.obj!.collected!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.historyJob != null) {
-              setState(() {
-                histoty = paperDetail!.obj!.historyJob!.toInt();
-              });
-            }
-            if (paperDetail!.obj!.exerciseRecord != null) {
-              setState(() {
-                practiceRecord = paperDetail!.obj!.exerciseRecord!.toInt();
-              });
-            }
-          }
         }
       }
     });
@@ -111,7 +61,12 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
 
   @override
   void loginChanged() {
+    print("loginChanged");
+    if(!Util.isLogin()){
+      logic.resetOtherCount(ReviewHomeDetail());
+    }
     if(mounted){
+      print("loginChanged at mounted");
       setState(() {
         isLogin = Util.isLogin();
       });
@@ -148,42 +103,51 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "$cumulativeExercise",
-                        style: TextStyle(
-                            color: AppColors.c_FF353E4D,
-                            fontSize: 26.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text("累计练习（$cumulativeExercise个）",
+                  GetBuilder<ReviewLogic>(
+                      id:GetBuilderIds.getReviewHomeDate,
+                      builder: (logic){
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${logic.state.cumulativeExercise}",
                           style: TextStyle(
-                            color: AppColors.c_FF434863,
-                            fontSize: 12.sp,
-                          ))
-                    ],
-                  ),
+                              color: AppColors.c_FF353E4D,
+                              fontSize: 26.sp,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text("累计练习（${logic.state.cumulativeExercise}个）",
+                            style: TextStyle(
+                              color: AppColors.c_FF434863,
+                              fontSize: 12.sp,
+                            ))
+                      ],
+                    );
+                  }),
                   Padding(padding: EdgeInsets.only(left: 56.w)),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "$todayExercise",
-                        style: TextStyle(
-                            color: AppColors.c_FF353E4D,
-                            fontSize: 26.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text("今日练习（$todayExercise个）",
-                          style: TextStyle(
-                            color: AppColors.c_FF434863,
-                            fontSize: 12.sp,
-                          ))
-                    ],
+                  GetBuilder<ReviewLogic>(
+                    id:GetBuilderIds.getReviewHomeDate,
+                    builder: (logic){
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${logic.state.todayExercise}",
+                            style: TextStyle(
+                                color: AppColors.c_FF353E4D,
+                                fontSize: 26.sp,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Text("今日练习（${logic.state.todayExercise}个）",
+                              style: TextStyle(
+                                color: AppColors.c_FF434863,
+                                fontSize: 12.sp,
+                              ))
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -201,30 +165,35 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            R.imagesReviewReadingTag,
-                            width: 27.w,
-                            height: 14.w,
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 3.w)),
-                          Text(
-                            "累计错误$cumulativeError次",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14.sp),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "已消灭$correct个错题",
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                      )
-                    ],
+                  GetBuilder<ReviewLogic>(
+                      id: GetBuilderIds.getReviewHomeDate,
+                      builder:(logic){
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  R.imagesReviewReadingTag,
+                                  width: 27.w,
+                                  height: 14.w,
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 3.w)),
+                                Text(
+                                  "累计错误${logic.state.cumulativeError}次",
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 14.sp),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "已消灭${logic.state.correct}个错题",
+                              style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                            )
+                          ],
+                        );
+                      }
                   ),
                   GestureDetector(
                     onTap: () {
@@ -299,13 +268,18 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildItem(() {
-                    RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
-                        arguments: {'type', 0});
-                  },
-                      title: "收藏题目个",
-                      subTitle: "收藏题目$collected个",
-                      icon: R.imagesReviewFavorQuestionIcon),
+                  GetBuilder<ReviewLogic>(
+                      id: GetBuilderIds.getReviewHomeDate,
+                      builder:(logic){
+                        return _buildItem(() {
+                          RouterUtil.toNamed(AppRoutes.ErrorNoteCollectPage,
+                              arguments: {'type', 0});
+                        },
+                            title: "收藏题目个",
+                            subTitle: "收藏题目${logic.state.collected}个",
+                            icon: R.imagesReviewFavorQuestionIcon);
+                      }
+                  ),
                 ],
               ),
             ),
@@ -342,13 +316,18 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
                 children: [
                   Visibility(
                       visible: !Util.isIOSMode(),
-                      child: _buildItem(() {
-                    RouterUtil.toNamed(
-                      AppRoutes.HomeworkHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)});
-                  },
-                      title: "历史作业",
-                      subTitle: "历史作业$histoty套",
-                      icon: R.imagesReviewHistoryHomework)),
+                      child: GetBuilder<ReviewLogic>(
+                          id: GetBuilderIds.getReviewHomeDate,
+                          builder:(logic){
+                            return _buildItem(() {
+                              RouterUtil.toNamed(
+                                  AppRoutes.HomeworkHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)});
+                            },
+                                title: "历史作业",
+                                subTitle: "历史作业${logic.state.histoty}套",
+                                icon: R.imagesReviewHistoryHomework);
+                          }
+                      )),
                   Visibility(
                     visible: !Util.isIOSMode(),
                     child: Divider(
@@ -356,14 +335,19 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
                     indent: 15.w,
                     endIndent: 15.w,
                   ),),
-                  _buildItem(() {
-                    RouterUtil.toNamed(
-                      AppRoutes.PractiseHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)}
-                    );
-                  },
-                      title: "练习记录",
-                      subTitle: "练习记录$practiceRecord条",
-                      icon: R.imagesReviewPractiseRecord),
+                  GetBuilder<ReviewLogic>(
+                    id: GetBuilderIds.getReviewHomeDate,
+                    builder:(logic){
+                      return _buildItem(() {
+                        RouterUtil.toNamed(
+                            AppRoutes.PractiseHistoryPage,arguments: {'studentId':SpUtil.getInt(BaseConstant.USER_ID)}
+                        );
+                      },
+                          title: "练习记录",
+                          subTitle: "练习记录${logic.state.practiceRecord}条",
+                          icon: R.imagesReviewPractiseRecord);
+                    }
+                  ),
                 ],
               ),
             ),
@@ -429,6 +413,10 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
   @override
   void dispose() {
     Get.delete<ReviewLogic>();
+    if(refrehUserInfoStreamSubscription !=null){
+      refrehUserInfoStreamSubscription!.cancel();
+    }
+    print("review dispose");
     super.dispose();
   }
 
@@ -439,4 +427,8 @@ class _ReviewPageState extends BasePageState<ReviewPage> {
   @override
   void onDestroy() {
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

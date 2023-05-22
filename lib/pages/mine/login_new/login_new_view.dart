@@ -176,8 +176,10 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             //选了去首页
           } else {
             logic.updateNativeUserInfo(state.infoResponse);
-            BlocProvider.of<LoginChangeBloc>(context)
-                .add(SendLoginChangeEvent());
+            if(mounted){
+              BlocProvider.of<LoginChangeBloc>(context)
+                  .add(SendLoginChangeEvent());
+            }
             if(widget.isEnterHome){
               if(state.infoResponse.obj?.identity == RoleType.teacher){
                 RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
