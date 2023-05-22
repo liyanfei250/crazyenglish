@@ -1,6 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/blocs/update_collect_bloc.dart';
+import 'package:crazyenglish/blocs/update_collect_event.dart';
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -122,6 +125,8 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
         InkWell(
           onTap: (){
             collectLogic.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
+            BlocProvider.of<UpdateCollectBloc>(context)
+                .add(SendCollectChangeEvent());
           },
           child: Image.asset(
             isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),

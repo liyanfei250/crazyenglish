@@ -1,6 +1,9 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/blocs/update_collect_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../../blocs/update_collect_event.dart';
 import '../../../../entity/home/HomeKingDate.dart';
 import '../../../../entity/home/SearchCollectListDetail.dart';
 import '../../../../entity/review/CollectDate.dart';
