@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-import '../../repository/ReviewRepository.dart';
+import '../../../../repository/ReviewRepository.dart';
 import 'error_note_child_state.dart';
 
 class ErrorNoteChildLogic extends GetxController {

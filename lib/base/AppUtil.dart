@@ -216,15 +216,11 @@ class Util {
                     startAngle: 180,
                     angleRange: 180,
                     size: 350.0.w),
-                onChange: (double value) {
-                  // callback providing a value while its being changed (with a pan gesture)
-                },
+                onChange: null,
                 onChangeStart: (double startValue) {
                   // callback providing a starting value (when a pan gesture starts)
                 },
-                onChangeEnd: (double endValue) {
-                  // callback providing an ending value (when a pan gesture ends)
-                },
+                onChangeEnd: null,
                 innerWidget: (double value) {
                   //This the widget that will show current value
                   return Column(

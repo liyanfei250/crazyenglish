@@ -1,7 +1,7 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/entity/home/HomeKingDate.dart';
 import 'package:crazyenglish/entity/review/CollectDate.dart';
-import 'package:crazyenglish/pages/reviews/repository/ReviewRepository.dart';
+import 'package:crazyenglish/repository/ReviewRepository.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import '../../../../entity/review/SearchCollectListDate.dart' as listdate;
 import 'package:crazyenglish/utils/json_cache_util.dart';

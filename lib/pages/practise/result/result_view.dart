@@ -183,7 +183,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
-                        currentSubjectVoList!.catalogueName??"",isWritinPage: currentSubjectVoList!.isSubjectivity??false),
+                        DataGroup.questionType["${currentSubjectVoList!.classifyValue??"0"}"]??"未知",isWritinPage: currentSubjectVoList!.isSubjectivity??false),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
@@ -417,7 +417,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         ]),
                     borderRadius: BorderRadius.all(Radius.circular(18.w)),
                   ),
-                  child: Text("下一章",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                  child: Text("下一题",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
                 ),
               ),
             ],

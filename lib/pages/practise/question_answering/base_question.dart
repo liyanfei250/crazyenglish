@@ -282,7 +282,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           itemList.add(Padding(
             padding: EdgeInsets.only(top: 18.w),
           ));
-          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback));
+          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback,answerType: widget.answerType));
         } else if(element.questionTypeStr == QuestionType.translate_question){
           itemList.add(buildQuestionType("填空"));
           itemList.add(Text("英汉互译",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp)));
@@ -313,7 +313,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             children: [
               Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
               Padding(padding: EdgeInsets.only(left: 11.w)),
-              Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback))
+              Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback,answerType: widget.answerType))
             ],
           ));
         }

@@ -5,7 +5,7 @@ import '../../../entity/paper_detail.dart';
 import '../../../entity/review/ReviewHomeDetail.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/json_cache_util.dart';
-import '../repository/ReviewRepository.dart';
+import '../../../repository/ReviewRepository.dart';
 import 'review_state.dart';
 
 class ReviewLogic extends GetxController {

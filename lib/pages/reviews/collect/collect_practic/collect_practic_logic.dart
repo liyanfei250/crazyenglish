@@ -10,7 +10,7 @@ import '../../../../entity/review/CollectDate.dart';
 import '../../../../entity/review/SearchCollectListDate.dart' as listdate;
 import '../../../../routes/getx_ids.dart';
 import '../../../../utils/json_cache_util.dart';
-import '../../repository/ReviewRepository.dart';
+import '../../../../repository/ReviewRepository.dart';
 import 'collect_practic_state.dart';
 
 class Collect_practicLogic extends GetxController {

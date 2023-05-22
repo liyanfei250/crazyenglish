@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
       }
     });
-    // dataGroupLogic.getConfig();
+    dataGroupLogic.getConfig();
     dataGroupLogic.addListenerId(GetBuilderIds.datagroupDetailResponse, () {
       if(dataGroupState.groupQUESTION_TYPE.obj!=null){
         dataGroupState.groupQUESTION_TYPE.obj!.forEach((e) {
