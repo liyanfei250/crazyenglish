@@ -414,9 +414,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                               isCommiting = true;
                               // 草稿模式提交的时候要转变
                               if(widget.answerType == AnsweringPage.answer_homework_draft_type){
-                                logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_type);
+                                logic.uploadWeekTest(exerciseVos:currentExerciseVos,currentSubjectVoList!,AnsweringPage.answer_homework_type);
                               }else if(widget.answerType == AnsweringPage.answer_continue_type){
-                                logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_normal_type);
+                                logic.uploadWeekTest(exerciseVos:currentExerciseVos,currentSubjectVoList!,AnsweringPage.answer_normal_type);
                               }else  if(widget.answerType == AnsweringPage.answer_fix_type){
                                 logic.uploadWeekTest(currentSubjectVoList!,widget.answerType);
                               }else{
@@ -570,7 +570,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             lastSubtopicId = currentSubjectVoList!.subtopicVoList![logic.state.currentQuestionNum].id;
           }
         }
-        logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_continue_type,
+        logic.uploadWeekTest(exerciseVos:currentExerciseVos,currentSubjectVoList!,AnsweringPage.answer_continue_type,
             lastSubjectId: currentSubjectVoList!.id,
             lastSubtopicId: lastSubtopicId);
       }else if(widget.answerType == AnsweringPage.answer_homework_type
@@ -581,7 +581,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             lastSubtopicId = currentSubjectVoList!.subtopicVoList![logic.state.currentQuestionNum].id;
           }
         }
-        logic.uploadWeekTest(currentSubjectVoList!,AnsweringPage.answer_homework_draft_type,
+        logic.uploadWeekTest(exerciseVos:currentExerciseVos,currentSubjectVoList!,AnsweringPage.answer_homework_draft_type,
             lastSubjectId: currentSubjectVoList!.id,
             lastSubtopicId: lastSubtopicId);
       }
