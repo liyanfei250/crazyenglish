@@ -16,6 +16,7 @@ import '../../../entity/home/HomeKingNewDate.dart';
 import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
 import 'package:crazyenglish/entity/teacher_week_list_response.dart' as weekListResponse;
 import '../../../r.dart';
+import '../../../entity/week_list_response.dart' as newData;
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
@@ -40,7 +41,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   List<weekListResponse.Records> myListDate = [];
   List<Obj> functionTxtNew = [];
   late Obj weekData;
-
   List<homemytask.Obj> listData = [];
 
   @override
@@ -214,8 +214,10 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   Widget buildItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
+        weekListResponse.Records old = myListDate[index];
+        newData.Obj updatedObj = updateObj(old);
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
-            arguments: myListDate![index]);
+            arguments: updatedObj);
       },
       child: Container(
         margin:
@@ -629,7 +631,30 @@ LinearGradient _getLinearGradient(Color left, Color right,
       begin: begin,
       end: end,
     );
-
+newData.Obj updateObj(weekListResponse.Records obj,
+    {int? id,
+      String? name,
+      int? affiliatedGrade,
+      int? schoolYear,
+      int? periodsNum,
+      bool? status,
+      bool? isDelete,
+      int? journalView,
+      String? createTime,
+      int? createUser}) {
+  return newData.Obj(
+    id: id ?? int.parse(obj.id!),
+    name: name ?? obj.name,
+    affiliatedGrade: affiliatedGrade ?? obj.affiliatedGrade,
+    schoolYear: schoolYear ?? obj.schoolYear,
+    periodsNum: periodsNum ?? obj.periodsNum,
+    status: status ?? obj.status,
+    isDelete: isDelete ?? obj.isDelete,
+    journalView: journalView ?? obj.journalView,
+    createTime: createTime ?? obj.createTime,
+    createUser: createUser ?? obj.createUser,
+  );
+}
 class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
   final Widget child;
 
