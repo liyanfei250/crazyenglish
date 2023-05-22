@@ -64,6 +64,7 @@ class AnsweringPage extends BasePage {
   static const childIndexKey = "childIndex";
   static const LastFinishResult = "LastFinishResult";
   static const examResult = "examResult";
+  static const hasResultIndicator = "hasResultIndicator";
 
   static const String result_type = "result_type";
   // 浏览模式
@@ -204,6 +205,30 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       if(widget.lastFinishResult!.obj!=null){
         currentExerciseVos = AnsweringPage.findExerciseResult(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
 
+        if((widget.answerType == AnsweringPage.answer_fix_type
+            || widget.answerType == AnsweringPage.answer_continue_type
+        || widget.answerType == AnsweringPage.answer_homework_draft_type)
+        && currentExerciseVos!=null && currentExerciseVos!.exerciseLists!=null && currentExerciseVos!.exerciseLists!.isNotEmpty){
+
+          currentExerciseVos!.exerciseLists!.forEach((element) {
+            num? subtopicId = element.subtopicId;
+
+            String correctAnswer= "";
+            int totalSubtopicLength = currentSubjectVoList!.subtopicVoList!.length;
+            for(int i = 0;i< totalSubtopicLength;i++){
+              if(currentSubjectVoList!.subtopicVoList![i].id == subtopicId){
+                correctAnswer = currentSubjectVoList!.subtopicVoList![i].answer??"";
+              }
+            }
+            SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(
+                subtopicId:element.subtopicId,
+                optionId:0,
+                userAnswer: element.answer,
+                answer: correctAnswer,
+                isCorrect: false);
+            logic.updateUserAnswer("${subtopicId}", subtopicAnswerVo);
+          });
+        }
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
         num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
         if(time>0){

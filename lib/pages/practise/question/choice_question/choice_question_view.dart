@@ -29,7 +29,7 @@ class ChoiceQuestionPage extends StatefulWidget {
   State<ChoiceQuestionPage> createState() => _ChoiceQuestionPageState();
 }
 
-class _ChoiceQuestionPageState extends State<ChoiceQuestionPage> {
+class _ChoiceQuestionPageState extends State<ChoiceQuestionPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final logic = Get.put(ChoiceQuestionLogic());
 
   late SubtopicVoList subtopicVoList;
@@ -153,5 +153,9 @@ class _ChoiceQuestionPageState extends State<ChoiceQuestionPage> {
     }
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 }
