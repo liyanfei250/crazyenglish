@@ -260,7 +260,7 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
     return InkWell(
       onTap: () {
         logicDetail.addJumpToReviewDetailListen(
-            resultType: AnsweringPage.result_browse_type);
+            resultType: AnsweringPage.result_browse_type,hasResultIndicator: false);
         logicDetail.getDetailAndEnterBrowsePage(
             "${weekPaperList[index].subjectId}",
             "${weekPaperList[index].subtopicId}");

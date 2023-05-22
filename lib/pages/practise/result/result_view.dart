@@ -55,6 +55,7 @@ class ResultPage extends BasePage{
 
   String operationId = "";
   String operationStudentId = "";
+  bool hasResultIndicator = true;
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
         Get.arguments is Map){
@@ -64,6 +65,7 @@ class ResultPage extends BasePage{
       parentIndex = Get.arguments[AnsweringPage.parentIndexKey];
       childIndex = Get.arguments[AnsweringPage.childIndexKey];
       lastFinishResult = Get.arguments[AnsweringPage.LastFinishResult];
+      hasResultIndicator = Get.arguments[AnsweringPage.hasResultIndicator]??true;
       resultType = Get.arguments[AnsweringPage.result_type]?? AnsweringPage.result_normal_type;
 
       operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
@@ -173,18 +175,21 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
               buildTransparentAppBar("${currentSubjectVoList!.catalogueName}"),
               Expanded(child: CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10.w),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
+                  SliverVisibility(
+                      visible: widget.hasResultIndicator,
+                      sliver: SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 10.w),
+                        ))),
+                  SliverVisibility(
+                      visible: widget.hasResultIndicator,
+                      sliver: SliverToBoxAdapter(
                     child: Util.buildTopIndicator(
                         currentExerciseVos!=null ? currentExerciseVos!.questionCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.correctCount??0:0,
                         currentExerciseVos!=null ? currentExerciseVos!.time??0:0,
                         DataGroup.questionType["${currentSubjectVoList!.classifyValue??"0"}"]??"未知",isWritinPage: currentSubjectVoList!.isSubjectivity??false),
-                  ),
+                  )),
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.only(top: 8.w),

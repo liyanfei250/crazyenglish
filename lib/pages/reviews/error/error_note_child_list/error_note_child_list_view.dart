@@ -28,10 +28,10 @@ import 'error_note_child_list_logic.dart';
 
 class ErrorNoteChildListPage extends StatefulWidget {
 
-  int type;
+  int isWrongOrCorrected;
   int typeTwo;
 
-  ErrorNoteChildListPage(this.type, this.typeTwo, {Key? key}) : super(key: key);
+  ErrorNoteChildListPage(this.isWrongOrCorrected, this.typeTwo, {Key? key}) : super(key: key);
 
   @override
   _ErrorNoteChildListPageState createState() => _ErrorNoteChildListPageState();
@@ -59,7 +59,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   @override
   void initState() {
     super.initState();
-    print('type==${widget.type}typeTwo==${widget.typeTwo}');
+    print('type==${widget.isWrongOrCorrected}typeTwo==${widget.typeTwo}');
     refrehStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshAnswerState){
         if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
@@ -71,7 +71,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     //classify 题型value
     logic.addListenerId(
         GetBuilderIds.errorNoteTestList +
-            widget.type.toString() +
+            widget.isWrongOrCorrected.toString() +
             widget.typeTwo.toString(), () {
       hideLoading();
       if (state.list != null ) {
@@ -233,8 +233,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   Widget listitem(List<RecordListVos> value, index) {
     return InkWell(
         onTap: () {
-          if(widget.type == ErrorNoteChildPage.HAS_CORRECTED){
-            logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type);
+          if(widget.isWrongOrCorrected == ErrorNoteChildPage.HAS_CORRECTED){
+            logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type,hasResultIndicator: false);
             logicDetail.getDetailAndEnterBrowsePage("${value[index].subjectId}","0");
           } else {
             logicDetail.addJumpToFixErrorListen();
@@ -251,7 +251,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: widget.type==0 ? 10.w : 14.w)),
+                      top: widget.isWrongOrCorrected==0 ? 10.w : 14.w)),
               Row(
                 children: [
                   Column(
@@ -279,8 +279,8 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                       Padding(
                         padding: EdgeInsets.only(top: 4.w),
                         child: Text(
-                          '正确率' +
-                              "${value[index].correctCount??0}" +
+                          '正确率 ' +
+                              "${widget.isWrongOrCorrected==ErrorNoteChildPage.WAIT_CORRECT? value[index].correctCount??0:value[index].totalCount??0}" +
                               "/" +
                               value[index].totalCount.toString(),
                           style: TextStyle(
@@ -294,7 +294,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   Expanded(child: Text('')),
                   Padding(
                     padding: EdgeInsets.only(right: 10.w),
-                    child: widget.type==0
+                    child: widget.isWrongOrCorrected==0
                         ? Image.asset(
                             R.imagesErrorToCorrect,
                             fit: BoxFit.cover,
@@ -312,7 +312,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: widget.type==0 ? 10.w : 14.w)),
+                      top: widget.isWrongOrCorrected==0 ? 10.w : 14.w)),
             ],
           ),
         ));
@@ -321,12 +321,12 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     // int userId, int isCorrect, int classify, int current, int size
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, pageStartIndex, pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.isWrongOrCorrected, widget.typeTwo, pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.type, widget.typeTwo, currentPageNo+1, pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.isWrongOrCorrected, widget.typeTwo, currentPageNo+1, pageSize);
 
   }
 

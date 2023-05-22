@@ -656,7 +656,7 @@ class WeekTestDetailLogic extends GetxController {
 
 
   // 跳转直接显示正确答案 结果页监听
-  void addJumpToReviewDetailListen({int parentIndex = 0,int resultType = AnsweringPage.result_normal_type}){
+  void addJumpToReviewDetailListen({int parentIndex = 0,int resultType = AnsweringPage.result_normal_type,bool hasResultIndicator = true}){
     disposeId(GetBuilderIds.exerciseHistory);
     addListenerId(GetBuilderIds.exerciseHistory, () {
       if(state.startExam!.obj!=null){
@@ -667,6 +667,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.parentIndexKey:parentIndex,
               AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.examResult:state.startExam!.obj,
+              AnsweringPage.hasResultIndicator: hasResultIndicator,
               AnsweringPage.result_type:resultType,
             });
       }else{
