@@ -88,7 +88,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
               } else if (mode == LoadStatus.failed) {
                 body = Text("");
               } else if (mode == LoadStatus.canLoading) {
-                body = Text("release to load more");
+                body = Text("释放以加载更多");
               } else {
                 body = Text("");
               }
@@ -379,31 +379,36 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     return GetBuilder<IndexLogic>(
       id: GetBuilderIds.getHomeBanner,
       builder: (logic){
-        return Container(
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 14.w),
-          height: 130.w,
-          child: Swiper(
-              autoStart: true,
-              circular: true,
-              indicator: CustomSwiperIndicator(
-                spacing: 4.w,
-                // radius: 4.0,
-                padding: EdgeInsets.only(bottom: 10.w),
-                // itemColor: AppColors.c_FFC2BFC2,
-                // itemActiveColor: AppColors.c_FF11CA9C
-                normalHeight: 4.w,
-                normalWidth: 4.w,
-                noralBoxDecoration: BoxDecoration(
-                    color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
-                selectHeight: 4.w,
-                selectWidth: 4.w,
-                selectBoxDecoration: BoxDecoration(
-                    color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
-              ),
-              indicatorAlignment: AlignmentDirectional.bottomCenter,
-              children: makeBanner(logic.state.banner)),
-        );
+        if(logic.state.banner!=null && logic.state.banner.obj!=null && logic.state.banner.obj!.isNotEmpty){
+          return Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 14.w),
+            height: 130.w,
+            child: Swiper(
+                autoStart: true,
+                circular: true,
+                indicator: CustomSwiperIndicator(
+                  spacing: 4.w,
+                  // radius: 4.0,
+                  padding: EdgeInsets.only(bottom: 10.w),
+                  // itemColor: AppColors.c_FFC2BFC2,
+                  // itemActiveColor: AppColors.c_FF11CA9C
+                  normalHeight: 4.w,
+                  normalWidth: 4.w,
+                  noralBoxDecoration: BoxDecoration(
+                      color: AppColors.c_80FFFFFF, shape: BoxShape.circle),
+                  selectHeight: 4.w,
+                  selectWidth: 4.w,
+                  selectBoxDecoration: BoxDecoration(
+                      color: AppColors.c_FFFFFFFF, shape: BoxShape.circle),
+                ),
+                indicatorAlignment: AlignmentDirectional.bottomCenter,
+                children: makeBanner(logic.state.banner)),
+          );
+        }else{
+          return const SizedBox();
+        }
+
       },
     );
   }
@@ -534,7 +539,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       );
 
   Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.only(top: 7.w),
     width: double.infinity,
     height: 28.w,
     child: Row(
@@ -638,11 +642,11 @@ class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
 
   @override
   // TODO: implement maxExtent
-  double get maxExtent => 70.w;
+  double get maxExtent => 77.w;
 
   @override
   // TODO: implement minExtent
-  double get minExtent => 70.w;
+  double get minExtent => 77.w;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

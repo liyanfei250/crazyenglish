@@ -6,10 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crazyenglish/base/bloc_wrapper.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'base/common.dart';
 import 'base/global.dart';
 import 'routes/app_pages.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   Config.env = Env.NEIBU;
@@ -38,6 +40,19 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      defaultTransition: Transition.noTransition,
+      locale: const Locale('zh', 'CN'),
+      localizationsDelegates: const [
+        // 添加 Refresh 的国际化代理
+        RefreshLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('zh', 'CN'), // 添加中文语言支持
+        Locale('en', 'US'), // 添加英文语言支持
+      ],
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       initialRoute: AppRoutes.INITIALNew,

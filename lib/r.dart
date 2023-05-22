@@ -497,6 +497,8 @@ class R {
   static final String imagesIndexIcon4 = 'images/index_icon_4.png';
   /// ![](http://127.0.0.1:11/images/iv_no_show.png)
   static final String imagesIvNoShow = 'images/iv_no_show.png';
+  /// ![](http://127.0.0.1:11/images/mine_grade_icon.png)
+  static final String imagesMineGradeIcon = 'images/mine_grade_icon.png';
   /// ![](http://127.0.0.1:11/images/home_search_ic.png)
   static final String imagesHomeSearchIc = 'images/home_search_ic.png';
   /// ![](http://127.0.0.1:11/images/torid_five_show.png)

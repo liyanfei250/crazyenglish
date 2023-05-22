@@ -84,16 +84,16 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
         onLoading: _onLoading,
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(
-                    bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
-                child: SearchBar(
-                  width: double.infinity,
-                  height: 28.w,
-                ),
-              ),
-            ),
+            // SliverToBoxAdapter(
+            //   child: Container(
+            //     margin: EdgeInsets.only(
+            //         bottom: 5.w, top: 12.w, left: 33.w, right: 33.w),
+            //     child: SearchBar(
+            //       width: double.infinity,
+            //       height: 28.w,
+            //     ),
+            //   ),
+            // ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 buildItem,
