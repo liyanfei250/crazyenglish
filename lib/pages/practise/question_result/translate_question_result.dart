@@ -136,7 +136,7 @@ class _TranslateQuestionResultState extends BaseQuestionResultState<TranslateQue
           children: [
             Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
             Padding(padding: EdgeInsets.only(left: 11.w)),
-            Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,))
+            Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,isResult:true))
           ],
         ));
       }
