@@ -150,6 +150,7 @@ class SubjectAnswerVo {
     _answer = answer;
     _isSubjectivity = isSubjectivity;
     _isOperation = isOperation;
+    _exerciseId = exerciseId;
     _questionTypeStr = questionTypeStr;
     _subtopicAnswerVo = subtopicAnswerVo;
   }

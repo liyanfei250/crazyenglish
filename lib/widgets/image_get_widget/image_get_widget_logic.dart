@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/config.dart';
 import 'package:crazyenglish/entity/login/login_util.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ class ImageGetWidgetLogic extends GetxController {
                 String? response = await COSClient(COSConfig(
                   SnsLoginUtil.QCloud_secretId,
                   SnsLoginUtil.QCloud_secretKey,
-                  SnsLoginUtil.QCloud_bucketName,
+                  Config.bucket_NAME,
                   SnsLoginUtil.QCloud_region,
                 )).putObject(
                     cosPath,
@@ -113,7 +114,7 @@ class ImageGetWidgetLogic extends GetxController {
               response = await COSClient(COSConfig(
                 SnsLoginUtil.QCloud_secretId,
                 SnsLoginUtil.QCloud_secretKey,
-                SnsLoginUtil.QCloud_bucketName,
+                Config.bucket_NAME,
                 SnsLoginUtil.QCloud_region,
               )).putObject(
                 cosPath,

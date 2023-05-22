@@ -8,18 +8,21 @@ enum Env {
 class Config {
   static Env? env;
   // 内网环境
-  static final String NEIBU_APP_ID = "1001";
-  static final String NEIBU_SECURITY_KEY = "f6448a1aa06b4779b39549c5f5f0aa32";
-  static final String NEIBU_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
+  static const String NEIBU_APP_ID = "1001";
+  static const String NEIBU_SECURITY_KEY = "f6448a1aa06b4779b39549c5f5f0aa32";
+  static const String NEIBU_BUCKET_NAME = "test-1315843937";
+  static const String NEIBU_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
 
   // 外网环境
-  static final String PRODUCT_APP_ID = "1001";
-  static final String PRODUCT_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static final String PRODUCT_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
+  static const String PRODUCT_APP_ID = "1001";
+  static const String PRODUCT_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
+  static const String PRODUCT_BUCKET_NAME = "prod-1315843937";
+  static const String PRODUCT_API_DOMAIN = "https://api.crazyenglishweekly.com/fkyy";
 
-  static final String TEST_APP_ID = "1001";
-  static final String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static final String TEST_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
+  static const String TEST_APP_ID = "1001";
+  static const String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
+  static const String TEST_BUCKET_NAME = "test-1315843937";
+  static const String TEST_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
 
   static String get appId {
     switch (env) {
@@ -51,6 +54,19 @@ class Config {
         return TEST_API_DOMAIN;
       default:
         return PRODUCT_API_DOMAIN;
+    }
+  }
+
+  static String get bucket_NAME {
+    switch (env) {
+      case Env.NEIBU:
+        return NEIBU_BUCKET_NAME;
+      case Env.PRODUCT:
+        return PRODUCT_BUCKET_NAME;
+      case Env.IOS:
+        return TEST_BUCKET_NAME;
+      default:
+        return PRODUCT_BUCKET_NAME;
     }
   }
 
