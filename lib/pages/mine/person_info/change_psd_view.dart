@@ -20,8 +20,8 @@ class ChangePsdPage extends BasePage {
 class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
   final logic = Get.find<Person_infoLogic>();
   TextEditingController? _phoneController;
-  var phoneCodeStr = "".obs;
-  var phoneNumStr = "".obs;
+  var oldPasswordStr = "".obs;
+  var newPasswordStr = "".obs;
   late bool isShowPsd;
 
   @override
@@ -98,13 +98,17 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
-              if (phoneCodeStr.value.isEmpty) {
-                Util.toast("请输入新的手机号");
+              if (oldPasswordStr.value.isEmpty) {
+                Util.toast("请输入旧密码");
+                return;
+              }
+              if (newPasswordStr.value.isEmpty) {
+                Util.toast("请输入新密码");
                 return;
               }
               //手机号的格式是否通过？
-              if (Util.isPhoneNumberInChina(phoneCodeStr.value)) {
-                Util.toast("手机号格式不对");
+              if (!Util.isLoginPassword(newPasswordStr.value)) {
+                Util.toast("密码长度为6-18位，满足字母大小写、数字、符号三类中其中两类");
                 return;
               }
               //todo 发送验证码，去验证码界面
@@ -153,9 +157,8 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
                         keyboardType: TextInputType.number,
                         obscureText: isShowPsd,
                         style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         onChanged: (String str) {
-                          phoneCodeStr.value = str;
+                          oldPasswordStr.value = str;
                         },
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -209,9 +212,8 @@ class _ToMyOrderPageState extends BasePageState<ChangePsdPage> {
                 keyboardType: TextInputType.number,
                 obscureText: isShowPsd,
                 style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onChanged: (String str) {
-                  phoneCodeStr.value = str;
+                  newPasswordStr.value = str;
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,

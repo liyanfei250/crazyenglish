@@ -1,4 +1,5 @@
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
+import 'package:crazyenglish/blocs/update_collect_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,6 +35,7 @@ class _BlocWrapperState extends State<BlocWrapper> {
           //Bloc提供器
           BlocProvider<LoginChangeBloc>(create: (_) => LoginChangeBloc()),
           BlocProvider<RefreshBlocBloc>(create: (_) => RefreshBlocBloc()),
+          BlocProvider<UpdateCollectBloc>(create: (_) => UpdateCollectBloc()),
         ], child: widget.child!);
   }
 

@@ -1,4 +1,6 @@
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/blocs/update_collect_bloc.dart';
+import 'package:crazyenglish/blocs/update_collect_event.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
@@ -8,6 +10,7 @@ import 'package:crazyenglish/pages/practise/question_result/writing_question_res
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../entity/week_detail_response.dart' as detail;
@@ -673,6 +676,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         InkWell(
           onTap: (){
             logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
+            BlocProvider.of<UpdateCollectBloc>(context)
+                .add(SendCollectChangeEvent());
           },
           child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
@@ -706,6 +711,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         InkWell(
           onTap: (){
             logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
+            BlocProvider.of<UpdateCollectBloc>(context)
+                .add(SendCollectChangeEvent());
           },
           child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
