@@ -55,7 +55,7 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
     BlocProvider.of<UpdateCollectBloc>(context).stream.listen((event) {
       if (event is SendCollectChangeEvent) {
         if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
-          _onRefresh();//todo 周报
+          _onRefresh();
         }
       }
     });
