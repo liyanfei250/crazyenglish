@@ -5,6 +5,7 @@ import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/pages/mine/question_feedback/question_feedback_view.dart';
@@ -464,7 +465,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
       personInfoLogic!.getPersonInfo("$userId");
     }
     refrehUserInfoStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
-      if(event is RefreshPersonInfoEvent){
+      if(event is RefreshPersonInfoState){
         int userId = SpUtil.getInt(BaseConstant.USER_ID);
         if(personInfoLogic!=null && userId>0){
           personInfoLogic!.getPersonInfo("$userId");

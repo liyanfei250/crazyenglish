@@ -136,6 +136,12 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       }
       _tabController = TabController(vsync: this, length: questionNum,initialIndex: widget.childIndex<questionNum? widget.childIndex:0);
     }
+    logicCollect.addListenerId(GetBuilderIds.toCollectDate, () {
+      if(mounted){
+        BlocProvider.of<UpdateCollectBloc>(context)
+            .add(SendCollectChangeEvent());
+      }
+    });
   }
 
   @override
@@ -676,8 +682,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         InkWell(
           onTap: (){
             logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
-            BlocProvider.of<UpdateCollectBloc>(context)
-                .add(SendCollectChangeEvent());
           },
           child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),
@@ -711,8 +715,6 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
         InkWell(
           onTap: (){
             logicCollect.toCollect(subjectId??0,subtopicId: subtopicId>0? subtopicId:-1);
-            BlocProvider.of<UpdateCollectBloc>(context)
-                .add(SendCollectChangeEvent());
           },
           child: Image.asset(isFavor? R.imagesExercisesNoteHearingCollected:R.imagesExercisesNoteHearing,width: 48.w,height: 17.w,),
         ),

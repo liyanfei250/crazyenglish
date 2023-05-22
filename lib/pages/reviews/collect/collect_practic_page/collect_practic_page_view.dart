@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
@@ -5,6 +7,7 @@ import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/blocs/update_collect_bloc.dart';
 import 'package:crazyenglish/blocs/update_collect_event.dart';
+import 'package:crazyenglish/blocs/update_collect_state.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_detail/week_test_detail_logic.dart';
 import 'package:crazyenglish/r.dart';
@@ -45,6 +48,7 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
   int currentPageNo = 1;
   final int pageStartIndex = 1;
 
+  StreamSubscription? refrehUserInfoStreamSubscription;
   @override
   void loginChanged() {
     setState(() {});
@@ -52,8 +56,10 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
 
   @override
   void onCreate() {
-    BlocProvider.of<UpdateCollectBloc>(context).stream.listen((event) {
-      if (event is SendCollectChangeEvent) {
+    refrehUserInfoStreamSubscription = BlocProvider.of<UpdateCollectBloc>(context).stream.listen((event) {
+      print("Collect ========== bef event");
+      if (event is CollectChangeSuccess) {
+        print("Collect ========== event");
         if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
           _onRefresh();
         }
@@ -268,6 +274,7 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
   void onDestroy() {
     Get.delete<Collect_practic_pageLogic>();
     Get.delete<WeekTestDetailLogic>();
+    refrehUserInfoStreamSubscription?.cancel();
     _refreshController.dispose();
   }
 

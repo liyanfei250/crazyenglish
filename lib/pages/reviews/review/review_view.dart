@@ -5,6 +5,7 @@ import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
+import 'package:crazyenglish/blocs/update_collect_bloc.dart';
 import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
@@ -32,17 +33,24 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
   final logic = Get.put(ReviewLogic());
   final state = Get.find<ReviewLogic>().state;
   // ReviewHomeDetail? paperDetail;
-  StreamSubscription? refrehUserInfoStreamSubscription;
+  StreamSubscription? refrehStreamSubscription;
+  StreamSubscription? refrehCollectStreamSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    refrehUserInfoStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+    refrehStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
       if(event is RefreshAnswerState){
         if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
           logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
         }
+      }
+    });
+
+    refrehCollectStreamSubscription = BlocProvider.of<UpdateCollectBloc>(context).stream.listen((event) {
+      if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+        logic.getHomePagerInfo(SpUtil.getInt(BaseConstant.USER_ID).toString());
       }
     });
 
@@ -413,9 +421,8 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
   @override
   void dispose() {
     Get.delete<ReviewLogic>();
-    if(refrehUserInfoStreamSubscription !=null){
-      refrehUserInfoStreamSubscription!.cancel();
-    }
+    refrehStreamSubscription?.cancel();
+    refrehCollectStreamSubscription?.cancel();
     print("review dispose");
     super.dispose();
   }
