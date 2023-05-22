@@ -2,6 +2,7 @@ import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/index/index_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -211,7 +212,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   }
 
   Widget buildItem(BuildContext context, int index) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
             arguments: myListDate![index]);
@@ -269,7 +270,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        myListDate[index].createTime ?? '',
+                        TimeUtil.extractDate(myListDate[index].createTime ?? ''),
                         style: TextStyle(
                             fontSize: 14,
                             color: Color(0xff898a93),

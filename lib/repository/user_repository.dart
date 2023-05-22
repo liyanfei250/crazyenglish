@@ -152,4 +152,12 @@ class UserRepository {
       return paperDetail!;
     }
   }
+  //修改密码
+  Future<CommentDate> toChangePersonPsd(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.put, Api.putUserIofo,
+        data: req, options: Options(method: Method.put,contentType: ContentType.json.toString()));
+    CommentDate paperDetail = CommentDate.fromJson(map);
+    return paperDetail!;
+  }
 }

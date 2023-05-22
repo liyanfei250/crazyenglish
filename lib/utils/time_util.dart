@@ -148,4 +148,11 @@ class TimeUtil {
       return "";
     }
   }
+
+  static String extractDate(String dateTimeString) {
+    if(dateTimeString.isEmpty){
+      return '';
+    }
+    return dateTimeString.substring(0, 10);
+  }
 }
