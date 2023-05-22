@@ -88,7 +88,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
               } else if (mode == LoadStatus.failed) {
                 body = Text("");
               } else if (mode == LoadStatus.canLoading) {
-                body = Text("release to load more");
+                body = Text("释放以加载更多");
               } else {
                 body = Text("");
               }
@@ -539,7 +539,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       );
 
   Widget _buildSearchBar() => Container(
-    margin: EdgeInsets.only(top: 7.w),
     width: double.infinity,
     height: 28.w,
     child: Row(
@@ -643,11 +642,11 @@ class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
 
   @override
   // TODO: implement maxExtent
-  double get maxExtent => 70.w;
+  double get maxExtent => 77.w;
 
   @override
   // TODO: implement minExtent
-  double get minExtent => 70.w;
+  double get minExtent => 77.w;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
