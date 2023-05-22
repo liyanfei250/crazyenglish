@@ -203,7 +203,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
                         );
                       }
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       //先获取tab接口，带着数据进去
                       logic.getHomeList('classify_type');
