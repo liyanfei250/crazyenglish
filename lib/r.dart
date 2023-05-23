@@ -547,6 +547,8 @@ class R {
   static final String imagesSplashCenterText = 'images/splash_center_text.png';
   /// ![](http://127.0.0.1:11/images/splash_icon.png)
   static final String imagesSplashIcon = 'images/splash_icon.png';
+  /// ![](http://127.0.0.1:11/images/splash_logo.png)
+  static final String imagesSplashLogo = 'images/splash_logo.png';
   /// ![](http://127.0.0.1:11/images/splash_welcome_1.png)
   static final String imagesSplashWelcome1 = 'images/splash_welcome_1.png';
   /// ![](http://127.0.0.1:11/images/splash_welcome_2.png)
