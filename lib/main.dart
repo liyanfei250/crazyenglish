@@ -2,6 +2,7 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crazyenglish/base/bloc_wrapper.dart';
 import 'package:crazyenglish/config.dart';
@@ -16,7 +17,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() {
   Config.env = Env.NEIBU;
   Global.init(() {
-    runApp(BlocWrapper(child: MyApp()));
+    FlutterBugly.postCatchedException(() {
+      runApp(BlocWrapper(child: MyApp()));
+    }, debugUpload: true);
   });
 }
 

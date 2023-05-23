@@ -50,7 +50,7 @@ dependencies:
   image: ^4.0.13
   # webSocket 连接
   web_socket_channel: ^2.2.0
-
+  flutter_bugly: 0.4.4
   image_picker: ^0.8.6
   image_gallery_saver: ^1.7.1 # 添加这一行
   # 状态管理
