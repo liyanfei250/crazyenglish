@@ -24,6 +24,7 @@
     <domain includeSubdomains="true">weixin.sogou.com</domain>
     <domain includeSubdomains="true">192.168.0.120</domain>
     <domain includeSubdomains="true">101.42.97.189</domain>
+    <domain includeSubdomains="true">t-m.crazyenglishweekly.com</domain>
         <trust-anchors>
             <certificates src="user"/>//用户自装证书
             <certificates src="system"/>//用户自装证书
