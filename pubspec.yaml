@@ -79,7 +79,7 @@ dependencies:
   device_info: ^2.0.2
   #  权限申请
   # https://pub.flutter-io.cn/packages/permission_handler
-  permission_handler: ^9.2.0
+  permission_handler: ^10.2.0
   tencent_cos: ^1.0.7
   image_cropper: ^3.0.0
   # 系统浏览器启动
