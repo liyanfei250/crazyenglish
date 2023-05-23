@@ -129,10 +129,18 @@ class SplashNewPageState extends State<SplashPageNew> {
           ),
           Positioned(
             bottom: 20.w,
-            child: Image.asset(
-              R.imagesSplashBottomLogo,
-              width: 109.w,
-              height: 30.w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  R.imagesSplashLogo,
+                  width: 30.w,
+                  height: 30.w,
+                ),
+                SizedBox(width: 11.w,),
+                Text("数字英语",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600,color: Color(0xff353e4d),))
+              ],
             ),
           ),
           Offstage(
