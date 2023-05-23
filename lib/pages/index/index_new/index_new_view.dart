@@ -7,6 +7,7 @@ import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -42,13 +43,11 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   List<Obj> functionTxtNew = [];
   late Obj weekData;
   List<homemytask.Obj> listData = [];
-
   @override
   void initState() {
     super.initState();
     SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN, false);
     //获取金刚区列表新增的列表
-
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
       hideLoading();
       if (mounted && _refreshController != null) {

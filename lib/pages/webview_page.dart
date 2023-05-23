@@ -6,7 +6,8 @@ import 'dart:typed_data';
 
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/r.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/config.dart' as config;
@@ -14,6 +15,7 @@ import 'package:crazyenglish/utils/colors.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../entity/apple_pay_item.dart';
 
@@ -29,7 +31,7 @@ class WebViewPage extends StatefulWidget {
       this.showAppBar = false,
       this.showStatusBar = false,
       this.showH5Title = false,
-      this.backIconType =  BackIconType.back,
+      this.backIconType = BackIconType.back,
       this.isMyOrder = false})
       : super(key: key);
 
@@ -62,18 +64,23 @@ class _WebViewPageState extends State<WebViewPage> {
   String applePayReloadUrl = "";
   BackIconType backIconType = BackIconType.back;
   StreamSubscription<ApplePayItem>? _appleAuthSubs;
-  StreamSubscription<Map<String,String>>? _applePayReloadUrl;
+  StreamSubscription<Map<String, String>>? _applePayReloadUrl;
   String mWxPayNextUrl = "";
+
   //控制器
   // late InAppWebViewController _controller ;
 
   //控制器
-  InAppWebViewController? _controller;
-  WebView? webView;
+  // InAppWebViewController? _controller;
+  // WebView? webView;
+  late WebViewController _controller;
+  double _progressValue = 0.0;
+  bool isFinish = false;
+
   @override
   void initState() {
     super.initState();
-    String testUrl  = "";
+    String testUrl = "";
     // testUrl = "http://10.155.63.184:30033/flutterDemo";
     webUrl = widget.url!;
     backIconType = widget.backIconType!;
@@ -81,6 +88,39 @@ class _WebViewPageState extends State<WebViewPage> {
     showAppBar = widget.showAppBar;
     showStatusBar = widget.showStatusBar;
     showH5Title = widget.showH5Title;
+
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+            setState(() {
+              _progressValue = progress / 100;
+            });
+          },
+          onPageStarted: (String url) {
+            setState(() {
+              _progressValue = 0.1;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              _progressValue = 1.0;
+              isFinish = true;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(webUrl!)) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(webUrl!));
   }
 
   @override
@@ -88,22 +128,43 @@ class _WebViewPageState extends State<WebViewPage> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: WillPopScope(
-        onWillPop: () async{
+        onWillPop: () async {
           bool canGoBack = false;
-         canGoBack = await _controller!.canGoBack();
+          canGoBack = await _controller!.canGoBack();
           if (canGoBack) {
             _controller!.goBack();
           } else {
             Get.back();
           }
-          if(canGoBack){
+          if (canGoBack) {
             return false;
-          }else{
+          } else {
             return false;
           }
-      },
+        },
         child: Builder(builder: (BuildContext context) {
-          return InAppWebView(
+          return Scaffold(
+            body: Column(
+              children: [
+                isFinish
+                    ? SizedBox.shrink()
+                    : Container(
+                        height: 3,
+                        width: MediaQuery.of(context).size.width,
+                        child: LinearProgressIndicator(
+                          value: _progressValue,
+                          backgroundColor: Colors.grey[200],
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                Expanded(
+                  child: WebViewWidget(controller: _controller),
+                ),
+              ],
+            ),
+          );
+          /*InAppWebView(
             initialUrlRequest: URLRequest(url:WebUri.uri(Uri.parse(webUrl!))),
             initialSettings: InAppWebViewSettings(
                 javaScriptEnabled:true,
@@ -115,12 +176,13 @@ class _WebViewPageState extends State<WebViewPage> {
                 URLAuthenticationChallenge challenge) async {
               return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
             },
-          );
+          )*/
+
+          ;
         }),
       ),
     );
   }
-
 
   @override
   void dispose() {
@@ -136,7 +198,7 @@ class _WebViewPageState extends State<WebViewPage> {
         centerTitle: true,
         leading: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () async{
+          onTap: () async {
             if (backIconType == BackIconType.back) {
               //返回按钮
               bool canGoBack = await _controller!.canGoBack();
@@ -187,24 +249,6 @@ class _WebViewPageState extends State<WebViewPage> {
     }
   }
 
-  ///变化返回按钮图标
-  _buildBackIcon() {
-    if (backIconType == BackIconType.back) {
-      return Icon(
-        Icons.arrow_back,
-        size: 25,
-        color: Colors.black,
-      );
-    } else {
-      return Icon(
-        Icons.close,
-        size: 25,
-        color: Colors.black,
-      );
-    }
-  }
-
-
   ///浏览器网页加载进度条
   _buildProgressBar(double progress, BuildContext context) {
     return PreferredSize(
@@ -219,31 +263,6 @@ class _WebViewPageState extends State<WebViewPage> {
       preferredSize: Size.fromHeight(0.1),
     );
   }
-
-
-  // @override
-  // void setState(VoidCallback fn) {
-  //   super.setState(() {
-  //     fn();
-  //     print("set State");
-  //   });
-  // }
-  //
-  // JavascriptChannel _backtopre(BuildContext context) {
-  //   return JavascriptChannel(
-  //       name: 'backtopre',
-  //       onMessageReceived: (JavascriptMessage message) {
-  //         _controller.future.then((webView) async {
-  //           bool canGoBack = await webView.canGoBack();
-  //           if (canGoBack) {
-  //             webView.goBack();
-  //           } else {
-  //             Get.back();
-  //           }
-  //         });
-  //       });
-  // }
-
 
   String getJs(Map<String, dynamic> map) {
     String jsonStr = json.encode(map);
