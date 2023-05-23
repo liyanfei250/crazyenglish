@@ -32,10 +32,6 @@ class AppUpdatePanelLogic extends GetxController {
 
   void getAppVersion() async {
     CheckUpdateResp checkUpdateResp = await weekTestRepository.getAppVersion();
-    String newVersion = "";
-    String publishDate = "0";
-    String updateDescription= "";
-    bool isUpdate = false;
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version= packageInfo.version;
     if(checkUpdateResp!=null){
