@@ -96,7 +96,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
             AppBar(
               elevation: 0,
               automaticallyImplyLeading: false,
-              centerTitle: true,
+              centerTitle: false,
               title: Text(
                 "复习巩固",
                 style: TextStyle(
