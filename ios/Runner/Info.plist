@@ -38,6 +38,8 @@
     <string>“数字英语”想访问您的相机</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>“数字英语”想访问您的相册</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>“数字英语”想访问您的网络</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UISupportedInterfaceOrientations</key>
