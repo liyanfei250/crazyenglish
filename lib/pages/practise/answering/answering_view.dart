@@ -231,6 +231,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
         num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
+        if(widget.answerType == AnsweringPage.answer_normal_type ||
+            widget.answerType == AnsweringPage.answer_homework_type ||
+            widget.answerType == AnsweringPage.answer_fix_type
+        ){
+          time = 0;
+        }
         if(time>0){
           logic.updateTime(countTime: time.toInt());
         }

@@ -41,6 +41,7 @@ class BaseConstant{
   static const String USER_ID = "USER_ID";
 
   static const String FIERST_NET_ERROR = "FIERST_NET_ERROR";
+  static const String VERSION_NOTIFIY = "VERSION_NOTIFIY";
 
 }
 

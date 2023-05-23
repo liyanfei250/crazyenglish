@@ -77,7 +77,7 @@ class Config {
       case Env.PRODUCT:
         return PRODUCT_API_DOMAIN;
       case Env.IOS:
-        return PRODUCT_API_DOMAIN;
+        return NEIBU_API_DOMAIN;
       default:
         return PRODUCT_API_DOMAIN;
     }
@@ -90,7 +90,7 @@ class Config {
       case Env.PRODUCT:
         return PRODUCT_BUCKET_NAME;
       case Env.IOS:
-        return PRODUCT_BUCKET_NAME;
+        return NEIBU_BUCKET_NAME;
       default:
         return PRODUCT_BUCKET_NAME;
     }

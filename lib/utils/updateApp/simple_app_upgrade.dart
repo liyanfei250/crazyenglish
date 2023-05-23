@@ -97,40 +97,38 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 285.w,
+        width: 271.w,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              // width: 285,
-              height: 156.h,
-              child: Stack(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8))),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'images/bg_update_top.png',
-                    height: Util.setHeight(156) as double?,
-                    fit: BoxFit.cover,
+                  Container(
+                    margin: EdgeInsets.only(left: 19.w,top:19.w,right: 19.w),
+                    child: Image.asset(
+                      'images/bg_update_top.png',
+                      height: Util.setHeight(101) as double?,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 22, top: 47.5),
+                    margin: EdgeInsets.only(left: 22, top: 16,bottom: 10.w),
                     child: Text(
-                      '发现新版本',
-                      style: TextStyle(
+                      "发现新版本 V${widget.resp.newVersion}",
+                      style: const TextStyle(
                           fontSize: 22,
-                          color: Colors.white,
+                          color: Color(0xFF282828),
                           decoration: TextDecoration.none),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 21.5, top: 86),
-                    child: Text(
-                      '数字英语',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          decoration: TextDecoration.none),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -241,7 +239,6 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
   ///
   String getUpdateContent(CheckUpdateResp resp) {
     String updateContent = "";
-    updateContent += "版本号 ：" + resp.newVersion!;
     updateContent +=
         "\n更新时间 ：${resp.publishDate}";
     // updateContent +=
