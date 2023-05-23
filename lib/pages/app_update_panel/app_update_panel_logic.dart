@@ -33,19 +33,9 @@ class AppUpdatePanelLogic extends GetxController {
   void getAppVersion() async {
     CheckUpdateResp checkUpdateResp = await weekTestRepository.getAppVersion();
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version= packageInfo.version;
     if(checkUpdateResp!=null){
-          // CheckUpdateResp checkUpdateResp = CheckUpdateResp(
-          //     apkUrl:"https://ps-1252082677.cos.ap-beijing.myqcloud.com/app-release.apk",
-          //     newVersion:newVersion,
-          //     publishDate:publishDate,
-          //     updateDescription: updateDescription,
-          //     forceUpdate:false,
-          //     apkSize: 10000,
-          //     isUpdate: isUpdate
-          // );
-          state.checkUpdateResp = checkUpdateResp;
-          update([GetBuilderIds.APPVERSION]);
+    state.checkUpdateResp = checkUpdateResp;
+    update([GetBuilderIds.APPVERSION]);
     }
 
   }

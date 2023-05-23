@@ -1,12 +1,14 @@
 import 'package:crazyenglish/pages/config/config_logic.dart';
 import 'package:crazyenglish/pages/index/index_new/index_new_view.dart';
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crazyenglish/entity/check_update_resp.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../base/common.dart';
 import '../routes/getx_ids.dart';
@@ -48,7 +50,14 @@ class _HomePageState extends State<HomePage> {
   final dataGroupState = Get.find<ConfigLogic>().state;
   final personInfoLogic = Get.lazyPut(()=>Person_infoLogic());
   final personInfoState = Get.find<Person_infoLogic>().state;
-
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
   List<String> bottomTitles = [
     "首页",
     "复习",
@@ -72,15 +81,16 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     Util.initWhenEnterMain();
-    appUpdatePanelLogic.getAppUserInfo();
     appUpdatePanelLogic.addListenerId(GetBuilderIds.getUserInfo, () {
       if(appUpdatePanelState.infoResponse!=null){
         // todo
       }
     });
-    appUpdatePanelLogic.getAppVersion();
+    _initPackageInfo();
+
     appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
-      if(appUpdatePanelState.checkUpdateResp!=null){
+      if(appUpdatePanelState.checkUpdateResp!=null
+          && _packageInfo.version.compareTo(appUpdatePanelState.checkUpdateResp!.newVersion??"")<0 ){
         showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
       }
     });
@@ -92,6 +102,12 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    appUpdatePanelLogic.getAppVersion();
+    _packageInfo = info;
   }
 
   @override
@@ -202,24 +218,43 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showAppUpgrade(CheckUpdateResp resp){
-    if ((resp.forceUpdate??0)>0) {
-      AppUpgrade.appUpgrade(
-        context,
-        resp,
-        // appMarketInfo: AppMarket.huaWei,
-        onCancel: () {
-          print('onCancel');
-        },
-        onOk: () {
-          print('onOk');
-        },
-        downloadProgress: (count, total) {
-          print('count:$count,total:$total');
-        },
-        downloadStatusChange: (DownloadStatus status, {dynamic error}) {
-          print('status:$status,error:$error');
-        },
-      );
+    int forceUpdateCount = resp.forceUpdate??0;
+    if (forceUpdateCount>0) {
+      bool isShow = true;
+      int hasNotify = SpUtil.getInt("${BaseConstant.VERSION_NOTIFIY}${resp.newVersion??""}");
+      if(forceUpdateCount ==1){
+        if(hasNotify >0){
+          isShow = false;
+        }
+      }else if(forceUpdateCount ==2){
+        if(hasNotify >3){
+          isShow = false;
+        }
+      }else if(forceUpdateCount==0){
+        isShow = false;
+      }else if(forceUpdateCount>=3){
+        isShow= true;
+      }
+      if(isShow){
+        SpUtil.putInt("${BaseConstant.VERSION_NOTIFIY}${resp.newVersion??""}",hasNotify+1);
+        AppUpgrade.appUpgrade(
+          context,
+          resp,
+          // appMarketInfo: AppMarket.huaWei,
+          onCancel: () {
+            print('onCancel');
+          },
+          onOk: () {
+            print('onOk');
+          },
+          downloadProgress: (count, total) {
+            print('count:$count,total:$total');
+          },
+          downloadStatusChange: (DownloadStatus status, {dynamic error}) {
+            print('status:$status,error:$error');
+          },
+        );
+      }
     }
   }
 

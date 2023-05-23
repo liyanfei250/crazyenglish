@@ -237,17 +237,15 @@ class WeekTestRepository {
     Map map = await NetManager.getInstance()!
         .request(Method.get, Api.getAppVersion+(Platform.isAndroid? "1":"2"),
         options: Options(method: Method.get));
-    CheckUpdateResp checkUpdateResp = CheckUpdateResp.fromJson(map);
-    return checkUpdateResp;
-    // if (checkUpdateResp.code != ResponseCode.status_success) {
-    //   return Future.error(baseResp.message!);
-    // }
-    // if(baseResp.getReturnData() !=null){
-    //   CheckUpdateResponse checkUpdateResp = CheckUpdateResponse.fromJson(baseResp.getReturnData());
-    //   return checkUpdateResp!.data!;
-    // } else {
-    // return Future.error("返回CheckUpdateResp为空");
-    // }
+    CheckUpdateResponse checkUpdateResp = CheckUpdateResponse.fromJson(map);
+    if (checkUpdateResp.code != ResponseCode.status_success) {
+      return Future.error(checkUpdateResp.message!);
+    }
+    if(checkUpdateResp.data !=null){
+      return checkUpdateResp!.data!;
+    } else {
+    return Future.error("返回CheckUpdateResp为空");
+    }
   }
 
   Future<HomeKingDate> getHomeWeeklyChoiceDate(String type) async {
