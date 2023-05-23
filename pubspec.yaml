@@ -50,7 +50,10 @@ dependencies:
   image: ^4.0.13
   # webSocket 连接
   web_socket_channel: ^2.2.0
+<<<<<<< HEAD
+=======
   flutter_bugly: 0.4.4
+>>>>>>> 37c5a33de7b98e0bd5817f9ebaae08924307999f
   image_picker: ^0.8.6
   image_gallery_saver: ^1.7.1 # 添加这一行
   # 状态管理
@@ -105,6 +108,7 @@ dependencies:
 
   #  flutter_inappwebview: ^5.7.2+3
   #  webview_flutter: ^4.0.1
+  webview_flutter: ^4.2.1
   flutter_inappwebview: ^6.0.0-beta.22
   video_player: ^2.4.10
   audioplayers: ^4.0.1
