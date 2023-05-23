@@ -81,13 +81,17 @@ class AnsweringLogic extends GetxController {
     }
 
 
+    num? exerciseId= 0;
+    if(exerciseVos!=null && !(exerciseVos!.isFinish??false)){
+      exerciseId = exerciseVos.id;
+    }
     SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
         subjectId: subjectVoList.id,
         answerTime: state.countTime,
         answer: state.subjectAnswerVo.answer??"",
         isSubjectivity: subjectVoList.isSubjectivity,
         questionTypeStr: subjectVoList.questionTypeStr,
-        exerciseId: exerciseVos?.id,
+        exerciseId: exerciseId,
         isOperation: examType == AnsweringPage.answer_homework_draft_type || examType == AnsweringPage.answer_continue_type,
         subtopicAnswerVo: subtopicAnswerVoList);
 
