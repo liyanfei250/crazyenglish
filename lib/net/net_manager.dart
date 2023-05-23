@@ -163,9 +163,18 @@ class NetManager {
                 Util.toast("${e.response!.data["message"]}");
                 return e.response!.data;
               }else if(e.response!.data.containsKey("status")){
-                Util.toast("网络错误：status: ${e.response!.data["status"]}");
+                if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+                  Util.toast("网络错误：status: ${e.response!.data["status"]}");
+                }else{
+                  SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+                }
+
               }else{
-                Util.toast("网络错误");
+                if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+                  Util.toast("网络错误");
+                }else{
+                  SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+                }
               }
             }else{
               Map<String, dynamic> _dataMap = _decodeData(e.response!)!;
@@ -178,10 +187,18 @@ class NetManager {
             }
 
           } else {
-            Util.toast("网络异常 dioerror：${e.message}");
+            if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+              Util.toast("网络异常 dioerror：${e.message}");
+            }else{
+              SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+            }
           }
       } else {
-        Util.toastLong("网络异常：${e.toString()}");
+        if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+          Util.toast("网络错误");
+        }else{
+          SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+        }
       }
       return new Future.error(e);
     }
@@ -207,7 +224,11 @@ class NetManager {
         //     response.statusCode.toString() +
         //     "\n" +
         //     response.statusMessage);
-        Util.toast("网络异常");
+        if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+          Util.toast("网络错误");
+        }else{
+          SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+        }
         return new Future.error(new DioError(
           response: response,
           error: "data parsing exception...",
@@ -215,11 +236,11 @@ class NetManager {
         ));
       }
     } else {
-      // Util.toast("网络异常 httpCode" +
-      //     response.statusCode.toString() +
-      //     "\n" +
-      //     response.statusMessage);
-      Util.toast("网络异常");
+      if(SpUtil.getBool(BaseConstant.FIERST_NET_ERROR)){
+        Util.toast("网络错误");
+      }else{
+        SpUtil.putBool(BaseConstant.FIERST_NET_ERROR,true);
+      }
     }
     return new Future.error(new DioError(
       response: response,
