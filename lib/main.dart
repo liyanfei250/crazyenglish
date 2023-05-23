@@ -1,4 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
+<<<<<<< HEAD
+=======
+import 'package:flutter/material.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+>>>>>>> 37c5a33de7b98e0bd5817f9ebaae08924307999f
 import 'package:crazyenglish/base/bloc_wrapper.dart';
 import 'package:crazyenglish/config.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +18,9 @@ import 'routes/app_pages.dart';
 void main() {
   Config.env = Env.NEIBU;
   Global.init(() {
-    runApp(BlocWrapper(child: MyApp()));
+    FlutterBugly.postCatchedException(() {
+      runApp(BlocWrapper(child: MyApp()));
+    }, debugUpload: true);
   });
 }
 

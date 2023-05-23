@@ -19,10 +19,10 @@ class Config {
   static const String PRODUCT_BUCKET_NAME = "prod-1315843937";
   static const String PRODUCT_API_DOMAIN = "https://api.crazyenglishweekly.com/fkyy";
 
-  static const String TEST_APP_ID = "1001";
-  static const String TEST_SECURITY_KEY = "5522e1d52361454c9f44eb7db1280f61";
-  static const String TEST_BUCKET_NAME = "test-1315843937";
-  static const String TEST_API_DOMAIN = "https://test-api.crazyenglishweekly.com/fkyy";
+  static const String buglyIosNeibuAppId = "0ba7862846";
+  static const String buglyIosProductAppId = "766ea9b5ae";
+  static const String buglyAndroidNeibuAppId = "44aea5eaba";
+  static const String buglyAndroidProductAppId = "1e465f9807";
 
   static String get appId {
     switch (env) {
@@ -32,6 +32,32 @@ class Config {
         return PRODUCT_APP_ID;
       default:
         return PRODUCT_APP_ID;
+    }
+  }
+
+  static String get getIosBugly{
+    switch (env) {
+      case Env.NEIBU:
+        return buglyIosNeibuAppId;
+      case Env.PRODUCT:
+        return buglyIosProductAppId;
+      case Env.IOS:
+        return buglyIosNeibuAppId;
+      default:
+        return buglyIosNeibuAppId;
+    }
+  }
+
+  static String get getAndroidBugly{
+    switch (env) {
+      case Env.NEIBU:
+        return buglyAndroidNeibuAppId;
+      case Env.PRODUCT:
+        return buglyAndroidProductAppId;
+      case Env.IOS:
+        return buglyAndroidNeibuAppId;
+      default:
+        return buglyAndroidNeibuAppId;
     }
   }
 
@@ -51,7 +77,7 @@ class Config {
       case Env.PRODUCT:
         return PRODUCT_API_DOMAIN;
       case Env.IOS:
-        return TEST_API_DOMAIN;
+        return PRODUCT_API_DOMAIN;
       default:
         return PRODUCT_API_DOMAIN;
     }
@@ -64,7 +90,7 @@ class Config {
       case Env.PRODUCT:
         return PRODUCT_BUCKET_NAME;
       case Env.IOS:
-        return TEST_BUCKET_NAME;
+        return PRODUCT_BUCKET_NAME;
       default:
         return PRODUCT_BUCKET_NAME;
     }

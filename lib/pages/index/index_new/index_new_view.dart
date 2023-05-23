@@ -385,7 +385,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
           return Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 14.w),
-            height: 130.w,
+            height: 140.w,
             child: Swiper(
                 autoStart: true,
                 circular: true,
@@ -436,7 +436,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
             banner.obj![i].img??"",
             cacheRawData: true,
             width: double.infinity,
-            height: 130.w,
+            height: 140.w,
             fit: BoxFit.fill,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(10.0.w)),

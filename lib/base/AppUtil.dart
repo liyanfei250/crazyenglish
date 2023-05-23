@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/entity/user_info_response.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -85,6 +86,10 @@ class Util {
     //     appId: SnsLoginUtil.TENCENT_APPID,
     //     universalLink: SnsLoginUtil.UNIVERSAL_LINK);
     // registerUmeng();
+    FlutterBugly.init(
+      androidAppId: Config.getAndroidBugly,
+      iOSAppId: Config.getIosBugly,
+    );
   }
 
   static Widget buildBackWidget(BuildContext context) {
