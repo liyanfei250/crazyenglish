@@ -73,7 +73,7 @@ class RouterUtil {
         (checkYKLogin ? !Util.isLoginCheckYK() : !Util.isLogin())) {
       return Get.toNamed(AppRoutes.LoginNew)!;
     }
-    return Get.to(WebViewPage(
+    return Get.to(()=>WebViewPage(
         title: title,
         url: url,
         showAppBar: showAppBar,
