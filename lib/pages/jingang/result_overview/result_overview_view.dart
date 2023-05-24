@@ -61,9 +61,12 @@ class _ResultOverviewPageState extends BasePageState<ResultOverviewPage> {
     int length = widget.jouralResultResponse.data!.length;
     for(int i = 0;i < length;i++){
       Exercise exercise = widget.jouralResultResponse.data![i];
-      totalRightCount = exercise.correctCount??0+totalRightCount;
-      totalCount = exercise.questionCount??0+totalCount;
-      totalTime = exercise.time??0+totalTime;
+      num correctCount = exercise.correctCount??0;
+      totalRightCount = correctCount + totalRightCount;
+      num questionCount = exercise.questionCount??0;
+      totalCount = questionCount + totalCount;
+      num time = exercise.time??0;
+      totalTime = time + totalTime;
       mapExerciseVos[exercise.journalCatalogueId??0] = exercise.exerciseVos;
     }
     if(widget.catalogueRecordVoList!=null){
