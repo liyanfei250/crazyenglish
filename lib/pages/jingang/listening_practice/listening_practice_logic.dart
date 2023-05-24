@@ -91,16 +91,18 @@ class Listening_practiceLogic extends GetxController {
         state.homeSecondListDate.clear();
       }
     } else {
-      if (current == 1) {
-        state.homeSecondListDate = list.obj!;
-      } else {
-        state.homeSecondListDate.clear();
-        state.homeSecondListDate.addAll(list.obj!);
-      }
-      if (list.obj!.length < size) {
-        state.hasMore = false;
-      } else {
-        state.hasMore = true;
+      if(list.obj != null){
+        if (current == 1) {
+          state.homeSecondListDate = list.obj!;
+        } else {
+          state.homeSecondListDate.clear();
+          state.homeSecondListDate.addAll(list.obj!);
+        }
+        if (list.obj!.length < size) {
+          state.hasMore = false;
+        } else {
+          state.hasMore = true;
+        }
       }
     }
     update(

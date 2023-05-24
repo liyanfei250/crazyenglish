@@ -14,10 +14,10 @@ class OtherRepository {
           Method.get,
           options: Options(contentType: ContentType.json.toString()),
           Api.getHomeKingList + type);
-      HomeKingDate paperDetail = HomeKingDate.fromJson(map);
-      if (paperDetail.code != ResponseCode.status_success) {
-        return Future.error(paperDetail.message!);
+      if (map["code"] != ResponseCode.status_success) {
+        return Future.error(map["message"]!);
       } else {
+        HomeKingDate paperDetail = HomeKingDate.fromJson(map);
         return paperDetail!;
       }
     }
@@ -28,7 +28,7 @@ class OtherRepository {
         options: Options(method: Method.post,contentType: ContentType.json.toString()));
     HomeSecondListDate paperDetail = HomeSecondListDate.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
-      return Future.error(paperDetail.message!);
+      return paperDetail;
     } else {
       return paperDetail!;
     }

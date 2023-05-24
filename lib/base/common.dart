@@ -253,8 +253,8 @@ class C{
   static const String levelJudge = "levelJudge";
 
   //用户协议
-  static const String REGISTER_LAW = "https://t-m.crazyenglishweekly.com/fkyy/regist/"; // 注册条款
-  static const String REGISTER_PRIVACY_POLICY_LAW = "https://t-m.crazyenglishweekly.com/fkyy/privacy"; // 隐私与政策
+  static const String REGISTER_LAW = "https://mp.crazyenglishweekly.com/fkyy/regist/"; // 注册条款
+  static const String REGISTER_PRIVACY_POLICY_LAW = "https://mp.crazyenglishweekly.com/fkyy/privacy"; // 隐私与政策
 
 
 }
