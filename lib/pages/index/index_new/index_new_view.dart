@@ -109,6 +109,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                 automaticallyImplyLeading: false,
                 title: _buildSearchBar(),
                 elevation: 0,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Colors.transparent,
               )),
 

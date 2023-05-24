@@ -12,6 +12,7 @@ import 'package:crazyenglish/pages/mine/question_feedback/question_feedback_view
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -77,14 +78,20 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Color(0xfff4f5f8),
       body: Column(
         children: [
+          AppBar(
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            centerTitle: false,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.transparent,
+          ),
           Container(
             width: double.infinity,
-            height: 180.w + statusBarHeight,
+            height: 180.w,
             // margin: EdgeInsets.only(
             //   top: statusBarHeight,
             // ),
@@ -100,7 +107,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
             ),
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 30.w+ statusBarHeight, left: 18.w),
+              margin: EdgeInsets.only(top: 30.w, left: 18.w),
               child: InkWell(
                 onTap: () {
                   RouterUtil.toNamed(AppRoutes.PersonInfoPage,

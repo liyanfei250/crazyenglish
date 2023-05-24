@@ -97,6 +97,7 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
               elevation: 0,
               automaticallyImplyLeading: false,
               centerTitle: false,
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
               title: Text(
                 "复习巩固",
                 style: TextStyle(
