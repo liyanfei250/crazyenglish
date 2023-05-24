@@ -62,6 +62,7 @@ class WeekTestListLogic extends GetxController {
       if (page == 1) {
         state.list = list.obj!;
       } else {
+        state.list.clear();
         state.list.addAll(list.obj!);
       }
       if (list.obj!.length < pageSize) {

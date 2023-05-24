@@ -69,7 +69,6 @@ class SplashNewPageState extends State<SplashPageNew> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: AppColors.theme_bg,
       body: Stack(

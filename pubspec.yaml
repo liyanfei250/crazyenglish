@@ -41,7 +41,7 @@ dependencies:
   flutter_native_splash: ^2.2.9
   dio: ^4.0.6
   ffi: ^2.0.0
-  flutter_screenutil: ^5.4.0
+  flutter_screenutil: ^5.8.2
   #事件总线--EventBus
   event_bus: ^2.0.0
   shared_preferences: ^2.0.7

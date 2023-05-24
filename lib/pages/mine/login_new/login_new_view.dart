@@ -209,11 +209,6 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (Util.isDesktop()) {
-      ScreenUtil.init(context, designSize: const Size(1000, 860));
-    } else {
-      ScreenUtil.init(context, designSize: const Size(375, 812));
-    }
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,//状态栏颜色

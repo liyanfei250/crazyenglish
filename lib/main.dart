@@ -64,28 +64,37 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      defaultTransition: Transition.noTransition,
-      locale: const Locale('zh', 'CN'),
-      localizationsDelegates: const [
-        // 添加 Refresh 的国际化代理
-        RefreshLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('zh', 'CN'), // 添加中文语言支持
-        Locale('en', 'US'), // 添加英文语言支持
-      ],
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
-      initialRoute: AppRoutes.INITIALNew,
-      getPages: AppPages.pages,
-      theme: ThemeData(
-        appBarTheme: AppBarTheme.of(context).copyWith(color: Colors.white),
-      ),
-    );
+    return ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context,child)=>GetMaterialApp(
+        defaultTransition: Transition.noTransition,
+        locale: const Locale('zh', 'CN'),
+        localizationsDelegates: const [
+          // 添加 Refresh 的国际化代理
+          RefreshLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('zh', 'CN'), // 添加中文语言支持
+          Locale('en', 'US'), // 添加英文语言支持
+        ],
+        builder: (context,child){
+          final originalMediaQuery = MediaQuery.of(context);
+          final customMediaQuery = originalMediaQuery.copyWith(
+            textScaleFactor:
+            1.0, // 这里将 textScaleFactor 设置为 1.0，即不跟随系统字体大小调整
+          );
+          return MediaQuery(data: customMediaQuery, child: BotToastInit()(context,child!),);
+        },
+        navigatorObservers: [BotToastNavigatorObserver()],
+        initialRoute: AppRoutes.INITIALNew,
+        getPages: AppPages.pages,
+        theme: ThemeData(
+          appBarTheme: AppBarTheme.of(context).copyWith(color: Colors.white),
+        ),
+      ));
   }
 
 }

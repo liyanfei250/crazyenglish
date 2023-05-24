@@ -323,7 +323,6 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
 
   @override
   void onDestroy() {
-    _controller.dispose();
   }
 
   void _onRefresh() async {
