@@ -63,8 +63,10 @@ class UserRepository {
 
 
   Future<SendCodeResponseNew> sendCodeNew(String phone,String type) async {
+    var headers = <String, dynamic>{};
+    headers['Authorization'] = null;
     Map map = await NetManager.getInstance()!
-        .request(Method.get, "${Api.getSendAuthCodeNew}$phone/$type");
+        .request(Method.get, "${Api.getSendAuthCodeNew}$phone/$type",options:Options(headers:headers));
     SendCodeResponseNew sendCodeResponse = SendCodeResponseNew.fromJson(map);
     if (sendCodeResponse.code != ResponseCode.status_success) {
       return Future.error(sendCodeResponse.message!);
