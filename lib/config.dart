@@ -42,7 +42,7 @@ class Config {
       case Env.PRODUCT:
         return buglyIosProductAppId;
       case Env.IOS:
-        return buglyIosNeibuAppId;
+        return buglyIosProductAppId;
       default:
         return buglyIosNeibuAppId;
     }
@@ -55,7 +55,7 @@ class Config {
       case Env.PRODUCT:
         return buglyAndroidProductAppId;
       case Env.IOS:
-        return buglyAndroidNeibuAppId;
+        return buglyAndroidProductAppId;
       default:
         return buglyAndroidNeibuAppId;
     }
