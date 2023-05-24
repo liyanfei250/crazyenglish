@@ -119,37 +119,18 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
 
 
   void showNotVipDialog(){
-    String content = "您当前的账户情况暂不满足自助注销条件，为了您的账户安全，请联系客服（13901119887）申请注销账户？";
+    String content = "您当前的账户情况暂不满足自助注销条件，为了您的账户安全，可采用下面两种方式进行账户注销\n 1. 发送邮件：fkyy_develop@163.com ，并提供您'数字英语'App 账户登录用户名和密码，我们会在24小时内处理并回复!\n 2. 联系客服（13901119887）申请注销账户";
     Get.defaultDialog(
       title: "温馨提示",
       content:Text(content,
         style: TextStyle(color: AppColors.TEXT_COLOR,fontSize: 15.sp),),
-      confirm: InkWell(
-        onTap: (){
-          Get.back();
-        },
-        child: Container(
-          alignment: Alignment.center,
-          width: 100.w,
-          height: 30.w,
-          margin: EdgeInsets.only(right: 10.w,bottom: 15.w),
-          decoration: BoxDecoration(
-            color: AppColors.THEME_COLOR,
-            //设置四周圆角 角度
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-            //设置四周边框
-            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
-          ),
-          child: Text("去打电话",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 13.sp),),
-        ),
-      ),
       cancel: InkWell(
         onTap: (){
           Get.back();
         },
         child: Container(
           alignment: Alignment.center,
-          width: 100.w,
+          width: 200.w,
           height: 30.w,
           margin: EdgeInsets.only(left: 10.w,bottom: 15.w),
           decoration: BoxDecoration(
@@ -159,7 +140,7 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
             //设置四周边框
             border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
           ),
-          child: Text("知道了",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
+          child: Text("知道了，去打电话(或发邮件)",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
         ),
       ),
     );
