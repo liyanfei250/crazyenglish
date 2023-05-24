@@ -276,8 +276,7 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
     widget.onOk?.call();
     if (Platform.isIOS) {
       //ios 需要跳转到app store更新，原生实现
-      // FlutterUpgrade.toAppStore(widget.iosAppId!);
-      FlutterUpgrade.toAppStore();
+      FlutterUpgrade.toAppStore(widget.iosAppId!);
       return;
     }
     if (widget.downloadUrl == null || widget.downloadUrl.isEmpty) {

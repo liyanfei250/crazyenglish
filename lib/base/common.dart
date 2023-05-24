@@ -209,9 +209,8 @@ class PayType{
 
 class C{
   static const String APPNAME = "数字英语";
-  static const String COMPANY = "太原东方盛慧科技有限公司";
-  static const String APP_DESC = "太原东方盛慧科技有限公司";
-  static const String APP_DOWNLOAD_URL = "https://ps-1252082677.cos.ap-beijing.myqcloud.com/apk/money_make.apk";
+  static const String COMPANY = "疯狂英语（山西）数字科技有限公司";
+  static const String APP_DESC = "疯狂英语（山西）数字科技有限公司";
 
   /**
    * 第三方登录参数
@@ -224,21 +223,21 @@ class C{
   static const String QQ_APP_ID = "1109734864";
 
   static const String WEIBO = "sinaweibo";
-  static const String WEIBO_APP_KEY = "1571175609";
-  static const String WEIBO_URL = "http://sns.whalecloud.com/sina2/callback";
+  static const String WEIBO_APP_KEY = "";
+  static const String WEIBO_URL = "";
 
   /**
    * 微信分享的参数
    */
   static const String WX = "WeiXin";
-  static const String WX_APP_ID = "wx816e8a97d374aa75";
-  static const String WX_APP_SECRET = "1b83bd73adfc6962731eeea1d5eb1050";
+  static const String WX_APP_ID = "";
+  static const String WX_APP_SECRET = "";
 //    static const String WX_APP_TEMPLATE_ID = "wQ90gKAb6bYZiUwTSclrQ_EgVIPK1-U9794qeYVTlKY";
-  static const String WX_APP_TEMPLATE_ID = "ryy4JUW1mRkrk2-LZw4m1W75pvwGPAZexYG-NZepVCg";
+  static const String WX_APP_TEMPLATE_ID = "";
 
 
   static const String BAIDU = "baidu";
-  static const String BAIDU_APP_KEY = "xnA14dMjxEFsuSdRXlKdz1vH";
+  static const String BAIDU_APP_KEY = "";
   static const String BAIDU_URL = "https://www.crazyenglishweekly.com";
 
   static const int SID_INVALID = 9708;

@@ -205,7 +205,7 @@ class _ToSetPsdPageState extends BasePageState<SetPsdPage> {
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Expanded(
                 child: TextField(
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               obscureText: isShowPsd,
               style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
               onChanged: (String str) {

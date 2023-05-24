@@ -37,10 +37,9 @@ class FlutterUpgrade {
   ///
   /// 跳转到ios app store
   ///
-  static toAppStore() async {
-  // static toAppStore(String id) async {
-    // var map = {'id': id};
-    // return await _channel.invokeMethod('toAppStore', map);
+  static toAppStore(String id) async {
+    var map = {'id': id};
+    return await _channel.invokeMethod('toAppStore', map);
   }
 
   ///
