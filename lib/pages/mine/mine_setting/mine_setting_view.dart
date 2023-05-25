@@ -1,5 +1,7 @@
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/blocs/login_change_bloc.dart';
 import 'package:crazyenglish/blocs/login_change_event.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +25,22 @@ class SettingPage extends BasePage {
 class _ToMySettingPageState extends BasePageState<SettingPage> {
   final logic = Get.put(Mine_settingLogic());
   final state = Get.find<Mine_settingLogic>().state;
-
+  TextEditingController? _phoneController;
+  String willDeleteUser = "";
   @override
   void onCreate() {
-
+    _phoneController = TextEditingController();
+    logic.addListenerId(GetBuilderIds.delRemoveInfo, () {
+      // ... 执行
+      //退出
+      SpUtil.putBool(BaseConstant.ISLOGING, false);
+      SpUtil.putString(BaseConstant.loginTOKEN, '');
+      SpUtil.putString(BaseConstant.USER_NAME, '');
+      BlocProvider.of<LoginChangeBloc>(context)
+          .add(SendLoginChangeEvent());
+      //直接去首页
+      Get.back();
+    });
   }
 
   @override
@@ -38,7 +52,11 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
           children: [
             const Divider(height: 1),
             _buildItem(context, "账户注销与停用", "",onTap: (){
-              showNotVipDialog();
+              if(Util.isLogin()){
+                showNotVipDialog();
+              }else{
+                Util.toast("登录后才能注销账户");
+              }
             }),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -119,18 +137,38 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
 
 
   void showNotVipDialog(){
-    String content = "您当前的账户情况暂不满足自助注销条件，为了您的账户安全，可采用下面两种方式进行账户注销\n 1. 发送邮件：fkyy_develop@163.com ，并提供您'数字英语'App 账户登录用户名和密码，我们会在24小时内处理并回复!\n 2. 联系客服（13901119887）申请注销账户";
+    String content = "您确定要注销账户吗？注销账户将从此设备中删除您的个人数据。请确保在注销前备份您的数据";
     Get.defaultDialog(
       title: "温馨提示",
       content:Text(content,
         style: TextStyle(color: AppColors.TEXT_COLOR,fontSize: 15.sp),),
+      confirm: InkWell(
+        onTap: (){
+          Get.back();
+          showRemoveDialog();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 100.w,
+          height: 30.w,
+          margin: EdgeInsets.only(right: 10.w,bottom: 15.w),
+          decoration: BoxDecoration(
+            color: AppColors.THEME_COLOR,
+            //设置四周圆角 角度
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //设置四周边框
+            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
+          ),
+          child: Text("去注销",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 13.sp),),
+        ),
+      ),
       cancel: InkWell(
         onTap: (){
           Get.back();
         },
         child: Container(
           alignment: Alignment.center,
-          width: 200.w,
+          width: 100.w,
           height: 30.w,
           margin: EdgeInsets.only(left: 10.w,bottom: 15.w),
           decoration: BoxDecoration(
@@ -140,7 +178,142 @@ class _ToMySettingPageState extends BasePageState<SettingPage> {
             //设置四周边框
             border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
           ),
-          child: Text("知道了，去打电话(或发邮件)",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
+          child: Text("知道了",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
+        ),
+      ),
+    );
+  }
+
+  // delRemoveInfo
+
+  Future<void> showRemoveDialog() async{
+    String content = "请输入您的用户名进行注销";
+    Get.defaultDialog(
+      title: "确认用户名注销",
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(content,
+            style: TextStyle(color: AppColors.TEXT_COLOR,fontSize: 15.sp),),
+          Padding(padding: EdgeInsets.only(top: 10.w)),
+          Container(
+            width: 329.w,
+            height: 47.w,
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                color: AppColors.c_4DD9D9D9),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              controller: _phoneController,
+              style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
+              //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              onChanged: (String str) {
+                willDeleteUser = str;
+              },
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: '请输入登录用户名注销账户',
+                hintStyle:
+                TextStyle(fontSize: 15, color: Color(0xff717171)),
+              ),
+            ),
+          ),
+        ],
+      ),
+      confirm: InkWell(
+        onTap: (){
+          if(willDeleteUser.isEmpty || willDeleteUser != SpUtil.getString(BaseConstant.USER_NAME)){
+            Util.toast("用户名输入有误");
+          }if(willDeleteUser == "guest"){
+            Util.toast("游客账户不支持注销");
+          }else{
+            Get.back();
+            showEnsureRemoveDialog();
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 100.w,
+          height: 30.w,
+          margin: EdgeInsets.only(right: 10.w,bottom: 15.w),
+          decoration: BoxDecoration(
+            color: AppColors.THEME_COLOR,
+            //设置四周圆角 角度
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //设置四周边框
+            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
+          ),
+          child: Text("注销",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 13.sp),),
+        ),
+      ),
+      cancel: InkWell(
+        onTap: (){
+          Get.back();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 100.w,
+          height: 30.w,
+          margin: EdgeInsets.only(left: 10.w,bottom: 15.w),
+          decoration: BoxDecoration(
+            color: AppColors.c_FFFFFFFF,
+            //设置四周圆角 角度
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //设置四周边框
+            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
+          ),
+          child: Text("放弃注销",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
+        ),
+      ),
+    );
+  }
+
+
+
+  Future<void> showEnsureRemoveDialog() async{
+    String content = "注销后将会退出登录，并清除用户信息！\n 是否注销";
+    Get.defaultDialog(
+      title: "确认注销",
+      content: Text(content,
+        style: TextStyle(color: AppColors.TEXT_COLOR,fontSize: 15.sp),),
+      confirm: InkWell(
+        onTap: (){
+          Get.back();
+          logic.delRemoveInfo();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 100.w,
+          height: 30.w,
+          margin: EdgeInsets.only(right: 10.w,bottom: 15.w),
+          decoration: BoxDecoration(
+            color: AppColors.THEME_COLOR,
+            //设置四周圆角 角度
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //设置四周边框
+            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
+          ),
+          child: Text("确认",style: TextStyle(color: AppColors.c_FFFFFFFF,fontSize: 13.sp),),
+        ),
+      ),
+      cancel: InkWell(
+        onTap: (){
+          Get.back();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 100.w,
+          height: 30.w,
+          margin: EdgeInsets.only(left: 10.w,bottom: 15.w),
+          decoration: BoxDecoration(
+            color: AppColors.c_FFFFFFFF,
+            //设置四周圆角 角度
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //设置四周边框
+            border: Border.all(width: 0.5, color: AppColors.THEME_COLOR),
+          ),
+          child: Text("取消",style: TextStyle(color: AppColors.THEME_COLOR,fontSize: 13.sp),),
         ),
       ),
     );

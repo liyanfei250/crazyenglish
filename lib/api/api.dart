@@ -294,4 +294,6 @@ class Api {
 
   static String getOperSubjectiveExercise = "${Config.ApiHost}/question/studentOperation/getOperSubjectiveExercise";
 
+  // 删除账户
+  static String delRemoveInfo = "${Config.ApiHost}/member/user/removeInfo";
 }
