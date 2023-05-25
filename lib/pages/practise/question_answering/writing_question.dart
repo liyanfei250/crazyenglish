@@ -50,6 +50,19 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   @override
   void onCreate() {
     element = widget.data;
+    if (widget.subtopicAnswerVoMap != null &&
+        widget.subtopicAnswerVoMap!["${element.id}:0"] != null) {
+      ExerciseLists exerciseLists = widget.subtopicAnswerVoMap!["${element
+          .id}:0"]!;
+      if ((exerciseLists.answer ?? "").isNotEmpty && widget.answerType!= AnsweringPage.answer_normal_type && widget.answerType!= AnsweringPage.answer_homework_draft_type) {
+        writController.text = exerciseLists.answer ?? "";
+        SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
+            isSubjectivity:true,questionTypeStr:'',answer:exerciseLists.answer);
+        if(userAnswerWritCallback!=null){
+          userAnswerWritCallback.call(subjectAnswerVo);
+        }
+      }
+    }
   }
 
   @override
@@ -201,23 +214,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           children: [
             InkWell(
               onTap: () {
-                Get.defaultDialog(
-                    title: "",
-                    textConfirm: "确定",
-                    textCancel: "取消",
-                    content: Text(
-                        widget.answerType == AnsweringPage.answer_fix_type ?
-                        "确认纠正错题" : "是否确定提交答案"),
-                    onConfirm:(){
-                      if(element!=null){
-                        logic.uploadWeekTest(element!,widget.answerType);
-                      }else{
-                        Util.toast("未获取到试题信息");
-                      }
-
-                      Get.back();
-                    }
-                );
+                logic.uploadWrite();
               },
               child: Image.asset(
                 R.imagesWritingCommitButton,
@@ -323,5 +320,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
       );
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+    writController.dispose();
+  }
 }
