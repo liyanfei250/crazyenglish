@@ -214,7 +214,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             num? subtopicId = element.subtopicId;
 
             String correctAnswer= "";
-            int totalSubtopicLength = currentSubjectVoList!.subtopicVoList!.length;
+            int totalSubtopicLength = 0;
+            if(currentSubjectVoList==null || currentSubjectVoList!.subtopicVoList == null){
+              totalSubtopicLength = 0;
+            } else {
+              totalSubtopicLength = currentSubjectVoList!.subtopicVoList!.length;
+            }
             for(int i = 0;i< totalSubtopicLength;i++){
               if(currentSubjectVoList!.subtopicVoList![i].id == subtopicId){
                 correctAnswer = currentSubjectVoList!.subtopicVoList![i].answer??"";

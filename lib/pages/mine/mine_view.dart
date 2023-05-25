@@ -44,10 +44,10 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
       fontSize: 13, color: Color(0xff353e4d), fontWeight: FontWeight.w400);
 
   StreamSubscription? refrehUserInfoStreamSubscription;
+
   void onClickPosition(int position) {
     switch (position) {
       case 0:
-
         break;
       case 1: //意见反馈
         RouterUtil.toNamed(AppRoutes.QuestionFeedbackPage,
