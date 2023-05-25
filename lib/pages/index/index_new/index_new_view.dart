@@ -526,7 +526,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
 
   Widget _buildSearchBar() => Container(
     width: double.infinity,
-    height: 28.w,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -538,9 +537,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 33.w,
-                  // margin: EdgeInsets.only(right: 19.w, left: 19.w),
-                  padding: EdgeInsets.only(left: 11.w),
+                  padding: EdgeInsets.only(left: 11.w,top: 4.w,bottom: 4.w),
                   decoration: BoxDecoration(
                       borderRadius:
                       BorderRadius.all(Radius.circular(14.w)),
