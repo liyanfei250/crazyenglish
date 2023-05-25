@@ -223,7 +223,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
               ),
             ),
             TextField(
-              autofocus: true,
+              autofocus: false,
               maxLines: 100,
               minLines: 10,
               controller: writController,
@@ -247,35 +247,36 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   Widget _listShow() => Expanded(
       child: Container(
           height: 190.w,
-          child: SingleChildScrollView(
-            child: SelectionArea(
-              child: Html(
-                data: TextUtil.weekDetail
-                    .replaceFirst("###content###", element.content ?? ""),
-                onImageTap: (
-                    url,
-                    context,
-                    attributes,
-                    element,
-                    ) {
-                  if (url != null && url!.startsWith('http')) {
-                    DialogManager.showPreViewImageDialog(
-                        BackButtonBehavior.close, url);
-                  }
-                },
-                style: {
-                  "p": Style(fontSize: FontSize.large),
-                  "sentence": Style(
-                      textDecorationStyle: TextDecorationStyle.dashed,
-                      textDecorationColor: AppColors.THEME_COLOR),
-                  "hr": Style(
-                    margin:
-                    Margins.only(left: 0, right: 0, top: 10.w, bottom: 10.w),
-                    padding: EdgeInsets.all(0),
-                    border: Border(bottom: BorderSide(color: Colors.grey)),
-                  )
-                },
-                tagsList: Html.tags..addAll(['sentence']),
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: SelectionArea(
+                child: Html(
+                  data: element.content ?? "",
+                  onImageTap: (
+                      url,
+                      context,
+                      attributes,
+                      element,
+                      ) {
+                    if (url != null && url!.startsWith('http')) {
+                      DialogManager.showPreViewImageDialog(
+                          BackButtonBehavior.close, url);
+                    }
+                  },
+                  style: {
+                    "p": Style(fontSize: FontSize.large),
+                    "sentence": Style(
+                        textDecorationStyle: TextDecorationStyle.dashed,
+                        textDecorationColor: AppColors.THEME_COLOR),
+                    "hr": Style(
+                      margin:
+                      Margins.only(left: 0, right: 0, top: 10.w, bottom: 10.w),
+                      padding: EdgeInsets.all(0),
+                      border: Border(bottom: BorderSide(color: Colors.grey)),
+                    )
+                  },
+                  tagsList: Html.tags..addAll(['sentence']),
+                ),
               ),
             ),
           )));

@@ -49,7 +49,7 @@ class SchoolReportListLogic extends GetxController {
     }
 
     
-    HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkStudentList(status,homeworkId, page, pageSize);
+    HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkScoreStudentList(homeworkId, page, pageSize);
 
     if(homeworkRepository!=null){
       state.list = homeworkStudentResponse.obj!.records!;

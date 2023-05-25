@@ -146,4 +146,35 @@ class HomeworkRepository {
       return Future.error("返回homeworkStudentResponse为空");
     }
   }
+  //成绩单
+  Future<HomeworkStudentResponse> getHomeworkScoreStudentList(
+     num operationClassId, int page, int pageSize) async {
+    Map<String, dynamic> req = {};
+    Map<String,dynamic> pageParam = {};
+    pageParam["current"] = page;
+    pageParam["size"] = pageSize;
+    req["p"] = pageParam;
+    req["operationClassId"] = operationClassId.toString();
+
+    Map map = await NetManager.getInstance()!.request(
+        Method.post,
+            "${Api.scoreList}",
+        data: req,
+        options: Options(
+          method: Method.post,
+          contentType: ContentType.json.toString(),
+        ));
+
+    if (map != null) {
+      HomeworkStudentResponse homeworkStudentResponse =
+          HomeworkStudentResponse.fromJson(map);
+      if (homeworkStudentResponse.code != ResponseCode.status_success) {
+        return Future.error("返回homeworkStudentResponse为空");
+      } else {
+        return homeworkStudentResponse!;
+      }
+    } else {
+      return Future.error("返回homeworkStudentResponse为空");
+    }
+  }
 }
