@@ -210,29 +210,40 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         || widget.answerType == AnsweringPage.answer_homework_draft_type)
         && currentExerciseVos!=null && currentExerciseVos!.exerciseLists!=null && currentExerciseVos!.exerciseLists!.isNotEmpty){
 
-          currentExerciseVos!.exerciseLists!.forEach((element) {
-            num? subtopicId = element.subtopicId;
+          if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
+            // ExerciseVos
+            if (currentExerciseVos!=null && currentExerciseVos!.exerciseLists != null &&
+                currentExerciseVos!.exerciseLists!.length > 0) {
+              SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId: currentSubjectVoList!.id,answer: currentExerciseVos!.exerciseLists![0].answer);
+              logic.updateUserWritAnswer("${currentSubjectVoList!.id}", subjectAnswerVo);
+            }
 
-            String correctAnswer= "";
-            int totalSubtopicLength = 0;
-            if(currentSubjectVoList==null || currentSubjectVoList!.subtopicVoList == null){
-              totalSubtopicLength = 0;
-            } else {
-              totalSubtopicLength = currentSubjectVoList!.subtopicVoList!.length;
-            }
-            for(int i = 0;i< totalSubtopicLength;i++){
-              if(currentSubjectVoList!.subtopicVoList![i].id == subtopicId){
-                correctAnswer = currentSubjectVoList!.subtopicVoList![i].answer??"";
+          }else{
+            currentExerciseVos!.exerciseLists!.forEach((element) {
+              num? subtopicId = element.subtopicId;
+
+              String correctAnswer= "";
+              int totalSubtopicLength = 0;
+              if(currentSubjectVoList==null || currentSubjectVoList!.subtopicVoList == null){
+                totalSubtopicLength = 0;
+              } else {
+                totalSubtopicLength = currentSubjectVoList!.subtopicVoList!.length;
               }
-            }
-            SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(
-                subtopicId:element.subtopicId,
-                optionId:0,
-                userAnswer: element.answer,
-                answer: correctAnswer,
-                isCorrect: false);
-            logic.updateUserAnswer("${subtopicId}", subtopicAnswerVo);
-          });
+              for(int i = 0;i< totalSubtopicLength;i++){
+                if(currentSubjectVoList!.subtopicVoList![i].id == subtopicId){
+                  correctAnswer = currentSubjectVoList!.subtopicVoList![i].answer??"";
+                }
+              }
+              SubtopicAnswerVo subtopicAnswerVo = SubtopicAnswerVo(
+                  subtopicId:element.subtopicId,
+                  optionId:0,
+                  userAnswer: element.answer,
+                  answer: correctAnswer,
+                  isCorrect: false);
+              logic.updateUserAnswer("${subtopicId}", subtopicAnswerVo);
+            });
+          }
+
         }
         subtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(currentExerciseVos);
         num time = AnsweringPage.findInitTime(widget.lastFinishResult!.obj,currentSubjectVoList!.id??0);
