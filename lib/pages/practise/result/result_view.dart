@@ -92,7 +92,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   final logicCollect = Get.put(Collect_practicLogic());
   // final PageController pageController = PageController(keepPage: true);
 
-  late TabController _tabController;
+  TabController? _tabController;
 
   List<BaseQuestionResult> pages = <BaseQuestionResult>[];
 
@@ -735,7 +735,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     Get.delete<AnsweringLogic>();
     Get.delete<WeekTestDetailLogic>();
     Get.delete<Collect_practicLogic>();
-    _tabController.dispose();
+    if(_tabController!=null){
+      _tabController!.dispose();
+    }
+
   }
 
   @override

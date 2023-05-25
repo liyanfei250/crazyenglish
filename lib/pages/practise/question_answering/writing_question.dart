@@ -54,8 +54,13 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
         widget.subtopicAnswerVoMap!["${element.id}:0"] != null) {
       ExerciseLists exerciseLists = widget.subtopicAnswerVoMap!["${element
           .id}:0"]!;
-      if ((exerciseLists.answer ?? "").isNotEmpty) {
+      if ((exerciseLists.answer ?? "").isNotEmpty && widget.answerType!= AnsweringPage.answer_normal_type && widget.answerType!= AnsweringPage.answer_homework_draft_type) {
         writController.text = exerciseLists.answer ?? "";
+        SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
+            isSubjectivity:true,questionTypeStr:'',answer:exerciseLists.answer);
+        if(userAnswerWritCallback!=null){
+          userAnswerWritCallback.call(subjectAnswerVo);
+        }
       }
     }
   }
@@ -316,5 +321,6 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
 
   @override
   void onDestroy() {
+    writController.dispose();
   }
 }
