@@ -68,8 +68,7 @@ class WritDialog extends Dialog {
               Expanded(child:SelectionArea(
                 child: SingleChildScrollView(
                   child: Html(
-                    data: TextUtil.weekDetail
-                        .replaceFirst("###content###", htmlContent ?? ""),
+                    data:  htmlContent ?? "",
                     onImageTap: (
                         url,
                         context,

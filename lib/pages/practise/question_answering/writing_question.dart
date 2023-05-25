@@ -134,8 +134,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
             Padding(padding: EdgeInsets.only(top: 0.w)),
             SelectionArea(
               child: Html(
-                data: TextUtil.weekDetail
-                    .replaceFirst("###content###", element.stem ?? ""),
+                data:  element.stem ?? "",
                 onImageTap: (
                   url,
                   context,
