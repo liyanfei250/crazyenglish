@@ -19,6 +19,9 @@ import 'school_report_list_logic.dart';
 class SchoolReportListPage extends BasePage {
   late History history;
   late int remindOrCrorrection;
+  int scoreList = 1;
+  int waitCorrectingList = 2;
+  int waitTipsList = 3;
 
   SchoolReportListPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&

@@ -268,6 +268,8 @@ class Api {
   static String correctionList = "${Config.ApiHost}/question/operation/student/correctionList/";
   // 待提醒学生列表
   static String remindList = "${Config.ApiHost}/question/operation/student/remindList/";
+  //成绩单
+  static String scoreList = "${Config.ApiHost}/question/operation/student/transcripts";
 
   // 历史作业
   static String historyPage = "${Config.ApiHost}/question/operation/historyPage";
