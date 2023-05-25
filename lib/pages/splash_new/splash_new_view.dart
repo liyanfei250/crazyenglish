@@ -34,6 +34,7 @@ class SplashNewPageState extends State<SplashPageNew> {
 
   var privacyAgreementTitle = "温馨提示";
   bool firstInstall = false;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -51,12 +52,11 @@ class SplashNewPageState extends State<SplashPageNew> {
     //1.首次安装
     firstInstall =
         SpUtil.getBool(BaseConstant.key_first_installation, defValue: true);
-    Future.delayed(const Duration(seconds: 3), () {
+    _timer = Timer(const Duration(seconds: 3), () {
       if (!firstInstall) {
         _goMain();
       }
-    }
-    );
+    });
   }
 
   void _goMain() {
@@ -137,8 +137,15 @@ class SplashNewPageState extends State<SplashPageNew> {
                   width: 30.w,
                   height: 30.w,
                 ),
-                SizedBox(width: 11.w,),
-                Text("数字英语",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600,color: Color(0xff353e4d),))
+                SizedBox(
+                  width: 11.w,
+                ),
+                Text("数字英语",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff353e4d),
+                    ))
               ],
             ),
           ),
@@ -275,6 +282,7 @@ class SplashNewPageState extends State<SplashPageNew> {
 
   @override
   void dispose() {
+    _timer.cancel();
     super.dispose();
   }
 }
