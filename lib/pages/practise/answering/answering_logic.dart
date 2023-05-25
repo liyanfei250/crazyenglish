@@ -62,6 +62,10 @@ class AnsweringLogic extends GetxController {
 
   }
 
+  void uploadWrite(){
+    update([GetBuilderIds.uploadWrite]);
+  }
+
   // "type": "1: 学生练习 2: 练习保存草稿 3：错题本提交 4：老师作业 5: 模拟考试"
   void uploadWeekTest(SubjectVoList subjectVoList,int examType,{ExerciseVos? exerciseVos,num? lastSubjectId, num? lastSubtopicId}) async{
     List<SubtopicAnswerVo> subtopicAnswerVoList = [];
