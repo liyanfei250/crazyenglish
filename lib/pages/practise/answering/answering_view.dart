@@ -561,7 +561,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           hasBottomPageTab = false;
-          isCommiting = true;
           questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
         || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
