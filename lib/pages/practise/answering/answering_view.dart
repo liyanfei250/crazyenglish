@@ -406,80 +406,102 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         ),
         Visibility(
           visible: hasBottomPageTab,
-          child: Container(
-          margin:
-          EdgeInsets.only(left: 66.w, right: 66.w, top: 10.w, bottom: 10.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
-                onTap: () {
-                  pageLogic.prePage();
-                },
-                child: GetBuilder<AnsweringLogic>(
-                    id: GetBuilderIds.answerPageNum,
-                    builder: (logic) {
-                      return Image.asset(
-                        logic.state.currentQuestionNum>0
-                            ? R.imagesPractisePreQuestionEnable
-                            : R.imagesPractisePreQuestionUnable,
-                        width: 40.w,
-                        height: 40.w,
-                      );
-                    }),
-              ),
-              GetBuilder<AnsweringLogic>(
-                  id: GetBuilderIds.answerPageNum,
-                  builder: (logic) {
-                    print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
-                    return Text(
-                      "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.c_FF353E4D),
-                    );
-                  }),
-              InkWell(
-                onTap: (){
-                  if(state.currentQuestionNum+1 >= state.totalQuestionNum){
-                    if(widget.answerType == AnsweringPage.answer_browse_type){
-                      if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
-                        RouterUtil.toNamed(AppRoutes.AnsweringPage,
-                            isNeedCheckLogin:true,
-                            arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
-                              AnsweringPage.catlogIdKey:widget.uuid,
-                              AnsweringPage.parentIndexKey:widget.parentIndex+1,
-                              AnsweringPage.childIndexKey:0,
-                              AnsweringPage.LastFinishResult:widget.lastFinishResult,
-                              AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
-                            });
-                      }else{
-                        Get.back();
-                      }
+              Divider(height: 0.2.w,color: AppColors.c_FFD2D5DC,),
+              Container(
+                margin:
+                EdgeInsets.only(left: 46.w, right: 46.w, top: 14.w, bottom: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        pageLogic.prePage();
+                      },
+                      child: GetBuilder<AnsweringLogic>(
+                          id: GetBuilderIds.answerPageNum,
+                          builder: (logic) {
+                            return Row(
+                              children: [
+                                Image.asset(
+                                  logic.state.currentQuestionNum>0
+                                      ? R.imagesPractisePreQuestionEnable
+                                      : R.imagesPractisePreQuestionUnable,
+                                  width: 18.w,
+                                  height: 18.w,
+                                ),
+                                Text("上一题",style: TextStyle(fontSize: 14.sp,
+                                    color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                              ],
+                            );
+                          }),
+                    ),
+                    GetBuilder<AnsweringLogic>(
+                        id: GetBuilderIds.answerPageNum,
+                        builder: (logic) {
+                          print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
+                          return Text(
+                            "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
+                            style: TextStyle(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.c_FF353E4D),
+                          );
+                        }),
+                    InkWell(
+                      onTap: (){
+                        if(state.currentQuestionNum+1 >= state.totalQuestionNum){
+                          if(widget.answerType == AnsweringPage.answer_browse_type){
+                            if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
+                              RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                                  isNeedCheckLogin:true,
+                                  arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                                    AnsweringPage.catlogIdKey:widget.uuid,
+                                    AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                                    AnsweringPage.childIndexKey:0,
+                                    AnsweringPage.LastFinishResult:widget.lastFinishResult,
+                                    AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+                                  });
+                            }else{
+                              Get.back();
+                            }
 
-                    }else{
-                      _uploadTestAnswer();
-                    }
-                  }else{
-                    pageLogic.nextPage();
-                  }
-                },
-                child: GetBuilder<AnsweringLogic>(
-                    id: GetBuilderIds.answerPageNum,
-                    builder: (logic) {
-                      return Image.asset(
-                        logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                            ? R.imagesPractiseNextQuestionEnable
-                            : R.imagesPractiseNextQuestionUnable,
-                        width: 40.w,
-                        height: 40.w,
-                      );
-                    }),
+                          }else{
+                            _uploadTestAnswer();
+                          }
+                        }else{
+                          pageLogic.nextPage();
+                        }
+                      },
+                      child: GetBuilder<AnsweringLogic>(
+                          id: GetBuilderIds.answerPageNum,
+                          builder: (logic) {
+                            return Row(
+                              children: [
+                                Text((widget.answerType==AnsweringPage.answer_browse_type
+                                    || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
+                                    color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                        || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                Visibility(
+                                    visible: widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum,
+                                    child: Image.asset(
+                                      logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                          ? R.imagesPractiseNextQuestionEnable
+                                          : R.imagesPractiseNextQuestionUnable,
+                                      width: 18.w,
+                                      height: 18.w,
+                                    ))
+                              ],
+                            );
+                          }),
+                    )
+                  ],
+                ),
               )
-            ],
-          ),
-        ))
+            ]
+          ))
       ],
     );
   }
