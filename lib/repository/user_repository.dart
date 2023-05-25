@@ -62,6 +62,21 @@ class UserRepository {
   }
 
 
+  Future<BaseResp> delRemoveInfo() async {
+    Map map = await NetManager.getInstance()!
+        .request(Method.delete, Api.delRemoveInfo);
+    BaseResp baseResp = BaseResp.fromJson(map);
+    if (baseResp.code != ResponseCode.status_success) {
+      Util.toast(baseResp.message ?? "");
+    }
+    if (baseResp != null) {
+      return baseResp!;
+    } else {
+      return Future.error("注销账户失败");
+    }
+  }
+
+
   Future<SendCodeResponseNew> sendCodeNew(String phone,String type) async {
     var headers = <String, dynamic>{};
     headers['Authorization'] = null;
