@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
@@ -423,18 +425,21 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       child: GetBuilder<AnsweringLogic>(
                           id: GetBuilderIds.answerPageNum,
                           builder: (logic) {
-                            return Row(
-                              children: [
-                                Image.asset(
-                                  logic.state.currentQuestionNum>0
-                                      ? R.imagesPractisePreQuestionEnable
-                                      : R.imagesPractisePreQuestionUnable,
-                                  width: 18.w,
-                                  height: 18.w,
-                                ),
-                                Text("上一题",style: TextStyle(fontSize: 14.sp,
-                                    color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                              ],
+                            return Container(
+                              width: 70.w,
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    logic.state.currentQuestionNum>0
+                                        ? R.imagesPractisePreQuestionEnable
+                                        : R.imagesPractisePreQuestionUnable,
+                                    width: 18.w,
+                                    height: 18.w,
+                                  ),
+                                  Text("上一题",style: TextStyle(fontSize: 14.sp,
+                                      color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                ],
+                              ),
                             );
                           }),
                     ),
@@ -478,22 +483,28 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                       child: GetBuilder<AnsweringLogic>(
                           id: GetBuilderIds.answerPageNum,
                           builder: (logic) {
-                            return Row(
-                              children: [
-                                Text((widget.answerType==AnsweringPage.answer_browse_type
-                                    || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
-                                    color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                        || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                                Visibility(
-                                    visible: widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum,
-                                    child: Image.asset(
-                                      logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                          ? R.imagesPractiseNextQuestionEnable
-                                          : R.imagesPractiseNextQuestionUnable,
-                                      width: 18.w,
-                                      height: 18.w,
-                                    ))
-                              ],
+                            return Container(
+                              width: 70.w,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text((widget.answerType==AnsweringPage.answer_browse_type
+                                      || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
+                                      color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                          || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                  (widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum) ?
+                                  Image.asset(
+                                    logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                        ? R.imagesPractiseNextQuestionEnable
+                                        : R.imagesPractiseNextQuestionUnable,
+                                    width: 18.w,
+                                    height: 18.w,
+                                  ):Container(width: 18.w,
+                                      height: 18.w)
+                                ],
+                              ),
                             );
                           }),
                     )
@@ -507,8 +518,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   }
 
   void _uploadTestAnswer(){
+
     Get.defaultDialog(
-      title: "",
+      title: "提交答案",
       confirm: InkWell(
         onTap: (){
           if(currentSubjectVoList!=null){
@@ -531,6 +543,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+          margin: EdgeInsets.only(bottom: 8.w),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -557,7 +570,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           Get.back();
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+          padding: EdgeInsets.symmetric(vertical: 3.w,horizontal: 23.w),
+          margin: EdgeInsets.only(bottom: 8.w),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(width: 1.w, color: AppColors.c_FFD2D5DC),
@@ -568,7 +582,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       ),
       content: Text(
         widget.answerType == AnsweringPage.answer_fix_type ?
-        "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+        "是否确定提交已纠正错题？" : "是否确定提交？",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
     );
   }
 

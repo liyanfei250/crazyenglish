@@ -1,4 +1,9 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/entity/check_update_resp.dart';
+import 'package:crazyenglish/pages/app_update_panel/app_update_panel_logic.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/utils/updateApp/app_upgrade.dart';
+import 'package:crazyenglish/utils/updateApp/download_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,6 +27,8 @@ class AboutUsPage extends BasePage {
 class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
   final logic = Get.put(About_usLogic());
   final state = Get.find<About_usLogic>().state;
+  final appUpdatePanelLogic = Get.put(AppUpdatePanelLogic());
+  final appUpdatePanelState = Get.find<AppUpdatePanelLogic>().state;
   final TextStyle textStyle = TextStyle(
       fontSize: 14, color: Color(0xff4d3535), fontWeight: FontWeight.w500);
   final TextStyle textSenStyle = TextStyle(
@@ -120,7 +127,8 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
 
         switch (menu) {
           case '版本信息':
-            Util.toast(_packageInfo.version);
+            addListener();
+            appUpdatePanelLogic.getAppVersion();
             break;
           case '隐私协议':
             RouterUtil.toWebPage(
@@ -176,8 +184,49 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
   }
 
   @override
-  void onCreate() {}
+  void onCreate() {
+
+  }
+
+  void addListener(){
+    appUpdatePanelLogic.addListenerId(GetBuilderIds.APPVERSION, () {
+      if(appUpdatePanelState.checkUpdateResp!=null
+          && _packageInfo.version.compareTo(appUpdatePanelState.checkUpdateResp!.newVersion??"")<0 ){
+        showAppUpgrade(appUpdatePanelState.checkUpdateResp!);
+      }
+    });
+  }
+
+  void showAppUpgrade(CheckUpdateResp resp){
+    int forceUpdateCount = resp.forceUpdate??0;
+    if (forceUpdateCount>0) {
+        AppUpgrade.appUpgrade(
+          context,
+          resp,
+          // appMarketInfo: AppMarket.huaWei,
+          onCancel: () {
+            print('onCancel');
+          },
+          onOk: () {
+            print('onOk');
+          },
+          downloadProgress: (count, total) {
+            print('count:$count,total:$total');
+          },
+          downloadStatusChange: (DownloadStatus status, {dynamic error}) {
+            print('status:$status,error:$error');
+          },
+        );
+    }else{
+      Util.toast("当前版本已是最新");
+    }
+  }
+
 
   @override
-  void onDestroy() {}
+  void onDestroy() {
+    Get.delete<AppUpdatePanelLogic>();
+    Get.delete<About_usLogic>();
+
+  }
 }
