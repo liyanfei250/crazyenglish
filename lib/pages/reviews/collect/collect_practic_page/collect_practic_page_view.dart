@@ -151,7 +151,7 @@ class _ToMyOrderPageState extends BasePageState<CollectPracticPageViewPage> {
                         imageAsset: R.imagesCommenNoDate,
                         title: '暂无数据',
                         topMargin: 100.w,
-                        subtitle: ''))
+                        subtitle: '快去做题吧'))
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
                       buildItem,

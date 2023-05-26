@@ -247,7 +247,10 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                       eventLoader: _getEventsForDay,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekStyle:
-                          DaysOfWeekStyle(dowTextFormatter: (date, locale) {
+                          DaysOfWeekStyle(
+                              weekdayStyle:TextStyle(color: Color(0xff353e4d)),
+                              weekendStyle:TextStyle(color: Color(0xff353e4d)),
+                              dowTextFormatter: (date, locale) {
                         String week = DateFormat.E("en_US").format(date);
                         switch (week) {
                           case "Mon":
@@ -399,7 +402,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                           imageAsset: R.imagesCommenNoDate,
                           title: '暂无数据',
                           topMargin: 20.w,
-                          subtitle: '')
+                          subtitle: '快去做题吧')
                       : Container(
                           decoration: MyDecoration(),
                           margin: EdgeInsets.only(left: 24, top: 12.w),
@@ -460,7 +463,8 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                         element.journalName??""+(element.questionTypeName??""),
                                                         style: TextStyle(
                                                             color: Color(
-                                                                0xff353e4d),
+                                                                0xff898a93),
+                                                            fontWeight: FontWeight.w500,
                                                             fontSize: 14.sp),
                                                       ),
                                                       Padding(
@@ -472,6 +476,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xff353e4d),
+                                                            fontWeight: FontWeight.w500,
                                                             fontSize: 14.sp),
                                                       ),
                                                       Padding(
@@ -527,6 +532,7 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                             style: TextStyle(
                                                                 color: Color(
                                                                     0xff898a93),
+                                                                fontWeight: FontWeight.w500,
                                                                 fontSize:
                                                                 12.sp),
                                                           ),

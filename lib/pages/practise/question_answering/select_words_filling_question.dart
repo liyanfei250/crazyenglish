@@ -50,7 +50,10 @@ class _SelectWordsFillingQuestionState extends BaseQuestionState<SelectWordsFill
           buildQuestionDesc("原文"),
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
-              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+              child: Container(
+                margin: EdgeInsets.only(top: 8.w),
+                child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),),
+              )),
           getDetail(focusIndex>=0? focusIndex:widget.childIndex,sub!)
         ],
       ),

@@ -29,6 +29,7 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
     logic.addListenerId(GetBuilderIds.toChangeNickName, () {
       Util.toast("修改昵称成功");
       logic.getPersonInfo("${SpUtil.getString(BaseConstant.USER_NAME)}");
+      Get.back();
     });
   }
 

@@ -38,11 +38,11 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
   final logic = Get.put(Person_infoLogic());
   final state = Get.find<Person_infoLogic>().state;
   final TextStyle textStyle = TextStyle(
-      fontSize: 14, color: Color(0xff4d3535), fontWeight: FontWeight.w500);
+      fontSize: 14.sp, color: Color(0xff4d3535), fontWeight: FontWeight.w600);
   final TextStyle textSenStyle = TextStyle(
-      fontSize: 12, color: Color(0xff898a93), fontWeight: FontWeight.w500);
+      fontSize: 13.sp, color: Color(0xff898a93), fontWeight: FontWeight.w500);
   final TextStyle styleScend = TextStyle(
-      fontSize: 11, color: Color(0xff4d3535), fontWeight: FontWeight.w400);
+      fontSize: 11.sp, color: Color(0xff4d3535), fontWeight: FontWeight.w400);
 
   @override
   void initState() {
@@ -94,27 +94,27 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
               ),
             ],
           ),
-          Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                  top: 10.w, bottom: 10.w, left: 13.w, right: 13.w),
-              margin: EdgeInsets.only(left: 34.w, right: 34.w, top: 16.w),
-              decoration: BoxDecoration(
-                color: Color(0xfffef4e6),
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFF93a5c9).withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 13,
-                    offset: Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: Text(
-                '头像一自然年只能提交一次，无论是否修改成功，提交即消耗本年度修改次数，请谨慎提交。',
-                style: styleScend,
-              )),
+          // Container(
+          //     width: double.infinity,
+          //     padding: EdgeInsets.only(
+          //         top: 10.w, bottom: 10.w, left: 13.w, right: 13.w),
+          //     margin: EdgeInsets.only(left: 34.w, right: 34.w, top: 16.w),
+          //     decoration: BoxDecoration(
+          //       color: Color(0xfffef4e6),
+          //       borderRadius: BorderRadius.circular(6),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Color(0xFF93a5c9).withOpacity(0.2),
+          //           spreadRadius: 1,
+          //           blurRadius: 13,
+          //           offset: Offset(0, 0),
+          //         ),
+          //       ],
+          //     ),
+          //     child: Text(
+          //       '头像一自然年只能提交一次，无论是否修改成功，提交即消耗本年度修改次数，请谨慎提交。',
+          //       style: styleScend,
+          //     )),
           Container(
               width: double.infinity,
               margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 25.w),
@@ -133,20 +133,14 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 20.w,
+                    height: 6.w,
                   ),
                   GetBuilder<Person_infoLogic>(
                     id: GetBuilderIds.getPersonInfo,
                     builder: (logic){
                     return buildItemType('修改昵称', logic.state.infoResponse?.obj?.nickname);
                   }),
-                  SizedBox(
-                    height: 14.w,
-                  ),
                   Divider(),
-                  SizedBox(
-                    height: 14.w,
-                  ),
                   buildItemType('修改密码'),
                   // SizedBox(
                   //   height: 14.w,
@@ -162,7 +156,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                   //       return buildItemType('更换手机号', logic.state.infoResponse?.obj?.phone);
                   //     }),
                   SizedBox(
-                    height: 20.w,
+                    height: 6.w,
                   ),
                 ],
               )),
@@ -271,7 +265,7 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
   }
 
   Widget buildItemType(String menu, [String? second]) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         switch (menu) {
           case '修改昵称':
@@ -287,37 +281,40 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
             return;
         }
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 29.w,
-          ),
-          Text(
-            menu,
-            style: textStyle,
-          ),
-          SizedBox(
-            width: 38.w,
-          ),
-          Expanded(
-            child: (second != null)
-                ? Text(
-                    second,
-                    style: textSenStyle,
-                  )
-                : Text(''),
-          ),
-          Image.asset(
-            R.imagesHomeNextIcBlack,
-            height: 7.w,
-            width: 11.w,
-          ),
-          SizedBox(
-            width: 25.w,
-          ),
-        ],
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 14.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 29.w,
+            ),
+            Text(
+              menu,
+              style: textStyle,
+            ),
+            SizedBox(
+              width: 38.w,
+            ),
+            Expanded(
+              child: (second != null)
+                  ? Text(
+                second,
+                style: textSenStyle,
+              )
+                  : Text(''),
+            ),
+            Image.asset(
+              R.imagesHomeNextIcBlack,
+              height: 14.w,
+              width: 22.w,
+            ),
+            SizedBox(
+              width: 25.w,
+            ),
+          ],
+        ),
       ),
     );
   }

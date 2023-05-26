@@ -60,7 +60,10 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           buildQuestionType("听力题"),
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
-              child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
+              child: Container(
+                margin: EdgeInsets.only(top: 8.w),
+                child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),),
+              )),
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
