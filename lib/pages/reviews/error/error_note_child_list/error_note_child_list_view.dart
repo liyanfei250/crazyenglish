@@ -261,7 +261,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                       Row(
                         children: [
                           Text(
-                            value[index].questionTypeName ?? "",
+                            value[index].catalogueName ?? "",
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

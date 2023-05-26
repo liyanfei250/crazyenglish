@@ -130,7 +130,8 @@ class RecordListVos {
       num? subjectId, 
       num? questionType, 
       String? questionTypeName, 
-      num? totalCount, 
+      String? catalogueName, //替代
+      num? totalCount,
       num? errorCount, 
       num? correctCount,
       List<CorrectionNotebooks>? correctionNotebooks,}){
@@ -138,6 +139,7 @@ class RecordListVos {
     _subjectId = subjectId;
     _questionType = questionType;
     _questionTypeName = questionTypeName;
+    _catalogueName = catalogueName;
     _totalCount = totalCount;
     _errorCount = errorCount;
     _correctCount = correctCount;
@@ -149,6 +151,7 @@ class RecordListVos {
     _subjectId = json['subjectId'];
     _questionType = json['questionType'];
     _questionTypeName = json['questionTypeName'];
+    _catalogueName = json['catalogueName'];
     _totalCount = json['totalCount'];
     _errorCount = json['errorCount'];
     _correctCount = json['correctCount'];
@@ -163,6 +166,7 @@ class RecordListVos {
   num? _subjectId;
   num? _questionType;
   String? _questionTypeName;
+  String? _catalogueName;
   num? _totalCount;
   num? _errorCount;
   num? _correctCount;
@@ -171,6 +175,7 @@ RecordListVos copyWith({  num? journalId,
   num? subjectId,
   num? questionType,
   String? questionTypeName,
+  String? catalogueName,
   num? totalCount,
   num? errorCount,
   num? correctCount,
@@ -179,6 +184,7 @@ RecordListVos copyWith({  num? journalId,
   subjectId: subjectId ?? _subjectId,
   questionType: questionType ?? _questionType,
   questionTypeName: questionTypeName ?? _questionTypeName,
+  catalogueName: catalogueName ?? _catalogueName,
   totalCount: totalCount ?? _totalCount,
   errorCount: errorCount ?? _errorCount,
   correctCount: correctCount ?? _correctCount,
@@ -188,6 +194,7 @@ RecordListVos copyWith({  num? journalId,
   num? get subjectId => _subjectId;
   num? get questionType => _questionType;
   String? get questionTypeName => _questionTypeName;
+  String? get catalogueName => _catalogueName;
   num? get totalCount => _totalCount;
   num? get errorCount => _errorCount;
   num? get correctCount => _correctCount;
@@ -199,6 +206,7 @@ RecordListVos copyWith({  num? journalId,
     map['subjectId'] = _subjectId;
     map['questionType'] = _questionType;
     map['questionTypeName'] = _questionTypeName;
+    map['catalogueName'] = _catalogueName;
     map['totalCount'] = _totalCount;
     map['errorCount'] = _errorCount;
     map['correctCount'] = _correctCount;

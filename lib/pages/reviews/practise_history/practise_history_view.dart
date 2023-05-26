@@ -467,6 +467,17 @@ class _Practise_historyPageState extends BasePageState<Practise_historyPage> {
                                                           padding:
                                                           EdgeInsets.only(
                                                               top: 11.w)),
+                                                      Text(
+                                                        element.catalogueName??"",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xff353e4d),
+                                                            fontSize: 14.sp),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                              top: 11.w)),
                                                       Row(
                                                         mainAxisAlignment:
                                                         MainAxisAlignment

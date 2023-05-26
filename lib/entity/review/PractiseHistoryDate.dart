@@ -127,6 +127,7 @@ class Obj {
     num? exerciseId,
     num? subjectId,
     String? questionTypeName,
+    String? catalogueName,
     String? time,
     num? exerciseCount,
     num? correctCount,
@@ -167,6 +168,7 @@ class Obj {
     _exerciseId = exerciseId;
     _subjectId = subjectId;
     _questionTypeName = questionTypeName;
+    _catalogueName = catalogueName;
     _time = time;
     _exerciseCount = exerciseCount;
     _correctCount = correctCount;
@@ -209,6 +211,7 @@ class Obj {
     _exerciseId = json['exerciseId'];
     _subjectId = json['subjectId'];
     _questionTypeName = json['questionTypeName'];
+    _catalogueName = json['catalogueName'];
     _time = json['time'];
     _exerciseCount = json['exerciseCount'];
     _correctCount = json['correctCount'];
@@ -249,6 +252,7 @@ class Obj {
   num? _exerciseId;
   num? _subjectId;
   String? _questionTypeName;
+  String? _catalogueName;
   String? _time;
   num? _exerciseCount;
   num? _correctCount;
@@ -288,6 +292,7 @@ class Obj {
     num? exerciseId,
     num? subjectId,
     String? questionTypeName,
+    String? catalogueName,
     String? time,
     num? exerciseCount,
     num? correctCount,
@@ -327,6 +332,7 @@ class Obj {
     exerciseId: exerciseId ?? _exerciseId,
     subjectId: subjectId ?? _subjectId,
     questionTypeName: questionTypeName ?? _questionTypeName,
+    catalogueName: catalogueName ?? _catalogueName,
     time: time ?? _time,
     exerciseCount: exerciseCount ?? _exerciseCount,
     correctCount: correctCount ?? _correctCount,
@@ -367,6 +373,7 @@ class Obj {
   num? get exerciseId => _exerciseId;
   num? get subjectId => _subjectId;
   String? get questionTypeName => _questionTypeName;
+  String? get catalogueName => _catalogueName;
   String? get time => _time;
   num? get exerciseCount => _exerciseCount;
   num? get correctCount => _correctCount;
@@ -409,6 +416,7 @@ class Obj {
     map['exerciseId'] = _exerciseId;
     map['subjectId'] = _subjectId;
     map['questionTypeName'] = _questionTypeName;
+    map['catalogueName'] = _catalogueName;
     map['time'] = _time;
     map['exerciseCount'] = _exerciseCount;
     map['correctCount'] = _correctCount;
