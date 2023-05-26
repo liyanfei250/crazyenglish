@@ -39,7 +39,7 @@ class ImageGetWidgetLogic extends GetxController {
         takePhotoCallback: () {
           PermissionsUtil.checkPermissions(
               context,
-              "为了正常拍摄照片，需要您授权以下权限",
+              "相册没有权限，请在设置-数字英语中打开相册",
               [RequestPermissionsTag.CAMERA], () {
             ImagePicker _picker = ImagePicker();
             // Pick an image
