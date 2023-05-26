@@ -87,7 +87,7 @@ PODS:
     - FlutterMacOS
   - sign_in_with_apple (0.0.1):
     - Flutter
-  - sqflite (0.0.2):
+  - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
   - TOCropViewController (2.6.1)
@@ -214,7 +214,7 @@ SPEC CHECKSUMS:
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   http_proxy_override: 3f8cc6cdea77725778ccd931fae2b54fc8bc27e5
-  image_cropper: 60c2789d1f1a78c873235d4319ca0c34a69f2d98
+  image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   integration_test: 13825b8a9334a850581300559b8839134b124670
@@ -224,15 +224,15 @@ SPEC CHECKSUMS:
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   SDWebImage: b9a731e1d6307f44ca703b3976d18c24ca561e84
   SDWebImageWebPCoder: 18503de6621dd2c420d680e33d46bf8e1d5169b0
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
-  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
