@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,7 +33,6 @@ class OthersQuestion extends BaseQuestion {
 class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   late SubjectVoList element;
-  Widget? detailWidget ;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -47,8 +47,9 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    if(detailWidget == null){
-      detailWidget = getQuestionDetail(element);
+    if(selectGapGetxController!=null){
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus);
     }
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -70,7 +71,6 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
               buildQuestionDesc("Question"),
             ],
           )),
-          Expanded(child:detailWidget!)
         ],
       ),
     );
