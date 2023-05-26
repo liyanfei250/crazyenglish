@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_bloc.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_event.dart';
 import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
+import 'package:crazyenglish/pages/practise/question/choice_question/choice_question_view.dart';
+import 'package:crazyenglish/pages/practise/question/question_factory.dart';
 import 'package:crazyenglish/pages/practise/question_answering/completion_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/others_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/listen_question.dart';
@@ -190,6 +194,11 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   Map<String,ExerciseLists> subtopicAnswerVoMap = {};
   bool hasBottomPageTab = true;
   bool isCommiting = false;
+  bool hasPageView = false;
+  List<Widget> childQuestionList = [];
+  Widget? childQustionPageView;
+  late PageController pageController;
+  final Map<String,TextEditingController> gapEditController = {};
 
   @override
   void onCreate() {
@@ -199,7 +208,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       startTimer();
     }
     logic.updateOperationInfo(widget.operationId, widget.operationStudentId);
-
+    pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
       if(widget.lastFinishResult!.obj!=null){
@@ -325,6 +334,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }
       });
     }
+
+    logic.addListenerId(GetBuilderIds.answerPageNum, () {
+      if(pageController.hasClients){
+        pageController.jumpToPage(state.currentQuestionNum);
+      }
+    });
   }
 
   @override
@@ -334,6 +349,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     return Scaffold(
       // resizeToAvoidBottomInset:false,
       appBar: AppBar(
+        shadowColor: const Color(0x1F000000),
         title: Text(
           widget.testDetailResponse!.obj!.name??"未获取到标题",
           style: TextStyle(
@@ -377,138 +393,138 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              maxHeight: MediaQuery
-                  .of(context)
-                  .size
-                  .height -
-                  AppBar().preferredSize.height -
-                  MediaQuery
-                      .of(context)
-                      .padding
-                      .top),
-          child: useOptionArray(pages),
-        ),
+      body: Column(
+        children: [
+          Expanded(child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: pages[0],
+              ),
+              SliverVisibility(
+                visible: hasPageView,
+                sliver: childQustionPageView??SliverToBoxAdapter(child: Container(),),
+              )
+            ],
+          )),
+          Visibility(
+              visible: hasBottomPageTab,
+              child: SafeArea(
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Divider(height: 0.2.w,color: AppColors.c_FFD2D5DC,),
+                      Container(
+                        margin:
+                        EdgeInsets.only(left: 46.w, right: 46.w, top: 14.w, bottom: 27.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                pageLogic.prePage();
+                              },
+                              child: GetBuilder<AnsweringLogic>(
+                                  id: GetBuilderIds.answerPageNum,
+                                  builder: (logic) {
+                                    return Container(
+                                      width: 70.w,
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            logic.state.currentQuestionNum>0
+                                                ? R.imagesPractisePreQuestionEnable
+                                                : R.imagesPractisePreQuestionUnable,
+                                            width: 18.w,
+                                            height: 18.w,
+                                          ),
+                                          Text("上一题",style: TextStyle(fontSize: 14.sp,
+                                              color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            GetBuilder<AnsweringLogic>(
+                                id: GetBuilderIds.answerPageNum,
+                                builder: (logic) {
+                                  print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
+                                  return Text(
+                                    "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
+                                    style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.c_FF353E4D),
+                                  );
+                                }),
+                            InkWell(
+                              onTap: (){
+                                if(state.currentQuestionNum+1 >= state.totalQuestionNum){
+                                  if(widget.answerType == AnsweringPage.answer_browse_type){
+                                    if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
+                                      RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                                          isNeedCheckLogin:true,
+                                          arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                                            AnsweringPage.catlogIdKey:widget.uuid,
+                                            AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                                            AnsweringPage.childIndexKey:0,
+                                            AnsweringPage.LastFinishResult:widget.lastFinishResult,
+                                            AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+                                          });
+                                    }else{
+                                      Get.back();
+                                    }
+
+                                  }else{
+                                    _uploadTestAnswer();
+                                  }
+                                }else{
+                                  pageLogic.nextPage();
+                                }
+                              },
+                              child: GetBuilder<AnsweringLogic>(
+                                  id: GetBuilderIds.answerPageNum,
+                                  builder: (logic) {
+                                    return Container(
+                                      width: 70.w,
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text((widget.answerType==AnsweringPage.answer_browse_type
+                                              || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
+                                              color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                                  || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                          (widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum) ?
+                                          Image.asset(
+                                            logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                                ? R.imagesPractiseNextQuestionEnable
+                                                : R.imagesPractiseNextQuestionUnable,
+                                            width: 18.w,
+                                            height: 18.w,
+                                          ):Container(width: 18.w,
+                                              height: 18.w)
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            )
+                          ],
+                        ),
+                      )
+                    ]
+                ),
+              ))
+        ],
       ),
     );
   }
 
-  Widget useOptionArray(List<BaseQuestion> pages) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            child: pages[0],
-          ),
-        ),
-        Visibility(
-          visible: hasBottomPageTab,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Divider(height: 0.2.w,color: AppColors.c_FFD2D5DC,),
-              Container(
-                margin:
-                EdgeInsets.only(left: 46.w, right: 46.w, top: 14.w, bottom: 10.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        pageLogic.prePage();
-                      },
-                      child: GetBuilder<AnsweringLogic>(
-                          id: GetBuilderIds.answerPageNum,
-                          builder: (logic) {
-                            return Row(
-                              children: [
-                                Image.asset(
-                                  logic.state.currentQuestionNum>0
-                                      ? R.imagesPractisePreQuestionEnable
-                                      : R.imagesPractisePreQuestionUnable,
-                                  width: 18.w,
-                                  height: 18.w,
-                                ),
-                                Text("上一题",style: TextStyle(fontSize: 14.sp,
-                                    color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                              ],
-                            );
-                          }),
-                    ),
-                    GetBuilder<AnsweringLogic>(
-                        id: GetBuilderIds.answerPageNum,
-                        builder: (logic) {
-                          print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
-                          return Text(
-                            "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
-                            style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.c_FF353E4D),
-                          );
-                        }),
-                    InkWell(
-                      onTap: (){
-                        if(state.currentQuestionNum+1 >= state.totalQuestionNum){
-                          if(widget.answerType == AnsweringPage.answer_browse_type){
-                            if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
-                              RouterUtil.toNamed(AppRoutes.AnsweringPage,
-                                  isNeedCheckLogin:true,
-                                  arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
-                                    AnsweringPage.catlogIdKey:widget.uuid,
-                                    AnsweringPage.parentIndexKey:widget.parentIndex+1,
-                                    AnsweringPage.childIndexKey:0,
-                                    AnsweringPage.LastFinishResult:widget.lastFinishResult,
-                                    AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
-                                  });
-                            }else{
-                              Get.back();
-                            }
-
-                          }else{
-                            _uploadTestAnswer();
-                          }
-                        }else{
-                          pageLogic.nextPage();
-                        }
-                      },
-                      child: GetBuilder<AnsweringLogic>(
-                          id: GetBuilderIds.answerPageNum,
-                          builder: (logic) {
-                            return Row(
-                              children: [
-                                Text((widget.answerType==AnsweringPage.answer_browse_type
-                                    || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
-                                    color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                        || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                                Visibility(
-                                    visible: widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum,
-                                    child: Image.asset(
-                                      logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                          ? R.imagesPractiseNextQuestionEnable
-                                          : R.imagesPractiseNextQuestionUnable,
-                                      width: 18.w,
-                                      height: 18.w,
-                                    ))
-                              ],
-                            );
-                          }),
-                    )
-                  ],
-                ),
-              )
-            ]
-          ))
-      ],
-    );
-  }
-
   void _uploadTestAnswer(){
+
     Get.defaultDialog(
       title: "",
+      titlePadding: EdgeInsets.all(0.0.w),
       confirm: InkWell(
         onTap: (){
           if(currentSubjectVoList!=null){
@@ -531,6 +547,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+          margin: EdgeInsets.only(left:10.w,bottom: 18.w),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -557,7 +574,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           Get.back();
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
+          padding: EdgeInsets.symmetric(vertical: 3.w,horizontal: 23.w),
+          margin: EdgeInsets.only(right:10.w,bottom: 18.w),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(width: 1.w, color: AppColors.c_FFD2D5DC),
@@ -566,9 +584,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           child: Text("取消",style: TextStyle(color:AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
         ),
       ),
-      content: Text(
-        widget.answerType == AnsweringPage.answer_fix_type ?
-        "确认纠正错题" : "是否确定提交答案",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+      content: Container(
+        margin: EdgeInsets.only(bottom: 20.w),
+        child: Text(
+          widget.answerType == AnsweringPage.answer_fix_type ?
+          "是否确定提交已纠正错题？" : "是否确定提交？",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+      ),
     );
   }
 
@@ -592,24 +613,30 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+          childQustionPageView = getQuestionDetail(currentSubjectVoList!);
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           hasBottomPageTab = false;
           questionList.add(WritingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
         || currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
           questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+          childQustionPageView = getQuestionDetail(currentSubjectVoList!);
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.translate_question){
           questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+          childQustionPageView = getQuestionDetail(currentSubjectVoList!);
         }else{
           switch (currentSubjectVoList!.classifyValue) {
             case QuestionTypeClassify.listening: // 听力题
               questionList.add(ListenQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+              childQustionPageView = getQuestionDetail(currentSubjectVoList!);
               break;
             case QuestionTypeClassify.reading: // 阅读题
               questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+              childQustionPageView = getQuestionDetail(currentSubjectVoList!);
               break;
             default:
               questionList.add(OthersQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+              childQustionPageView = getQuestionDetail(currentSubjectVoList!);
               print("题型分类："
                   "${QuestionTypeClassify.getName(currentSubjectVoList!.classifyValue!.toInt())}\n"
                   "题型：${currentSubjectVoList!.questionTypeName}"
@@ -620,6 +647,203 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
       }
     }
     return questionList;
+  }
+
+  TextEditingController makeEditController(String key){
+    if(gapEditController[key] == null){
+      TextEditingController controller = TextEditingController();
+      gapEditController[key] = controller;
+      return controller;
+    }else{
+      return gapEditController[key]!;
+    }
+  }
+
+  Widget getQuestionDetail(SubjectVoList element){
+    childQuestionList.clear();
+
+    // 判断是否父子题
+    // 普通阅读 常规阅读题 是父子题
+    int questionNum = element.subtopicVoList!.length;
+    if(questionNum>0){
+      for(int i = 0 ;i< questionNum;i++){
+        SubtopicVoList question = element.subtopicVoList![i];
+
+        List<Widget> itemList = [];
+
+        if(element.questionTypeStr == QuestionType.single_choice
+            || element.questionTypeStr == QuestionType.complete_filling
+            || element.questionTypeStr == QuestionType.normal_reading
+            || element.questionTypeStr == QuestionType.multi_choice
+            || element.questionTypeStr == QuestionType.judge_choice){
+          // 选择题
+          itemList.add(buildQuestionType("选择题"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          bool isClickEnable = true;
+          String defaultChooseAnswers = "";
+          // 找到上次作答记录 或者 错题本正确题目答案
+          num subjectId = element.id??0;
+          num subtopicId = question.id??0;
+          if(subtopicAnswerVoMap!=null
+              && subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+            ExerciseLists exerciseLists = subtopicAnswerVoMap["$subjectId:$subtopicId"]!;
+            if(question.optionsList!=null &&
+                exerciseLists.answer!=null &&
+                exerciseLists.answer!.isNotEmpty){
+              for(int i = 0; i< question.optionsList!.length;i++){
+                if(exerciseLists.answer!.contains("${question.optionsList![i].sequence}")){
+                  defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
+                }
+              }
+            }
+          }
+          if(widget.answerType == AnsweringPage.answer_fix_type){
+            if(subtopicAnswerVoMap!=null
+                && subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
+              isClickEnable = false;
+            }
+          } else if(widget.answerType == AnsweringPage.answer_normal_type){
+            defaultChooseAnswers = "";
+          }
+
+          if(element.questionTypeStr == QuestionType.multi_choice){
+            if((question.optionsList![0].content??"").isNotEmpty){
+              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true));
+            } else {
+              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true,isImgChoice: true,));
+            }
+          }else if(element.questionTypeStr == QuestionType.judge_choice){
+            itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isJudge:true));
+          }else{
+            // TODO 判断是否是图片选择题的逻辑需要修改
+            if((question.optionsList![0].content??"").isNotEmpty){
+              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false));
+            } else {
+              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false,isImgChoice: true));
+            }
+          }
+
+        }else if(element.questionTypeStr == QuestionType.normal_gap) {
+          itemList.add(buildQuestionType("填空题"));
+          // itemList.add(buildReadQuestion(element.content ?? ""));
+          itemList.add(QuestionFactory.buildNarmalGapQuestion(
+              question, 0, makeEditController,answerType: widget.answerType));
+        }else if(element.questionTypeStr == QuestionType.question_reading){
+          itemList.add(buildQuestionType("填空"));
+          itemList.add(Visibility(
+            visible: question!.problem != null && question!.problem!.isNotEmpty,
+            child: Text(
+              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          itemList.add(Padding(
+            padding: EdgeInsets.only(top: 18.w),
+          ));
+          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,subtopicAnswerVoMap,null,clearFocus,userAnswerCallback: userAnswerCallback,answerType: widget.answerType));
+        } else if(element.questionTypeStr == QuestionType.translate_question){
+          itemList.add(buildQuestionType("填空"));
+          itemList.add(Text("英汉互译",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp)));
+          itemList.add(Padding(padding: EdgeInsets.only(top: 30.w),));
+          itemList.add(Row(
+            children: [
+              Text("原文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+              Padding(padding: EdgeInsets.only(left: 11.w)),
+              Expanded(child: Container(
+                height: 44.w,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                  border: Border.all(
+                      width: 1.w,
+                      color: AppColors.c_FFB4B9C6,
+                      style: BorderStyle.solid
+                  ),
+                ),
+                child: Text("${question.problem}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
+              ))
+            ],
+          ));
+          itemList.add(Padding(padding: EdgeInsets.only(top: 16.w),));
+          itemList.add(Row(
+            children: [
+              Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
+              Padding(padding: EdgeInsets.only(left: 11.w)),
+              Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,subtopicAnswerVoMap,null,clearFocus,userAnswerCallback: userAnswerCallback,answerType: widget.answerType))
+            ],
+          ));
+        }
+        // else if(element.questionTypeStr == QuestionType.correction_question){
+        //   itemList.add(buildQuestionType("纠错题"));
+        //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
+        // }
+
+        childQuestionList.add(SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: itemList,
+            ),
+          ),
+        ));
+      }
+    }
+
+    if(logic!=null){
+      print("call updateCurrentPage getQuestionDetail");
+      logic.updateCurrentPage(widget.childIndex,totalQuestion:childQuestionList.length,isInit: true);
+    }
+
+    hasPageView = true;
+    return SliverFillViewport(
+      delegate: SliverChildListDelegate(
+          [Column(
+            children: [
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  physics: _neverScroll,
+                  pageSnapping: false,
+                  onPageChanged: (int value){
+                    // if(logic!=null){
+                    //   logic.updateCurrentPage(value,totalQuestion:questionList.length);
+                    // }
+                  },
+                  children: childQuestionList,
+                ),
+              )
+            ],
+          )]
+      ),
+    );
+
+  }
+
+  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo){
+    logic.updateUserAnswer((subtopicAnswerVo.subtopicId??1).toString(), subtopicAnswerVo);
+  }
+
+  Widget buildQuestionType(String name){
+    return Container(
+      height: 17.w,
+      margin: EdgeInsets.only(top:14.w,bottom: 10.w),
+      padding: EdgeInsets.only(left:2.w,right:2.w),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+          border: Border.all(color: AppColors.c_FF898A93,width: 0.4.w)
+      ),
+      child: Text(name,style: TextStyle(color: AppColors.c_FF898A93,fontSize: 10.sp),),
+    );
+  }
+
+  void clearFocus(){
+    closeKeyBoard();
   }
 
   startTimer() {
@@ -638,6 +862,9 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   @override
   void onDestroy() {
     cancelTimer();
+    if(pageController.hasClients){
+      pageController.dispose();
+    }
     if(!isCommiting){
       if(widget.answerType == AnsweringPage.answer_normal_type
       || widget.answerType == AnsweringPage.answer_continue_type

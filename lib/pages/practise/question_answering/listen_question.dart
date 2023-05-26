@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/practise/question_answering/base_question.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../entity/start_exam.dart';
@@ -46,7 +47,10 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
 
   @override
   Widget build(BuildContext context) {
-
+    if(selectGapGetxController!=null){
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus);
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w),
@@ -60,11 +64,9 @@ class _ListenQuestionState extends BaseQuestionState<ListenQuestion> {
           // Visibility(
           //     visible: element.name!=null && element.name!.isNotEmpty,
           //     child: Text(element.name??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-
           Visibility(
               visible: element.classifyValue == QuestionTypeClassify.listening && element.audio !=null && element.audio!.isNotEmpty,
               child: buildListenQuestion(element.audio??"")),
-          Expanded(child: getQuestionDetail(element)),
         ],
       ),
     );

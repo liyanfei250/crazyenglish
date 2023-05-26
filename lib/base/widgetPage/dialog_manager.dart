@@ -189,6 +189,7 @@ class DialogManager {
         allowClick: true,
         onlyOne: true,
         crossPage: true,
+        enableKeyboardSafeArea:true,
         backButtonBehavior: backButtonBehavior,
         wrapToastAnimation: (controller, cancel, child) => Stack(
               children: <Widget>[

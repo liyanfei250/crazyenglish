@@ -188,7 +188,7 @@ class QuestionFactory{
     );
   }
 
-  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,AnswerMixin answerMin,{UserAnswerCallback? userAnswerCallback,bool isResult=false,int answerType = AnsweringPage.answer_normal_type,}){
+  static Widget buildShortAnswerQuestion(num subjecId,SubtopicVoList subtopicVoList,int gapKey,Map<String,ExerciseLists> subtopicAnswerVoMap,GetEditingControllerCallback? getEditingControllerCallback,CloseKeyBoardCallback answerMin,{UserAnswerCallback? userAnswerCallback,bool isResult=false,int answerType = AnsweringPage.answer_normal_type,}){
     var correctType = 0.obs;
     TextEditingController controller = TextEditingController();
     num subtopicId = subtopicVoList.id??0;
@@ -260,11 +260,11 @@ class QuestionFactory{
 
           onSubmitted: (text){
             print("======+++==onSubmitted====");
-            answerMin.clearFocus();
+            answerMin.call();
           },
           onEditingComplete: (){
             print("=====+++===onEditingComplete====");
-            answerMin.clearFocus();
+            answerMin.call();
           },
           controller: controller),
     );
@@ -273,7 +273,7 @@ class QuestionFactory{
   /// 常规填空、补全填空、翻译填空 选词填空题干部分
   /// gapKey 默认空的索引号
   /// 客观题
-  static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,AnswerMixin answerMin,{int gapKey = 0,int defaultIndex = 0,
+  static Widget buildFillingQuestion(SubjectVoList subjectVoList,GetFocusNodeControllerCallback getFocusNodeControllerCallback,GetEditingControllerCallback getEditingControllerCallback,Map<String,ExerciseLists> subtopicAnswerVoMap,CloseKeyBoardCallback answerMin,{int gapKey = 0,int defaultIndex = 0,
     bool isResult = false,int answerType = AnsweringPage.answer_normal_type,UserAnswerCallback? userAnswerCallback}){
     String gap = "____";
 
@@ -427,14 +427,14 @@ class QuestionFactory{
 
                       onSubmitted: (text){
                         print("======+++==onSubmitted====");
-                        answerMin.clearFocus();
+                        answerMin.call();
                         _.updateGapKeyContent(key, text??"");
                         getFocusNodeControllerCallback(key).unfocus();
                         _.updateFocus(key, false,isInit:false);
                       },
                       onEditingComplete: (){
                         print("=====+++===onEditingComplete====");
-                        answerMin.clearFocus();
+                        answerMin.call();
                         getFocusNodeControllerCallback(key).unfocus();
                         _.updateFocus(key, false,isInit:false);
                       },

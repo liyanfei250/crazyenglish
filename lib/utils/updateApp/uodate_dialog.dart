@@ -4,7 +4,7 @@
 // import 'package:crazyenglish/bling/route/bling_router.dart';
 // import 'package:crazyenglish/page/setting/check_update_resp.dart';
 // import 'package:crazyenglish/utils/AppUtil.dart';
-// import 'package:crazyenglish/utils/channel/kooielts_channel.dart';
+// import 'package:crazyenglish/utils/channel/crazyenglish_channel.dart';
 // import 'package:crazyenglish/utils/colors.dart';
 // import 'package:crazyenglish/utils/date_util.dart';
 // import 'package:flutter/material.dart';

@@ -104,10 +104,10 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
+                    color: Color(0xFF93a5c9).withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 13,
+                    offset: Offset(0, 0),
                   ),
                 ],
               ),
@@ -123,11 +123,11 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
-                  ),
+                    color: Color(0xFF93a5c9).withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 13,
+                    offset: Offset(0, 0),
+                  )
                 ],
               ),
               child: Column(
@@ -175,11 +175,11 @@ class _ToMyOrderPageState extends BasePageState<PersonInfoPage> {
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
-                  ),
+                    color: Color(0xFF93a5c9).withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 13,
+                    offset: Offset(0, 0),
+                  )
                 ],
               ),
               child: Column(

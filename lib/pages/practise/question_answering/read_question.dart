@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -35,7 +36,6 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
 
   late SubjectVoList element;
 
-  Widget? detailWidget ;
   @override
   getAnswers() {
     // TODO: implement getAnswers
@@ -50,9 +50,11 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    if(detailWidget == null){
-      detailWidget = getQuestionDetail(element);
+    if(selectGapGetxController!=null){
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
+      selectGapGetxController.disposeId(GetBuilderIds.updateFocus);
     }
+
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 18.w,right: 18.w,top: 17.w),
@@ -66,7 +68,6 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
           buildReadQuestion(element!.content),
           buildQuestionDesc("Question"),
-          Expanded(child: detailWidget!)
         ],
       ),
     );

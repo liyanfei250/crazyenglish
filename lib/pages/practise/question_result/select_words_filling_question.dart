@@ -73,7 +73,7 @@ class _SelectWordsFillingQuestionResultState extends BaseQuestionResultState<Sel
         mainAxisSize: MainAxisSize.min,
         children: [
           buildQuestionType("选词填空题"),
-          QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,this),
+          QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,clearFocus),
           QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
         ],
       ),

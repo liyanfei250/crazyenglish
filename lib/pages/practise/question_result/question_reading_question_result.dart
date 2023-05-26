@@ -121,7 +121,7 @@ class _QuestionReadingQuestionResultState extends BaseQuestionResultState<Questi
         questionList.add(Padding(
           padding: EdgeInsets.only(top: 18.w),
         ));
-        questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,this,isResult:true));
+        questionList.add(QuestionFactory.buildShortAnswerQuestion(element.id??0,question,1,widget.subtopicAnswerVoMap,null,clearFocus,isResult:true));
       }
       collectLogic.queryCollectState(element.id??0);
     }

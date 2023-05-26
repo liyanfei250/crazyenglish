@@ -72,28 +72,35 @@ class _ToMyOrderPageState extends BasePageState<ChangeNickNamePage> {
             SizedBox(
               height: 34.w,
             ),
-            Container(
-              width: double.infinity,
-              height: 47,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFFBC00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(26),
-                  ),
+            InkWell(
+              child: Container(
+                width: double.infinity,
+                height: 47,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFBC00),
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF93a5c9).withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 13,
+                      offset: Offset(0, 0),
+                    )
+                  ],
                 ),
                 child: Text(
                   '提交',
                   style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
-                onPressed: () {
-                  // 点击按钮触发的逻辑
-                  logic.changeNickName(_controller.text);
-                },
               ),
+              onTap: (){
+                logic.changeNickName(_controller.text);
+              },
             ),
           ],
         ),

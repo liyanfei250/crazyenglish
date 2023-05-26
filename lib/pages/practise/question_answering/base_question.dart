@@ -32,6 +32,7 @@ typedef GetFocusNodeControllerCallback = FocusNode Function(String key);
 typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
 typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
+typedef CloseKeyBoardCallback = void Function();
 
 abstract class BaseQuestion extends StatefulWidget{
   late BaseQuestionState baseQuestionState;
@@ -64,7 +65,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   final Map<String,TextEditingController> gapEditController = {};
   final Map<String,FocusNode> gapFocusNodeController = {};
   Map<String,String> gapAnswerController = {};
-  late PageController pageController;
 
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
@@ -78,7 +78,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void initState(){
     super.initState();
     onCreate();
-    pageController = PageController(keepPage: true,initialPage: widget.childIndex);
+
     tag = tag+curPage;
     selectGapGetxController.initLastAnswer(getLastAnswer());
     selectGapGetxController.updateFocus("${widget.childIndex+1}",true,isInit: true);
@@ -199,158 +199,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     );
   }
 
-  Widget getQuestionDetail(SubjectVoList element){
-    questionList.clear();
-
-    // 判断是否父子题
-    // 普通阅读 常规阅读题 是父子题
-    int questionNum = element.subtopicVoList!.length;
-    if(questionNum>0){
-      for(int i = 0 ;i< questionNum;i++){
-        SubtopicVoList question = element.subtopicVoList![i];
-
-        List<Widget> itemList = [];
-
-        if(element.questionTypeStr == QuestionType.single_choice
-            || element.questionTypeStr == QuestionType.complete_filling
-            || element.questionTypeStr == QuestionType.normal_reading
-            || element.questionTypeStr == QuestionType.multi_choice
-            || element.questionTypeStr == QuestionType.judge_choice){
-          // 选择题
-          itemList.add(buildQuestionType("选择题"));
-          itemList.add(Visibility(
-            visible: question!.problem != null && question!.problem!.isNotEmpty,
-            child: Text(
-              "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          bool isClickEnable = true;
-          String defaultChooseAnswers = "";
-          // 找到上次作答记录 或者 错题本正确题目答案
-          num subjectId = element.id??0;
-          num subtopicId = question.id??0;
-          if(widget.subtopicAnswerVoMap!=null
-              && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
-            ExerciseLists exerciseLists = widget.subtopicAnswerVoMap["$subjectId:$subtopicId"]!;
-            if(question.optionsList!=null &&
-                exerciseLists.answer!=null &&
-                exerciseLists.answer!.isNotEmpty){
-              for(int i = 0; i< question.optionsList!.length;i++){
-                if(exerciseLists.answer!.contains("${question.optionsList![i].sequence}")){
-                  defaultChooseAnswers = "$defaultChooseAnswers+${question.optionsList![i].sequence}";
-                }
-              }
-            }
-          }
-          if(widget.answerType == AnsweringPage.answer_fix_type){
-            if(widget.subtopicAnswerVoMap!=null
-                && widget.subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
-              isClickEnable = false;
-            }
-          } else if(widget.answerType == AnsweringPage.answer_normal_type){
-            defaultChooseAnswers = "";
-          }
-
-          if(element.questionTypeStr == QuestionType.multi_choice){
-            if((question.optionsList![0].content??"").isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true));
-            } else {
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true,isImgChoice: true,));
-            }
-          }else if(element.questionTypeStr == QuestionType.judge_choice){
-            itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isJudge:true));
-          }else{
-            // TODO 判断是否是图片选择题的逻辑需要修改
-            if((question.optionsList![0].content??"").isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false));
-            } else {
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false,isImgChoice: true));
-            }
-          }
-
-        }else if(element.questionTypeStr == QuestionType.normal_gap) {
-          itemList.add(buildQuestionType("填空题"));
-          // itemList.add(buildReadQuestion(element.content ?? ""));
-          itemList.add(QuestionFactory.buildNarmalGapQuestion(
-              question, 0, makeEditController,answerType: widget.answerType));
-        }else if(element.questionTypeStr == QuestionType.question_reading){
-          itemList.add(buildQuestionType("填空"));
-          itemList.add(Visibility(
-            visible: question!.problem != null && question!.problem!.isNotEmpty,
-            child: Text(
-              question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
-            ),));
-          itemList.add(Padding(
-            padding: EdgeInsets.only(top: 18.w),
-          ));
-          itemList.add(QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback,answerType: widget.answerType));
-        } else if(element.questionTypeStr == QuestionType.translate_question){
-          itemList.add(buildQuestionType("填空"));
-          itemList.add(Text("英汉互译",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 18.sp)));
-          itemList.add(Padding(padding: EdgeInsets.only(top: 30.w),));
-          itemList.add(Row(
-            children: [
-              Text("原文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Expanded(child: Container(
-                height: 44.w,
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 10.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(7.w)),
-                  border: Border.all(
-                      width: 1.w,
-                      color: AppColors.c_FFB4B9C6,
-                      style: BorderStyle.solid
-                  ),
-                ),
-                child: Text("${question.problem}",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp),),
-              ))
-            ],
-          ));
-          itemList.add(Padding(padding: EdgeInsets.only(top: 16.w),));
-          itemList.add(Row(
-            children: [
-              Text("译文",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 14.sp)),
-              Padding(padding: EdgeInsets.only(left: 11.w)),
-              Expanded(child: QuestionFactory.buildShortAnswerQuestion(element.id!.toInt(),question,1,widget.subtopicAnswerVoMap,null,this,userAnswerCallback: userAnswerCallback,answerType: widget.answerType))
-            ],
-          ));
-        }
-        // else if(element.questionTypeStr == QuestionType.correction_question){
-        //   itemList.add(buildQuestionType("纠错题"));
-        //   itemList.add(QuestionFactory.buildFixProblemQuestion(element,element!.content!));
-        // }
-
-        questionList.add(SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: itemList,
-          ),
-        ));
-      }
-    }
-
-    if(logic!=null){
-      print("call updateCurrentPage getQuestionDetail");
-      logic.updateCurrentPage(widget.childIndex,totalQuestion:questionList.length,isInit: true);
-    }
-    selectGapGetxController.disposeId(GetBuilderIds.updateFocus+"isInit");
-    selectGapGetxController.disposeId(GetBuilderIds.updateFocus);
-    return PageView(
-      controller: pageController,
-      physics: _neverScroll,
-      pageSnapping: false,
-      onPageChanged: (int value){
-        // if(logic!=null){
-        //   logic.updateCurrentPage(value,totalQuestion:questionList.length);
-        // }
-      },
-      children: questionList,
-    );
-  }
-
 
   @override
   int getQuestionCount() {
@@ -425,9 +273,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void jumpToQuestion(int index) {
     int currentPage = index;
     // 检测
-    if(pageController.hasClients){
-      pageController.jumpToPage(currentPage);
-    }
     print("jumpToQuestion==${currentPage}");
     logic.updateCurrentPage(currentPage);
   }
@@ -499,9 +344,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   void dispose() {
     print(tag + "dispose\n");
     Get.delete<SelectGapGetxController>();
-    if(pageController.hasClients){
-      pageController.dispose();
-    }
     pagLogic.disposeId(GetBuilderIds.answerPrePage);
     pagLogic.disposeId(GetBuilderIds.answerNextPage);
     onDestroy();

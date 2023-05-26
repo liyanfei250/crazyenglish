@@ -315,9 +315,9 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
+                    spreadRadius: 1,
+                    blurRadius: 13,
+                    offset: Offset(0, 0),
                   ),
                 ],
               ),

@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../base/AppUtil.dart';
 import '../../entity/check_update_resp.dart';
 import '../colors.dart';
-import '../date_util.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'app_market.dart';
 import 'app_upgrade.dart';
 import 'download_status.dart';
@@ -38,7 +38,7 @@ class SimpleAppUpgradeWidget extends StatefulWidget {
       required this.resp,
         required this.downloadUrl,
       this.forceUpdate = false,
-      this.iosAppId = "1488425098",
+      this.iosAppId = "6448911680",
       this.appMarketInfo,
       this.onCancel,
       this.onOk,
@@ -265,6 +265,16 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
         : Container();
   }
 
+   final String _appStoreUrl = 'https://apps.apple.com/app/id6448911680'; // 替换为您应用程序的 App Store URL
+
+   void _launchAppStore() async {
+     if (await canLaunchUrl(Uri.parse(_appStoreUrl))) {
+       await launchUrl(Uri.parse(_appStoreUrl));
+     } else {
+       throw 'Could not launch $_appStoreUrl';
+     }
+   }
+
   ///
   /// 点击确定按钮
   ///
@@ -275,8 +285,7 @@ class _SimpleAppUpgradeWidget extends State<SimpleAppUpgradeWidget> {
 
     widget.onOk?.call();
     if (Platform.isIOS) {
-      //ios 需要跳转到app store更新，原生实现
-      FlutterUpgrade.toAppStore(widget.iosAppId!);
+      _launchAppStore();
       return;
     }
     if (widget.downloadUrl == null || widget.downloadUrl.isEmpty) {
