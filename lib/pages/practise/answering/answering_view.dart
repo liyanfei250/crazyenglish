@@ -349,6 +349,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     return Scaffold(
       // resizeToAvoidBottomInset:false,
       appBar: AppBar(
+        shadowColor: const Color(0x1F000000),
         title: Text(
           widget.testDetailResponse!.obj!.name??"未获取到标题",
           style: TextStyle(
@@ -407,110 +408,112 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           )),
           Visibility(
               visible: hasBottomPageTab,
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(height: 0.2.w,color: AppColors.c_FFD2D5DC,),
-                    Container(
-                      margin:
-                      EdgeInsets.only(left: 46.w, right: 46.w, top: 14.w, bottom: 10.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              pageLogic.prePage();
-                            },
-                            child: GetBuilder<AnsweringLogic>(
+              child: SafeArea(
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Divider(height: 0.2.w,color: AppColors.c_FFD2D5DC,),
+                      Container(
+                        margin:
+                        EdgeInsets.only(left: 46.w, right: 46.w, top: 14.w, bottom: 27.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                pageLogic.prePage();
+                              },
+                              child: GetBuilder<AnsweringLogic>(
+                                  id: GetBuilderIds.answerPageNum,
+                                  builder: (logic) {
+                                    return Container(
+                                      width: 70.w,
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            logic.state.currentQuestionNum>0
+                                                ? R.imagesPractisePreQuestionEnable
+                                                : R.imagesPractisePreQuestionUnable,
+                                            width: 18.w,
+                                            height: 18.w,
+                                          ),
+                                          Text("上一题",style: TextStyle(fontSize: 14.sp,
+                                              color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            GetBuilder<AnsweringLogic>(
                                 id: GetBuilderIds.answerPageNum,
                                 builder: (logic) {
-                                  return Container(
-                                    width: 70.w,
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          logic.state.currentQuestionNum>0
-                                              ? R.imagesPractisePreQuestionEnable
-                                              : R.imagesPractisePreQuestionUnable,
-                                          width: 18.w,
-                                          height: 18.w,
-                                        ),
-                                        Text("上一题",style: TextStyle(fontSize: 14.sp,
-                                            color: logic.state.currentQuestionNum>0? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                                      ],
-                                    ),
+                                  print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
+                                  return Text(
+                                    "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
+                                    style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.c_FF353E4D),
                                   );
                                 }),
-                          ),
-                          GetBuilder<AnsweringLogic>(
-                              id: GetBuilderIds.answerPageNum,
-                              builder: (logic) {
-                                print("====pageJumg===${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}");
-                                return Text(
-                                  "${logic.state.currentQuestionNum+1}/${logic.state.totalQuestionNum}",
-                                  style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.c_FF353E4D),
-                                );
-                              }),
-                          InkWell(
-                            onTap: (){
-                              if(state.currentQuestionNum+1 >= state.totalQuestionNum){
-                                if(widget.answerType == AnsweringPage.answer_browse_type){
-                                  if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
-                                    RouterUtil.toNamed(AppRoutes.AnsweringPage,
-                                        isNeedCheckLogin:true,
-                                        arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
-                                          AnsweringPage.catlogIdKey:widget.uuid,
-                                          AnsweringPage.parentIndexKey:widget.parentIndex+1,
-                                          AnsweringPage.childIndexKey:0,
-                                          AnsweringPage.LastFinishResult:widget.lastFinishResult,
-                                          AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
-                                        });
-                                  }else{
-                                    Get.back();
-                                  }
+                            InkWell(
+                              onTap: (){
+                                if(state.currentQuestionNum+1 >= state.totalQuestionNum){
+                                  if(widget.answerType == AnsweringPage.answer_browse_type){
+                                    if(AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex+1)!=null){
+                                      RouterUtil.toNamed(AppRoutes.AnsweringPage,
+                                          isNeedCheckLogin:true,
+                                          arguments: {AnsweringPage.examDetailKey: widget.testDetailResponse,
+                                            AnsweringPage.catlogIdKey:widget.uuid,
+                                            AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                                            AnsweringPage.childIndexKey:0,
+                                            AnsweringPage.LastFinishResult:widget.lastFinishResult,
+                                            AnsweringPage.answer_type:AnsweringPage.answer_browse_type,
+                                          });
+                                    }else{
+                                      Get.back();
+                                    }
 
+                                  }else{
+                                    _uploadTestAnswer();
+                                  }
                                 }else{
-                                  _uploadTestAnswer();
+                                  pageLogic.nextPage();
                                 }
-                              }else{
-                                pageLogic.nextPage();
-                              }
-                            },
-                            child: GetBuilder<AnsweringLogic>(
-                                id: GetBuilderIds.answerPageNum,
-                                builder: (logic) {
-                                  return Container(
-                                    width: 70.w,
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text((widget.answerType==AnsweringPage.answer_browse_type
-                                            || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
-                                            color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                                || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
-                                        (widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum) ?
-                                        Image.asset(
-                                          logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
-                                              ? R.imagesPractiseNextQuestionEnable
-                                              : R.imagesPractiseNextQuestionUnable,
-                                          width: 18.w,
-                                          height: 18.w,
-                                        ):Container(width: 18.w,
-                                            height: 18.w)
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          )
-                        ],
-                      ),
-                    )
-                  ]
+                              },
+                              child: GetBuilder<AnsweringLogic>(
+                                  id: GetBuilderIds.answerPageNum,
+                                  builder: (logic) {
+                                    return Container(
+                                      width: 70.w,
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text((widget.answerType==AnsweringPage.answer_browse_type
+                                              || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum)? "下一题":"提交",style: TextStyle(fontSize: 14.sp,
+                                              color: (logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                                  || (logic.state.currentQuestionNum+1 >= logic.state.totalQuestionNum && widget.answerType != AnsweringPage.answer_browse_type ))? AppColors.c_FF353E4D:AppColors.c_80353E4D),),
+                                          (widget.answerType==AnsweringPage.answer_browse_type || logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum) ?
+                                          Image.asset(
+                                            logic.state.currentQuestionNum+1 < logic.state.totalQuestionNum
+                                                ? R.imagesPractiseNextQuestionEnable
+                                                : R.imagesPractiseNextQuestionUnable,
+                                            width: 18.w,
+                                            height: 18.w,
+                                          ):Container(width: 18.w,
+                                              height: 18.w)
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            )
+                          ],
+                        ),
+                      )
+                    ]
+                ),
               ))
         ],
       ),
@@ -520,7 +523,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   void _uploadTestAnswer(){
 
     Get.defaultDialog(
-      title: "提交答案",
+      title: "",
+      titlePadding: EdgeInsets.all(0.0.w),
       confirm: InkWell(
         onTap: (){
           if(currentSubjectVoList!=null){
@@ -543,7 +547,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 4.w,horizontal: 23.w),
-          margin: EdgeInsets.only(bottom: 8.w),
+          margin: EdgeInsets.only(left:10.w,bottom: 18.w),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -571,7 +575,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 3.w,horizontal: 23.w),
-          margin: EdgeInsets.only(bottom: 8.w),
+          margin: EdgeInsets.only(right:10.w,bottom: 18.w),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(width: 1.w, color: AppColors.c_FFD2D5DC),
@@ -580,9 +584,12 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           child: Text("取消",style: TextStyle(color:AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
         ),
       ),
-      content: Text(
-        widget.answerType == AnsweringPage.answer_fix_type ?
-        "是否确定提交已纠正错题？" : "是否确定提交？",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+      content: Container(
+        margin: EdgeInsets.only(bottom: 20.w),
+        child: Text(
+          widget.answerType == AnsweringPage.answer_fix_type ?
+          "是否确定提交已纠正错题？" : "是否确定提交？",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
+      ),
     );
   }
 

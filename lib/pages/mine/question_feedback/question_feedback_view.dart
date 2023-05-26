@@ -209,7 +209,7 @@ class _ToQuestionFeedbackPageState extends BasePageState<QuestionFeedbackPage> {
           children: [
             Positioned(
                 top: 10.w,
-                left: 14.w,
+                left: 2.w,
                 right: 14.w,
                 child: TextField(
                   maxLines: 12,
