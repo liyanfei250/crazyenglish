@@ -7,17 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 ///description:请求权限
 // ignore: must_be_immutable
 class RequestPermissionsDialog extends Dialog {
   String content;
 
-  LinkedHashMap<String,String> items;
+  LinkedHashMap<String, String> items;
 
   ClickNextCallback? onNext;
 
-  RequestPermissionsDialog({required this.content, required this.items,this.onNext});
+  RequestPermissionsDialog(
+      {required this.content, required this.items, this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -34,28 +34,18 @@ class RequestPermissionsDialog extends Dialog {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ///标题
-            Text(
-              "权限申请",
-              style: TextStyle(
-                  decoration: TextDecoration.none,
-                  fontSize: 16.sp,
-                  color: AppColors.c_FF32374E,
-                  fontWeight: FontWeight.bold),
-            ),
-
-            ///文字描述
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 14.h, 0, 30.h),
-              child: Text(
-                content,
-                style: TextStyle(fontSize: 16.sp, decoration: TextDecoration.none,color: AppColors.c_FF32374E),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            // Text(
+            //   "权限申请",
+            //   style: TextStyle(
+            //       decoration: TextDecoration.none,
+            //       fontSize: 16.sp,
+            //       color: AppColors.c_FF32374E,
+            //       fontWeight: FontWeight.bold),
+            // ),
 
             ///中间图片条目
             Padding(
-              padding: EdgeInsets.only(bottom: 30.h),
+              padding: EdgeInsets.only(top:28.w,bottom: 20.h),
               child: Container(
                 height: 84.h,
                 child: ListView.builder(
@@ -70,19 +60,8 @@ class RequestPermissionsDialog extends Dialog {
                         children: [
                           Image.asset(
                             items.values.toList()[i],
-                            width: 50.w,
-                            height: 50.w,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6.h),
-                            child: Text(
-                              items.keys.toList()[i],
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.c_FF32374E),
-                            ),
+                            width: 70.w,
+                            height: 70.w,
                           ),
                         ],
                       ),
@@ -94,39 +73,87 @@ class RequestPermissionsDialog extends Dialog {
                 ),
               ),
             ),
-
-            ///底部按钮
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                if(onNext!=null){
-                  onNext!();
-                }
-              },
-              child: Container(
-                width: 220.w,
-                height: 44.h,
-                decoration: BoxDecoration(
-                    color: AppColors.THEME_COLOR,
-                    borderRadius: BorderRadius.all(Radius.circular(22.r))),
-                child: Center(
-                  child: Text(
-                    "下一步",
-                    style:
-                        TextStyle(fontSize: 17.sp, color: AppColors.c_FFFFFFFF,decoration: TextDecoration.none),
+            ///文字描述
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 24.h, 0, 30.h),
+              child: Text(
+                content,
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    decoration: TextDecoration.none,
+                    color: AppColors.c_FF32374E),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 78.w,minHeight: 32.w),
+                    child:Container(
+                      alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xffdfe2e9),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(17),
+                        ),
+                        child: Text(
+                          '取消',
+                          style: TextStyle(
+                            color: Color(0xff353e4d),
+                            fontSize: 16.sp,
+                          ),
+                        )
+                    )
+                    ,
                   ),
                 ),
-              ),
-            )
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                    if (onNext != null) {
+                      onNext!();
+                    }
+                  },
+                  child:ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 78.w,minHeight: 32.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xfff19e59),
+                                Color(0xffec5f2a),
+                              ]),
+                          color: AppColors.THEME_COLOR,
+                          borderRadius: BorderRadius.all(Radius.circular(17))),
+                      child: Center(
+                        child: Text(
+                          "去设置",
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              color: AppColors.c_FFFFFFFF,
+                              decoration: TextDecoration.none),
+                        ),
+                      ),
+                    ),
+                  ) ,
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
-
-
 }
-
 
 ///下一步回掉
 typedef ClickNextCallback = void Function();

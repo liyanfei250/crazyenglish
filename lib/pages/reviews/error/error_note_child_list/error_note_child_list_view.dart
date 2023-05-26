@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart'as refresh;
+import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 
 import '../../../../base/AppUtil.dart';
 import '../../../../base/common.dart';
 import '../../../../base/widgetPage/loading.dart';
-import '../../../../entity/review/ErrorNoteTabDate.dart'as errorDate;
+import '../../../../entity/review/ErrorNoteTabDate.dart' as errorDate;
 import '../../../../entity/review/ErrorNoteTabDate.dart';
 import '../../../../r.dart';
 import '../../../../routes/getx_ids.dart';
@@ -27,11 +27,11 @@ import '../error_note_child/error_note_child_view.dart';
 import 'error_note_child_list_logic.dart';
 
 class ErrorNoteChildListPage extends StatefulWidget {
-
   int isWrongOrCorrected;
   int typeTwo;
 
-  ErrorNoteChildListPage(this.isWrongOrCorrected, this.typeTwo, {Key? key}) : super(key: key);
+  ErrorNoteChildListPage(this.isWrongOrCorrected, this.typeTwo, {Key? key})
+      : super(key: key);
 
   @override
   _ErrorNoteChildListPageState createState() => _ErrorNoteChildListPageState();
@@ -48,7 +48,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   final stateDetail = Get.find<WeekTestDetailLogic>().state;
 
   refresh.RefreshController _refreshController =
-  refresh.RefreshController(initialRefresh: false);
+      refresh.RefreshController(initialRefresh: false);
   CancelFunc? _cancelLoading;
   final int pageSize = 10;
   int currentPageNo = 1;
@@ -56,13 +56,15 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   final int pageStartIndex = 1;
 
   StreamSubscription? refrehStreamSubscription;
+
   @override
   void initState() {
     super.initState();
     print('type==${widget.isWrongOrCorrected}typeTwo==${widget.typeTwo}');
-    refrehStreamSubscription = BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
-      if(event is RefreshAnswerState){
-        if(logic!=null && SpUtil.getInt(BaseConstant.USER_ID)>0){
+    refrehStreamSubscription =
+        BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+      if (event is RefreshAnswerState) {
+        if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
           _onRefresh();
         }
       }
@@ -74,7 +76,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
             widget.isWrongOrCorrected.toString() +
             widget.typeTwo.toString(), () {
       hideLoading();
-      if (state.list != null ) {
+      if (state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
           currentPageNo++;
           weekPaperList.addAll(state!.list!);
@@ -148,18 +150,17 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
           slivers: [
             weekPaperList.length == 0
                 ? SliverToBoxAdapter(
-                child: PlaceholderPage(
-                    imageAsset: R.imagesCommenNoDate,
-                    title: '暂无数据',
-                    topMargin: 100.w,
-                    subtitle: ''))
-                :
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                listitemBigBg,
-                childCount: weekPaperList.length,
-              ),
-            ),
+                    child: PlaceholderPage(
+                        imageAsset: R.imagesCommenNoDate,
+                        title: '暂无数据',
+                        topMargin: 100.w,
+                        subtitle: ''))
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      listitemBigBg,
+                      childCount: weekPaperList.length,
+                    ),
+                  ),
           ],
         ),
       ),
@@ -233,12 +234,16 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   Widget listitem(List<RecordListVos> value, index) {
     return InkWell(
         onTap: () {
-          if(widget.isWrongOrCorrected == ErrorNoteChildPage.HAS_CORRECTED){
-            logicDetail.addJumpToReviewDetailListen(resultType: AnsweringPage.result_browse_type,hasResultIndicator: false);
-            logicDetail.getDetailAndEnterBrowsePage("${value[index].subjectId}","0");
+          if (widget.isWrongOrCorrected == ErrorNoteChildPage.HAS_CORRECTED) {
+            logicDetail.addJumpToReviewDetailListen(
+                resultType: AnsweringPage.result_browse_type,
+                hasResultIndicator: false);
+            logicDetail.getDetailAndEnterBrowsePage(
+                "${value[index].subjectId}", "0");
           } else {
             logicDetail.addJumpToFixErrorListen();
-            logicDetail.getDetailAndEnterFixPage("${value[index].subjectId}",value[index].correctionNotebooks);
+            logicDetail.getDetailAndEnterFixPage(
+                "${value[index].subjectId}", value[index].correctionNotebooks);
           }
         },
         child: Container(
@@ -251,36 +256,25 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: widget.isWrongOrCorrected==0 ? 10.w : 14.w)),
+                      top: widget.isWrongOrCorrected == 0 ? 10.w : 14.w)),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            value[index].catalogueName ?? "",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff353e4d)),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 11.w)),
-                          index == 0? Image.asset(
-                              R.imagesListenigLastIcon,
-                              fit: BoxFit.cover,
-                              width: 26.w,
-                              height: 18.w,
-                            ):SizedBox.shrink(),
-                        ],
+                      Text(
+                        value[index].catalogueName ?? "",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff353e4d)),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 4.w),
                         child: Text(
                           '正确率 ' +
-                              "${widget.isWrongOrCorrected==ErrorNoteChildPage.WAIT_CORRECT? value[index].correctCount??0:value[index].totalCount??0}" +
+                              "${widget.isWrongOrCorrected == ErrorNoteChildPage.WAIT_CORRECT ? value[index].correctCount ?? 0 : value[index].totalCount ?? 0}" +
                               "/" +
                               value[index].totalCount.toString(),
                           style: TextStyle(
@@ -294,7 +288,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   Expanded(child: Text('')),
                   Padding(
                     padding: EdgeInsets.only(right: 10.w),
-                    child: widget.isWrongOrCorrected==0
+                    child: widget.isWrongOrCorrected == 0
                         ? Image.asset(
                             R.imagesErrorToCorrect,
                             fit: BoxFit.cover,
@@ -312,7 +306,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: widget.isWrongOrCorrected==0 ? 10.w : 14.w)),
+                      top: widget.isWrongOrCorrected == 0 ? 10.w : 14.w)),
             ],
           ),
         ));
@@ -321,13 +315,14 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     // int userId, int isCorrect, int classify, int current, int size
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.isWrongOrCorrected, widget.typeTwo, pageStartIndex, pageSize);
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),
+        widget.isWrongOrCorrected, widget.typeTwo, pageStartIndex, pageSize);
   }
 
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),widget.isWrongOrCorrected, widget.typeTwo, currentPageNo+1, pageSize);
-
+    logic.getList(SpUtil.getInt(BaseConstant.USER_ID),
+        widget.isWrongOrCorrected, widget.typeTwo, currentPageNo + 1, pageSize);
   }
 
   @override
@@ -335,7 +330,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     Get.delete<Error_note_child_listLogic>();
     Get.delete<Error_noteLogic>();
     _refreshController.dispose();
-    if(refrehStreamSubscription!=null){
+    if (refrehStreamSubscription != null) {
       refrehStreamSubscription!.cancel();
     }
     super.dispose();
