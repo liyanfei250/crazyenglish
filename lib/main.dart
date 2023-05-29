@@ -92,6 +92,8 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
         initialRoute: AppRoutes.INITIALNew,
         getPages: AppPages.pages,
         theme: ThemeData(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent, // 替换点击效果
           appBarTheme: AppBarTheme.of(context).copyWith(color: Colors.white),
         ),
       ));

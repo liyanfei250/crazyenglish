@@ -193,7 +193,7 @@ class Util {
         color: AppColors.c_FFFFFFFF,
         boxShadow: [
           BoxShadow(
-            color: AppColors.c_FFD0C5B4, // 阴影的颜色
+            color: AppColors.c_FFD0C5B4.withOpacity(0.15), // 阴影的颜色
             offset: Offset(0.w, 0.w), // 阴影与容器的距离
             blurRadius: 3.w, // 高斯的标准偏差与盒子的形状卷积。
             spreadRadius: 1.w,
@@ -236,14 +236,14 @@ class Util {
                         "正确率",
                         style: TextStyle(
                             fontSize: 14.w,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.c_FF898A93),
                       ),
                       Text(
                         "${rightCount}",
                         style: TextStyle(
                             fontSize: 40.w,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.c_FF1B1D2C),
                       ),
                       Text(
@@ -292,7 +292,7 @@ class Util {
                           style: TextStyle(
                               fontSize: 12.w,
                               color: AppColors.c_FFB3B7C6,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w600),
                         )
                       ],
                     ),
@@ -301,7 +301,7 @@ class Util {
                       style: TextStyle(
                           fontSize: 12.w,
                           color: AppColors.c_FFB3B7C6,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w600),
                     )
                   ],
                 ),
@@ -323,7 +323,7 @@ class Util {
                           style: TextStyle(
                               fontSize: 12.w,
                               color: AppColors.c_FFB3B7C6,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w600),
                         )
                       ],
                     ),
@@ -332,7 +332,7 @@ class Util {
                       style: TextStyle(
                           fontSize: 12.w,
                           color: AppColors.c_FFB3B7C6,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w600),
                     )
                   ],
                 )

@@ -428,6 +428,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                                   builder: (logic) {
                                     return Container(
                                       width: 70.w,
+                                      height: 30.w,
                                       child: Row(
                                         children: [
                                           Image.asset(
@@ -486,6 +487,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                                   builder: (logic) {
                                     return Container(
                                       width: 70.w,
+                                      height: 30.w,
                                       alignment: Alignment.center,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -525,6 +527,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     Get.defaultDialog(
       title: "",
       titlePadding: EdgeInsets.all(0.0.w),
+      contentPadding: EdgeInsets.all(0.0.w),
       confirm: InkWell(
         onTap: (){
           if(currentSubjectVoList!=null){
@@ -585,7 +588,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         ),
       ),
       content: Container(
-        margin: EdgeInsets.only(bottom: 20.w),
+        margin: EdgeInsets.only(bottom: 10.w),
         child: Text(
           widget.answerType == AnsweringPage.answer_fix_type ?
           "是否确定提交已纠正错题？" : "是否确定提交？",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),

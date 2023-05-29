@@ -150,17 +150,18 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
           slivers: [
             weekPaperList.length == 0
                 ? SliverToBoxAdapter(
-                    child: PlaceholderPage(
-                        imageAsset: R.imagesCommenNoDate,
-                        title: '暂无数据',
-                        topMargin: 100.w,
-                        subtitle: ''))
-                : SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      listitemBigBg,
-                      childCount: weekPaperList.length,
-                    ),
-                  ),
+                child: PlaceholderPage(
+                    imageAsset: R.imagesCommenNoDate,
+                    title: '暂无数据',
+                    topMargin: 100.w,
+                    subtitle: '快去做题吧'))
+                :
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                listitemBigBg,
+                childCount: weekPaperList.length,
+              ),
+            ),
           ],
         ),
       ),
@@ -171,7 +172,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
     return Container(
       margin: EdgeInsets.only(top: 20.w, left: 18.w, right: 18.w, bottom: 10.w),
       padding:
-          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 10.w),
+          EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w,),
       width: double.infinity,
       alignment: Alignment.topRight,
       decoration: BoxDecoration(
@@ -203,7 +204,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   style: TextStyle(
                       fontSize: 12,
                       color: Color(0xff858aa0),
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w600),
                 )),
             Expanded(child: Text('')),
             Padding(
@@ -263,12 +264,23 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        value[index].catalogueName ?? "",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff353e4d)),
+                      Row(
+                        children: [
+                          Text(
+                            value[index].catalogueName ?? "",
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff353e4d)),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 11.w)),
+                          // index == 0? Image.asset(
+                          //     R.imagesListenigLastIcon,
+                          //     fit: BoxFit.cover,
+                          //     width: 26.w,
+                          //     height: 18.w,
+                          //   ):SizedBox.shrink(),
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 4.w),
@@ -279,7 +291,7 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                               value[index].totalCount.toString(),
                           style: TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w500,
                               color: Color(0xff858aa0)),
                         ),
                       ),
@@ -304,9 +316,6 @@ class _ErrorNoteChildListPageState extends State<ErrorNoteChildListPage>
                   )
                 ],
               ),
-              Padding(
-                  padding: EdgeInsets.only(
-                      top: widget.isWrongOrCorrected == 0 ? 10.w : 14.w)),
             ],
           ),
         ));

@@ -173,7 +173,7 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
                                     ),
                                   );
                                 })),
-                        Padding(padding: EdgeInsets.only(top: 15.w)),
+                        Padding(padding: EdgeInsets.only(top: 13.w)),
                         isLogin //是否登录
                             ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -195,11 +195,16 @@ class _MinePageState extends BasePageState<MinePage> with SingleTickerProviderSt
                                         });
                                   }
                                 },
-                                child: Text(
-                                  SpUtil.getString(BaseConstant.USER_NAME),
-                                  style: TextStyle(
-                                      color: Color(0xff353e4d),
-                                      fontSize: 20.w),
+                                child: GetBuilder<Person_infoLogic>(
+                                  id: GetBuilderIds.getPersonInfo,
+                                  builder: (logic){
+                                    return Text(
+                                      logic.state.infoResponse.obj?.nickname??"",
+                                      style: TextStyle(
+                                          color: Color(0xff353e4d),
+                                          fontSize: 20.sp),
+                                    );
+                                  },
                                 )),
                             //TextButton(onPressed: toLogin(), child: Text("用户登录")),
                           ],

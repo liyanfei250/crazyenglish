@@ -193,7 +193,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
               ]),
             ),
           ),
-          Text(name,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),)
+          Text(name,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600,color: AppColors.c_FF353E4D),)
         ],
       ),
     );

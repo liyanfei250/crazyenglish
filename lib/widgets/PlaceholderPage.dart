@@ -37,7 +37,7 @@ class PlaceholderPage extends StatelessWidget {
             title,
             style: TextStyle(
               fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w400,
               color: Color(0xff353E4D)
             ),
           ),
@@ -45,8 +45,8 @@ class PlaceholderPage extends StatelessWidget {
           Text(
             subtitle,
             style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey[600],
+              fontSize: 14.sp,
+              color: Color(0xffd2d5dc),
             ),
           ),
         ],
