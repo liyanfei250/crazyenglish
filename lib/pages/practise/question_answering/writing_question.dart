@@ -86,21 +86,23 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
         SingleChildScrollView(
           child: detailWidget,
         ),
-        Positioned(
-          left: _offset.dx,
-          top: _offset.dy,
-          child: Draggable(
-            child: buildContainer(),
-            feedback: buildContainer(),
-            onDraggableCanceled: (Velocity velocity, Offset offset) {
-              offset = Offset(offset.dx, offset.dy - 80.w);
-              setState(() {
-                _offset = offset;
-              });
-            },
-            childWhenDragging: Container(),
-          ),
-        )
+        Visibility(
+            visible: (element.modelEssay ?? "").isNotEmpty,
+            child: Positioned(
+              left: _offset.dx,
+              top: _offset.dy,
+              child: Draggable(
+                child: buildContainer(),
+                feedback: buildContainer(),
+                onDraggableCanceled: (Velocity velocity, Offset offset) {
+                  offset = Offset(offset.dx, offset.dy - 80.w);
+                  setState(() {
+                    _offset = offset;
+                  });
+                },
+                childWhenDragging: Container(),
+              ),
+            ))
       ],
     );
   }
@@ -322,12 +324,12 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
       );
 
   int countWords(String text) {
-      if (text.isEmpty) {
-        return 0;
-      }
+    if (text.isEmpty) {
+      return 0;
+    }
 
-      List<String> words = text.trim().split(RegExp(r'[\s,]+'));
-      return words.length;
+    List<String> words = text.trim().split(RegExp(r'[\s,]+'));
+    return words.length;
   }
 
   Widget _listShow() => Expanded(
