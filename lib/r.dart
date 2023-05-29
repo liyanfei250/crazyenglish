@@ -669,6 +669,8 @@ class R {
   static final String imagesWelcomeTxt = 'images/welcome_txt.png';
   /// ![](http://127.0.0.1:11/images/writing_commit_button.png)
   static final String imagesWritingCommitButton = 'images/writing_commit_button.png';
+  /// ![](http://127.0.0.1:11/images/writing_exam.png)
+  static final String imagesWritingExam = 'images/writing_exam.png';
   /// ![](http://127.0.0.1:11/images/writing_look_botton.png)
   static final String imagesWritingLookBotton = 'images/writing_look_botton.png';
   /// ![](http://127.0.0.1:11/images/writing_result_bg.png)

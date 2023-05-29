@@ -25,7 +25,6 @@ import '../../../entity/week_detail_response.dart';
  * Description:写作
  */
 class WritingQuestion extends BaseQuestion {
-
   WritingQuestion(Map<String, ExerciseLists> subtopicAnswerVoMap,
       int answerType, SubjectVoList data, int childIndex, {Key? key})
       : super(subtopicAnswerVoMap, answerType, childIndex,
@@ -41,6 +40,8 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   late SubjectVoList element;
   final TextEditingController writController = TextEditingController();
   Widget? detailWidget;
+  Offset _offset = Offset(310.w, 70.w);
+  var _wordCount = 0.obs;
 
   @override
   getAnswers() {
@@ -52,17 +53,27 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
     element = widget.data;
     if (widget.subtopicAnswerVoMap != null &&
         widget.subtopicAnswerVoMap!["${element.id}:0"] != null) {
-      ExerciseLists exerciseLists = widget.subtopicAnswerVoMap!["${element
-          .id}:0"]!;
-      if ((exerciseLists.answer ?? "").isNotEmpty && widget.answerType!= AnsweringPage.answer_normal_type && widget.answerType!= AnsweringPage.answer_homework_draft_type) {
+      ExerciseLists exerciseLists =
+          widget.subtopicAnswerVoMap!["${element.id}:0"]!;
+      if ((exerciseLists.answer ?? "").isNotEmpty &&
+          widget.answerType != AnsweringPage.answer_normal_type &&
+          widget.answerType != AnsweringPage.answer_homework_draft_type) {
         writController.text = exerciseLists.answer ?? "";
-        SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
-            isSubjectivity:true,questionTypeStr:'',answer:exerciseLists.answer);
-        if(userAnswerWritCallback!=null){
+        SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
+            subjectId: element.id,
+            isSubjectivity: true,
+            questionTypeStr: '',
+            answer: exerciseLists.answer);
+        if (userAnswerWritCallback != null) {
           userAnswerWritCallback.call(subjectAnswerVo);
         }
       }
     }
+    writController.addListener(() {
+      setState(() {
+        _wordCount.value = countWords(writController.text);
+      });
+    });
   }
 
   @override
@@ -70,8 +81,61 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
     if (detailWidget == null) {
       detailWidget = _buildClassArea();
     }
-    return SingleChildScrollView(
-      child: detailWidget,
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: detailWidget,
+        ),
+        Positioned(
+          left: _offset.dx,
+          top: _offset.dy,
+          child: Draggable(
+            child: buildContainer(),
+            feedback: buildContainer(),
+            onDraggableCanceled: (Velocity velocity, Offset offset) {
+              offset = Offset(offset.dx, offset.dy - 80.w);
+              setState(() {
+                _offset = offset;
+              });
+            },
+            childWhenDragging: Container(),
+          ),
+        )
+      ],
+    );
+  }
+
+  void _onTextChanged() {}
+
+  Widget buildContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.w),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xfff3b144),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          Util.toast("查看范文");
+          showDialog(
+            context: context,
+            builder: (context) => WritDialog(element.modelEssay ?? ""),
+          );
+        },
+        child: Image.asset(
+          R.imagesWritingExam,
+          width: 40.w,
+          height: 40.w,
+        ),
+      ),
     );
   }
 
@@ -134,7 +198,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
             Padding(padding: EdgeInsets.only(top: 0.w)),
             SelectionArea(
               child: Html(
-                data:  element.stem ?? "",
+                data: element.stem ?? "",
                 onImageTap: (
                   url,
                   context,
@@ -170,7 +234,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
   Widget _buildClassCard(int index) => Container(
         margin: EdgeInsets.only(top: 20.w),
         padding:
-            EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
+            EdgeInsets.only(left: 14.w, right: 10.w, top: 14.w, bottom: 14.w),
         width: double.infinity,
         alignment: Alignment.topRight,
         decoration: BoxDecoration(
@@ -187,7 +251,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_listShow(), _rightShow()],
+          children: [_listShow()],
         ),
       );
 
@@ -213,6 +277,10 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           children: [
             InkWell(
               onTap: () {
+                if (_wordCount.value < 50) {
+                  Util.toast('需写够50字才可提交哦～');
+                  return;
+                }
                 logic.uploadWrite();
               },
               child: Image.asset(
@@ -226,10 +294,14 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
               maxLines: 100,
               minLines: 10,
               controller: writController,
+              keyboardType: TextInputType.multiline,
               onChanged: (String str) {
-                  SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(subjectId:element.id,
-                      isSubjectivity:true,questionTypeStr:'',answer:str);
-                  userAnswerWritCallback.call(subjectAnswerVo);
+                SubjectAnswerVo subjectAnswerVo = SubjectAnswerVo(
+                    subjectId: element.id,
+                    isSubjectivity: true,
+                    questionTypeStr: '',
+                    answer: str);
+                userAnswerWritCallback.call(subjectAnswerVo);
               },
               style: TextStyle(color: Color(0xff353e4d), fontSize: 12.sp),
               decoration: InputDecoration(
@@ -238,10 +310,25 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
                   border: InputBorder.none,
                   hintStyle:
                       TextStyle(color: Color(0xffb3b7c6), fontSize: 12.sp)),
-            )
+            ),
+            Obx(() => Text(
+                  _wordCount.value == 0
+                      ? 'Word Count:${countWords(writController.text)}'
+                      : 'Word Count:${_wordCount.value}',
+                  style: TextStyle(fontSize: 12.sp),
+                ))
           ],
         ),
       );
+
+  int countWords(String text) {
+      if (text.isEmpty) {
+        return 0;
+      }
+
+      List<String> words = text.trim().split(RegExp(r'[\s,]+'));
+      return words.length;
+  }
 
   Widget _listShow() => Expanded(
       child: Container(
@@ -252,11 +339,11 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
                 child: Html(
                   data: element.content ?? "",
                   onImageTap: (
-                      url,
-                      context,
-                      attributes,
-                      element,
-                      ) {
+                    url,
+                    context,
+                    attributes,
+                    element,
+                  ) {
                     if (url != null && url!.startsWith('http')) {
                       DialogManager.showPreViewImageDialog(
                           BackButtonBehavior.close, url);
@@ -268,8 +355,8 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
                         textDecorationStyle: TextDecorationStyle.dashed,
                         textDecorationColor: AppColors.THEME_COLOR),
                     "hr": Style(
-                      margin:
-                      Margins.only(left: 0, right: 0, top: 10.w, bottom: 10.w),
+                      margin: Margins.only(
+                          left: 0, right: 0, top: 10.w, bottom: 10.w),
                       padding: EdgeInsets.all(0),
                       border: Border(bottom: BorderSide(color: Colors.grey)),
                     )
@@ -280,47 +367,9 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
             ),
           )));
 
-  Widget _rightShow() => Container(
-        width: 90.w,
-        height: 190.w,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Visibility(
-              visible: (element.modelEssay ??
-                  "").isNotEmpty,
-              child: InkWell(
-              onTap: () {
-                //RouterUtil.toNamed(AppRoutes.IntensiveListeningPage);
-                Util.toast("查看范文");
-                showDialog(
-                  context: context,
-                  builder: (context) => WritDialog(
-                      element.modelEssay ??
-                          ""),
-                );
-              },
-              child: Image.asset(
-                R.imagesWritingLookBotton,
-                width: 77.w,
-                height: 18.w,
-              ),
-            )),
-            Expanded(child: Text("")),
-            Text(
-              "注意：词数100左右",
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 10.sp,
-                  color: Color(0xfff2a842)),
-            ),
-          ],
-        ),
-      );
-
   @override
   void onDestroy() {
+    writController.removeListener(_onTextChanged);
     writController.dispose();
   }
 }

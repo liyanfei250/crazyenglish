@@ -515,6 +515,7 @@ flutter:
     - images/welcome_icon.png
     - images/welcome_txt.png
     - images/writing_commit_button.png
+    - images/writing_exam.png
     - images/writing_look_botton.png
     - images/writing_result_bg.png
     - images/writing_result_blow.png
