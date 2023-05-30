@@ -738,7 +738,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                 && subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
               isClickEnable = false;
             }
-          } else if(widget.answerType == AnsweringPage.answer_normal_type){
+          } else if(widget.answerType == AnsweringPage.answer_normal_type
+            || widget.answerType == AnsweringPage.answer_homework_type){
             defaultChooseAnswers = "";
           }
 

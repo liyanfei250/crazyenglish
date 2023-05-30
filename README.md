@@ -16,6 +16,12 @@ SelectFillingQuestion
 
 SelectWordsFillingQuestion
 
+
+重新练习（去掉作答信息）
+选择题：初始化选项时 置为空
+填空题：不初始化作答数据
+选择填空题：选项
+
 ```
 mermaidgraph
  LRA[]

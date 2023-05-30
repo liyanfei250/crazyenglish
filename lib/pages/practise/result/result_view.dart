@@ -34,7 +34,7 @@ import '../question_result/listen_question_result.dart';
 import '../question_result/question_reading_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question_result.dart';
-import '../question_result/select_words_filling_question.dart';
+import '../question_result/select_words_filling_question_result.dart';
 import '../question_result/others_question_result.dart';
 
 /// 核心逻辑：结果页

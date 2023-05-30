@@ -74,7 +74,7 @@ class _SelectWordsFillingQuestionResultState extends BaseQuestionResultState<Sel
         children: [
           buildQuestionType("选词填空题"),
           QuestionFactory.buildFillingQuestion(element,makeFocusNodeController,makeEditController,widget.subtopicAnswerVoMap,clearFocus),
-          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!)
+          QuestionFactory.buildSelectWordsAnswerQuestion(element.optionsList!,isResult: true)
         ],
       ),
     );

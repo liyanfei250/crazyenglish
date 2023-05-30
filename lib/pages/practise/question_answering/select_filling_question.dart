@@ -75,7 +75,7 @@ class _SelectFillingQuestionState extends BaseQuestionState<SelectFillingQuestio
         children: [
           buildQuestionType("选择填空题"),
           QuestionFactory.buildSelectFillingQuestion(element,makeFocusNodeController,userAnswerCallback:userAnswerCallback,widget.subtopicAnswerVoMap,answerType: widget.answerType),
-          QuestionFactory.buildSelectOptionQuestion(element.optionsList!)
+          QuestionFactory.buildSelectOptionQuestion(element.optionsList!,gapKeySet: gapKeIndexSet)
         ],
       ),
     );

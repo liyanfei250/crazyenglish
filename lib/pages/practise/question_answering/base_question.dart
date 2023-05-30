@@ -73,14 +73,21 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   final logic = Get.find<AnsweringLogic>();
   final pagLogic = Get.find<PageGetxController>();
 
-  final Set<String> gapKeySet = {};
+  // 用于选择填空 草稿，纠错 已选中
+  final Set<String> answerIndexSet = {};
+  // 用于纠错模式不能更新空
+  final Set<String> gapKeIndexSet = {};
   @override
   void initState(){
     super.initState();
     onCreate();
 
     tag = tag+curPage;
-    selectGapGetxController.initLastAnswer(getLastAnswer());
+    if(widget.answerType != AnsweringPage.answer_normal_type
+        && widget.answerType != AnsweringPage.answer_homework_type){
+      Map<String,String>  contentMap = getLastAnswer();
+      selectGapGetxController.initLastAnswer(contentMap,answerIndexSet: answerIndexSet);
+    }
     selectGapGetxController.updateFocus("${widget.childIndex+1}",true,isInit: true);
 
     print(tag + "initState\n");
@@ -141,6 +148,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(widget.data!=null && widget.subtopicAnswerVoMap.isNotEmpty){
       if(widget.data.questionTypeStr == QuestionType.normal_gap
           || widget.data.questionTypeStr == QuestionType.completion_filling
+          || widget.data.questionTypeStr == QuestionType.select_filling
           || widget.data.questionTypeStr == QuestionType.complete_filling
           || widget.data.questionTypeStr == QuestionType.translate_filling
           || widget.data.questionTypeStr == QuestionType.select_words_filling){
@@ -153,8 +161,10 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
             String userAnswer = widget.subtopicAnswerVoMap["${subjectid}:${subtopicId}"]!.answer??"";
             if(userAnswer.isNotEmpty){
               contentMap["${i+1}"] = userAnswer;
+              // TODO answerIndexSet 逻辑有误
+              // answerIndexSet.add("${i}");
               if(widget.answerType == AnsweringPage.answer_fix_type){
-                gapKeySet.add("${i+1}");
+                gapKeIndexSet.add("${i+1}");
               }
             }
           }
