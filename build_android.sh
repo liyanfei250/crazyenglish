@@ -18,15 +18,17 @@ local_file_path="build/app/outputs/flutter-apk/app-release.apk"
 coscmd config -a "$secret_id" -s "$secret_key" -r "$region" -b "$bucket"
 
 # 上传
-echo "coscmd upload $local_file_path $cos_path/$file_name"
+echo "upload $local_file_path $cos_path/$file_name"
 coscmd upload "$local_file_path" "$file_name"
 
+echo "upload success ?"
 ## 刷新 CDN 缓存
 # 设置 COS 和 CDN 参数
 urls="http://${cdn_domain}/crazyenglish.apk"
 
+echo "刷新 CDN 缓存"
 tccli configure set secretId "$secret_id"
 tccli configure set secretKey "$secret_key"
 tccli configure set region "$region"
 
-tccli cdn RefreshCdnUrl --urls "$urls"
+tccli cdn PurgeUrlsCache --Urls "[\"$urls\"]"
