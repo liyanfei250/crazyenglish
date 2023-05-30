@@ -32,3 +32,6 @@ tccli configure set secretKey "$secret_key"
 tccli configure set region "$region"
 
 tccli cdn PurgeUrlsCache --Urls "[\"$urls\"]"
+
+# 查看刷新结果命令
+# tccli cdn DescribePurgeTasks --TaskId "462913016862616677"
