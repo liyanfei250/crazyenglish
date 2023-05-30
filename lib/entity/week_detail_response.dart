@@ -535,13 +535,15 @@ class SubtopicVoList {
   SubtopicVoList({
       num? id, 
       num? subjectId, 
-      String? problem, 
-      String? answer, 
+      String? problem,
+      String? img,
+      String? answer,
       num? sort, 
       List<OptionsList>? optionsList,}){
     _id = id;
     _subjectId = subjectId;
     _problem = problem;
+    _img = img;
     _answer = answer;
     _sort = sort;
     _optionsList = optionsList;
@@ -551,6 +553,7 @@ class SubtopicVoList {
     _id = json['id'];
     _subjectId = json['subjectId'];
     _problem = json['problem'];
+    _img = json['img'];
     _answer = json['answer'];
     _sort = json['sort'];
     if (json['optionsList'] != null) {
@@ -563,18 +566,21 @@ class SubtopicVoList {
   num? _id;
   num? _subjectId;
   String? _problem;
+  String? _img;
   String? _answer;
   num? _sort;
   List<OptionsList>? _optionsList;
 SubtopicVoList copyWith({  num? id,
   num? subjectId,
   String? problem,
+  String? img,
   String? answer,
   num? sort,
   List<OptionsList>? optionsList,
 }) => SubtopicVoList(  id: id ?? _id,
   subjectId: subjectId ?? _subjectId,
   problem: problem ?? _problem,
+  img: img ?? _img,
   answer: answer ?? _answer,
   sort: sort ?? _sort,
   optionsList: optionsList ?? _optionsList,
@@ -582,6 +588,7 @@ SubtopicVoList copyWith({  num? id,
   num? get id => _id;
   num? get subjectId => _subjectId;
   String? get problem => _problem;
+  String? get img => _img;
   String? get answer => _answer;
   num? get sort => _sort;
   List<OptionsList>? get optionsList => _optionsList;
@@ -591,6 +598,7 @@ SubtopicVoList copyWith({  num? id,
     map['id'] = _id;
     map['subjectId'] = _subjectId;
     map['problem'] = _problem;
+    map['img'] = _img;
     map['answer'] = _answer;
     map['sort'] = _sort;
     if (_optionsList != null) {
