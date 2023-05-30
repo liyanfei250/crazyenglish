@@ -77,6 +77,7 @@ class _ListenQuestionResultState extends BaseQuestionResultState<ListenQuestionR
     if(listtenUrl.isNotEmpty){
       audioPlayer.setSourceUrl(listtenUrl);
       return Container(
+        margin: EdgeInsets.symmetric(vertical: 15.w),
         child: TestPlayerWidget(audioPlayer,TestPlayerWidget.PRACTISE_TYPE),
       );
     }else{
