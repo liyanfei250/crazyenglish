@@ -288,7 +288,7 @@ class QuestionFactory{
       // 填充答案
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
-        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer??"";
         if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
           if(userAnswer.isNotEmpty){
@@ -534,7 +534,7 @@ class QuestionFactory{
       int isRight = AnswerType.no_answer;
       if(subjectVoList.subtopicVoList!=null && subjectVoList.subtopicVoList!.length>gapKey){
         subtopicId = subjectVoList.subtopicVoList![gapKey].id!;
-        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer!;
+        subtopicAnswer = subjectVoList.subtopicVoList![gapKey].answer??"";
         if((isResult || answerType == AnsweringPage.answer_fix_type) && subtopicAnswerVoMap!=null && subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!=null){
           userAnswer = subtopicAnswerVoMap["${subjectVoList.id}:${subtopicId}"]!.answer??"";
           if(userAnswer.isNotEmpty){

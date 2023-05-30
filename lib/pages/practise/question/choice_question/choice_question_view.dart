@@ -21,8 +21,9 @@ class ChoiceQuestionPage extends StatefulWidget {
   bool? isMulti = false;
   bool? isJudge = false;
   bool? isImgChoice = false;
+  int? pageIndex = 0;
 
-  ChoiceQuestionPage(this.subtopicVoList,this.isClickEnable,this.isResultPage,{
+  ChoiceQuestionPage(this.pageIndex,this.subtopicVoList,this.isClickEnable,this.isResultPage,{
   this.defaultChooseIndex,this.isCorrect,this.userAnswerCallback,this.isMulti,this.isJudge,this.isImgChoice,Key? key}) : super(key: key);
 
   @override
@@ -68,7 +69,7 @@ class _ChoiceQuestionPageState extends State<ChoiceQuestionPage> with SingleTick
             userAnswer: logic.getUserAnswer(),
             answer: subtopicVoList.answer,
             isCorrect: false);
-        userAnswerCallback!.call(subtopicAnswerVo);
+        userAnswerCallback!.call(subtopicAnswerVo,indexPage:widget.pageIndex??-1);
       }
     });
   }

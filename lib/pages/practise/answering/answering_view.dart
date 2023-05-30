@@ -9,8 +9,10 @@ import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
+import 'package:crazyenglish/pages/practise/answering/select_gap_getxcontroller.dart';
 import 'package:crazyenglish/pages/practise/question/choice_question/choice_question_view.dart';
 import 'package:crazyenglish/pages/practise/question/question_factory.dart';
+import 'package:crazyenglish/pages/practise/question_answering/complete_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/completion_filling_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/others_question.dart';
 import 'package:crazyenglish/pages/practise/question_answering/listen_question.dart';
@@ -174,6 +176,7 @@ class AnsweringPage extends BasePage {
 class _AnsweringPageState extends BasePageState<AnsweringPage> {
   final logic = Get.put(AnsweringLogic());
   final pageLogicLazy = Get.lazyPut(()=>PageGetxController());
+  final selectGapGetxController = Get.put(SelectGapGetxController());
   late PageGetxController pageLogic ;
   final state = Get
       .find<AnsweringLogic>()
@@ -615,7 +618,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         }else if (currentSubjectVoList!.questionTypeStr == QuestionType.select_filling){
           questionList.add(SelectFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
-          questionList.add(ReadQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
+          questionList.add(CompleteFillingQuestion(subtopicAnswerVoMap,widget.answerType,currentSubjectVoList!,widget.childIndex));
           childQustionPageView = getQuestionDetail(currentSubjectVoList!);
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.writing_question){
           hasBottomPageTab = false;
@@ -715,18 +718,18 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
           if(element.questionTypeStr == QuestionType.multi_choice){
             if((question.optionsList![0].content??"").isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true));
+              itemList.add(ChoiceQuestionPage(i,question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true));
             } else {
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true,isImgChoice: true,));
+              itemList.add(ChoiceQuestionPage(i,question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:true,isImgChoice: true,));
             }
           }else if(element.questionTypeStr == QuestionType.judge_choice){
-            itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isJudge:true));
+            itemList.add(ChoiceQuestionPage(i,question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isJudge:true));
           }else{
             // TODO 判断是否是图片选择题的逻辑需要修改
             if((question.optionsList![0].content??"").isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false));
+              itemList.add(ChoiceQuestionPage(i,question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false));
             } else {
-              itemList.add(ChoiceQuestionPage(question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false,isImgChoice: true));
+              itemList.add(ChoiceQuestionPage(i,question,isClickEnable,false,userAnswerCallback: userAnswerCallback,defaultChooseIndex: defaultChooseAnswers,isMulti:false,isImgChoice: true));
             }
           }
 
@@ -828,7 +831,10 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
 
   }
 
-  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo){
+  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo,{int indexPage=-1}){
+    if(indexPage>-1 && selectGapGetxController!=null){
+      selectGapGetxController.updateGapKeyContent("${indexPage+1}", subtopicAnswerVo.userAnswer??"");
+    }
     logic.updateUserAnswer((subtopicAnswerVo.subtopicId??1).toString(), subtopicAnswerVo);
   }
 
@@ -896,5 +902,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
     }
     Get.delete<AnsweringLogic>();
     Get.delete<PageGetxController>();
+    Get.delete<SelectGapGetxController>();
   }
 }
