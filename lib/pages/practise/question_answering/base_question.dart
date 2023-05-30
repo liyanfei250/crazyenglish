@@ -31,7 +31,7 @@ typedef GetEditingControllerCallback = TextEditingController Function(String key
 typedef GetFocusNodeControllerCallback = FocusNode Function(String key);
 typedef GetAnswerControllerCallback = String Function(String key);
 typedef PageControllerListener = TextEditingController Function(String key);
-typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo);
+typedef UserAnswerCallback = void Function(SubtopicAnswerVo subtopicAnswerVo,{int indexPage});
 typedef CloseKeyBoardCallback = void Function();
 
 abstract class BaseQuestion extends StatefulWidget{
@@ -69,7 +69,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   // 禁止 PageView 滑动
   final ScrollPhysics _neverScroll = const NeverScrollableScrollPhysics();
   List<Widget> questionList = [];
-  final selectGapGetxController = Get.put(SelectGapGetxController());
+  final selectGapGetxController = Get.find<SelectGapGetxController>();
   final logic = Get.find<AnsweringLogic>();
   final pagLogic = Get.find<PageGetxController>();
 
@@ -141,6 +141,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     if(widget.data!=null && widget.subtopicAnswerVoMap.isNotEmpty){
       if(widget.data.questionTypeStr == QuestionType.normal_gap
           || widget.data.questionTypeStr == QuestionType.completion_filling
+          || widget.data.questionTypeStr == QuestionType.complete_filling
           || widget.data.questionTypeStr == QuestionType.translate_filling
           || widget.data.questionTypeStr == QuestionType.select_words_filling){
         int totalLength = (widget.data.subtopicVoList??[]).length;
@@ -287,7 +288,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
     }
   }
 
-  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo){
+  void userAnswerCallback(SubtopicAnswerVo subtopicAnswerVo,{int indexPage=-1}){
     logic.updateUserAnswer((subtopicAnswerVo.subtopicId??1).toString(), subtopicAnswerVo);
   }
 
@@ -343,7 +344,6 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
   @override
   void dispose() {
     print(tag + "dispose\n");
-    Get.delete<SelectGapGetxController>();
     pagLogic.disposeId(GetBuilderIds.answerPrePage);
     pagLogic.disposeId(GetBuilderIds.answerNextPage);
     onDestroy();

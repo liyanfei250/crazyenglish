@@ -4,6 +4,7 @@ import 'package:crazyenglish/blocs/update_collect_event.dart';
 import 'package:crazyenglish/entity/start_exam.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
+import 'package:crazyenglish/pages/practise/question_result/complete_filling_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/completion_filling_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/translate_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/writing_question_result.dart';
@@ -523,11 +524,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
           // 写作题
           questionList.add(WritingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
           hasTab = false;
-        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading
-            || currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling
-          ){
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.normal_reading){
           // 常规阅读题 完型填空
           questionList.add(ReadQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
+          childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
+        }else if(currentSubjectVoList!.questionTypeStr == QuestionType.complete_filling){
+          // 常规阅读题 完型填空
+          questionList.add(CompleteFillingQuestionResult(subtopicAnswerVoMap,widget.childIndex,data: currentSubjectVoList!));
           childQustionPageView = getChildQuestionDetail(currentSubjectVoList!);
         }else if(currentSubjectVoList!.questionTypeStr == QuestionType.question_reading){
           // 简答阅读题
@@ -627,13 +630,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             }
           }
           if(element.questionTypeStr == QuestionType.judge_choice){
-            itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
+            itemList.add(ChoiceQuestionPage(i,question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect,isJudge: true,));
           }else{
             // TODO 判断是否是图片选择题的逻辑需要修改
             if((question.optionsList![0].content??"").isNotEmpty){
-              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
+              itemList.add(ChoiceQuestionPage(i,question,false,true,defaultChooseIndex: defaultChooseAnswers,isCorrect:isCorrect));
             }else{
-              itemList.add(ChoiceQuestionPage(question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
+              itemList.add(ChoiceQuestionPage(i,question,false,true,defaultChooseIndex: defaultChooseAnswers,isImgChoice: true,));
             }
           }
 
