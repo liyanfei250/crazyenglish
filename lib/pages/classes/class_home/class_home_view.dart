@@ -255,7 +255,7 @@ class _ClassHomePageState extends State<ClassHomePage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          QrImageView(
+          QrImage(
             data: top?.id.toString() ?? "",
             version: QrVersions.auto,
             size: 87.w,

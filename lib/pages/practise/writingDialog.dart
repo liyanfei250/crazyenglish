@@ -65,16 +65,18 @@ class WritDialog extends Dialog {
                       ))
                 ],
               ),
-              Expanded(child:SelectionArea(
+              Expanded(
+                  child: Scrollbar(
+                      child: SelectionArea(
                 child: SingleChildScrollView(
                   child: Html(
-                    data:  htmlContent ?? "",
+                    data: htmlContent ?? "",
                     onImageTap: (
-                        url,
-                        context,
-                        attributes,
-                        element,
-                        ) {
+                      url,
+                      context,
+                      attributes,
+                      element,
+                    ) {
                       if (url != null && url!.startsWith('http')) {
                         DialogManager.showPreViewImageDialog(
                             BackButtonBehavior.close, url);
@@ -95,7 +97,7 @@ class WritDialog extends Dialog {
                     tagsList: Html.tags..addAll(['sentence']),
                   ),
                 ),
-              ) )
+              )))
 
               /*Text(title,
                   style: TextStyle(
