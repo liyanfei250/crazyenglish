@@ -71,6 +71,12 @@ class FeedbackType{
   static const int system = 3;
 }
 
+class ScoreListType{
+  static const int scoreList = 1;
+  static const int waitCorrectingList = 2;
+  static const int waitTipsList = 3;
+}
+
 // 发布作业类型
 class PaperType{
   // 习题类型

@@ -19,28 +19,33 @@ import 'school_report_list_logic.dart';
 class SchoolReportListPage extends BasePage {
   late History history;
   late int remindOrCrorrection;
-  int scoreList = 1;
-  int waitCorrectingList = 2;
-  int waitTipsList = 3;
+  static const int scoreList = 1;
+  static const int waitCorrectingList = 2;
+  static const int waitTipsList = 3;
+  int content_type = 0;
+  static const String listType = "listType";
 
-  SchoolReportListPage({Key? key}) : super(key: key){
-    if(Get.arguments!=null &&
-        Get.arguments is Map){
-      history = Get.arguments[HomeworkCompleteOverviewPage.HistoryItem]??false;
-      remindOrCrorrection = Get.arguments[HomeworkCompleteOverviewPage.Status]??1;
+  SchoolReportListPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      history =
+          Get.arguments[HomeworkCompleteOverviewPage.HistoryItem] ?? false;
+      remindOrCrorrection =
+          Get.arguments[HomeworkCompleteOverviewPage.Status] ?? 1;
+      content_type = Get.arguments[listType];
     }
   }
 
   @override
-  BasePageState<SchoolReportListPage> getState() => _SchoolReportListPageState();
+  BasePageState<SchoolReportListPage> getState() =>
+      _SchoolReportListPageState();
 }
 
 class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
   final logic = Get.put(SchoolReportListLogic());
   final state = Get.find<SchoolReportListLogic>().state;
 
-
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -49,40 +54,36 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentList+"${widget.history.id}",(){
+    logic.addListenerId(GetBuilderIds.getStudentList + "${widget.history.id}",
+        () {
       hideLoading();
-      if(state.list!=null && state.list!=null){
-        if(state.pageNo == currentPageNo+1){
+      if (state.list != null && state.list != null) {
+        if (state.pageNo == currentPageNo + 1) {
           studentList.addAll(state!.list!);
           currentPageNo++;
-          if(mounted && _refreshController!=null){
+          if (mounted && _refreshController != null) {
             _refreshController.loadComplete();
-            if(!state!.hasMore){
+            if (!state!.hasMore) {
               _refreshController.loadNoData();
-            }else{
+            } else {
               _refreshController.resetNoData();
             }
 
-            setState(() {
-
-            });
+            setState(() {});
           }
-
-        }else if(state.pageNo == pageStartIndex){
+        } else if (state.pageNo == pageStartIndex) {
           currentPageNo = pageStartIndex;
           studentList.clear();
           studentList.addAll(state.list!);
-          if(mounted && _refreshController!=null){
+          if (mounted && _refreshController != null) {
             _refreshController.refreshCompleted();
-            if(!state!.hasMore){
+            if (!state!.hasMore) {
               _refreshController.loadNoData();
-            }else{
+            } else {
               _refreshController.resetNoData();
             }
-            setState(() {
-            });
+            setState(() {});
           }
-
         }
       }
     });
@@ -90,14 +91,16 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
     showLoading("加载中");
   }
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getStudentList(widget.history.id??0,pageStartIndex,pageSize,widget.remindOrCrorrection);
+    logic.getStudentList(widget.history.id ?? 0, pageStartIndex, pageSize,
+        widget.content_type);
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    logic.getStudentList(widget.history.id??0,currentPageNo+1,pageSize,widget.remindOrCrorrection);
+    logic.getStudentList(widget.history.id ?? 0, currentPageNo + 1, pageSize,
+        widget.content_type);
   }
 
   @override
@@ -110,16 +113,17 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
     return Scaffold(
       appBar: buildNormalAppBar("成绩单"),
       body: Container(
-        margin: EdgeInsets.only(top: 30.w, left: 18.w, right: 18.w,bottom: 30.w),
+        margin:
+            EdgeInsets.only(top: 30.w, left: 18.w, right: 18.w, bottom: 30.w),
         padding: EdgeInsets.only(top: 20.w, left: 23.w, right: 23.w),
         decoration: BoxDecoration(
           color: AppColors.c_FFFFFFFF,
           borderRadius: BorderRadius.all(Radius.circular(7.w)),
-          boxShadow:[
+          boxShadow: [
             BoxShadow(
-              color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-              offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-              blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+              color: Color(0xffe3edff).withOpacity(0.5), // 阴影的颜色
+              offset: Offset(0.w, 0.w), // 阴影与容器的距离
+              blurRadius: 10.w, // 高斯的标准偏差与盒子的形状卷积。
               spreadRadius: 0.w,
             ),
           ],
@@ -129,9 +133,27 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("学生姓名",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
-                Text("提交情况",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),),
-                Text("成绩",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.sp,fontWeight: FontWeight.w500),)
+                Text(
+                  "学生姓名",
+                  style: TextStyle(
+                      color: AppColors.c_FF353E4D,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  "提交情况",
+                  style: TextStyle(
+                      color: AppColors.c_FF353E4D,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  widget.content_type == SchoolReportListPage.scoreList ? "成绩" : '',
+                  style: TextStyle(
+                      color: AppColors.c_FF353E4D,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
+                )
               ],
             ),
             Container(
@@ -140,31 +162,28 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               width: double.infinity,
               margin: EdgeInsets.only(top: 17.w),
             ),
-            Expanded(child: SmartRefresher(
+            Expanded(
+                child: SmartRefresher(
               enablePullDown: true,
               enablePullUp: true,
               header: WaterDropHeader(),
               footer: CustomFooter(
-                builder: (BuildContext context,LoadStatus? mode){
-                  Widget body ;
-                  if(mode==LoadStatus.idle){
-                    body =  Text("");
-                  }
-                  else if(mode==LoadStatus.loading){
-                    body =  CupertinoActivityIndicator();
-                  }
-                  else if(mode == LoadStatus.failed){
+                builder: (BuildContext context, LoadStatus? mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
                     body = Text("");
-                  }
-                  else if(mode == LoadStatus.canLoading){
+                  } else if (mode == LoadStatus.loading) {
+                    body = CupertinoActivityIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text("");
+                  } else if (mode == LoadStatus.canLoading) {
                     body = Text("release to load more");
-                  }
-                  else{
+                  } else {
                     body = Text("");
                   }
                   return Container(
                     height: 55.0,
-                    child: Center(child:body),
+                    child: Center(child: body),
                   );
                 },
               ),
@@ -174,13 +193,14 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               child: CustomScrollView(
                 slivers: [
                   SliverPadding(
-                    padding: EdgeInsets.only(left: 0.w,right: 0.w),
+                    padding: EdgeInsets.only(left: 0.w, right: 0.w),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         buildItem,
                         childCount: studentList.length,
                       ),
-                    ),)
+                    ),
+                  )
                 ],
               ),
             ))
@@ -189,7 +209,6 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
       ),
     );
   }
-
 
   Widget buildItem(BuildContext context, int index) {
     student.Records studentItem = studentList[index];
@@ -206,7 +225,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "${index+1}",
+                "${index + 1}",
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -222,20 +241,24 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
             ],
           ),
-          buildHasAnswered(index==1, index==1? "已做":"未做"),
+          buildHasAnswered(index == 1, index == 1 ? "已做" : "未做"),
           Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "80",
+                "${studentItem.objectiveProperSize?? 0}",
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Color(0xffed702d)),
               ),
               Padding(padding: EdgeInsets.only(left: 30.w)),
-              Image.asset(R.imagesSchoolReportRightArrow,width: 8.5.w,height: 8.5.w,),
+              Image.asset(
+                R.imagesSchoolReportRightArrow,
+                width: 8.5.w,
+                height: 8.5.w,
+              ),
             ],
           ),
         ],
@@ -243,8 +266,8 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
     );
   }
 
-  Widget buildHasAnswered(bool hasAnswered,String text){
-    if(hasAnswered){
+  Widget buildHasAnswered(bool hasAnswered, String text) {
+    if (hasAnswered) {
       return Container(
         height: 16.w,
         width: 42.w,
@@ -257,11 +280,15 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                 Color(0xffec6b6a),
                 Color(0xffee7b8a),
               ]),
-          borderRadius: BorderRadius.only(topLeft:Radius.circular(7.w),bottomRight: Radius.circular(7.w)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(7.w), bottomRight: Radius.circular(7.w)),
         ),
-        child: Text(text,style: TextStyle(fontSize: 10.sp,color: Colors.white),),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 10.sp, color: Colors.white),
+        ),
       );
-    }else{
+    } else {
       return Container(
         height: 16.w,
         width: 42.w,
@@ -270,16 +297,17 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
           color: AppColors.c_FFD2D5DC,
           borderRadius: BorderRadius.all(Radius.circular(2.w)),
         ),
-        child: Text(text,style: TextStyle(fontSize: 10.sp,color: Colors.white),),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 10.sp, color: Colors.white),
+        ),
       );
     }
   }
-
 
   @override
   void dispose() {
     Get.delete<SchoolReportListLogic>();
     super.dispose();
   }
-
 }
