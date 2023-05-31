@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/blocs/update_collect_bloc.dart';
 import 'package:crazyenglish/blocs/update_collect_event.dart';
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
@@ -180,27 +181,7 @@ abstract class BaseQuestionResultState<T extends BaseQuestionResult> extends Sta
           border: Border.all(color: AppColors.c_FFD2D5DC,width: 0.4.w)
       ),
       child: SingleChildScrollView(
-        child:  Html(
-          data: htmlContent??"",
-          onImageTap: (url,context,attributes,element,){
-            if(url!=null && url!.startsWith('http')){
-              DialogManager.showPreViewImageDialog(
-                  BackButtonBehavior.close, url);
-            }
-          },
-          style: {
-            "p": QuestionFactory.getHtml_P_TagStyle(),
-            "hr":Style(
-              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-              padding: EdgeInsets.all(0),
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-            )
-          },
-          tagsList: Html.tags..addAll(['gap']),
-          customRenders: {
-          },
-
-        ),
+        child:  Util.getHtmlWidget(htmlContent),
       ),
     );
   }
