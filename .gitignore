@@ -129,4 +129,3 @@ app.*.map.json
 **/linux/flutter/generated_plugin_registrant.cc
 **/linux/flutter/generated_plugin_registrant.h
 **/linux/flutter/ephemeral/.plugin_symlinks/
-build_ios.sh
