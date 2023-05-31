@@ -31,6 +31,7 @@ import '../question_answering/base_question.dart';
 class QuestionFactory{
   static Style getHtml_P_TagStyle(){
     return Style(
+        textAlign: TextAlign.justify,
         fontSize:FontSize(14.sp),
         color: const Color(0xff353e4d)
     );
@@ -99,7 +100,7 @@ class QuestionFactory{
 
     }
     return Html(
-      data: htmlContent??"",
+      data: (htmlContent??"").replaceAll("\t", "&ensp;&ensp;"),
       onImageTap: (url,context,attributes,element,){
         if(url!=null && url!.startsWith('http')){
           DialogManager.showPreViewImageDialog(
@@ -314,7 +315,7 @@ class QuestionFactory{
       }
     }
     return Html(
-      data: htmlContent??"",
+      data: (htmlContent??"").replaceAll("\t", "&ensp;&ensp;"),
       onImageTap: (url,context,attributes,element,){
         if(url!=null && url!.startsWith('http')){
           DialogManager.showPreViewImageDialog(
@@ -563,7 +564,7 @@ class QuestionFactory{
 
 
     return Html(
-      data: htmlContent??"",
+      data: (htmlContent??"").replaceAll("\t", "&ensp;&ensp;"),
       onImageTap: (url,context,attributes,element,){
         if(url!=null && url!.startsWith('http')){
           DialogManager.showPreViewImageDialog(

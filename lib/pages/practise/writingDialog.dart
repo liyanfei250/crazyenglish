@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import '../../base/AppUtil.dart';
 import '../../base/widgetPage/dialog_manager.dart';
 import '../../r.dart';
 import '../../utils/text_util.dart';
@@ -69,33 +70,7 @@ class WritDialog extends Dialog {
                   child: Scrollbar(
                       child: SelectionArea(
                 child: SingleChildScrollView(
-                  child: Html(
-                    data: htmlContent ?? "",
-                    onImageTap: (
-                      url,
-                      context,
-                      attributes,
-                      element,
-                    ) {
-                      if (url != null && url!.startsWith('http')) {
-                        DialogManager.showPreViewImageDialog(
-                            BackButtonBehavior.close, url);
-                      }
-                    },
-                    style: {
-                      "p": Style(fontSize: FontSize.large,margin: Margins.only(top: 0.w)),
-                      "sentence": Style(
-                          textDecorationStyle: TextDecorationStyle.dashed,
-                          textDecorationColor: AppColors.THEME_COLOR),
-                      "hr": Style(
-                        margin: Margins.only(
-                            left: 0, right: 0, top: 10.w, bottom: 10.w),
-                        padding: EdgeInsets.all(0),
-                        border: Border(bottom: BorderSide(color: Colors.grey)),
-                      )
-                    },
-                    tagsList: Html.tags..addAll(['sentence']),
-                  ),
+                  child: Util.getHtmlWidget(htmlContent,fontSize: FontSize.large),
                 ),
               )))
 

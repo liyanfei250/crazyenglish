@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
@@ -82,31 +83,7 @@ class _OthersQuestionState extends BaseQuestionState<OthersQuestion> {
       margin: EdgeInsets.only(top: 17.w,bottom: 18.w),
       child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        child:  Html(
-          data: htmlContent??"",
-          onImageTap: (url,context,attributes,element,){
-            if(url!=null && url!.startsWith('http')){
-              DialogManager.showPreViewImageDialog(
-                  BackButtonBehavior.close, url);
-            }
-          },
-          style: {
-            "p": Style(
-                fontSize:FontSize(14.sp),
-                color: const Color(0xff353e4d)
-            ),
-
-            // "hr":Style(
-            //   margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-            //   padding: EdgeInsets.all(0),
-            //   border: Border(bottom: BorderSide(color: Colors.grey)),
-            // )
-          },
-          tagsList: Html.tags..addAll(['gap']),
-          customRenders: {
-          },
-
-        ),
+        child:  Util.getHtmlWidget(htmlContent),
       ),
     );
   }
