@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/pages/index/index_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/utils/time_util.dart';
@@ -15,7 +16,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../base/common.dart' as common;
 import '../../../entity/home/HomeKingNewDate.dart';
 import '../../../entity/home/HomeMyTasksDate.dart' as homemytask;
-import 'package:crazyenglish/entity/teacher_week_list_response.dart' as weekListResponse;
+import 'package:crazyenglish/entity/teacher_week_list_response.dart'
+    as weekListResponse;
 import '../../../r.dart';
 import '../../../entity/week_list_response.dart' as newData;
 import '../../../routes/app_pages.dart';
@@ -43,6 +45,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   List<Obj> functionTxtNew = [];
   late Obj weekData;
   List<homemytask.Obj> listData = [];
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +63,19 @@ class _IndexPageState extends BasePageState<IndexNewPage>
         }
       }
     });
+    logic.addListenerId(GetBuilderIds.getMyTasksDate, () {
+      hideLoading();
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
 
+      if (state.myTask != null && state.myTask!.obj != null) {
+        listData = state.myTask!.obj!;
+        if (mounted && _refreshController != null) {
+          setState(() {});
+        }
+      }
+    });
     _onRefresh();
     showLoading("");
   }
@@ -105,14 +120,14 @@ class _IndexPageState extends BasePageState<IndexNewPage>
             slivers: [
               SliverPersistentHeader(
                 pinned: false,
-                delegate: _MyAppbarDelegate(child: AppBar(
-                automaticallyImplyLeading: false,
-                title: _buildSearchBar(),
-                elevation: 0,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-                backgroundColor: Colors.transparent,
-              )),
-
+                delegate: _MyAppbarDelegate(
+                    child: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: _buildSearchBar(),
+                  elevation: 0,
+                  systemOverlayStyle: SystemUiOverlayStyle.dark,
+                  backgroundColor: Colors.transparent,
+                )),
               ),
               SliverToBoxAdapter(
                 child: Column(
@@ -204,6 +219,9 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                           title: '暂无数据',
                           topMargin: 100.w,
                           subtitle: '')),
+              SliverToBoxAdapter(
+                child: _buildClassCard(0),
+              )
             ],
           ),
         ),
@@ -216,8 +234,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       onTap: () {
         weekListResponse.Records old = myListDate[index];
         newData.Obj updatedObj = updateObj(old);
-        RouterUtil.toNamed(AppRoutes.WeeklyTestCategory,
-            arguments: updatedObj);
+        RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: updatedObj);
       },
       child: Container(
         margin:
@@ -272,7 +289,8 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        TimeUtil.extractDate(myListDate[index].createTime ?? ''),
+                        TimeUtil.extractDate(
+                            myListDate[index].createTime ?? ''),
                         style: TextStyle(
                             fontSize: 14,
                             color: Color(0xff898a93),
@@ -381,8 +399,10 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   Widget get adsBanner {
     return GetBuilder<IndexLogic>(
       id: GetBuilderIds.getHomeBanner,
-      builder: (logic){
-        if(logic.state.banner!=null && logic.state.banner.obj!=null && logic.state.banner.obj!.isNotEmpty){
+      builder: (logic) {
+        if (logic.state.banner != null &&
+            logic.state.banner.obj != null &&
+            logic.state.banner.obj!.isNotEmpty) {
           return Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 14.w),
@@ -408,10 +428,9 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                 indicatorAlignment: AlignmentDirectional.bottomCenter,
                 children: makeBanner(logic.state.banner)),
           );
-        }else{
+        } else {
           return const SizedBox();
         }
-
       },
     );
   }
@@ -419,14 +438,14 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   ///banner条目适配器
   List<Widget> makeBanner(banner.Banner banner) {
     List<Widget> items = [];
-    if(banner!=null && banner.obj!=null && banner.obj!.isNotEmpty){
-      for(int i = 0;i<banner.obj!.length;i++){
+    if (banner != null && banner.obj != null && banner.obj!.isNotEmpty) {
+      for (int i = 0; i < banner.obj!.length; i++) {
         items.add(InkWell(
-          onTap: (){
-            if((banner.obj![i].externalLinks??"").isNotEmpty){
+          onTap: () {
+            if ((banner.obj![i].externalLinks ?? "").isNotEmpty) {
               RouterUtil.toWebPage(
                 banner.obj![i].externalLinks,
-                title: banner.obj![i].positionName??"",
+                title: banner.obj![i].positionName ?? "",
                 showStatusBar: true,
                 showAppBar: true,
                 showH5Title: true,
@@ -434,7 +453,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
             }
           },
           child: ExtendedImage.network(
-            banner.obj![i].img??"",
+            banner.obj![i].img ?? "",
             cacheRawData: true,
             width: double.infinity,
             height: 140.w,
@@ -459,7 +478,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
           ),
         ));
       }
-
     }
 
     return items;
@@ -467,7 +485,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
 
   Widget _buildFuncAreaItem(Obj e) => InkWell(
         onTap: () {
-
           switch (e.type) {
             case "weekly_type":
               RouterUtil.toNamed(AppRoutes.WeeklyTestList, arguments: e);
@@ -525,45 +542,82 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       );
 
   Widget _buildSearchBar() => Container(
-    width: double.infinity,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-            child: GestureDetector(
-                onTap: () {
-                  RouterUtil.toNamed(AppRoutes.HomeSearchPage,
-                      arguments: {'isteacher': false});
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(left: 11.w,top: 4.w,bottom: 4.w),
-                  decoration: BoxDecoration(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(14.w)),
-                      color: AppColors.c_FFFFFFFF),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        R.imagesIndexSearch,
-                        fit: BoxFit.cover,
-                        width: 22.w,
-                        height: 22.w,
-                        color: Color(0xffb3b7c0),
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: GestureDetector(
+                    onTap: () {
+                      RouterUtil.toNamed(AppRoutes.HomeSearchPage,
+                          arguments: {'isteacher': false});
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                          EdgeInsets.only(left: 11.w, top: 4.w, bottom: 4.w),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(14.w)),
+                          color: AppColors.c_FFFFFFFF),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            R.imagesIndexSearch,
+                            fit: BoxFit.cover,
+                            width: 22.w,
+                            height: 22.w,
+                            color: Color(0xffb3b7c0),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 9.w)),
+                          Text(
+                            "搜索",
+                            style: TextStyle(
+                                fontSize: 14.sp, color: Color(0xffb3b7c0)),
+                          )
+                        ],
                       ),
-                      Padding(padding: EdgeInsets.only(left: 9.w)),
-                      Text(
-                        "搜索",
-                        style: TextStyle(
-                            fontSize: 14.sp, color: Color(0xffb3b7c0)),
-                      )
-                    ],
-                  ),
-                ))),
-      ],
-    ),
-  );
+                    ))),
+          ],
+        ),
+      );
+
+  Widget _buildClassCard(int index) => Container(
+      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
+      padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 2.w, bottom: 2.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: listData.isNotEmpty
+          ? ListView.separated(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return _listOne(listData[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(height: 1, color: Color(0xffd2d5dc));
+              },
+              itemCount: listData.length,
+            )
+          : Container(
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
+              child: PlaceholderPage(
+                  imageAsset: R.imagesCommenNoDate,
+                  title: '暂无作业任务',
+                  topMargin: 0.w,
+                  subtitle: ''),
+            ));
 
   @override
   bool get wantKeepAlive => true;
@@ -574,6 +628,9 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     //获取我的期刊列表
     logic.getMyRecommendation();
     logic.getHomeBanner();
+
+    //获取我的任务
+    logic.getMyTasks();
   }
 
   void _onLoading() async {}
@@ -591,6 +648,71 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   @override
   void onDestroy() {}
 }
+
+Widget _listOne(homemytask.Obj value) => InkWell(
+      onTap: () {
+        RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+          PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
+          PreviewExamPaperPage.StudentOperationId: value.id,
+          PreviewExamPaperPage.PaperId: value.operationId
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            //Padding(padding: EdgeInsets.only(left: 7.w,right: 7.w)),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(children: [
+                    Container(
+                      width: 27.w,
+                      height: 14.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          gradient: yellowGreen(),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(7.w),
+                              topRight: Radius.circular(7.w),
+                              bottomRight: Radius.circular(7.w),
+                              bottomLeft: Radius.circular(0.w)),
+                          color: Color(0xfff0e9ff)),
+                      child: Text("${value.completeSize}/${value.totalSize}",
+                          style: TextStyle(
+                              color: Color(0xff8b8f9f),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w700)),
+                    ),
+                    SizedBox(width: 10.w),
+                    Text("${value.name}",
+                        style: TextStyle(
+                            color: Color(0xff353e4d),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600)),
+                  ]),
+                  SizedBox(
+                    height: 5.w,
+                  ),
+                  Row(
+                    children: [
+                      Text("剩余时间：${value.timeRemaining}",
+                          style: TextStyle(
+                              color: Color(0xff8b8f9f),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700)),
+                      SizedBox(width: 30.w),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
 
 LinearGradient yellowGreen(
         {begin = AlignmentDirectional.centerStart,
@@ -611,17 +733,18 @@ LinearGradient _getLinearGradient(Color left, Color right,
       begin: begin,
       end: end,
     );
+
 newData.Obj updateObj(weekListResponse.Records obj,
     {int? id,
-      String? name,
-      int? affiliatedGrade,
-      int? schoolYear,
-      int? periodsNum,
-      bool? status,
-      bool? isDelete,
-      int? journalView,
-      String? createTime,
-      int? createUser}) {
+    String? name,
+    int? affiliatedGrade,
+    int? schoolYear,
+    int? periodsNum,
+    bool? status,
+    bool? isDelete,
+    int? journalView,
+    String? createTime,
+    int? createUser}) {
   return newData.Obj(
     id: id ?? int.parse(obj.id!),
     name: name ?? obj.name,
@@ -635,13 +758,15 @@ newData.Obj updateObj(weekListResponse.Records obj,
     createUser: createUser ?? obj.createUser,
   );
 }
-class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
+
+class _MyAppbarDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
 
   _MyAppbarDelegate({required this.child});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return child;
   }
 
@@ -655,6 +780,4 @@ class _MyAppbarDelegate extends SliverPersistentHeaderDelegate{
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
-
-
 }
