@@ -119,16 +119,19 @@ class HomeworkRepository {
   // 待批改 2
   Future<HomeworkStudentResponse> getHomeworkStudentList(
       int homeworkType, num operationClassId, int page, int pageSize) async {
-    P p = P(
-      current: page,
-      size: pageSize,
-    );
+    Map<String, dynamic> req = {};
+    Map<String,dynamic> pageParam = {};
+    pageParam["current"] = page;
+    pageParam["size"] = pageSize;
+    req["p"] = pageParam;
+    req["operationClassId"] = operationClassId.toString();
 
     Map map = await NetManager.getInstance()!.request(
         Method.post,
         homeworkType == 1
             ? "${Api.remindList}$operationClassId"
             : "${Api.correctionList}$operationClassId",
+        data: req,
         options: Options(
           method: Method.post,
           contentType: ContentType.json.toString(),
@@ -147,18 +150,31 @@ class HomeworkRepository {
     }
   }
   //成绩单
+  //待提醒
+  //待批改
   Future<HomeworkStudentResponse> getHomeworkScoreStudentList(
-     num operationClassId, int page, int pageSize) async {
+      int homeworkType, num operationClassId, int page, int pageSize) async {
     Map<String, dynamic> req = {};
     Map<String,dynamic> pageParam = {};
     pageParam["current"] = page;
     pageParam["size"] = pageSize;
     req["p"] = pageParam;
     req["operationClassId"] = operationClassId.toString();
+    var  netUrl;
+    if (homeworkType == ScoreListType.scoreList){
+      netUrl =  Api.scoreList;
+
+    }
+    if (homeworkType == ScoreListType.waitCorrectingList){
+      netUrl =  Api.correctionList;
+    }
+    if (homeworkType == ScoreListType.waitTipsList){
+      netUrl =  Api.remindList;
+    }
 
     Map map = await NetManager.getInstance()!.request(
         Method.post,
-            "${Api.scoreList}",
+        netUrl,
         data: req,
         options: Options(
           method: Method.post,

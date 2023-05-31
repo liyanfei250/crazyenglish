@@ -1,4 +1,5 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/pages/homework/school_report_list/school_report_list_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_detail/week_test_detail_logic.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
@@ -181,7 +182,8 @@ class _HomeworkCompleteOverviewPageState
                                     AppRoutes.SchoolReportListPage,
                                     arguments: {
                                       HomeworkCompleteOverviewPage.HistoryItem:
-                                          widget.history
+                                          widget.history,
+                                      SchoolReportListPage.listType:SchoolReportListPage.scoreList
                                     });
                               },
                               child: Row(

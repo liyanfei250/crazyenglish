@@ -265,9 +265,9 @@ class Api {
   static String indexTeacerOperationDetailList = "${Config.ApiHost}/question/operation/actionPage";
 
   // 待批改学生列表
-  static String correctionList = "${Config.ApiHost}/question/operation/student/correctionList/";
+  static String correctionList = "${Config.ApiHost}/question/operation/student/correctionPage";
   // 待提醒学生列表
-  static String remindList = "${Config.ApiHost}/question/operation/student/remindList/";
+  static String remindList = "${Config.ApiHost}/question/operation/student/remindPage";
   //成绩单
   static String scoreList = "${Config.ApiHost}/question/operation/student/transcripts";
 

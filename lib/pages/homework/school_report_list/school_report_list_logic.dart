@@ -9,7 +9,7 @@ import 'school_report_list_state.dart';
 class SchoolReportListLogic extends GetxController {
   final SchoolReportListState state = SchoolReportListState();
   HomeworkRepository homeworkRepository = HomeworkRepository();
-  
+
   @override
   void onReady() {
     // TODO: implement onReady
@@ -25,10 +25,6 @@ class SchoolReportListLogic extends GetxController {
 
   // 1 待提醒 2 待批改
   void getStudentList(num homeworkId,int page,int pageSize,int status) async{
-    Map<String,String> req= {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
 
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.StudentListResponse,labelId: "$homeworkId$status").then((value){
@@ -45,11 +41,11 @@ class SchoolReportListLogic extends GetxController {
       } else {
         state.hasMore = true;
       }
-      update(["${GetBuilderIds.getStudentList}$homeworkId"]);
+      update(["${GetBuilderIds.getStudentList}$homeworkId$status"]);
     }
 
-    
-    HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkScoreStudentList(homeworkId, page, pageSize);
+
+    HomeworkStudentResponse homeworkStudentResponse = await homeworkRepository.getHomeworkScoreStudentList(status,homeworkId, page, pageSize);
 
     if(homeworkRepository!=null){
       state.list = homeworkStudentResponse.obj!.records!;
@@ -77,7 +73,7 @@ class SchoolReportListLogic extends GetxController {
         state.hasMore = true;
       }
     }
-    update(["${GetBuilderIds.getStudentList}$homeworkId"]);
+    update(["${GetBuilderIds.getStudentList}$homeworkId$status"]);
 
   }
 
