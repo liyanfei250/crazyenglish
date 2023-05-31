@@ -83,7 +83,7 @@ class WritDialog extends Dialog {
                       }
                     },
                     style: {
-                      "p": Style(fontSize: FontSize.large),
+                      "p": Style(fontSize: FontSize.large,margin: Margins.only(top: 0.w)),
                       "sentence": Style(
                           textDecorationStyle: TextDecorationStyle.dashed,
                           textDecorationColor: AppColors.THEME_COLOR),

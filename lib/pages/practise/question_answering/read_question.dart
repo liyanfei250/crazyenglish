@@ -66,7 +66,7 @@ class _ReadQuestionState extends BaseQuestionState<ReadQuestion> {
           Visibility(
               visible: element.stem!=null && element.stem!.isNotEmpty,
               child: Text(element.stem??"",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),)),
-          buildReadQuestion(element!.content),
+          buildReadQuestion(element!.content!.replaceAll("\t", "&ensp;&ensp;")),
           buildQuestionDesc("Question"),
         ],
       ),

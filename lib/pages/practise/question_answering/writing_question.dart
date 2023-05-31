@@ -129,7 +129,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           Util.toast("查看范文");
           showDialog(
             context: context,
-            builder: (context) => WritDialog(element.modelEssay ?? ""),
+            builder: (context) => WritDialog((element.modelEssay ?? "").replaceAll("\t", "&ensp;&ensp;")),
           );
         },
         child: Image.asset(
@@ -200,7 +200,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
             Padding(padding: EdgeInsets.only(top: 0.w)),
             SelectionArea(
               child: Html(
-                data: element.stem ?? "",
+                data: (element.stem ?? "").replaceAll("\t", "&ensp;&ensp;"),
                 onImageTap: (
                   url,
                   context,
