@@ -9,6 +9,7 @@ import 'package:crazyenglish/pages/practise/question_result/completion_filling_q
 import 'package:crazyenglish/pages/practise/question_result/translate_question_result.dart';
 import 'package:crazyenglish/pages/practise/question_result/writing_question_result.dart';
 import 'package:crazyenglish/pages/reviews/collect/collect_practic/collect_practic_logic.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ import '../question_result/listen_question_result.dart';
 import '../question_result/question_reading_question_result.dart';
 import '../question_result/read_question_result.dart';
 import '../question_result/select_filling_question_result.dart';
-import '../question_result/select_words_filling_question.dart';
+import '../question_result/select_words_filling_question_result.dart';
 import '../question_result/others_question_result.dart';
 
 /// 核心逻辑：结果页
@@ -614,6 +615,31 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
               "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          itemList.add(Visibility(
+            visible: question!.img != null && question!.img!.isNotEmpty,
+            child: ExtendedImage.network(
+              question!.img ?? "",
+              cacheRawData: true,
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              enableLoadState: true,
+              loadStateChanged: (state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.completed:
+                    return ExtendedRawImage(
+                      image: state.extendedImageInfo?.image,
+                      fit: BoxFit.cover,
+                    );
+                  default:
+                    return Image.asset(
+                      R.imagesCommenNoDate,
+                      fit: BoxFit.fitHeight,
+                    );
+                }
+              },
             ),));
           bool? isCorrect;
           num subjectId = element.id??0;

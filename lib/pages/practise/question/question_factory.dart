@@ -451,9 +451,9 @@ class QuestionFactory{
   }
 
   /// 选词填空的词
-  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers,{Set<String>? gapKeySet}){
+  static Widget buildSelectWordsAnswerQuestion(List<OptionsList> answers,{Set<String>? gapKeySet,bool isResult = false}){
     return Wrap(
-      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e,gapKeySet)).toList(),
+      children: answers.map((e) => _colorAnswerItem(answers.indexOf(e),e,gapKeySet,isResult)).toList(),
     );
   }
 
@@ -461,12 +461,15 @@ class QuestionFactory{
 
   /// answerIndex 选项的索引
   /// answer 选项的内容
-  static Widget _colorAnswerItem(int answerIndex,OptionsList answer,Set<String>? gapKeySet) {
+  static Widget _colorAnswerItem(int answerIndex,OptionsList answer,Set<String>? gapKeySet,bool isResult) {
     return GetBuilder<SelectGapGetxController>(
       id: "answer:${answerIndex}",
       builder: (_){
         return GestureDetector(
           onTap: () {
+            if(isResult){
+              return;
+            }
             String gapKey = "";
             _.hasFocusMap.forEach((key, value) {
               if(value){
@@ -475,7 +478,7 @@ class QuestionFactory{
                 }
               }
             });
-
+            print("gapKey: $gapKey");
             // 去掉之前的选项 选择状态
             String findBeforeAnswerIndex = "";
             _.answerIndexToGapIndexMap.forEach((answerIndex, value) {
@@ -750,10 +753,14 @@ class QuestionFactory{
         return GestureDetector(
             onTap: isClickEnable? () {
               String gapKey = "";
+              // 找见当下的焦点gapKey
               _.hasFocusMap.forEach((key, value) {
-                if(gapKeySet==null || !gapKeySet.contains(key)){
-                  gapKey = key;
+                if(value){
+                  if(gapKeySet==null || !gapKeySet.contains(key)){
+                    gapKey = key;
+                  }
                 }
+
               });
 
               // 去掉之前的选项 选择状态

@@ -21,6 +21,7 @@ import 'package:crazyenglish/pages/practise/question_answering/select_filling_qu
 import 'package:crazyenglish/pages/practise/question_answering/writing_question.dart';
 import 'package:crazyenglish/pages/practise/result/result_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -689,6 +690,31 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             child: Text(
               "${question!.problem}",style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
             ),));
+          itemList.add(Visibility(
+            visible: question!.img != null && question!.img!.isNotEmpty,
+            child: ExtendedImage.network(
+              question!.img ?? "",
+              cacheRawData: true,
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              enableLoadState: true,
+              loadStateChanged: (state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.completed:
+                    return ExtendedRawImage(
+                      image: state.extendedImageInfo?.image,
+                      fit: BoxFit.cover,
+                    );
+                  default:
+                    return Image.asset(
+                      R.imagesCommenNoDate,
+                      fit: BoxFit.fitHeight,
+                    );
+                }
+              },
+            ),));
           bool isClickEnable = true;
           String defaultChooseAnswers = "";
           // 找到上次作答记录 或者 错题本正确题目答案
@@ -712,7 +738,8 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                 && subtopicAnswerVoMap.containsKey("$subjectId:$subtopicId")){
               isClickEnable = false;
             }
-          } else if(widget.answerType == AnsweringPage.answer_normal_type){
+          } else if(widget.answerType == AnsweringPage.answer_normal_type
+            || widget.answerType == AnsweringPage.answer_homework_type){
             defaultChooseAnswers = "";
           }
 
@@ -744,6 +771,31 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
             visible: question!.problem != null && question!.problem!.isNotEmpty,
             child: Text(
               question!.problem!,style: TextStyle(color: AppColors.c_FF101010,fontSize: 14.sp,fontWeight: FontWeight.bold),
+            ),));
+          itemList.add(Visibility(
+            visible: question!.img != null && question!.img!.isNotEmpty,
+            child: ExtendedImage.network(
+              question!.img ?? "",
+              cacheRawData: true,
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+              enableLoadState: true,
+              loadStateChanged: (state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.completed:
+                    return ExtendedRawImage(
+                      image: state.extendedImageInfo?.image,
+                      fit: BoxFit.cover,
+                    );
+                  default:
+                    return Image.asset(
+                      R.imagesCommenNoDate,
+                      fit: BoxFit.fitHeight,
+                    );
+                }
+              },
             ),));
           itemList.add(Padding(
             padding: EdgeInsets.only(top: 18.w),

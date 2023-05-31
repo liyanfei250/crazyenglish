@@ -38,8 +38,14 @@ class SelectGapGetxController extends GetxController{
     indexContentList.addAll(list);
   }
 
-  initLastAnswer(Map<String,String> lastAnswer){
+  initLastAnswer(Map<String,String> lastAnswer,{Set<String>? answerIndexSet}){
     contentMap.addAll(lastAnswer);
+    if(answerIndexSet!=null){
+      answerIndexSet.forEach((element) {
+        answerIndexToGapIndexMap.addAllIf(true, {"answer:$element": "-1"});
+      });
+    }
+
   }
 
   // 1. 只允许一个空的焦点为true
