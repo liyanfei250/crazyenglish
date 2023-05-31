@@ -798,7 +798,6 @@ class QuestionFactory{
                   answer!.sequence!,
                   answer!.content!,
                   double.infinity,
-                  52.w,
                   false
               ),
             )
