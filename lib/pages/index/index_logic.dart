@@ -115,4 +115,29 @@ class IndexLogic extends GetxController {
     }
   }
 
+
+  void getMyTasks() async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.HomeMyTasks)
+        .then((value) {
+      if (value != null) {
+        return HomeMyTasksDate.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is HomeMyTasksDate) {
+      state.myTask = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getMyTasksDate]);
+    }
+
+    HomeMyTasksDate list = await homeViewRepository.getMyTask({"userId":SpUtil.getInt(BaseConstant.USER_ID)});
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeMyTasks, list.toJson());
+    state.myTask = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getMyTasksDate]);
+    }
+  }
 }
