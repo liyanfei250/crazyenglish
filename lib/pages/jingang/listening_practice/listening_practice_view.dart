@@ -366,7 +366,9 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                       fontWeight: FontWeight.w500),
                 )),
             Expanded(child: Text('')),
-            InkWell(
+            Visibility(
+                visible: widget.type!.dictionaryId !=1646439861824098308,
+                child: InkWell(
               onTap: () {
                 logicDetail.addJumpToResutOverViewListen(obj.journalName);
                 logicDetail.jumpToResutOverView("${obj.journalId}","${widget.type!.dictionaryId}",obj.catalogueMergeVo!);
@@ -379,22 +381,26 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
                         color: Color(0xff353e4d),
                         fontWeight: FontWeight.w600)),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 2.w,
-                top: 9.w,
-                bottom: 11.w,
-                right: 18.w,
+            )),
+            Visibility(
+              visible: widget.type!.dictionaryId !=1646439861824098308,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 2.w,
+                  top: 9.w,
+                  bottom: 11.w,
+                  right: 18.w,
+                ),
+                child: Image.asset(
+                  R.imagesIconToNext,
+                  color: Color(0xff353e4d),
+                  fit: BoxFit.cover,
+                  width: 7.w,
+                  height: 11.w,
+                ),
               ),
-              child: Image.asset(
-                R.imagesIconToNext,
-                color: Color(0xff353e4d),
-                fit: BoxFit.cover,
-                width: 7.w,
-                height: 11.w,
-              ),
             ),
+
           ],
         ),
         Container(
@@ -524,16 +530,20 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
             ),
             Padding(padding: EdgeInsets.only(left: 11.w)),
             Expanded(child: Text('')),
-            Text(
-              '正确率' +
-                  data.correctCount.toString() +
-                  "/" +
-                  data.questionCount.toString(),
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff858aa0)),
-            )
+            Visibility(
+              visible: widget.type!.dictionaryId !=1646439861824098308,
+              child: Text(
+                '正确率' +
+                    data.correctCount.toString() +
+                    "/" +
+                    data.questionCount.toString(),
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff858aa0)),
+              ),
+            ),
+
           ],
         ),
       ),

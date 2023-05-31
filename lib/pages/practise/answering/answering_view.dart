@@ -203,7 +203,6 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
   Widget? childQustionPageView;
   late PageController pageController;
   final Map<String,TextEditingController> gapEditController = {};
-
   @override
   void onCreate() {
     pageLogic = Get.find<PageGetxController>();

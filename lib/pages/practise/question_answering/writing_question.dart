@@ -83,8 +83,15 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
     }
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: detailWidget,
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onVerticalDragUpdate: (detail){
+            print("onVerticalDragUpdate:${detail.delta.dy}");
+            closeKeyBoard();
+          },
+          child:SingleChildScrollView(
+            child: detailWidget,
+          ),
         ),
         Visibility(
             visible: (element.modelEssay ?? "").isNotEmpty,
