@@ -16,9 +16,10 @@ import '../../week_test/week_test_detail/test_player_widget.dart';
 class WritingQuestionResult extends BaseQuestionResult {
   SubjectVoList data;
 
-  WritingQuestionResult(Map<String, ExerciseLists> subtopicAnswerVoMap,int childIndex,
+  WritingQuestionResult(
+      Map<String, ExerciseLists> subtopicAnswerVoMap, int childIndex,
       {required this.data, Key? key})
-      : super(subtopicAnswerVoMap, childIndex,key: key);
+      : super(subtopicAnswerVoMap, childIndex, key: key);
 
   @override
   BaseQuestionResultState<BaseQuestionResult> getState() {
@@ -29,6 +30,7 @@ class WritingQuestionResult extends BaseQuestionResult {
 class _WritingQuestionResultState
     extends BaseQuestionResultState<WritingQuestionResult> {
   late SubjectVoList element;
+
   @override
   getAnswers() {
     throw UnimplementedError();
@@ -41,53 +43,73 @@ class _WritingQuestionResultState
 
   @override
   Widget build(BuildContext context) {
-    collectLogic.queryCollectState(element.id??0);
+    collectLogic.queryCollectState(element.id ?? 0);
     return _buildClassCard(0);
   }
 
   Widget _buildClassCard(int index) => SingleChildScrollView(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 8.w),
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          padding: EdgeInsets.only(top: 18.w, left: 18.w, right: 18.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 8.w),
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: EdgeInsets.only(top: 18.w, left: 18.w, right: 18.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  buildQuestionDesc("范文"),
-                  GetBuilder<Collect_practicLogic>(
-                    id: "${GetBuilderIds.collectState}:${element.id}",
-                    builder: (_){
-                      return buildFavorAndFeedback(_.state.collectMap["${element.id}"]??false, element.id);
-                    },
-                  )
-                ],
-              ),
-              buildReadQuestion(widget.data.modelEssay??"无范文"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildQuestionDesc("原文"),
-                  Text('')
-                ],
-              ),
-              buildReadQuestion(widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!=null ? widget.subtopicAnswerVoMap[element.id.toString()+ ":0"]!.answer??"无数据":"无数据"),
-              // _exampleLayout(),
-            ],
-          ),
-        )
-      ],
-    ),
-  );
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildQuestionDesc("题目"),
+                      GetBuilder<Collect_practicLogic>(
+                        id: "${GetBuilderIds.collectState}:${element.id}",
+                        builder: (_) {
+                          return buildFavorAndFeedback(
+                              _.state.collectMap["${element.id}"] ?? false,
+                              element.id);
+                        },
+                      )
+                    ],
+                  ),
 
+                  buildReadQuestion((widget.data.stem.toString() +
+                          widget.data.content.toString()) ??
+                      "无数据"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [buildQuestionDesc("原文"), Text('')],
+                  ),
+                  buildReadQuestion(widget.subtopicAnswerVoMap[
+                              element.id.toString() + ":0"] !=
+                          null
+                      ? widget
+                              .subtopicAnswerVoMap[
+                                  element.id.toString() + ":0"]!
+                              .answer ??
+                          "无数据"
+                      : "无数据"),
+                  widget.data.modelEssay != null &&
+                          widget.data.modelEssay!.isNotEmpty
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [buildQuestionDesc("范文"), Text('')],
+                        )
+                      : SizedBox.shrink(),
+                  widget.data.modelEssay != null &&
+                          widget.data.modelEssay!.isNotEmpty
+                      ? buildReadQuestion(widget.data.modelEssay ?? "无范文")
+                      : SizedBox.shrink(),
+
+                  // _exampleLayout(),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
 
   @override
   void onDestroy() {}
-
 }
