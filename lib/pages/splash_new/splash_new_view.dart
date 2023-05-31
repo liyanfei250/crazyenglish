@@ -124,6 +124,7 @@ class SplashNewPageState extends State<SplashPageNew> {
                 width: 274.w,
                 height: 54.w,
               ),
+              buildTextContainer(),
             ],
           ),
           Positioned(
@@ -279,7 +280,27 @@ class SplashNewPageState extends State<SplashPageNew> {
       ),
     );
   }
+  Widget buildTextContainer() {
+    const String text = '英语周报数字化融媒体平台';
+     double containerWidth = 274.w;
 
+    return Container(
+      width: containerWidth,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: text.split('').map((char) {
+          return Text(
+            char,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color(0xff353e4d),
+              fontWeight: FontWeight.w500,
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
   @override
   void dispose() {
     _timer.cancel();
