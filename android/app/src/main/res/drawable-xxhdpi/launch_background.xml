@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/white"/>
-    <item android:drawable="@mipmap/splash_center_image" android:top="145dp" android:left="60dp" android:right="60dp" android:gravity="top|center">
-    </item>
+    <item android:drawable="@color/white" />
+    <item
+        android:layout_marginTop="200dp"
+        android:drawable="@mipmap/splash_center_image"
+        android:gravity="top|center"
+        android:left="60dp"
+        android:right="60dp"
+        android:top="165dp"></item>
 </layer-list>
