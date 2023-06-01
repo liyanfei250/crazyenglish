@@ -3,9 +3,11 @@ import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
+import 'package:crazyenglish/entity/login/login_util.dart';
 import 'package:crazyenglish/entity/user_info_response.dart';
 import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -126,7 +128,23 @@ class Util {
       androidAppId: Config.getAndroidBugly,
       iOSAppId: Config.getIosBugly,
     );
+    Fluwx fluwx = Fluwx();
+    fluwx.registerApi(appId: SnsLoginUtil.WECHAT_APPID,universalLink: SnsLoginUtil.WECHAT_UNIVERSAL_LINK);
+
   }
+
+  static jumpToMiniProgram() async {
+    Fluwx fluwx = Fluwx();
+    bool isInstalled = await fluwx.isWeChatInstalled;
+    if (!isInstalled) {
+      // 如果用户未安装微信，则弹出提示信息
+      return;
+    }
+    fluwx.open(target: MiniProgram(
+        username: 'gh_8a1d62dbee07'
+    ));
+  }
+
 
   static Widget buildBackWidget(BuildContext context) {
     return GestureDetector(

@@ -422,16 +422,17 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     if(banner!=null && banner.obj!=null && banner.obj!.isNotEmpty){
       for(int i = 0;i<banner.obj!.length;i++){
         items.add(InkWell(
-          onTap: (){
-            if((banner.obj![i].externalLinks??"").isNotEmpty){
-              RouterUtil.toWebPage(
-                banner.obj![i].externalLinks,
-                title: banner.obj![i].positionName??"",
-                showStatusBar: true,
-                showAppBar: true,
-                showH5Title: true,
-              );
-            }
+          onTap: () async{
+            // if((banner.obj![i].externalLinks??"").isNotEmpty){
+            //   RouterUtil.toWebPage(
+            //     banner.obj![i].externalLinks,
+            //     title: banner.obj![i].positionName??"",
+            //     showStatusBar: true,
+            //     showAppBar: true,
+            //     showH5Title: true,
+            //   );
+            // }
+            Util.jumpToMiniProgram();
           },
           child: ExtendedImage.network(
             banner.obj![i].img??"",
