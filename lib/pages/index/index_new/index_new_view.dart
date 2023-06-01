@@ -282,7 +282,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                       ),
                       SizedBox(height: 5),
                       Container(
-                        width: 62.w,
+                        width: 66.w,
                         padding: EdgeInsets.only(
                             left: 10.w, right: 10.w, top: 2.w, bottom: 2.w),
                         alignment: Alignment.center,
@@ -303,7 +303,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                               width: 4.w,
                             ),
                             Text(
-                              myListDate[index].journalView.toString() ?? '0',
+                              Util.formatNum(myListDate[index].journalView??0),
                               style: TextStyle(
                                   fontSize: 11.sp, color: Color(0xff898a93)),
                             )
@@ -423,16 +423,26 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       for(int i = 0;i<banner.obj!.length;i++){
         items.add(InkWell(
           onTap: () async{
-            // if((banner.obj![i].externalLinks??"").isNotEmpty){
-            //   RouterUtil.toWebPage(
-            //     banner.obj![i].externalLinks,
-            //     title: banner.obj![i].positionName??"",
-            //     showStatusBar: true,
-            //     showAppBar: true,
-            //     showH5Title: true,
-            //   );
-            // }
-            Util.jumpToMiniProgram();
+            if(banner.obj![i].type == 1){
+              if((banner.obj![i].externalLinks??"").isNotEmpty){
+                RouterUtil.toWebPage(
+                  banner.obj![i].externalLinks,
+                  title: banner.obj![i].positionName??"",
+                  showStatusBar: true,
+                  showAppBar: true,
+                  showH5Title: true,
+                );
+              }else{
+                Util.toast("获取地址失败");
+              }
+            }else if(banner.obj![i].type == 2){
+              if((banner.obj![i].appletId??"").isNotEmpty){
+                Util.jumpToMiniProgram(banner.obj![i].appletId);
+              }else{
+                Util.toast("获取小程序id失败");
+              }
+
+            }
           },
           child: ExtendedImage.network(
             banner.obj![i].img??"",

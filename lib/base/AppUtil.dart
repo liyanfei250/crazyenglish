@@ -133,7 +133,7 @@ class Util {
 
   }
 
-  static jumpToMiniProgram() async {
+  static jumpToMiniProgram(String? appid) async {
     Fluwx fluwx = Fluwx();
     bool isInstalled = await fluwx.isWeChatInstalled;
     if (!isInstalled) {
@@ -141,7 +141,7 @@ class Util {
       return;
     }
     fluwx.open(target: MiniProgram(
-        username: 'gh_8a1d62dbee07'
+        username: "$appid"
     ));
   }
 
@@ -546,7 +546,7 @@ class Util {
     return ScreenUtil().setSp(sp);
   }
 
-  static String formatNum(int num) {
+  static String formatNum(num num) {
     if (num < 0) {
       return "";
     } else if (num < 10000) {
