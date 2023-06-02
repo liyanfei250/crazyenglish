@@ -74,6 +74,7 @@ class Obj {
       num? id,
       String? name,
       num? position,
+      num? type,
       String? positionName,
       String? img,
       String? externalLinks,
@@ -85,6 +86,7 @@ class Obj {
     _id = id;
     _name = name;
     _position = position;
+    _type = type;
     _positionName = positionName;
     _img = img;
     _externalLinks = externalLinks;
@@ -99,6 +101,7 @@ class Obj {
     _id = json['id'];
     _name = json['name'];
     _position = json['position'];
+    _type = json['type'];
     _positionName = json['positionName'];
     _img = json['img'];
     _externalLinks = json['externalLinks'];
@@ -111,6 +114,7 @@ class Obj {
   num? _id;
   String? _name;
   num? _position;
+  num? _type;
   String? _positionName;
   String? _img;
   String? _externalLinks;
@@ -122,6 +126,7 @@ class Obj {
 Obj copyWith({  num? id,
   String? name,
   num? position,
+  num? type,
   String? positionName,
   String? img,
   String? externalLinks,
@@ -133,6 +138,7 @@ Obj copyWith({  num? id,
 }) => Obj(  id: id ?? _id,
   name: name ?? _name,
   position: position ?? _position,
+  type: type ?? _type,
   positionName: positionName ?? _positionName,
   img: img ?? _img,
   externalLinks: externalLinks ?? _externalLinks,
@@ -145,6 +151,7 @@ Obj copyWith({  num? id,
   num? get id => _id;
   String? get name => _name;
   num? get position => _position;
+  num? get type => _type;
   String? get positionName => _positionName;
   String? get img => _img;
   String? get externalLinks => _externalLinks;
@@ -159,6 +166,7 @@ Obj copyWith({  num? id,
     map['id'] = _id;
     map['name'] = _name;
     map['position'] = _position;
+    map['type'] = _type;
     map['positionName'] = _positionName;
     map['img'] = _img;
     map['externalLinks'] = _externalLinks;

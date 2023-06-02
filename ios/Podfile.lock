@@ -34,6 +34,12 @@ PODS:
     - Flutter
     - flutter_sound_core (= 9.2.13)
   - flutter_sound_core (9.2.13)
+  - fluwx (0.0.1):
+    - Flutter
+    - fluwx/pay (= 0.0.1)
+  - fluwx/pay (0.0.1):
+    - Flutter
+    - WechatOpenSDK-XCFramework (~> 2.0.2)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -95,6 +101,7 @@ PODS:
     - Flutter
   - video_player_avfoundation (0.0.1):
     - Flutter
+  - WechatOpenSDK-XCFramework (2.0.2)
 
 DEPENDENCIES:
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
@@ -109,6 +116,7 @@ DEPENDENCIES:
   - flutter_native_image (from `.symlinks/plugins/flutter_native_image/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
+  - fluwx (from `.symlinks/plugins/fluwx/ios`)
   - http_proxy_override (from `.symlinks/plugins/http_proxy_override/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
@@ -138,6 +146,7 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - TOCropViewController
+    - WechatOpenSDK-XCFramework
 
 EXTERNAL SOURCES:
   audio_session:
@@ -164,6 +173,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
+  fluwx:
+    :path: ".symlinks/plugins/fluwx/ios"
   http_proxy_override:
     :path: ".symlinks/plugins/http_proxy_override/ios"
   image_cropper:
@@ -212,6 +223,7 @@ SPEC CHECKSUMS:
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
+  fluwx: 4e01cbba9403c95cd973d5d8f8b9db5244f09446
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   http_proxy_override: 3f8cc6cdea77725778ccd931fae2b54fc8bc27e5
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
@@ -236,6 +248,7 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
+  WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
 
 PODFILE CHECKSUM: 49b45fa8dfbe0733ec351549a192ec6ad20e3b44
 

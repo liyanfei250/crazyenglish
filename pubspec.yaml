@@ -114,7 +114,19 @@ dependencies:
   syncfusion_flutter_core: ^20.4.52
   table_calendar: ^3.0.9
   grouped_list: ^5.1.2
+  fluwx: 4.2.4+1
 
+fluwx:
+  app_id: wxf814fbeed5ba5291
+  # only debug in debug mode
+  android:
+  #      interrupt_wx_request: true # default is true
+  #      flutter_activity: MainActivity #Default to launch app's launcher
+  ios:
+    universal_link: https://app-download.crazyenglishweekly.com/
+  #    scene_delegate: true #default false
+  # payment is enabled by default
+  no_pay: true
 
 dev_dependencies:
   icons_launcher: ^2.1.0

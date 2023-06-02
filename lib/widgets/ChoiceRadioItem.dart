@@ -19,7 +19,6 @@ class ChoiceRadioItem extends StatelessWidget {
   String? answerValue;
   String? contentValue;
   double? width;
-  double? height;
   bool isJudge;
 
   ChoiceRadioItemType type = ChoiceRadioItemType.DEFAULT;
@@ -33,7 +32,6 @@ class ChoiceRadioItem extends StatelessWidget {
       this.labelValue,
       this.contentValue,
       this.width,
-      this.height,
       this.isJudge,
       {Key? key}) : super(key: key);
 
@@ -50,7 +48,7 @@ class ChoiceRadioItem extends StatelessWidget {
       ],
     ):Container(
       width: this.width??100,
-      height: this.height,
+      padding: EdgeInsets.only(top: 10.w,bottom: 10.w),
       decoration: BoxDecoration(
         color: getBgColor(type),
         borderRadius: BorderRadius.all(Radius.circular(7.w)),
@@ -75,9 +73,8 @@ class ChoiceRadioItem extends StatelessWidget {
               Padding(padding: EdgeInsets.only(left: 19.w)),
               Container(
                 width: 218.w,
-                child: Text(contentValue??"",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                alignment: Alignment.centerLeft,
+                child: Text("${contentValue??""}".replaceAll("\n", ""),
                   style: TextStyle(fontSize: 14.sp,color: AppColors.TEXT_BLACK_COLOR,fontWeight: FontWeight.normal),),
               ),
             ],

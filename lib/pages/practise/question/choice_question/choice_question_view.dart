@@ -107,7 +107,6 @@ class _ChoiceQuestionPageState extends State<ChoiceQuestionPage> with SingleTick
                               e!.sequence??"",
                               e!.content??"",
                               double.infinity,
-                              52.w,
                               isJudge,
                           ),
                         ),

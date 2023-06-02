@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/entity/commit_request.dart';
 import 'package:crazyenglish/pages/practise/question/question_factory.dart';
 import 'package:flutter/material.dart';
@@ -225,30 +226,7 @@ abstract class BaseQuestionState<T extends BaseQuestion> extends State<T> with A
           border: Border.all(color: AppColors.c_FFD2D5DC,width: 0.4.w)
       ),
       child: SingleChildScrollView(
-        child:  Html(
-          data: htmlContent??"",
-          onImageTap: (url,context,attributes,element,){
-            if(url!=null && url!.startsWith('http')){
-              DialogManager.showPreViewImageDialog(
-                  BackButtonBehavior.close, url);
-            }
-          },
-          style: {
-            // "p":Style(
-            //     fontSize:FontSize.large
-            // ),
-
-            "hr":Style(
-              margin: Margins.only(left:0,right: 0,top: 10.w,bottom:10.w),
-              padding: EdgeInsets.all(0),
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-            )
-          },
-          tagsList: Html.tags..addAll(['gap']),
-          customRenders: {
-          },
-
-        ),
+        child:  Util.getHtmlWidget(htmlContent),
       ),
     );
   }

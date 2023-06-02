@@ -83,8 +83,15 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
     }
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: detailWidget,
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onVerticalDragUpdate: (detail){
+            print("onVerticalDragUpdate:${detail.delta.dy}");
+            closeKeyBoard();
+          },
+          child:SingleChildScrollView(
+            child: detailWidget,
+          ),
         ),
         Visibility(
             visible: (element.modelEssay ?? "").isNotEmpty,
@@ -199,33 +206,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
             ),
             Padding(padding: EdgeInsets.only(top: 0.w)),
             SelectionArea(
-              child: Html(
-                data: element.stem ?? "",
-                onImageTap: (
-                  url,
-                  context,
-                  attributes,
-                  element,
-                ) {
-                  if (url != null && url!.startsWith('http')) {
-                    DialogManager.showPreViewImageDialog(
-                        BackButtonBehavior.close, url);
-                  }
-                },
-                style: {
-                  "p": QuestionFactory.getHtml_P_TagStyle(),
-                  "sentence": Style(
-                      textDecorationStyle: TextDecorationStyle.dashed,
-                      textDecorationColor: AppColors.THEME_COLOR),
-                  "hr": Style(
-                    margin: Margins.only(
-                        left: 0, right: 0, top: 10.w, bottom: 10.w),
-                    padding: EdgeInsets.all(0),
-                    border: Border(bottom: BorderSide(color: Colors.grey)),
-                  )
-                },
-                tagsList: Html.tags..addAll(['sentence']),
-              ),
+              child: Util.getHtmlWidget(element.stem),
             ),
             _buildClassCard(0),
             _inputCard(),
@@ -338,33 +319,7 @@ class _WritingQuestionState extends BaseQuestionState<WritingQuestion> {
           child: Scrollbar(
             child: SingleChildScrollView(
               child: SelectionArea(
-                child: Html(
-                  data: element.content ?? "",
-                  onImageTap: (
-                    url,
-                    context,
-                    attributes,
-                    element,
-                  ) {
-                    if (url != null && url!.startsWith('http')) {
-                      DialogManager.showPreViewImageDialog(
-                          BackButtonBehavior.close, url);
-                    }
-                  },
-                  style: {
-                    "p": Style(fontSize: FontSize.large),
-                    "sentence": Style(
-                        textDecorationStyle: TextDecorationStyle.dashed,
-                        textDecorationColor: AppColors.THEME_COLOR),
-                    "hr": Style(
-                      margin: Margins.only(
-                          left: 0, right: 0, top: 10.w, bottom: 10.w),
-                      padding: EdgeInsets.all(0),
-                      border: Border(bottom: BorderSide(color: Colors.grey)),
-                    )
-                  },
-                  tagsList: Html.tags..addAll(['sentence']),
-                ),
+                child: Util.getHtmlWidget(element.content),
               ),
             ),
           )));

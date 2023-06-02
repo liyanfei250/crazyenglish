@@ -6,15 +6,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 class SnsLoginUtil {
-  static const String WECHAT_APPID = 'wx1b0f3b89f9fc263b';
-  static const String TENCENT_APPID = '102024877';
+  static const String WECHAT_APPID = 'wxf814fbeed5ba5291';
   static const String WECHAT_UNIVERSAL_LINK =
-      'https://dfhui.cn/moneymake/'; // iOS 请配置
-  static const String WECHAT_APPSECRET = '36c68af07fddecd604bd38ccc020f28b';
-  static const String WECHAT_MINIAPPID = 'your wechat miniAppId';
-  static const String WECHAT_CUSTOM_SERVICE = 'https://work.weixin.qq.com/kfid/kfc2d2a9d29c2815488';
-  static const String WECHAT_CORP_Id = 'wwfb7d5295241c23fc';
+      'https://app-download.crazyenglishweekly.com/'; // iOS 请配置
+  static const String WECHAT_APPSECRET = '815f006d7476de1caeed7137801bc705';
 
+  static const String TENCENT_APPID = '102024877';
   static const String UNIVERSAL_LINK =
       'https://dfhui.cn/'; // iOS 请配置
 

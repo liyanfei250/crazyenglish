@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crazyenglish/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -124,6 +125,7 @@ class SplashNewPageState extends State<SplashPageNew> {
                 width: 274.w,
                 height: 54.w,
               ),
+              buildTextContainer(),
             ],
           ),
           Positioned(
@@ -231,6 +233,10 @@ class SplashNewPageState extends State<SplashPageNew> {
                         SpUtil.putBool(
                             BaseConstant.key_first_installation, false);
                         _goMain();
+                        FlutterBugly.init(
+                          androidAppId: Config.getAndroidBugly,
+                          iOSAppId: Config.getIosBugly,
+                        );
                       },
                       child: Container(
                         width: 250.w,
@@ -279,7 +285,27 @@ class SplashNewPageState extends State<SplashPageNew> {
       ),
     );
   }
+  Widget buildTextContainer() {
+    const String text = '英语周报数字化融媒体平台';
+     double containerWidth = 274.w;
 
+    return Container(
+      width: containerWidth,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: text.split('').map((char) {
+          return Text(
+            char,
+            style: TextStyle(
+              fontSize: 16,
+              color: Color(0xff353e4d),
+              fontWeight: FontWeight.w500,
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
   @override
   void dispose() {
     _timer.cancel();

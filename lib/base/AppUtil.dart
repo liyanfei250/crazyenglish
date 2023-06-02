@@ -2,8 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/base/widgetPage/dialog_manager.dart';
+import 'package:crazyenglish/entity/login/login_util.dart';
 import 'package:crazyenglish/entity/user_info_response.dart';
 import 'package:flutter_bugly/flutter_bugly.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:crazyenglish/base/common.dart';
@@ -71,6 +75,40 @@ class Util {
     return croppedFile;
   }
 
+  static Html getHtmlWidget(String? htmlContent,{FontSize? fontSize}){
+    fontSize ??= FontSize(14.sp);
+    return Html(
+      data: (htmlContent ?? "").replaceAll("\t", "&ensp;&ensp;"),
+      onImageTap: (
+          url,
+          context,
+          attributes,
+          element,
+          ) {
+        if (url != null && url!.startsWith('http')) {
+          DialogManager.showPreViewImageDialog(
+              BackButtonBehavior.close, url);
+        }
+      },
+      style: {
+        "p": Style(
+            textAlign: TextAlign.justify,
+            color: const Color(0xff353e4d),
+            fontSize: fontSize,margin: Margins.only(top: 0.w)),
+        "sentence": Style(
+            textDecorationStyle: TextDecorationStyle.dashed,
+            textDecorationColor: AppColors.THEME_COLOR),
+        "hr": Style(
+          margin: Margins.only(
+              left: 0, right: 0, top: 10.w, bottom: 10.w),
+          padding: EdgeInsets.all(0),
+          border: Border(bottom: BorderSide(color: Colors.grey)),
+        )
+      },
+      tagsList: Html.tags..addAll(['sentence']),
+    );
+  }
+
   static initWhenEnterMain() async {
     // Wechat.instance.registerApp(
     //   appId: SnsLoginUtil.WECHAT_APPID,
@@ -86,11 +124,23 @@ class Util {
     //     appId: SnsLoginUtil.TENCENT_APPID,
     //     universalLink: SnsLoginUtil.UNIVERSAL_LINK);
     // registerUmeng();
-    FlutterBugly.init(
-      androidAppId: Config.getAndroidBugly,
-      iOSAppId: Config.getIosBugly,
-    );
+    Fluwx fluwx = Fluwx();
+    fluwx.registerApi(appId: SnsLoginUtil.WECHAT_APPID,universalLink: SnsLoginUtil.WECHAT_UNIVERSAL_LINK);
+
   }
+
+  static jumpToMiniProgram(String? appid) async {
+    Fluwx fluwx = Fluwx();
+    bool isInstalled = await fluwx.isWeChatInstalled;
+    if (!isInstalled) {
+      // 如果用户未安装微信，则弹出提示信息
+      return;
+    }
+    fluwx.open(target: MiniProgram(
+        username: "$appid"
+    ));
+  }
+
 
   static Widget buildBackWidget(BuildContext context) {
     return GestureDetector(
@@ -492,7 +542,7 @@ class Util {
     return ScreenUtil().setSp(sp);
   }
 
-  static String formatNum(int num) {
+  static String formatNum(num num) {
     if (num < 0) {
       return "";
     } else if (num < 10000) {
