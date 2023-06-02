@@ -233,7 +233,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
 //                   sliver: SliverToBoxAdapter(
 //                 child: _buildClassArea(),
 //               ))
-// >>>>>>> ea0c01e41176308595a321741f1d22c3ce675618
             ],
           ),
         ),

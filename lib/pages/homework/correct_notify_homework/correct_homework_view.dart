@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
+import 'package:crazyenglish/pages/homework/school_report_list/school_report_list_view.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
@@ -248,8 +249,8 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage> {
         RouterUtil.toNamed(
             AppRoutes.SchoolReportListPage,
             arguments: {
-              HomeworkCompleteOverviewPage.HistoryItem:
-              widget.history,
+              // HomeworkCompleteOverviewPage.HistoryItem:
+              // widget.history,
               SchoolReportListPage.listType:SchoolReportListPage.scoreList
             });
       },
