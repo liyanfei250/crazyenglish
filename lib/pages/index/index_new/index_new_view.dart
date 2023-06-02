@@ -206,7 +206,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                   ],
                 ),
               ),
-<<<<<<< HEAD
               myListDate.length > 0
                   ? SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -222,8 +221,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                           subtitle: '')),
               SliverToBoxAdapter(
                 child: _buildClassCard(0),
-              )
-=======
+              ),
               SliverToBoxAdapter(
                   child: _createListView()),
               SliverToBoxAdapter(
@@ -234,7 +232,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                   sliver: SliverToBoxAdapter(
                 child: _buildClassArea(),
               ))
->>>>>>> ea0c01e41176308595a321741f1d22c3ce675618
             ],
           ),
         ),
@@ -801,40 +798,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     ),
   );
 
-  Widget _buildClassCard(int index) => Container(
-      margin: EdgeInsets.only(top: 20.w, left: 14.w, right: 14.w, bottom: 14.w),
-      padding: EdgeInsets.only(left: 14.w, right: 14.w, top: 2.w, bottom: 2.w),
-      width: double.infinity,
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
-              offset: Offset(10, 20), // 阴影与容器的距离
-              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
-              spreadRadius: 10.0,
-            )
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(10.w)),
-          color: AppColors.c_FFFFFFFF),
-      child: listData.isNotEmpty ? ListView.separated(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return _listOne(listData[index]);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider(height: 1, color: Color(0xffd2d5dc));
-        },
-        itemCount: listData.length,
-      ): Container(
-        margin: EdgeInsets.only( left: 20.w, right: 20.w),
-        child: PlaceholderPage(
-            imageAsset: R.imagesCommenNoDate,
-            title: '暂无作业任务',
-            topMargin: 0.w,
-            subtitle: ''),
-      )) ;
 
   Widget _listOne(homemytask.Obj value) => InkWell(
     onTap: () {
@@ -920,16 +883,13 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     logic.getMyRecommendation();
     logic.getHomeBanner();
 
-<<<<<<< HEAD
     //获取我的任务
     logic.getMyTasks();
-=======
     if(!Util.isIOSMode()){
       //获取我的任务
       logic.getMyTasks();
     }
 
->>>>>>> ea0c01e41176308595a321741f1d22c3ce675618
   }
 
   void _onLoading() async {}

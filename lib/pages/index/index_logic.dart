@@ -123,8 +123,6 @@ class IndexLogic extends GetxController {
       }
     });
 
-<<<<<<< HEAD
-=======
 
   void getMyTasks() async {
     var cache = await JsonCacheManageUtils.getCacheData(
@@ -134,8 +132,7 @@ class IndexLogic extends GetxController {
         return HomeMyTasksDate.fromJson(value as Map<String, dynamic>?);
       }
     });
-
->>>>>>> ea0c01e41176308595a321741f1d22c3ce675618
+  }
     bool hasCache = false;
     if (cache is HomeMyTasksDate) {
       state.myTask = cache!;
