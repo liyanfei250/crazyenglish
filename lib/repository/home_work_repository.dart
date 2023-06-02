@@ -163,7 +163,6 @@ class HomeworkRepository {
     var  netUrl;
     if (homeworkType == ScoreListType.scoreList){
       netUrl =  Api.scoreList;
-
     }
     if (homeworkType == ScoreListType.waitCorrectingList){
       netUrl =  Api.correctionList;

@@ -54,7 +54,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentList + "${widget.history.id}",
+    logic.addListenerId(GetBuilderIds.getStudentList + "${widget.history.id}"+widget.content_type.toString(),
         () {
       hideLoading();
       if (state.list != null && state.list != null) {

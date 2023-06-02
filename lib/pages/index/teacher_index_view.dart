@@ -7,6 +7,7 @@ import 'package:crazyenglish/pages/homework/correct_notify_homework/correct_home
 import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
+import 'package:crazyenglish/xfyy/bean/xf_text_req.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -414,7 +415,7 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                 children: [
                   _buildItem(() {
                     RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
-                        arguments: {CorrectHomeworkPage.NeedNotify: true});
+                        arguments: {CorrectHomeworkPage.NeedNotify: true,CorrectHomeworkPage.listType:ScoreListType.waitTipsList});
                   }, context, R.imagesHomeWorkTips, '待提醒', '(10)'),
                   Container(
                     width: 1,
@@ -424,7 +425,7 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                   ),
                   _buildItem(() {
                     RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
-                        arguments: {CorrectHomeworkPage.NeedNotify: false});
+                        arguments: {CorrectHomeworkPage.NeedNotify: false,CorrectHomeworkPage.listType:ScoreListType.waitCorrectingList});
                   }, context, R.imagesHomeWorkChange, '待批改', '(10)'),
                 ],
               ),

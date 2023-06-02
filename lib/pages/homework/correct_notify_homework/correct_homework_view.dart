@@ -28,13 +28,15 @@ class CorrectHomeworkPage extends BasePage {
 
   bool isAssignHomework = false;
   bool needNotify = false;
-
+  int content_type = 0;
   static const String NeedNotify = "needNotify";
+  static const String listType = "listType";
 
   CorrectHomeworkPage({Key? key}) : super(key: key) {
     if(Get.arguments!=null &&
         Get.arguments is Map){
       needNotify = Get.arguments[NeedNotify]??false;
+      content_type = Get.arguments[listType];
     }
   }
 
@@ -241,65 +243,76 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage> {
   Widget buildItem(BuildContext context, int index) {
     History history = historys[index];
 
-    return Container(
-      margin: EdgeInsets.only(left: 18.w, right: 18.w,top: 24.w),
-      padding: EdgeInsets.only(left: 27.w,right: 27.w,top: 3.w,bottom: 12.w),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(7.w)),
-        boxShadow:[
-          BoxShadow(
-            color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-            offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-            blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
-            spreadRadius: 0.w,
-          ),
-        ],
+    return InkWell(
+      onTap: (){
+        RouterUtil.toNamed(
+            AppRoutes.SchoolReportListPage,
+            arguments: {
+              HomeworkCompleteOverviewPage.HistoryItem:
+              widget.history,
+              SchoolReportListPage.listType:SchoolReportListPage.scoreList
+            });
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 18.w, right: 18.w,top: 24.w),
+        padding: EdgeInsets.only(left: 27.w,right: 27.w,top: 3.w,bottom: 12.w),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(7.w)),
+          boxShadow:[
+            BoxShadow(
+              color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
+              offset: Offset(0.w, 0.w),						// 阴影与容器的距离
+              blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 0.w,
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 16.w)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("${history.name}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
+                InkWell(
+                  onTap: (){
+                    if(widget.needNotify){
+                      RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                        HomeworkCompleteOverviewPage.HistoryItem:history,
+                        HomeworkCompleteOverviewPage.Status:1,
+                      });
+                    }else {
+                      RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
+                        HomeworkCompleteOverviewPage.HistoryItem:history,
+                        HomeworkCompleteOverviewPage.Status:2,
+                      });
+                    }
+                  },
+                  child: widget.needNotify?
+                  goToNextPage("去提醒") :
+                  buildHasChecked(false,"待批改（18）"),
+                )
+              ],
+            ),
+            Container(margin:EdgeInsets.only(top: 11.w,bottom: 6.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
+            Row(
+              children: [
+                buildLineItem(R.imagesExamPaperName,"${history.name}"),
+              ],
+            ),
+            buildLineItem(R.imagesExamPaperTiCount,"${history.studentCompleteSize}/${history.studentTotalSize} 完成"),
+            Visibility(
+                visible: !widget.isAssignHomework,
+                child: buildLineItem(R.imagesExamPaperTiType,"班级平均分")),
+          ],
+        ),
       ),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(padding: EdgeInsets.only(top: 16.w)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("${history.name}",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93,fontWeight: FontWeight.w500),),
-              InkWell(
-                onTap: (){
-                  if(widget.needNotify){
-                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
-                      HomeworkCompleteOverviewPage.HistoryItem:history,
-                      HomeworkCompleteOverviewPage.Status:1,
-                    });
-                  }else {
-                    RouterUtil.toNamed(AppRoutes.SchoolReportListPage,arguments: {
-                      HomeworkCompleteOverviewPage.HistoryItem:history,
-                      HomeworkCompleteOverviewPage.Status:2,
-                    });
-                  }
-                },
-                child: widget.needNotify?
-                          goToNextPage("去提醒") :
-                buildHasChecked(false,"待批改（18）"),
-              )
-            ],
-          ),
-          Container(margin:EdgeInsets.only(top: 11.w,bottom: 6.w),width: double.infinity,height: 0.2.w,color: AppColors.c_FFD2D5DC,),
-          Row(
-            children: [
-              buildLineItem(R.imagesExamPaperName,"${history.name}"),
-            ],
-          ),
-          buildLineItem(R.imagesExamPaperTiCount,"${history.studentCompleteSize}/${history.studentTotalSize} 完成"),
-          Visibility(
-            visible: !widget.isAssignHomework,
-            child: buildLineItem(R.imagesExamPaperTiType,"班级平均分")),
-        ],
-      ),
-    );
+    ) ;
   }
 
   Widget goToNextPage(String text){

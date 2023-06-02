@@ -114,8 +114,6 @@ class IndexLogic extends GetxController {
       update([GetBuilderIds.getHomeMyJournalDate]);
     }
   }
-
-
   void getMyTasks() async {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.HomeMyTasks)
