@@ -124,10 +124,6 @@ class Util {
     //     appId: SnsLoginUtil.TENCENT_APPID,
     //     universalLink: SnsLoginUtil.UNIVERSAL_LINK);
     // registerUmeng();
-    FlutterBugly.init(
-      androidAppId: Config.getAndroidBugly,
-      iOSAppId: Config.getIosBugly,
-    );
     Fluwx fluwx = Fluwx();
     fluwx.registerApi(appId: SnsLoginUtil.WECHAT_APPID,universalLink: SnsLoginUtil.WECHAT_UNIVERSAL_LINK);
 

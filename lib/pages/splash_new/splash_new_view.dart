@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crazyenglish/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -232,6 +233,10 @@ class SplashNewPageState extends State<SplashPageNew> {
                         SpUtil.putBool(
                             BaseConstant.key_first_installation, false);
                         _goMain();
+                        FlutterBugly.init(
+                          androidAppId: Config.getAndroidBugly,
+                          iOSAppId: Config.getIosBugly,
+                        );
                       },
                       child: Container(
                         width: 250.w,
