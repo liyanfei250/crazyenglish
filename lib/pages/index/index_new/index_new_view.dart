@@ -599,6 +599,16 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                         ],
                       ),
                     ))),
+            GestureDetector(
+              onTap: () {
+                RouterUtil.toNamed(AppRoutes.QRViewPage);
+              },
+              child: Image.asset(
+                R.imagesIndexScan,
+                width: 18.w,
+                height: 18.w,
+              ),
+            ),
           ],
         ),
       );
