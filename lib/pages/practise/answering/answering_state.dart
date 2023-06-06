@@ -22,6 +22,7 @@ class AnsweringState {
 
   String? operationId = "";
   String? operationStudentId = "";
+  String? operationClassId = "";
 
 
   StartExam examResult = StartExam();

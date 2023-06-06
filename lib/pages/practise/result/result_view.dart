@@ -57,6 +57,7 @@ class ResultPage extends BasePage{
 
   String operationId = "";
   String operationStudentId = "";
+  String operationClassId = "";
   bool hasResultIndicator = true;
   ResultPage({Key? key}) : super(key: key){
     if(Get.arguments!=null &&
@@ -72,6 +73,7 @@ class ResultPage extends BasePage{
 
       operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
       operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
+      operationClassId = Get.arguments[PreviewExamPaperPage.OperationClassId]?? "";
     }
   }
 
@@ -383,12 +385,13 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                         AnsweringPage.result_type:widget.resultType,
                         PreviewExamPaperPage.PaperId: widget.operationId,
                         PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
+                        PreviewExamPaperPage.OperationClassId: widget.operationClassId,
                       });
                     } else {
                       if(widget.resultType == AnsweringPage.result_homework_type){
                         logicDetail.addJumpToStartHomeworkListen();
                         logicDetail.getDetailAndStartHomework("${currentSubjectVoList!.journalCatalogueId}",
-                            "${widget.operationStudentId}","${widget.operationId}",enterResult: false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
+                            "${widget.operationStudentId}","${widget.operationClassId}","${widget.operationId}",enterResult: false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex+1,jumpChildIndex: 0);
                         showLoading("");
                       }else{
                         // 跳作答页

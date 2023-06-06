@@ -1,3 +1,5 @@
+import 'package:crazyenglish/entity/class_list_response.dart';
+import 'package:crazyenglish/pages/mine/ClassRepository.dart';
 import 'package:get/get.dart';
 
 import '../../../entity/HomeworkHistoryResponse.dart';
@@ -9,38 +11,35 @@ import 'choose_history_homework_state.dart';
 class ChooseHistoryHomeworkLogic extends GetxController {
   final ChooseHistoryHomeworkState state = ChooseHistoryHomeworkState();
   HomeworkRepository homeworkRepository = HomeworkRepository();
+  ClassRepository netTool = ClassRepository();
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
-
-  //TODO 缓存key需要处理
-  void getHomeworkHistoryList(dynamic schoolClassId,int page,int pageSize) async{
-    Map<String,String> req= {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
-
+  void getHistoryListActionPage(dynamic schoolClassId, int teacherId,
+      int actionPage, int page, int pageSize) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-        JsonCacheManageUtils.HomeworkHistoryResponse).then((value){
-      if(value!=null){
-        return HomeworkHistoryResponse.fromJson(value as Map<String,dynamic>?);
+            JsonCacheManageUtils.HomeworkHistoryResponse,labelId: schoolClassId.toString()+actionPage.toString())
+        .then((value) {
+      if (value != null) {
+        return HomeworkHistoryResponse.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     state.pageNo = page;
-    if(page==1 && cache is HomeworkHistoryResponse && cache.obj!=null && cache.obj!.records!=null) {
+    if (page == 1 &&
+        cache is HomeworkHistoryResponse &&
+        cache.obj != null &&
+        cache.obj!.records != null) {
       state.list = cache.obj!.records!;
-      if(state.list.length < pageSize){
+      if (state.list.length < pageSize) {
         state.hasMore = false;
       } else {
         state.hasMore = true;
@@ -48,16 +47,19 @@ class ChooseHistoryHomeworkLogic extends GetxController {
       update([GetBuilderIds.getHistoryHomeworkList]);
     }
 
-
-    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomework(schoolClassId,page,pageSize);
+    HomeworkHistoryResponse list =
+        await homeworkRepository.getHistoryHomeworkActionPage(
+            schoolClassId, teacherId, actionPage, page, pageSize);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.HomeworkHistoryResponse,
-          labelId: "",
+          labelId: schoolClassId.toString()+actionPage.toString(),
           list.toJson());
     }
 
-    if (list.obj == null || list.obj!.records==null || list.obj!.records!.isEmpty) {
+    if (list.obj == null ||
+        list.obj!.records == null ||
+        list.obj!.records!.isEmpty) {
       if (page == 1) {
         state.list.clear();
       }
@@ -76,57 +78,33 @@ class ChooseHistoryHomeworkLogic extends GetxController {
     update([GetBuilderIds.getHistoryHomeworkList]);
   }
 
+  //班级列表查询
+  void getMyClassList(String teacherUserId) async {
+    Map<String, String> req = {};
+    req['teacherUserId'] = teacherUserId;
 
-  //TODO 缓存key需要处理
-  void getHistoryListActionPage(int actionPage,int page,int pageSize) async{
-    Map<String,String> req= {};
-    // req["weekTime"] = weekTime;
-    req["current"] = "$page";
-    req["size"] = "$pageSize";
+    var cache = await JsonCacheManageUtils.getCacheData(
+            JsonCacheManageUtils.HomeClassTab,
+            labelId: teacherUserId)
+        .then((value) {
+      if (value != null) {
+        return ClassListResponse.fromJson(value as Map<String, dynamic>?);
+      }
+    });
 
-    // var cache = await JsonCacheManageUtils.getCacheData(
-    //     JsonCacheManageUtils.HomeworkHistoryResponse).then((value){
-    //   if(value!=null){
-    //     return HomeworkHistoryResponse.fromJson(value as Map<String,dynamic>?);
-    //   }
-    // });
-    //
-    // state.pageNo = page;
-    // if(page==1 && cache is HomeworkHistoryResponse && cache.obj!=null && cache.obj!.records!=null) {
-    //   state.list = cache.obj!.records!;
-    //   if(state.list.length < pageSize){
-    //     state.hasMore = false;
-    //   } else {
-    //     state.hasMore = true;
-    //   }
-    //   update([GetBuilderIds.getHistoryHomeworkList]);
-    // }
-
-
-    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomeworkActionPage(actionPage,page,pageSize);
-    if (page == 1) {
-      JsonCacheManageUtils.saveCacheData(
-          JsonCacheManageUtils.HomeworkHistoryResponse,
-          labelId: "",
-          list.toJson());
+    bool hasCache = false;
+    if (cache is ClassListResponse) {
+      state.myClassList = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getHomeClassTab + teacherUserId]);
     }
-
-    if (list.obj == null || list.obj!.records==null || list.obj!.records!.isEmpty) {
-      if (page == 1) {
-        state.list.clear();
-      }
-    } else {
-      if (page == 1) {
-        state.list = list.obj!.records!;
-      } else {
-        state.list.addAll(list.obj!.records!);
-      }
-      if (list.obj!.records!.length < pageSize) {
-        state.hasMore = false;
-      } else {
-        state.hasMore = true;
-      }
+    ClassListResponse list = await netTool.getMyClassList(req);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.HomeClassTab, list.toJson(),
+        labelId: teacherUserId);
+    state.myClassList = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getHomeClassTab + teacherUserId]);
     }
-    update([GetBuilderIds.getHistoryHomeworkList]);
   }
 }

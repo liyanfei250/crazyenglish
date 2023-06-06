@@ -63,6 +63,7 @@ class AnsweringPage extends BasePage {
   int answerType = answer_normal_type;
   String operationId = "";
   String operationStudentId = "";
+  String operationClassId = "";
 
 
   static const examDetailKey = "examDetail";
@@ -109,6 +110,7 @@ class AnsweringPage extends BasePage {
       answerType = Get.arguments[answer_type]?? answer_normal_type;
       operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
       operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
+      operationClassId = Get.arguments[PreviewExamPaperPage.OperationClassId]?? "";
     }
   }
 
@@ -210,7 +212,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
         && widget.answerType!= AnsweringPage.answer_browse_type){
       startTimer();
     }
-    logic.updateOperationInfo(widget.operationId, widget.operationStudentId);
+    logic.updateOperationInfo(widget.operationId, widget.operationStudentId,widget.operationClassId);
     pageController = PageController(keepPage: true,initialPage: widget.childIndex);
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
     if(currentSubjectVoList!=null && widget.lastFinishResult!=null){
@@ -308,6 +310,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           AnsweringPage.result_type:resultType,
           PreviewExamPaperPage.PaperId: widget.operationId,
           PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
+          PreviewExamPaperPage.OperationClassId: widget.operationClassId,
         });
       }
     });
@@ -326,6 +329,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
                   PreviewExamPaperPage.PaperId: widget.operationId,
                   PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
+                  PreviewExamPaperPage.OperationClassId: widget.operationClassId,
                 });
           }else{
             // TODO 刷新上级列表接口

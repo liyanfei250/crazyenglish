@@ -33,9 +33,10 @@ class AnsweringLogic extends GetxController {
     }
   }
 
-  void updateOperationInfo(String? operationId,String? operationStudentId){
+  void updateOperationInfo(String? operationId,String? operationStudentId,String? operationClassId){
     state.operationId = operationId;
     state.operationStudentId = operationStudentId;
+    state.operationClassId = operationClassId;
   }
 
   void updateUserAnswer(String subtopicId,SubtopicAnswerVo subtopicAnswerVo){
@@ -106,6 +107,7 @@ class AnsweringLogic extends GetxController {
         journalCatalogueId: subjectVoList.journalCatalogueId,
         type: "${examType}",
         examId: 0,
+        operationClassId:state.operationClassId,
         operationId:state.operationId??"",
         operationStudentId:state.operationStudentId,
         lastSubjectId: (lastSubjectId??0).toString(),

@@ -1,14 +1,16 @@
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkExamPaperResponse.dart';
 import 'package:crazyenglish/pages/homework/school_report_list/school_report_list_view.dart';
 import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 import '../../../entity/class_list_response.dart' as choice;
 import '../../../base/AppUtil.dart';
 import '../../../base/common.dart' as common;
@@ -49,8 +51,8 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
   final state = Get.find<ChooseHistoryHomeworkLogic>().state;
 
   AssignHomeworkLogic? assignLogic;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  pull.RefreshController _refreshController =
+  pull.RefreshController(initialRefresh: false);
   late AnimationController _controller;
   final int pageSize = 20;
   int currentPageNo = 1;
@@ -111,6 +113,17 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
         }
       }
     });
+    logic.addListenerId(
+        GetBuilderIds.getHomeClassTab +
+            SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
+      if (state.myClassList != null && state.myClassList!.obj != null) {
+        tabs = state.myClassList!.obj!;
+        items = tabs.map((obj) => obj.name!).toList();
+        setState(() {});
+      }
+    });
+    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
+
     _onRefresh();
     showLoading("加载中");
   }
@@ -251,20 +264,20 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                   )
                 ];
               },
-              body: SmartRefresher(
+              body: pull.SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
-                header: WaterDropHeader(),
-                footer: CustomFooter(
-                  builder: (BuildContext context, LoadStatus? mode) {
+                header: pull.WaterDropHeader(),
+                footer: pull.CustomFooter(
+                  builder: (BuildContext context, pull.LoadStatus? mode) {
                     Widget body;
-                    if (mode == LoadStatus.idle) {
+                    if (mode == pull.LoadStatus.idle) {
                       body = Text("");
-                    } else if (mode == LoadStatus.loading) {
+                    } else if (mode == pull.LoadStatus.loading) {
                       body = CupertinoActivityIndicator();
-                    } else if (mode == LoadStatus.failed) {
+                    } else if (mode == pull.LoadStatus.failed) {
                       body = Text("");
-                    } else if (mode == LoadStatus.canLoading) {
+                    } else if (mode == pull.LoadStatus.canLoading) {
                       body = Text("release to load more");
                     } else {
                       body = Text("");
@@ -357,8 +370,13 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                                 schoolClassId = null;
                               });
                               _startAnimation(_isOpen);
-                              logic.getHomeworkHistoryList(
-                                  schoolClassId, pageStartIndex, pageSize); //全部
+                              if (widget.needNotify) {
+                                logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
+                                    common.HomeworkStatus.unstart, pageStartIndex, pageSize);
+                              } else {
+                                logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
+                                    common.HomeworkStatus.started, pageStartIndex, pageSize);
+                              }
                             },
                             child: Text(
                               '全部分类',
@@ -384,10 +402,16 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                                     _selectedIndex = index;
                                     _isOpen = false;
                                     choiceText.value = tabs[index]!.name!;
+                                    schoolClassId = tabs[index]!.id!;
                                   });
                                   _startAnimation(_isOpen);
-                                  logic.getHomeworkHistoryList(tabs[index]!.id!,
-                                      pageStartIndex, pageSize);
+                                  if (widget.needNotify) {
+                                    logic.getHistoryListActionPage(tabs[index]!.id!,SpUtil.getInt(BaseConstant.USER_ID),
+                                        common.HomeworkStatus.unstart, pageStartIndex, pageSize);
+                                  } else {
+                                    logic.getHistoryListActionPage(tabs[index]!.id!,SpUtil.getInt(BaseConstant.USER_ID),
+                                        common.HomeworkStatus.started, pageStartIndex, pageSize);
+                                  }
                                 },
                                 child: Container(
                                   height: 25.w,
@@ -429,20 +453,20 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
     if (widget.needNotify) {
-      logic.getHistoryListActionPage(
+      logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
           common.HomeworkStatus.unstart, pageStartIndex, pageSize);
     } else {
-      logic.getHistoryListActionPage(
+      logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
           common.HomeworkStatus.started, pageStartIndex, pageSize);
     }
   }
 
   void _onLoading() async {
     if (widget.needNotify) {
-      logic.getHistoryListActionPage(
+      logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
           common.HomeworkStatus.unstart, currentPageNo + 1, pageSize);
     } else {
-      logic.getHistoryListActionPage(
+      logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
           common.HomeworkStatus.started, currentPageNo + 1, pageSize);
     }
   }

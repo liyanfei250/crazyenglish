@@ -145,7 +145,7 @@ class WeekTestDetailLogic extends GetxController {
   }
 
   // 作业作答 跳转到答题页
-  void getDetailAndStartHomework(String id,String operationStudentId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,
+  void getDetailAndStartHomework(String id,String operationStudentId,String operationClassId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,
     int jumpParentIndex = -1,int jumpChildIndex = -1,CancelFunc? hideLoading}) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(id);
     if(weekDetailResponse!=null){
@@ -158,7 +158,7 @@ class WeekTestDetailLogic extends GetxController {
           return;
         }
       }
-      jumpToAnswerHomework(id,operationStudentId,operationId,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage,jumpParentIndex : jumpParentIndex,jumpChildIndex : jumpChildIndex);
+      jumpToAnswerHomework(id,operationStudentId,operationClassId,operationId,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage,jumpParentIndex : jumpParentIndex,jumpChildIndex : jumpChildIndex);
     } else {
       Util.toast("获取试题详情数据失败");
       if(hideLoading!=null){
@@ -373,7 +373,7 @@ class WeekTestDetailLogic extends GetxController {
     }
   }
 
-  void jumpToAnswerHomework(String id,String operationStudentId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{
+  void jumpToAnswerHomework(String id,String operationStudentId,String operationClassId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{
 
     BoolObjResponse baseResp = await weekTestRepository.getVerifyDeadline(operationStudentId);
 
@@ -384,6 +384,7 @@ class WeekTestDetailLogic extends GetxController {
       state.isOffCurrentPage = isOffCurrentPage??false;
       state.operationId = operationId;
       state.operationStudentId = operationStudentId;
+      state.operationClassId = operationClassId;
       int maxLength = 0;
       if(state.weekDetailResponse.obj!.subjectVoList!=null){
         maxLength = state.weekDetailResponse.obj!.subjectVoList!.length;
@@ -619,6 +620,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
+                PreviewExamPaperPage.OperationClassId: state.operationClassId,
               });
         }
 
@@ -648,6 +650,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
+                PreviewExamPaperPage.OperationClassId: state.operationClassId,
               });
         }
       }

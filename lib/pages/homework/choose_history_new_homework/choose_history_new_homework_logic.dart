@@ -78,7 +78,7 @@ class Choose_history_new_homeworkLogic extends GetxController {
 
 
   //TODO 缓存key需要处理
-  void getHistoryListActionPage(int actionPage,int page,int pageSize) async{
+  void getHistoryListActionPage(int schoolClassId,int teacherId, int actionPage,int page,int pageSize) async{
     Map<String,String> req= {};
     // req["weekTime"] = weekTime;
     req["current"] = "$page";
@@ -103,7 +103,7 @@ class Choose_history_new_homeworkLogic extends GetxController {
     // }
 
 
-    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomeworkActionPage(actionPage,page,pageSize);
+    HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomeworkActionPage(schoolClassId,teacherId,actionPage,page,pageSize);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.HomeworkHistoryResponse,

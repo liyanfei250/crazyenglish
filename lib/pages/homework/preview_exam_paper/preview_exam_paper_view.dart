@@ -28,12 +28,14 @@ class PreviewExamPaperPage extends BasePage {
   static const String PaperId = "OperationId";
   static const String ShowAssignHomework = "isShowAssignHomework";
   static const String StudentOperationId = "StudentOperationId";
+  static const String OperationClassId = "OperationClassId";
   static const String PaperName = "PaperName";
   late int paperType;
   late int paperId;
   late String paperName = '';
   late bool isShowAssignHomework;
   int? studentOperationId;
+  int? operationClassId;
   int? operationId;
 
   PreviewExamPaperPage({Key? key}) : super(key: key) {
@@ -42,6 +44,7 @@ class PreviewExamPaperPage extends BasePage {
       paperId = Get.arguments[PaperId];
       isShowAssignHomework = Get.arguments[ShowAssignHomework] ?? false;
       studentOperationId = Get.arguments[StudentOperationId] ?? 0;
+      operationClassId = Get.arguments[OperationClassId] ?? 0;
       paperName = Get.arguments[PaperName] ?? '已选试卷';
     } else {
       Get.back();
@@ -259,6 +262,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
           logicDetail.getDetailAndStartHomework(
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
+              "${widget.operationClassId}",
               "${widget.paperId}");
           showLoading("");
         } else {

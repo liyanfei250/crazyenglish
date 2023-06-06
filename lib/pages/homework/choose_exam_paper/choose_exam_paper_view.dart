@@ -276,6 +276,7 @@ class _ChooseExamPaperPageState
                             widget.isAssignHomework,
                             PreviewExamPaperPage.PaperType: common.PaperType.exam,
                             PreviewExamPaperPage.StudentOperationId: null,
+                            PreviewExamPaperPage.OperationClassId: null,
                             PreviewExamPaperPage.PaperId: exampaper.id,
                             PreviewExamPaperPage.PaperName: exampaper.name
                           });
@@ -303,6 +304,7 @@ class _ChooseExamPaperPageState
                     widget.isAssignHomework,
                 PreviewExamPaperPage.PaperType: common.PaperType.exam,
                 PreviewExamPaperPage.StudentOperationId: null,
+                PreviewExamPaperPage.OperationClassId: null,
                 PreviewExamPaperPage.PaperId: exampaper.id,
                 PreviewExamPaperPage.PaperName: exampaper.name
               });

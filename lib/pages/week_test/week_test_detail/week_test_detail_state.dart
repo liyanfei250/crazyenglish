@@ -13,6 +13,7 @@ class WeekTestDetailState {
   int parentIndex = 0;
   int childIndex = 0;
   String operationStudentId ="";
+  String operationClassId ="";
   String operationId ="";
 
   JouralResultResponse jouralResultResponse = JouralResultResponse();

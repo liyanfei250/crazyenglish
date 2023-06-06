@@ -824,6 +824,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
         PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
         PreviewExamPaperPage.StudentOperationId:value.id,
+        PreviewExamPaperPage.OperationClassId:value.operationClassId,
         PreviewExamPaperPage.PaperId:value.operationId});
     },
     child: Container(
@@ -930,6 +931,7 @@ Widget _listOne(homemytask.Obj value) => InkWell(
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
           PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
           PreviewExamPaperPage.StudentOperationId: value.id,
+          PreviewExamPaperPage.OperationClassId: value.operationClassId,
           PreviewExamPaperPage.PaperId: value.operationId
         });
       },
