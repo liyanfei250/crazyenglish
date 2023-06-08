@@ -93,6 +93,7 @@ class GetBuilderIds {
   static const String getHomeDateListTeacher = "getHomeDateListTeacher";
   static const String getHomeMyJournalDateTeacher = "getHomeMyJournalDateTeacher";
   static const String getHomeMyRecommendation = "getHomeMyRecommendation";
+  static const String getTeacherHomeGetNumber = "getTeacherHomeGetNumber";
   static const String getMyClassList = "getMyClassList";
   static const String getMyClassListDetail = "getMyClassListDetail";
   static const String getMyClassAdd = "getMyClassAdd";

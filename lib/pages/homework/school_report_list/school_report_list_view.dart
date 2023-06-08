@@ -1,3 +1,4 @@
+import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +55,10 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   @override
   void onCreate() {
-    logic.addListenerId(GetBuilderIds.getStudentList + "${widget.history.id}"+widget.content_type.toString(),
-        () {
+    logic.addListenerId(
+        GetBuilderIds.getStudentList +
+            "${widget.history.id}" +
+            widget.content_type.toString(), () {
       hideLoading();
       if (state.list != null && state.list != null) {
         if (state.pageNo == currentPageNo + 1) {
@@ -93,8 +96,8 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getStudentList(widget.history.id ?? 0, pageStartIndex, pageSize,
-        widget.content_type);
+    logic.getStudentList(
+        widget.history.id ?? 0, pageStartIndex, pageSize, widget.content_type);
   }
 
   void _onLoading() async {
@@ -104,14 +107,22 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
   }
 
   @override
-  void onDestroy() {
-    // TODO: implement onDestroy
-  }
+  void onDestroy() {}
 
   @override
   Widget build(BuildContext context) {
+    var title;
+    if (widget.content_type == SchoolReportListPage.scoreList) {
+      title = "成绩单";
+    }
+    if (widget.content_type == SchoolReportListPage.waitCorrectingList) {
+      title = "待批改列表";
+    }
+    if (widget.content_type == SchoolReportListPage.waitTipsList) {
+      title = "提醒列表";
+    }
     return Scaffold(
-      appBar: buildNormalAppBar("成绩单"),
+      appBar: buildNormalAppBar(title),
       body: Container(
         margin:
             EdgeInsets.only(top: 30.w, left: 18.w, right: 18.w, bottom: 30.w),
@@ -141,14 +152,24 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                       fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  "提交情况",
+                  widget.content_type == SchoolReportListPage.scoreList||widget.content_type == SchoolReportListPage.waitCorrectingList
+                      ? "提交情况"
+                      : (widget.content_type ==
+                              SchoolReportListPage.waitTipsList
+                          ? "作业完成度"
+                          : ""),
                   style: TextStyle(
                       color: AppColors.c_FF353E4D,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  widget.content_type == SchoolReportListPage.scoreList ? "成绩" : '',
+                  widget.content_type == SchoolReportListPage.scoreList||widget.content_type ==
+                      SchoolReportListPage.waitCorrectingList
+                      ? "正确率" : (widget.content_type ==
+                                  SchoolReportListPage.waitTipsList
+                              ? "操作"
+                              : ""),
                   style: TextStyle(
                       color: AppColors.c_FF353E4D,
                       fontSize: 16.sp,
@@ -196,7 +217,11 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                     padding: EdgeInsets.only(left: 0.w, right: 0.w),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        buildItem,
+                        widget.content_type == SchoolReportListPage.scoreList ||
+                                widget.content_type ==
+                                    SchoolReportListPage.waitCorrectingList
+                            ? buildItem
+                            : buildItem2,
                         childCount: studentList.length,
                       ),
                     ),
@@ -241,13 +266,14 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
             ],
           ),
-          buildHasAnswered(index == 1, index == 1 ? "已做" : "未做"),
+          buildHasAnswered(index == 1, widget.content_type ==
+              SchoolReportListPage.waitCorrectingList?'未批改':index == 1 ? "已做" : "未做"),
           Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "${studentItem.objectiveProperSize?? 0}",
+                "${studentItem.objectiveProperSize ?? 0}",
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -261,6 +287,80 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildItem2(BuildContext context, int index) {
+    student.Records studentItem = studentList[index];
+    double percentage =
+        (studentItem.completeSize! / studentItem.totalSize!) * 100;
+    // 判断结果是否为NaN
+    if (percentage.isNaN) {
+      percentage = 0;
+    }
+    String percentageText = percentage.toStringAsFixed(2) + '%';
+    return Container(
+      padding: EdgeInsets.only(top: 14.w, bottom: 14.w),
+      width: double.infinity,
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "${index + 1}",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d)),
+              ),
+              Padding(padding: EdgeInsets.only(left: 20.w)),
+              Text(
+                "${studentItem.studentName}",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d)),
+              ),
+            ],
+          ),
+          Text(
+            percentageText,
+            style: TextStyle(fontSize: 12.sp, color: Color(0xff353e4d)),
+          ),
+          InkWell(
+            onTap: (){
+              Util.toast("已提醒当前学生！");
+            },
+            child: Container(
+              padding: EdgeInsets.only(top: 4.w,bottom: 4.w,left: 18.w,right: 18.w),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xfff19e59),
+                      Color(0xffec5f2a),
+                    ]),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(17.w),
+                    bottomRight: Radius.circular(17.w),
+                    topRight: Radius.circular(17.w),
+                    bottomLeft: Radius.circular(17.w)),
+              ),
+              child: Text(
+                "提醒",
+                style: TextStyle(fontSize: 12.sp, color: Colors.white),
+              ),
+            ),
+          ),
+          
         ],
       ),
     );

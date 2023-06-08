@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/teacher_home_tips_response.dart' as number;
 import 'package:crazyenglish/entity/teacher_week_list_response.dart'
     as weekList;
 import 'package:crazyenglish/pages/homework/choose_history_new_homework/choose_history_new_homework_view.dart';
@@ -28,7 +29,6 @@ import 'teacher_index_logic.dart';
 import '../../../entity/week_list_response.dart' as newData;
 
 class TeacherIndexPage extends BasePage {
-
   TeacherIndexPage({Key? key}) : super(key: key);
 
   @override
@@ -45,10 +45,11 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
   List<Obj> functionTxtNew = [];
   List<weekList.Records> myListDate = []; //我的期刊
   List<weekList.Records> myBottomDate = []; //推荐期刊
+  late number.Obj myTipsNum; //推荐期刊
   @override
   void initState() {
     super.initState();
-    SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN,true);
+    SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, true);
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeDateListTeacher, () {
       if (mounted && _refreshController != null) {
@@ -84,6 +85,19 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
       if (state.recommendJournal != null) {
         if (mounted && state.recommendJournal!.obj != null) {
           myBottomDate = state.recommendJournal!.obj!.records!;
+          setState(() {});
+        }
+      }
+    });
+
+    //获取提醒数量
+    logic.addListenerId(GetBuilderIds.getTeacherHomeGetNumber, () {
+      if (mounted && _refreshController != null) {
+        _refreshController.refreshCompleted();
+      }
+      if (state.number != null) {
+        if (mounted && state.number!.obj != null) {
+          myTipsNum = state.number.obj!;
           setState(() {});
         }
       }
@@ -170,13 +184,10 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
         ));
   }
 
-
   @override
   void loginChanged() {
-    if(mounted){
-      setState(() {
-
-      });
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -188,20 +199,20 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
             ClipOval(
               child: GetBuilder<Person_infoLogic>(
                   id: GetBuilderIds.getPersonInfo,
-                  builder: (logic){
+                  builder: (logic) {
                     return InkWell(
-                      onTap: (){
+                      onTap: () {
                         RouterUtil.toNamed(AppRoutes.PersonInfoPage,
                             isNeedCheckLogin: true,
                             arguments: {
                               'isStudent':
-                              SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
-                                  ? false
-                                  : true
+                                  SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)
+                                      ? false
+                                      : true
                             });
                       },
                       child: ExtendedImage.network(
-                        isLogin? logic.state.infoResponse.obj?.url ?? "":"",
+                        isLogin ? logic.state.infoResponse.obj?.url ?? "" : "",
                         cacheRawData: true,
                         width: 32.w,
                         height: 32.w,
@@ -415,8 +426,13 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                 children: [
                   _buildItem(() {
                     RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
-                        arguments: {CorrectHomeworkPage.NeedNotify: true,CorrectHomeworkPage.listType:ScoreListType.waitTipsList});
-                  }, context, R.imagesHomeWorkTips, '待提醒', '(10)'),
+                        arguments: {
+                          CorrectHomeworkPage.NeedNotify: true,
+                          CorrectHomeworkPage.listType:
+                              ScoreListType.waitTipsList
+                        });
+                  }, context, R.imagesHomeWorkTips, '待提醒',
+                      '(${myTipsNum.remindCount ?? 0})'),
                   Container(
                     width: 1,
                     margin: EdgeInsets.only(top: 18.w, bottom: 18.w),
@@ -425,8 +441,13 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                   ),
                   _buildItem(() {
                     RouterUtil.toNamed(AppRoutes.CorrectHomeworkPage,
-                        arguments: {CorrectHomeworkPage.NeedNotify: false,CorrectHomeworkPage.listType:ScoreListType.waitCorrectingList});
-                  }, context, R.imagesHomeWorkChange, '待批改', '(10)'),
+                        arguments: {
+                          CorrectHomeworkPage.NeedNotify: false,
+                          CorrectHomeworkPage.listType:
+                              ScoreListType.waitCorrectingList
+                        });
+                  }, context, R.imagesHomeWorkChange, '待批改',
+                      '(${myTipsNum.correctionCount ?? 0})'),
                 ],
               ),
             ),
@@ -863,11 +884,11 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
     //新增金刚区的列表，有图片
     logic.getHomeListNew();
     //获取我的期刊列表
-    logic.getMyJournalList(
-        "${SpUtil.getInt(BaseConstant.USER_ID)}", 10, 1);
+    logic.getMyJournalList("${SpUtil.getInt(BaseConstant.USER_ID)}", 10, 1);
     //获取我的推荐期刊任务
-    logic.getMyRecommendation(
-        "${SpUtil.getInt(BaseConstant.USER_ID)}", 10, 1);
+    logic.getMyRecommendation("${SpUtil.getInt(BaseConstant.USER_ID)}", 10, 1);
+    //提醒数量
+    logic.getNumber();
   }
 
   void _onLoading() async {}

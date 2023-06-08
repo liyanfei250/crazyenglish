@@ -1,3 +1,4 @@
+import 'package:crazyenglish/entity/teacher_home_tips_response.dart';
 import 'package:crazyenglish/pages/index/teacher_index_state.dart';
 import 'package:get/get.dart';
 
@@ -113,6 +114,31 @@ class TeacherIndexLogic extends GetxController {
     state.recommendJournal = list!;
     if (!hasCache) {
       update([GetBuilderIds.getHomeMyRecommendation]);
+    }
+  }
+
+  void getNumber() async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+            JsonCacheManageUtils.TeacherHomeGetNumber)
+        .then((value) {
+      if (value != null) {
+        return TeacherHomeTipsResponse.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    bool hasCache = false;
+    if (cache is TeacherHomeTipsResponse) {
+      state.number = cache!;
+      hasCache = true;
+      update([GetBuilderIds.getTeacherHomeGetNumber]);
+    }
+    TeacherHomeTipsResponse list =
+        await homeViewRepository.getHomeTipsNum();
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.TeacherHomeGetNumber, list.toJson());
+    state.number = list!;
+    if (!hasCache) {
+      update([GetBuilderIds.getTeacherHomeGetNumber]);
     }
   }
 }

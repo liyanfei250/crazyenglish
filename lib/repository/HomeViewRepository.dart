@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crazyenglish/entity/home/banner.dart';
+import 'package:crazyenglish/entity/teacher_home_tips_response.dart';
 import 'package:crazyenglish/entity/week_list_response.dart';
 import 'package:dio/dio.dart';
 
@@ -162,6 +163,20 @@ class HomeViewRepository {
         options: Options(
             method: Method.post, contentType: ContentType.json.toString()));
     TeacherWeekListResponse paperDetail = TeacherWeekListResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
+
+  //获取首页提醒数量
+  Future<TeacherHomeTipsResponse> getHomeTipsNum() async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.indexTeacerOperationStatus,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TeacherHomeTipsResponse paperDetail = TeacherHomeTipsResponse.fromJson(map);
     if (paperDetail.code != ResponseCode.status_success) {
       return Future.error(paperDetail.message!);
     } else {

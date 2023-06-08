@@ -477,9 +477,9 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
     return InkWell(
       onTap: () {
         RouterUtil.toNamed(AppRoutes.SchoolReportListPage, arguments: {
-          // HomeworkCompleteOverviewPage.HistoryItem:
-          // widget.history,
-          SchoolReportListPage.listType: SchoolReportListPage.scoreList
+          HomeworkCompleteOverviewPage.HistoryItem:
+          history,
+          SchoolReportListPage.listType: widget.content_type
         });
       },
       child: Container(

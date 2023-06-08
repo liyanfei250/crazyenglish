@@ -260,7 +260,7 @@ class Api {
 
 
   // 教师端首页 待批改、待提醒状态值
-  static String indexTeacerOperationStatus = "${Config.ApiHost}/question/operation/actionStatus/:teacherId";
+  static String indexTeacerOperationStatus = "${Config.ApiHost}/question/operation/actionStatus";
   //教师端首页 待批改、待提醒列表
   static String indexTeacerOperationDetailList = "${Config.ApiHost}/question/operation/actionPage";
 

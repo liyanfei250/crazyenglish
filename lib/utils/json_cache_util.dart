@@ -71,6 +71,7 @@ class JsonCacheManageUtils {
   static const int StudentChoiceList = 0x215; //选择学生列表
   static const int TeacherTestPagerList = 0x216; //试卷库
   static const int TeacherTestPagerLook = 0x217; //试卷库预览
+  static const int TeacherHomeGetNumber = 0x218; //教师端首页提醒数量
 
   // String contentJson;
 
