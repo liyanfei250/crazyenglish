@@ -45,7 +45,7 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
   List<Obj> functionTxtNew = [];
   List<weekList.Records> myListDate = []; //我的期刊
   List<weekList.Records> myBottomDate = []; //推荐期刊
-  late number.Obj myTipsNum; //推荐期刊
+  late number.Obj myTipsNum = number.Obj(); //提醒数量
   @override
   void initState() {
     super.initState();

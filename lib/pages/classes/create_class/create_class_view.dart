@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -206,12 +207,12 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherSex, "讲师性别:",
-                    "${userInfoResponse?.obj?.username}"),
+                    "${userInfoResponse?.obj?.sexName}"),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
                 _myHorizontalLayout(R.imagesClassInfoTeacherAge, "讲师教龄:",
-                    "${userInfoResponse?.obj?.username}"),
+                    TimeUtil.getTimeDay(userInfoResponse!.obj!.teachingExperience!)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),

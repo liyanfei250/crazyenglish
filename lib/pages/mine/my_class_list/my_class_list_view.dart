@@ -1,4 +1,5 @@
 import 'package:crazyenglish/utils/sp_util.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +67,9 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
                 child: _buildTabBar(),
               ),
               tabs.length > 0
-                  ? _buildTableBarView()
+                  ? Expanded(
+                      child: _buildTableBarView(),
+                    )
                   : PlaceholderPage(
                       imageAsset: R.imagesCommenNoDate,
                       title: '暂无数据',
@@ -137,8 +140,9 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
           studentSize: e.studentSize!.toString(),
           classId: e.id!,
           teacherName: "${userInfoResponse?.obj?.username}",
-          teacherSex: "${userInfoResponse?.obj?.username}",
-          teacherAge: "${userInfoResponse?.obj?.username}",
+          teacherSex: "${userInfoResponse?.obj?.sexName}",
+          teacherAge:
+              TimeUtil.getTimeDay("${userInfoResponse?.obj?.teachingExperience}"),
           teacherConnect: "${userInfoResponse?.obj?.phone}",
         );
       }).toList());
