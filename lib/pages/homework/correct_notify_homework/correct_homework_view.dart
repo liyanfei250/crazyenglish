@@ -8,8 +8,13 @@ import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
+import 'package:flutter_pickers/time_picker/model/suffix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 import '../../../entity/class_list_response.dart' as choice;
 import '../../../base/AppUtil.dart';
@@ -65,6 +70,22 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
   bool _isOpen = false;
   int _selectedIndex = -1;
   dynamic schoolClassId = null;
+  var choiceTime = "".obs;
+  var selectData = {
+    DateMode.YMDHMS: '',
+    DateMode.YMDHM: '',
+    DateMode.YMDH: '',
+    DateMode.YMD: '',
+    DateMode.YM: '',
+    DateMode.Y: '',
+    DateMode.MDHMS: '',
+    DateMode.HMS: '',
+    DateMode.MD: '',
+    DateMode.S: '',
+  };
+
+  late num startTime;
+  late num endTime;
 
   @override
   String getDataId(String key, History n) {
@@ -81,6 +102,10 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
     if (widget.isAssignHomework) {
       assignLogic = Get.find<AssignHomeworkLogic>();
     }
+
+    choiceTime.value =
+    "${DateFormat("yyyy年MM月dd日 HH:mm:ss").format(DateTime.now())}";
+    endTime = DateTime.now().millisecondsSinceEpoch;
 
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList, () {
       hideLoading();
@@ -237,20 +262,27 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                               ),
                               Container(
                                 height: 20.w,
-                                child: Text(
-                                  "2023年03月21日 周二",
+                                child:Obx(() => Text(
+                                  choiceTime.value,
                                   style: TextStyle(
                                       color: AppColors.c_FF353E4D,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500),
                                 ),
+                                )
                               ),
                             ],
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              _onClickItem(DateMode.YMDHMS);
+                            },
                             child: Container(
-                              margin: EdgeInsets.only(left: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 15.w,
+                                  right: 15.w,
+                                  top: 6.w,
+                                  bottom: 6.w),
                               child: Image.asset(
                                 R.imagesHomeWorkTime,
                                 width: 16.w,
@@ -372,10 +404,10 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                               _startAnimation(_isOpen);
                               if (widget.needNotify) {
                                 logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-                                    common.HomeworkStatus.unstart, pageStartIndex, pageSize);
+                                    common.HomeworkStatus.unstart, pageStartIndex, pageSize,endTime.toString());
                               } else {
                                 logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-                                    common.HomeworkStatus.started, pageStartIndex, pageSize);
+                                    common.HomeworkStatus.started, pageStartIndex, pageSize,endTime.toString());
                               }
                             },
                             child: Text(
@@ -407,10 +439,10 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                                   _startAnimation(_isOpen);
                                   if (widget.needNotify) {
                                     logic.getHistoryListActionPage(tabs[index]!.id!,SpUtil.getInt(BaseConstant.USER_ID),
-                                        common.HomeworkStatus.unstart, pageStartIndex, pageSize);
+                                        common.HomeworkStatus.unstart, pageStartIndex, pageSize,endTime.toString());
                                   } else {
                                     logic.getHistoryListActionPage(tabs[index]!.id!,SpUtil.getInt(BaseConstant.USER_ID),
-                                        common.HomeworkStatus.started, pageStartIndex, pageSize);
+                                        common.HomeworkStatus.started, pageStartIndex, pageSize,endTime.toString());
                                   }
                                 },
                                 child: Container(
@@ -454,20 +486,20 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
     currentPageNo = pageStartIndex;
     if (widget.needNotify) {
       logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-          common.HomeworkStatus.unstart, pageStartIndex, pageSize);
+          common.HomeworkStatus.unstart, pageStartIndex, pageSize,endTime.toString());
     } else {
       logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-          common.HomeworkStatus.started, pageStartIndex, pageSize);
+          common.HomeworkStatus.started, pageStartIndex, pageSize,endTime.toString());
     }
   }
 
   void _onLoading() async {
     if (widget.needNotify) {
       logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-          common.HomeworkStatus.unstart, currentPageNo + 1, pageSize);
+          common.HomeworkStatus.unstart, currentPageNo + 1, pageSize,endTime.toString());
     } else {
       logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
-          common.HomeworkStatus.started, currentPageNo + 1, pageSize);
+          common.HomeworkStatus.started, currentPageNo + 1, pageSize,endTime.toString());
     }
   }
 
@@ -652,6 +684,47 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
+  }
+
+  void _onClickItem(model) {
+    Pickers.showDatePicker(
+      context,
+      mode: model,
+      suffix: Suffix.normal(),
+      minDate: PDuration(year: 2020, month: 2, day: 10),
+      maxDate: PDuration(second: 22),
+      onConfirm: (p) {
+        print('longer >>> 返回数据：$p');
+        switch (model) {
+          case DateMode.YMDHMS:
+            selectData[model] =
+            '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}';
+            DateFormat inputFormat = DateFormat("yyyy年M月d日 H:m:s");
+            DateFormat outputFormat = DateFormat("yyyy年MM月dd日 HH:mm:ss");
+            DateTime dateTime = inputFormat.parse(
+                '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}');
+            String output = outputFormat.format(dateTime);
+            choiceTime.value = output;
+
+            DateTime date = DateTime(
+                p.year!, p.month!, p.day!, p.hour!, p.minute!, p.second!);
+            DateTime startOfDay = DateTime(date.year, date.month, date.day,
+                date.hour, date.minute, date.second);
+
+
+            endTime = startOfDay.millisecondsSinceEpoch;
+
+            if (widget.needNotify) {
+              logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
+                  common.HomeworkStatus.unstart, pageStartIndex, pageSize,endTime.toString());
+            } else {
+              logic.getHistoryListActionPage(schoolClassId,SpUtil.getInt(BaseConstant.USER_ID),
+                  common.HomeworkStatus.started, pageStartIndex, pageSize,endTime.toString());
+            }
+            break;
+        }
+      },
+      // onChanged: (p) => print(p),
+    );
   }
 }

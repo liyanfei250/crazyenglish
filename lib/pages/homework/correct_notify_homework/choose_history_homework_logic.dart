@@ -24,9 +24,9 @@ class ChooseHistoryHomeworkLogic extends GetxController {
   }
 
   void getHistoryListActionPage(dynamic schoolClassId, int teacherId,
-      int actionPage, int page, int pageSize) async {
+      int actionPage, int page, int pageSize,String endDate) async {
     var cache = await JsonCacheManageUtils.getCacheData(
-            JsonCacheManageUtils.HomeworkHistoryResponse,labelId: schoolClassId.toString()+actionPage.toString())
+            JsonCacheManageUtils.HomeworkHistoryResponse,labelId: schoolClassId.toString()+actionPage.toString()+endDate)
         .then((value) {
       if (value != null) {
         return HomeworkHistoryResponse.fromJson(value as Map<String, dynamic>?);
@@ -49,11 +49,11 @@ class ChooseHistoryHomeworkLogic extends GetxController {
 
     HomeworkHistoryResponse list =
         await homeworkRepository.getHistoryHomeworkActionPage(
-            schoolClassId, teacherId, actionPage, page, pageSize);
+            schoolClassId, teacherId, actionPage, page, pageSize,endDate);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.HomeworkHistoryResponse,
-          labelId: schoolClassId.toString()+actionPage.toString(),
+          labelId: schoolClassId.toString()+actionPage.toString()+endDate,
           list.toJson());
     }
 

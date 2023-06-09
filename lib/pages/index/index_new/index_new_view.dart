@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
@@ -219,9 +221,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                           title: '暂无数据',
                           topMargin: 100.w,
                           subtitle: '')),
-              SliverToBoxAdapter(
-                child: _buildClassCard(0),
-              )
+              SliverToBoxAdapter(child: _buildClassArea(),),
 // =======
 //               SliverToBoxAdapter(
 //                   child: _createListView()),
