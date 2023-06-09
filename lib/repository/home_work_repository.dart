@@ -23,7 +23,7 @@ import '../net/net_manager.dart';
 class HomeworkRepository {
   // 获取作业历史列表
   Future<HomeworkHistoryResponse> getHistoryHomework(
-      dynamic schoolClassId, int page, int pageSize,String endDate) async {
+      dynamic schoolClassId, int page, int pageSize,String endDate,String start) async {
     P p = P(
       current: page,
       size: pageSize,
@@ -33,7 +33,8 @@ class HomeworkRepository {
         teacherId: SpUtil.getInt(BaseConstant.USER_ID).toString(),
         schoolClassId: schoolClassId.toString(),
         orderType: "2",
-        endDate:endDate,
+        start:start,
+        end:endDate,
         p: p);
 
     Map map =
@@ -59,7 +60,7 @@ class HomeworkRepository {
 
   // 获取待提醒 1 待批改 2 列表
   Future<HomeworkHistoryResponse> getHistoryHomeworkActionPage(dynamic schoolClassId,int teacherId,
-      int actionType, int page, int pageSize,String endDate) async {
+      int actionType, int page, int pageSize,String endDate,String start) async {
     P p = P(
       current: page,
       size: pageSize,
@@ -69,7 +70,8 @@ class HomeworkRepository {
         teacherId: teacherId.toString(),
         orderType: "1",
         schoolClassId: schoolClassId.toString(),
-        endDate:endDate,
+        end:endDate,
+        start: start,
         p: p);
 
     Map map = await NetManager.getInstance()!

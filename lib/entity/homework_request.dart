@@ -14,6 +14,8 @@ class HomeworkRequest {
       String? schoolClassId, 
       String? startDate, 
       String? endDate, 
+      String? start,
+      String? end,
       String? orderType,}){
     _p = p;
     _actionType = actionType;
@@ -21,6 +23,8 @@ class HomeworkRequest {
     _schoolClassId = schoolClassId;
     _startDate = startDate;
     _endDate = endDate;
+    _start = start;
+    _end = end;
     _orderType = orderType;
 }
 
@@ -31,6 +35,8 @@ class HomeworkRequest {
     _schoolClassId = json['schoolClassId'];
     _startDate = json['startDate'];
     _endDate = json['endDate'];
+    _start = json['start'];
+    _end = json['end'];
     _orderType = json['orderType'];
   }
   P? _p;
@@ -39,6 +45,8 @@ class HomeworkRequest {
   String? _schoolClassId;
   String? _startDate;
   String? _endDate;
+  String? _start;
+  String? _end;
   String? _orderType;
 HomeworkRequest copyWith({  P? p,
   num? actionType,
@@ -46,6 +54,8 @@ HomeworkRequest copyWith({  P? p,
   String? schoolClassId,
   String? startDate,
   String? endDate,
+  String? start,
+  String? end,
   String? orderType,
 }) => HomeworkRequest(  p: p ?? _p,
   actionType: actionType ?? _actionType,
@@ -53,6 +63,8 @@ HomeworkRequest copyWith({  P? p,
   schoolClassId: schoolClassId ?? _schoolClassId,
   startDate: startDate ?? _startDate,
   endDate: endDate ?? _endDate,
+  start: start ?? _start,
+  end: end ?? _end,
   orderType: orderType ?? _orderType,
 );
   P? get p => _p;
@@ -61,6 +73,8 @@ HomeworkRequest copyWith({  P? p,
   String? get schoolClassId => _schoolClassId;
   String? get startDate => _startDate;
   String? get endDate => _endDate;
+  String? get start => _start;
+  String? get end => _end;
   String? get orderType => _orderType;
 
   Map<String, dynamic> toJson() {
@@ -73,6 +87,8 @@ HomeworkRequest copyWith({  P? p,
     map['schoolClassId'] = _schoolClassId;
     map['startDate'] = _startDate;
     map['endDate'] = _endDate;
+    map['start'] = _start;
+    map['end'] = _end;
     map['orderType'] = _orderType;
     return map;
   }

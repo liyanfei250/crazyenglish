@@ -24,8 +24,8 @@ class Choose_history_new_homeworkLogic extends GetxController {
     super.onClose();
   }
 
-  void getHomeworkHistoryList(
-      dynamic schoolClassId, int page, int pageSize, String endDate) async {
+  void getHomeworkHistoryList(dynamic schoolClassId, int page, int pageSize,
+      String endDate, String start) async {
     Map<String, String> req = {};
     // req["weekTime"] = weekTime;
     req["current"] = "$page";
@@ -33,7 +33,7 @@ class Choose_history_new_homeworkLogic extends GetxController {
 
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.HomeworkHistoryResponse,
-            labelId: endDate + schoolClassId.toString())
+            labelId: start + endDate + schoolClassId.toString())
         .then((value) {
       if (value != null) {
         return HomeworkHistoryResponse.fromJson(value as Map<String, dynamic>?);
@@ -53,17 +53,18 @@ class Choose_history_new_homeworkLogic extends GetxController {
       }
       update([
         GetBuilderIds.getHistoryHomeworkList +
+            start +
             endDate +
             schoolClassId.toString()
       ]);
     }
 
     HomeworkHistoryResponse list = await homeworkRepository.getHistoryHomework(
-        schoolClassId, page, pageSize, endDate);
+        schoolClassId, page, pageSize, endDate,start);
     if (page == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.HomeworkHistoryResponse,
-          labelId: endDate + schoolClassId.toString(),
+          labelId: start + endDate + schoolClassId.toString(),
           list.toJson());
     }
 
@@ -86,7 +87,10 @@ class Choose_history_new_homeworkLogic extends GetxController {
       }
     }
     update([
-      GetBuilderIds.getHistoryHomeworkList + endDate + schoolClassId.toString()
+      GetBuilderIds.getHistoryHomeworkList +
+          start +
+          endDate +
+          schoolClassId.toString()
     ]);
   }
 

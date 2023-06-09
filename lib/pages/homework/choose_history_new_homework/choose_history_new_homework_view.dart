@@ -62,6 +62,7 @@ class _ChooseHistoryNewHomeworkPageState
   List<History> historys = [];
   final int pageStartIndex = 1;
   var choiceText = "全部".obs;
+  var choiceTimeStart = "".obs;
   var choiceTime = "".obs;
   late List<String> items = [];
   List<choice.Obj> tabs = [];
@@ -99,9 +100,21 @@ class _ChooseHistoryNewHomeworkPageState
       duration: const Duration(milliseconds: 300),
     );
 
-    choiceTime.value =
-        "${DateFormat("yyyy年MM月dd日 HH:mm:ss").format(DateTime.now())}";
-    endTime = DateTime.now().millisecondsSinceEpoch;
+    choiceTimeStart.value =
+        "${DateFormat("yyyy年MM月dd日").format(DateTime.now())}";
+
+    choiceTime.value = "${DateFormat("yyyy年MM月dd日").format(DateTime.now())}";
+
+    // 获取当前时间
+    DateTime now = DateTime.now();
+
+    // 创建一个新的DateTime对象，表示当天的第一秒
+    DateTime startOfDay = DateTime(now.year, now.month, now.day, 0, 0, 0);
+    startTime = startOfDay.millisecondsSinceEpoch;
+
+    // 创建一个新的DateTime对象，表示当天的最后一秒
+    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
+    endTime = endOfDay.millisecondsSinceEpoch;
 
     if (widget.isAssignHomework) {
       assignLogic = Get.find<AssignHomeworkLogic>();
@@ -128,6 +141,7 @@ class _ChooseHistoryNewHomeworkPageState
   void addLister() {
     logic.addListenerId(
         GetBuilderIds.getHistoryHomeworkList +
+            startTime.toString() +
             endTime.toString() +
             schoolClassId.toString(), () {
       hideLoading();
@@ -295,35 +309,59 @@ class _ChooseHistoryNewHomeworkPageState
                                   width: 5.w,
                                 ))),
                               ),
-                              Container(
-                                height: 20.w,
-                                child: Obx(() => Text(
-                                      choiceTime.value,
-                                      style: TextStyle(
-                                          color: AppColors.c_FF353E4D,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _onClickItemStart(DateMode.YMDHMS);
+                                    },
+                                    child: Container(
+                                      height: 20.w,
+                                      child: Obx(() => Text(
+                                            choiceTimeStart.value,
+                                            style: TextStyle(
+                                                color: AppColors.c_FF353E4D,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500),
+                                          )),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 4.w, right: 4.w),
+                                    height: 1.w,
+                                    width: 10.w,
+                                    color: Colors.black,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      _onClickItem(DateMode.YMDHMS);
+                                    },
+                                    child: Container(
+                                      height: 20.w,
+                                      child: Obx(() => Text(
+                                            choiceTime.value,
+                                            style: TextStyle(
+                                                color: AppColors.c_FF353E4D,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500),
+                                          )),
+                                    ),
+                                  )
+                                ],
                               ),
                             ],
                           ),
-                          InkWell(
-                            onTap: () {
-                              _onClickItem(DateMode.YMDHMS);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  left: 15.w,
-                                  right: 15.w,
-                                  top: 6.w,
-                                  bottom: 6.w),
-                              child: Image.asset(
-                                R.imagesHomeWorkTime,
-                                width: 16.w,
-                                height: 16.w,
-                              ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 15.w, right: 15.w, top: 6.w, bottom: 6.w),
+                            child: Image.asset(
+                              R.imagesHomeWorkTime,
+                              width: 16.w,
+                              height: 16.w,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -432,6 +470,7 @@ class _ChooseHistoryNewHomeworkPageState
                               //删除原来的重新监听
                               logic.disposeId(
                                   GetBuilderIds.getHistoryHomeworkList +
+                                      startTime.toString() +
                                       endTime.toString() +
                                       schoolClassId.toString());
                               setState(() {
@@ -446,7 +485,8 @@ class _ChooseHistoryNewHomeworkPageState
                                   schoolClassId,
                                   pageStartIndex,
                                   pageSize,
-                                  endTime.toString()); //全部
+                                  endTime.toString(),
+                                  startTime.toString()); //全部
                             },
                             child: Text(
                               '全部分类',
@@ -471,6 +511,7 @@ class _ChooseHistoryNewHomeworkPageState
                                   //删除原来的重新监听
                                   logic.disposeId(
                                       GetBuilderIds.getHistoryHomeworkList +
+                                          startTime.toString() +
                                           endTime.toString() +
                                           schoolClassId.toString());
 
@@ -486,7 +527,8 @@ class _ChooseHistoryNewHomeworkPageState
                                       schoolClassId,
                                       pageStartIndex,
                                       pageSize,
-                                      endTime.toString());
+                                      endTime.toString(),
+                                      startTime.toString());
                                 },
                                 child: Container(
                                   height: 25.w,
@@ -527,13 +569,13 @@ class _ChooseHistoryNewHomeworkPageState
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    logic.getHomeworkHistoryList(
-        schoolClassId, pageStartIndex, pageSize, endTime.toString());
+    logic.getHomeworkHistoryList(schoolClassId, pageStartIndex, pageSize,
+        endTime.toString(), startTime.toString());
   }
 
   void _onLoading() async {
-    logic.getHomeworkHistoryList(
-        schoolClassId, currentPageNo + 1, pageSize, endTime.toString());
+    logic.getHomeworkHistoryList(schoolClassId, currentPageNo + 1, pageSize,
+        endTime.toString(), startTime.toString());
   }
 
   Widget buildItem(BuildContext context, int index) {
@@ -743,6 +785,50 @@ class _ChooseHistoryNewHomeworkPageState
   @override
   void onDestroy() {}
 
+  void _onClickItemStart(model) {
+    Pickers.showDatePicker(
+      context,
+      mode: model,
+      suffix: Suffix.normal(),
+      minDate: PDuration(year: 2020, month: 2, day: 10),
+      maxDate: PDuration(second: 22),
+      onConfirm: (p) {
+        print('longer >>> 返回数据：$p');
+        switch (model) {
+          case DateMode.YMDHMS:
+            selectData[model] =
+                '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}';
+            DateFormat inputFormat = DateFormat("yyyy年M月d日 H:m:s");
+            DateFormat outputFormat = DateFormat("yyyy年MM月dd日");
+            DateTime dateTime = inputFormat.parse(
+                '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}');
+            String output = outputFormat.format(dateTime);
+            choiceTimeStart.value = output;
+
+            DateTime date = DateTime(
+                p.year!, p.month!, p.day!, p.hour!, p.minute!, p.second!);
+            DateTime startOfDay = DateTime(date.year, date.month, date.day,
+                date.hour, date.minute, date.second);
+
+            //删除原来的重新监听
+            logic.disposeId(GetBuilderIds.getHistoryHomeworkList +
+                startTime.toString() +
+                endTime.toString() +
+                schoolClassId.toString());
+
+            startTime = startOfDay.millisecondsSinceEpoch;
+
+            addLister();
+
+            logic.getHomeworkHistoryList(schoolClassId, pageStartIndex,
+                pageSize, endTime.toString(), startTime.toString());
+            break;
+        }
+      },
+      // onChanged: (p) => print(p),
+    );
+  }
+
   void _onClickItem(model) {
     Pickers.showDatePicker(
       context,
@@ -757,7 +843,7 @@ class _ChooseHistoryNewHomeworkPageState
             selectData[model] =
                 '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}';
             DateFormat inputFormat = DateFormat("yyyy年M月d日 H:m:s");
-            DateFormat outputFormat = DateFormat("yyyy年MM月dd日 HH:mm:ss");
+            DateFormat outputFormat = DateFormat("yyyy年MM月dd日");
             DateTime dateTime = inputFormat.parse(
                 '${p.year}年${p.month}月${p.day}日 ${p.hour}:${p.minute}:${p.second}');
             String output = outputFormat.format(dateTime);
@@ -770,6 +856,7 @@ class _ChooseHistoryNewHomeworkPageState
 
             //删除原来的重新监听
             logic.disposeId(GetBuilderIds.getHistoryHomeworkList +
+                startTime.toString() +
                 endTime.toString() +
                 schoolClassId.toString());
 
@@ -777,8 +864,8 @@ class _ChooseHistoryNewHomeworkPageState
 
             addLister();
 
-            logic.getHomeworkHistoryList(
-                schoolClassId, pageStartIndex, pageSize, endTime.toString());
+            logic.getHomeworkHistoryList(schoolClassId, pageStartIndex,
+                pageSize, endTime.toString(), startTime.toString());
             break;
         }
       },
