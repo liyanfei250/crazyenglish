@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/blocs/update_class_bloc.dart';
+import 'package:crazyenglish/blocs/update_class_event.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,10 +59,13 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
 
     logic.addListenerId(GetBuilderIds.getMyClassAdd, () {
       Util.toast("添加成功");
-      Get.back(result: 'add_success');
-    });
-    userInfoResponse = UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
 
+      if (mounted) {
+        BlocProvider.of<UpdateClassBloc>(context).add(SendClassChangeEvent());
+      }
+    });
+    userInfoResponse =
+        UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
   }
 
   @override
@@ -211,8 +217,11 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
-                _myHorizontalLayout(R.imagesClassInfoTeacherAge, "讲师教龄:",
-                    TimeUtil.getTimeDay(userInfoResponse!.obj!.teachingExperience!)),
+                _myHorizontalLayout(
+                    R.imagesClassInfoTeacherAge,
+                    "讲师教龄:",
+                    TimeUtil.getTimeDay(
+                        userInfoResponse!.obj!.teachingExperience!)),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),

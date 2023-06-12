@@ -60,7 +60,7 @@ UserInfoResponse copyWith({  num? code,
 /// sex : 2
 /// sexName : "女"
 /// phone : "13800011188"
-/// identity : 1
+/// identity : 1老师2学生
 /// url : "http://cdn-files-test.crazyenglishweekly.com/crazyenglish/app/1651539603655626753/headimg_1651539603655626753_imgimage_cropper_1684403155252.jpg"
 /// affiliatedSchool : "qqqqqqqqq"
 /// affiliatedGrade : "1648226541879005185"

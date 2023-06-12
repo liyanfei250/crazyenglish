@@ -21,16 +21,14 @@ import '../../../utils/sp_util.dart';
 import 'login_new_logic.dart';
 
 class LoginNewPage extends BasePage {
-
   static const String inEnterHome = "enter_home";
   static const String UserInfoResponse = "UserInfoResponse";
 
   bool isEnterHome = true;
 
-  LoginNewPage({Key? key}) : super(key: key){
-    if(Get.arguments!=null &&
-        Get.arguments is Map){
-      isEnterHome = Get.arguments[inEnterHome]??false;
+  LoginNewPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      isEnterHome = Get.arguments[inEnterHome] ?? false;
     }
   }
 
@@ -127,7 +125,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.mobileLogin, () {
       if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
-        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
+        SpUtil.putString(BaseConstant.loginTOKEN,
+            state.loginResponse.data!.accessToken ?? "");
         Util.getHeader();
         logic.getUserinfo();
       } else {
@@ -137,7 +136,8 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
     logic.addListenerId(GetBuilderIds.passwordLogin, () {
       if ((state.loginResponse.data?.accessToken ?? "").isNotEmpty) {
         Util.toast("登录成功");
-        SpUtil.putString(BaseConstant.loginTOKEN, state.loginResponse.data!.accessToken??"");
+        SpUtil.putString(BaseConstant.loginTOKEN,
+            state.loginResponse.data!.accessToken ?? "");
         Util.getHeader();
         logic.getUserinfo();
       } else {
@@ -152,51 +152,67 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
 
         if (state.infoResponse.obj?.identity == RoleType.student ||
             state.infoResponse.obj?.identity == RoleType.teacher) {
-          SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", true);
+          SpUtil.putBool(
+              "${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}",
+              true);
         } else {
-          SpUtil.putBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}", false);
+          SpUtil.putBool(
+              "${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}",
+              false);
         }
 
-        if (!SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}")) {
+        //1老师2学生
+        if (state.infoResponse.obj?.identity == 1) {
+          SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, true);
+        }
+
+        if (state.infoResponse.obj?.identity == 2) {
+          SpUtil.putBool(BaseConstant.IS_TEACHER_LOGIN, false);
+        }
+
+        if (!SpUtil.getBool(
+            "${BaseConstant.IS_CHOICE_ROLE}${state.infoResponse.obj?.id}")) {
           //没选角色
-          RouterUtil.offAndToNamed(AppRoutes.RolePage,arguments: {
+          RouterUtil.offAndToNamed(AppRoutes.RolePage, arguments: {
             LoginNewPage.inEnterHome: widget.isEnterHome,
             LoginNewPage.UserInfoResponse: state.infoResponse,
           });
-
         } else {
-          if ((state.infoResponse.obj?.affiliatedGrade??"").isEmpty && !SpUtil.getBool("${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
+          if ((state.infoResponse.obj?.affiliatedGrade ?? "").isEmpty &&
+              !SpUtil.getBool(
+                  "${BaseConstant.IS_CHOICE_ROLE_GRADE}${state.infoResponse.obj?.id}")) {
             ////是学生且没选年级
             //如果没选年级就去选年级
-            RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage,
-                arguments: {
-                LoginNewPage.inEnterHome: widget.isEnterHome,
-                LoginNewPage.UserInfoResponse: state.infoResponse,
-                });
+            RouterUtil.offAndToNamed(AppRoutes.RoleTwoPage, arguments: {
+              LoginNewPage.inEnterHome: widget.isEnterHome,
+              LoginNewPage.UserInfoResponse: state.infoResponse,
+            });
             //选了去首页
           } else {
             logic.updateNativeUserInfo(state.infoResponse);
-            if(mounted){
+            if (mounted) {
               BlocProvider.of<LoginChangeBloc>(context)
                   .add(SendLoginChangeEvent());
             }
-            if(widget.isEnterHome){
-              if(state.infoResponse.obj?.identity == RoleType.teacher){
+            if (widget.isEnterHome) {
+              if (state.infoResponse.obj?.identity == RoleType.teacher) {
                 RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
-              }else{
+              } else {
                 RouterUtil.offAndToNamed(AppRoutes.HOME);
               }
-            }else{
-              if(SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.student){
+            } else {
+              if (!SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) &&
+                  state.infoResponse.obj?.identity == RoleType.student) {
                 RouterUtil.offAndToNamed(AppRoutes.HOME);
-              }else if(!SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) && state.infoResponse.obj?.identity == RoleType.teacher){
+              } else if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN) &&
+                  state.infoResponse.obj?.identity == RoleType.teacher) {
                 RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME);
               }
               Get.back();
             }
           }
         }
-      }else{
+      } else {
         Util.toast("登录失败，获取个人信息失败");
       }
     });
@@ -210,16 +226,23 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,//状态栏颜色
-          statusBarIconBrightness: Brightness.light, //状态栏图标颜色
-          statusBarBrightness: Brightness.dark,  //状态栏亮度
-          systemStatusBarContrastEnforced: true, //系统状态栏对比度强制
-          systemNavigationBarColor: Colors.white,  //导航栏颜色
-          systemNavigationBarIconBrightness: Brightness.light,//导航栏图标颜色
-          systemNavigationBarDividerColor: Colors.transparent,//系统导航栏分隔线颜色
-          systemNavigationBarContrastEnforced: true,//系统导航栏对比度强制
-        ),
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        //状态栏颜色
+        statusBarIconBrightness: Brightness.light,
+        //状态栏图标颜色
+        statusBarBrightness: Brightness.dark,
+        //状态栏亮度
+        systemStatusBarContrastEnforced: true,
+        //系统状态栏对比度强制
+        systemNavigationBarColor: Colors.white,
+        //导航栏颜色
+        systemNavigationBarIconBrightness: Brightness.light,
+        //导航栏图标颜色
+        systemNavigationBarDividerColor: Colors.transparent,
+        //系统导航栏分隔线颜色
+        systemNavigationBarContrastEnforced: true, //系统导航栏对比度强制
+      ),
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: AppColors.theme_bg,
@@ -246,19 +269,21 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                         centerTitle: true,
                         automaticallyImplyLeading: false,
                         title: Text(""),
-                        backgroundColor:Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         actions: [
-                          Obx(()=>TextButton(
-                              onPressed: toPsdLogin,
-                              child: Text(
-                                isPhoneLog.value ? '账号密码登录' : '手机号登录',
-                                style: TextStyle(
-                                    color: Color(0xff353e4d), fontSize: 14.sp),
-                              )),)
+                          Obx(
+                            () => TextButton(
+                                onPressed: toPsdLogin,
+                                child: Text(
+                                  isPhoneLog.value ? '账号密码登录' : '手机号登录',
+                                  style: TextStyle(
+                                      color: Color(0xff353e4d),
+                                      fontSize: 14.sp),
+                                )),
+                          )
                         ],
                       ),
-
-                      Obx(()=>Text(isPhoneLog.value ? '手机号登录' : '账号密码登录',
+                      Obx(() => Text(isPhoneLog.value ? '手机号登录' : '账号密码登录',
                           style: TextStyle(
                             fontSize: 21.sp,
                             fontWeight: FontWeight.bold,
@@ -267,11 +292,11 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                       Visibility(
                           visible: isPhoneLog.value,
                           child: Text('未注册过的手机号将自动创建账号',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w100,
-                            color: Color(0xff898a93),
-                          ))),
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w100,
+                                color: Color(0xff898a93),
+                              ))),
                       _getLoginInput(),
                       Padding(padding: EdgeInsets.only(top: 10.w)),
                       const Spacer(),
@@ -285,26 +310,26 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Obx(() => InkWell(
-                                  onTap: () {
-                                    agreePolicy.value = !agreePolicy.value;
-                                  },
-                                  child: Container(
-                                    width: 20.w,
-                                    height: 20.w,
-                                    padding: EdgeInsets.only(
-                                        left: 5.w,
-                                        right: 5.w,
-                                        top: 1.w,
-                                        bottom: 5.w),
-                                    child: Image.asset(
-                                      agreePolicy.value
-                                          ? R.imagesLoginAgreeSelected
-                                          : R.imagesLoginAgreeDefault,
-                                      width: 10.w,
-                                      height: 10.w,
-                                    ),
-                                  ),
-                                )),
+                                      onTap: () {
+                                        agreePolicy.value = !agreePolicy.value;
+                                      },
+                                      child: Container(
+                                        width: 20.w,
+                                        height: 20.w,
+                                        padding: EdgeInsets.only(
+                                            left: 5.w,
+                                            right: 5.w,
+                                            top: 1.w,
+                                            bottom: 5.w),
+                                        child: Image.asset(
+                                          agreePolicy.value
+                                              ? R.imagesLoginAgreeSelected
+                                              : R.imagesLoginAgreeDefault,
+                                          width: 10.w,
+                                          height: 10.w,
+                                        ),
+                                      ),
+                                    )),
                                 Expanded(
                                   child: RichText(
                                     maxLines: 2,
@@ -320,7 +345,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: AppColors.THEME_COLOR,
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                TextDecoration.none),
+                                                    TextDecoration.none),
                                             recognizer: recognizerRegister,
                                           ),
                                           TextSpan(
@@ -329,7 +354,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: Color(0xff727a89),
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                TextDecoration.none),
+                                                    TextDecoration.none),
                                           ),
                                           TextSpan(
                                             text: "《隐私政策》",
@@ -337,7 +362,7 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
                                                 color: AppColors.THEME_COLOR,
                                                 fontSize: 11.sp,
                                                 decoration:
-                                                TextDecoration.none),
+                                                    TextDecoration.none),
                                             recognizer: recognizerPrivacyLaw,
                                           ),
                                           // TextSpan(
@@ -386,100 +411,107 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
       child: Column(
         children: [
           _getInputPhoneView(),
-          Obx(()=>Visibility(visible: isPhoneLog.value,child: Container(
-            margin: EdgeInsets.only(top: 18.w),
-            child: Container(
-                width: 329.w,
-                height: 47.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8.w)),
-                    color: AppColors.c_4DD9D9D9),
-                child: Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(left: 15.w),
-                        width: 220.w,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          controller: _verifyCodeController,
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              color: Color(0xff32374e)),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          onChanged: (String str) {
-                            phoneAuthStr.value = str;
+          Obx(() => Visibility(
+              visible: isPhoneLog.value,
+              child: Container(
+                margin: EdgeInsets.only(top: 18.w),
+                child: Container(
+                    width: 329.w,
+                    height: 47.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                        color: AppColors.c_4DD9D9D9),
+                    child: Row(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.only(left: 15.w),
+                            width: 220.w,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _verifyCodeController,
+                              style: TextStyle(
+                                  fontSize: 15.sp, color: Color(0xff32374e)),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              onChanged: (String str) {
+                                phoneAuthStr.value = str;
+                              },
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: '请输入验证码',
+                                hintStyle: TextStyle(
+                                    fontSize: 15, color: Color(0xff717171)),
+                              ),
+                            )),
+                        VerticalDivider(
+                          color: Colors.grey,
+                          width: 1,
+                          indent: 13.w,
+                          endIndent: 13.w,
+                        ),
+                        SizedBox(
+                          width: 14.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (_isHavePhoneNum.value) {
+                              if (countDown.value <= 0) {
+                                logic.sendCode(_phoneController!.text,
+                                    SmsCodeType.phoneLogin);
+                              } else {
+                                hideKeyBoard();
+                                Util.toast("请等待${countDown.value} s后重新发送");
+                              }
+                            } else {
+                              hideKeyBoard();
+                              Util.toast("请输入手机号");
+                            }
                           },
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: '请输入验证码',
-                            hintStyle: TextStyle(
-                                fontSize: 15, color: Color(0xff717171)),
-                          ),
-                        )),
-                    VerticalDivider(
-                      color: Colors.grey,
-                      width: 1,
-                      indent: 13.w,
-                      endIndent: 13.w,
-                    ),
-                    SizedBox(
-                      width: 14.w,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (_isHavePhoneNum.value) {
-                          if (countDown.value <= 0) {
-                            logic.sendCode(_phoneController!.text,SmsCodeType.phoneLogin);
-                          } else {
-                            hideKeyBoard();
-                            Util.toast("请等待${countDown.value} s后重新发送");
-                          }
-                        } else {
-                          hideKeyBoard();
-                          Util.toast("请输入手机号");
-                        }
-                      },
-                      child: Obx(() => Text(
-                        countDown.value == -1
-                            ? "获取验证码"
-                            : "${countDown.value} s",
+                          child: Obx(() => Text(
+                                countDown.value == -1
+                                    ? "获取验证码"
+                                    : "${countDown.value} s",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: AppColors.THEME_COLOR),
+                              )),
+                        )
+                      ],
+                    )),
+              ))),
+          Obx(() => Visibility(
+              visible: !isPhoneLog.value, child: _getInputPsdView())),
+          Obx(() => Visibility(
+              visible: isPhoneLog.value,
+              child: Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.only(top: 24.w),
+                  child: TextButton(
+                      onPressed: toPsd,
+                      child: Text(
+                        '',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: AppColors.THEME_COLOR),
-                      )),
-                    )
-                  ],
-                )),
-          ))),
-          Obx(()=>Visibility(visible: !isPhoneLog.value,child: _getInputPsdView())),
-          Obx(()=>Visibility(visible: isPhoneLog.value,child: Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.only(top: 24.w),
-              child: TextButton(
-                  onPressed: toPsd,
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                        fontSize: 14.sp, color: Color(0xff898a93)),
-                  ))))),
-          Obx(()=>Visibility(visible: !isPhoneLog.value,child: Container(
-              alignment: Alignment.centerRight,
-              margin: EdgeInsets.only(top: 24.w),
-              child: TextButton(
-                  onPressed: toSetPsd,
-                  child: Text(
-                    '忘记密码',
-                    style: TextStyle(
-                        fontSize: 14.sp, color: Color(0xff898a93)),
-                  ))))),
+                            fontSize: 14.sp, color: Color(0xff898a93)),
+                      ))))),
+          Obx(() => Visibility(
+              visible: !isPhoneLog.value,
+              child: Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.only(top: 24.w),
+                  child: TextButton(
+                      onPressed: toSetPsd,
+                      child: Text(
+                        '忘记密码',
+                        style: TextStyle(
+                            fontSize: 14.sp, color: Color(0xff898a93)),
+                      ))))),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
               hideKeyBoard();
-              if(!agreePolicy.value){
+              if (!agreePolicy.value) {
                 Util.toast("同意协议后才能登录");
                 return;
               }
@@ -522,22 +554,22 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
             }),
           ),
           Visibility(
-              visible: Util.isIOSMode(),
-              child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              hideKeyBoard();
-              logic.passwordLogin("guest", "123456");
-            },
-            child: Container(
-              height: 47.w,
-              child: const Center(
-                child: Text(
-                  "游客登录",
-                  style: TextStyle(color: Color(0xff898a93), fontSize: 15),
-                ),
-              ),
-            )),
+            visible: Util.isIOSMode(),
+            child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  hideKeyBoard();
+                  logic.passwordLogin("guest", "123456");
+                },
+                child: Container(
+                  height: 47.w,
+                  child: const Center(
+                    child: Text(
+                      "游客登录",
+                      style: TextStyle(color: Color(0xff898a93), fontSize: 15),
+                    ),
+                  ),
+                )),
           )
         ],
       ),
@@ -556,21 +588,25 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
           children: [
             Padding(padding: EdgeInsets.only(left: 15.w)),
             Expanded(
-                child: Obx(()=>TextField(
-                  keyboardType: TextInputType.text,
-                  controller: _psdControl,
-                  obscureText: isShowPsd,
-                  style: TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
-                  inputFormatters: isPhoneLog.value? [FilteringTextInputFormatter.digitsOnly]:[FilteringTextInputFormatter.singleLineFormatter],
-                  onChanged: (String str) {
-                    phoneCodeStr.value = str;
-                  },
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '请输入密码',
-                    hintStyle: TextStyle(fontSize: 15, color: Color(0xff717171)),
-                  ),
-                ))),
+                child: Obx(() => TextField(
+                      keyboardType: TextInputType.text,
+                      controller: _psdControl,
+                      obscureText: isShowPsd,
+                      style:
+                          TextStyle(fontSize: 15.sp, color: Color(0xff32374e)),
+                      inputFormatters: isPhoneLog.value
+                          ? [FilteringTextInputFormatter.digitsOnly]
+                          : [FilteringTextInputFormatter.singleLineFormatter],
+                      onChanged: (String str) {
+                        phoneCodeStr.value = str;
+                      },
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '请输入密码',
+                        hintStyle:
+                            TextStyle(fontSize: 15, color: Color(0xff717171)),
+                      ),
+                    ))),
             InkWell(
               onTap: () {
                 toPsdShow();
@@ -606,33 +642,35 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
           Container(
             width: 300.w,
             alignment: Alignment.centerLeft,
-            child: Obx(()=>TextField(
-              keyboardType: isPhoneLog.value? TextInputType.phone:TextInputType.text,
-              controller: _phoneController,
-              style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
-              //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (String str) {
-                phoneStr.value = str;
-                if (phoneStr.value.isNotEmpty) {
-                  _isHavePhoneNum.value = true;
-                } else {
-                  _isHavePhoneNum.value = false;
-                }
-              },
-              decoration: isPhoneLog.value
-                  ? const InputDecoration(
-                border: InputBorder.none,
-                hintText: '请输入手机号',
-                hintStyle:
-                TextStyle(fontSize: 15, color: Color(0xff717171)),
-              )
-                  : const InputDecoration(
-                border: InputBorder.none,
-                hintText: '请输入用户名/手机号/邮箱',
-                hintStyle:
-                TextStyle(fontSize: 15, color: Color(0xff717171)),
-              ),
-            )),
+            child: Obx(() => TextField(
+                  keyboardType: isPhoneLog.value
+                      ? TextInputType.phone
+                      : TextInputType.text,
+                  controller: _phoneController,
+                  style: TextStyle(fontSize: 15, color: Color(0xff32374e)),
+                  //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (String str) {
+                    phoneStr.value = str;
+                    if (phoneStr.value.isNotEmpty) {
+                      _isHavePhoneNum.value = true;
+                    } else {
+                      _isHavePhoneNum.value = false;
+                    }
+                  },
+                  decoration: isPhoneLog.value
+                      ? const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '请输入手机号',
+                          hintStyle:
+                              TextStyle(fontSize: 15, color: Color(0xff717171)),
+                        )
+                      : const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '请输入用户名/手机号/邮箱',
+                          hintStyle:
+                              TextStyle(fontSize: 15, color: Color(0xff717171)),
+                        ),
+                )),
           )
         ],
       ),
@@ -671,12 +709,10 @@ class _LoginPageState extends BasePageState<LoginNewPage> {
   }
 
   @override
-  void onCreate() {
-  }
+  void onCreate() {}
 
   @override
-  void onDestroy() {
-  }
+  void onDestroy() {}
 
   void appleLogin() async {
     final appleCredential = await SignInWithApple.getAppleIDCredential(

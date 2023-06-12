@@ -91,8 +91,13 @@ class SplashNewPageState extends State<SplashPageNew> {
                 child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      RouterUtil.offAndToNamed(AppRoutes.HOME,
-                          isNeedCheckLogin: true);
+                      if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
+                        RouterUtil.offAndToNamed(AppRoutes.TEACHER_HOME,
+                            isNeedCheckLogin: true);
+                      } else {
+                        RouterUtil.offAndToNamed(AppRoutes.HOME,
+                            isNeedCheckLogin: true);
+                      }
                     },
                     child: Container(
                       height: 26.w,
@@ -285,9 +290,10 @@ class SplashNewPageState extends State<SplashPageNew> {
       ),
     );
   }
+
   Widget buildTextContainer() {
     const String text = '英语周报数字化融媒体平台';
-     double containerWidth = 274.w;
+    double containerWidth = 274.w;
 
     return Container(
       width: containerWidth,
@@ -306,6 +312,7 @@ class SplashNewPageState extends State<SplashPageNew> {
       ),
     );
   }
+
   @override
   void dispose() {
     _timer.cancel();

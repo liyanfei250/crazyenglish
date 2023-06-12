@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/base/common.dart';
+import 'package:crazyenglish/blocs/update_class_bloc.dart';
+import 'package:crazyenglish/blocs/update_class_state.dart';
 import 'package:crazyenglish/pages/classes/create_class/create_class_view.dart';
 import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +38,7 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
   bool _showAddClass = false;
   var extend = false;
   List<Obj> tabs = [];
+  StreamSubscription? refrehUserInfoStreamSubscription;
 
   @override
   void initState() {
@@ -40,13 +46,32 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     _tabController = TabController(vsync: this, length: tabs.length);
 
     setListner();
+    if (refrehUserInfoStreamSubscription != null) {
+      refrehUserInfoStreamSubscription =
+          BlocProvider
+              .of<UpdateClassBloc>(context)
+              .stream
+              .listen((event) {
+            print("Class ========== bef event");
+            if (event is ClassChangeSuccess) {
+              print("Class ========== event");
+              if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
+                logic.disposeId(GetBuilderIds.getHomeClassTab +
+                    SpUtil.getInt(BaseConstant.USER_ID).toString());
+                setListner();
+              }
+            }
+          });
+    }
   }
 
   void setListner() {
     logic.addListenerId(
         GetBuilderIds.getHomeClassTab +
             SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
-      if (mounted&&state.myClassList != null && state.myClassList!.obj != null) {
+      if (mounted &&
+          state.myClassList != null &&
+          state.myClassList!.obj != null) {
         print("班级数据===" + state.myClassList!.obj![0]!.name!);
         tabs = state.myClassList!.obj!;
         setState(() {
@@ -56,7 +81,8 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
       }
     });
 
-    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString(),isCash: true);
+    logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString(),
+        isCash: true);
   }
 
   @override
@@ -211,6 +237,9 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
   void dispose() {
     Get.delete<ClassLogic>();
     _tabController.dispose();
+    if (refrehUserInfoStreamSubscription != null) {
+      refrehUserInfoStreamSubscription?.cancel();
+    }
     super.dispose();
   }
 }
