@@ -296,4 +296,7 @@ class Api {
 
   // 删除账户
   static String delRemoveInfo = "${Config.ApiHost}/member/user/removeInfo";
+
+  // 练习报告
+  static String practiceReports = "${Config.ApiHost}/question/operation/student/practiceReports/";
 }

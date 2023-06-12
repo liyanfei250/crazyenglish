@@ -1,13 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:crazyenglish/entity/report_response.dart' as list;
 import '../../../r.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/routes_utils.dart';
@@ -21,27 +22,39 @@ import 'dart:ui' as ui;
  * 班级练习报告页面
  */
 class ClassPractiseReportPage extends BasePage {
-
   ClassPractiseReportPage({Key? key}) : super(key: key);
 
   @override
-  BasePageState<ClassPractiseReportPage> getState() => _ClassPractiseReportPageState();
+  BasePageState<ClassPractiseReportPage> getState() =>
+      _ClassPractiseReportPageState();
 }
 
-class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPage> {
+class _ClassPractiseReportPageState
+    extends BasePageState<ClassPractiseReportPage> {
   final logic = Get.put(ClassPractiseReportLogic());
   final state = Get.find<ClassPractiseReportLogic>().state;
   final GlobalKey _globalKey = GlobalKey();
+  List<list.TopThree> topList = [];
+  List<list.NotSubmit> bottomList = [];
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
+    logic.addListenerId(GetBuilderIds.getTeacherGetRerport, () {
+      hideLoading();
+      topList.clear();
+      topList.addAll(state.listTop!);
+      bottomList.clear();
+      bottomList.addAll(state.listBottom!);
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    //todo 顶部数据真实的id都带过来
+    logic.getReportResponseList('1667095996182114305');
   }
 
   @override
-  void onDestroy() {
-    // TODO: implement onDestroy
-  }
+  void onDestroy() {}
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +65,17 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 24.w,left: 18.w,right: 18.w,bottom: 26.w),
-              padding: EdgeInsets.only(left: 27.w,right: 27.w,bottom: 19.w),
+              margin: EdgeInsets.only(
+                  top: 24.w, left: 18.w, right: 18.w, bottom: 26.w),
+              padding: EdgeInsets.only(left: 27.w, right: 27.w, bottom: 19.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(7.w)),
-                boxShadow:[
+                boxShadow: [
                   BoxShadow(
-                    color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-                    offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                    blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                    color: Color(0xffe3edff).withOpacity(0.5), // 阴影的颜色
+                    offset: Offset(0.w, 0.w), // 阴影与容器的距离
+                    blurRadius: 10.w, // 高斯的标准偏差与盒子的形状卷积。
                     spreadRadius: 0.w,
                   ),
                 ],
@@ -73,8 +87,18 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(R.imagesClassReportGold,width: 54.w,height: 54.w,),
-                      Text("一班（七年级）",style: TextStyle(fontSize: 16.w,fontWeight: FontWeight.w500,color: AppColors.c_FF353E4D),),
+                      Image.asset(
+                        R.imagesClassReportGold,
+                        width: 54.w,
+                        height: 54.w,
+                      ),
+                      Text(
+                        "一班（七年级）",
+                        style: TextStyle(
+                            fontSize: 16.w,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.c_FF353E4D),
+                      ),
                     ],
                   ),
                   Row(
@@ -88,17 +112,33 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("18",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FFED702D,fontWeight: FontWeight.w500),),
-                              Text("人",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
+                              Text(
+                                "18",
+                                style: TextStyle(
+                                    fontSize: 24.sp,
+                                    color: AppColors.c_FFED702D,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "人",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.c_FF353E4D),
+                              ),
                             ],
                           ),
-                          Text("完成人数",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
+                          Text(
+                            "完成人数",
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.c_FF898A93),
+                          )
                         ],
                       ),
                       Container(
                         width: 0.4.w,
                         height: 32.w,
-                        color: AppColors.c_FFD2D5DC,),
+                        color: AppColors.c_FFD2D5DC,
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -106,17 +146,33 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("98",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FFED702D,fontWeight: FontWeight.w500),),
-                              Text("分",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
+                              Text(
+                                "98",
+                                style: TextStyle(
+                                    fontSize: 24.sp,
+                                    color: AppColors.c_FFED702D,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "分",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.c_FF353E4D),
+                              ),
                             ],
                           ),
-                          Text("平均分",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
+                          Text(
+                            "平均分",
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.c_FF898A93),
+                          )
                         ],
                       ),
                       Container(
                         width: 0.4.w,
                         height: 32.w,
-                        color: AppColors.c_FFD2D5DC,),
+                        color: AppColors.c_FFD2D5DC,
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -124,11 +180,26 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("98",style: TextStyle(fontSize: 24.sp,color: AppColors.c_FFED702D,fontWeight: FontWeight.w500),),
-                              Text("分",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
+                              Text(
+                                "98",
+                                style: TextStyle(
+                                    fontSize: 24.sp,
+                                    color: AppColors.c_FFED702D,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "分",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.c_FF353E4D),
+                              ),
                             ],
                           ),
-                          Text("最高分",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF898A93),)
+                          Text(
+                            "最高分",
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.c_FF898A93),
+                          )
                         ],
                       ),
                     ],
@@ -136,7 +207,11 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                   Container(
                     margin: EdgeInsets.only(top: 22.w),
                     alignment: Alignment.bottomLeft,
-                    child: Text("统计时间：2023年03月21日",style: TextStyle(fontSize: 10.w,color: AppColors.c_FFB4B9C6),),
+                    child: Text(
+                      "统计时间：2023年03月21日",
+                      style: TextStyle(
+                          fontSize: 10.w, color: AppColors.c_FFB4B9C6),
+                    ),
                   ),
                 ],
               ),
@@ -147,64 +222,77 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(R.imagesClassReportBg),
-                        fit: BoxFit.cover
-                    ),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(13.w),
-                        topLeft: Radius.circular(13.w))
-                ),
+                        topLeft: Radius.circular(13.w))),
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
                     Column(
                       children: [
                         Container(
-                          height:14.w,
+                          height: 14.w,
                           width: double.infinity,
-                          margin: EdgeInsets.only(top:167.w,left: 54.w,right: 54.w),
+                          margin: EdgeInsets.only(
+                              top: 167.w, left: 54.w, right: 54.w),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.w),topRight: Radius.circular(10.w)),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.w),
+                                topRight: Radius.circular(10.w)),
                             color: Colors.white.withOpacity(0.4),
-                            boxShadow:[
+                            boxShadow: [
                               BoxShadow(
-                                color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-                                offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                                color: Color(0xffe3edff).withOpacity(0.5),
+                                // 阴影的颜色
+                                offset: Offset(0.w, 0.w),
+                                // 阴影与容器的距离
+                                blurRadius: 10.w,
+                                // 高斯的标准偏差与盒子的形状卷积。
                                 spreadRadius: 0.w,
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          height:14.w,
+                          height: 14.w,
                           width: double.infinity,
-                          margin: EdgeInsets.only(left: 48.w,right: 48.w),
+                          margin: EdgeInsets.only(left: 48.w, right: 48.w),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.7),
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.w),topRight: Radius.circular(10.w)),
-                            boxShadow:[
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.w),
+                                topRight: Radius.circular(10.w)),
+                            boxShadow: [
                               BoxShadow(
-                                color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-                                offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                                color: Color(0xffe3edff).withOpacity(0.5),
+                                // 阴影的颜色
+                                offset: Offset(0.w, 0.w),
+                                // 阴影与容器的距离
+                                blurRadius: 10.w,
+                                // 高斯的标准偏差与盒子的形状卷积。
                                 spreadRadius: 0.w,
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          height:352.w,
+                          height: 352.w,
                           width: double.infinity,
-                          margin: EdgeInsets.only(left: 40.w,right: 40.w),
+                          margin: EdgeInsets.only(left: 40.w, right: 40.w),
                           padding: EdgeInsets.only(top: 72.w),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.w)),
                             color: Colors.white,
-                            boxShadow:[
+                            boxShadow: [
                               BoxShadow(
-                                color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-                                offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                                blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                                color: Color(0xffe3edff).withOpacity(0.5),
+                                // 阴影的颜色
+                                offset: Offset(0.w, 0.w),
+                                // 阴影与容器的距离
+                                blurRadius: 10.w,
+                                // 高斯的标准偏差与盒子的形状卷积。
                                 spreadRadius: 0.w,
                               ),
                             ],
@@ -215,48 +303,88 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
                               Container(
                                 width: double.infinity,
                                 height: 0.8.w,
-                                margin: EdgeInsets.only(left: 40.w,right: 40.w,top: 30.w,bottom: 13.w),
+                                margin: EdgeInsets.only(
+                                    left: 40.w,
+                                    right: 40.w,
+                                    top: 30.w,
+                                    bottom: 13.w),
                                 color: AppColors.c_FFD2D5DC,
                               ),
-                              Text("未提交（2）",style: TextStyle(fontSize: 12.sp,color: AppColors.c_FF353E4D),),
-                              Text("请家长及时督促，认真对待学习~",style: TextStyle(fontSize: 10.sp,color: AppColors.c_FFB4B9C6),),
+                              Text(
+                                "未提交（2）",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.c_FF353E4D),
+                              ),
+                              Text(
+                                "请家长及时督促，认真对待学习~",
+                                style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: AppColors.c_FFB4B9C6),
+                              ),
                               Container(
                                 margin: EdgeInsets.only(top: 17.w),
-                                child: Text("武海将",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
+                                child: Text(
+                                  "武海将",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: AppColors.c_FF353E4D,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               )
                             ],
                           ),
                         ),
                         InkWell(
                           onTap: () async {
-                            await PermissionsUtil.checkPermissions(context,
-                                "为了正常访问相册，需要您授权以下权限", [RequestPermissionsTag.PHOTOS], () {
-                                  _saveImage();
-                                });
+                            await PermissionsUtil.checkPermissions(
+                                context,
+                                "为了正常访问相册，需要您授权以下权限",
+                                [RequestPermissionsTag.PHOTOS], () {
+                              _saveImage();
+                            });
                           },
                           child: Container(
-                            height:39.w,
+                            height: 39.w,
                             width: double.infinity,
                             alignment: Alignment.center,
-                            margin: EdgeInsets.only(left: 48.w,right: 48.w,top: 20.w,bottom: 46.w),
+                            margin: EdgeInsets.only(
+                                left: 48.w,
+                                right: 48.w,
+                                top: 20.w,
+                                bottom: 46.w),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(10.w)),
-                              boxShadow:[
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.w)),
+                              boxShadow: [
                                 BoxShadow(
-                                  color: Color(0xffe3edff).withOpacity(0.5),		// 阴影的颜色
-                                  offset: Offset(0.w, 0.w),						// 阴影与容器的距离
-                                  blurRadius: 10.w,							// 高斯的标准偏差与盒子的形状卷积。
+                                  color: Color(0xffe3edff).withOpacity(0.5),
+                                  // 阴影的颜色
+                                  offset: Offset(0.w, 0.w),
+                                  // 阴影与容器的距离
+                                  blurRadius: 10.w,
+                                  // 高斯的标准偏差与盒子的形状卷积。
                                   spreadRadius: 0.w,
                                 ),
                               ],
                             ),
-                            child: Text("分享给家长",style: TextStyle(fontSize: 14.sp,color: AppColors.c_FF353E4D,fontWeight: FontWeight.w500),),
+                            child: Text(
+                              "分享给家长",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.c_FF353E4D,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
                         )
                       ],
                     ),
-                    Image.asset(R.imagesClassReportGoldBg,width: 275.w,height: 251.w,),
+                    Image.asset(
+                      R.imagesClassReportGoldBg,
+                      width: 275.w,
+                      height: 251.w,
+                    ),
                   ],
                 ),
               ),
@@ -273,7 +401,7 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
     }
 
     RenderRepaintBoundary boundary =
-    _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+        _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
     ui.Image image = await boundary.toImage(pixelRatio: 2.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -291,8 +419,7 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
     }
   }
 
-
-  Widget buildHeadList(){
+  Widget buildHeadList() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -305,20 +432,40 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
             children: [
               Stack(
                 children: [
-                  Image.asset(R.imagesClassReportSecondBg,width: 60.w,height: 64.w,),
-                  Container(
-                    width: 60.w,height: 64.w,
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(R.imagesClassReportSecondUser,width: 52.w,height: 52.w,),
+                  Image.asset(
+                    R.imagesClassReportSecondBg,
+                    width: 60.w,
+                    height: 64.w,
                   ),
                   Container(
-                    width: 60.w,height: 64.w,
+                    width: 60.w,
+                    height: 64.w,
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      R.imagesClassReportSecondUser,
+                      width: 52.w,
+                      height: 52.w,
+                    ),
+                  ),
+                  Container(
+                    width: 60.w,
+                    height: 64.w,
                     alignment: Alignment.bottomCenter,
-                    child: Image.asset(R.imagesClassReportSecond,width: 20.w,height: 51.w,),
+                    child: Image.asset(
+                      R.imagesClassReportSecond,
+                      width: 20.w,
+                      height: 51.w,
+                    ),
                   )
                 ],
               ),
-              Text("杨晋鑫",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500,color: const Color(0xff748ea3)),)
+              Text(
+                "杨晋鑫",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xff748ea3)),
+              )
             ],
           ),
         ),
@@ -331,20 +478,40 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
             children: [
               Stack(
                 children: [
-                  Image.asset(R.imagesClassReportFirstBg,width: 74.w,height: 79.w,),
-                  Container(
-                    width: 74.w,height: 79.w,
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(R.imagesClassReportFirstUser,width: 66.w,height: 66.w,),
+                  Image.asset(
+                    R.imagesClassReportFirstBg,
+                    width: 74.w,
+                    height: 79.w,
                   ),
                   Container(
-                    width: 74.w,height: 79.w,
+                    width: 74.w,
+                    height: 79.w,
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      R.imagesClassReportFirstUser,
+                      width: 66.w,
+                      height: 66.w,
+                    ),
+                  ),
+                  Container(
+                    width: 74.w,
+                    height: 79.w,
                     alignment: Alignment.bottomCenter,
-                    child: Image.asset(R.imagesClassReportFirst,width: 17.w,height: 64.w,),
+                    child: Image.asset(
+                      R.imagesClassReportFirst,
+                      width: 17.w,
+                      height: 64.w,
+                    ),
                   )
                 ],
               ),
-              Text("杨晋鑫",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500,color: const Color(0xffff9700)),)
+              Text(
+                "杨晋鑫",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xffff9700)),
+              )
             ],
           ),
         ),
@@ -357,20 +524,40 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
             children: [
               Stack(
                 children: [
-                  Image.asset(R.imagesClassReportThirdBg,width: 60.w,height: 64.w,),
-                  Container(
-                    width: 60.w,height: 64.w,
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(R.imagesClassReportSecondUser,width: 52.w,height: 52.w,),
+                  Image.asset(
+                    R.imagesClassReportThirdBg,
+                    width: 60.w,
+                    height: 64.w,
                   ),
                   Container(
-                    width: 60.w,height: 64.w,
+                    width: 60.w,
+                    height: 64.w,
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      R.imagesClassReportSecondUser,
+                      width: 52.w,
+                      height: 52.w,
+                    ),
+                  ),
+                  Container(
+                    width: 60.w,
+                    height: 64.w,
                     alignment: Alignment.bottomCenter,
-                    child: Image.asset(R.imagesClassReportThird,width: 20.w,height: 51.w,),
+                    child: Image.asset(
+                      R.imagesClassReportThird,
+                      width: 20.w,
+                      height: 51.w,
+                    ),
                   )
                 ],
               ),
-              Text("杨晋鑫",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500,color: const Color(0xffff5d00)),)
+              Text(
+                "杨晋鑫",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xffff5d00)),
+              )
             ],
           ),
         )
@@ -383,5 +570,4 @@ class _ClassPractiseReportPageState extends BasePageState<ClassPractiseReportPag
     Get.delete<ClassPractiseReportLogic>();
     super.dispose();
   }
-
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crazyenglish/base/AppUtil.dart';
 import 'package:crazyenglish/entity/base_resp.dart';
+import 'package:crazyenglish/entity/report_response.dart';
 import 'package:dio/dio.dart';
 
 import '../../api/api.dart';
@@ -38,6 +39,18 @@ class ClassRepository {
     }
   }
 
+  Future<ReportResponse> getReportResponse(String operationClassId) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.get,
+        Api.practiceReports + operationClassId,
+        options: Options(method: Method.get));
+    ReportResponse paperDetail = ReportResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
   Future<ClassDetailResponse> getMyClassDetail(String id,
       {isTeacher = false, isJoin = false}) async {
     Map map = await NetManager.getInstance()!.request(

@@ -53,6 +53,7 @@ class GetBuilderIds {
   static const String getHistoryHomeworkList = "getHistoryHomeworkList";
   static const String updateCheckBox = "updateCheckBox";
   static const String getExamper = "getExamper";
+  static const String getTeacherGetRerport = "getTeacherGetRerport";
   static const String getStudentChoiceList = "getStudentChoiceList";
   static const String delRemoveInfo = "delRemoveInfo";
 
