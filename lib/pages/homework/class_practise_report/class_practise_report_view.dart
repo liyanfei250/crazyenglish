@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/entity/HomeworkHistoryResponse.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +24,14 @@ import 'dart:ui' as ui;
  * 班级练习报告页面
  */
 class ClassPractiseReportPage extends BasePage {
-  ClassPractiseReportPage({Key? key}) : super(key: key);
+  static const String HistoryItem = "history";
+  late History history;
+
+  ClassPractiseReportPage({Key? key}) : super(key: key) {
+    if (Get.arguments != null && Get.arguments is Map) {
+      history = Get.arguments[HistoryItem] ?? false;
+    }
+  }
 
   @override
   BasePageState<ClassPractiseReportPage> getState() =>
@@ -93,7 +102,7 @@ class _ClassPractiseReportPageState
                         height: 54.w,
                       ),
                       Text(
-                        "一班（七年级）",
+                        "${widget.history.name}",
                         style: TextStyle(
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
@@ -113,14 +122,14 @@ class _ClassPractiseReportPageState
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                "18",
+                                "${widget.history.studentCompleteSize ?? '0'}",
                                 style: TextStyle(
                                     fontSize: 24.sp,
-                                    color: AppColors.c_FFED702D,
+                                    color: AppColors.c_FF353E4D,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                "人",
+                                "/${widget.history.studentTotalSize ?? '0'}",
                                 style: TextStyle(
                                     fontSize: 12.sp,
                                     color: AppColors.c_FF353E4D),
@@ -134,11 +143,6 @@ class _ClassPractiseReportPageState
                           )
                         ],
                       ),
-                      Container(
-                        width: 0.4.w,
-                        height: 32.w,
-                        color: AppColors.c_FFD2D5DC,
-                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -147,14 +151,14 @@ class _ClassPractiseReportPageState
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                "98",
+                                "${widget.history.accuracy ?? '0'}",
                                 style: TextStyle(
                                     fontSize: 24.sp,
-                                    color: AppColors.c_FFED702D,
+                                    color: AppColors.c_FF353E4D,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                "分",
+                                "%",
                                 style: TextStyle(
                                     fontSize: 12.sp,
                                     color: AppColors.c_FF353E4D),
@@ -162,53 +166,19 @@ class _ClassPractiseReportPageState
                             ],
                           ),
                           Text(
-                            "平均分",
+                            "正确率",
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.c_FF898A93),
                           )
                         ],
-                      ),
-                      Container(
-                        width: 0.4.w,
-                        height: 32.w,
-                        color: AppColors.c_FFD2D5DC,
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                "98",
-                                style: TextStyle(
-                                    fontSize: 24.sp,
-                                    color: AppColors.c_FFED702D,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                "分",
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: AppColors.c_FF353E4D),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "最高分",
-                            style: TextStyle(
-                                fontSize: 12.sp, color: AppColors.c_FF898A93),
-                          )
-                        ],
-                      ),
+                      )
                     ],
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 22.w),
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      "统计时间：2023年03月21日",
+                      "统计时间：${TimeUtil.getFormatTime(widget.history.updateTime ?? "")}",
                       style: TextStyle(
                           fontSize: 10.w, color: AppColors.c_FFB4B9C6),
                     ),
@@ -311,7 +281,7 @@ class _ClassPractiseReportPageState
                                 color: AppColors.c_FFD2D5DC,
                               ),
                               Text(
-                                "未提交（2）",
+                                "未提交(${bottomList.length})",
                                 style: TextStyle(
                                     fontSize: 12.sp,
                                     color: AppColors.c_FF353E4D),
@@ -322,16 +292,32 @@ class _ClassPractiseReportPageState
                                     fontSize: 10.sp,
                                     color: AppColors.c_FFB4B9C6),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(top: 17.w),
-                                child: Text(
-                                  "武海将",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppColors.c_FF353E4D,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              )
+                              Expanded(child: Container(
+                                  margin: EdgeInsets.only(top: 17.w,left: 20.w,right: 20.w,bottom: 10.w),
+                                  child: GridView.builder(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Text(
+                                        bottomList[index].studentName ?? '',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.c_FF353E4D,
+                                            fontWeight: FontWeight.w500),
+                                      );
+                                    },
+                                    itemCount: bottomList.length,
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3, //每行显示的元素个数
+                                        crossAxisSpacing: 20.0,
+                                        mainAxisSpacing: 16.0,
+                                        childAspectRatio: 1.0
+                                    ),
+                                  )
+                              ))
+
                             ],
                           ),
                         ),
@@ -460,7 +446,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                "杨晋鑫",
+                topList.length > 0 ? topList[0].studentName ?? '' : '第一',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -506,7 +492,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                "杨晋鑫",
+                topList.length > 1 ? topList[1].studentName ?? '' : '第二',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -552,7 +538,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                "杨晋鑫",
+                topList.length > 2 ? topList[2].studentName ?? '' : '第三',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
