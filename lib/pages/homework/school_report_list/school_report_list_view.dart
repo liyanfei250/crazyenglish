@@ -156,7 +156,9 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                       fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  widget.content_type == SchoolReportListPage.scoreList||widget.content_type == SchoolReportListPage.waitCorrectingList
+                  widget.content_type == SchoolReportListPage.scoreList ||
+                          widget.content_type ==
+                              SchoolReportListPage.waitCorrectingList
                       ? "提交情况"
                       : (widget.content_type ==
                               SchoolReportListPage.waitTipsList
@@ -168,12 +170,14 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                       fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  widget.content_type == SchoolReportListPage.scoreList||widget.content_type ==
-                      SchoolReportListPage.waitCorrectingList
-                      ? "正确率" : (widget.content_type ==
-                                  SchoolReportListPage.waitTipsList
-                              ? "操作"
-                              : ""),
+                  widget.content_type == SchoolReportListPage.scoreList ||
+                          widget.content_type ==
+                              SchoolReportListPage.waitCorrectingList
+                      ? "正确率"
+                      : (widget.content_type ==
+                              SchoolReportListPage.waitTipsList
+                          ? "操作"
+                          : ""),
                   style: TextStyle(
                       color: AppColors.c_FF353E4D,
                       fontSize: 16.sp,
@@ -243,13 +247,14 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
     student.Records studentItem = studentList[index];
 
     return InkWell(
-      onTap: (){
+      onTap: () {
         RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
-          PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
-          PreviewExamPaperPage.Papermode:PaperMode.TeacherCorrect,
-          PreviewExamPaperPage.StudentOperationId:studentItem.id,
-          PreviewExamPaperPage.OperationClassId:studentItem.operationClassId,
-          PreviewExamPaperPage.PaperId:studentItem.operationId});
+          PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
+          PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
+          PreviewExamPaperPage.StudentOperationId: studentItem.id,
+          PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
+          PreviewExamPaperPage.PaperId: studentItem.operationId
+        });
       },
       child: Container(
         height: 60.w,
@@ -279,8 +284,10 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
                 ),
               ],
             ),
-            buildHasAnswered(index == 1, widget.content_type ==
-                SchoolReportListPage.waitCorrectingList?'未批改':index == 1 ? "已做" : "未做"),
+            widget.content_type == SchoolReportListPage.waitCorrectingList
+                ? buildHasAnswered(index == 1, '未批改')
+                : buildHasAnswered(studentItem.studentStatus == 2,
+                    studentItem.studentStatus == 2 ? "已做" : "未做"),
             Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -348,11 +355,12 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
             style: TextStyle(fontSize: 12.sp, color: Color(0xff353e4d)),
           ),
           InkWell(
-            onTap: (){
+            onTap: () {
               Util.toast("已提醒当前学生！");
             },
             child: Container(
-              padding: EdgeInsets.only(top: 4.w,bottom: 4.w,left: 18.w,right: 18.w),
+              padding: EdgeInsets.only(
+                  top: 4.w, bottom: 4.w, left: 18.w, right: 18.w),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -374,7 +382,6 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
               ),
             ),
           ),
-          
         ],
       ),
     );

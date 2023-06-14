@@ -108,7 +108,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        _handleClick;
+                        logic.toReleaseWork();
                       },
                       child: Container(
                         height: 28.w,
@@ -717,7 +717,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
     _debounceUtils.run(() {
       // 当按下按钮时，在这里执行你的操作
       print('Button clicked');
-      logic.toReleaseWork();
+
     }, debounceDuration: Duration(milliseconds: 500)); // 设置防抖动时间间隔
   }
 

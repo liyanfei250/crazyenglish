@@ -628,18 +628,20 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                           arguments: {
                             HomeworkCompleteOverviewPage.HistoryItem: history,
                             HomeworkCompleteOverviewPage.Status: 1,
+                            SchoolReportListPage.listType: widget.content_type
                           });
                     } else {
                       RouterUtil.toNamed(AppRoutes.SchoolReportListPage,
                           arguments: {
                             HomeworkCompleteOverviewPage.HistoryItem: history,
                             HomeworkCompleteOverviewPage.Status: 2,
+                            SchoolReportListPage.listType: widget.content_type
                           });
                     }
                   },
                   child: widget.needNotify
                       ? goToNextPage("去提醒")
-                      : buildHasChecked(false, "待批改（18）"),
+                      : buildHasChecked(false, "待批改"),
                 )
               ],
             ),
@@ -711,6 +713,7 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
       );
     } else {
       return Container(
+        padding: EdgeInsets.only(left: 4.w,right: 4.w),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: AppColors.c_FFD2D5DC,
