@@ -158,6 +158,13 @@ class HomeworkStatus{
   static const int completed = 3;
 }
 
+class HistoryHomeworkStatus{
+  // 未检查
+  static const int not_checked  = 1;
+  // 已检查
+  static const int checked = 2;
+}
+
 class AnswerType{
   static const int no_answer = 0;
   static const int wrong = 1;

@@ -621,9 +621,9 @@ class _ChooseHistoryNewHomeworkPageState
                       ? goToNextPage("预览")
                       : buildHasChecked(
                           history.operationStatus ==
-                              common.HomeworkStatus.completed,
+                              common.HistoryHomeworkStatus.checked,
                           history.operationStatus ==
-                                  common.HomeworkStatus.completed
+                                  common.HistoryHomeworkStatus.checked
                               ? "已检查"
                               : "未检查"),
                 )
@@ -697,41 +697,6 @@ class _ChooseHistoryNewHomeworkPageState
     );
   }
 
-  Widget buildHasChecked(bool hasChecked, String text) {
-    if (hasChecked) {
-      return Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xffec6b6a),
-                Color(0xffee7b8a),
-              ]),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(7.w), bottomRight: Radius.circular(7.w)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 10.sp, color: Colors.white),
-        ),
-      );
-    } else {
-      return Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.c_FFD2D5DC,
-          borderRadius: BorderRadius.all(Radius.circular(2.w)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 10.sp, color: Colors.white),
-        ),
-      );
-    }
-  }
-
   Widget buildLineItem(String img, String text) {
     return Container(
       height: 38.w,
@@ -755,6 +720,43 @@ class _ChooseHistoryNewHomeworkPageState
         ],
       ),
     );
+  }
+
+  Widget buildHasChecked(bool hasChecked, String text) {
+    if (hasChecked) {
+      return Container(
+        padding: EdgeInsets.only(left: 4.w,right: 4.w,top: 2.w,bottom: 2.w),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xffec6b6a),
+                Color(0xffee7b8a),
+              ]),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(7.w), bottomRight: Radius.circular(7.w)),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 10.sp, color: Colors.white),
+        ),
+      );
+    } else {
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(left: 4.w,right: 4.w,top: 2.w,bottom: 2.w),
+        decoration: BoxDecoration(
+          color: AppColors.c_FFD2D5DC,
+          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 10.sp, color: Colors.white),
+        ),
+      );
+    }
   }
 
   void _startAnimation(bool _isOpen) {

@@ -46,7 +46,6 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
   void initState() {
     super.initState();
 
-    //TODO 输入之后不能直接监听显示
     searchLogic.addListenerId(GetBuilderIds.getHomeSearchDate, () {
       hideLoading();
       if (widget.type == 4) {
