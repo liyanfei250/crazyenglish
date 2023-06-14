@@ -1,3 +1,4 @@
+import 'package:crazyenglish/entity/common_response.dart';
 import 'package:crazyenglish/pages/practise/answering/answering_view.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
@@ -145,4 +146,19 @@ class AnsweringLogic extends GetxController {
     state.examResult = startExam;
     update([GetBuilderIds.examResult]);
   }
+
+  void getToCorrect(
+      num? exerciseId, String remark,String operationClassId,String operationStudentId) async {
+    Map<String, dynamic> req = {};
+    req["exerciseId"] = exerciseId??0;
+    req["correctionType"] = "1";// 答题1 小题2
+    req["operationClassId"] = operationClassId;
+    req["operationStudentId"] = operationStudentId;
+    req["remark"] = remark;
+    CommonResponse list = await weekTestRepository.toCorrectionOperation(req);
+    if(list.success!){
+      update([GetBuilderIds.getToCoorectWriting]);
+    }
+  }
+
 }

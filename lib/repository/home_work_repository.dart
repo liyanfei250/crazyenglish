@@ -95,29 +95,6 @@ class HomeworkRepository {
     }
   }
 
-  // 获取作业详情
-  Future<HomeworkDetailResponse> getPreviewOperation(int operationId) async {
-    Map<String, dynamic> req = {"operationId": operationId};
-    Map map = await NetManager.getInstance()!
-        .request(Method.post, Api.previewOperation,data: req,
-            options: Options(
-              method: Method.post,
-              contentType: ContentType.json.toString(),
-            ));
-
-    if (map != null) {
-      HomeworkDetailResponse homeworkDetailResponse =
-          HomeworkDetailResponse.fromJson(map);
-      if (homeworkDetailResponse.code != ResponseCode.status_success) {
-        return Future.error("返回homeworkDetailResponse为空");
-      } else {
-        return homeworkDetailResponse!;
-      }
-    } else {
-      return Future.error("返回homeworkDetailResponse为空");
-    }
-  }
-
   // type
   // 待提醒 1
   // 待批改 2

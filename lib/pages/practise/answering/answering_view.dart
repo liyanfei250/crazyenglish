@@ -122,7 +122,9 @@ class AnsweringPage extends BasePage {
 
 
   static SubjectVoList? findJumpSubjectVoList(detail.WeekDetailResponse? testDetailResponse,int parentIndex){
-    if (testDetailResponse!=null && testDetailResponse!.obj != null) {
+    if (testDetailResponse!=null
+        && testDetailResponse!.obj != null
+        && testDetailResponse!.obj!.subjectVoList != null) {
       int length = testDetailResponse!.obj!.subjectVoList!.length;
 
       if(parentIndex < length){

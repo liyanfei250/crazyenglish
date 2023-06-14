@@ -274,7 +274,7 @@ class Api {
   // 历史作业
   static String historyPage = "${Config.ApiHost}/question/operation/historyPage";
 
-  // 作业预览接口
+  // 学生端作业预览接口
   static String previewOperation = "${Config.ApiHost}/question/studentOperation/getOperationCatalogue";
 
   // 关键接口：批改作业接口
@@ -286,7 +286,7 @@ class Api {
   // 选择学生班级列表接口
   static String memberClassStudentList = "${Config.ApiHost}/member/classStudent/list/";
 
-  // 试卷预览
+  // 教师端试卷预览
   static String toPreviewOperation = "${Config.ApiHost}/question/operation/previewOperation";
 
   // 根据作业获取主观题试题详情

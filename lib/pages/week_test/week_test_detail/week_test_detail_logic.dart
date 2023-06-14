@@ -604,7 +604,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.catlogIdKey:state.uuid,
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
-                AnsweringPage.examResult: state.startExam,
+                AnsweringPage.examResult: state.startExam?.obj,
                 AnsweringPage.result_type:AnsweringPage.result_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
@@ -634,7 +634,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.catlogIdKey:state.uuid,
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
-                AnsweringPage.examResult: state.startExam,
+                AnsweringPage.examResult: state.startExam?.obj,
                 AnsweringPage.result_type:AnsweringPage.result_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
@@ -653,6 +653,45 @@ class WeekTestDetailLogic extends GetxController {
                 PreviewExamPaperPage.OperationClassId: state.operationClassId,
               });
         }
+      }
+    });
+  }
+
+  // 跳转教师批改页面监听
+  void addJumpToStartTeacherCorrectionListen(){
+    disposeId(GetBuilderIds.startHomework);
+    addListenerId(GetBuilderIds.startHomework, () {
+      if(state.isOffCurrentPage){
+        RouterUtil.offAndToNamed(
+            AppRoutes.ResultPage,
+            isNeedCheckLogin:true,
+            arguments: {
+              AnsweringPage.examDetailKey: state.weekDetailResponse,
+              AnsweringPage.catlogIdKey:state.uuid,
+              AnsweringPage.parentIndexKey:state.parentIndex,
+              AnsweringPage.childIndexKey:state.childIndex,
+              AnsweringPage.examResult: state.startExam?.obj,
+              AnsweringPage.result_type:AnsweringPage.result_homework_correctioin_type,
+              PreviewExamPaperPage.PaperId: state.operationId,
+              PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
+              PreviewExamPaperPage.OperationClassId: state.operationClassId,
+            });
+
+      }else{
+        RouterUtil.toNamed(
+            AppRoutes.ResultPage,
+            isNeedCheckLogin:true,
+            arguments: {
+              AnsweringPage.examDetailKey: state.weekDetailResponse,
+              AnsweringPage.catlogIdKey:state.uuid,
+              AnsweringPage.parentIndexKey:state.parentIndex,
+              AnsweringPage.childIndexKey:state.childIndex,
+              AnsweringPage.examResult: state.startExam?.obj,
+              AnsweringPage.result_type:AnsweringPage.result_homework_correctioin_type,
+              PreviewExamPaperPage.PaperId: state.operationId,
+              PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
+              PreviewExamPaperPage.OperationClassId: state.operationClassId,
+            });
       }
     });
   }
