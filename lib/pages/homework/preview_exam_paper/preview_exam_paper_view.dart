@@ -28,6 +28,8 @@ class PaperMode{
   static const int StudentAnswerHomework = 2;
   // 老师批改模式
   static const int TeacherCorrect = 3;
+  // 学生结果页模式
+  static const int StudentHomeworkResult = 4;
 }
 
 /**
@@ -283,6 +285,14 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
         }else if(widget.paperMode == PaperMode.TeacherCorrect){
           logicDetail.addJumpToStartTeacherCorrectionListen();
           logicDetail.getDetailAndStartHomework(
+              smallList.journalCatalogueId ?? "",
+              "${widget.studentOperationId}",
+              "${widget.operationClassId}",
+              "${widget.paperId}");
+          showLoading("");
+        }else if(widget.paperMode == PaperMode.StudentHomeworkResult) {
+          logicDetail.addJumpToStartHomeworkListen();
+          logicDetail.getDetailAndEnterHomeworkResult(
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
               "${widget.operationClassId}",
