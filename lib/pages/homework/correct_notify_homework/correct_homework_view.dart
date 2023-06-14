@@ -258,21 +258,12 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                 return [
                   SliverToBoxAdapter(
                     child: Container(
-                      margin: EdgeInsets.only(top: 24.w, left: 18.w),
+                      margin: EdgeInsets.only(left: 18.w),
                       child: Row(
                         children: [
                           Stack(
                             children: [
-                              Container(
-                                height: 20.w,
-                                width: 48.w,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                  color: AppColors.c_FFFCEFD8,
-                                  width: 5.w,
-                                ))),
-                              ),
+
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -281,7 +272,7 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                                       _onClickItemStart(DateMode.YMDHMS);
                                     },
                                     child: Container(
-                                      height: 20.w,
+                                      padding: EdgeInsets.only(top: 24.w,bottom: 24.w),
                                       child: Obx(() => Text(
                                             choiceTimeStart.value,
                                             style: TextStyle(
@@ -303,7 +294,7 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
                                       _onClickItem(DateMode.YMDHMS);
                                     },
                                     child: Container(
-                                      height: 20.w,
+                                      padding: EdgeInsets.only(top: 24.w,bottom: 24.w),
                                       child: Obx(() => Text(
                                             choiceTime.value,
                                             style: TextStyle(
@@ -598,7 +589,7 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
         });
       },
       child: Container(
-        margin: EdgeInsets.only(left: 18.w, right: 18.w, top: 24.w),
+        margin: EdgeInsets.only(left: 18.w, right: 18.w, bottom: 24.w),
         padding:
             EdgeInsets.only(left: 27.w, right: 27.w, top: 3.w, bottom: 12.w),
         width: double.infinity,
