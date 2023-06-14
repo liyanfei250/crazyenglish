@@ -1,7 +1,11 @@
+import 'package:crazyenglish/base/common.dart' as common;
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/home/PractiseDate.dart';
 import 'package:crazyenglish/entity/review/PractiseHistoryDate.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
 import 'package:crazyenglish/routes/getx_ids.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -438,11 +442,19 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                                           children: [
                                             InkWell(
                                               onTap: () {
-                                                logicDetail
-                                                    .addJumpToStartExamListen();
-                                                logicDetail
-                                                    .getDetailAndStartExam("0");
-                                                showLoading("");
+                                                RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+                                                  PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+                                                  PreviewExamPaperPage.Papermode:PaperMode.StudentHomeworkResult,
+                                                  PreviewExamPaperPage.StudentOperationId:element.id??0,
+                                                  PreviewExamPaperPage.OperationClassId:element.operationClassId,
+                                                  PreviewExamPaperPage.PaperId:element.operationId});
+                                                // logicDetail.addJumpToStartHomeworkListen();
+                                                // logicDetail.getDetailAndEnterHomeworkResult(
+                                                //     "",
+                                                //     "${element.id}",
+                                                //     "${element.operationClassId}",
+                                                //     "${element.paperId}");
+                                                // showLoading("");
                                               },
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,

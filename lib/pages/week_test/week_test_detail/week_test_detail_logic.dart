@@ -168,6 +168,30 @@ class WeekTestDetailLogic extends GetxController {
   }
 
 
+  // 历史作业跳转结果页
+  void getDetailAndEnterHomeworkResult(String id,String operationStudentId,String operationClassId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,
+    int jumpParentIndex = -1,int jumpChildIndex = -1,CancelFunc? hideLoading}) async {
+    WeekDetailResponse weekDetailResponse = await getWeekTestDetailByCatalogId(id);
+    if(weekDetailResponse!=null){
+      if(weekDetailResponse.obj!=null){
+        if(weekDetailResponse.obj!.subjectVoList==null || weekDetailResponse.obj!.subjectVoList!.length==0){
+          Util.toast("目录下没有试题");
+          if(hideLoading!=null){
+            hideLoading.call();
+          }
+          return;
+        }
+      }
+      jumpToHomeworkResult(id,operationStudentId,operationClassId,operationId,enterResult: enterResult,isOffCurrentPage: isOffCurrentPage,jumpParentIndex : jumpParentIndex,jumpChildIndex : jumpChildIndex);
+    } else {
+      Util.toast("获取试题详情数据失败");
+      if(hideLoading!=null){
+        hideLoading.call();
+      }
+    }
+  }
+
+
   // 练习记录 跳转到结果页
   void getDetailAndEnterResult(String subjectId,String exerciseId) async {
     WeekDetailResponse weekDetailResponse = await getWeekTestDetailBySubjectId(subjectId);
@@ -444,6 +468,69 @@ class WeekTestDetailLogic extends GetxController {
       // TODO 直接跳结果页
       Util.toast("作业已结束");
     }
+
+  }
+
+  void jumpToHomeworkResult(String id,String operationStudentId,String operationClassId,String operationId,{bool? enterResult = false,bool? isOffCurrentPage = false,int jumpParentIndex = -1,int jumpChildIndex = -1}) async{
+
+    StartExam startExam = await weekTestRepository.getStartHomework(id,operationStudentId);
+    state.startExam = startExam;
+    state.uuid = id;
+    state.isOffCurrentPage = isOffCurrentPage??false;
+    state.operationId = operationId;
+    state.operationStudentId = operationStudentId;
+    state.operationClassId = operationClassId;
+    int maxLength = 0;
+    if(state.weekDetailResponse.obj!.subjectVoList!=null){
+      maxLength = state.weekDetailResponse.obj!.subjectVoList!.length;
+    }
+    if(jumpParentIndex>=0){
+      // 直接跳到指定题目 开始作答
+      state.parentIndex = jumpParentIndex;
+      state.childIndex = (jumpChildIndex < 0 ? 0 :jumpChildIndex);
+    } else {
+      // 找到上次作答位置索引
+      if(startExam!.obj==null || (startExam!.obj?.isFinish?? true)){
+        // 已经做完 从第一道题开始即可
+        state.parentIndex = 0;
+        state.childIndex = 0;
+      } else {
+        // 未做完 从后台返回的索引开始
+        state.parentIndex = (startExam!.obj?.parentIndex?? 0).toInt();
+        state.childIndex = (startExam!.obj?.sublevelIndex?? 0).toInt();
+        // 索引异常
+        if(state.parentIndex > maxLength){
+          state.parentIndex = 0;
+          state.childIndex = 0;
+        }
+      }
+    }
+    state.enterResult = true;
+    // 有结果才正真跳结果页 否则还是不行 进入作答页
+    var nextHasResult = false;
+    SubjectVoList? nextSubjectVoList = AnsweringPage.findJumpSubjectVoList(state.weekDetailResponse,state.parentIndex);
+    if(nextSubjectVoList!=null){
+      if(startExam!=null && startExam.obj!=null){
+        ExerciseVos? exerciseVos = AnsweringPage.findExerciseResult(startExam.obj,nextSubjectVoList!.id??0);
+        Map<String,ExerciseLists> nextSubtopicAnswerVoMap = AnsweringPage.makeExerciseResultToMap(exerciseVos);
+        if(nextSubtopicAnswerVoMap.isEmpty){
+          nextHasResult = false;
+        }else{
+          nextHasResult = true;
+        }
+      }else{
+        nextHasResult = false;
+      }
+    }else{
+      nextHasResult = false;
+    }
+    if(nextHasResult){
+      state.enterResult = true;
+    }else{
+      state.enterResult = false;
+    }
+
+    update([GetBuilderIds.startHomework]);
 
   }
 

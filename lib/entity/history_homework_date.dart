@@ -215,8 +215,9 @@ Obj copyWith({  List<Records>? records,
 
 class Records {
   Records({
-      num? operationClassId, 
-      num? classId, 
+      num? id,
+      num? operationClassId,
+      num? classId,
       num? operationId, 
       String? name, 
       num? teacherId, 
@@ -247,6 +248,7 @@ class Records {
       num? classOperationStatus, 
       num? classAccuracy,}){
     _operationClassId = operationClassId;
+    _id = id;
     _classId = classId;
     _operationId = operationId;
     _name = name;
@@ -281,6 +283,7 @@ class Records {
 
   Records.fromJson(dynamic json) {
     _operationClassId = json['operationClassId'];
+    _id = json['id'];
     _classId = json['classId'];
     _operationId = json['operationId'];
     _name = json['name'];
@@ -313,6 +316,7 @@ class Records {
     _classAccuracy = json['classAccuracy'];
   }
   num? _operationClassId;
+  num? _id;
   num? _classId;
   num? _operationId;
   String? _name;
@@ -343,7 +347,9 @@ class Records {
   dynamic _gradeName;
   num? _classOperationStatus;
   num? _classAccuracy;
-Records copyWith({  num? operationClassId,
+Records copyWith({
+  num? id,
+  num? operationClassId,
   num? classId,
   num? operationId,
   String? name,
@@ -374,7 +380,9 @@ Records copyWith({  num? operationClassId,
   dynamic gradeName,
   num? classOperationStatus,
   num? classAccuracy,
-}) => Records(  operationClassId: operationClassId ?? _operationClassId,
+}) => Records(
+  id: id ?? _id,
+  operationClassId: operationClassId ?? _operationClassId,
   classId: classId ?? _classId,
   operationId: operationId ?? _operationId,
   name: name ?? _name,
@@ -407,6 +415,7 @@ Records copyWith({  num? operationClassId,
   classAccuracy: classAccuracy ?? _classAccuracy,
 );
   num? get operationClassId => _operationClassId;
+  num? get id => _id;
   num? get classId => _classId;
   num? get operationId => _operationId;
   String? get name => _name;
@@ -441,6 +450,7 @@ Records copyWith({  num? operationClassId,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['operationClassId'] = _operationClassId;
+    map['id'] = _id;
     map['classId'] = _classId;
     map['operationId'] = _operationId;
     map['name'] = _name;
