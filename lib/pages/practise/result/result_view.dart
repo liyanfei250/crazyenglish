@@ -110,6 +110,8 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   bool hasPageView = false;
   List<Widget> childQuestionList = [];
   Widget? childQustionPageView;
+
+  TextEditingController markEditController = TextEditingController();
   @override
   void onCreate() {
     currentSubjectVoList = AnsweringPage.findJumpSubjectVoList(widget.testDetailResponse,widget.parentIndex);
@@ -280,41 +282,39 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-              visible: widget.resultType == AnsweringPage.result_normal_type,
-              child: Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Visibility(
-                visible: widget.resultType != AnsweringPage.result_homework_type,
+                  visible: widget.resultType == AnsweringPage.result_normal_type,
                   child: InkWell(
-                onTap: (){
-                  logicDetail.addJumpToStartExamListen();
-                  logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
-                  showLoading("");
-                },
-                child: Container(
-                  width: 134.w,
-                  height: 35.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xfff19e59),
-                          Color(0xffec5f2a),
-                        ]),
-                    borderRadius: BorderRadius.all(Radius.circular(18.w)),
-                  ),
-                  child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
-                ),
-              )),
+                    onTap: (){
+                      logicDetail.addJumpToStartExamListen();
+                      logicDetail.getDetailAndStartExam("${currentSubjectVoList!.journalCatalogueId}",enterResult:false,isOffCurrentPage:true,jumpParentIndex: widget.parentIndex,jumpChildIndex: 0);
+                      showLoading("");
+                    },
+                    child: Container(
+                      width: 134.w,
+                      height: 35.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xfff19e59),
+                              Color(0xffec5f2a),
+                            ]),
+                        borderRadius: BorderRadius.all(Radius.circular(18.w)),
+                      ),
+                      child: Text("重新练习",style: TextStyle(fontSize: 14.sp,color:AppColors.c_FFFFFFFF),),
+                    ),
+                  )),
               Visibility(
                   visible: widget.resultType == AnsweringPage.result_homework_correctioin_type,
                   child: InkWell(
                     onTap: (){
-                      // Get.bottomSheet(bottomsheet);
+                      Get.bottomSheet(correctBottomSheet());
                     },
                     child: Container(
                       width: 134.w,
@@ -376,17 +376,17 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                           AppRoutes.ResultPage,
                           isNeedCheckLogin:true,
                           arguments: {
-                        AnsweringPage.examDetailKey: widget.testDetailResponse,
-                        AnsweringPage.catlogIdKey:widget.uuid,
-                        AnsweringPage.parentIndexKey:widget.parentIndex+1,
-                        AnsweringPage.childIndexKey:widget.childIndex,
-                        AnsweringPage.examResult: widget.examResult,
-                        AnsweringPage.LastFinishResult: widget.lastFinishResult,
-                        AnsweringPage.result_type:widget.resultType,
-                        PreviewExamPaperPage.PaperId: widget.operationId,
-                        PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
-                        PreviewExamPaperPage.OperationClassId: widget.operationClassId,
-                      });
+                            AnsweringPage.examDetailKey: widget.testDetailResponse,
+                            AnsweringPage.catlogIdKey:widget.uuid,
+                            AnsweringPage.parentIndexKey:widget.parentIndex+1,
+                            AnsweringPage.childIndexKey:widget.childIndex,
+                            AnsweringPage.examResult: widget.examResult,
+                            AnsweringPage.LastFinishResult: widget.lastFinishResult,
+                            AnsweringPage.result_type:widget.resultType,
+                            PreviewExamPaperPage.PaperId: widget.operationId,
+                            PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
+                            PreviewExamPaperPage.OperationClassId: widget.operationClassId,
+                          });
                     } else {
                       if(widget.resultType == AnsweringPage.result_homework_type){
                         logicDetail.addJumpToStartHomeworkListen();
@@ -431,7 +431,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                 ),
               ),
             ],
-          )),
+          ),
         ],
       ),
     );
@@ -760,6 +760,85 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
   }
 
 
+  Widget correctBottomSheet(){
+    return Container(
+      margin: EdgeInsets.only(top: 14.w),
+      padding:
+      EdgeInsets.only(left: 14.w, right: 14.w, top: 14.w, bottom: 14.w),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.c_FFFFEBEB.withOpacity(0.5), // 阴影的颜色
+              offset: Offset(10, 20), // 阴影与容器的距离
+              blurRadius: 45.0, // 高斯的标准偏差与盒子的形状卷积。
+              spreadRadius: 10.0,
+            )
+          ],
+          borderRadius: BorderRadius.only(topRight: Radius.circular(10.w),topLeft: Radius.circular(10.w)),
+          color: AppColors.c_FFFFFFFF),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("备注：",style: TextStyle(color: AppColors.c_FF353E4D,fontSize: 16.w,fontWeight: FontWeight.bold),),
+              InkWell(
+                onTap: () {
+                  logic.getToCorrect(currentExerciseVos?.id,markEditController.text,widget.operationClassId,widget.operationStudentId);
+                  showLoading("提交中");
+                },
+                child: Image.asset(
+                  R.imagesRemarkCompleteBtn,
+                  width: 64.w,
+                  height: 21.w,
+                ),
+              ),
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(top: 13.w)),
+          TextField(
+            autofocus: false,
+            maxLines: 100,
+            minLines: 10,
+            controller: markEditController,
+            keyboardType: TextInputType.multiline,
+            onChanged: (String str) {
+
+            },
+            style: TextStyle(color: Color(0xff353e4d), fontSize: 12.sp),
+
+            decoration: InputDecoration(
+              hintText: "请在这里开始批改吧～",
+              isDense:true,
+                filled: true,
+                fillColor: AppColors.c_FFF5F7FB,
+              contentPadding: EdgeInsets.all(14.w),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                borderSide: BorderSide(
+                    width: 1.w,
+                    color: AppColors.c_FFD2D5DC,
+                    style: BorderStyle.solid
+                ),
+              ),
+              focusedBorder:OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.w)),
+                borderSide: BorderSide(
+                    width: 1.w,
+                    color: AppColors.c_FFD2D5DC,
+                    style: BorderStyle.solid
+                ),
+              ),
+                hintStyle:
+                TextStyle(color: Color(0xffb3b7c6), fontSize: 12.sp))
+            ),
+        ],
+      ),
+    );
+  }
 
 
   @override
@@ -769,6 +848,10 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
     Get.delete<Collect_practicLogic>();
     if(_tabController!=null){
       _tabController!.dispose();
+    }
+
+    if(markEditController!=null){
+      markEditController.dispose();
     }
 
   }

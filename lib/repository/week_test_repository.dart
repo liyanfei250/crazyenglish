@@ -273,4 +273,19 @@ class WeekTestRepository {
       return paperDetail!;
     }
   }
+
+  //批改作业接口
+  Future<CommonResponse> toCorrectionOperation(Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.correctionOperation,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    CommonResponse paperDetail = CommonResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 }

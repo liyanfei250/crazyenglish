@@ -241,7 +241,7 @@ class ClassRepository {
     }
   }
 
-  //试卷库预览
+  //试卷库预览 作业完成情况概览
   Future<TestPaperLookResponse> toPreviewOperation(
       Map<String, dynamic> req) async {
     Map map = await NetManager.getInstance()!.request(

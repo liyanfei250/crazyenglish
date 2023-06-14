@@ -221,7 +221,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                     R.imagesClassInfoTeacherAge,
                     "讲师教龄:",
                     TimeUtil.getTimeDay(
-                        userInfoResponse!.obj!.teachingExperience!)),
+                        userInfoResponse!.obj?.teachingExperience??"")),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),

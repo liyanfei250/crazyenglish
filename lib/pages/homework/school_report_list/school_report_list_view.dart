@@ -1,5 +1,8 @@
 import 'package:crazyenglish/base/AppUtil.dart';
+import 'package:crazyenglish/base/common.dart' as common;
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/routes/app_pages.dart';
+import 'package:crazyenglish/routes/routes_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +15,7 @@ import '../../../r.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../utils/colors.dart';
 import '../homework_complete_overview/homework_complete_overview_view.dart';
+import '../preview_exam_paper/preview_exam_paper_view.dart';
 import 'school_report_list_logic.dart';
 
 /**
@@ -238,56 +242,66 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
   Widget buildItem(BuildContext context, int index) {
     student.Records studentItem = studentList[index];
 
-    return Container(
-      height: 60.w,
-      width: double.infinity,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "${index + 1}",
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 20.w)),
-              Text(
-                "${studentItem.studentName}",
-                style: TextStyle(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff353e4d)),
-              ),
-            ],
-          ),
-          buildHasAnswered(index == 1, widget.content_type ==
-              SchoolReportListPage.waitCorrectingList?'未批改':index == 1 ? "已做" : "未做"),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "${studentItem.objectiveProperSize ?? 0}",
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffed702d)),
-              ),
-              Padding(padding: EdgeInsets.only(left: 30.w)),
-              Image.asset(
-                R.imagesSchoolReportRightArrow,
-                width: 8.5.w,
-                height: 8.5.w,
-              ),
-            ],
-          ),
-        ],
+    return InkWell(
+      onTap: (){
+        RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+          PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+          PreviewExamPaperPage.Papermode:PaperMode.TeacherCorrect,
+          PreviewExamPaperPage.StudentOperationId:studentItem.id,
+          PreviewExamPaperPage.OperationClassId:studentItem.operationClassId,
+          PreviewExamPaperPage.PaperId:studentItem.operationId});
+      },
+      child: Container(
+        height: 60.w,
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "${index + 1}",
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d)),
+                ),
+                Padding(padding: EdgeInsets.only(left: 20.w)),
+                Text(
+                  "${studentItem.studentName}",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff353e4d)),
+                ),
+              ],
+            ),
+            buildHasAnswered(index == 1, widget.content_type ==
+                SchoolReportListPage.waitCorrectingList?'未批改':index == 1 ? "已做" : "未做"),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "${studentItem.objectiveProperSize ?? 0}",
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xffed702d)),
+                ),
+                Padding(padding: EdgeInsets.only(left: 30.w)),
+                Image.asset(
+                  R.imagesSchoolReportRightArrow,
+                  width: 8.5.w,
+                  height: 8.5.w,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,17 +20,29 @@ import 'preview_exam_paper_logic.dart';
 import '../../../entity/test_paper_look_response.dart' as paper;
 import 'package:crazyenglish/base/common.dart' as common;
 
+// 作业模式
+class PaperMode{
+  // 纯预览模式
+  static const int Preview = 1;
+  // 学生答题模式
+  static const int StudentAnswerHomework = 2;
+  // 老师批改模式
+  static const int TeacherCorrect = 3;
+}
+
 /**
  * 试卷预览
  */
 class PreviewExamPaperPage extends BasePage {
   static const String PaperType = "PaperType";
+  static const String Papermode = "paperMode";
   static const String PaperId = "OperationId";
   static const String ShowAssignHomework = "isShowAssignHomework";
   static const String StudentOperationId = "StudentOperationId";
   static const String OperationClassId = "OperationClassId";
   static const String PaperName = "PaperName";
   late int paperType;
+  late int paperMode;
   late int paperId;
   late String paperName = '';
   late bool isShowAssignHomework;
@@ -38,9 +50,11 @@ class PreviewExamPaperPage extends BasePage {
   int? operationClassId;
   int? operationId;
 
+
   PreviewExamPaperPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       paperType = Get.arguments[PaperType];
+      paperMode = Get.arguments[Papermode] ?? PaperMode.Preview;
       paperId = Get.arguments[PaperId];
       isShowAssignHomework = Get.arguments[ShowAssignHomework] ?? false;
       studentOperationId = Get.arguments[StudentOperationId] ?? 0;
@@ -255,17 +269,26 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   Widget listitemSmall(paper.Catalogues smallList, int index) {
     return InkWell(
       onTap: () {
-        // studentOperationId
-        if ((widget.studentOperationId ?? 0) > 0) {
-          // 做作业流程
-          logicDetail.addJumpToStartHomeworkListen();
+        if(widget.paperMode == PaperMode.StudentAnswerHomework){
+          if ((widget.studentOperationId ?? 0) > 0) {
+            // 做作业流程
+            logicDetail.addJumpToStartHomeworkListen();
+            logicDetail.getDetailAndStartHomework(
+                smallList.journalCatalogueId ?? "",
+                "${widget.studentOperationId}",
+                "${widget.operationClassId}",
+                "${widget.paperId}");
+            showLoading("");
+          }
+        }else if(widget.paperMode == PaperMode.TeacherCorrect){
+          logicDetail.addJumpToStartTeacherCorrectionListen();
           logicDetail.getDetailAndStartHomework(
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
               "${widget.operationClassId}",
               "${widget.paperId}");
           showLoading("");
-        } else {
+        }else{
           // 预览试题流程
           logicDetail.addJumpToBrowsePaperListen();
           logicDetail.getDetailAndEnterBrowsePaperPage(
