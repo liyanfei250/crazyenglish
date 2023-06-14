@@ -11,10 +11,6 @@ class Home_searchState {
   int currentPageNoj = 1;
   String searchText = '';
 
-  //TODO 搜索类型处理
-  //TODO 学生信息
-  //TODO 分页处理
-  //TODO 历史作业抽出来
   final int pageSize = 20;
 
   final int pageStartIndex = 1;

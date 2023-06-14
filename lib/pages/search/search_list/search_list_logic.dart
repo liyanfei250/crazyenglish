@@ -40,7 +40,6 @@ class Search_listLogic extends GetxController {
         state.listS = cache!.obj!.students!.records!;
       }
 
-      //todo 具体的参数获取
       // if(state.paperList.length < pageSize){
       //   state.hasMore = false;
       // } else {
