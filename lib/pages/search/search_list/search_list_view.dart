@@ -4,6 +4,7 @@ import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/search/home_search/home_search_logic.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -192,22 +193,28 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(1.0),
-              child: Image.network(
-                recordsS. coverImg??
-                    "https://pics0.baidu.com/feed/0b55b319ebc4b74531587bda64b9f91c888215fb.jpeg@f_auto?token=c5e40b1e9aa7359c642904f84b564921",
+              child: ExtendedImage.network(
+                recordsS.coverImg ?? "",
+                cacheRawData: true,
                 width: 72.w,
                 height: 72.w,
                 fit: BoxFit.fill,
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
-                  return ClipRRect(
-                      borderRadius: BorderRadius.circular(1.0),
-                      child: Image(
-                        image: AssetImage(R.imagesStudentHead),
-                        width: 72.w,
-                        height: 72.w,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                enableLoadState: true,
+                loadStateChanged: (state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.completed:
+                      return ExtendedRawImage(
+                        image: state.extendedImageInfo?.image,
+                        fit: BoxFit.cover,
+                      );
+                    default:
+                      return Image.asset(
+                        R.imagesReadingDefault,
                         fit: BoxFit.fill,
-                      ));
+                      );
+                  }
                 },
               ),
             ),
@@ -355,10 +362,29 @@ class _ToSearchListPageState extends BasePageState<SearchListPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(11)),
-              child: Image.asset(
-                R.imagesSearchPlaceIc,
+              child: ExtendedImage.network(
+                records.coverImg ?? "",
+                cacheRawData: true,
                 width: 52.w,
                 height: 74.w,
+                fit: BoxFit.fill,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                enableLoadState: true,
+                loadStateChanged: (state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.completed:
+                      return ExtendedRawImage(
+                        image: state.extendedImageInfo?.image,
+                        fit: BoxFit.cover,
+                      );
+                    default:
+                      return Image.asset(
+                        R.imagesReadingDefault,
+                        fit: BoxFit.fill,
+                      );
+                  }
+                },
               ),
             ),
             Expanded(

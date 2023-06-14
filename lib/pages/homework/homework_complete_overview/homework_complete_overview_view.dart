@@ -213,7 +213,7 @@ class _HomeworkCompleteOverviewPageState
                             InkWell(
                               onTap: () {
                                 RouterUtil.toNamed(
-                                    AppRoutes.ClassPractiseReportPage);
+                                    AppRoutes.ClassPractiseReportPage,arguments: {HomeworkCompleteOverviewPage.HistoryItem: widget.history});
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,

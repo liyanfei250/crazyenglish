@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -32,7 +33,16 @@ class Util {
   static num setWidth(double width) {
     return ScreenUtil().setWidth(width);
   }
+   late Timer _debounceTimer;
 
+   void run(Function callback, {Duration debounceDuration = const Duration(milliseconds: 500)}) {
+    if (_debounceTimer != null) {
+      _debounceTimer.cancel();
+    }
+    _debounceTimer = Timer(debounceDuration, () {
+      callback();
+    });
+  }
   static Future<Uint8List?> imageToUnit8List(ui.Image image) async {
     ByteData? byteData = await image.toByteData();
     if (byteData != null) {
@@ -402,36 +412,41 @@ class Util {
         callback.call();
         choose.value = !choose.value;
       },
-      child: Container(
-        width: 16.w,
-        height: 16.w,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xfff19e59),
-                Color(0xffec5f2a),
-              ]),
-          borderRadius: BorderRadius.all(Radius.circular(6.w)),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xffee754f).withOpacity(0.25), // 阴影的颜色
-              offset: Offset(0.w, 4.w), // 阴影与容器的距离
-              blurRadius: 6.w, // 高斯的标准偏差与盒子的形状卷积。
-              spreadRadius: 0.w,
-            ),
-          ],
-        ),
-        child: Obx(() => Visibility(
-              visible: choose.value,
-              child: Image.asset(
-                R.imagesIconChooseCenter,
-                width: 12.w,
-                height: 12.w,
+      child:Container(
+        width: 38.w,
+        height: 30.w,
+        alignment: Alignment.center,
+        child: Container(
+          width: 16.w,
+          height: 16.w,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xfff19e59),
+                  Color(0xffec5f2a),
+                ]),
+            borderRadius: BorderRadius.all(Radius.circular(6.w)),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xffee754f).withOpacity(0.25), // 阴影的颜色
+                offset: Offset(0.w, 4.w), // 阴影与容器的距离
+                blurRadius: 6.w, // 高斯的标准偏差与盒子的形状卷积。
+                spreadRadius: 0.w,
               ),
-            )),
-      ),
+            ],
+          ),
+          child: Obx(() => Visibility(
+            visible: choose.value,
+            child: Image.asset(
+              R.imagesIconChooseCenter,
+              width: 12.w,
+              height: 12.w,
+            ),
+          )),
+        ),
+      ) ,
     );
   }
 

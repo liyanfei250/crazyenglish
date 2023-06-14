@@ -1,5 +1,6 @@
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
 import 'package:crazyenglish/entity/HomeworkJournalResponse.dart';
+import 'package:crazyenglish/utils/time_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -281,16 +282,20 @@ class _ChooseJournalPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "${student.name}",
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff353e4d)),
+                  SizedBox(
+                    width: 130.w,
+                    child: Text(
+                      "${student.name}",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff353e4d)),
+                    ),
                   ),
                   Padding(padding: EdgeInsets.only(top: 6.w)),
                   Text(
-                    student.createTime ?? '',
+                    TimeUtil.getTimeReplaceT(student.createTime ?? ''),
                     style: TextStyle(fontSize: 11.sp, color: Color(0xff898a93)),
                   ),
                   Padding(padding: EdgeInsets.only(top: 4.w)),

@@ -11,14 +11,14 @@ class Watting_pushLogic extends GetxController {
   ClassRepository netTool = ClassRepository();
 
   void getStudentWorkList(
-      int workType, String studentId, int curent, int size,num start, num end ) async {
+      int workType, String studentId, int current, int size,num start, num end ) async {
     Map<String, dynamic> req = {};
     Map<String, dynamic> p = {};
     req['workType'] = workType;
     req['studentId'] = studentId;
     req['start'] = start;
     req['end'] = end;
-    p['curent'] = curent;
+    p['current'] = current;
     p['size'] = size;
     req['p'] = p;
     var cache = await JsonCacheManageUtils.getCacheData(
@@ -30,8 +30,8 @@ class Watting_pushLogic extends GetxController {
       }
     });
 
-    state.pageNo = curent;
-    if (curent == 1 &&
+    state.pageNo = current;
+    if (current == 1 &&
         cache is StudentWorkListResponse &&
         cache.obj != null &&
         cache.obj!.records != null) {
@@ -45,18 +45,18 @@ class Watting_pushLogic extends GetxController {
           [GetBuilderIds.getStudentWorkList + workType.toString() + studentId]);
     }
     StudentWorkListResponse list = await netTool.getStudentWorkList(req);
-    if (curent == 1) {
+    if (current == 1) {
       JsonCacheManageUtils.saveCacheData(
           JsonCacheManageUtils.StudentWorkList,
           labelId: workType.toString() + studentId,
           list.toJson());
     }
     if (list.obj!.records == null) {
-      if (curent == 1) {
+      if (current == 1) {
         state.list.clear();
       }
     } else {
-      if (curent == 1) {
+      if (current == 1) {
         state.list = list.obj!.records!;
       } else {
         state.list.addAll(list.obj!.records!);

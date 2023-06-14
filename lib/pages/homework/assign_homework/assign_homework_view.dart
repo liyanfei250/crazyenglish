@@ -57,6 +57,10 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
     DateMode.S: '',
   };
 
+  final myFocusNode = FocusNode();
+
+  final _debounceUtils = Util(); // 创建一个DebounceUtils实例
+
   @override
   void onCreate() {
     if (widget.paperType! > 0) {
@@ -69,8 +73,13 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
     logic.addListenerId(GetBuilderIds.getToReleaseWork, () {
       if (state.releaseWork.code == 0) {
         Util.toast('发布作业成功');
-        setState(() {});
+        Navigator.pop(context);
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // 在页面构建完成后，请求一个新的焦点，使TextField失去焦点
+      FocusScope.of(context).requestFocus(FocusNode());
     });
   }
 
@@ -99,7 +108,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        logic.toReleaseWork();
+                        _handleClick;
                       },
                       child: Container(
                         height: 28.w,
@@ -180,6 +189,7 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(8.w))),
                                 child: TextField(
+                                  focusNode: myFocusNode,
                                   textAlign: TextAlign.left,
                                   decoration: InputDecoration(
                                       hintText: "请输入作业名称",
@@ -443,33 +453,40 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   buildTipsWidget("作业截止时间"),
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        left: 12.w, right: 12.w),
-                                    margin: EdgeInsets.only(left: 8.w),
-                                    height: 22.w,
-                                    width: (logic.state.assignHomeworkRequest
-                                                    .deadline ??
-                                                "")
-                                            .isEmpty
-                                        ? 150.w
-                                        : null,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.c_FFFFF7ED,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16.5.w))),
-                                    child: Text(
-                                        (logic.state.assignHomeworkRequest
-                                                        .deadline ??
-                                                    "")
-                                                .isEmpty
-                                            ? ''
-                                            : (logic.state.assignHomeworkRequest
-                                                    .deadline ??
-                                                ""),
-                                        style: TextStyle(
-                                            color: AppColors.c_FFED702D,
-                                            fontSize: 11.w)),
+                                  InkWell(
+                                    onTap: () {
+                                      _onClickItem(DateMode.YMDHMS);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                          left: 12.w, right: 12.w),
+                                      margin: EdgeInsets.only(left: 8.w),
+                                      height: 22.w,
+                                      width: (logic.state.assignHomeworkRequest
+                                                      .deadline ??
+                                                  "")
+                                              .isEmpty
+                                          ? 150.w
+                                          : null,
+                                      decoration: BoxDecoration(
+                                          color: AppColors.c_FFFFF7ED,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16.5.w))),
+                                      child: Text(
+                                          (logic.state.assignHomeworkRequest
+                                                          .deadline ??
+                                                      "")
+                                                  .isEmpty
+                                              ? ''
+                                              : (logic
+                                                      .state
+                                                      .assignHomeworkRequest
+                                                      .deadline ??
+                                                  ""),
+                                          style: TextStyle(
+                                              color: AppColors.c_FFED702D,
+                                              fontSize: 11.w)),
+                                    ),
                                   ),
                                   InkWell(
                                     onTap: () {
@@ -695,6 +712,15 @@ class _AssignHomeworkPageState extends BasePageState<AssignHomeworkPage> {
 
   @override
   void onDestroy() {}
+
+  void _handleClick() {
+    _debounceUtils.run(() {
+      // 当按下按钮时，在这里执行你的操作
+      print('Button clicked');
+      logic.toReleaseWork();
+    }, debounceDuration: Duration(milliseconds: 500)); // 设置防抖动时间间隔
+  }
+
 
   Widget buildTipsWidget(String text) {
     return Stack(

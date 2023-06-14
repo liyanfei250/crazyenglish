@@ -559,22 +559,30 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
-                      child: Image.network(
+                      child:ExtendedImage.network(
                         myBottomDate[index].coverImg ?? "",
+                        cacheRawData: true,
                         width: 54.w,
                         height: 54.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            child: Image.asset(
-                              R.imagesShopImageLogoTest,
-                              width: 54.w,
-                              height: 54.w,
-                            ),
-                          );
+                        fit: BoxFit.fill,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                        enableLoadState: true,
+                        loadStateChanged: (state) {
+                          switch (state.extendedImageLoadState) {
+                            case LoadState.completed:
+                              return ExtendedRawImage(
+                                image: state.extendedImageInfo?.image,
+                                fit: BoxFit.cover,
+                              );
+                            default:
+                              return Image.asset(
+                                R.imagesReadingDefault,
+                                fit: BoxFit.fill,
+                              );
+                          }
                         },
-                      ),
+                      ) ,
                     ),
                   ],
                 ),
@@ -802,20 +810,28 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(13)),
-                      child: Image.network(
+                      child: ExtendedImage.network(
                         myListDate[index].coverImg ?? "",
+                        cacheRawData: true,
                         width: 52.w,
                         height: 74.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(13)),
-                            child: Image.asset(
-                              R.imagesHomeShowBuy,
-                              width: 52.w,
-                              height: 74.w,
-                            ),
-                          );
+                        fit: BoxFit.fill,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                        enableLoadState: true,
+                        loadStateChanged: (state) {
+                          switch (state.extendedImageLoadState) {
+                            case LoadState.completed:
+                              return ExtendedRawImage(
+                                image: state.extendedImageInfo?.image,
+                                fit: BoxFit.cover,
+                              );
+                            default:
+                              return Image.asset(
+                                R.imagesReadingDefault,
+                                fit: BoxFit.fill,
+                              );
+                          }
                         },
                       ),
                     ),
@@ -920,11 +936,9 @@ class _TeacherIndexPageState extends BasePageState<TeacherIndexPage> {
 
   @override
   void onCreate() {
-    // TODO: implement onCreate
   }
 
   @override
   void onDestroy() {
-    // TODO: implement onDestroy
   }
 }
