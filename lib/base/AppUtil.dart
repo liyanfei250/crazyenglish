@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -32,7 +33,16 @@ class Util {
   static num setWidth(double width) {
     return ScreenUtil().setWidth(width);
   }
+   late Timer _debounceTimer;
 
+   void run(Function callback, {Duration debounceDuration = const Duration(milliseconds: 500)}) {
+    if (_debounceTimer != null) {
+      _debounceTimer.cancel();
+    }
+    _debounceTimer = Timer(debounceDuration, () {
+      callback();
+    });
+  }
   static Future<Uint8List?> imageToUnit8List(ui.Image image) async {
     ByteData? byteData = await image.toByteData();
     if (byteData != null) {
