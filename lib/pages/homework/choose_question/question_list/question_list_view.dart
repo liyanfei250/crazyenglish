@@ -56,7 +56,7 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             gradeLogic.state.dictionaryId.toString(), () {
       hideLoading();
       if (gradeLogic.state.homeSecondListDate != null) {
-        //TODO 判断选择之前勾选的数据
+        //判断选择之前勾选的数据
         if (gradeLogic.state.homeFinalListDate != null) {
           if (assignLogic.state.assignHomeworkRequest.journalCatalogueIds !=
                   null &&
@@ -82,7 +82,8 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             } else {
               _refreshController.resetNoData();
             }
-            widget.chooseLogic.addData(widget.tagId, gradeLogic.state!.homeFinalListDate!);
+            widget.chooseLogic
+                .addData(widget.tagId, gradeLogic.state!.homeFinalListDate!);
             setState(() {});
           }
         } else if (gradeLogic.state.pageNo == pageStartIndex) {
@@ -110,7 +111,6 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
 
   void _onRefresh() async {
     currentPageNo = pageStartIndex;
-    // todo 写活
     gradeLogic.getQuestionList(
         SpUtil.getInt(BaseConstant.USER_ID),
         gradeLogic.state.dictionaryId,
@@ -221,12 +221,16 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
           children: [
             Padding(
                 padding: EdgeInsets.only(top: 8.w, bottom: 11.w),
-                child: Text(
-                  obj.journalName ?? '',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff858aa0),
-                      fontWeight: FontWeight.w500),
+                child: SizedBox(
+                  width: 180.w,
+                  child: Text(
+                    obj.journalName ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xff858aa0),
+                        fontWeight: FontWeight.w500),
+                  ),
                 )),
             Expanded(child: Text('')),
             InkWell(
@@ -312,12 +316,16 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
             children: [
               Padding(
                   padding: EdgeInsets.only(top: 8.w, bottom: 8.w, left: 17.w),
-                  child: Text(
-                    value.catalogueMergeName ?? "",
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xffed702d),
-                        fontWeight: FontWeight.w500),
+                  child: SizedBox(
+                    width: 240.w,
+                    child: Text(
+                      value.catalogueMergeName ?? "",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xffed702d),
+                          fontWeight: FontWeight.w500),
+                    ),
                   )),
               Padding(
                   padding: EdgeInsets.only(top: 8.w, bottom: 8.w),
@@ -362,27 +370,23 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
 
   Widget listitem(CatalogueRecordVoList data, int value) {
     return InkWell(
-      onTap: () {
-        //todo 勾选
-      },
+      onTap: () {},
       child: Container(
         padding: EdgeInsets.only(top: 20.w, bottom: 20.w),
         child: Row(
           children: [
-            Text(
-              data.catalogueName ?? "",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff353e4d)),
+            SizedBox(
+              width: 190.w,
+              child: Text(
+                data.catalogueName ?? "",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff353e4d)),
+              ),
             ),
             Padding(padding: EdgeInsets.only(left: 11.w)),
-            Image.asset(
-              R.imagesListenigLastIcon,
-              fit: BoxFit.cover,
-              width: 26.w,
-              height: 18.w,
-            ),
             Expanded(child: Text('')),
             GetBuilder<ChooseLogic>(
               id: GetBuilderIds.updateCheckBox + widget.tagId,

@@ -148,6 +148,19 @@ class TimeUtil {
       return "";
     }
   }
+  static String getTimeReplaceT(String startDateStr) {
+    if (startDateStr.isNotEmpty && startDateStr.length > 17) {
+      try {
+        var finalTime = startDateStr.substring(0, 16).replaceAll('T', ' ');
+        return finalTime;
+      } catch (e) {
+        e.printError();
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
 
   static String extractDate(String dateTimeString) {
     if(dateTimeString.isEmpty){
