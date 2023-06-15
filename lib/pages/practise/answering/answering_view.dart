@@ -334,11 +334,13 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   PreviewExamPaperPage.OperationClassId: widget.operationClassId,
                 });
           }else{
-            // TODO 刷新上级列表接口
+            BlocProvider.of<RefreshBlocBloc>(context)
+                .add(RefreshPreviewExamPaperEvent());
             Get.back();
           }
         }else{
-          // TODO 刷新上级列表接口
+          BlocProvider.of<RefreshBlocBloc>(context)
+              .add(RefreshPreviewExamPaperEvent());
           Get.back();
         }
       });

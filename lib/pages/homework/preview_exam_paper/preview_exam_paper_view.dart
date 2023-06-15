@@ -1,16 +1,21 @@
+import 'dart:async';
+
 import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/base/widgetPage/base_page_widget.dart';
+import 'package:crazyenglish/blocs/refresh_bloc_state.dart';
 import 'package:crazyenglish/r.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 
 import '../../../base/AppUtil.dart';
+import '../../../blocs/refresh_bloc_bloc.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/getx_ids.dart';
 import '../../../routes/routes_utils.dart';
@@ -84,9 +89,19 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   pull.RefreshController _refreshController =
       pull.RefreshController(initialRefresh: false);
   List<paper.Obj> questionList = [];
-
+  StreamSubscription? refrehStreamSubscription;
   @override
   void onCreate() {
+
+    refrehStreamSubscription =
+        BlocProvider.of<RefreshBlocBloc>(context).stream.listen((event) {
+          if (event is RefreshPreviewExamPaperState) {
+            if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
+              _onRefresh();
+            }
+          }
+        });
+
     logic.addListenerId(GetBuilderIds.getExamper, () {
       hideLoading();
       questionList.clear();
@@ -341,6 +356,9 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   void dispose() {
     Get.delete<PreviewExamPaperLogic>();
     Get.delete<WeekTestDetailLogic>();
+    if (refrehStreamSubscription != null) {
+      refrehStreamSubscription!.cancel();
+    }
     super.dispose();
   }
 

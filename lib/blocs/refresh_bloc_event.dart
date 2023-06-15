@@ -15,3 +15,8 @@ class RefreshPersonInfoEvent extends RefreshBlocEvent{
 class RefreshAnswerStateInfoEvent extends RefreshBlocEvent{
 
 }
+
+// 刷新预览试卷界面
+class RefreshPreviewExamPaperEvent extends RefreshBlocEvent{
+
+}
