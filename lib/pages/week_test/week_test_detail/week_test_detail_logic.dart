@@ -454,13 +454,24 @@ class WeekTestDetailLogic extends GetxController {
         }else{
           nextHasResult = false;
         }
-        if(nextHasResult){
-          state.enterResult = true;
+
+        if((startExam!.obj?.isFinish?? true)){
+          if(nextHasResult){
+            state.enterResult = true;
+          }else{
+            state.enterResult = false;
+          }
         }else{
           state.enterResult = false;
+          if(nextHasResult){
+            state.continueAnswer = true;
+          }else{
+            state.continueAnswer = false;
+          }
         }
       }else{
         state.enterResult = false;
+        state.continueAnswer = false;
       }
 
       update([GetBuilderIds.startHomework]);
@@ -704,7 +715,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
-                AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
+                AnsweringPage.answer_type: state.continueAnswer? AnsweringPage.answer_homework_draft_type:AnsweringPage.answer_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
                 PreviewExamPaperPage.OperationClassId: state.operationClassId,
@@ -734,7 +745,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.parentIndexKey:state.parentIndex,
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
-                AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
+                AnsweringPage.answer_type: state.continueAnswer? AnsweringPage.answer_homework_draft_type:AnsweringPage.answer_homework_type,
                 PreviewExamPaperPage.PaperId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
                 PreviewExamPaperPage.OperationClassId: state.operationClassId,

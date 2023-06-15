@@ -15,6 +15,8 @@ class RefreshBlocBloc extends Bloc<RefreshBlocEvent, RefreshBlocState> {
       yield RefreshPersonInfoState();
     }else if(event is RefreshAnswerStateInfoEvent){
       yield RefreshAnswerState();
+    }else if(event is RefreshPreviewExamPaperEvent){
+      yield RefreshPreviewExamPaperState();
     }
   }
 

@@ -823,6 +823,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     onTap: () {
       RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
         PreviewExamPaperPage.PaperType:common.PaperType.HistoryHomework,
+        PreviewExamPaperPage.Papermode:PaperMode.StudentAnswerHomework,
         PreviewExamPaperPage.StudentOperationId:value.id,
         PreviewExamPaperPage.OperationClassId:value.operationClassId,
         PreviewExamPaperPage.PaperId:value.operationId});

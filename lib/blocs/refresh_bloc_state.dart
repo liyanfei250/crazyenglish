@@ -15,3 +15,7 @@ class RefreshPersonInfoState extends RefreshBlocState{
 class RefreshAnswerState extends RefreshBlocState{
 
 }
+
+class RefreshPreviewExamPaperState extends RefreshBlocState{
+
+}
