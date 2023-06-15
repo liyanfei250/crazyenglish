@@ -5,6 +5,7 @@ import 'package:crazyenglish/blocs/update_class_bloc.dart';
 import 'package:crazyenglish/blocs/update_class_event.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/utils/time_util.dart';
+import 'package:crazyenglish/widgets/image_get_widget/image_get_widget_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,6 +40,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
   bool _hasText = false;
   bool _hasImage = false;
   FileNew.File? _image;
+  late String? classImgUrl;
 
   UserInfoResponse? userInfoResponse;
 
@@ -63,9 +65,11 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
       if (mounted) {
         BlocProvider.of<UpdateClassBloc>(context).add(SendClassChangeEvent());
       }
+      Navigator.pop(context);
     });
     userInfoResponse =
         UserInfoResponse.fromJson(SpUtil.getObject(BaseConstant.USER_INFO));
+
   }
 
   @override
@@ -221,7 +225,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                     R.imagesClassInfoTeacherAge,
                     "讲师教龄:",
                     TimeUtil.getTimeDay(
-                        userInfoResponse!.obj?.teachingExperience??"")),
+                        userInfoResponse!.obj?.teachingExperience ?? "")),
                 Divider(
                   color: AppColors.c_FFD2D5DC,
                 ),
@@ -250,9 +254,10 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                         Util.toast('班级名称不能为空！');
                         return;
                       }
+
                       //todo 图片处理
                       logic.toAddClass(
-                          'https://p0.ssl.img.360kuai.com/t01736c309615e3dc19.jpg',
+                          classImgUrl!,
                           _controller.text,
                           SpUtil.getInt(BaseConstant.USER_ID).toString());
                     },
@@ -356,14 +361,20 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                       });
                     },
                     child: Container(
-                      width: 120.w,
-                      height: 80.w,
                       alignment: Alignment.center,
                       color: Color(0xffd2d5dc),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
+                          ImageGetWidgetPage(
+                              "headimg_${SpUtil.getInt(BaseConstant.USER_ID)}_img",
+                              "",
+                              (imgUrl) {
+                            classImgUrl = imgUrl;
+                          }, () {
+                            return true;
+                          }, false),
+                          /*Image.asset(
                             R.imagesClassAddWhite,
                             width: 14.w,
                             height: 14.w,
@@ -377,7 +388,7 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14.sp,
                                 color: Colors.white),
-                          )
+                          )*/
                         ],
                       ),
                     )),

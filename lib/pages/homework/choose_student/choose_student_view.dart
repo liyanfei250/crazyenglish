@@ -205,12 +205,8 @@ class _ChooseStudentPageState
                       (isSelectedMap[key]![id] ?? false)) {
                     historys.add(n);
                     studentsId.add(n.userId!);
-<<<<<<< HEAD
-                    studentsName.add(n.actualname ?? '');
                     studentsNameMap[n.userId!.toString()] = n.actualname ?? '';
-=======
                     studentsName.add(n.actualname??"无名");
->>>>>>> 1353129e2e27d3d3ce3cbab0740ce8b6be1689c3
                   }
                 }
               }

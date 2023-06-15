@@ -46,23 +46,18 @@ class _ClassPageState extends State<ClassPage> with TickerProviderStateMixin {
     _tabController = TabController(vsync: this, length: tabs.length);
 
     setListner();
-    if (refrehUserInfoStreamSubscription != null) {
-      refrehUserInfoStreamSubscription =
-          BlocProvider
-              .of<UpdateClassBloc>(context)
-              .stream
-              .listen((event) {
-            print("Class ========== bef event");
-            if (event is ClassChangeSuccess) {
-              print("Class ========== event");
-              if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
-                logic.disposeId(GetBuilderIds.getHomeClassTab +
-                    SpUtil.getInt(BaseConstant.USER_ID).toString());
-                setListner();
-              }
-            }
-          });
-    }
+    refrehUserInfoStreamSubscription =
+        BlocProvider.of<UpdateClassBloc>(context).stream.listen((event) {
+      print("Class ========== bef event");
+      if (event is ClassChangeSuccess) {
+        print("Class ========== event");
+        if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
+          logic.disposeId(GetBuilderIds.getHomeClassTab +
+              SpUtil.getInt(BaseConstant.USER_ID).toString());
+          setListner();
+        }
+      }
+    });
   }
 
   void setListner() {
