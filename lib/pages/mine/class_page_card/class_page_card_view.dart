@@ -168,7 +168,7 @@ class _ClassCardState extends State<ClassCard> {
                               onPressed: () {
                                 toAdd({
                                   "classId":widget.classId.toString(),
-                                  "studentUserId": widget.studentUserId.toString()
+                                  "userId": widget.studentUserId.toString()
                                 }, context);
                               },
                               child: Text(
