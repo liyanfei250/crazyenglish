@@ -6,7 +6,6 @@ class ChooseQuestionState {
   late HomeKingDate tabList;
   HomeKingDate paperDetail = HomeKingDate();
   dynamic affiliatedGrade = null;
-  //todo 写活
   dynamic dictionaryId = null;
   int selectedIndex = -1;
   int pageSize =20;

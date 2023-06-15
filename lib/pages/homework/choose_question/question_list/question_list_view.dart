@@ -49,7 +49,6 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
 
   @override
   void onCreate() {
-    //todo 实际数据
     gradeLogic.state.dictionaryId = widget.tagId;
     gradeLogic.addListenerId(
         GetBuilderIds.getHomeSecondListDate +
@@ -233,20 +232,6 @@ class _QuestionListPageState extends BasePageState<QuestionListPage> {
                   ),
                 )),
             Expanded(child: Text('')),
-            InkWell(
-              onTap: () {
-                // logicDetail.addJumpToResutOverViewListen();
-                // logicDetail.jumpToResutOverView("${obj.journalId}","${widget.type!.dictionaryId}",obj.catalogueMergeVo!);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(top: 8.w, bottom: 11.w, right: 2.w),
-                child: Text('期刊成绩',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xff353e4d),
-                        fontWeight: FontWeight.w600)),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.only(
                 left: 2.w,

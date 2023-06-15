@@ -34,6 +34,7 @@ class _ChooseStudentPageState
   late TabController _tabController;
   final assignLogic = Get.find<AssignHomeworkLogic>();
   List<Obj> tabs = [];
+  Map<String, String> getClassName = {};
 
   @override
   String getDataId(String key, Student n) {
@@ -50,6 +51,10 @@ class _ChooseStudentPageState
             SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
       if (state.myClassList != null && state.myClassList!.obj != null) {
         tabs = state.myClassList!.obj!;
+        for (Obj tab in tabs) {
+          getClassName[tab.id.toString()] = tab.name ?? '';
+        }
+
         setState(() {
           _tabController.dispose();
           _tabController = TabController(vsync: this, length: tabs.length);
@@ -190,6 +195,8 @@ class _ChooseStudentPageState
             List<Student> historys = [];
             List<num> studentsId = [];
             List<String> studentsName = [];
+            List<ClassInfos> classList = [];
+            Map<String, String> studentsNameMap = {};
             dataList.forEach((key, value) {
               if (value != null) {
                 for (Student n in value!) {
@@ -198,22 +205,38 @@ class _ChooseStudentPageState
                       (isSelectedMap[key]![id] ?? false)) {
                     historys.add(n);
                     studentsId.add(n.userId!);
-                    studentsName.add(n.actualname!);
+                    studentsName.add(n.actualname ?? '');
+                    studentsNameMap[n.userId!.toString()] = n.actualname ?? '';
                   }
                 }
               }
             });
-            if (historys.isNotEmpty) {
-              //todo 班级id 的获取
+
+            isSelectedMap.forEach((key, value) {
+              value.forEach((student, isCheck) {
+                studentsId.add(num.parse(student));
+              });
+
               ClassInfos clsss = ClassInfos(
-                  schoolClassId: '1655395694170124290',
-                  studentUserIds: studentsId);
+                  schoolClassId: key,
+                  studentUserIds: studentsId,
+                  studentUserName: studentsName);
+              classList.add(clsss);
+            });
+            if (historys.isNotEmpty) {
               assignLogic.updateAssignHomeworkRequest(
-                  schoolClassInfos: [clsss],
+                  schoolClassInfos: classList,
                   schoolClassInfoDesc: '已选学生（' +
                       historys.length.toString() +
                       "）人\n已选班级" +
-                      studentsName.toString());
+                      classList
+                          .map((e) =>
+                              '（' +
+                              getClassName[e.schoolClassId].toString() +
+                              // ":" +
+                              // e.studentUserName!.join('') +
+                              '）')
+                          .join(''));
             } else {
               assignLogic.updateAssignHomeworkRequest(
                 paperType: -1,

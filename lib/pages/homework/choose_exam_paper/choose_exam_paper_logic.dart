@@ -73,7 +73,6 @@ class ChooseExamPaperLogic extends GetxController {
     update([GetBuilderIds.getExampersList]);
   }
 
-  //TODO  批改调用
   void getToCorrect(
       String exerciseListId, num score, String remark) async {
     Map<String, dynamic> req = {};

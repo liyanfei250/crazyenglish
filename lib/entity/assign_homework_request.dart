@@ -125,9 +125,12 @@ AssignHomeworkRequest copyWith({  String? name,
 class ClassInfos {
   ClassInfos({
       String? schoolClassId, 
-      List<num>? studentUserIds,}){
+      List<num>? studentUserIds,
+      List<String>? studentUserName,
+  }){
     _schoolClassId = schoolClassId;
     _studentUserIds = studentUserIds;
+    _studentUserName = studentUserName;
 }
 
   ClassInfos.fromJson(dynamic json) {
@@ -136,18 +139,23 @@ class ClassInfos {
   }
   String? _schoolClassId;
   List<num>? _studentUserIds;
+  List<String>? _studentUserName;
 ClassInfos copyWith({  String? schoolClassId,
   List<num>? studentUserIds,
+  List<String>? studentUserName,
 }) => ClassInfos(  schoolClassId: schoolClassId ?? _schoolClassId,
   studentUserIds: studentUserIds ?? _studentUserIds,
+  studentUserName: studentUserName ?? _studentUserName,
 );
   String? get schoolClassId => _schoolClassId;
   List<num>? get studentUserIds => _studentUserIds;
+  List<String>? get studentUserName => _studentUserName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['schoolClassId'] = _schoolClassId;
     map['studentUserIds'] = _studentUserIds;
+    map['studentUserName'] = _studentUserName;
     return map;
   }
 
