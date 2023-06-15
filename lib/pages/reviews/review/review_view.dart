@@ -437,6 +437,5 @@ class _ReviewPageState extends BasePageState<ReviewPage> with SingleTickerProvid
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

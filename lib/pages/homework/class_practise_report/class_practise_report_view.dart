@@ -58,8 +58,7 @@ class _ClassPractiseReportPageState
         setState(() {});
       }
     });
-    //todo 顶部数据真实的id都带过来
-    logic.getReportResponseList('1667095996182114305');
+    logic.getReportResponseList(widget.history.id!.toString());
   }
 
   @override
@@ -446,7 +445,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                topList.length > 0 ? topList[0].studentName ?? '' : '第一',
+                topList.length > 1 ? topList[1].studentName ?? '' : '第二名',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -492,7 +491,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                topList.length > 1 ? topList[1].studentName ?? '' : '第二',
+                topList.length > 0 ? topList[0].studentName ?? '' : '第一名',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -538,7 +537,7 @@ class _ClassPractiseReportPageState
                 ],
               ),
               Text(
-                topList.length > 2 ? topList[2].studentName ?? '' : '第三',
+                topList.length > 2 ? topList[2].studentName ?? '' : '第三名',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
