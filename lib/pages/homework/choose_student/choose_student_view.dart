@@ -198,7 +198,7 @@ class _ChooseStudentPageState
                       (isSelectedMap[key]![id] ?? false)) {
                     historys.add(n);
                     studentsId.add(n.userId!);
-                    studentsName.add(n.actualname!);
+                    studentsName.add(n.actualname??"无名");
                   }
                 }
               }

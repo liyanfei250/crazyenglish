@@ -279,7 +279,9 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                 smallList.journalCatalogueId ?? "",
                 "${widget.studentOperationId}",
                 "${widget.operationClassId}",
-                "${widget.paperId}");
+                "${widget.paperId}",
+                enterResult: true
+            );
             showLoading("");
           }
         }else if(widget.paperMode == PaperMode.TeacherCorrect){
@@ -296,7 +298,9 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
               "${widget.operationClassId}",
-              "${widget.paperId}");
+              "${widget.paperId}",
+              enterResult: true
+          );
           showLoading("");
         }else{
           // 预览试题流程
