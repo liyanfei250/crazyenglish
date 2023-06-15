@@ -506,7 +506,6 @@ class ToListeningPracticePageState extends BasePageState<ListeningPracticePage>
   Widget listitem(CatalogueRecordVoList data, int value) {
     return InkWell(
       onTap: () {
-        //todo 跳转列表页
         logicDetail.addJumpToStartExamListen();
         logicDetail.getDetailAndStartExam(data.catalogueId.toString(),enterResult: true);
         showLoading("");

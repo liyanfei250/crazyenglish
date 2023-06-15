@@ -123,8 +123,6 @@ class _ToMyOrderPageState extends BasePageState<AboutUsPage> {
   Widget buildItemType(String menu, [String? second,bool isArrowVisible = true]) {
     return GestureDetector(
       onTap: () {
-        //todo 具体的跳转界面
-
         switch (menu) {
           case '版本信息':
             addListener();

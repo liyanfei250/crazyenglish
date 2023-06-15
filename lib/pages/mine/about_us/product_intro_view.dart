@@ -86,8 +86,6 @@ class _ProductIntroPageState extends BasePageState<ProductIntroPage> {
   Widget buildItemType(String menu, [String? second]) {
     return GestureDetector(
       onTap: () {
-        //todo 具体的跳转界面
-
         switch (menu) {
           case '版本信息':
             Util.toast(_packageInfo.version);

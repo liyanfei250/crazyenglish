@@ -33,10 +33,6 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
     super.initState();
     isShowPsd = false;
     _phoneController = TextEditingController();
-    logic.toChangePhoneNum('id');
-    logic.addListenerId(GetBuilderIds.toChangePhoneNumber, () {
-      //todo
-    });
 
     logic.addListenerId(GetBuilderIds.sendCode, () {
       // Util.toast(state.sendCodeResponse.data??"");
@@ -126,7 +122,6 @@ class _ToMyOrderPageState extends BasePageState<ChangePhonePage> {
                 Util.toast("手机号格式不对");
                 return;
               }
-              //todo 发送验证码，去验证码界面
               logic.sendCode(_phoneController!.text,SmsCodeType.changeMobile);
             },
             child: Container(
