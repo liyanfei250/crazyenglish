@@ -105,19 +105,21 @@ class _CorrectHomeworkPageState extends BasePageState<CorrectHomeworkPage>
     }
 
     choiceTimeStart.value =
-        "${DateFormat("yyyy年MM月dd日").format(DateTime.now())}";
+    "${DateFormat("yyyy年MM月dd日").format(DateTime.now())}";
 
-    choiceTime.value = "${DateFormat("yyyy年MM月dd日").format(DateTime.now())}";
+    choiceTime.value = "${DateFormat("yyyy年MM月dd日").format(DateTime.now().add(Duration(days: 1)))}";
 
     // 获取当前时间
     DateTime now = DateTime.now();
+    //一天后
+    DateTime nowDay = DateTime.now().add(Duration(days: 1));
 
     // 创建一个新的DateTime对象，表示当天的第一秒
     DateTime startOfDay = DateTime(now.year, now.month, now.day, 0, 0, 0);
     startTime = startOfDay.millisecondsSinceEpoch;
 
     // 创建一个新的DateTime对象，表示当天的最后一秒
-    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
+    DateTime endOfDay = DateTime(nowDay.year, nowDay.month, nowDay.day, 23, 59, 59, 999);
     endTime = endOfDay.millisecondsSinceEpoch;
 
     logic.addListenerId(GetBuilderIds.getHistoryHomeworkList, () {
