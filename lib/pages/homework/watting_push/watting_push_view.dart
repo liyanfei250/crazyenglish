@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:crazyenglish/pages/homework/preview_exam_paper/preview_exam_paper_view.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../entity/student_work_list_response.dart';
-
+import 'package:crazyenglish/base/common.dart' as common;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../base/widgetPage/loading.dart';
 import '../../../r.dart';
@@ -383,7 +384,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
         SizedBox(
           height: 14.w,
         ),
-        buildItemClassStudentThree('待批改内容：', '查看详情'),
+        buildItemClassStudentThree('待批改内容：', '查看详情',workList[index]!),
       ],
     );
   }
@@ -443,7 +444,7 @@ class _WattingPushPageState extends State<Watting_pushPage>
     );
   }
 
-  Widget buildItemClassStudentThree(String first, String second) {
+  Widget buildItemClassStudentThree(String first, String second,Records studentItem) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -461,7 +462,14 @@ class _WattingPushPageState extends State<Watting_pushPage>
             Expanded(child: Text('')),
             InkWell(
               onTap: () {
-                RouterUtil.toNamed(AppRoutes.TeacherToBeCorrectedPage);
+                // RouterUtil.toNamed(AppRoutes.TeacherToBeCorrectedPage);
+                RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+                  PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
+                  PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
+                  PreviewExamPaperPage.StudentOperationId: studentItem.id,
+                  PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
+                  PreviewExamPaperPage.PaperId: studentItem.operationId
+                });
               },
               child: Container(
                 alignment: Alignment.center,

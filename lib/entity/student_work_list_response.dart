@@ -213,7 +213,8 @@ class Records {
       num? operationClassId, 
       num? classId, 
       num? teacherId, 
-      num? studentUserId, 
+      num? operationId,
+      num? studentUserId,
       num? operationStatus, 
       num? objectiveSize, 
       num? objectiveProperSize, 
@@ -229,6 +230,7 @@ class Records {
     _operationClassId = operationClassId;
     _classId = classId;
     _teacherId = teacherId;
+    _operationId = operationId;
     _studentUserId = studentUserId;
     _operationStatus = operationStatus;
     _objectiveSize = objectiveSize;
@@ -248,6 +250,7 @@ class Records {
     _operationClassId = json['operationClassId'];
     _classId = json['classId'];
     _teacherId = json['teacherId'];
+    _operationId = json['operationId'];
     _studentUserId = json['studentUserId'];
     _operationStatus = json['operationStatus'];
     _objectiveSize = json['objectiveSize'];
@@ -265,6 +268,7 @@ class Records {
   num? _operationClassId;
   num? _classId;
   num? _teacherId;
+  num? _operationId;
   num? _studentUserId;
   num? _operationStatus;
   num? _objectiveSize;
@@ -281,6 +285,7 @@ Records copyWith({  num? id,
   num? operationClassId,
   num? classId,
   num? teacherId,
+  num? operationId,
   num? studentUserId,
   num? operationStatus,
   num? objectiveSize,
@@ -297,6 +302,7 @@ Records copyWith({  num? id,
   operationClassId: operationClassId ?? _operationClassId,
   classId: classId ?? _classId,
   teacherId: teacherId ?? _teacherId,
+  operationId: operationId ?? _operationId,
   studentUserId: studentUserId ?? _studentUserId,
   operationStatus: operationStatus ?? _operationStatus,
   objectiveSize: objectiveSize ?? _objectiveSize,
@@ -314,6 +320,7 @@ Records copyWith({  num? id,
   num? get operationClassId => _operationClassId;
   num? get classId => _classId;
   num? get teacherId => _teacherId;
+  num? get operationId => _operationId;
   num? get studentUserId => _studentUserId;
   num? get operationStatus => _operationStatus;
   num? get objectiveSize => _objectiveSize;
@@ -333,6 +340,7 @@ Records copyWith({  num? id,
     map['operationClassId'] = _operationClassId;
     map['classId'] = _classId;
     map['teacherId'] = _teacherId;
+    map['operationId'] = _operationId;
     map['studentUserId'] = _studentUserId;
     map['operationStatus'] = _operationStatus;
     map['objectiveSize'] = _objectiveSize;
