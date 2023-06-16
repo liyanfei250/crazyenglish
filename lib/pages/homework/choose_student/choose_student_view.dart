@@ -204,7 +204,6 @@ class _ChooseStudentPageState
                   if (isSelectedMap[key] != null &&
                       (isSelectedMap[key]![id] ?? false)) {
                     historys.add(n);
-                    studentsId.add(n.userId!);
                     studentsNameMap[n.userId!.toString()] = n.actualname ?? '';
                     studentsName.add(n.actualname??"无名");
                   }
