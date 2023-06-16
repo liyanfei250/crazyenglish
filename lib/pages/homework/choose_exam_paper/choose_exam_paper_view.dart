@@ -277,7 +277,7 @@ class _ChooseExamPaperPageState
                             PreviewExamPaperPage.PaperType: common.PaperType.exam,
                             PreviewExamPaperPage.StudentOperationId: null,
                             PreviewExamPaperPage.OperationClassId: null,
-                            PreviewExamPaperPage.PaperId: exampaper.id,
+                            PreviewExamPaperPage.OperationId: exampaper.id,
                             PreviewExamPaperPage.PaperName: exampaper.name
                           });
                         },
@@ -305,7 +305,7 @@ class _ChooseExamPaperPageState
                 PreviewExamPaperPage.PaperType: common.PaperType.exam,
                 PreviewExamPaperPage.StudentOperationId: null,
                 PreviewExamPaperPage.OperationClassId: null,
-                PreviewExamPaperPage.PaperId: exampaper.id,
+                PreviewExamPaperPage.OperationId: exampaper.id,
                 PreviewExamPaperPage.PaperName: exampaper.name
               });
             },

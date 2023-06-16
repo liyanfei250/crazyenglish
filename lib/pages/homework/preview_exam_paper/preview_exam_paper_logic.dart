@@ -61,10 +61,10 @@ class PreviewExamPaperLogic extends GetxController {
     update([(GetBuilderIds.getExamper)]);
   }
 
-  void getPreviewQuestionForCorrectList(int paperType, int paperId) async {
+  void getPreviewQuestionForCorrectList(int operationId, int operationStudentId,bool isSubjectivity,num studentUserId) async {
     var cache = await JsonCacheManageUtils.getCacheData(
         JsonCacheManageUtils.TeacherTestPagerCorrectLoog,
-        labelId: "$paperType$paperId")
+        labelId: "$operationStudentId")
         .then((value) {
       if (value != null) {
         return TestPaperLookResponse.fromJson(value as Map<String, dynamic>?);
@@ -76,15 +76,16 @@ class PreviewExamPaperLogic extends GetxController {
       update([(GetBuilderIds.getExamper)]);
     }
     Map<String, dynamic> req = Map();
-    if (paperType == common.PaperType.exam) {
-      req = {"paperType": paperType, "paperId": paperId};
-    } else {
-      req = {"paperType": paperType, "historyOperationId": paperId};
-    }
+    req = {
+      "operationId": operationId,
+      "operationStudentId": operationStudentId,
+      "isSubjectivity":isSubjectivity,
+      "studentUserId":studentUserId,
+    };
     TestPaperLookResponse list = await classRepository.toPreviewOperationForCorrect(req);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.TeacherTestPagerCorrectLoog, list.toJson(),
-        labelId: "$paperType$paperId");
+        labelId: "$operationStudentId");
     if (list.obj == null) {
       state.list.clear();
     } else {

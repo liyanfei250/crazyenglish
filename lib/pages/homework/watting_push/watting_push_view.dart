@@ -468,7 +468,8 @@ class _WattingPushPageState extends State<Watting_pushPage>
                   PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
                   PreviewExamPaperPage.StudentOperationId: studentItem.id,
                   PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
-                  PreviewExamPaperPage.PaperId: studentItem.operationId
+                  PreviewExamPaperPage.StudentId: widget.typeTwo,
+                  PreviewExamPaperPage.OperationId: studentItem.operationId
                 });
               },
               child: Container(

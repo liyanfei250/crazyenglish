@@ -704,7 +704,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.examResult: state.startExam?.obj,
                 AnsweringPage.result_type:AnsweringPage.result_homework_type,
-                PreviewExamPaperPage.PaperId: state.operationId,
+                PreviewExamPaperPage.OperationId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
               });
         }else{
@@ -716,7 +716,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
                 AnsweringPage.answer_type: state.continueAnswer? AnsweringPage.answer_homework_draft_type:AnsweringPage.answer_homework_type,
-                PreviewExamPaperPage.PaperId: state.operationId,
+                PreviewExamPaperPage.OperationId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
                 PreviewExamPaperPage.OperationClassId: state.operationClassId,
               });
@@ -734,7 +734,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.examResult: state.startExam?.obj,
                 AnsweringPage.result_type:AnsweringPage.result_homework_type,
-                PreviewExamPaperPage.PaperId: state.operationId,
+                PreviewExamPaperPage.OperationId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
               });
         }else{
@@ -746,7 +746,7 @@ class WeekTestDetailLogic extends GetxController {
                 AnsweringPage.childIndexKey:state.childIndex,
                 AnsweringPage.LastFinishResult:state.startExam,
                 AnsweringPage.answer_type: state.continueAnswer? AnsweringPage.answer_homework_draft_type:AnsweringPage.answer_homework_type,
-                PreviewExamPaperPage.PaperId: state.operationId,
+                PreviewExamPaperPage.OperationId: state.operationId,
                 PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
                 PreviewExamPaperPage.OperationClassId: state.operationClassId,
               });
@@ -770,7 +770,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.examResult: state.startExam?.obj,
               AnsweringPage.result_type:AnsweringPage.result_homework_correctioin_type,
-              PreviewExamPaperPage.PaperId: state.operationId,
+              PreviewExamPaperPage.OperationId: state.operationId,
               PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
               PreviewExamPaperPage.OperationClassId: state.operationClassId,
             });
@@ -786,7 +786,7 @@ class WeekTestDetailLogic extends GetxController {
               AnsweringPage.childIndexKey:state.childIndex,
               AnsweringPage.examResult: state.startExam?.obj,
               AnsweringPage.result_type:AnsweringPage.result_homework_correctioin_type,
-              PreviewExamPaperPage.PaperId: state.operationId,
+              PreviewExamPaperPage.OperationId: state.operationId,
               PreviewExamPaperPage.StudentOperationId: state.operationStudentId,
               PreviewExamPaperPage.OperationClassId: state.operationClassId,
             });

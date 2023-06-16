@@ -208,6 +208,7 @@ class NetManager {
         response.statusCode == HttpStatus.created) {
       try {
         if (response.data is Map) {
+
           return response.data;
 
         } else {
@@ -217,6 +218,11 @@ class NetManager {
           //     : _dataMap[_codeKey];
           // _msg = _dataMap[_msgKey];
           // _data = _dataMap[_dataKey];
+          if(_dataMap.containsKey("code")
+              && (_dataMap["code"] == 40401 || _dataMap["code"] == ResponseCode.status_token_invalid)){
+            RouterUtil.toNamed(AppRoutes.LoginNew);
+            Util.toast("登录信息过期");
+          }
           return _dataMap;
         }
       } catch (e) {

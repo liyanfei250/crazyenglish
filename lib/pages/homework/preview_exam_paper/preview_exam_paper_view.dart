@@ -43,26 +43,28 @@ class PaperMode{
 class PreviewExamPaperPage extends BasePage {
   static const String PaperType = "PaperType";
   static const String Papermode = "paperMode";
-  static const String PaperId = "OperationId";
+  static const String OperationId = "OperationId";
   static const String ShowAssignHomework = "isShowAssignHomework";
   static const String StudentOperationId = "StudentOperationId";
   static const String OperationClassId = "OperationClassId";
+  static const String StudentId = "studentId";
   static const String PaperName = "PaperName";
   late int paperType;
   late int paperMode;
-  late int paperId;
+  late int operationId;
   late String paperName = '';
   late bool isShowAssignHomework;
   int? studentOperationId;
   int? operationClassId;
-  int? operationId;
+  num? studentId;
 
 
   PreviewExamPaperPage({Key? key}) : super(key: key) {
     if (Get.arguments != null && Get.arguments is Map) {
       paperType = Get.arguments[PaperType];
       paperMode = Get.arguments[Papermode] ?? PaperMode.Preview;
-      paperId = Get.arguments[PaperId];
+      operationId = Get.arguments[OperationId];
+      studentId = Get.arguments[StudentId]?? 0;
       isShowAssignHomework = Get.arguments[ShowAssignHomework] ?? false;
       studentOperationId = Get.arguments[StudentOperationId] ?? 0;
       operationClassId = Get.arguments[OperationClassId] ?? 0;
@@ -119,24 +121,24 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
   void _onRefresh() async {
     if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       if(widget.paperMode == PaperMode.TeacherCorrect){
-        logic.getPreviewQuestionForCorrectList(widget.paperType, widget.paperId);
+        logic.getPreviewQuestionForCorrectList(widget.operationId, widget.studentOperationId??0, false, widget.studentId??0 );
       }else{
-        logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+        logic.getPreviewQuestionList(widget.paperType, widget.operationId);
       }
     } else {
-      logic.getPreviewOperation(widget.paperId);
+      logic.getPreviewOperation(widget.operationId);
     }
   }
 
   void _onLoading() async {
     if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
       if(widget.paperMode == PaperMode.TeacherCorrect){
-        logic.getPreviewQuestionForCorrectList(widget.paperType, widget.paperId);
+        logic.getPreviewQuestionForCorrectList(widget.operationId, widget.studentOperationId??0, false, widget.studentId??0);
       }else{
-        logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+        logic.getPreviewQuestionList(widget.paperType, widget.operationId);
       }
     } else {
-      logic.getPreviewOperation(widget.paperId);
+      logic.getPreviewOperation(widget.operationId);
     }
   }
 
@@ -169,7 +171,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                               RouterUtil.toNamed(AppRoutes.AssignHomeworkPage,
                                   arguments: {
                                     "paperType": common.PaperType.exam,
-                                    "paperId": widget.paperId.toString(),
+                                    "paperId": widget.operationId.toString(),
                                     "examDesc":
                                         "试卷名称：" + (widget.paperName ?? '')
                                   });
@@ -302,7 +304,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
                 smallList.journalCatalogueId ?? "",
                 "${widget.studentOperationId}",
                 "${widget.operationClassId}",
-                "${widget.paperId}",
+                "${widget.operationId}",
                 enterResult: true
             );
             showLoading("");
@@ -313,7 +315,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
               "${widget.operationClassId}",
-              "${widget.paperId}");
+              "${widget.operationId}");
           showLoading("");
         }else if(widget.paperMode == PaperMode.StudentHomeworkResult) {
           logicDetail.addJumpToStartHomeworkListen();
@@ -321,7 +323,7 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
               smallList.journalCatalogueId ?? "",
               "${widget.studentOperationId}",
               "${widget.operationClassId}",
-              "${widget.paperId}",
+              "${widget.operationId}",
               enterResult: true
           );
           showLoading("");

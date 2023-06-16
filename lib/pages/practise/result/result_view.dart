@@ -71,7 +71,7 @@ class ResultPage extends BasePage{
       hasResultIndicator = Get.arguments[AnsweringPage.hasResultIndicator]??true;
       resultType = Get.arguments[AnsweringPage.result_type]?? AnsweringPage.result_normal_type;
 
-      operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
+      operationId = Get.arguments[PreviewExamPaperPage.OperationId]?? "";
       operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
       operationClassId = Get.arguments[PreviewExamPaperPage.OperationClassId]?? "";
     }
@@ -383,7 +383,7 @@ class _ResultPageState extends BasePageState<ResultPage> with SingleTickerProvid
                             AnsweringPage.examResult: widget.examResult,
                             AnsweringPage.LastFinishResult: widget.lastFinishResult,
                             AnsweringPage.result_type:widget.resultType,
-                            PreviewExamPaperPage.PaperId: widget.operationId,
+                            PreviewExamPaperPage.OperationId: widget.operationId,
                             PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
                             PreviewExamPaperPage.OperationClassId: widget.operationClassId,
                           });

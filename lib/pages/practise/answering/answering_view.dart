@@ -108,7 +108,7 @@ class AnsweringPage extends BasePage {
       childIndex = Get.arguments[childIndexKey];
       lastFinishResult = Get.arguments[LastFinishResult];
       answerType = Get.arguments[answer_type]?? answer_normal_type;
-      operationId = Get.arguments[PreviewExamPaperPage.PaperId]?? "";
+      operationId = Get.arguments[PreviewExamPaperPage.OperationId]?? "";
       operationStudentId = Get.arguments[PreviewExamPaperPage.StudentOperationId]?? "";
       operationClassId = Get.arguments[PreviewExamPaperPage.OperationClassId]?? "";
     }
@@ -310,7 +310,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
           AnsweringPage.examResult: state.examResult.obj,
           AnsweringPage.LastFinishResult: widget.lastFinishResult,
           AnsweringPage.result_type:resultType,
-          PreviewExamPaperPage.PaperId: widget.operationId,
+          PreviewExamPaperPage.OperationId: widget.operationId,
           PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
           PreviewExamPaperPage.OperationClassId: widget.operationClassId,
         });
@@ -329,7 +329,7 @@ class _AnsweringPageState extends BasePageState<AnsweringPage> {
                   AnsweringPage.parentIndexKey:widget.parentIndex+1,
                   AnsweringPage.childIndexKey:widget.childIndex,
                   AnsweringPage.answer_type:AnsweringPage.answer_homework_type,
-                  PreviewExamPaperPage.PaperId: widget.operationId,
+                  PreviewExamPaperPage.OperationId: widget.operationId,
                   PreviewExamPaperPage.StudentOperationId: widget.operationStudentId,
                   PreviewExamPaperPage.OperationClassId: widget.operationClassId,
                 });

@@ -447,7 +447,7 @@ class _HomeworkHistoryPageState extends BasePageState<HomeworkHistoryPage> {
                                                   PreviewExamPaperPage.Papermode:PaperMode.StudentHomeworkResult,
                                                   PreviewExamPaperPage.StudentOperationId:element.id??0,
                                                   PreviewExamPaperPage.OperationClassId:element.operationClassId,
-                                                  PreviewExamPaperPage.PaperId:element.operationId});
+                                                  PreviewExamPaperPage.OperationId:element.operationId});
                                                 // logicDetail.addJumpToStartHomeworkListen();
                                                 // logicDetail.getDetailAndEnterHomeworkResult(
                                                 //     "",

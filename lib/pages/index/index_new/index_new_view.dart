@@ -827,7 +827,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
         PreviewExamPaperPage.Papermode:PaperMode.StudentAnswerHomework,
         PreviewExamPaperPage.StudentOperationId:value.id,
         PreviewExamPaperPage.OperationClassId:value.operationClassId,
-        PreviewExamPaperPage.PaperId:value.operationId});
+        PreviewExamPaperPage.OperationId:value.operationId});
     },
     child: Container(
       padding: EdgeInsets.only(top: 16.w, bottom: 16.w),
@@ -934,7 +934,7 @@ Widget _listOne(homemytask.Obj value) => InkWell(
           PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
           PreviewExamPaperPage.StudentOperationId: value.id,
           PreviewExamPaperPage.OperationClassId: value.operationClassId,
-          PreviewExamPaperPage.PaperId: value.operationId
+          PreviewExamPaperPage.OperationId: value.operationId
         });
       },
       child: Container(

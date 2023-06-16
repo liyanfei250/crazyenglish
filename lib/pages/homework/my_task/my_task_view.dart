@@ -124,7 +124,7 @@ class _ToMyTaskPageState extends BasePageState<MyTaskPage> {
           PreviewExamPaperPage.Papermode:PaperMode.StudentAnswerHomework,
           PreviewExamPaperPage.StudentOperationId:listData[index].id,
           PreviewExamPaperPage.OperationClassId:listData[index].operationClassId,
-          PreviewExamPaperPage.PaperId:listData[index].operationId});
+          PreviewExamPaperPage.OperationId:listData[index].operationId});
       },
       child: Container(
           margin:

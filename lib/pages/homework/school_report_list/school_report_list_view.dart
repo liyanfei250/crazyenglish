@@ -253,7 +253,7 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
           PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
           PreviewExamPaperPage.StudentOperationId: studentItem.id,
           PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
-          PreviewExamPaperPage.PaperId: studentItem.operationId
+          PreviewExamPaperPage.OperationId: studentItem.operationId
         });
       },
       child: Container(
