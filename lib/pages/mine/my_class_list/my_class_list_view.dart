@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:crazyenglish/blocs/update_class_bloc.dart';
+import 'package:crazyenglish/blocs/update_class_state.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:crazyenglish/utils/time_util.dart';
 import 'package:crazyenglish/widgets/PlaceholderPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +36,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   late TabController _tabController;
   List<Obj> tabs = [];
   userIfo.UserInfoResponse? userInfoResponse;
-
+  StreamSubscription? refrehUserInfoStreamSubscription;
   @override
   void initState() {
     super.initState();
@@ -85,9 +90,25 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   @override
   void onCreate() {
     _tabController = TabController(vsync: this, length: tabs.length);
+    setListner();
+
+    refrehUserInfoStreamSubscription =
+        BlocProvider.of<UpdateClassBloc>(context).stream.listen((event) {
+          print("Class ========== bef event");
+          if (event is ClassChangeSuccess) {
+            print("Class ========== event");
+            if (logic != null && SpUtil.getInt(BaseConstant.USER_ID) > 0) {
+              logic.disposeId(GetBuilderIds.getMyClassList +
+                  SpUtil.getInt(BaseConstant.USER_ID).toString());
+              setListner();
+            }
+          }
+        });
+    showLoading('');
+  }
+  void setListner() {
     logic.addListenerId(
-        GetBuilderIds.getMyClassList +
-            SpUtil.getInt(BaseConstant.USER_ID).toString(), () {
+        GetBuilderIds.getMyClassList , () {
       hideLoading();
       if (state.myClassList != null && state.myClassList!.obj != null) {
         tabs = state.myClassList!.obj!;
@@ -98,9 +119,7 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
       }
     });
     logic.getMyClassList(SpUtil.getInt(BaseConstant.USER_ID).toString());
-    showLoading('');
   }
-
   @override
   void onDestroy() {}
 
@@ -154,6 +173,9 @@ class _ToMyOrderPageState extends BasePageState<MyClassListPage>
   void dispose() {
     Get.delete<My_class_listLogic>();
     _tabController.dispose();
+    if (refrehUserInfoStreamSubscription != null) {
+      refrehUserInfoStreamSubscription?.cancel();
+    }
     super.dispose();
   }
 }

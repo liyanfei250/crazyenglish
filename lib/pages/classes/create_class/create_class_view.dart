@@ -255,7 +255,6 @@ class _ToCreateClassPageState extends BasePageState<Create_classPage> {
                         return;
                       }
 
-                      //todo 图片处理
                       logic.toAddClass(
                           classImgUrl!,
                           _controller.text,

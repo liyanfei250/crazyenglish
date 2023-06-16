@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:crazyenglish/base/AppUtil.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/common.dart' as common;
@@ -81,7 +83,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
     _onRefresh();
     showLoading("");
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,8 +224,8 @@ class _IndexPageState extends BasePageState<IndexNewPage>
                           subtitle: '')),
               SliverToBoxAdapter(child: _buildClassArea(),),
 // =======
-//               SliverToBoxAdapter(
-//                   child: _createListView()),
+              // SliverToBoxAdapter(
+              //     child: _createListView()),
 //               SliverToBoxAdapter(
 //                 child: Padding(padding: EdgeInsets.only(top: 14.w)),
 //               ),

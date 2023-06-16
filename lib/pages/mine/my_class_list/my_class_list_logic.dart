@@ -28,14 +28,14 @@ class My_class_listLogic extends GetxController {
     if (cache is ClassListResponse) {
       state.myClassList = cache!;
       hasCache = true;
-      update([GetBuilderIds.getMyClassList+teacherUserId]);
+      update([GetBuilderIds.getMyClassList]);
     }
     ClassListResponse list = await netTool.getMyClassList(req);
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeMyClassList, list.toJson(),labelId: teacherUserId);
     state.myClassList = list!;
     if (!hasCache) {
-      update([GetBuilderIds.getMyClassList+teacherUserId]);
+      update([GetBuilderIds.getMyClassList]);
     }
   }
 
