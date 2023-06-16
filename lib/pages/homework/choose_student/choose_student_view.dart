@@ -233,8 +233,10 @@ class _ChooseStudentPageState
                               '（' +
                               getClassName[e.schoolClassId].toString() +
                               // ":" +
+                              //     e.studentUserIds!.map((f) => studentsNameMap[f]).toList().toString()+
+
                               // e.studentUserName!.join('') +
-                              '）')
+                              '）\n')
                           .join(''));
             } else {
               assignLogic.updateAssignHomeworkRequest(
