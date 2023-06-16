@@ -73,6 +73,8 @@ class JsonCacheManageUtils {
   static const int TeacherTestPagerLook = 0x217; //试卷库预览
   static const int TeacherHomeGetNumber = 0x218; //教师端首页提醒数量
   static const int TeacherGetRerport = 0x219; //教师端获取练习报告
+  static const int TeacherTestPagerCorrectLoog = 0x21A; //试卷库预览准备批改
+
 
   // String contentJson;
 

@@ -288,6 +288,8 @@ class Api {
 
   // 教师端试卷预览
   static String toPreviewOperation = "${Config.ApiHost}/question/operation/previewOperation";
+  // 教师端试卷预览 准备批改
+  static String previewCorrectionOperation = "${Config.ApiHost}/question/operation/previewCorrectionOperation";
 
   // 根据作业获取主观题试题详情
   static String getOperSubjectiveDetails = "${Config.ApiHost}/question/studentOperation/getOperSubjectiveDetails";

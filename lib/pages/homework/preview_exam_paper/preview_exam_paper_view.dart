@@ -118,7 +118,11 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
 
   void _onRefresh() async {
     if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-      logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+      if(widget.paperMode == PaperMode.TeacherCorrect){
+        logic.getPreviewQuestionForCorrectList(widget.paperType, widget.paperId);
+      }else{
+        logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+      }
     } else {
       logic.getPreviewOperation(widget.paperId);
     }
@@ -126,7 +130,11 @@ class _PreviewExamPaperPageState extends BasePageState<PreviewExamPaperPage>
 
   void _onLoading() async {
     if (SpUtil.getBool(BaseConstant.IS_TEACHER_LOGIN)) {
-      logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+      if(widget.paperMode == PaperMode.TeacherCorrect){
+        logic.getPreviewQuestionForCorrectList(widget.paperType, widget.paperId);
+      }else{
+        logic.getPreviewQuestionList(widget.paperType, widget.paperId);
+      }
     } else {
       logic.getPreviewOperation(widget.paperId);
     }
