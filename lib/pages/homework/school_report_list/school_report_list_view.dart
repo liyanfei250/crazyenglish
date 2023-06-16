@@ -248,13 +248,26 @@ class _SchoolReportListPageState extends BasePageState<SchoolReportListPage> {
 
     return InkWell(
       onTap: () {
-        RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
-          PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
-          PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
-          PreviewExamPaperPage.StudentOperationId: studentItem.id,
-          PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
-          PreviewExamPaperPage.OperationId: studentItem.operationId
-        });
+        if(widget.content_type == SchoolReportListPage.scoreList){
+          // 查看结果
+          RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+            PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
+            PreviewExamPaperPage.Papermode: PaperMode.StudentHomeworkResult,
+            PreviewExamPaperPage.StudentOperationId: studentItem.id,
+            PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
+            PreviewExamPaperPage.OperationId: studentItem.operationId
+          });
+        }else{
+          // 去批改
+          RouterUtil.toNamed(AppRoutes.PreviewExamPaperPage, arguments: {
+            PreviewExamPaperPage.PaperType: common.PaperType.HistoryHomework,
+            PreviewExamPaperPage.Papermode: PaperMode.TeacherCorrect,
+            PreviewExamPaperPage.StudentOperationId: studentItem.id,
+            PreviewExamPaperPage.OperationClassId: studentItem.operationClassId,
+            PreviewExamPaperPage.OperationId: studentItem.operationId
+          });
+        }
+
       },
       child: Container(
         height: 60.w,
