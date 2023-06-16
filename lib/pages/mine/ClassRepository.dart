@@ -256,6 +256,21 @@ class ClassRepository {
       return paperDetail!;
     }
   }
+  //试卷库预览 准备批改
+  Future<TestPaperLookResponse> toPreviewOperationForCorrect(
+      Map<String, dynamic> req) async {
+    Map map = await NetManager.getInstance()!.request(
+        Method.post, Api.previewCorrectionOperation,
+        data: req,
+        options: Options(
+            method: Method.post, contentType: ContentType.json.toString()));
+    TestPaperLookResponse paperDetail = TestPaperLookResponse.fromJson(map);
+    if (paperDetail.code != ResponseCode.status_success) {
+      return Future.error(paperDetail.message!);
+    } else {
+      return paperDetail!;
+    }
+  }
 
 //  学生端获取试卷预览
   Future<TestPaperLookResponse> getPreviewOperation(int operationId) async {

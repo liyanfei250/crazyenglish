@@ -61,6 +61,39 @@ class PreviewExamPaperLogic extends GetxController {
     update([(GetBuilderIds.getExamper)]);
   }
 
+  void getPreviewQuestionForCorrectList(int paperType, int paperId) async {
+    var cache = await JsonCacheManageUtils.getCacheData(
+        JsonCacheManageUtils.TeacherTestPagerCorrectLoog,
+        labelId: "$paperType$paperId")
+        .then((value) {
+      if (value != null) {
+        return TestPaperLookResponse.fromJson(value as Map<String, dynamic>?);
+      }
+    });
+
+    if (cache is TestPaperLookResponse && cache.obj != null) {
+      state.list = cache.obj!;
+      update([(GetBuilderIds.getExamper)]);
+    }
+    Map<String, dynamic> req = Map();
+    if (paperType == common.PaperType.exam) {
+      req = {"paperType": paperType, "paperId": paperId};
+    } else {
+      req = {"paperType": paperType, "historyOperationId": paperId};
+    }
+    TestPaperLookResponse list = await classRepository.toPreviewOperationForCorrect(req);
+    JsonCacheManageUtils.saveCacheData(
+        JsonCacheManageUtils.TeacherTestPagerCorrectLoog, list.toJson(),
+        labelId: "$paperType$paperId");
+    if (list.obj == null) {
+      state.list.clear();
+    } else {
+      state.list = list.obj!;
+    }
+    update([(GetBuilderIds.getExamper)]);
+  }
+
+
   void getPreviewOperation(int paperId) async {
     var cache = await JsonCacheManageUtils.getCacheData(
             JsonCacheManageUtils.TeacherTestPagerLook,
