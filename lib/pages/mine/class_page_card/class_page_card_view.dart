@@ -124,7 +124,7 @@ class _ClassCardState extends State<ClassCard> {
             ),
             Visibility(
               visible: widget.isShowAdd,
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   showDialog(
                     context: context,
@@ -346,7 +346,7 @@ class _ClassCardState extends State<ClassCard> {
             ),
           ),
           Expanded(child: Text('')),
-          GestureDetector(
+          InkWell(
             onTap: () {
               RouterUtil.toNamed(AppRoutes.StudentRankingPage, arguments: {'classId':widget.classId,
                 'isStudent':
