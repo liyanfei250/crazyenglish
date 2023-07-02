@@ -115,6 +115,10 @@ dependencies:
   table_calendar: ^3.0.9
   grouped_list: ^5.1.2
   fluwx: 4.2.4+1
+  dart_openai: ^2.0.1
+  get_storage: ^2.1.1
+  markdown_widget: ^2.2.0
+  flutter_math_fork: ^0.7.1
 
 fluwx:
   app_id: wxf814fbeed5ba5291
@@ -539,3 +543,8 @@ flutter:
     - images/num_index2.png
     - images/icon_transmission_speed_05_selected.png
     - images/student_head.png
+
+  fonts:
+    - family: wxIconFont
+      fonts:
+        - asset: assets/fonts/iconfont.ttf

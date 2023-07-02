@@ -4,6 +4,8 @@ import 'package:audio_session/audio_session.dart';
 import 'package:crazyenglish/xfyy/utils/xf_socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
 
@@ -32,7 +34,7 @@ class _VoiceTextState extends State<VoiceText> {
   XfSocket? xfSocket;
 
   /// 识别文本
-  String text = "";
+  var text = "".obs;
 
   /// 是否在说话
   bool isTalking = false;
@@ -108,10 +110,10 @@ class _VoiceTextState extends State<VoiceText> {
           Container(
             margin: const EdgeInsetsDirectional.only(
                 start: 20, end: 20, top: 100, bottom: 50),
-            child: Text(
-              "识别结果：$text",
+            child: Obx(()=>Text(
+              "识别结果：${text.value}",
               style: const TextStyle(fontSize: 12, color: Colors.black87),
-            ),
+            )),
           ),
           VoiceAnimation(voiceNum: voiceNum),
           Container(
@@ -135,10 +137,8 @@ class _VoiceTextState extends State<VoiceText> {
                       // 时间结束
                     }
                   });
-                  xfSocket = XfSocket.connectVoice(onTextResult: (text) {
-                    setState(() {
-                      this.text = text;
-                    });
+                  xfSocket = XfSocket.connectVoice(onTextResult: (textResult) {
+                    text.value = textResult;
                   });
                   state = 0;
                   startRecord();

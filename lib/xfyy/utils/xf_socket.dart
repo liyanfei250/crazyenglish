@@ -17,9 +17,13 @@ import 'package:web_socket_channel/status.dart' as status;
 // const String _apiKey = "445f5702911ec04cfc9155e1350b2a53";
 // const String _apiSecret = "Y2M5OTI1MmZjY2NkNWYzZWY5OGJkMDRk";
 
-const String _appId = "573472a8";
-const String _apiKey = "518c9af2e1033e7e76900f38a8dff147";
-const String _apiSecret = "954e0b74bfc8652e3823ad5a3ac6786e";
+// const String _appId = "573472a8";
+// const String _apiKey = "518c9af2e1033e7e76900f38a8dff147";
+// const String _apiSecret = "954e0b74bfc8652e3823ad5a3ac6786e";
+
+const String _appId = "aaa708a5";
+const String _apiKey = "94cceb11525377a8af3ed0499a224f7e";
+const String _apiSecret = "MzM5ZDc0NzczZDI5ZWM5NDcxMzEzZTFi";
 
 const String _host = "tts-api.xfyun.cn";
 const String _host2 = "iat-api.xfyun.cn";
@@ -27,6 +31,7 @@ const String _host2 = "iat-api.xfyun.cn";
 const String huaweiAppid= "hw065511755";
 const String huaweiApiKey= "FB92ELRV2AXMJF7GY6BY";
 const String huaweiApiSecret= "uA6saFaYpPbjsWcgrBDbitF41oIRCKh1jQz7PjeD";
+
 
 /// 作者： lixp
 /// 创建时间： 2022/6/1 15:57
@@ -175,7 +180,8 @@ class XfSocket {
 
     BusinessV business = BusinessV();
     // 语种 zh_cn:中文
-    business.language = "en_us";
+    business.language = "zh_cn";
+    // business.language = "en_us";
     //应用领域
     // iat：日常用语
     // medical：医疗
@@ -212,7 +218,7 @@ class XfSocket {
 
     String req = jsonEncode(xfVoiceReq);
     _channel?.sink.add(req);
-    // debugPrint("inputV == $req}");
+    debugPrint("inputV == $req}");
     // if (state == 2) {
     //   close();
     // }

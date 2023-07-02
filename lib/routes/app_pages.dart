@@ -23,6 +23,7 @@ import 'package:crazyenglish/pages/mine/login_new/login_new_view.dart';
 import 'package:crazyenglish/pages/mine/set_psd/set_psd_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_catalog/week_test_catalog_view.dart';
 import 'package:crazyenglish/pages/week_test/week_test_list/week_test_list_view.dart';
+import 'package:crazyenglish/xfyy/main.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../drawable_test/draggable_demo.dart';
@@ -68,9 +69,9 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> SplashPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> TestApp(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPageNew(),),
-    GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
+    // GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPage(),),
-    // GetPage(name: AppRoutes.INITIAL, page:()=> MyHomePage(title: "ceshi",),),
+    GetPage(name: AppRoutes.INITIALNew, page:()=> MyHomePage(title: "ceshi",),),
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),
     GetPage(name: AppRoutes.LoginNew, page:()=> LoginNewPage(),),
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
