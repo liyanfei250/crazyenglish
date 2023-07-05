@@ -61,7 +61,8 @@ import '../pages/mine/mine_setting/mine_setting_view.dart';
 import '../pages/mine/person_info/role_view.dart';
 import '../pages/mine/person_info/role_two_view.dart';
 import '../xfyy/text_to_voice.dart';
-
+import 'package:crazyenglish/pages/chatgpt/api/chat_api.dart';
+import 'package:crazyenglish/pages/chatgpt/chat_page.dart';
 part './app_routes.dart';
 
 abstract class AppPages {
@@ -69,10 +70,11 @@ abstract class AppPages {
     // GetPage(name: AppRoutes.INITIAL, page:()=> SplashPage(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> TestApp(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPageNew(),),
-    // GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
+    GetPage(name: AppRoutes.INITIALNew, page:()=> SplashPageNew(),),
     // GetPage(name: AppRoutes.INITIAL, page:()=> LoginPage(),),
-    GetPage(name: AppRoutes.INITIALNew, page:()=> MyHomePage(title: "ceshi",),),
+    // GetPage(name: AppRoutes.INITIALNew, page:()=> MyHomePage(title: "ceshi",),),
     GetPage(name: AppRoutes.HOME, page:()=> HomePage(),),
+    GetPage(name: AppRoutes.CHAT_API, page: () => ChatPage(chatApi: ChatApi())),
     GetPage(name: AppRoutes.LoginNew, page:()=> LoginNewPage(),),
     GetPage(name: AppRoutes.WeeklyTestList, page:()=>WeekTestListPage(),),
     GetPage(name: AppRoutes.WeeklyTestCategory, page:()=>WeekTestCatalogPage(),),

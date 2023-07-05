@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
+import 'package:crazyenglish/pages/week_test/week_test_detail/test_player_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -32,11 +36,21 @@ class _TextToVoiceState extends State<TextToVoice> {
   var englishTxt = "".obs;
   var vcnTxt = "Laura".obs;
 
+  AudioPlayer? audioPlayer;
+//  男声 女声
+  var playMan = "henry".obs;
+  String man = "henry";
+  String woman = "catherine";
+  late AudioPlayerStateChanged audioPlayerStateChanged;
+  StreamController<bool> playerManStreamController = StreamController.broadcast();
   @override
   void initState() {
     super.initState();
 
     initPlay();
+    audioPlayerStateChanged = (playerState){
+      // this.playerState = playerState;
+    };
   }
 
 
@@ -87,6 +101,7 @@ class _TextToVoiceState extends State<TextToVoice> {
                   });
                 },
                 child: Text("采用${vcnTxt.value}播放"))),
+        TestPlayerWidget(audioPlayer,TestPlayerWidget.READ_TOP_TYPE,voiceContent: "To become proficient in English, here are some tips",playerName: playMan.value,stateChangeCallback:audioPlayerStateChanged,playerManStreamController: playerManStreamController),
             Padding(padding: EdgeInsets.only(top: 20.w)),
             Image.asset(R.imagesXunfei),
             Image.asset(R.imagesXunfeiEnglish)

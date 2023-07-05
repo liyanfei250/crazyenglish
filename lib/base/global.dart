@@ -13,7 +13,7 @@ import 'package:http_proxy_override/http_proxy_override.dart';
 import '../config.dart';
 import '../utils/sp_util.dart';
 import 'AppUtil.dart';
-
+import 'package:get_storage/get_storage.dart';
 class Global {
   //初始化全局信息
   static Future init(VoidCallback callback,{bool isTeacher = false}) async {
@@ -23,7 +23,7 @@ class Global {
       HttpOverrides.global = await HttpProxyOverride.createHttpProxy();
     }
 
-
+    await GetStorage.init();
     // BotToastInit();
     await SpUtil.getInstance();
     if(isTeacher){

@@ -4,6 +4,7 @@ abstract class AppRoutes{
   static const INITIAL = '/';
   static const INITIALNew = '/SplashNew';
   static const HOME = '/home';
+  static const CHAT_API = '/CHAT_API';
   static const LoginNew = '/loginNew';
   static const LOGIN = '/login';
   static const WeeklyTestList = '/weeklyTestList';

@@ -5,8 +5,7 @@ import 'package:crazyenglish/repository/HomeViewRepository.dart';
 import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:get/get.dart';
 
-import '../../entity/home/HomeKingDate.dart';
-import '../../entity/home/HomeKingNewDate.dart';
+import '../../entity/home/HomeKingNewDate.dart' as king;
 import '../../entity/home/HomeMyTasksDate.dart';
 import '../../entity/review/HomeListDate.dart';
 import '../../entity/week_list_response.dart';
@@ -34,21 +33,29 @@ class IndexLogic extends GetxController {
             JsonCacheManageUtils.HomeKingListNew,labelId: type)
         .then((value) {
       if (value != null) {
-        return HomeKingNewDate.fromJson(value as Map<String, dynamic>?);
+        return king.HomeKingNewDate.fromJson(value as Map<String, dynamic>?);
       }
     });
 
     bool hasCache = false;
-    if (cache is HomeKingNewDate) {
+    if (cache is king.HomeKingNewDate) {
       state.paperDetailNew = cache!;
+      state.paperDetailNew!.obj!.add(
+          king.Obj(
+              type: "ai_type",
+              name: "AI速答"));
       hasCache = true;
       update([GetBuilderIds.getHomeDateListNew]);
     }
-    HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
+    king.HomeKingNewDate list = await homeViewRepository.getHomeKingListNew(type);
 
     JsonCacheManageUtils.saveCacheData(
         JsonCacheManageUtils.HomeKingListNew,labelId:type, list.toJson());
     state.paperDetailNew = list!;
+    state.paperDetailNew!.obj!.add(
+        king.Obj(
+            type: "ai_type",
+            name: "AI速答"));
     if (!hasCache) {
       update([GetBuilderIds.getHomeDateListNew]);
     }
@@ -69,7 +76,7 @@ class IndexLogic extends GetxController {
     });
 
     bool hasCache = false;
-    if (cache is HomeKingNewDate) {
+    if (cache is king.HomeKingNewDate) {
       state.banner = cache!;
       hasCache = true;
       update([GetBuilderIds.getHomeBanner]);

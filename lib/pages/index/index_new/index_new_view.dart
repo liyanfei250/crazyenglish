@@ -30,6 +30,11 @@ import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/swiper.dart';
 import 'package:crazyenglish/entity/home/banner.dart' as banner;
+import 'package:crazyenglish/pages/chatgpt/controller/conversation.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/message.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/prompt.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/settings.dart';
+import 'package:crazyenglish/pages/chatgpt/api/chat_api.dart';
 
 class IndexNewPage extends BasePage {
   const IndexNewPage({Key? key}) : super(key: key);
@@ -53,6 +58,10 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   @override
   void initState() {
     super.initState();
+    Get.put(SettingsController());
+    Get.put(ConversationController());
+    Get.put(MessageController());
+    Get.put(PromptController());
     SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN, false);
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
@@ -63,7 +72,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
       if (state.myJournalDetail != null) {
         if (mounted && state.myJournalDetail!.obj != null) {
           myListDate = state.myJournalDetail!.obj!.records!;
-          setState(() {});
+      setState(() {});
         }
       }
     });
@@ -247,6 +256,7 @@ class _IndexPageState extends BasePageState<IndexNewPage>
         weekListResponse.Records old = myListDate[index];
         newData.Obj updatedObj = updateObj(old);
         RouterUtil.toNamed(AppRoutes.WeeklyTestCategory, arguments: updatedObj);
+
       },
       child: Container(
         margin:
@@ -514,7 +524,8 @@ class _IndexPageState extends BasePageState<IndexNewPage>
             case "lable_type":
               RouterUtil.toNamed(AppRoutes.ListeningPracticePage, arguments: e);
               break;
-
+            case "ai_type":
+              RouterUtil.toNamed(AppRoutes.CHAT_API, arguments: e);
             /*
             case "shopping_type":
               RouterUtil.toNamed(AppRoutes.ToShoppingPage,
@@ -917,6 +928,10 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   @override
   void dispose() {
     Get.delete<IndexLogic>();
+    Get.delete<SettingsController>();
+    Get.delete<ConversationController>();
+    Get.delete<MessageController>();
+    Get.delete<PromptController>();
     _refreshController.dispose();
     super.dispose();
   }

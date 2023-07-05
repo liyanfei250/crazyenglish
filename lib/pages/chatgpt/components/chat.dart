@@ -25,27 +25,36 @@ class _ChatWindowState extends State<ChatWindow> {
   final _formKey = GlobalKey<FormState>(); // 定义一个 GlobalKey
   final _scrollController = ScrollController();
   List<Message> messageList = <Message>[];
+  MessageController? controllerMessage;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    MessageController controllerMessage = Get.find();
-    controllerMessage.addListenerId(ConversationController.ConversationMachine, () {
+    controllerMessage = Get.find();
+    controllerMessage!.addListenerId(ConversationController.ConversationMachine, () {
       setState(() {
         messageList.clear();
-        messageList.addAll(controllerMessage.messageList.value);
+        messageList.addAll(controllerMessage!.messageList.value);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollToNewMessage();
         });
       });
     });
-    controllerMessage.loadAndUpdateMessages(ConversationController.ConversationMachine);
+    controllerMessage!.loadAndUpdateMessages(ConversationController.ConversationMachine);
     // Future.delayed(new Duration(milliseconds: 400),(){
     //   ConversationController controller = Get.find();
     //   controller.currentConversationUuid(ConversationController.ConversationMachine);
     //   MessageController controllerMessage = Get.find();
     //   controllerMessage.loadAndUpdateMessages(ConversationController.ConversationMachine);
     // });
+  }
+
+
+  @override
+  void dispose() {
+    if(controllerMessage!=null) {
+      controllerMessage!.disposeId(ConversationController.ConversationMachine);
+    }
   }
 
   @override
