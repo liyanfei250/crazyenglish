@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:crazyenglish/pages/mine/person_info/person_info_logic.dart';
+import 'package:crazyenglish/routes/getx_ids.dart';
 var uuid = const Uuid();
 
 class ChatWindow extends StatefulWidget {
@@ -26,10 +27,16 @@ class _ChatWindowState extends State<ChatWindow> {
   final _scrollController = ScrollController();
   List<Message> messageList = <Message>[];
   MessageController? controllerMessage;
+  final personInfoLazyLogic = Get.lazyPut(()=>Person_infoLogic());
+  final personInfoLogic = Get.find<Person_infoLogic>();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    int userId = SpUtil.getInt(BaseConstant.USER_ID);
+    if(personInfoLogic!=null && userId>0){
+      personInfoLogic!.getPersonInfo("$userId");
+    }
     controllerMessage = Get.find<MessageController>();
     controllerMessage!.addListenerId(ConversationController.ConversationMachine, () {
       setState(() {
@@ -55,6 +62,7 @@ class _ChatWindowState extends State<ChatWindow> {
     if(controllerMessage!=null) {
       controllerMessage!.disposeId(ConversationController.ConversationMachine);
     }
+    Get.delete<Person_infoLogic>();
   }
 
   @override
@@ -175,7 +183,16 @@ class _ChatWindowState extends State<ChatWindow> {
               SizedBox(
                 width: 5,
               ),
-              Text("User"),
+              GetBuilder<Person_infoLogic>(
+                id: GetBuilderIds.getPersonInfo,
+                builder: (logic){
+                  return Text(
+                    logic.state.infoResponse.obj?.nickname??"",
+                    style: TextStyle(
+                        color: Color(0xff353e4d)),
+                  );
+                },
+              ),
               SizedBox(
                 width: 10,
               )
