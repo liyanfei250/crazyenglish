@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:crazyenglish/base/common.dart';
 import 'package:crazyenglish/pages/chatgpt/components/markdown.dart';
 import 'package:crazyenglish/pages/chatgpt/components/prompts.dart';
 import 'package:crazyenglish/pages/chatgpt/controller/conversation.dart';
 import 'package:crazyenglish/pages/chatgpt/controller/message.dart';
 import 'package:crazyenglish/pages/chatgpt/controller/prompt.dart';
 import 'package:crazyenglish/pages/chatgpt/repository/conversation.dart';
+import 'package:crazyenglish/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
