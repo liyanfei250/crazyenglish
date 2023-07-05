@@ -30,10 +30,6 @@ import '../../../routes/routes_utils.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/swiper.dart';
 import 'package:crazyenglish/entity/home/banner.dart' as banner;
-import 'package:crazyenglish/pages/chatgpt/controller/conversation.dart';
-import 'package:crazyenglish/pages/chatgpt/controller/message.dart';
-import 'package:crazyenglish/pages/chatgpt/controller/prompt.dart';
-import 'package:crazyenglish/pages/chatgpt/controller/settings.dart';
 import 'package:crazyenglish/pages/chatgpt/api/chat_api.dart';
 
 class IndexNewPage extends BasePage {
@@ -58,10 +54,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   @override
   void initState() {
     super.initState();
-    Get.put(SettingsController());
-    Get.put(ConversationController());
-    Get.put(MessageController());
-    Get.put(PromptController());
     SpUtil.putBool(common.BaseConstant.IS_TEACHER_LOGIN, false);
     //获取金刚区列表新增的列表
     logic.addListenerId(GetBuilderIds.getHomeMyJournalDate, () {
@@ -928,10 +920,6 @@ class _IndexPageState extends BasePageState<IndexNewPage>
   @override
   void dispose() {
     Get.delete<IndexLogic>();
-    Get.delete<SettingsController>();
-    Get.delete<ConversationController>();
-    Get.delete<MessageController>();
-    Get.delete<PromptController>();
     _refreshController.dispose();
     super.dispose();
   }

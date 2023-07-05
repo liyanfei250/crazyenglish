@@ -1,8 +1,13 @@
 import 'package:crazyenglish/pages/chatgpt/api/chat_api.dart';
 import 'package:crazyenglish/pages/chatgpt/components/chat.dart';
 import 'package:crazyenglish/pages/chatgpt/components/conversation.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/conversation.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/message.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/prompt.dart';
+import 'package:crazyenglish/pages/chatgpt/controller/settings.dart';
 import 'package:crazyenglish/pages/chatgpt/models/chat_message.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -22,6 +27,16 @@ class _ChatPageState extends State<ChatPage> {
   ];
   var _awaitingResponse = false;
 
+
+  @override
+  void initState() {
+    super.initState();
+    Get.put(SettingsController());
+    Get.put(ConversationController());
+    Get.put(MessageController());
+    Get.put(PromptController());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,5 +44,15 @@ class _ChatPageState extends State<ChatPage> {
       drawer: const ConversationWindow(),
       body: const ChatWindow(),
     );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<SettingsController>();
+    Get.delete<ConversationController>();
+    Get.delete<MessageController>();
+    Get.delete<PromptController>();
+    super.dispose();
+
   }
 }

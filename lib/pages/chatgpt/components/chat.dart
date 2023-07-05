@@ -30,7 +30,7 @@ class _ChatWindowState extends State<ChatWindow> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controllerMessage = Get.find();
+    controllerMessage = Get.find<MessageController>();
     controllerMessage!.addListenerId(ConversationController.ConversationMachine, () {
       setState(() {
         messageList.clear();
